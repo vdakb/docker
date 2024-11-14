@@ -1,2 +1,3 @@
 RUN mkdir -p /repo
-COPY .repo/ /repo
+WORKDIR /repo
+COPY .repo/ .
