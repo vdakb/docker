@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="robots"                content="noindex, nofollow">
+    <meta http-equiv="expires"         content="0">
+    <meta http-equiv="pragma"          content="no-cache">
+    <meta http-equiv="cache-control"   content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- ===============================================-->
+    <!-- Stylesheets                                    -->
+    <!-- ===============================================-->
+    <link rel="stylesheet" type="text/css" href="resources/css/fontawesome.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="resources/css/main.css">
+  </head>
+  <body>
+    <div id="security" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="captcha-header" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <a class="close" data-dismiss="modal">&times;</a>
+         </div>
+         <div class="modal-body">
+           <img id="challenge-preview" src="http://buster.vm.oracle.com:7007/ocs/v1/captcha" alt="challenge-image"/>
+           <i id="challenge-response"></i>
+           <form id="challenge-form" class="form-horizontal" action="http://buster.vm.oracle.com:7007/ocs/v1/verify" method="post">
+             <input id="challenge-answer" name="challenge-response" type="text" placeholder="Enter Security Code" class="form-control input-md" required>
+             <a id="challenge-refresh" href="" ><span class="fa fa-refresh"></span><small> New code</small></a>
+             <button id="challenge-validate" class="challenge-validate">Validate</button>
+           </form>
+         </div>
+         <div class="modal-footer">
+           <button type="button" class="btn btn-primary">Verify</button>
+           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+       </div>
+      </div>
+    </div>
+    <div>
+      <span id="fa-policy">
+        <i class="fa fa-info-circle stretched-link" aria-hidden="true" data-toggle="modal" data-target="#security"></i>
+      </span>
+    </div>
+<!--
+  <div id="captcha">
+     <div class="col-md-4">
+       <img id="challenge-preview" src="http://buster.vm.oracle.com:7007/ocs/v1/captcha" alt="challenge-image"/>
+       <i id="challenge-response"></i>
+       <form id="challenge-form" class="form-horizontal" action="http://buster.vm.oracle.com:7007/ocs/v1/verify" method="post">
+          <input id="challenge-answer" name="challenge-response" type="text" placeholder="Enter Security Code" class="form-control input-md" required>
+          <a id="challenge-refresh" href="" ><span class="fa fa-refresh"></span><small> New code</small></a>
+          <button id="challenge-validate" class="challenge-validate">Validate</button>
+       </form>
+      </div>
+    </div>
+-->
+    <!--
+     | when require.js loads it will inject another script tag defined in
+     | data-main (with async attribute) load app.js after require.js loads
+    <script data-main="resources/lib/app" src="resources/lib/require.min.js"></script>
+     -->
+    <script type="text/javascript" src="resources/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="resources/lib/popper.min.js"></script>
+    <script type="text/javascript" src="resources/lib/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(
+        function() {
+          /*
+          $("#challenge-validate").click(
+            function() {
+              var bundle = require("i18n!app/nls/bundle")
+              console.log(bundle);
+              // "Resposta incorreta. Tente novamente!"
+              alert(bundle.root.challenge.accepted);
+            }
+          )
+          */
+          $("#challenge-refresh").click(
+             function() {
+               $('#challenge-preview').attr('src', $('#challenge-preview').attr('src'));
+            }
+          )
+        }
+      );
+    </script>
+  </body>
+</html>

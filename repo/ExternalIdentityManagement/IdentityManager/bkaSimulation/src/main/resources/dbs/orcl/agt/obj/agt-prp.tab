@@ -1,0 +1,35 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityManager\bkaSimulation\src\main\resources\dbs\agt\obj\agt-prp.tab
+--
+-- Generated for Oracle Database 12c on Sun January 21 16:53:56 2020 by Server Generator 10.1.2.93.10
+
+CREATE TABLE agt_properties (
+  rowversion   VARCHAR   ( 30)                 NOT NULL
+, created_on   TIMESTAMP       DEFAULT SYSDATE NOT NULL
+, created_by   VARCHAR   (128)                 NOT NULL
+, updated_on   TIMESTAMP       DEFAULT SYSDATE NOT NULL
+, updated_by   VARCHAR   (128)                 NOT NULL
+, org          VARCHAR   (128)                 NOT NULL
+, name         VARCHAR   (128)                 NOT NULL
+, value        VARCHAR   (128)                 NOT NULL
+, CONSTRAINT agt_prp_pk PRIMARY KEY (org, name)
+, CONSTRAINT agt_prp_fk FOREIGN KEY (org) REFERENCES agt_organizations (name) ON DELETE CASCADE
+)
+/
+COMMENT ON TABLE agt_properties IS 'Apigee Environment Property Repository'
+/
+COMMENT ON COLUMN agt_properties.rowversion IS 'Row Version of data record'
+/
+COMMENT ON COLUMN agt_properties.created_by IS 'Creator of the data record'
+/
+COMMENT ON COLUMN agt_properties.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN agt_properties.updated_by IS 'Modifier of the data record'
+/
+COMMENT ON COLUMN agt_properties.updated_on IS 'Last Modified Timestamp of data record'
+/
+COMMENT ON COLUMN agt_properties.org IS 'The organization'
+/
+COMMENT ON COLUMN agt_properties.name IS 'The property name'
+/
+COMMENT ON COLUMN agt_properties.value IS 'The property value'
+/

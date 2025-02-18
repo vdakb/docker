@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<definitions xmlns:xsd      ="http://www.w3.org/2001/XMLSchema"
+             xmlns          ="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap     ="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:plnk     ="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+             xmlns:tns      ="http://wls.ws.workflowservice.platform.iam.oracle/"
+             targetNamespace="http://wls.ws.workflowservice.platform.iam.oracle/"
+             name           ="CallbackService">
+  <types>
+    <xsd:schema>
+      <xsd:import namespace="http://wls.ws.workflowservice.platform.iam.oracle/" schemaLocation="xsd/callback-service.xsd"/>
+    </xsd:schema>
+  </types>
+
+  <message name="callback">
+    <part name="parameters" element="tns:callback"/>
+  </message>
+  <message name="callbackResponse">
+    <part name="parameters" element="tns:callbackResponse"/>
+  </message>
+  <message name="callbackFault">
+    <part xmlns:ns1="http://oracle.iam.com/callbackfault" name="fault" element="tns:callbackError"/>
+  </message>
+
+  <portType name="CallbackService">
+    <operation name="callback">
+      <input  message="tns:callback"/>
+      <output message="tns:callbackResponse"/>
+      <fault  message="tns:callbackFault" name="CallbackFault"/>
+    </operation>
+  </portType>
+
+  <binding name="CallbackServicePortBinding" type="tns:CallbackService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+    <operation name="callback">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+      <fault name="CallbackFault">
+        <soap:fault name="CallbackFault" use="literal"/>
+      </fault>
+    </operation>
+  </binding>
+  <service name="CallbackService">
+    <port name="CallbackServicePort" binding="tns:CallbackServicePortBinding">
+      <soap:address location="localhost"/>
+    </port>
+  </service>
+  <plnk:partnerLinkType name="CallbackService_PL">
+    <plnk:role name="CallbackService_Role">
+      <plnk:portType name="tns:CallbackService"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+</definitions>

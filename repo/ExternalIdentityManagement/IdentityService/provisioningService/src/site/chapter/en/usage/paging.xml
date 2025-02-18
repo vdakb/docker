@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="use-paging"
+         xml:lang="en"
+         version ="5.0">
+  <title>Pagination</title>
+  <para>
+    Pagination parameters can be used together to <emphasis>"page through"</emphasis> large numbers of resources so as not to overwhelm the client or service provider.
+  </para>
+  <caution>
+    <title>Caution</title>
+    Because pagination is not stateful, clients <emphasis role="strong">MUST</emphasis> be prepared to handle inconsistent results.
+  </caution>
+  <para>
+    For example, a request for a list of 10 resources beginning with a startIndex of 1 <emphasis role="strong">MAY</emphasis> return different results when repeated, since resources on the service provider may have changed between requests.
+    Pagination parameters and general behavior are derived from the OpenSearch Protocol.
+  </para>
+  <para>
+    The following table describes the pagination request parameter, its description and the default value:
+  </para>
+  <table colsep="0">
+    <tgroup cols="3">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="8em"/>
+      <colspec colname="c3" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>Parameter</entry>
+          <entry>Default</entry>
+          <entry>Description</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>startIndex</entry>
+          <entry>1</entry>
+          <entry>
+            <para>
+              Non-negative integer.
+            </para>
+            <para>
+              The 1-based index of the first query result. A value less than 1 is interpreted as 1.
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>count</entry>
+          <entry>None</entry>
+          <entry>
+            <para>
+              Non-negative integer.
+            </para>
+            <para>
+              Specifies the desired number of query results per page, example: 10.
+              A value less than 0 is interpreted as 0.
+              A value of 0 indicates that no resource results are to be returned except for total results.
+            </para>
+            <para>
+              When specified, the service provider does not return more results than specified, although it may return fewer results.
+            </para>
+            <para>
+              If not specified, the maximum of results is set by the service provider.
+            </para>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para>
+    The following table displays the pagination response elements:
+  </para>
+  <table colsep="0">
+    <tgroup cols="2">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>Element</entry>
+          <entry>Description</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>totalResults</entry>
+          <entry>
+            <para>
+              Non-negative integer.
+            </para>
+            <para>
+              Specifies the total number of results matching the query.
+              For example, 1000.
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>startIndex</entry>
+          <entry>
+            <para>
+              Non-negative integer.
+            </para>
+            <para>
+              The 1-based index of the first result in the current set of query results.
+              For example: 1
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>itemsPerPage</entry>
+          <entry>
+            <para>
+              Non-negative integer.
+            </para>
+            <para>
+              The number of query results that are returned in a query response page.
+              For example, 10.
+            </para>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <bridgehead renderas="sect6">Example</bridgehead>
+  <!--
+  Don't indent what's in the element below
+  -->
+  <programlisting language="bash">
+curl --request GET \
+     --location 'https://&lt;service-host&gt;:&lt;service-port&gt;/igs/scim/v2/Users?startIndex=1&amp;count=10' \
+     --header 'Accept: pplication/scim+json' \
+     --header 'Content Type: pplication/scim+json' \
+     --header 'Authorization: Bearer eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0IjoiSjFs...'
+  </programlisting>
+  <para>
+    The response to the query above returns metadata regarding paging similar to the following example.
+  </para>
+  <programlisting language="json">
+{ "schemas": [
+    "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+  ]
+, "totalResults": 21
+, "startIndex": 1
+, "itemsPerPage": 10
+  "Resources": [
+    ...
+  ]
+}
+  </programlisting>
+  <note>
+    <title>Note</title>
+    <para>In the previous example, to continue paging, set the startIndex to 11 and re-fetch, that is:</para>
+    <para><literal>/igs/scim/v2/Users?startIndex=11&amp;count=10</literal></para>
+  </note>
+</section>

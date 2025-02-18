@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysauth$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Authorization']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{pageFlowScope.mode == 'view'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysauth$bundle.ENT_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysauth$bundle.ENT_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysauth$bundle.ENT_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysauth$bundle.ENT_ACCOUNT}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysauth$bundle.ENT_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysauth$bundle.ENT_CREATE_TITLE : af:formatString(sysauth$bundle.ENT_DETAIL, pageFlowScope.entitlementCode)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysauth$bundle.ENT_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id            ="btn15"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysauth$bundle.ENT_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.entitlementTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.entitlementAccount.submit}"
+                   action        ="#{pageFlowScope.entitlementTrain.submit}"
+                   styleClass    ="whiteTextButton"
+                   inlineStyle   ="#{pageFlowScope.entitlementTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+        <af:button id            ="btn16"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysauth$bundle.ENT_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.entitlementTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.entitlementAccount.revert}"
+                   actionListener="#{pageFlowScope.entitlementTrain.revert}"
+                   immediate     ="true">
+          <af:clientAttribute name="account" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelGroupLayout id="pg02" layout="scroll">
+        <af:spacer id="sp05" width="0" height="10"/>
+        <af:panelCollection id="pc01" styleClass="AFStretchWidth" featuresOff="statusBar">
+          <f:facet name="toolbar">
+            <af:toolbar id="tb03" binding="#{backingBeanScope.entitlementAccount.toolbar}" >
+              <af:group id="g01">
+                <af:button id            ="btn01"
+                           text          ="#{sysbase$bundle.GENERIC_ASSIGN}"
+                           icon          ="/images/func_add_16_ena.png"
+                           hoverIcon     ="/images/func_add_16_hov.png"
+                           disabledIcon  ="/images/func_add_16_dis.png"
+                           depressedIcon ="/images/func_add_16_act.png"
+                           shortDesc     ="#{sysauth$bundle.ENT_ACCOUNT_ASSIGN}"
+                           actionListener="#{backingBeanScope.entitlementAccount.launchAssignRequest}"
+                           partialSubmit ="true"/>
+                <af:button id            ="btn02"
+                           text          ="#{sysbase$bundle.GENERIC_REVOKE}"
+                           icon          ="/images/func_delete_16_ena.png"
+                           hoverIcon     ="/images/func_delete_16_hov.png"
+                           disabledIcon  ="/images/func_delete_16_dis.png"
+                           depressedIcon ="/images/func_delete_16_act.png"
+                           shortDesc     ="#{sysauth$bundle.ENT_ACCOUNT_REVOKE}"
+                           actionListener="#{backingBeanScope.entitlementAccount.launchRevokeRequest}"
+                           partialSubmit ="true"/>
+                <af:button id            ="btn04"
+                           text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                           icon          ="/images/func_refresh_16_ena.png"
+                           hoverIcon     ="/images/func_refresh_16_hov.png"
+                           disabledIcon  ="/images/func_refresh_16_dis.png"
+                           depressedIcon ="/images/func_refresh_16_act.png"
+                           shortDesc     ="#{sysauth$bundle.ENT_ACCOUNT_REFRESH}"
+                           actionListener="#{backingBeanScope.entitlementAccount.refreshListener}"/>
+              </af:group>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="menus">
+            <af:menu id ="m01" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{backingBeanScope.entitlementAccount.actionMenu}">
+              <af:commandMenuItem id            ="cmi01"
+                                  text          ="#{sysbase$bundle.GENERIC_ASSIGN}"
+                                  icon          ="/images/func_add_16_ena.png"
+                                  shortDesc     ="#{sysauth$bundle.ENT_ACCOUNT_ASSIGN}"
+                                  actionListener="#{backingBeanScope.entitlementAccount.launchAssignRequest}"
+                                  useWindow     ="false"/>
+              <af:commandMenuItem id            ="cmi02"
+                                  text          ="#{sysbase$bundle.GENERIC_REVOKE}"
+                                  icon          ="/images/func_delete_16_ena.png"
+                                  shortDesc     ="#{sysauth$bundle.ENT_ACCOUNT_REVOKE}"
+                                  actionListener="#{backingBeanScope.entitlementAccount.launchRevokeRequest}"
+                                  useWindow     ="false"/>
+              <af:commandMenuItem id            ="cmi04"
+                                  text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                  icon          ="/images/func_refresh_16_ena.png"
+                                  shortDesc     ="#{sysauth$bundle.ENT_ACCOUNT_REFRESH}"
+                                  actionListener="#{backingBeanScope.entitlementAccount.refreshListener}"
+                                  useWindow     ="false"/>
+            </af:menu>
+          </f:facet>
+          <!--
+          we use columnStretching="multiple" to give us the opportunity
+          to size the columns by witdh="nn%"
+          The default width for a column is 100px. There is no auto
+          sizing for columns. Set the width attribute to ensure the
+          column is wide enough to accommodate the width of the
+          contents. When the "multiple" option is used in the table that
+          contains the column, the width can be set to a percentage.
+          -->
+          <af:table id                   ="act1" var="row" varStatus="vs"
+                    value                ="#{bindings.Account.collectionModel}"
+                    rows                 ="#{bindings.Account.rangeSize}"
+                    fetchSize            ="#{bindings.Account.rangeSize}"
+                    binding              ="#{backingBeanScope.entitlementAccount.searchTable}"
+                    selectionListener    ="#{backingBeanScope.entitlementAccount.selectionListener}"
+                    summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                    filterVisible        ="false"
+                    filterModel          ="#{bindings.AccountListCriteria.queryDescriptor}"
+                    queryListener        ="#{bindings.AccountListCriteria.processQuery}"
+                    columnStretching     ="multiple"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    autoHeightRows       ="0"
+                    rowSelection         ="single"
+                    columnSelection      ="none"
+                    scrollPolicy         ="page"
+                    immediate            ="true"
+                    emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+            <af:column id="c00" rowHeader="true" width="20" headerText="" align="right"/>
+            <af:column id="c01" width="10%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="provisionStatus" headerText="#{bindings.Account.hints.provisionStatus.label}">
+              <af:link id="cl11" text="#{row.provisionStatus}" actionListener="#{backingBeanScope.entitlementAccount.detail}" icon="#{sysauth$bundle.ENT_LIST}"/>
+            </af:column>
+            <af:column id="c02" width="10%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="provisionMechanism" headerText="#{bindings.Account.hints.provisionMechanism.label}">
+              <af:outputText id="ot12" value="#{row.provisionMechanism}"/>
+            </af:column>
+            <af:column id="c03" width="10%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="accountType" headerText="#{bindings.Account.hints.accountType.label}">
+              <af:outputText id="ot13" value="#{row.accountType}"/>
+            </af:column>
+            <af:column id="c04" width="10%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="accountName" headerText="#{bindings.Account.hints.accountName.label}">
+               <af:outputText id="ot15" value="#{row.accountName}"/>
+             </af:column>
+             <af:column id="c05" width="10%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="beneficiaryLogin" headerText="#{bindings.Account.hints.beneficiaryLogin.label}">
+               <af:link id="cl15" text="#{row.beneficiaryLogin}" actionListener="#{backingBeanScope.entitlementAccount.userDetail}" icon="/images/qual_user_16.png"/>
+             </af:column>
+             <af:column id="c06" width="25%" filterable="false" sortable="false" headerText="#{bindings.Account.hints.beneficiaryFirstName.label}">
+               <af:outputText id="ot16" value="#{row.beneficiaryFirstName}"/>
+             </af:column>
+             <af:column id="c07" width="25%" filterable="false" sortable="false" headerText="#{bindings.Account.hints.beneficiaryLastName.label}">
+               <af:outputText id="ot17" value="#{row.beneficiaryLastName}"/>
+             </af:column>
+             <f:facet name="contextMenu">
+               <af:popup id="p01" contentDelivery="lazyUncached">
+                 <af:menu id="m02">
+                   <af:commandMenuItem id            ="cmi08"
+                                      text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                       icon          ="/images/func_refresh_16_ena.png"
+                                       shortDesc     ="#{sysauth$bundle.ENT_ACCOUNT_REFRESH}"
+                                       actionListener="#{backingBeanScope.entitlementAccount.refreshListener}"
+                                       useWindow     ="false"/>
+                 </af:menu>
+               </af:popup>
+             </f:facet>
+           </af:table>
+         </af:panelCollection>
+       </af:panelGroupLayout>
+     </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

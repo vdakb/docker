@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="main$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Main']}"/>
+  <af:panelStretchLayout id="ps11" topHeight="30px" bottomHeight="30px">
+    <f:facet name="top">
+      <af:panelHeader id="ph11" text="#{main$bundle.FORGOT_USER_LOGIN_HEADER}">
+        <f:facet name="toolbar">
+          <af:button id="btn1" text="#{main$bundle.GENERIC_BACKTO_LOGIN}" icon="/images/oia-navigateback_ena.png" action="backtologin"/>
+        </f:facet>
+      </af:panelHeader>
+    </f:facet>
+    <f:facet name="center">
+      <af:panelGroupLayout id="pg11">
+        <af:panelGroupLayout id="pgl2" rendered="#{pageFlowScope.exFlag eq 'success'}">
+          <af:outputText value="#{af:formatString(unauthenticateduiBundle.FORGOT_LOGIN_EMAIL_MESSAGE,pageFlowScope.email)}"
+                         id="ot1"
+                         inlineStyle="color:rgb(0,0,132); font-size:small; font-weight:normal;"/>
+          <af:spacer width="5" height="10" id="s1"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl3"
+                             rendered="#{pageFlowScope.exFlag eq 'unauthexc'}">
+          <af:outputText value="#{unauthenticateduiBundle['forgotlogin.UserNotFound_Message_1']}"
+                         id="ot2"
+                         inlineStyle="color:rgb(0,0,132); font-size:small; font-weight:normal;"/>
+        </af:panelGroupLayout>
+        <af:panelGroupLayout id="pgl4"
+                             rendered="#{pageFlowScope.exFlag eq 'notifiexc'}">
+          <af:outputText value="#{unauthenticateduiBundle['forgotlogin.UserNotFound_Message_2']}"
+                         id="ot4"
+                         inlineStyle="color:rgb(0,0,132); font-size:small; font-weight:normal;"/>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelStretchLayout>
+</jsp:root>

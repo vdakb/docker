@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            = "Oracle Consulting Services Identity Manager Deployment Exporter"
+         default         = "iam-instance-status"
+         basedir         = ".."
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server    = "http://oracle.iam.identity/server"
+         xmlns:plugin    = "http://oracle.iam.identity/plugin"
+         xmlns:metadata  = "http://oracle.iam.identity/metadata"
+         xmlns:object    = "http://oracle.iam.identity/object"
+         xmlns:operation = "http://oracle.iam.identity/operation"
+         xmlns:job       = "http://oracle.iam.identity/job"
+         xmlns:sandbox   = "http://oracle.iam.identity/sandbox"
+         xmlns:workflow  = "http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the CSV Flatfile Foundation Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports the CSV Flatfile Foundation Configuration">
+    <record name="../log/oim-export-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile  = "${resource.dir}/xml/base/cvs-scheduler-dm.xml"
+                        description = "CSV Flatfile Foundation Configuration ${application.release}">
+        <object:category value="scheduledTask" name="CSV Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="CSV Lookup Provisioning"/>
+        <object:category value="scheduledTask" name="CSV Organization Trusted Reconciliation"/>
+        <object:category value="scheduledTask" name="CSV Organization Trusted Provisioning"/>
+        <object:category value="scheduledTask" name="CSV Identity Reconciliation"/>
+        <object:category value="scheduledTask" name="CSV Identity Provisioning"/>
+        <object:category value="scheduledTask" name="CSV Account Reconciliation"/>
+        <object:category value="scheduledTask" name="CSV Account Provisioning"/>
+      </object:exportSet>
+    </object:export>
+    <record name="../log/oim-export-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the CSV Flatfile Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o Lookup Definition
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Exports the CSV Flatfile Target Configuration ${application.release}">
+    <record name="../log/oim-export-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile  = "${resource.dir}/xml/target/org-scheduler-dm.xml"
+                        description = "CSV Flatfile Configuration ${application.release}">
+        <object:category value="Job"      name="CSV Organization Target Reconciliation"/>
+        <object:category value="Job"      name="CSV Organization Target Provisioning"/>
+      </object:exportSet>
+      <object:exportSet exportFile  = "${resource.dir}/xml/target/usr-scheduler-dm.xml"
+                        description = "CSV Flatfile Configuration ${application.release}">
+        <object:category value="Job"      name="CSV Account Reconciliation"/>
+        <object:category value="Job"      name="CSV Account Provisioning"/>
+      </object:exportSet>
+    </object:export>
+    <record name="../log/oim-export-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the CSV Flatfile Trusted Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="trusted" description="Exports the CSV Flatfile Target Configuration ${application.release}">
+    <record name="../log/oim-export-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile  = "${resource.dir}/xml/trusted/lku-scheduler-dm.xml"
+                        description = "CSV Flatfile Configuration ${application.release}">
+        <object:category value="Job"      name="CSV Location Lookup Reconciliation"/>
+        <object:category value="Job"      name="CSV Position Lookup Reconciliation"/>
+      </object:exportSet>
+      <object:exportSet exportFile  = "${resource.dir}/xml/trusted/org-process-dm.xml"
+                        description = "CSV Flatfile Configuration ${application.release}">
+        <object:category value="Resource" name="Xellerate Organization"/>
+        <object:category value="Process"  name="Xellerate Organization"/>
+      </object:exportSet>
+      <object:exportSet exportFile  = "${resource.dir}/xml/trusted/org-scheduler-dm.xml"
+                        description = "CSV Flatfile Configuration ${application.release}">
+        <object:category value="Job"      name="CSV Organization Trusted Reconciliation"/>
+        <object:category value="Job"      name="CSV Organization Trusted Provisioning"/>
+      </object:exportSet>
+      <object:exportSet exportFile  = "${resource.dir}/xml/trusted/usr-process-dm.xml"
+                        description = "CSV Flatfile Configuration ${application.release}">
+        <object:category value="Resource" name="CSV Identity"/>
+        <object:category value="Process"  name="CSV Identity Reconciliation"/>
+      </object:exportSet>
+      <object:exportSet exportFile  = "${resource.dir}/xml/trusted/usr-scheduler-dm.xml"
+                        description = "CSV Flatfile Configuration ${application.release}">
+        <object:category value="Job"      name="CSV Identity Reconciliation"/>
+        <object:category value="Job"      name="CSV Identity Provisioning"/>
+      </object:exportSet>
+    </object:export>
+    <record name="../log/oim-export-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Exports the project artifacts from the target host and Identity Manager Instance" depends="base, trusted"/>
+</project>

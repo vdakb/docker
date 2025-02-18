@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id="attributesPageDef"
+                Package="bka.employee.portal.vehicle.vhu.view"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+    <iterator id="VehicleIterator"         Binds="VehicleDetailVO" DataControl="VehicleAMDataControl"        RangeSize="25"/>
+    <iterator id="brandIterator"           Binds="BrandDetailVO"   DataControl="AdministrationAMDataControl" RangeSize="25"/>
+  </executables>
+  <bindings>
+    <attributeValues id="carPlateNumber" IterBinding="VehicleIterator">
+      <AttrNames>
+        <Item Value="carPlateNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="brandIcon" IterBinding="VehicleIterator">
+      <AttrNames>
+        <Item Value="brandIcon"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="VehicleAMDataControl" />
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="VehicleAMDataControl"  />
+    <methodAction id                 ="handleSelectTargets"
+                  DataControl        ="BrandVehiculeEventHandler"
+                  InstanceName       ="BrandVehiculeEventHandler.dataProvider"
+                  MethodName         ="handleSelection"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="event" NDType="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+    </methodAction>
+    <methodAction id="requeryAttribute"
+                  InstanceName="VehicleAMDataControl.dataProvider"
+				          DataControl="VehicleAMDataControl"
+                  Action="invokeMethod"
+                  MethodName="requeryAttribute"
+                  IsViewObjectMethod="false" 
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+      <NamedData NDName="pending"    NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id="refreshVehiculeAttribute"
+	                DataControl="VehicleAMDataControl"
+				          InstanceName="VehicleAMDataControl.dataProvider"
+                  MethodName="refreshVehiculeAttribute"
+				          Action="invokeMethod" 
+				          IsViewObjectMethod="false" 
+				          RequiresUpdateModel="true"/>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseRefreshLaunchAreaEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.RefreshLaunchAreaEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+    <listOfValues id="brandKey" IterBinding="VehicleIterator" Uses="LOV_brandKey" StaticList="false" />
+    <list id="colorKey" IterBinding="VehicleIterator" Uses="LOV_colorKey" SelectItemValueMode="ListObject" StaticList="false"/>
+    <list id="typeKey"  IterBinding="VehicleIterator" Uses="LOV_typeKey"  SelectItemValueMode="ListObject" StaticList="false" />
+	  <tree IterBinding="VehicleIterator" id="VehicleDetailVO">
+      <nodeDefinition Name="VehicleDetailVO0" DefName="bka.employee.portal.vehicle.model.view.VehicleVO">
+        <AttrNames>
+          <Item Value="carPlateNumber"/>
+          <Item Value="brandKey"/>
+          <Item Value="colorKey"/>
+          <Item Value="typeKey"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+	  <tree IterBinding="brandIterator" id="brands">
+      <nodeDefinition Name="brands" DefName="bka.employee.portal.vehicle.model.view.BrandVO">
+        <AttrNames>
+          <Item Value="id"/>
+          <Item Value="icon"/>
+          <Item Value="name"/>
+        </AttrNames>
+      </nodeDefinition>
+     </tree>
+  </bindings>
+  <eventMap xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+    <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent">
+      <producer region="*">
+        <consumer handler="handleSelectTargets">
+          <parameters>
+            <parameter name="targetSelectionEvent" value="${payLoad}"/>
+          </parameters>
+        </consumer>
+      </producer>
+    </event>
+  </eventMap>
+</pageDefinition>

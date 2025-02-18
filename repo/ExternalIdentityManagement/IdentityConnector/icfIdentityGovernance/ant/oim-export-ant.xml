@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter"
+         basedir        =".."
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-export-ant.log"/>
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Identity Manager System Integration Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports the Connector Base Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/base/igs-adapter-dm.xml"
+                        description="Identity Governance Service Adapter Configuration ${application.release}">
+        <object:category value="TaskAdapter"   name="adpIGSACCOUNTCREATE"/>
+        <object:category value="TaskAdapter"   name="adpIGSACCOUNTMODIFY"/>
+        <object:category value="TaskAdapter"   name="adpIGSACCOUNTUPDATE"/>
+        <object:category value="TaskAdapter"   name="adpGDSACCOUNTMODIFYATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpIGSACCOUNTASSIGNATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpIGSACCOUNTREVOKEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpIGSACCOUNTREVOKE"/>
+        <object:category value="TaskAdapter"   name="adpIGSACCOUNTACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpIGSACCOUNTDEACTIVATE"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/igs-scheduler-dm.xml"
+                        description="Identity Governance Service Scheduler Configuration ${application.release}">
+        <object:category value="scheduledTask" name="IGS Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="IGS Delete Reconciliation"/>
+        <object:category value="scheduledTask" name="IGS Account Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+ <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Identity Governance Service Provider Target
+  **           Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Lookup Definition
+  **           o Resource Form
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Exports the Connector Target Configuration ${application.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the Lookup configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/igs-lookup-dm.xml"
+                        description="Identity Governance Service Configuration ${application.release}">
+        <object:category value="Lookup"        name="IGSP.Role"/>
+        <object:category value="Lookup"        name="IGSP.UID.Tenant"/>
+        <object:category value="Lookup"        name="IGSP.UID.Role"/>
+      </object:exportSet>
+      <!-- export the IT Resource configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/igs-resource-dm.xml"
+                        description="Identity Governance Service Configuration ${application.release}">
+        <object:category value="ITResource"    name="IGSP Endpoint"/>
+      </object:exportSet>
+      <!-- export the User Defined Form configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/igs-model-dm.xml"
+                        description="Identity Governance Service Connector Configuration ${application.release}">
+        <object:category value="Process Form" name="UD_IGSP_URL"/>
+        <object:category value="Process Form" name="UD_IGSP_UTN"/>
+        <object:category value="Process Form" name="UD_IGSP_USR"/>
+      </object:exportSet>
+      <!-- export the Provisioning Process configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/igs-process-dm.xml"
+                        description="Identity Governance Service Connector Configuration ${application.release}">
+        <object:category value="Resource"     name="IGSP Account"/>
+        <object:category value="Process"      name="IGSP Account"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/igs-scheduler-dm.xml"
+                        description="Identity Governance Service Configuration ${application.release}">
+        <object:category value="Job"           name="IGSP Role Reconciliation"/>
+        <object:category value="Job"           name="IGSP Tenant Reconciliation"/>
+        <object:category value="Job"           name="IGSP Delete Reconciliation"/>
+        <object:category value="Job"           name="IGSP Account Reconciliation"/>
+        <object:category value="Job"           name="IGSP Access Policy Housekeeping"/>
+      </object:exportSet>
+      <!-- export the Request Catalog configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/igs-request-dm.xml"
+                        description="Identity Governance Service Connector Configuration ${application.release}">
+        <object:category value="RequestDataset"      name="IGSPRequest"/>
+        <object:category value="ApplicationInstance" name="IGSPAccount"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Clear Identity Manager Caches.
+  **
+  ** Synopsis: The tasks prepares the Identity Manager Application Deployment.
+  **           This includes:
+  **           o Clearing several caches
+  ******************************************************************************
+  -->
+  <target name="9999" description="Clear Identity Manager Caches">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="9999 Clear Caches"/>
+    <echo message="============================================================="/>
+    <echo message="Clear metadata cache for environment ${fmw.env} on ${oim.server.name}:${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}"/>
+    <echo message="Clear object cache for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <echo message="============================================================="/>
+    <echo message="9999 completed"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

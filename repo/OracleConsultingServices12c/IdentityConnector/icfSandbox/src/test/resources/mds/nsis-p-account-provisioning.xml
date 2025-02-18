@@ -1,0 +1,46 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="UD_UPCPN_USR_SID"
+            uniqueName    ="UD_UPCPN_USR_UID"
+            transformation="false">
+  <attribute type="string" name="__UID__"                  source="UD_UPCPN_USR_SID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="__NAME__"                 source="UD_UPCPN_USR_UID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="__PASSWORD__"            source="UD_UPCPN_USR_PWD">
+    <flag>sensitive</flag>
+  </attribute>
+  <attribute type="string" name="name.familyName"         source="UD_UPCPN_USR_SN"/>
+  <attribute type="string" name="name.givenName"          source="UD_UPCPN_USR_GN"/>
+  <attribute type="string" name="preferredLanguage"       source="UD_UPCPN_USR_LANGUAGE"/>
+  <attribute type="string" name="emails.work.value"       source="UD_UPCPN_USR_EMAIL"/>
+  <attribute type="string" name="phoneNumbers.work.value" source="UD_UPCPN_USR_PHONE"/>
+  <attribute type="string" name="urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:organization" source="UD_UPCPN_USR_OID"/>
+  <!--
+   | child form providing access only on column names not labels hence so any
+   | clone of the connector we need a new decriptor; aaargggh
+   -->
+  <multivalue name="group" source="UD_UPCPN_UGP">
+    <attribute type="string" name="__UID__" source="UD_UPCPN_UGP_SID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <!--
+   | connector is the default target hence not specified here
+   | groovy is the default language hence not specified here
+   -->
+  <!--
+  <action phase="create-before">
+    <command>
+      <![CDATA[]]>
+    <command>
+    <option name="1">1</option>
+    <option name="2">2</option>
+    <option name="3">3</option>
+    <option name="4">4</option>
+    <option name="5">5</option>
+  </action>
+  -->
+</descriptor>

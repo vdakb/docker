@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="use-error"
+         xml:lang="de"
+         version ="5.0">
+  <title>Fehlerformat</title>
+  <para>
+    Die Fehlerantwortdaten f&#252;r jeden API-Aufruf k&#246;nnen im JSON-Format angezeigt werden.
+    JSON (JavaScript Object Notation) ist ein leichtes Datenaustauschformat.
+  </para>
+  <para>
+    Beispiel f&#252;r die Fehlerantwort auf eine GET-Anfrage f&#252;r eine nicht vorhandene Ressource:
+  </para>
+  <programlisting language="json">
+{ "status": 404
+, "type": "none"
+, "detail": "Resource of type Surrogate with id [T-36-0-30-101-4123459] does not exists."
+, "description": "HTTP-404: The requested resource could not be found but may be available in the
+future. Subsequent requests by the client are permissible."
+}
+  </programlisting>
+  <table colsep="0">
+    <tgroup cols="2">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>Segment</entry>
+          <entry>Beschreibung</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry><emphasis role="strong">status</emphasis></entry>
+          <entry>Der HTTP-Statuscode, ausgedr&#252;ckt als JSON-String.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">type</emphasis></entry>
+          <entry>Ein Schl&#252;sselwort f&#252;r den Fehler.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">detail</emphasis></entry>
+          <entry>Eine detaillierte, f&#252;r Menschen lesbare Benachrichtigung.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">description</emphasis></entry>
+          <entry>Eine detaillierte, f&#252;r Menschen lesbare Beschreibung.</entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para>
+    F?r HTTP-Statuscode <literal>400 Bad Request</literal> sind die folgenden Fehlertypen definiert
+  </para>
+  <table colsep="0">
+    <tgroup cols="2">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>Typ</entry>
+          <entry>Beschreibung</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry><emphasis role="strong">invalidFilter</emphasis></entry>
+          <entry>Die angegebene Filtersyntax war ung&#252;ltig oder die angegebene Kombination aus Attributwert und Vergleichsoperation wird nicht unterst&#252;tzt.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">tooMany</emphasis></entry>
+          <entry>Der angegebene Filter gibt mehr Ergebnisse zur&#252;ck, als der Server berechnen oder verarbeiten m&#246;chte.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">uniqueness</emphasis></entry>
+          <entry>Einer oder mehrere der Attributwerte werden bereits verwendet oder sind reserviert.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">mutability</emphasis></entry>
+          <entry>Die versuchte &#196;nderung ist nicht mit der Ver&#228;nderbarkeit oder dem aktuellen Status des Zielattributs vereinbar.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">invalidSyntax</emphasis></entry>
+          <entry>Die Struktur der Nachricht der Anforderung war ung&#252;ltig oder entsprach nicht dem Anforderungsschema.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">invalidPath</emphasis></entry>
+          <entry>Das <literal>path</literal>-Attribut war ung&#252;ltig oder fehlerhaft.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">invalidValue</emphasis></entry>
+          <entry>Ein erforderlicher Wert fehlte oder der angegebene Wert war nicht mit dem Vorgang, dem Attributtyp oder dem Ressourcenschema kompatibel.</entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">noTarget</emphasis></entry>
+          <entry>
+            Der angegebene <literal>path</literal> ergab kein Attribut oder keinen Attributwert, der bearbeitet werden konnte.
+            Dies tritt auf, wenn der angegebene <literal>path</literal>-Wert einen Filter enth?lt, der keine &#220;bereinstimmung ergibt.
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+</section>

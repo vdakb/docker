@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+          
+  <c:set var="oauthBundle"
+         value="#{adfBundle['bka.iam.identity.ui.oauth.OAuthBundle']}"/>
+  <af:panelGroupLayout id="pgl1" styleClass="AFStretchWidth">
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth" featuresOff="statusBar">
+      <f:facet name="toolbar">
+        <af:toolbar id="t2"
+                    binding="#{pageFlowScope.clientMB.toolbar}">
+          <af:commandToolbarButton 
+            text="#{oauthBundle['button-create']}"
+            id="ctb1"
+            icon="/images/func_add_16_ena.png"
+            hoverIcon="/images/func_add_16_hov.png"
+            disabledIcon="/images/func_add_16_dis.png"
+            depressedIcon="/images/func_add_16_act.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.clientMB.launchCreateClient}"
+            />
+          <af:commandToolbarButton 
+            text="#{oauthBundle['button-edit']}"
+            id="ctb2" 
+            icon="/images/func_open_16_ena.png"
+            hoverIcon="/images/func_open_16_hov.png"
+            disabledIcon="/images/func_open_16_dis.png"
+            depressedIcon="/images/func_open_16_act.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.clientMB.launchEditClient}"
+            />
+          <af:commandToolbarButton 
+            text="#{oauthBundle['button-delete']}"
+            id="ctb3" 
+            icon="/images/func_delete_16_ena.png"
+            hoverIcon="/images/func_delete_16_hov.png"
+            disabledIcon="/images/func_delete_16_dis.png"
+            depressedIcon="/images/func_delete_16_act.png"
+            immediate="true"
+          >
+            <af:showPopupBehavior align="afterStart"
+                                  popupId="::confirmPopupForClientDelete"/>
+          </af:commandToolbarButton>
+          <af:commandToolbarButton 
+            text="#{oauthBundle['dialog-reset-password']}"
+            id="ctb4" 
+            immediate="true"
+            icon="/images/func_userresetpassword_16_ena.png"
+            hoverIcon="/images/func_userresetpassword_16_hov.png"
+            disabledIcon="/images/func_userresetpassword_16_dis.png"
+            depressedIcon="/images/func_userresetpassword_16_act.png">
+            <af:showPopupBehavior align="afterStart"
+                                  popupId="::passwordReset"/>
+            </af:commandToolbarButton>
+          <af:commandToolbarButton 
+            text="#{oauthBundle['button-refresh']}"
+            id="ctb5" 
+            immediate="true"
+            actionListener="#{pageFlowScope.clientMB.refreshClients}"
+            icon="/images/func_refresh_16_ena.png"
+            hoverIcon="/images/func_refresh_16_hov.png"
+            disabledIcon="/images/func_refresh_16_dis.png"
+            depressedIcon="/images/func_refresh_16_act.png"/>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="menus">
+        <af:menu text="#{oauthBundle['oam-servers-actions']}" id="m1"
+                 binding="#{pageFlowScope.clientMB.actionMenu}">
+          <af:commandMenuItem 
+            text="#{oauthBundle['button-create']}"
+            id="cmi1" 
+            icon="/images/func_add_16_ena.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.clientMB.launchCreateClient}"/>                               
+          <af:commandMenuItem 
+            text="#{oauthBundle['button-edit']}"
+            id="cmi2" icon="/images/func_modify_16_ena.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.clientMB.launchEditClient}"
+            />
+          <af:commandMenuItem 
+            text="#{oauthBundle['button-delete']}"
+            id="cmi3" icon="/images/func_delete_16_ena.png"
+            immediate="true"
+            >
+            <af:showPopupBehavior align="afterStart"
+                                  popupId="::confirmPopupForClientDelete"/>
+            </af:commandMenuItem>
+           <af:commandMenuItem 
+            text="#{oauthBundle['dialog-reset-password']}"
+            id="cmi4" 
+            icon="/images/func_userresetpassword_16_ena.png"
+            immediate="true">
+            <af:showPopupBehavior align="afterStart"
+                                  popupId="::passwordReset"/>
+            </af:commandMenuItem>
+           <af:commandMenuItem 
+            text="#{oauthBundle['button-refresh']}"
+            id="cmi5" 
+            icon="/images/func_refresh_16_ena.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.clientMB.refreshClients}"/>
+        </af:menu>
+      </f:facet>
+      <af:table value="#{bindings.clients.collectionModel}" var="row" rows="#{bindings.clients.rangeSize}"
+                emptyText="#{bindings.clients.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.clients.collectionModel.selectedRow}"
+                rowSelection="single"
+                fetchSize="#{bindings.clients.rangeSize}" filterModel="#{bindings.clientsQuery.queryDescriptor}"
+                filterVisible="true" queryListener="#{bindings.clientsQuery.processQuery}" varStatus="vs" id="t1"
+                binding="#{pageFlowScope.clientMB.searchTable}"
+                selectionListener="#{bindings.clients.collectionModel.makeCurrent}"
+                columnStretching="last"
+                >
+        <af:column rowHeader="true" width="30"
+                   headerText=""
+                   align="right" id="c8">
+        </af:column>        
+        <af:column sortProperty="#{bindings.clients.hints.id.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.clients.hints.id.label}" id="c1">
+          <af:commandLink text="#{row.id}" id="cl1"
+                   immediate="true"
+                   actionListener="#{pageFlowScope.clientMB.launchEditClient}"
+                   partialSubmit="true">
+            </af:commandLink>
+        </af:column>
+        <af:column sortProperty="#{bindings.clients.hints.name.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.clients.hints.name.label}" id="c2">
+          <af:outputText value="#{row.name}" shortDesc="#{bindings.clients.hints.name.tooltip}" id="ot2"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.clients.hints.description.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.clients.hints.description.label}" id="c3">
+          <af:outputText value="#{row.description}" shortDesc="#{bindings.clients.hints.description.tooltip}" id="ot3"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.clients.hints.clientType.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.clients.hints.clientType.label}" id="c4">
+          <af:outputText value="#{row.clientType}" shortDesc="#{bindings.clients.hints.clientType.tooltip}" id="ot4"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.clients.hints.defaultScope.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.clients.hints.defaultScope.label}" id="c5">
+          <af:outputText value="#{row.defaultScope}" shortDesc="#{bindings.clients.hints.defaultScope.tooltip}"
+                         id="ot5"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.clients.hints.usePKCE.name}" filterable="true" sortable="true"
+                   headerText="#{bindings.clients.hints.usePKCE.label}" id="c6">
+          <af:outputText value="#{row.usePKCE}" shortDesc="#{bindings.clients.hints.usePKCE.tooltip}" id="ot6"/>
+        </af:column>
+        <af:column sortProperty="#{bindings.clients.hints.issueTLSClientCertificateBoundAccessTokens.name}"
+                   filterable="true" sortable="true"
+                   headerText="#{bindings.clients.hints.issueTLSClientCertificateBoundAccessTokens.label}" id="c7">
+          <af:outputText value="#{row.issueTLSClientCertificateBoundAccessTokens}"
+                         shortDesc="#{bindings.clients.hints.issueTLSClientCertificateBoundAccessTokens.tooltip}"
+                         id="ot7"/>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+    <af:popup id="confirmPopupForClientDelete" launcherVar="source" eventContext="launcher"
+              contentDelivery="lazyUncached">
+      <af:dialog id="d1" type="yesNo" inlineStyle="width:500px"
+                 title="#{oauthBundle['dialog-warning']}"
+                 titleIconSource="/images/warning.png"
+                 dialogListener="#{pageFlowScope.clientMB.deleteClient}"
+                 affirmativeTextAndAccessKey="#{oauthBundle['dialog-button-delete']}"
+                 cancelTextAndAccessKey="#{oauthBundle['dialog-button-cancel']}"
+                 noTextAndAccessKey="#{oauthBundle['dialog-button-cancel']}">
+        <af:panelGroupLayout layout="scroll" id="pgl12" inlineStyle="width:auto;height:auto;">
+          <af:outputText id="ot22" value="#{oauthBundle['dialog-confirm-delete']}"
+                         inlineStyle="font-weight:bold; font-size:small;"/>
+          <af:spacer width="100%" height="10" id="s28"/>
+          <af:panelGroupLayout id="pgl13" layout="vertical" inlineStyle="width:350px;">
+            <af:outputText id="ot23"  value="#{pageFlowScope.clientMB.actionWarningMessageDelete}"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    <af:popup id="passwordReset" launcherVar="source" eventContext="launcher"
+                contentDelivery="lazyUncached">
+      <af:dialog id="d2" type="yesNo" inlineStyle="width:500px"
+                 title="#{oauthBundle['client-reset-password-title']}"
+                 titleIconSource="/images/passwordField.png"
+                 dialogListener="#{pageFlowScope.clientMB.resetClientPassword}"
+                 affirmativeTextAndAccessKey="#{oauthBundle['dialog-reset-password']}"
+                 cancelTextAndAccessKey="#{oauthBundle['dialog-button-cancel']}"
+                 noTextAndAccessKey="#{oauthBundle['dialog-button-cancel']}">
+        <af:panelGroupLayout layout="scroll" id="pgl14" inlineStyle="width:auto;height:auto;">
+          <af:outputText id="ot24" value="#{pageFlowScope.clientMB.messageResetClientPassword}"
+                         inlineStyle="font-weight:bold; font-size:small;"/>
+          <af:spacer width="100%" height="10" id="s29"/>
+          <af:panelFormLayout id="pfl2" maxColumns="1" fieldWidth="200" labelWidth="200" rows="2">
+            <af:inputText id="newPassword" 
+                          label="#{oauthBundle['client-reset-password-new-password']}"
+                          secret="true"
+                          binding="#{pageFlowScope.clientMB.newPassword}">
+            </af:inputText>
+            <af:inputText id="confirmNewPassword" 
+                          label="#{oauthBundle['client-reset-password-confirm-new-password']}"
+                          secret="true"
+                          binding="#{pageFlowScope.clientMB.confirmNewPassword}">
+          </af:inputText>
+        </af:panelFormLayout>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+  </af:panelGroupLayout>
+</jsp:root>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+            Name                  ="OrchestrationProcessVO"
+            BindingStyle          ="OracleName"
+            FetchMode             ="FETCH_AS_NEEDED"
+            AccessMode            ="RANGE_PAGING"
+            RangeSize             ="20"
+            CustomQuery           ="false"
+            FromList              ="ORP OrchestrationProcessEO"
+            PageIterMode          ="Full"
+            InheritPersonalization="merge"
+            RowClass              ="oracle.iam.identity.sysadmin.model.view.OrchestrationProcessVORowImpl"
+            ComponentClass        ="oracle.iam.identity.sysadmin.model.view.OrchestrationProcessVOImpl">
+  <DesignTime>
+    <Attr Name="_isCodegen"    Value="true"/>
+    <Attr Name="_diagramName"  Value="Orchestration Process View"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL        ResId="orp.single"/>
+      <LABEL_PLURAL ResId="orp.multiple"/>
+      <TOOLTIP      ResId="orp.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewAccessor Name="statusLOV" AMUsageName="OrchestrationAM" ViewInstanceName="OrchestrationProcessStatusLOV" RowLevelBinds="true" ViewObjectName="oracle.iam.identity.sysadmin.model.view.OrchestrationProcessStatusVO"/>
+  <ListBinding  Name="StatusLOV" ListVOName="statusLOV" ListRangeSize="12" NullValueFlag="none" MRUCount="0" ComboRowCountHint="10">
+    <AttrArray Name="AttrNames">
+      <Item Value="status"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="encoded"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="decoded"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage Name="OrchestrationProcessEO" Entity="oracle.iam.identity.sysadmin.model.entity.OrchestrationProcessEO"/>
+  <ViewAttribute Name="processId" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="processId" AliasName="PROCESSID">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="processName" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="processName" AliasName="PROCESSNAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="bulkParentId" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="bulkParentId" AliasName="BULKPARENTID">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="status" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="status" AliasName="STATUS" LOVName="StatusLOV">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="parentId" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="parentId" AliasName="PARENTID">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="dependendId" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="dependendId" AliasName="DEPENDENDID">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="entityId" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="entityId" AliasName="ENTITYID">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="entityType" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="entityType" AliasName="ENTITYTYPE">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="outOfBandEvents" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="outOfBandEvents" AliasName="OUTOFBANDEVENTS">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="operation" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="operation" AliasName="OPERATION">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="stage" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="stage" AliasName="STAGE">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="changeType" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="changeType" AliasName="CHANGETYPE">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="retry" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="retry" AliasName="RETRYCOUNT">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="createdOn" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="createdOn" AliasName="CREATEDDON">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="modifiedOn" PrecisionRule="true" EntityUsage="OrchestrationProcessEO" EntityAttrName="modifiedOn" AliasName="MODIFIEDON">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewLinkAccessor Name="OrchestrationEventVO" ViewLink="oracle.iam.identity.sysadmin.model.view.link.OrchestrationProcessEventVL" Type="oracle.jbo.RowIterator" IsUpdateable="false"/>
+  <!--
+  View Criteria declared by this view
+  -->
+  <ViewCriteria Name="OrchestrationProcessVC" ViewObjectName="oracle.iam.identity.sysadmin.model.view.OrchestrationProcessVO" Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property Name="mode"                     Value="Basic"/>
+        <Property Name="showInList"               Value="true"/>
+        <Property Name="autoExecute"              Value="false"/>
+        <Property Name="displayOperators"         Value="InAdvancedMode"/>
+        <Property Name="allowConjunctionOverride" Value="true"/>
+        <Property Name="displayName"              ResId="orp.search"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow Name="vcrORP" UpperColumns="1">
+      <ViewCriteriaItem Name="processId"  ViewAttribute="processId"  Operator="="          Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="status"     ViewAttribute="status"     Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="entityType" ViewAttribute="entityType" Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="operation"  ViewAttribute="operation"  Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="stage"      ViewAttribute="stage"      Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="changeType" ViewAttribute="changeType" Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysadmin.bundle.Backend"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<!--
+ | DSteding
+ | Bug: If the element becomes preface the title is rendered twice
+ -->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="dir-arch"
+         xml:lang="en"
+         version ="5.0">
+  <title>Architecture</title>
+  <para>
+    The architecture illustrates the components provisioned on the PSP for the Directory Synchronization.
+  </para>
+  <para>
+    Within the PSP VCN' there exist two types of subnets:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>public (Public Subnet)</para>
+    </listitem>
+    <listitem>
+      <para>private (Subnet and Data Subnet)</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+    Resources deployed into the public subnets will receive a public IP address and will be publicly visible on the CNP.
+    There is no component deployed in this subnets.
+  </para>
+  <para>
+    Resources deployed into the private subnets receive only a private IP address and hence are not publicly visible on the CNP, improving the security of those resources.
+    The Identity Manager deployed in private subnets.
+ </para>
+  <informalfigure id="uid-arch-ref">
+    <mediaobject>
+      <alt>Architecture</alt>
+      <imageobject>
+        <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/images/en/architecture.png" format="PNG"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <section xml:id="uid-arch-cmp">
+    <title>Components</title>
+    <table colsep="0">
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="2em"/>
+        <colspec colname="c2" colwidth="10em"/>
+        <colspec colname="c3" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>#</entry>
+            <entry>Component</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="src/site/images/callout-oim.png"/>
+                </imageobject>
+              </inlinemediaobject>
+            </entry>
+            <entry>Identity Manager</entry>
+            <entry>
+              <para>
+                This is the central part of the provided functionality.
+              </para>
+              <para>
+                This is where the core functionality is implemented and the configuration endpoints of the source and destination directory services are hosted.Hier wird die Kernfunktionalit?t implementiert und die Konfigurationsendpunkte der Quell- und Zielverzeichnisdienste gehostet.
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="src/site/images/callout-src.png"/>
+                </imageobject>
+              </inlinemediaobject>
+            </entry>
+            <entry>Source</entry>
+            <entry>The source of the syncronization process.</entry>
+          </row>
+          <row>
+            <entry>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="src/site/images/callout-tgt.png"/>
+                </imageobject>
+              </inlinemediaobject>
+            </entry>
+            <entry>Target</entry>
+            <entry>The target of the syncronization process.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+</chapter>

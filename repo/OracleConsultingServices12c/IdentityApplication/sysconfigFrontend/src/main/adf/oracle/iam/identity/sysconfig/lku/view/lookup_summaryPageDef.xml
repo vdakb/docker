@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="lookup_summaryPageDef"
+                Package="oracle.iam.identity.sysconfig.lku.view">
+  <parameters/>
+  <executables>
+    <iterator id="LookupIterator"      Binds="LookupDetailVO" DataControl="LookupAMDataControl" RangeSize="20" Refresh="ifNeeded"/>
+    <iterator id="LookupValueIterator" Binds="LookupValueVO"  DataControl="LookupAMDataControl" RangeSize="20" Refresh="ifNeeded"/>
+  </executables>
+  <bindings>
+    <attributeValues id="lookupKey" IterBinding="LookupIterator">
+      <AttrNames>
+        <Item Value="lookupKey"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="name" IterBinding="LookupIterator">
+      <AttrNames>
+        <Item Value="name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="meaning" IterBinding="LookupIterator">
+      <AttrNames>
+        <Item Value="meaning"/>
+      </AttrNames>
+    </attributeValues>
+    <list id="type" IterBinding="LookupIterator" DTSupportsMRU="false" StaticList="false" SelectItemValueMode="ListObject" Uses="TypeLOV"/>
+    <attributeValues id="field" IterBinding="LookupIterator">
+      <AttrNames>
+        <Item Value="field"/>
+      </AttrNames>
+    </attributeValues>
+    <button id="required" IterBinding="LookupIterator" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="required"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <attributeValues id="group" IterBinding="LookupIterator">
+      <AttrNames>
+        <Item Value="group"/>
+      </AttrNames>
+    </attributeValues>
+    <tree id="LookupValue" IterBinding="LookupValueIterator">
+      <nodeDefinition Name="LookupValueNode" DefName="oracle.iam.identity.sysconfig.model.view.LookupValueVO">
+        <AttrNames>
+          <Item Value="lookupKey"/>
+          <Item Value="valueKey"/>
+          <Item Value="encoded"/>
+          <Item Value="decoded"/>
+          <Item Value="disabled"/>
+          <Item Value="pendingAction"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button id="disabled" IterBinding="LookupValueIterator" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="disabled"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="0"/>
+        <Item Value="1"/>
+      </ValueList>
+    </button>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="LookupAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="LookupAMDataControl"/>
+    <methodAction id                 ="lookupFetch"
+                  Action             ="invokeMethod"
+                  MethodName         ="fetchByName"
+                  DataControl        ="LookupAMDataControl"
+                  InstanceName       ="LookupAMDataControl.dataProvider"
+                  RequiresUpdateModel="true"
+                  IsViewObjectMethod ="false">
+      <NamedData NDName="identifier" NDType="java.lang.String"  NDValue="#{pageFlowScope.name}"/>
+    </methodAction>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

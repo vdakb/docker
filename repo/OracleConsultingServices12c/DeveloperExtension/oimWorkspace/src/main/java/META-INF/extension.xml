@@ -1,0 +1,1230 @@
+<extension id            ="oracle.ocs.workspace.oim"
+           version       ="12.2.1.3.42.60.103"
+           esdk-version  ="2.0"
+           rsbundle-class="oracle.jdeveloper.workspace.oim.Manifest"
+           xmlns         ="http://jcp.org/jsr/198/extension-manifest">
+  <name>${oim}</name>
+  <owner>${oim.vendor}</owner>
+  <trigger-hooks xmlns="http://xmlns.oracle.com/ide/extension">
+    <rules>
+      <rule id="oim-extension-state" type="extension-is-enabled">
+        <parameters>
+          <param name="extension-id" value="oracle.ocs.workspace.oim"/>
+        </parameters>
+      </rule>
+      <!--
+      This rule checks if context has a Project with a minimum technology scope
+      as specified.
+      The technology-keys parameter is a comma-separated list of technology
+      keys. The match parameter is optional, valid values are 'all' or 'any',
+      default is 'all'
+      -->
+      <rule id="oim-technology-scope" type="project-has-techscope">
+        <parameters>
+          <param name="technology-keys" value="oim.technology"/>
+        </parameters>
+      </rule>
+      <rule id="oim-workspace" type="workspace-property-equals">
+        <parameters>
+          <param name="property-name"  value="appTemplateId"/>
+          <param name="property-value" value="oim.application"/>
+        </parameters>
+      </rule>
+      <rule id="adf-workspace" type="workspace-property-equals">
+        <parameters>
+          <param name="property-name"  value="appTemplateId"/>
+          <param name="property-value" value="oim.customization"/>
+        </parameters>
+      </rule>
+      <composite-rule id="oim-workspace-technology-scope">
+        <and>
+          <rule-reference id="oim-workspace"/>
+          <rule-reference id="oim-technology-scope"/>
+        </and>
+      </composite-rule>
+      <composite-rule id="adf-workspace-technology-scope">
+        <and>
+          <rule-reference id="adf-workspace"/>
+          <rule-reference id="oim-technology-scope"/>
+        </and>
+      </composite-rule>
+    </rules>
+    <triggers>
+      <connection-type-hook xmlns="http://xmlns.oracle.com/jdeveloper/1100/connection-type-hook">
+        <connection-type id                 ="oracle.jdeveloper.connection.oim.model.IdentityServer"
+                         label              ="${iam.connection.oim}"
+                         description        ="${iam.connection.oim.description}"
+                         tool-tip           ="${iam.connection.oim.description}"
+                         class              ="oracle.jdeveloper.connection.oim.adapter.IdentityType"
+                         wizard-class       ="oracle.jdeveloper.connection.oim.wizard.IdentityServerWizard"
+                         referenceable-class="oracle.jdeveloper.connection.oim.model.IdentityServer"
+                         icon               ="${iam.connection.oim.icon}"
+                         app-connection     ="false"
+                         ide-connection     ="true"
+                         deployable         ="false"/>
+      </connection-type-hook>
+      <connection-type-hook xmlns="http://xmlns.oracle.com/jdeveloper/1100/connection-type-hook">
+        <connection-type id                 ="oracle.jdeveloper.connection.oim.model.IdentityDirectory"
+                         label              ="${iam.connection.file}"
+                         description        ="${iam.connection.file.description}"
+                         tool-tip           ="${iam.connection.file.description}"
+                         class              ="oracle.jdeveloper.connection.oim.adapter.IdentityDirectory"
+                         wizard-class       ="oracle.jdeveloper.connection.oim.wizard.IdentityDirectoryWizard"
+                         referenceable-class="oracle.jdeveloper.connection.iam.model.FileSystem"
+                         icon               ="${iam.connection.file.icon}"
+                         app-connection     ="false"
+                         ide-connection     ="true"
+                         deployable         ="false"/>
+      </connection-type-hook>
+      <resource-catalog-trigger-hook xmlns="http://xmlns.oracle.com/jdeveloper/1100/resource-catalog-trigger-hook">
+        <rc-adapter connection-type-class        ="oracle.jdeveloper.connection.oim.adapter.IdentityDirectory"
+                    initial-context-factory-class="oracle.jdeveloper.connection.iam.adapter.FileSystemNodeFactory"/>
+      </resource-catalog-trigger-hook>
+      <gallery xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+        <item rule="always-enabled">
+          <name>oracle.jdeveloper.connection.oim.wizard.IdentityServerWizard</name>
+          <description>${iam.connection.oim}</description>
+          <help>${iam.connection.oim.description}</help>
+          <icon>${iam.connection.oim.icon}</icon>
+          <folder>oim</folder>
+          <technologyKey>oim.technology</technologyKey>
+        </item>
+        <item rule="always-enabled">
+          <name>oracle.jdeveloper.connection.oim.wizard.IdentityServerWizard</name>
+          <description>${iam.connection.oim}</description>
+          <help>${iam.connection.oim.description}</help>
+          <icon>${iam.connection.oim.icon}</icon>
+          <category>General</category>
+          <folder>Connections</folder>
+          <technologyKey>General</technologyKey>
+        </item>
+
+        <item rule="always-enabled">
+          <name>oracle.jdeveloper.connection.oim.wizard.IdentityDirectoryWizard</name>
+          <description>${iam.connection.file}</description>
+          <help>${iam.connection.file.description}</help>
+          <icon>${iam.connection.file.icon}</icon>
+          <folder>oim</folder>
+          <technologyKey>oim.technology</technologyKey>
+        </item>
+        <item rule="always-enabled">
+          <name>oracle.jdeveloper.connection.oim.wizard.IdentityDirectoryWizard</name>
+          <description>${iam.connection.file}</description>
+          <help>${iam.connection.file.description}</help>
+          <icon>${iam.connection.file.icon}</icon>
+          <category>General</category>
+          <folder>Connections</folder>
+          <technologyKey>General</technologyKey>
+        </item>
+
+      </gallery>
+      <technology-hook>
+        <!--
+        ========================================================================
+        == Identity Manager                                                   ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oim.technology</key>
+          <name>${oim.technology}</name>
+          <description>${oim.description}</description>
+          <technology-dependencies>
+            <key>imf.technology</key>
+          </technology-dependencies>
+        </technology>
+        <!--
+        ========================================================================
+        == Identity Manager Server                                            ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oim.server</key>
+          <name>${oim.server}</name>
+          <description>${oim.server.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.OIMServerPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oim-server.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == SOA Suite Server                                                   ==
+        ========================================================================
+        -->
+        <technology>
+          <key>soa.server</key>
+          <name>${soa.server}</name>
+          <description>${soa.server.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.SOAServerPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>soa-server.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Identity Manager Library                                           ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oim.library</key>
+          <name>${oim.library}</name>
+          <description>${oim.library.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Identity Manager 12c Platform</name>
+              <description>${oracle-oim-12c-platform}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Adapter</name>
+              <description>${oracle-oim-12c-adapter}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Scheduler</name>
+              <description>${oracle-oim-12c-scheduler}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Foundation</name>
+              <description>${oracle-oim-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Utility</name>
+              <description>${oracle-oim-12c-utility}</description>
+            </library>
+          </library-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.LibraryPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oim-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-library-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Identity Manager Adapter                                           ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oim.adapter</key>
+          <name>${oim.adapter}</name>
+          <description>${oim.adapter.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Identity Manager 12c Platform</name>
+              <description>${oracle-oim-12c-platform}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Adapter</name>
+              <description>${oracle-oim-12c-adapter}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Scheduler</name>
+              <description>${oracle-oim-12c-scheduler}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Foundation</name>
+              <description>${oracle-oim-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Utility</name>
+              <description>${oracle-oim-12c-utility}</description>
+            </library>
+          </library-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.AdapterPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oim-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-export-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-import-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-adapter-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Identity Manager Plug-In                                           ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oim.plugin</key>
+          <name>${oim.plugin}</name>
+          <description>${oim.plugin.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Identity Manager 12c Platform</name>
+              <description>${oracle-oim-12c-platform}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Adapter</name>
+              <description>${oracle-oim-12c-adapter}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Scheduler</name>
+              <description>${oracle-oim-12c-scheduler}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Foundation</name>
+              <description>${oracle-oim-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Utility</name>
+              <description>${oracle-oim-12c-utility}</description>
+            </library>
+          </library-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.PluginPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oim-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-export-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>EventHandlers.xml</name>
+              <path>./metadata</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-import-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-plugin-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>plugin.xml</name>
+              <path>./src/main/resources/xml</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Identity Manager Connector                                         ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oim.connector</key>
+          <name>${oim.connector}</name>
+          <description>${oim.connector.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Identity Manager 12c Platform</name>
+              <description>${oracle-oim-12c-platform}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Adapter</name>
+              <description>${oracle-oim-12c-adapter}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Scheduler</name>
+              <description>${oracle-oim-12c-scheduler}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Foundation</name>
+              <description>${oracle-oim-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Utility</name>
+              <description>${oracle-oim-12c-utility}</description>
+            </library>
+          </library-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.ConnectorPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oim-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-export-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-import-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-request-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-connector-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Identity Manager Deployment                                        ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oim.deployment</key>
+          <name>${oim.deployment}</name>
+          <description>${oim.deployment.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.DeploymentPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oim-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-export-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-import-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Identity Manager Frontend                                          ==
+        ========================================================================
+        -->
+       <technology>
+          <key>oim.frontend</key>
+          <name>${oim.frontend}</name>
+          <description>${oim.frontend.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Identity Manager 12c Platform</name>
+              <description>${oracle-oim-12c-platform}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Model</name>
+              <description>${oracle-oim-12c-model}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Frontend</name>
+              <description>${oracle-oim-12c-view}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Faces</name>
+              <description>${oracle-hst-12c-faces}</description>
+            </library>
+          </library-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.FrontendPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>adf-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>adf-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>adf-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>adf-library-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ==========================================================================
+        == Identity Manager Backend                                             ==
+        ==========================================================================
+        -->
+        <technology>
+          <key>oim.backend</key>
+          <name>${oim.backend}</name>
+          <description>${oim.backend.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Identity Manager 12c Platform</name>
+              <description>${oracle-oim-12c-platform}</description>
+            </library>
+            <library>
+              <name>Identity Manager 12c Model</name>
+              <description>${oracle-oim-12c-model}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+          </library-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.BackendPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>adf-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>adf-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>adf-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>adf-library-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Identity Manager Assembly                                          ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oim.assembly</key>
+          <name>${oim.assembly}</name>
+          <description>${oim.assembly.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.AssemblyPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>adf-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>adf-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>adf-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>adf-assembly-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Identity Manager Workflow                                          ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oim.workflow</key>
+          <name>${oim.workflow}</name>
+          <description>${oim.workflow.description}</description>
+          <technology-dependencies>
+            <key>oim.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oim.wizard.CompositePage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>soa-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>soa-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>soa-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-export-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-import-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oim-workflow-ant.xml</name>
+              <path>./ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+      </technology-hook>
+      <actions xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+        <!--
+        ========================================================================
+        == the commmand that the oim feature will use to regenerate the build ==
+        == hierarchy                                                          ==
+        ========================================================================
+        -->
+        <action id="oim.jpr.configurator" canBePlacedOnMainToolbar="true">
+          <properties>
+            <property name="Name">${oim.project.configurator}</property>
+            <property name="SmallIcon">${oim.project.configurator.icon}</property>
+            <property name="LongDescription">${oim.project.configurator.description}</property>
+          </properties>
+          <command-class>oracle.jdeveloper.workspace.oim.project.Configurator</command-class>
+        </action>
+        <!--
+        ========================================================================
+        == the commmand that the oim feature will use to regenerate the ANT   ==
+        == runtime classpath                                                  ==
+        ========================================================================
+        -->
+        <action id="oim.jpr.runtime" canBePlacedOnMainToolbar="true">
+          <properties>
+            <property name="Name">${oim.project.runtime}</property>
+            <property name="SmallIcon">${oim.project.runtime.icon}</property>
+            <property name="LongDescription">${oim.project.runtime.description}</property>
+          </properties>
+          <command-class>oracle.jdeveloper.workspace.oim.project.Runtime</command-class>
+        </action>
+        <!--
+        ========================================================================
+        == the commmand that the oim feature will use to regenerate the Maven ==
+        == build file ierarchy                                                ==
+        ========================================================================
+        -->
+        <action id="oim.mvn.build" canBePlacedOnMainToolbar="true">
+          <properties>
+            <property name="Name">${oim.maven.build}</property>
+            <property name="SmallIcon">${oim.maven.build.icon}</property>
+            <property name="LongDescription">${oim.maven.build.description}</property>
+          </properties>
+          <command-class>oracle.jdeveloper.workspace.oim.maven.Build</command-class>
+        </action>
+        <!--
+        ========================================================================
+        == The commmand that this feature will use to toggling the visibility of
+        == Identity Server Navigator's toolbar.                               ==
+        ========================================================================
+        -->
+        <action id="iam.connection.oim.action.toolbar">
+          <properties>
+            <property name="Name">${iam.connection.oim}</property>
+          </properties>
+        </action>
+        <!--
+        ========================================================================
+        == The commmand that this feature will use to create a new Identity   ==
+        == Entry in a selected Identity Service Connection                    ==
+        ========================================================================
+        -->
+        <action id="iam.connection.oim.action.create">
+          <properties>
+            <property name="Name">${iam.connection.oim.action.create}</property>
+            <property name="SmallIcon">${OracleIcons.NEW}</property>
+          </properties>
+        </action>
+        <!--
+        ========================================================================
+        == The commmand that this feature will use to modify a Identity       ==
+        == Entry in a selected Identity Service Connection                    ==
+        ========================================================================
+        -->
+        <action id="iam.connection.oim.action.modify">
+          <properties>
+            <property name="Name">${iam.connection.oim.action.modify}</property>
+            <property name="SmallIcon">${OracleIcons.EDIT}</property>
+          </properties>
+        </action>
+        <!--
+        ========================================================================
+        == The commmand that this feature will use to close an opened         ==
+        == Identity Service Connection                                        ==
+        ========================================================================
+        -->
+        <action id="iam.connection.oim.action.close">
+          <properties>
+            <property name="Name">${iam.connection.oim.action.close}</property>
+            <property name="SmallIcon">${OracleIcons.TERMINATE}</property>
+          </properties>
+        </action>
+        <!--
+        ========================================================================
+        == The commmand that this feature will use to show a Identity         ==
+        == Navigator                                                          ==
+        ========================================================================
+        -->
+        <action id="iam.connection.oim.action.navigator">
+          <properties>
+            <property name="Name">${iam.connection.oim}</property>
+            <property name="MnemonicKey">${iam.connection.oim.mnemonic}</property>
+            <property name="SmallIcon">/oracle/jdeveloper/workspace/oim/gallery/application.png</property>
+          </properties>
+        </action>
+      </actions>
+      <settings-ui-hook>
+        <!--
+        ========================================================================
+        == the pages display in the Oracle JDeveloper Preference Navigator    ==
+        ========================================================================
+        -->
+        <page id="oim" parent-idref="/preferences/iam">
+          <label>${oim.name}</label>
+          <traversable-class>oracle.jdeveloper.workspace.oim.preference.Panel</traversable-class>
+        </page>
+        <!--
+        ========================================================================
+        == the pages display in the Oracle JDeveloper Project Settings        ==
+        ========================================================================
+        -->
+        <page id="oim" parent-idref="/Project/iam">
+          <label>${oim.name}</label>
+          <traversable-class>oracle.jdeveloper.workspace.oim.project.Panel</traversable-class>
+        </page>
+      </settings-ui-hook>
+      <!--
+      <accelerator-hook xmlns="http://xmlns.oracle.com/ide/extension">
+        <file>oracle/jdeveloper/connection/oim/accelerators.xml</file>
+      </accelerator-hook>
+      -->
+      <controllers>
+        <!--
+        ========================================================================
+        == the controller to display the Identity Service Navigator          ==
+        ========================================================================
+        -->
+        <controller class="oracle.jdeveloper.connection.oim.navigator.IdentityNavigator">
+          <update-rules>
+            <update-rule rule="always-enabled">
+              <action id="iam.connection.oim.action.navigator"/>
+            </update-rule>
+          </update-rules>
+        </controller>
+      </controllers>
+      <gallery xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+        <folders>
+          <!--
+          ======================================================================
+          == The 'label' attribute allows the folder name to be translated;   ==
+          == the key must be in the extension manifest resource bundle.       ==
+          ==                                                                  ==
+          == Note to myself:                                                  ==
+          == Ensure always that the key defined here is the same that we used ==
+          == in the extension manifest resource bundle as the key of the      ==
+          == Please vistit Manifest.FEATURE to check                          ==
+          ======================================================================
+          -->
+          <name label="${oim.name}">oim</name>
+          <category>iam</category>
+        </folders>
+      </gallery>
+    </triggers>
+  </trigger-hooks>
+  <feature id="oracle.ocs.workspace.oim" xmlns="http://xmlns.oracle.com/ide/extension">
+    <name>${oim.name}</name>
+    <category-id>iam-category imf-category</category-id>
+    <description>${oim.description}</description>
+    <members/>
+    <type>
+      <technology key="oim.technology"/>
+    </type>
+    <vendor>${oim.vendor}</vendor>
+    <license>${oim.license}</license>
+    <copyright>${oim.copyright}</copyright>
+  </feature>
+  <hooks>
+    <jdeveloper-hook xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+      <context-menu-listeners>
+        <site idref="navigator"> <!-- or "editor", or "explorer" -->
+          <!--
+          ======================================================================
+          == the context menu listener in the navigator to display the menu   ==
+          == item for action oim.jpr.configurator to regenerate the build     ==
+          == file hierarchy                                                   ==
+          ======================================================================
+          -->
+          <listener-class>oracle.jdeveloper.workspace.oim.project.ConfiguratorContextListener</listener-class>
+          <!--
+          ======================================================================
+          == the context menu listener in the navigator to display the menu   ==
+          == item for action oim.jpr.runtime to regenerate the ANT runtime    ==
+          == classpath                                                        ==
+          ======================================================================
+          -->
+          <listener-class>oracle.jdeveloper.workspace.oim.project.RuntimeContextListener</listener-class>
+          <!--
+          ======================================================================
+          == the context menu listener in the navigator to display the menu   ==
+          == item for action oim.mvn.build to regenerate the Maven Project    ==
+          == Object Model runtime classpath                                   ==
+          ======================================================================
+          <listener-class>oracle.jdeveloper.workspace.oim.maven.BuildContextListener</listener-class>
+          -->
+        </site>
+      </context-menu-listeners>
+      <addins>
+        <!--
+        ========================================================================
+        == The addin that initialize this extension                           ==
+        ==                                                                    ==
+        == All technologies and templates will be created by this             ==
+        == implementation. It was not possible to prevent JDeveloper to list  ==
+        == the templates that can be created by the template-hook.            ==
+        == All templates that are registered through the TemplateManager will ==
+        == be handled by NewObjectFromTemplate and the appropriate subclasses ==
+        == for applications and projects. Those wizards cannot be intercepted ==
+        == due to the classes are declared as final (really stupid).         ==
+        ==                                                                    ==
+        == Due to that reason we will not declare gallery items in the        ==
+        == section above like:                                                ==
+        ==                                                                    ==
+        ==   <item>                                                           ==
+        ==     <name>fullqualified class name</name>                          ==
+        ==     <folder>oim</folder>                                           ==
+        ==     <technologyKey>oim.technology</technologyKey>                  ==
+        ==   </item>                                                          ==
+        ==                                                                    ==
+        ========================================================================
+        -->
+        <addin headless="true">oracle.jdeveloper.workspace.oim.Feature</addin>
+      </addins>
+      <context-menu-listeners>
+        <!--
+        ========================================================================
+        == Register a context menu listener on the Resource Catalog           ==
+        == Navigator                                                          ==
+        ========================================================================
+        <site idref="rescat">
+        </site>
+        -->
+        <!--
+        ========================================================================
+        == Register a context menu listener on the Navigator Window           ==
+        ========================================================================
+        -->
+        <site idref="navigator">
+          <listener-class>oracle.jdeveloper.connection.oim.navigator.IdentityNavigatorController</listener-class>
+        </site>
+      </context-menu-listeners>
+    </jdeveloper-hook>
+    <menu-hook>
+       <!--
+       =========================================================================
+       == Register the navigator toolbar item to the Window menu              ==
+       =========================================================================
+       -->
+      <toolbars>
+        <toolbar id="iam.connection.oim.toolbar">
+          <section id="iam.connection.1">
+            <item action-ref="Ide.REFRESH_CMD_ID"/>
+          </section>
+          <section id="iam.connection.2">
+            <item action-ref="iam.connection.oim.action.create"/>
+            <item action-ref="iam.connection.oim.action.modify"/>
+          </section>
+        </toolbar>
+      </toolbars>
+       <!--
+       =========================================================================
+       == Register the navigator menu item to the Window menu                 ==
+       =========================================================================
+       -->
+      <menus>
+        <menubar id="javax.ide.view.MAIN_WINDOW_MENUBAR_ID">
+          <menu id="javax.ide.WINDOW_MENU_ID">
+            <section id="iam.connection.iam">
+              <item action-ref="iam.connection.oim.action.navigator"/>
+            </section>
+          </menu>
+        </menubar>
+      </menus>
+    </menu-hook>
+  </hooks>
+</extension>

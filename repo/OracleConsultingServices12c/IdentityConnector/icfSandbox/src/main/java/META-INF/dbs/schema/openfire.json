@@ -1,0 +1,176 @@
+{
+  "structural" : [ {
+    "type" : "account",
+    "entity" : {
+      "schema" : "ofsowner",
+      "name" : "ofuser"
+    },
+    "layered" : [ {
+      "prefix" : "property",
+      "source" : {
+        "entity" : {
+          "schema" : "ofsowner",
+          "name" : "ofuserprop"
+        },
+        "relation" : [ "username" ]
+      }
+    }, {
+      "prefix" : "flag",
+      "source" : {
+        "entity" : {
+          "schema" : "ofsowner",
+          "name" : "ofuserflag"
+        },
+        "relation" : [ "username" ]
+      }
+    } ],
+    "embedded" : [ {
+      "prefix" : "group",
+      "source" : {
+        "entity" : {
+          "schema" : "ofsowner",
+          "name" : "ofgroup"
+        },
+        "relation" : [ "username" ]
+      }
+    } ]
+  }, {
+    "type" : "group",
+    "entity" : {
+      "schema" : "ofsowner",
+      "name" : "ofgroup"
+    },
+    "layered" : [ {
+      "prefix" : "property",
+      "source" : {
+        "entity" : {
+          "schema" : "ofsowner",
+          "name" : "ofgroupprop"
+        },
+        "relation" : [ "groupname" ]
+      }
+    } ],
+    "embedded" : [ {
+      "prefix" : "account",
+      "source" : {
+        "entity" : {
+          "schema" : "ofsowner",
+          "name" : "ofuser"
+        },
+        "relation" : [ "groupname" ]
+      }
+    } ]
+  } ],
+  "entity" : [ {
+    "schema" : "ofsowner",
+    "name" : "ofuser",
+    "primary" : [ {
+      "name" : "username",
+      "class" : "java.lang.String",
+      "flag" : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name" : "name",
+      "class" : "java.lang.String"
+    }, {
+      "name" : "email",
+      "class" : "java.lang.String"
+    }, {
+      "name" : "storedkey",
+      "class" : "java.lang.String",
+      "flag" : [ "not_creatable", "not_updateable", "generated" ]
+    }, {
+      "name" : "serverkey",
+      "class" : "java.lang.String",
+      "flag" : [ "not_creatable", "not_updateable", "generated" ]
+    }, {
+      "name" : "salt",
+      "class" : "java.lang.String",
+      "flag" : [ "not_creatable", "not_updateable", "generated" ]
+    }, {
+      "name" : "iterations",
+      "class" : "java.math.BigDecimal",
+      "flag" : [ "not_creatable", "not_updateable", "generated" ]
+    }, {
+      "name" : "plainpassword",
+      "class" : "java.lang.String",
+      "flag" : [ "not_creatable", "not_updateable", "generated" ]
+    }, {
+      "name" : "encryptedpassword",
+      "class" : "java.lang.String",
+      "flag" : [ "not_creatable", "not_updateable", "generated" ]
+    }, {
+      "name" : "creationdate",
+      "class" : "java.util.Date",
+      "flag" : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    }, {
+      "name" : "modificationdate",
+      "class" : "java.util.Date",
+      "flag" : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    } ]
+  }, {
+    "schema" : "ofsowner",
+    "name" : "ofgroup",
+    "primary" : [ {
+      "name" : "groupname",
+      "class" : "java.lang.String",
+      "flag" : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name" : "description",
+      "class" : "java.lang.String"
+    } ]
+  }, {
+    "schema" : "ofsowner",
+    "name" : "ofuserprop",
+    "primary" : [ {
+      "name" : "username",
+      "class" : "java.lang.String",
+      "flag" : [ "required" ]
+    }, {
+      "name" : "name",
+      "class" : "java.lang.String",
+      "flag" : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name" : "propvalue",
+      "class" : "java.lang.String",
+      "flag" : [ "required" ]
+    } ]
+  }, {
+    "schema" : "ofsowner",
+    "name" : "ofuserflag",
+    "primary" : [ {
+      "name" : "username",
+      "class" : "java.lang.String",
+      "flag" : [ "required" ]
+    }, {
+      "name" : "name",
+      "class" : "java.lang.String",
+      "flag" : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name" : "starttime",
+      "class" : "java.util.Date"
+    }, {
+      "name" : "endtime",
+      "class" : "java.util.Date"
+    } ]
+  }, {
+    "schema" : "ofsowner",
+    "name" : "ofgroupprop",
+    "primary" : [ {
+      "name" : "groupname",
+      "class" : "java.lang.String",
+      "flag" : [ "required" ]
+    }, {
+      "name" : "name",
+      "class" : "java.lang.String",
+      "flag" : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name" : "propvalue",
+      "class" : "java.lang.String"
+    } ]
+  } ]
+}

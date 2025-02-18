@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Directory Service Configuration VFKA"
+         default="all"
+         basedir="."
+         xmlns:fmw="http://oracle.hst.deployment/fusion"
+         xmlns:jps="http://oracle.hst.deployment/security"
+         xmlns:wsm="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:config="http://oracle.ods.deployment/config"
+         xmlns:entry="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <import file="bka-oud-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="ods.recorder.name" value="${log.env}/bka-config-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Infrastructure Administration Groups (Technical Groups)
+  **           o Infrastructure Administration Users (Technical Users)
+  **           o Access Control Information (ACI)
+  ******************************************************************************
+  -->
+  <target name="vfka-base" description="Configures the Directory Information Tree">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="Configures VFKA Directory Information Tree ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create VFKA Directory Information Tree on ${bka.server.context} at ${bka.server.host}:${bka.server.port}"/>
+    <entry:create contextRef="bka-context" contextRoot="${bka.server.context}">
+      <entry name="ou" value="VFKA">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+      </entry>
+    </entry:create>
+    <echo message="=================================================================="/>
+    <echo message="vfka-structure completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+
+  <target name="vfka-structure" description="Configures the Directory Information Tree">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="Configures VFKA Directory Information Tree ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create VFKA Directory Information Tree on ${bka.server.context} at ${bka.server.host}:${bka.server.port}"/>
+    <entry:create contextRef="bka-context" contextRoot="ou=VFKA,${bka.server.context}">
+      <entry name="ou" value="Groups">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="description" value="Identifies the default base where groups are resides"/>
+      </entry>
+      <entry name="ou" value="People">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="description" value="Identifies the default base where users are resides"/>
+      </entry>
+    </entry:create>
+    <echo message="=================================================================="/>
+    <echo message="vfka-structure completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+</project>

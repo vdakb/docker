@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="api-apps"
+         xml:lang="en"
+         version ="5.0">
+  <title>Endpoint /Applications</title>
+  <para>
+    The <literal>/Applications</literal> endpoint can be used retrieving list of available applications (alongside with all namespaces, entitlements and members),
+    for listing available entitlement namespaces (alongside with all entitlements and members) for a specific application,
+    for listing available entitlements (alongside with all members) for a specific application namespace,
+    for listing assigned members for a specific per-application entitlement and
+    modify entitlement assignmentfor entitlement membership management using <literal>PATCH</literal> operation.
+  </para>
+  <caution>
+    <title>Authorization</title>
+    <para>
+      Any access to any method provided by this resource <emphasis role="strong">MUST</emphasis> be authorized by an access token.
+    </para>
+    <para>
+      Accessing the endpoint requires valid user by providing Basic Authentication or Bearer/SAML/OAuth token issued by BKA services, the authenticated user needs to be member of <literal>viewer</literal> or <literal>administrator</literal> Java(tm) Platform, Enterprise Edition (Java EE) roles.
+    </para>
+  </caution>
+  <para>
+    The following API operations are supported by the IGS SCIM Extension <literal>/Users</literal> endpoint implementation:
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend='api-apps-list-app'>List Applications</link>
+      </listitem>
+      <listitem>
+        <link linkend='api-apps-list-ns'>List Per-Application Namespaces</link>
+      </listitem>
+      <listitem>
+        <link linkend='api-apps-list-ents'>List Per-Namespace Entitlements</link>
+      </listitem>
+      <listitem>
+        <link linkend='api-apps-list-members'>List Per-Entitlement Members</link>
+      </listitem>
+      <listitem>
+        <link linkend='api-apps-modify-members'>Modify Per-Entitlement Members</link>
+      </listitem>
+    </itemizedlist>
+  </para>
+  <xi:include href="list-app.xml"/>
+  <xi:include href="list-namespaces.xml"/>
+  <xi:include href="list-entitlements.xml"/>
+  <xi:include href="list-members.xml"/>
+  <xi:include href="modify-members.xml"/>
+</chapter>

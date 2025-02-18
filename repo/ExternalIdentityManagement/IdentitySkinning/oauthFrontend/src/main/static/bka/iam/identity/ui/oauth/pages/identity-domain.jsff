@@ -1,0 +1,162 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+          
+  <c:set var="oauthBundle"
+         value="#{adfBundle['bka.iam.identity.ui.oauth.OAuthBundle']}"/>
+         
+  <af:panelHeader text="#{oauthBundle['oam-header']}: #{pageFlowScope.oam_connection_name}" id="ph1">
+      <af:panelGroupLayout id="pgl1" styleClass="AFStretchWidth">
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth" featuresOff="statusBar">
+          <f:facet name="toolbar">
+            <af:toolbar id="t2"
+                        binding="#{pageFlowScope.IdentityDomainManagedBean.toolbar}">
+              <af:commandToolbarButton 
+                text="#{oauthBundle['button-create']}"
+                id="ctb1"
+                icon="/images/func_add_16_ena.png"
+                hoverIcon="/images/func_add_16_hov.png"
+                disabledIcon="/images/func_add_16_dis.png"
+                depressedIcon="/images/func_add_16_act.png"
+                immediate="true"
+                actionListener="#{pageFlowScope.IdentityDomainManagedBean.launchCreateIdentityDomain}"
+                />
+              <af:commandToolbarButton 
+                text="#{oauthBundle['button-edit']}"
+                id="ctb2" 
+                icon="/images/func_open_16_ena.png"
+                hoverIcon="/images/func_open_16_hov.png"
+                disabledIcon="/images/func_open_16_dis.png"
+                depressedIcon="/images/func_open_16_act.png"
+                immediate="true"
+                actionListener="#{pageFlowScope.IdentityDomainManagedBean.launchEditIdentityDomain}"
+                />
+              <af:commandToolbarButton 
+                text="#{oauthBundle['button-delete']}"
+                id="ctb3" 
+                icon="/images/func_delete_16_ena.png"
+                hoverIcon="/images/func_delete_16_hov.png"
+                disabledIcon="/images/func_delete_16_dis.png"
+                depressedIcon="/images/func_delete_16_act.png"
+                immediate="true">
+                <af:showPopupBehavior align="afterStart"
+                                      popupId="::confirmPopupForIdentityDomainDelete"/>
+              </af:commandToolbarButton>
+              <af:commandToolbarButton 
+                text="#{oauthBundle['button-refresh']}"
+                id="ctb14" 
+                immediate="true"
+                actionListener="#{pageFlowScope.IdentityDomainManagedBean.refreshIdentityDomains}"
+                icon="/images/func_refresh_16_ena.png"
+                hoverIcon="/images/func_refresh_16_hov.png"
+                disabledIcon="/images/func_refresh_16_dis.png"
+                depressedIcon="/images/func_refresh_16_act.png"/>
+          </af:toolbar>
+          </f:facet>
+          <f:facet name="menus">
+            <af:menu text="#{oauthBundle['oam-servers-actions']}" id="m1"
+                     binding="#{pageFlowScope.IdentityDomainManagedBean.actionMenu}">
+              <af:commandMenuItem 
+                text="#{oauthBundle['button-create']}"
+                id="cmi1" icon="/images/func_add_16_ena.png"
+                immediate="true"
+                actionListener="#{pageFlowScope.IdentityDomainManagedBean.launchCreateIdentityDomain}"/>                          
+              <af:commandMenuItem 
+                text="#{oauthBundle['button-edit']}"
+                id="cmi3" icon="/images/func_modify_16_ena.png"
+                immediate="true"
+                actionListener="#{pageFlowScope.IdentityDomainManagedBean.launchEditIdentityDomain}"
+                />
+              <af:commandMenuItem 
+                text="#{oauthBundle['button-delete']}"
+                id="cmi4" icon="/images/func_delete_16_ena.png"
+                immediate="true">
+                <af:showPopupBehavior align="afterStart"
+                                      popupId="::confirmPopupForIdentityDomainDelete"/>
+              </af:commandMenuItem>
+              <af:commandMenuItem 
+                text="#{oauthBundle['button-refresh']}"
+                id="cmi5" icon="/images/func_refresh_16_ena.png"
+                immediate="true"
+                actionListener="#{pageFlowScope.IdentityDomainManagedBean.refreshIdentityDomains}"/>
+            </af:menu>
+          </f:facet>
+        <af:table value="#{bindings.identityDomains.collectionModel}" var="row"
+                  rows="#{bindings.identityDomains.rangeSize}"
+                  emptyText="#{bindings.identityDomains.viewable ? 'No data to display.' : 'Access Denied.'}"
+                  rowBandingInterval="0" 
+                  rowSelection="single" 
+                  fetchSize="#{bindings.identityDomains.rangeSize}"
+                  filterModel="#{bindings.identityDomainsQuery.queryDescriptor}" 
+                  filterVisible="true"
+                  queryListener="#{bindings.identityDomainsQuery.processQuery}" 
+                  varStatus="vs" 
+                  id="t1"
+                  binding="#{pageFlowScope.IdentityDomainManagedBean.searchTable}"
+                  selectionListener="#{bindings.identityDomains.collectionModel.makeCurrent}"
+                  columnStretching="column:c1"
+                  >
+          <af:column rowHeader="true" width="30"
+                     headerText=""
+                     align="right" id="c8">
+          </af:column>
+          <af:column sortProperty="#{bindings.identityDomains.hints.name.name}" filterable="true" sortable="true"
+                     headerText="#{oauthBundle['identity-domain-details-domain-name']}" id="c1">
+            <af:commandLink text="#{row.name}" id="cl1"
+                                  immediate="true"
+                                  actionListener="#{pageFlowScope.IdentityDomainManagedBean.launchEditIdentityDomain}"
+                                  partialSubmit="true">
+                    <f:attribute name="oam_connection_name"  value="#{pageFlowScope.oam_connection_name}"/>
+                    <f:attribute name="identity_domain_name" value="#{row.name}"/>
+            </af:commandLink>
+          </af:column>
+          <af:column sortProperty="#{bindings.identityDomains.hints.description.name}" filterable="true" sortable="true"
+                     headerText="#{oauthBundle['identity-domain-details-description']}" id="c2">
+            <af:outputText value="#{row.description}" shortDesc="#{bindings.identityDomains.hints.description.tooltip}"
+                           id="ot2"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.identityDomains.hints.consentPageURL.name}" filterable="true"
+                     sortable="true" 
+                     headerText="#{oauthBundle['identity-domain-details-consent-page-url']}" id="c3">
+            <af:outputText value="#{row.consentPageURL}"
+                           shortDesc="#{bindings.identityDomains.hints.consentPageURL.tooltip}" id="ot3"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.identityDomains.hints.errorPageURL.name}" filterable="true"
+                     sortable="true" 
+                     headerText="#{oauthBundle['identity-domain-details-error-page-url']}" id="c4">
+            <af:outputText value="#{row.errorPageURL}"
+                           shortDesc="#{bindings.identityDomains.hints.errorPageURL.tooltip}" id="ot4"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.identityDomains.hints.identityProvider.name}" filterable="true"
+                     sortable="true" 
+                     headerText="#{oauthBundle['identity-domain-details-identity-provider']}" id="c5">
+            <af:outputText value="#{row.identityProvider}"
+                           shortDesc="#{bindings.identityDomains.hints.identityProvider.tooltip}" id="ot5"/>
+          </af:column>
+        </af:table>
+      </af:panelCollection>
+      <af:popup id="confirmPopupForIdentityDomainDelete" launcherVar="source" eventContext="launcher"
+              contentDelivery="lazyUncached">
+        <af:dialog id="d1" type="yesNo" inlineStyle="width:500px"
+                 title="#{oauthBundle['dialog-warning']}"
+                 titleIconSource="/images/warning.png"
+                 dialogListener="#{pageFlowScope.IdentityDomainManagedBean.deleteIdentityDomain}"
+                 affirmativeTextAndAccessKey="#{oauthBundle['dialog-button-delete']}"
+                 cancelTextAndAccessKey="#{oauthBundle['dialog-button-cancel']}"
+                 noTextAndAccessKey="#{oauthBundle['dialog-button-cancel']}">
+          <af:panelGroupLayout layout="scroll" id="pgl12" inlineStyle="width:auto;height:auto;">
+            <af:outputText id="ot22" value="#{oauthBundle['dialog-confirm-delete']}"
+                           inlineStyle="font-weight:bold; font-size:small;"/>
+            <af:spacer width="100%" height="10" id="s28"/>
+            <af:panelGroupLayout id="pgl13" layout="vertical" inlineStyle="width:350px;">
+              <af:outputText id="ot23"  value="#{pageFlowScope.IdentityDomainManagedBean.actionWarningMessageDelete}"/>
+            </af:panelGroupLayout>
+          </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+      </af:panelGroupLayout>
+     </af:panelHeader>
+  
+</jsp:root>

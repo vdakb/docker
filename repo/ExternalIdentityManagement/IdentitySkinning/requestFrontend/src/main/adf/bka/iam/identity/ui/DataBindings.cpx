@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns            ="http://xmlns.oracle.com/adfm/application" version="12.2.1.22.48"
+             xmlns:datacontrol="http://xmlns.oracle.com/adfm/datacontrol"
+             id               ="DataBindings"
+             Package          ="bka.iam.identity.ui"
+             ClientType       ="Generic"
+             ErrorHandlerClass="oracle.iam.ui.platform.exception.OIMErrorHandler"
+             SeparateXMLFiles ="false">
+  <definitionFactories>
+    <factory nameSpace="http://xmlns.oracle.com/adf/controller/binding" className="oracle.adf.controller.internal.binding.TaskFlowBindingDefFactoryImpl"/>
+    <dtfactory className="oracle.adf.controller.internal.dtrt.binding.BindingDTObjectFactory"/>
+  </definitionFactories>
+  <pageMap>
+    <page path="/bka/iam/identity/ui/request/view/efbs-account.jsff"                                        usageId="bka_iam_identity_ui_efbs_accountPageDef"/>
+    <page path="/WEB-INF/oracle/iam/ui/custom/request/flow/efbs-account-tf.xml#efbs-account-tf@beneficiary" usageId="bka_iam_identity_ui_efbs_account_tf_efbs_account_tf_beneficiaryPageDef"/>
+  </pageMap>
+  <pageDefinitionUsages>
+    <page id="bka_iam_identity_ui_efbs_accountPageDef"                                path="bka.iam.identity.ui.request.view.efbs_accountPageDef"/>
+    <page id="bka_iam_identity_ui_efbs_account_tf_efbs_account_tf_beneficiaryPageDef" path="oracle.iam.ui.custom.request.flow.efbs_account_tf_efbs_account_tf_beneficiaryPageDef"/>
+  </pageDefinitionUsages>
+  <dataControlUsages>
+    <dc id="ShellEventHandler"         path="oracle.idm.shell.adfm.ShellEventHandler"/>
+    <BC4JDataControl xmlns                 ="http://xmlns.oracle.com/adfm/datacontrol"
+                     id                    ="ManageUsersAMDataControl"
+                     Package               ="oracle.iam.ui.manageusers.model.am"
+                     FactoryClass          ="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     Configuration         ="ManageUsersAMLocal"
+                     syncMode              ="Immediate"
+                     SupportsTransactions  ="true"
+                     SupportsFindMode      ="true"
+                     SupportsRangesize     ="true"
+                     SupportsResetState    ="true"
+                     SupportsSortCollection="true"/>
+  </dataControlUsages>
+</Application>

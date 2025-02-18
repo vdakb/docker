@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Framework 12c Sandbox" default="make" basedir=".">
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="subant-connector">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="oim-connector-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="subant-adapter">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="oim-adapter-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="subant-library">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="oim-library-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="subant-utility">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="oim-utility-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="subant-plugin">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="oim-plugin-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="subant-cleanup">
+    <attribute name="subproject"/>
+    <sequential>
+      <exec executable="svn">
+        <arg value="cleanup"/>
+        <arg value="--remove-unversioned"/>
+        <arg value="../../@{subproject}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <macrodef name="make-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-connector subtarget="clean"   subproject="@{path}"/>
+      <subant-connector subtarget="compile" subproject="@{path}"/>
+      <subant-connector subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="make-adapter">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Adapter @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-adapter subtarget="clean"   subproject="@{path}"/>
+      <subant-adapter subtarget="compile" subproject="@{path}"/>
+      <subant-adapter subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="make-plugin">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Plug-In @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-plugin subtarget="clean"   subproject="@{path}"/>
+      <subant-plugin subtarget="compile" subproject="@{path}"/>
+      <subant-plugin subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="make-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-library subtarget="clean"   subproject="@{path}"/>
+      <subant-library subtarget="compile" subproject="@{path}"/>
+      <subant-library subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="make-utility">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Utility @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-utility subtarget="clean"   subproject="@{path}"/>
+      <subant-utility subtarget="compile" subproject="@{path}"/>
+      <subant-utility subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="deploy-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-connector subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="deploy-adapter">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Adapter @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-adapter subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="deploy-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-library subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="deploy-plugin">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Plug-In @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-plugin subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-adapter">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Adapter @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-plugin">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Plug-In @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-utility">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Utility @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to make the entire workspace
+  =====================================================================
+  -->
+  <target name="make" description="Package the entire workspace artifacts to the appropriate java archive">
+    <record name="./oim-framework-ant.log" action="start"/>
+    <echo message="============================================================="/>
+    <echo message="Build of Identity Manager Framework"/>
+    <echo message="============================================================="/>
+    <make-adapter   path="bkaAdapter"        component="Adapter Foundation"/>
+    <xslt style="oim-framework-log.xsl" out="../doc/changelog/oim-framework-log.html" force="true" in="oim-framework-log.xml"/>
+    <record name="./oim-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the entire workspace
+  ==
+  == There is no need to create a dependency on the make target because
+  == any deployment task on the ANT subproject has such dependency
+  == already
+  =====================================================================
+  -->
+  <target name="deploy" description="Deployment of the entire workspace artifacts to the appropriate destination">
+    <record name="./oim-framework-ant.log" action="start" append="true"/>
+    <echo message="============================================================="/>
+    <echo message="Deployment of Identity Manager Framework"/>
+    <echo message="============================================================="/>
+    <deploy-adapter   path="bkaAdapter"        component="Adapter Foundation eFBS"/>
+    <record name="./oim-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the entire workspace by leveraging svn
+  == cleanup
+  =====================================================================
+  -->
+  <target name="cleanup" description="Cleanup of the entire workspace artifacts">
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Identity Manager Framework"/>
+    <echo message="============================================================="/>
+    <cleanup-adapter   path="bkaAdapter"       component="Adapter Foundation"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create the change documentation based on the data
+  == collected in the file ant/oim-framework-log.xml.
+  == It does some style sheet transformation to create an HTML file of the
+  == information.
+  =====================================================================
+  -->
+  <target name="changelog" description="Creates a changelog in html format">
+    <xslt style="oim-framework-log.xsl" out="../doc/changelog/oim-framework-log.html" force="true" in="oim-framework-log.xml"/>
+  </target>
+</project>

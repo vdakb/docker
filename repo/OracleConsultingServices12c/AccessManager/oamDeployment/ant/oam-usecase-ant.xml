@@ -1,0 +1,1182 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name                ="Access Manager Deployment Use Case"
+         basedir             ="../"
+         xmlns:fmw           ="http://oracle.hst.deployment/fusion"
+         xmlns:jps           ="http://oracle.hst.deployment/security"
+         xmlns:wsm           ="http://oracle.hst.deployment/webservice"
+         xmlns:server        ="http://oracle.hst.deployment/topology"
+         xmlns:ids           ="http://oracle.iam.access/identitystore"
+         xmlns:service       ="http://oracle.iam.access/accessservice"
+         xmlns:ams           ="http://oracle.iam.access/accessserver"
+         xmlns:agent         ="http://oracle.iam.access/accessagent"
+         xmlns:policy        ="http://oracle.iam.access/accesspolicy"
+         xmlns:identitydomain="http://oracle.iam.oauth/domain"
+         xmlns:resourceserver="http://oracle.iam.oauth/resource">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oam-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name"      value="../log/oam-usecase-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Service Configuration
+  **
+  ** Synopsis: The tasks reports the service configuration
+  **           This includes:
+  **           o Access Service
+  ******************************************************************************
+  -->
+  <target name="0000" description="Report Service Configuration in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0000 Report Access Service Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <service:status contextRef="jmx-context"/>
+    <echo message="=================================================================="/>
+    <echo message="0000 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Identity Store Configuration
+  **
+  ** Synopsis: The tasks deploys the Identity Store
+  **           This includes:
+  **           o Primary User Identity Store
+  ******************************************************************************
+  -->
+  <target name="0101" description="Creating Identity Stores in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0101 Create Identity Store Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <ids:create contextRef="jmx-context">
+      <ids:instance name="PlayGroundIdentityStore">
+        <ids:parameter value="serviceType"           name="OUD"/>
+        <ids:parameter value="serviceProvider"       name="OUD"/>
+        <ids:parameter value="serviceURL"            name="ldap://buster.vm.oracle.com:7389"/>
+        <ids:parameter value="servicePrincipal"      name="uid=iamadmin,cn=System,dc=vm,dc=oracle,dc=com"/>
+        <ids:parameter value="serviceCredential"     name="Sophie20061990$"/>
+        <ids:parameter value="groupSearchBase"       name="ou=Groups,dc=vm,dc=oracle,dc=com"/>
+        <ids:parameter value="groupCacheEnabled"     name="false"/>
+        <ids:parameter value="userSearchBase"        name="ou=People,dc=vm,dc=oracle,dc=com"/>
+      </ids:instance>
+    </ids:create>
+    <echo message="=================================================================="/>
+    <echo message="0101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Identity Store Configuration
+  **
+  ** Synopsis: The tasks deploys the Identity Store
+  **           This includes:
+  **           o Primary User Identity Store
+  ******************************************************************************
+  -->
+  <target name="0102" description="Modify Identity Stores in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0102 Modify Identity Store Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <ids:modify contextRef="jmx-context">
+      <ids:instance name="PlayGroundIdentityStore">
+        <ids:parameter value="serviceType"           name="OUD"/>
+        <ids:parameter value="serviceProvider"       name="OUD"/>
+        <ids:parameter value="serviceURL"            name="ldap://buster.vm.oracle.com:7389"/>
+        <ids:parameter value="servicePrincipal"      name="uid=iamadmin,cn=System,dc=vm,dc=oracle,dc=com"/>
+        <ids:parameter value="serviceCredential"     name="Sophie20061990$"/>
+        <ids:parameter value="primary"               name="true"/>
+        <ids:parameter value="system"                name="false"/>
+        <ids:parameter value="groupSearchBase"       name="ou=Groups,dc=vm,dc=oracle,dc=com"/>
+        <ids:parameter value="groupNameAttribute"    name="cn"/>
+        <ids:parameter value="groupObjectClass"      name="groupOfUniqueNames"/>
+        <ids:parameter value="groupCacheEnabled"     name="false"/>
+        <ids:parameter value="groupCacheSize"        name="10000"/>
+        <ids:parameter value="groupCacheTTL"         name="0"/>
+        <ids:parameter value="userSearchBase"        name="ou=People,dc=vm,dc=oracle,dc=com"/>
+        <ids:parameter value="userObjectClass"       name="person"/>
+        <ids:parameter value="userNameAttribute"     name="mail"/>
+        <ids:parameter value="userPasswordAttribute" name="userPassword"/>
+        <ids:parameter value="userNativeProvider"    name="false"/>
+        <ids:parameter value="prefetchedAttributes"  name="mail,cn,uid,sn,givenName"/>
+        <ids:parameter value="connectionPoolSizeMin" name="2"/>
+        <ids:parameter value="connectionPoolSizeMax" name="5"/>
+        <ids:parameter value="connectionWaitTimeout" name="10"/>
+        <ids:parameter value="connectionRetryCount"  name="3"/>
+        <ids:parameter value="referralPolicy"        name="throw"/>
+      </ids:instance>
+    </ids:modify>
+    <echo message="=================================================================="/>
+    <echo message="0102 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Undeploys the Access Manager Identity Store Configuration
+  **
+  ** Synopsis: The tasks undeploys the Identity Store
+  **           This includes:
+  **           o Primary User Identity Store
+  ******************************************************************************
+  -->
+  <target name="0103" description="Delete Identity Stores in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0103 Delete Identity Store Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <ids:delete contextRef="jmx-context" failonerror="false">
+      <ids:instance name="PlayGroundIdentityStore"/>
+    </ids:delete>
+    <echo message="=================================================================="/>
+    <echo message="0103 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Identity Store Configuration
+  **
+  ** Synopsis: The tasks reports the Identity Store configuration
+  **           This includes:
+  **           o Primary User Identity Store
+  ******************************************************************************
+  -->
+  <target name="0104" description="Report Identity Stores in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0104 Report Identity Store Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <ids:report contextRef="jmx-context" failonerror="false">
+      <ids:instance name="PlayGroundIdentityStore"/>
+    </ids:report>
+    <echo message="=================================================================="/>
+    <echo message="0104 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Access Server Configuration
+  **
+  ** Synopsis: The tasks deploys the Access Server
+  **           This includes:
+  **           o Access Server
+  ******************************************************************************
+  -->
+  <target name="0203" description="Managing Access Servers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0203 Delete Access Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <ams:delete contextRef="jmx-context" failonerror="false">
+      <ams:instance name="PlayGroundAccessServer"/>
+    </ams:delete>
+    <echo message="=================================================================="/>
+    <echo message="0203 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Access Server Configuration
+  **
+  ** Synopsis: The tasks reports the Access Server
+  **           This includes:
+  **           o Access Server
+  ******************************************************************************
+  -->
+  <target name="0204" description="Managing Access Servers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0204 Report Access Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <ams:print contextRef="jmx-context" failonerror="false">
+      <ams:instance name="PlayGroundAccessServer"/>
+    </ams:print>
+    <echo message="=================================================================="/>
+    <echo message="0204 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Authentication/Authorization
+  **           Policy Configuration
+  **
+  ** Synopsis: The tasks deploys the certain Policies
+  **           This includes:
+  **           o Authentication/Authorization Policy acme-domain
+  ******************************************************************************
+  -->
+  <target name="0301" description="Creating Authentication/Authorization in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0301 Create Authentication/Authorization Policy Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <policy:create contextRef="www-context">
+      <instance name="buster.vm.oracle.com">
+        <parameter value="applicationDomain"             name="acme-domain"/>
+        <parameter value="authenticationSchemePublic"    name="LDAPScheme"/>
+        <parameter value="authenticationSchemeProtected" name="acme-domain"/>
+        <parameter value="publicScheme" name="acme-domain"/>
+        <resourceProtected>
+          <url value="/resource1.html"/>
+          <url value="/resource2.html"/>
+        </resourceProtected>
+        <resourcePublic>
+          <url value="/public1.html"/>
+          <url value="/public2.html"/>
+        </resourcePublic>
+        <resourceExcluded>
+          <url value="/excluded1.html"/>
+        </resourceExcluded>
+        <variations>
+          <server host="igd.console.oracle.com"/>
+          <server host="igd.console.zimtstern.com"/>
+          <server host="iad.console.oracle.com"/>
+          <server host="iad.console.zimtstern.com"/>
+        </variations>
+        <applicationDomain>
+          <authentication>
+            <authenticationPolicy name                ="AuthenticationPolicy1"
+                                  description         ="Authentication policy created using policyUpdate mode of rreg tool"
+                                  authenticationScheme="LDAPScheme">
+              <addedUri>
+                <uri value="/res1" queryString=""/>
+                <uri value="/res2" queryString=""/>
+              </addedUri>
+              <response>
+                <responseSuccess name="AuthnResponseTest1" type="Cookie"  value="123"/>
+                <responseSuccess name="AuthnResponseTest2" type="Session" value="223"/>
+                <responseSuccess name="AuthnResponseTest3" type="Header"  value="323"/>
+              </response>
+            </authenticationPolicy>
+          </authentication>
+          <authorization>
+            <authorizationPolicy name                ="AuthorizationPolicy1"
+                                 description         ="Authorization policy created using policyUpdate mode of rreg tool">
+              <addedUri>
+                <uri value="/res1" queryString=""/>
+                <uri value="/res2" queryString=""/>
+              </addedUri>
+              <conditions>
+                <condition name="myiprangecondition" type="ip4_Range">
+                  <ip>
+                    <range from="192.168.1.1" to="192.168.1.100"/>
+                    <range from="192.168.2.1" to="192.168.2.100"/>
+                  </ip>
+                </condition>
+                <condition name="mytemprolcondition" type="temporal">
+                  <temporal startTime="08:00:00" endTime="18:00:00">
+                    <dayOfWeek monday="1" tuesday="1" wednesday="1" thursday="1" friday="1" saturday="0" sunday="0"/>
+                  </temporal>
+                </condition>
+                <condition name="myidentity" type="identity">
+                  <identity store="UserIdentityStore1" type="User" entity="weblogic"/>
+                </condition>
+                <condition name="myattrcondition" type="attribute" combiner="ANY">
+                  <attribute name="session count" namespace="session" operator="equals" value="testvalue"/>
+                </condition>
+              </conditions>
+              <rules>
+                <rule effect="DENY">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="mytemprolcondition"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+              <response>
+                <responseSuccess name="AuthzResponseTest1" type="Cookie"  value="123"/>
+                <responseSuccess name="AuthzResponseTest2" type="Session" value="223"/>
+                <responseSuccess name="AuthzResponseTest3" type="Header"  value="323"/>
+              </response>
+            </authorizationPolicy>
+          </authorization>
+        </applicationDomain>
+      </instance>
+    </policy:create>
+    <echo message="=================================================================="/>
+    <echo message="0301 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deletes the Access Manager Authentication/Authorization
+  **           Policy Configuration
+  **
+  ** Synopsis: The tasks deletes certain Policies
+  **           This includes:
+  **           o Authentication/Authorization Policy acme-domain
+  ******************************************************************************
+  -->
+  <target name="0303" description="Deleting Authentication/Authorization Policies in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0303 Delete Authentication/Authorization Policy Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <policy:delete contextRef="www-context" failonerror="false">
+      <instance name="buster.vm.oracle.com">
+        <parameter value="applicationDomainName" name="acme-domain"/>
+      </instance>
+    </policy:delete>
+    <echo message="=================================================================="/>
+    <echo message="0303 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Registers the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks register Access Agents
+  **           This includes:
+  **           o Access Agent acme-agent-10g
+  ******************************************************************************
+  -->
+  <target name="0401" description="Register Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0401 Register Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:create contextRef="www-context">
+      <instance name="acme-agent-10g" version="10g">
+        <parameter value="agentPassword"                 name="Sophie20061990$"/>
+        <parameter value="hostIdentifier"                name="buster.vm.oracle.com"/>
+        <parameter value="agentBaseURL"                  name="http://buster.vm.oracle.com"/>
+        <parameter value="virtualHost"                   name="false"/>
+        <parameter value="applicationDomain"             name="RREG_OAM"/>
+        <parameter value="autoCreatePolicy"              name="true"/>
+        <parameter value="cookieDomainPrimary"           name="{client_domain}"/>
+        <parameter value="cacheElementsMax"              name="100000"/>
+        <parameter value="cacheTimeout"                  name="1800"/>
+        <parameter value="cookieSessionTime"             name="3600"/>
+        <parameter value="connectionMax"                 name="1"/>
+        <parameter value="connectionSessionTimeMax"      name="60"/>
+        <parameter value="sessionIdleTimeout"            name="3600"/>
+        <parameter value="failoverThreshold"             name="1"/>
+        <parameter value="timeoutThreshold"              name="5"/>
+        <parameter value="sleep"                         name="60"/>
+        <parameter value="debug"                         name="false"/>
+        <parameter value="security"                      name="open"/>
+        <parameter value="denyNotProtected"              name="true"/>
+        <parameter value="allowManagementOperation"      name="false"/>
+        <parameter value="browserCachePragmaHeader"      name="no-cache"/>
+        <parameter value="browserCacheControlHeader"     name="no-cache"/>
+        <parameter value="ipValidation"                  name="false"/>
+        <parameter value="logoutTargetURLParam"          name="end_url"/>
+        <parameter value="authenticationSchemeProtected" name=""/>
+        <variations>
+          <server host="igd.console.oracle.com"/>
+          <server host="igd.console.zimtstern.com"/>
+          <server host="iad.console.oracle.com"/>
+          <server host="iad.console.zimtstern.com"/>
+        </variations>
+        <validationException>
+          <address value="10.11.11.11"/>
+          <address value="10.11.11.12"/>
+          <address value="10.11.11.13"/>
+        </validationException>
+        <logoutURL>
+          <url value="/oamsso/logout.html"/>
+        </logoutURL>
+        <resourceProtected>
+          <url value="/**"/>
+        </resourceProtected>
+        <resourcePublic>
+          <url value="/public/**"/>
+        </resourcePublic>
+        <resourceExcluded>
+          <url value="/excluded/**"/>
+        </resourceExcluded>
+        <userDefined>
+          <userProperty name="TestName">
+            <userValue value="testValue1"/>
+            <userValue value="testValue2"/>
+            <userValue value="testValue3"/>
+          </userProperty>
+          <userProperty name="MaxPostDataLength">
+            <userValue value="750000"/>
+          </userProperty>
+          <userProperty name="maxSessionTimeUnits">
+            <userValue value="minutes"/>
+          </userProperty>
+          <userProperty name="RetainDownstreamPostData">
+            <userValue value="false"/>
+          </userProperty>
+          <userProperty name="useIISBuiltinAuthentication">
+            <userValue value="false"/>
+          </userProperty>
+          <userProperty name="idleSessionTimeoutLogic">
+            <userValue value="leastComponentIdleTimeout"/>
+          </userProperty>
+          <userProperty name="URLInUTF8Format">
+            <userValue value="true"/>
+          </userProperty>
+          <userProperty name="inactiveReconfigPeriod">
+            <userValue value="10"/>
+          </userProperty>
+          <userProperty name="WaitForFailover">
+            <userValue value="-1"/>
+          </userProperty>
+          <userProperty name="proxySSLHeaderVar">
+            <userValue value="IS_SSL"/>
+          </userProperty>
+          <userProperty name="client_request_retry_attempts">
+            <userValue value="1"/>
+          </userProperty>
+          <userProperty name="ContentLengthFor401Response">
+            <userValue value="0"/>
+          </userProperty>
+          <userProperty name="SUN61HttpProtocolVersion">
+            <userValue value="1.0"/>
+          </userProperty>
+          <userProperty name="impersonationCredentials">
+            <userValue value="cred"/>
+          </userProperty>
+          <userProperty name="UseWebGateExtForPassthrough">
+            <userValue value="false"/>
+          </userProperty>
+          <userProperty name="syncOperationMode">
+            <userValue value="false"/>
+          </userProperty>
+        </userDefined>
+        <serverPrimary>
+          <server host="oliver.vm.oracle.com" port="4711" connectionMax="8"/>
+          <server host="oliver.vm.oracle.com" port="4712" connectionMax="3"/>
+        </serverPrimary>
+        <serverSecondary>
+          <server host="laurel.vm.oracle.com" port="7777" connectionMax="8"/>
+          <server host="laurel.vm.oracle.com" port="7778" connectionMax="3"/>
+          <server host="laurel.vm.oracle.com" port="7779" connectionMax="4"/>
+        </serverSecondary>
+      </instance>
+    </agent:create>
+    <echo message="=================================================================="/>
+    <echo message="0401 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Modifies the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks modify Access Agents
+  **           This includes:
+  **           o Access Agent acme-agent-10g
+  ******************************************************************************
+  -->
+  <target name="0402" description="Register Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0402 Modify Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:modify contextRef="www-context">
+      <instance name="acme-agent-10g" version="10g">
+        <parameter value="preferredHost"                 name="RREG_HostId"/>
+        <parameter value="cookieDomainPrimary"           name="{client_domain}"/>
+        <parameter value="security"                      name="open"/>
+        <parameter value="state"                         name="Enabled"/>
+        <parameter value="cacheElementsMax"              name="100000"/>
+        <parameter value="cacheTimeout"                  name="1800"/>
+        <parameter value="connectionMax"                 name="1"/>
+        <parameter value="connectionSessionTimeMax"      name="60"/>
+        <parameter value="failoverThreshold"             name="1"/>
+        <parameter value="timeoutThreshold"              name="5"/>
+        <parameter value="sleep"                         name="60"/>
+        <parameter value="browserCachePragmaHeader"      name="no-cache"/>
+        <parameter value="browserCacheControlHeader"     name="no-cache"/>
+        <parameter value="debug"                         name="false"/>
+        <parameter value="ipValidation"                  name="0"/>
+        <parameter value="denyNotProtected"              name="1"/>
+        <parameter value="allowManagementOperation"      name="false"/>
+        <logoutURL>
+          <url value="/oamsso/logout.html"/>
+        </logoutURL>
+        <userDefined>
+          <userProperty name="MaxPostDataLength">
+            <userValue value="750000"/>
+          </userProperty>
+        </userDefined>
+        <validationException>
+          <address value="10.11.11.11"/>
+          <address value="10.11.11.12"/>
+          <address value="10.11.11.13"/>
+        </validationException>
+      </instance>
+    </agent:modify>
+    <echo message="=================================================================="/>
+    <echo message="0402 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks deploys the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-10g
+  ******************************************************************************
+  -->
+  <target name="0403" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0403 Delete Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:delete contextRef="www-context" failonerror="false">
+      <instance name="acme-agent-10g" version="10g"/>
+    </agent:delete>
+    <echo message="=================================================================="/>
+    <echo message="0403 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Validates the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks validates the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-11g
+  ******************************************************************************
+  -->
+  <target name="0404" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0404 Validate Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:validate contextRef="www-context" failonerror="false">
+      <instance name="acme-agent-10g" version="10g"/>
+    </agent:validate>
+    <echo message="=================================================================="/>
+    <echo message="0404 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks reports the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-11g
+  ******************************************************************************
+  -->
+  <target name="0405" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0405 Report Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:print contextRef="www-context" failonerror="false">
+      <agent:instance name="acme-agent-11g" version="11g"/>
+    </agent:print>
+    <echo message="=================================================================="/>
+    <echo message="0405 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Registers the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks register the Access Agents
+  **           This includes:
+  **           o Access Agent acme-agent-11g
+  ******************************************************************************
+  -->
+  <target name="0411" description="Register Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0411 Register Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:create contextRef="www-context">
+      <instance name="acme-agent-11g" version="11g">
+        <parameter value="hostIdentifier"                name="buster.vm.oracle.com"/>
+        <parameter value="agentBaseURL"                  name="http://buster.vm.oracle.com"/>
+        <parameter value="virtualHost"                   name="false"/>
+        <parameter value="agentPassword"                 name="Sophie20061990$"/>
+        <parameter value="applicationDomain"             name="RREG_OAM11G"/>
+        <parameter value="autoCreatePolicy"              name="true"/>
+        <parameter value="cacheElementsMax"              name="100000"/>
+        <parameter value="cacheTimeout"                  name="1800"/>
+        <parameter value="tokenValidityPeriod"           name="3600"/>
+        <parameter value="connectionMax"                 name="1"/>
+        <parameter value="connectionSessionTimeMax"      name="60"/>
+        <parameter value="failoverThreshold"             name="1"/>
+        <parameter value="timeoutThreshold"              name="5"/>
+        <parameter value="sleep"                         name="60"/>
+        <parameter value="debug"                         name="false"/>
+        <parameter value="security"                      name="open"/>
+        <parameter value="denyNotProtected"              name="1"/>
+        <parameter value="allowManagementOperation"      name="false"/>
+        <parameter value="allowTokenScopeOperation"      name="false"/>
+        <parameter value="allowMasterTokenRetrieval"     name="false"/>
+        <parameter value="allowCollectorOperation"       name="false"/>
+        <parameter value="browserCachePragmaHeader"      name="no-cache"/>
+        <parameter value="browserCacheControlHeader"     name="no-cache"/>
+        <parameter value="ipValidation"                  name="0"/>
+        <parameter value="authenticationSchemeProtected" name=""/>
+        <parameter value="logoutCallbackURL"             name="/oam_logout_success"/>
+        <parameter value="logoutTargetURLParam"          name="end_url"/>
+        <validationException>
+          <address value="10.11.11.11"/>
+          <address value="10.11.11.12"/>
+          <address value="10.11.11.13"/>
+        </validationException>
+        <logoutURL>
+          <url value="/logout1.html"/>
+          <url value="/logout2.html"/>
+        </logoutURL>
+        <serverPrimary>
+          <server host="oliver.vm.oracle.com" port="4711" connectionMax="8"/>
+          <server host="oliver.vm.oracle.com" port="4712" connectionMax="3"/>
+        </serverPrimary>
+        <serverSecondary>
+          <server host="laurel.vm.oracle.com" port="7777" connectionMax="8"/>
+          <server host="laurel.vm.oracle.com" port="7778" connectionMax="3"/>
+          <server host="laurel.vm.oracle.com" port="7779" connectionMax="4"/>
+        </serverSecondary>
+        <resourceProtected>
+          <url value="/**"/>
+        </resourceProtected>
+        <resourcePublic>
+          <url value="/public/**"/>
+        </resourcePublic>
+        <resourceExcluded>
+          <url value="/excluded/**"/>
+        </resourceExcluded>
+        <variations>
+          <server host="igd.console.oracle.com"/>
+          <server host="igd.console.zimtstern.com"/>
+          <server host="iad.console.oracle.com"/>
+          <server host="iad.console.zimtstern.com"/>
+        </variations>
+        <userDefined>
+          <userProperty name="TestName">
+            <userValue value="testValue1"/>
+            <userValue value="testValue2"/>
+            <userValue value="testValue3"/>
+          </userProperty>
+          <userProperty name="MaxPostDataLength">
+            <userValue value="750000"/>
+          </userProperty>
+          <userProperty name="maxSessionTimeUnits">
+            <userValue value="minutes"/>
+          </userProperty>
+          <userProperty name="RetainDownstreamPostData">
+            <userValue value="false"/>
+          </userProperty>
+          <userProperty name="useIISBuiltinAuthentication">
+            <userValue value="false"/>
+          </userProperty>
+          <userProperty name="URLInUTF8Format">
+            <userValue value="true"/>
+          </userProperty>
+          <userProperty name="inactiveReconfigPeriod">
+            <userValue value="10"/>
+          </userProperty>
+          <userProperty name="WaitForFailover">
+            <userValue value="-1"/>
+          </userProperty>
+          <userProperty name="proxySSLHeaderVar">
+            <userValue value="IS_SSL"/>
+          </userProperty>
+          <userProperty name="client_request_retry_attempts">
+            <userValue value="1"/>
+          </userProperty>
+          <userProperty name="ContentLengthFor401Response">
+            <userValue value="0"/>
+          </userProperty>
+          <userProperty name="SUN61HttpProtocolVersion">
+            <userValue value="1.0"/>
+          </userProperty>
+          <userProperty name="impersonationCredentials">
+            <userValue value="cred"/>
+          </userProperty>
+          <userProperty name="UseWebGateExtForPassthrough">
+            <userValue value="false"/>
+          </userProperty>
+          <userProperty name="syncOperationMode">
+            <userValue value="false"/>
+          </userProperty>
+          <userProperty name="filterOAMAuthnCookie">
+            <userValue value="true"/>
+          </userProperty>
+        </userDefined>
+      </instance>
+    </agent:create>
+    <echo message="=================================================================="/>
+    <echo message="0411 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Modifies the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks modifies the Access Agents
+  **           This includes:
+  **           o Access Agent acme-agent-11g
+  ******************************************************************************
+  -->
+  <target name="0412" description="Modify Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0412 Modify Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:modify contextRef="www-context">
+      <instance name="acme-agent-11g" version="11g">
+        <parameter value="preferredHost"                 name="RREG_HostId11G"/>
+        <parameter value="agentBaseURL"                  name="http://buster.vm.oracle.com"/>
+        <parameter value="security"                      name="open"/>
+        <parameter value="state"                         name="Enabled"/>
+        <parameter value="cacheElementsMax"              name="100000"/>
+        <parameter value="cacheTimeout"                  name="1800"/>
+        <parameter value="tokenValidityPeriod"           name="3600"/>
+        <parameter value="connectionMax"                 name="1"/>
+        <parameter value="connectionSessionTimeMax"      name="60"/>
+        <parameter value="failoverThreshold"             name="1"/>
+        <parameter value="timeoutThreshold"              name="5"/>
+        <parameter value="logoutCallbackURL"             name="/oam_logout_success"/>
+        <parameter value="logoutRedirectURL"             name="http://buster.vm.oracle.com:8011/oam/server/logout"/>
+        <parameter value="logoutTargetURLParam"          name="end_url"/>
+        <parameter value="sleep"                         name="60"/>
+        <parameter value="browserCachePragmaHeader"      name="no-cache"/>
+        <parameter value="browserCacheControlHeader"     name="no-cache"/>
+        <parameter value="debug"                         name="false"/>
+        <parameter value="ipValidation"                  name="0"/>
+        <parameter value="denyNotProtected"              name="1"/>
+        <parameter value="allowManagementOperation"      name="false"/>
+        <parameter value="allowTokenScopeOperation"      name="false"/>
+        <parameter value="allowMasterTokenRetrieval"     name="false"/>
+        <parameter value="allowCollectorOperation"       name="false"/>
+        <serverPrimary>
+          <server host="oam_server1" port="14100" connectionMax="1"/>
+          <server host="oam_server2" port="14100" connectionMax="2"/>
+        </serverPrimary>
+        <serverSecondary>
+          <server host="oam_server3" port="1400"  connectionMax="3"/>
+          <server host="oam_server4" port="14000" connectionMax="4"/>
+        </serverSecondary>
+        <validationException>
+          <address value="10.11.11.11"/>
+          <address value="10.11.11.12"/>
+          <address value="10.11.11.13"/>
+        </validationException>
+        <logoutURL>
+          <url value="/logout.html"/>
+        </logoutURL>
+        <userDefined>
+          <userProperty name="MaxPostDataLength">
+            <userValue value="750000"/>
+          </userProperty>
+        </userDefined>
+      </instance>
+    </agent:modify>
+    <echo message="=================================================================="/>
+    <echo message="0412 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks deploys the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-11g
+  ******************************************************************************
+  -->
+  <target name="0413" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0413 Delete Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:delete contextRef="www-context" failonerror="false">
+      <instance name="acme-agent-11g" version="11g"/>
+    </agent:delete>
+    <echo message="=================================================================="/>
+    <echo message="0413 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Validates the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks validates the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-11g
+  ******************************************************************************
+  -->
+  <target name="0414" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0414 Validate Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:validate contextRef="www-context" failonerror="false">
+      <instance name="acme-agent-11g" version="11g"/>
+    </agent:validate>
+    <echo message="=================================================================="/>
+    <echo message="0414 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks reports the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-11g
+  ******************************************************************************
+  -->
+  <target name="0415" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0415 Report Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:print contextRef="www-context" failonerror="false">
+      <agent:instance name="acme-agent-11g" version="11g"/>
+    </agent:print>
+    <echo message="=================================================================="/>
+    <echo message="0415 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Registers the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks register the Access Agents
+  **           This includes:
+  **           o Access Agent acme-agent-opensso
+  ******************************************************************************
+  -->
+  <target name="0421" description="Register Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0421 Register Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:create contextRef="www-context">
+      <instance name="acme-agent-opensso" version="openSSO">
+        <parameter value="hostIdentifier"                name="buster.vm.oracle.com"/>
+        <parameter value="agentBaseURL"                  name="http://buster.vm.oracle.com"/>
+        <parameter value="virtualHost"                   name="false"/>
+        <parameter value="agentPassword"                 name="Sophie20061990$"/>
+        <parameter value="applicationDomain"             name="OPENSSO_APPDOMAIN"/>
+        <parameter value="autoCreatePolicy"              name="true"/>
+        <parameter value="authenticationSchemeProtected" name=""/>
+        <parameter value="openSSOType"                   name="J2EE"/>
+        <parameter value="openSSOVersion"                name=""/>
+        <parameter value="openSSODebugDirectory"         name=""/>
+        <parameter value="openSSOAuditDirectory"         name=""/>
+        <parameter value="openSSOAuditFilename"          name=""/>
+      </instance>
+    </agent:create>
+    <echo message="=================================================================="/>
+    <echo message="0421 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Modifies the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks modifies the Access Agents
+  **           This includes:
+  **           o Access Agent acme-agent-opensso
+  ******************************************************************************
+  -->
+  <target name="0422" description="Modify Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0422 Modify Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:modify contextRef="www-context">
+      <instance name="acme-agent-opensso" version="openSSO">
+        <parameter value="hostIdentifier"            name="OPENSSO_HOSTID"/>
+        <parameter value="preferredHost"             name="RREG_HostId11G"/>
+        <parameter value="agentBaseURL"              name="http://buster.vm.oracle.com"/>
+        <parameter value="state"                     name="Disabled"/>
+        <parameter value="openSSOType"               name="J2EE"/>
+        <parameter value="openSSOFilterMode"         name="SSO_ONLY"/>
+        <parameter value="openSSOSessionTimeOut"     name="60"/>
+        <parameter value="openSSOSessionMax"         name="10"/>
+        <parameter value="openSSOOrganizationName"   name="realm1"/>
+        <parameter value="openSSODebugDirectory"     name="/agentdebugdir"/>
+        <parameter value="openSSOAuditDirectory"     name="/agentauditdir"/>
+        <parameter value="openSSOAuditFilename"      name="agentauditfilename"/>
+        <parameter value="openSSOCookieName"         name="PlanetDirectoryPro"/>
+        <parameter value="openSSOCookieSeparator"    name="|"/>
+        <parameter value="openSSOCookieEncoding"     name="true"/>
+        <parameter value="openSSOAccessDeniedURI"    name=""/>
+        <parameter value="openSSODebugLevel"         name=""/>
+        <parameter value="openSSOUserMappingMode"    name="PROFILE_ATTRIBUTE"/>
+        <parameter value="openSSOUserAttributeName"  name="myusername"/>
+        <parameter value="openSSOUserPrincipal"      name=""/>
+        <parameter value="openSSOUserToken"          name=""/>
+        <loginURL>
+          <url value="http://{host}:{port}/login1.html"/>
+          <url value="http://{host}:{port}/login2.html"/>
+        </loginURL>
+        <logoutURL>
+          <url value="http://{host}:{port}/logout1.html"/>
+          <url value="http://{host}:{port}/logout2.html"/>
+        </logoutURL>
+        <resourceNotEnforced>
+          <url value="/notEnforcedUrl1.html"/>
+          <url value="/notEnforcedUrl2.html"/>
+        </resourceNotEnforced>
+        <parameter value="openSSOFetchModeProfile"  name="HTTP_HEADER"/>
+        <profileAttributeMapping>
+          <mapping name="pam_name1" value="pam_value1"/>
+        </profileAttributeMapping>
+        <parameter value="openSSOFetchModeSession"  name="HTTP_HEADER"/>
+        <sessionAttributeMapping>
+          <mapping name="sam_name1" value="sam_value1"/>
+        </sessionAttributeMapping>
+        <parameter value="openSSOFetchModeResponse" name="HTTP_COOKIE"/>
+        <responseAttributeMapping>
+          <mapping name="ram_name1" value="ram_value1"/>
+        </responseAttributeMapping>
+        <miscellaneous>
+          <miscellaneousProperty name="com.sun.identity.agents.config.repository.location"        value="centralized"/>
+          <miscellaneousProperty name="com.sun.identity.agents.config.audit.accesstype"           value="LOG_NONE"/>
+          <miscellaneousProperty name="com.sun.identity.agents.config.log.disposition"            value="LOCAL"/>
+          <miscellaneousProperty name="com.sun.identity.client.notification.url"                  value="http://{host}:{port}/agentapp/notification"/>
+          <miscellaneousProperty name="com.sun.identity.agents.config.fqdn.default"               value="{host}"/>
+          <miscellaneousProperty name="com.sun.identity.agents.config.load.interval"              value="3600"/>
+          <miscellaneousProperty name="com.sun.identity.agents.config.legacy.redirect.uri"        value="/agentapp/sunwLegacySupportURI"/>
+          <miscellaneousProperty name="com.sun.identity.agents.polling.interval"                  value="3"/>
+          <miscellaneousProperty name="com.sun.identity.policy.client.cacheMode"                  value="self"/>
+          <miscellaneousProperty name="com.sun.identity.policy.client.booleanActionValues"        value="iPlanetAMWebAgentService|GET|allow|deny:iPlanetAMWebAgentService|POST|allow|deny"/>
+          <miscellaneousProperty name="com.sun.identity.policy.client.resourceComparators"        value="serviceType=iPlanetAMWebAgentService|class=com.sun.identity.policy.plugins.HttpURLResourceName|wildcard=*|delimiter=/|caseSensitive=false"/>
+          <miscellaneousProperty name="com.sun.identity.policy.client.clockSkew"                  value="0"/>
+          <miscellaneousProperty name="com.sun.identity.agents.config.change.notification.enable" value="true"/>
+        </miscellaneous>
+      </instance>
+    </agent:modify>
+    <echo message="=================================================================="/>
+    <echo message="0422 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks deploys the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-opensso
+  ******************************************************************************
+  -->
+  <target name="0423" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0423 Delete Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:delete contextRef="www-context" failonerror="false">
+      <instance name="acme-agent-opensso" version="openSSO"/>
+    </agent:delete>
+    <echo message="=================================================================="/>
+    <echo message="0423 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Validates the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks validates the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-opensso
+  ******************************************************************************
+  -->
+  <target name="0424" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0424 Validate Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:validate contextRef="www-context" failonerror="false">
+      <instance name="acme-agent-opensso" version="openSSO"/>
+    </agent:validate>
+    <echo message="=================================================================="/>
+    <echo message="0424 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks reports the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-opensso
+  ******************************************************************************
+  -->
+  <target name="0425" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0425 Report Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:report contextRef="www-context" failonerror="false">
+      <agent:instance name="acme-agent-opensso" version="openSSO"/>
+    </agent:report>
+    <echo message="=================================================================="/>
+    <echo message="0425 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Registers the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks register the Access Agents
+  **           This includes:
+  **           o Access Agent acme-agent-orclsso
+  ******************************************************************************
+  -->
+  <target name="0431" description="Register Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0431 Register Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:create contextRef="www-context">
+      <instance name="acme-agent-orclsso" version="orclSSO">
+        <parameter value="hostIdentifier"          name="buster.vm.oracle.com"/>
+        <parameter value="agentBaseURL"            name="http://buster.vm.oracle.com"/>
+        <parameter value="virtualHost"             name="false"/>
+        <parameter value="agentPassword"           name="Sophie20061990$"/>
+        <parameter value="applicationDomain"       name="RREG_OSSO"/>
+        <parameter value="autoCreatePolicy"        name="true"/>
+        <parameter value="orclSSOSsoServerVersion" name="v3.0"/>
+        <parameter value="orclSSOOracleHomePath"   name="$ORACLE_HOME"/>
+        <parameter value="virtualHost"             name=""/>
+        <parameter value="orclSSOUpdateMode"       name=""/>
+        <parameter value="orclSSOSdminInfo"        name=""/>
+        <parameter value="orclSSOAdminId"          name=""/>
+        <parameter value="protectedAuthnScheme"    name=""/>
+        <parameter value="orclSSOLogoutURL"        name=""/>
+        <parameter value="orclSSOFailureURL"       name=""/>
+      </instance>
+    </agent:create>
+    <echo message="=================================================================="/>
+    <echo message="0431 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Modifies the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks modifies the Access Agents
+  **           This includes:
+  **           o Access Agent acme-agent-orclsso
+  ******************************************************************************
+  -->
+  <target name="0432" description="Modify Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0432 Modify Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:modify contextRef="www-context">
+      <instance name="acme-agent-orclsso" version="orclSSO">
+        <parameter value="orclSSOAdminInfo"  name="OPENSSO_HOSTID"/>
+        <parameter value="orclSSOAdminId"    name="RREG_HostId11G"/>
+        <parameter value="orclSSOSuccessURL" name="http://{agent_base_url_host}:{agent_base_URL_port}/osso_login_success"/>
+        <parameter value="orclSSOFailureURL" name="http://{agent_base_url_host}:{agent_base_URL_port}/osso_login_failure"/>
+        <parameter value="orclSSOStartDate"  name="yyyy-mm-dd"/>
+        <parameter value="orclSSOHomeURL"    name="http://{agent_base_url_host}:{agent_base_URL_port}"/>
+        <parameter value="orclSSOLogoutURL"  name="http://{agent_base_url_host}:{agent_base_URL_port}/osso_logout_success"/>
+      </instance>
+    </agent:modify>
+    <echo message="=================================================================="/>
+    <echo message="0432 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks deploys the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-orclsso
+  ******************************************************************************
+  -->
+  <target name="0433" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0433 Delete Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:delete contextRef="www-context" failonerror="false">
+      <instance name="acme-agent-orclsso" version="orclSSO"/>
+    </agent:delete>
+    <echo message="=================================================================="/>
+    <echo message="0433 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Validates the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks validates the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-orclsso
+  ******************************************************************************
+  -->
+  <target name="0434" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0434 Validate Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:validate contextRef="www-context" failonerror="false">
+      <instance name="acme-agent-orclsso" version="orclSSO"/>
+    </agent:validate>
+    <echo message="=================================================================="/>
+    <echo message="0434 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Access Agent Configuration
+  **
+  ** Synopsis: The tasks reports the Access Agent
+  **           This includes:
+  **           o Access Agent acme-agent-orclsso
+  ******************************************************************************
+  -->
+  <target name="0435" description="Managing Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0435 Report Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <agent:report contextRef="www-context" failonerror="false">
+      <agent:instance name="acme-agent-orclsso" version="orclsso"/>
+    </agent:report>
+    <echo message="=================================================================="/>
+    <echo message="0435 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

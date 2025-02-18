@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<composite xmlns       ="http://xmlns.oracle.com/sca/1.0"
+           xmlns:xs    ="http://www.w3.org/2001/XMLSchema"
+           xmlns:wsp   ="http://schemas.xmlsoap.org/ws/2004/09/policy"
+           xmlns:orawsp="http://schemas.oracle.com/ws/2006/01/policy"
+           xmlns:ui    ="http://xmlns.oracle.com/soa/designer/"
+           name        ="#{sca.workflow.name}"
+           revision    ="#{sca.workflow.revision}"
+           label       ="#{sca.workflow.label}"
+           mode        ="#{sca.workflow.mode}"
+           state       ="#{sca.workflow.state}">
+
+  <import importType="wsdl" namespace="http://xmlns.oracle.com/iam/oim/approval/process"                 location="ApprovalProcess.wsdl"/>
+  <import importType="wsdl" namespace="http://wls.ws.workflowservice.platform.iam.oracle/"               location="CallbackServiceDefinitions.wsdl"/>
+  <import importType="wsdl" namespace="http://xmlns.oracle.com/bpel/workflow/taskService"                location="oramds:/soa/shared/workflow/TaskServiceInterface.wsdl"/>
+  <import importType="wsdl" namespace="http://xmlns.oracle.com/bpel/workflow/taskDecision/ApprovalRules" location="ApprovalRules.wsdl"/>
+
+  <service name="ApprovalRequest" ui:wsdlLocation="ApprovalProcess.wsdl">
+    <interface.wsdl interface="http://xmlns.oracle.com/iam/oim/approval/process#wsdl.interface(ApprovalProcess)" callbackInterface="http://xmlns.oracle.com/iam/oim/approval/process#wsdl.interface(ApprovalProcessCallback)"/>
+    <binding.ws port="http://xmlns.oracle.com/iam/oim/approval/process#wsdl.endpoint(approvalprocess_client_ep/ApprovalProcess_pt)">
+      <wsp:PolicyReference URI="oracle/wss11_saml_or_username_token_with_message_protection_service_policy" orawsp:category="security" orawsp:status="enabled"/>
+      <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">NEVER</property>
+    </binding.ws>
+    <binding.adf registryName="registryName" serviceName="#{sca.workflow.service}"/>
+    <callback>
+      <binding.ws port="http://xmlns.oracle.com/iam/oim/approval/process#wsdl.endpoint(approvalprocess_client_ep/ApprovalProcessCallback_pt)">
+        <wsp:PolicyReference URI="oracle/wss11_saml_token_with_message_protection_client_policy" orawsp:category="security" orawsp:status="enabled"/>
+        <property name="keystore.recipient.alias" type="xs:string" many="false">xell</property>
+        <property name="javax.xml.ws.security.auth.username" type="xs:string">weblogic</property>
+      </binding.ws>
+    </callback>
+  </service>
+
+  <component name="ApprovalProcess">
+    <implementation.bpel src="ApprovalProcess.bpel"/>
+  </component>
+
+  <component name="ApprovalTask">
+    <implementation.workflow src="ApprovalTask.task"/>
+  </component>
+
+  <component name="ApprovalRules">
+    <implementation.decision src="ApprovalRules.decs"/>
+  </component>
+
+  <reference name="ApprovalResponse" ui:wsdlLocation="CallbackServiceDefinitions.wsdl">
+    <interface.wsdl interface="http://wls.ws.workflowservice.platform.iam.oracle/#wsdl.interface(CallbackService)"/>
+    <binding.ws port="http://wls.ws.workflowservice.platform.iam.oracle/#wsdl.endpoint(CallbackService/CallbackServicePort)" location="CallbackServiceDefinitions.wsdl" soapVersion="1.1">
+      <wsp:PolicyReference URI="oracle/wss11_saml_token_with_message_protection_client_policy" orawsp:category="security" orawsp:status="enabled"/>
+      <property name="keystore.recipient.alias"                  type="xs:string" many="false">xell</property>
+      <property name="javax.xml.ws.security.auth.username"       type="xs:string">weblogic</property>
+      <property name="weblogic.wsee.wsat.transaction.flowOption" type="xs:string" many="false">WSDLDriven</property>
+    </binding.ws>
+  </reference>
+
+  <wire>
+    <source.uri>ApprovalRequest</source.uri>
+    <target.uri>ApprovalProcess/RequestApprovalService</target.uri>
+  </wire>
+
+  <wire>
+    <source.uri>ApprovalProcess/CallbackService</source.uri>
+    <target.uri>ApprovalResponse</target.uri>
+  </wire>
+
+  <wire>
+    <source.uri>ApprovalProcess/ApprovalTask.TaskService</source.uri>
+    <target.uri>ApprovalTask/TaskService</target.uri>
+  </wire>
+
+  <wire>
+    <source.uri>ApprovalTask/ApprovalRules</source.uri>
+    <target.uri>ApprovalRules/ApprovalRules</target.uri>
+  </wire>
+</composite>

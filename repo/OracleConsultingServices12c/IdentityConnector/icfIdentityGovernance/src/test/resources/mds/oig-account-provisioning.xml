@@ -1,0 +1,56 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="UD_IGS_USR_SID"
+            uniqueName    ="UD_IGS_USR_UID"
+            transformation="false">
+  <attribute type="string" name="__UID__"      source="UD_OIG_USR_SID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="__NAME__"     source="UD_OIG_USR_UID">
+    <flag>required</flag>
+  </attribute>
+  <attribute class="string" name="firstName"   source="UD_OIG_USR_GN">
+    <flag>required</flag>
+  </attribute>
+  <attribute class="string" name="lastName"    source="UD_OIG_USR_SN">
+    <flag>required</flag>
+  </attribute>
+  <attribute class="string" name="displayName" source="UD_OIG_USR_DN">
+    <flag>required</flag>
+  </attribute>
+  <!--
+   | child form providing access only on column names not labels hence so any
+   | clone of the connector we need a new decriptor; aaargggh
+   -->
+  <multivalue name="__GROUP__" source="UD_OIG_UPR">
+    <attribute class="string" name="__UID__" source="UD_IGS_UPR_UID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <!--
+   | child form providing access only on column names not labels hence so any
+   | clone of the connector we need a new decriptor; aaargggh
+   -->
+  <multivalue name="__GLOBAL__" source="UD_OIG_UPG">
+    <attribute class="string"  name="__UID__"   source="UD_OIG_UPG_UID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <!--
+   | child form providing access only on column names not labels hence so any
+   | clone of the connector we need a new decriptor; aaargggh
+   -->
+  <multivalue name="__SCOPED__" source="UD_OIG_UPS">
+    <attribute class="string"  name="__UID__"   source="UD_OIG_UPS_UID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute class="string"  name="scope"     source="UD_OIG_UPS_SID">
+      <flag>required</flag>
+    </attribute>
+    <attribute class="boolean" name="hierarchy" source="UD_OIG_UPS_HID">
+      <flag>required</flag>
+    </attribute>
+  </multivalue>
+</descriptor>

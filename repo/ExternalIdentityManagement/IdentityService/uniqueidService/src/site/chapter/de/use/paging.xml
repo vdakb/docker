@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="use-paging"
+         xml:lang="de"
+         version ="5.0">
+  <title>Umfangsangabe</title>
+  <para>
+    Parameter zur Umfangsangabe k&#246;nnen verwendet werden, um eine gro&#223;e Anzahl von Ressourcen zu <emphasis>durchbl&#228;ttern</emphasis>, um den Client oder Server nicht zu &#252;berfordern.
+  </para>
+  <caution>
+    <title>Achtung</title>
+    Da die Umfangsangaben nicht zustandsbehaftet ist, m&#252;ssen Clients darauf vorbereitet sein, mit inkonsistenten Ergebnissen umzugehen.
+  </caution>
+  <para>
+    Beispielsweise kann eine Anfrage nach einer Liste von 10 Ressourcen, die mit einem startIndex von 1 beginnt, bei Wiederholung unterschiedliche Ergebnisse zur&#252;ckgeben, da sich die Ressourcen des Service Provider zwischen den Anfragen m&#246;glicherweise ge&#228;ndert haben.
+    Parameter zur Umfangsangabe und deren allgemeines Verhalten werden vom OpenSearch-Protokoll abgeleitet.
+  </para>
+  <para>
+    In der folgenden Tabelle werden die Parameter zur Umfangsangabe, ihre Beschreibung und die Standardwerte beschrieben.
+  </para>
+  <table colsep="0">
+    <tgroup cols="3">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="8em"/>
+      <colspec colname="c3" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>Parameter</entry>
+          <entry>Standard</entry>
+          <entry>Beschreibung</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>startIndex</entry>
+          <entry>1</entry>
+          <entry>
+            <para>
+              Nicht negative Ganzzahl.
+            </para>
+            <para>
+              Der 1-basierte Index des ersten Abfrageergebnisses. Ein Wert kleiner als 1 wird als 1 interpretiert.
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>count</entry>
+          <entry>Keiner</entry>
+          <entry>
+            <para>
+              Nicht negative Ganzzahl.
+            </para>
+            <para>
+              Gibt die gew&#252;nschte Anzahl von Abfrageergebnissen pro Seite an, Beispiel: 10.
+              Ein Wert kleiner als 0 wird als 0 interpretiert.
+              Der Wert 0 gibt an, dass au&#223;er den Gesamtergebnissen keine Ressourcenergebnisse zur&#252;ckgegeben werden sollen.
+            </para>
+            <para>
+              Wenn angegeben, gibt der Service Provider nicht mehr Ergebnisse als angegeben zur&#252;ck, obwohl er m&#246;glicherweise weniger Ergebnisse zur&#252;ckgibt.
+            </para>
+            <para>
+             Wenn nicht angegeben, wird das Maximum der Ergebnisse vom Service Provider festgelegt.
+            </para>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para>
+    In der folgenden Tabelle werden die Paginierungsantwortelemente angezeigt:
+  </para>
+  <table colsep="0">
+    <tgroup cols="2">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>Element</entry>
+          <entry>Beschreibung</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>items</entry>
+          <entry>
+            <para>
+              Nicht negative Ganzzahl.
+            </para>
+            <para>
+              Die Anzahl der Abfrageergebnisse, die auf einer Abfrage-Antwortseite zur&#252;ckgegeben werden. Zum Beispiel 10.
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>start</entry>
+          <entry>
+            <para>
+              Nicht negative Ganzzahl.
+            </para>
+            <para>
+              Der 1-basierte Index des ersten Ergebnisses im aktuellen Satz von Abfrageergebnissen.
+              Zum Beispiel: 1
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>total</entry>
+          <entry>
+            <para>
+              Nicht negative Ganzzahl.
+            </para>
+            <para>
+              Gibt die Gesamtzahl der Ergebnisse an, die mit der Abfrage &#252;bereinstimmen.
+              Zum Beispiel 1000.
+            </para>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <bridgehead renderas="sect6">Beispiel</bridgehead>
+  <!--
+  Don't indent what's in the element below
+  -->
+  <programlisting language="bash">
+curl --request GET \
+     --location 'https://&lt;service-host&gt;:&lt;service-port&gt;/igs/uid/v1/participant?startIndex=1&amp;count=10' \
+     --header 'Accept: application/json' \
+     --header 'Content Type: application/json' \
+     --header 'Authorization: Bearer eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0IjoiSjFs...'
+  </programlisting>
+  <para>
+    Die Antwort auf die obige Abfrage gibt Metadaten zum Umfang zur&#252;ck, &#228;hnlich dem folgenden Beispiel.
+  </para>
+  <programlisting language="json">
+{ "total": 21
+, "start": 1
+, "items": 10,
+  "result": [
+    ...
+  ]
+}
+  </programlisting>
+  <note>
+    <title>Ninweis</title>
+    <para>Um im vorherigen Beispiel mit den Parameter zur Umfangsangabe fortzufahren, setzen Sie startIndex auf 11 und rufen Sie es erneut ab, d.h.:</para>
+    <para><literal>/igs/uid/v1/participant?startIndex=11&amp;count=10</literal></para>
+  </note>
+</section>

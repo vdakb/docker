@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><xl-ddm-data database="" description="BKA Directory Service Scheduler Configuration 12.2.1.3" exported-date="1715332795316" user="XELSYSADM" version="12.2.1.4.0">
+  <scheduledTask mds-file="BKA Directory Lookup Reconciliation.xml" mds-path="/db" name="BKA Directory Lookup Reconciliation" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+      <name>BKA Directory Lookup Reconciliation</name>
+      <class>oracle.iam.identity.bds.service.reconciliation.LookupReconciliation</class>
+      <description>BKA Directory Lookup Reconciliation</description>
+      <retry>0</retry>
+      <parameters>
+         <string-param encrypted="false" helpText="The IT Resource used to establish the connection to the Service Provider" required="true">IT Resource</string-param>
+         <string-param encrypted="false" helpText="The name of the object to reconcile" required="true">Reconciliation Object</string-param>
+         <string-param encrypted="false" helpText="The operation to perform on the object to reconcile. Has to be either Refresh or Update" required="true">Reconciliation Operation</string-param>
+         <string-param encrypted="false" helpText="The name of the entity attribute that has to be stored as the encoded value" required="true">Encoded Value</string-param>
+         <string-param encrypted="false" helpText="The name of the entity attribute that has to be stored as the decoded value" required="true">Decoded Value</string-param>
+         <string-param encrypted="false" helpText="Holds the timestamp when this task was last executed successfully" required="true">Last Reconciled</string-param>
+         <string-param encrypted="false" helpText="The value written to Lookup Group in case the operation on a particular Lookup Definition has to create it" required="true">Lookup Group</string-param>
+         <string-param encrypted="false" helpText="The identifier of the source (aka ObjectClass) that has to be used to reconcile" required="true">Reconciliation Source</string-param>
+         <string-param encrypted="false" helpText="Specifies the object class to retrieve from the search base" required="false">Search Container</string-param>
+         <string-param encrypted="false" helpText="Specifies the search base to retrieve entries from the target system" required="false">Search Base</string-param>
+         <string-param encrypted="false" helpText="Specifies which filter criteria has to be applied to retrieve directory entries. Must be a valid ICF search filter if specified" required="false">Search Filter</string-param>
+         <string-param encrypted="false" helpText="Specifies the scope of the search to retrieve objects from target system. Has to be either Object, OneLevel or SubTree" required="true">Search Scope</string-param>
+         <boolean-param encrypted="false" helpText="Select the option Yes if the Service Provider search has to be extended by the timestamp this job was last time executed successfully as a filter criteria; otherwise select option No" required="true">Incremental</boolean-param>
+         <boolean-param encrypted="false" helpText="Select the option Yes if the entitlements loaded needs to be prefixed with the internal system identifier and/or the name of the IT Resource" required="true">Entitlement Prefix Required</boolean-param>
+         <boolean-param encrypted="false" helpText="Select this option if the data should only be gathered from the reconciliation source" required="true">Gather Only</boolean-param>
+         <number-param encrypted="false" helpText="Specifies the size of a batch read from the reconciliation source" required="false">Batch Size</number-param>
+         <string-param encrypted="false" helpText="Specifies the name of the Job that will be started by this Job on successfully completion" required="false">Dependent Job</string-param>
+      </parameters>
+   </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+  <scheduledTask mds-file="BKA Directory Account Reconciliation.xml" mds-path="/db" name="BKA Directory Account Reconciliation" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+      <name>BKA Directory Account Reconciliation</name>
+      <class>oracle.iam.identity.bds.service.reconciliation.AccountReconciliation</class>
+      <description>BKA Directory Account Reconciliation</description>
+      <retry>0</retry>
+      <parameters>
+         <string-param encrypted="false" helpText="The IT Resource used to establish the connection to the Service Provider" required="true">IT Resource</string-param>
+         <string-param encrypted="false" helpText="The name of the object to reconcile" required="true">Reconciliation Object</string-param>
+         <string-param encrypted="false" helpText="The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile" required="true">Reconciliation Descriptor</string-param>
+         <string-param encrypted="false" helpText="Holds the timestamp when this task was last executed successfully" required="true">Last Reconciled</string-param>
+         <string-param encrypted="false" helpText="Specifies the search base to retrieve entries from the target system" required="false">Search Base</string-param>
+         <string-param encrypted="false" helpText="Specifies the scope of the search to retrieve objects from target system. Has to be either Object, OneLevel or SubTree" required="true">Search Scope</string-param>
+         <string-param encrypted="false" helpText="Specifies which filter criteria has to be applied to retrieve directory entries. Must be a valid LDAP search filter" required="true">Search Filter</string-param>
+         <boolean-param encrypted="false" helpText="Select the option Yes if the Service Provider search has to be extended by the timestamp this job was last time executed successfully as a filter criteria; otherwise select option No" required="true">Incremental</boolean-param>
+         <boolean-param encrypted="false" helpText="Select the option Yes to prevent event creation and processing of Service Provider data that already exists in Identity Manager; otherwise select option No" required="true">Ignore Dublicates</boolean-param>
+         <boolean-param encrypted="false" helpText="Select this option if the data should only be gathered from the reconciliation source" required="true">Gather Only</boolean-param>
+         <string-param encrypted="false" helpText="Specifies which filter criteria has to be applied to retrieve entries. Must be a valid Service Provider search filter" required="false">Search Filter</string-param>
+         <number-param encrypted="false" helpText="Specifies the size of a batch read from the Service Provider" required="false">Batch Size</number-param>
+         <number-param encrypted="false" helpText="Specifies that how many threads this task should create to distribute the workload" required="false">Thread Pool Size</number-param>
+         <string-param encrypted="false" helpText="Specifies the name of the Job that will be started by this Job on successfully completion" required="false">Dependent Job</string-param>
+         <string-param encrypted="false" helpText="Specifies the DN where group objects are located" required="false">Group Base Context</string-param>
+         <string-param encrypted="false" helpText="Specifies the DN where group objects are located" required="false">Role Base Context</string-param>
+         <string-param encrypted="false" helpText="Specifies the DN where group objects are located" required="false">Scope Base Context</string-param>
+      </parameters>
+   </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+</xl-ddm-data>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="UD_APID_USR_UPN"
+            uniqueName    ="UD_APID_USR_UID"
+            transformation="false">
+  <attribute type="string"  name="__NAME__" source="UD_APID_USR_UID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string"  name="__NAME__" source="UD_APID_USR_UID">
+    <flag>sensitive</flag>
+  </attribute>
+  <attribute type="string" name="lastName"  source="UD_APID_USR_SN">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="firstName" source="UD_APID_USR_GN">
+    <flag/>
+  </attribute>
+  <!--
+   | child form providing access only on column names not labels hence for
+   | any clone of the connector we need a new decriptor; aaargggh
+   -->
+  <multivalue name="application" source="UD_APID_DAP" transformation="true">
+    <attribute type="string" name="__UID__" source="UD_APID_DAP_SID">
+      <flag>required</flag>
+    </attribute>
+  </multivalue>
+</descriptor>

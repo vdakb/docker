@@ -1,0 +1,50 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="UD_OFS_USR_UID"
+            uniqueName    ="UD_OFS_USR_UID"
+            transformation="false">
+  <attribute type="string" name="__NAME__"         source="UD_OFS_USR_UID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="__PASSWORD__"     source="UD_OFS_USR_PWD">
+    <flag>sensitive</flag>
+  </attribute>
+  <attribute type="string" name="name"             source="UD_OFS_USR_NAME">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="email"            source="UD_OFS_USR_MAIL">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="boolean" name="administrator"   source="UD_OFS_USR_ADM">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string"  name="property.gender" source="UD_OFS_USR_GENDER"/>
+  <attribute type="string"  name="property.age"    source="UD_OFS_USR_AGE"/>
+  <!--
+   | child form providing access only on column names not labels hence for
+   | any clone of the connector we need a new decriptor; aaargggh
+   | -->
+  <multivalue name="group" source="UD_OFS_UGP" transformation="false">
+    <attribute class="string" name="__UID__"  source="UD_OFS_UGP_GID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute class="boolean" name="Administrator" source="administrator"/>
+  </multivalue>
+  <!--
+   | child form providing access only on column names not labels hence for
+   | any clone of the connector we need a new decriptor; aaargggh
+   | -->
+  <multivalue name="group" source="UD_OFS_UMR" transformation="false">
+    <attribute class="string" name="__UID__"  source="UD_OFS_URM_RID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="string" name="name"      source="UD_OFS_UMR_JID"/>
+    <attribute type="string" name="nickName"  source="UD_OFS_UMR_NN"/>
+    <attribute type="string" name="lastName"  source="UD_OFS_UMR_SN"/>
+    <attribute type="string" name="firstName" source="UD_OFS_UMR_GN"/>
+    <attribute type="string" name="email"     source="UD_OFS_UMR_MAIL"/>
+    <attribute type="string" name="url"       source="UD_OFS_UMR_URL"/>
+    <attribute type="string" name="faq"       source="UD_OFS_UMR_FAQ"/>
+  </multivalue>
+</descriptor>

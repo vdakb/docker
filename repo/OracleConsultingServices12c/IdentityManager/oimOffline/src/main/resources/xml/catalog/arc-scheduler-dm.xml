@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@leslie.vm.oracle.com:1521/metadata.vm.oracle.com" description="Offline Catalog Service Snychronization Revision 1.0.0.0" exported-date="1394116316165" user="XELSYSADM" version="2.0.2.1">
+  <Job name="Identity Role Harvester" repo-type="API">
+    <retrycount>0</retrycount>
+    <taskStatus>true</taskStatus>
+    <concurrent>false</concurrent>
+    <jobScheduleType>None</jobScheduleType>
+    <taskClassName>oracle.iam.identity.ots.service.catalog.IdentityRoleHarvester</taskClassName>
+    <lastModifyDate>1394116176917</lastModifyDate>
+    <method>executeJob</method>
+    <taskKey>1</taskKey>
+    <attributes>
+      <object>
+        <key>Data Filename</key>
+        <value type="jobparameter">
+          <name type="string">Data Filename</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the raw file to harvest</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">1</paramKey>
+          <paramValue type="string">ocs-role.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">2</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the data should only be gathered from the reconciliation source; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">4</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">3</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Error Folder</key>
+        <value type="jobparameter">
+          <name type="string">Error Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder where the raw files should be copied to after they are proceed by the preprocessor and there might be some errors detected</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">6</paramKey>
+          <paramValue type="string">/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimOffline/test/error</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Validate Import</key>
+        <value type="jobparameter">
+          <name type="string">Validate Import</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entire file to import should be validated against the XML schema before it is unmarshalled</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">5</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Entitlement Prefix Required</key>
+        <value type="jobparameter">
+          <name type="string">Entitlement Prefix Required</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entitlements loaded needs to be prefixed with the internal system identifier and/or the name of the IT Resource</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">7</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Data Folder</key>
+        <value type="jobparameter">
+          <name type="string">Data Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder the file to reconcile is located in the filesystem</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">8</paramKey>
+          <paramValue type="string">/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimOffline/test/data</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>File Encoding</key>
+        <value type="jobparameter">
+          <name type="string">File Encoding</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Tell the process how the raw files are encoded</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">9</paramKey>
+          <paramValue type="string">ISO-8859-1</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Unmarshaller Implementation</key>
+        <value type="jobparameter">
+          <name type="string">Unmarshaller Implementation</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The fullqualified name of the Java Class governs the process of deserializing XML data into newly created Java content trees, optionally validating the XML data as it is unmarshalled</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">10</paramKey>
+          <paramValue type="string">oracle.iam.identity.utility.file.XMLBusinessRoleFactory</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">11</paramKey>
+          <paramValue type="string">/metadata/ocs-features-configuration/ots/arc/role.xml</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <source-scope name="Identity Role Harvester" type="scheduledTask"/>
+    <taskName scheduledTask="Identity Role Harvester"/>
+  </Job>
+  <Job name="Analytics Role Harvester" repo-type="API">
+    <retrycount>0</retrycount>
+    <taskStatus>true</taskStatus>
+    <concurrent>false</concurrent>
+    <jobScheduleType>None</jobScheduleType>
+    <taskClassName>oracle.iam.identity.ots.service.catalog.AnalyticsRoleHarvester</taskClassName>
+    <lastModifyDate>1394116300472</lastModifyDate>
+    <method>executeJob</method>
+    <taskKey>2</taskKey>
+    <attributes>
+      <object>
+        <key>Data Filename</key>
+        <value type="jobparameter">
+          <name type="string">Data Filename</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the raw file to harvest</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">12</paramKey>
+          <paramValue type="string">ocs-role.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">13</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the data should only be gathered from the reconciliation source; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">15</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">14</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Error Folder</key>
+        <value type="jobparameter">
+          <name type="string">Error Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder where the raw files should be copied to after they are proceed by the preprocessor and there might be some errors detected</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">17</paramKey>
+          <paramValue type="string">/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimOffline/test/error</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Validate Import</key>
+        <value type="jobparameter">
+          <name type="string">Validate Import</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entire file to import should be validated against the XML schema before it is unmarshalled</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">16</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Entitlement Prefix Required</key>
+        <value type="jobparameter">
+          <name type="string">Entitlement Prefix Required</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entitlements loaded needs to be prefixed with the internal system identifier and/or the name of the IT Resource</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">18</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Data Folder</key>
+        <value type="jobparameter">
+          <name type="string">Data Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder the file to reconcile is located in the filesystem</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">19</paramKey>
+          <paramValue type="string">/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimOffline/test/data</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>File Encoding</key>
+        <value type="jobparameter">
+          <name type="string">File Encoding</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Tell the process how the raw files are encoded</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">20</paramKey>
+          <paramValue type="string">ISO-8859-1</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Unmarshaller Implementation</key>
+        <value type="jobparameter">
+          <name type="string">Unmarshaller Implementation</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The fullqualified name of the Java Class governs the process of deserializing XML data into newly created Java content trees, optionally validating the XML data as it is unmarshalled</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">21</paramKey>
+          <paramValue type="string">oracle.iam.identity.utility.file.XMLBusinessRoleFactory</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">22</paramKey>
+          <paramValue type="string">/metadata/ocs-features-configuration/arc/businessrole.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to Identity Analytics Services</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">23</paramKey>
+          <paramValue type="string">Identity Analytics Service</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <source-scope name="Analytics Role Harvester" type="scheduledTask"/>
+    <taskName scheduledTask="Analytics Role Harvester"/>
+  </Job>
+  <Job name="Access Request Catalog Export" repo-type="API">
+    <retrycount>0</retrycount>
+    <taskStatus>true</taskStatus>
+    <concurrent>false</concurrent>
+    <jobScheduleType>None</jobScheduleType>
+    <taskClassName>oracle.iam.identity.ots.service.catalog.Export</taskClassName>
+    <lastModifyDate>1381083693731</lastModifyDate>
+    <method>executeJob</method>
+    <taskKey>81</taskKey>
+    <attributes>
+      <object>
+        <key>Data Filename</key>
+        <value type="jobparameter">
+          <name type="string">Data Filename</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the raw file to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">61</paramKey>
+          <paramValue type="string">ocs-catalog.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">62</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Error Folder</key>
+        <value type="jobparameter">
+          <name type="string">Error Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder where the raw files should be copied to after they are proceed by the preprocessor and there might be some errors detected</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">63</paramKey>
+          <paramValue type="string">/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimOffline/test/error</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Marshaller Implementation</key>
+        <value type="jobparameter">
+          <name type="string">Marshaller Implementation</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The fullqualified name of the Java Class governs the process of serializing the Java content trees into  XML data newly, optionally validating the XML data as it is marshalled</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">64</paramKey>
+          <paramValue type="string">this</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Data Folder</key>
+        <value type="jobparameter">
+          <name type="string">Data Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder the file to reconcile is located in the filesystem</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">65</paramKey>
+          <paramValue type="string">/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimOffline/test/data</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>File Encoding</key>
+        <value type="jobparameter">
+          <name type="string">File Encoding</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Tell the process how the raw files are encoded</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">66</paramKey>
+          <paramValue type="string">ISO-8859-1</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">67</paramKey>
+          <paramValue type="string">/metadata/ocs-features-configuration/ots/catalog/export.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Process Application Instances</key>
+        <value type="jobparameter">
+          <name type="string">Process Application Instances</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the job should serialize application to the XML file</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">68</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Entitlement Prefix Stripped</key>
+        <value type="jobparameter">
+          <name type="string">Entitlement Prefix Stripped</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entitlements marshalled needs to be strip of the internal system identifier and/or the name of the IT Resource</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">69</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Process Entitlements</key>
+        <value type="jobparameter">
+          <name type="string">Process Entitlements</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the job should serialize entitlements to the XML file</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">70</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">72</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the data should only be gathered from the reconciliation source; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">71</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Process Roles</key>
+        <value type="jobparameter">
+          <name type="string">Process Roles</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the job should serialize roles to XML file</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">73</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <source-scope name="Access Request Catalog Export" type="scheduledTask"/>
+    <taskName scheduledTask="Access Request Catalog Export"/>
+  </Job>
+  <Job name="Access Request Catalog Import" repo-type="API">
+    <retrycount>0</retrycount>
+    <taskStatus>true</taskStatus>
+    <concurrent>false</concurrent>
+    <jobScheduleType>None</jobScheduleType>
+    <taskClassName>oracle.iam.identity.ots.service.catalog.Import</taskClassName>
+    <lastModifyDate>1381083935718</lastModifyDate>
+    <method>executeJob</method>
+    <taskKey>82</taskKey>
+    <attributes>
+      <object>
+        <key>Data Filename</key>
+        <value type="jobparameter">
+          <name type="string">Data Filename</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the raw file to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">74</paramKey>
+          <paramValue type="string">ocs-catalog.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">75</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Error Folder</key>
+        <value type="jobparameter">
+          <name type="string">Error Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder where the raw files should be copied to after they are proceed by the preprocessor and there might be some errors detected</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">76</paramKey>
+          <paramValue type="string">/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimOffline/test/error</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Entitlement Prefix Required</key>
+        <value type="jobparameter">
+          <name type="string">Entitlement Prefix Required</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entitlements loaded needs to be prefixed with the internal system identifier and/or the name of the IT Resource</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">77</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Data Folder</key>
+        <value type="jobparameter">
+          <name type="string">Data Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder the file to reconcile is located in the filesystem</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">78</paramKey>
+          <paramValue type="string">/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimOffline/test/data</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>File Encoding</key>
+        <value type="jobparameter">
+          <name type="string">File Encoding</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Tell the process how the raw files are encoded</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">79</paramKey>
+          <paramValue type="string">ISO-8859-1</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">80</paramKey>
+          <paramValue type="string">/metadata/ocs-features-configuration/ots/catalog/import.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Process Application Instances</key>
+        <value type="jobparameter">
+          <name type="string">Process Application Instances</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the job should process application instances contained in the XML file</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">81</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Process Entitlements</key>
+        <value type="jobparameter">
+          <name type="string">Process Entitlements</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the job should process entitlements contained in the XML file</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">82</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the data should only be gathered from the reconciliation source; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">83</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">84</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Validate Import</key>
+        <value type="jobparameter">
+          <name type="string">Validate Import</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entire file to import should be validated against the XML schema before it is unmarshalled</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">85</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Process Roles</key>
+        <value type="jobparameter">
+          <name type="string">Process Roles</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the job should process roles contained in the XML file</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">87</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Unmarshaller Implementation</key>
+        <value type="jobparameter">
+          <name type="string">Unmarshaller Implementation</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The fullqualified name of the Java Class governs the process of deserializing XML data into newly created Java content trees, optionally validating the XML data as it is unmarshalled</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">86</paramKey>
+          <paramValue type="string">oracle.iam.identity.utility.file.XMLCatalogFactory</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <source-scope name="Access Request Catalog Import" type="scheduledTask"/>
+    <taskName scheduledTask="Access Request Catalog Import"/>
+  </Job>
+</xl-ddm-data>

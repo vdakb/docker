@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name           ="Oracle Identity Workflow Workspace Targets"
+         basedir        ="."
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/weblogic"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:composite="http://oracle.iam.identity/composite"
+         xmlns:request  ="http://oracle.iam.identity/request"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="./soa-context.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="cleanup" description="Clean the project build deliverables">
+    <!-- remove the files that are not formerly versionized -->
+    <exec executable="svn">
+      <arg value="cleanup"/>
+      <arg value="--remove-unversioned"/>
+      <arg value="${basedir}"/>
+    </exec>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables" depends="cleanup">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${sca.inf.bin}"/>
+      <fileset dir="${deploy.dir}"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the build process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init" depends="clean">
+    <tstamp/>
+    <mkdir dir="${sca.inf.bin}/META-INF"/>
+    <mkdir dir="${deploy.dir}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to compile the composite
+  =====================================================================
+  -->
+  <target name="compile" depends="init">
+    <javac executable       ="${jdk.compiler}"
+           source           ="${jdk.version}"
+           target           ="${jdk.version}"
+           debug            ="${javac.debug}"
+           nowarn           ="${javac.nowarn}"
+           destdir          ="${sca.inf.bin}"
+           encoding         ="${javac.encoding}"
+           deprecation      ="${javac.deprecation}"
+           classpathref     ="compiler.classpath"
+           includeantruntime="no">
+      <src path        ="${source.dir}"/>
+    </javac>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create a manifest used in the jar files
+  =====================================================================
+  -->
+  <target name="manifest" description="Create a manifest used in the archive files">
+    <delete file="${sca.inf.bin}/META-INF/MANIFEST.MF"/>
+    <echo message="Reverting build version properties"/>
+    <exec executable="svn">
+      <arg value="revert"/>
+      <arg value="composite.version"/>
+    </exec>
+    <!-- update to version properties -->
+    <propertyfile file="composite.version" comment="Build version info">
+      <entry key="build.timest" type="date" value="now" pattern="dd/MM/yyyy hh:mm:ss aa"/>
+      <entry key="build.major"  type="int"  value="00"  pattern="00" default="00"/>
+      <entry key="build.minor"  type="int"  value="01"  pattern="00" default="00" operation="+" />
+    </propertyfile>
+    <!-- load the file -->
+    <property file="composite.version"/>
+    <!-- create the manifest file -->
+    <manifest file="${sca.inf.bin}/META-INF/MANIFEST.MF">
+      <attribute name="Built-By"               value="${user.name}"/>
+      <attribute name="Built-At"               value="${build.timest}"/>
+      <attribute name="Specification-Title"    value="${description}"/>
+      <attribute name="Specification-Version"  value="${workflow.revision}"/>
+      <attribute name="Specification-Vendor"   value="Oracle Consulting Services"/>
+      <attribute name="Implementation-Title"   value="${description}"/>
+      <attribute name="Implementation-Version" value="${workflow.revision}-${build.major}.${build.minor}"/>
+      <attribute name="Implementation-Vendor"  value="Oracle Consulting Services"/>
+    </manifest>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to validate the composite
+  =====================================================================
+  -->
+  <target name="validate" description="Compile and validate a composite" depends="compile">
+    <composite:validate input="${compiler.source}" outXml="${compiler.output}" error="${compiler.error}" appHome="${basedir}" failonerror="true" displayLevel="${compiler.verbosity}" reportErrors="${compiler.schemaError}">
+      <jvmarg value="-Djavax.xml.xpath.XPathFactory:http://java.sun.com/jaxp/xpath/dom=oracle.xml.xpath.JXPathFactory"/>
+      <jvmarg value="-Xms128m"/>
+      <jvmarg value="-Xmx1024m"/>
+      <jvmarg value="-XX:PermSize=32m"/>
+      <jvmarg value="-XX:MaxPermSize=256m"/>
+      <jvmarg value="-Doracle.xdkjava.compatibility.version=11.1.1"/>
+      <jvmarg value="-Doracle.soa.compatibility.version=11.1.1"/>
+      <!-- jvmarg value="-DcheckSolicitResponseAndNotification=disabled"/ -->
+      <!-- jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"/ -->
+    </composite:validate>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to copy secific files to the output directory
+  =====================================================================
+  -->
+  <target name="copy" description="Copy files to output directory" depends="clean">
+    <copy todir="${sca.inf.bin}/META-INF" overwrite="true" preservelastmodified="false" verbose="no">
+      <fileset dir="${source.dir}/META-INF">
+        <include  name="NOTICE.txt"/>
+        <include  name="LICENSE.txt"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the composite
+  =====================================================================
+  -->
+  <target name="make" depends="copy,compile,manifest">
+    <!-- assemble the archive -->
+    <echo message="Packaging composite archive ${deploy.dir}/${composite.archive}.jar"/>
+    <zip destfile="${deploy.dir}/${composite.archive}.jar" compress="false">
+      <fileset dir="${basedir}/SOA">
+        <include name="**/*.xsd"/>
+        <include name="**/*.xsl"/>
+        <include name="**/*.exm"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.wsdl"/>
+        <include name="**/*.bpel"/>
+        <include name="**/*.task"/>
+        <include name="**/SCA-INF/lib/**/*"/>
+        <include name="**/SCA-INF/classes/**/*"/>
+        <exclude name="**/SCA-INF/classes/.data"/>
+        <!--
+         | The diagram file is generated inside JDeveloper by opening
+         | "composite.xml" file; the diagram definition will be stored in file
+         | "SOA/SCA-INF/<ProcessName>.diagram.xml"
+         | (the one of "required artifacts" mentioned in document/note).
+         | To be more specific JDeveloper generates two "diagram" files the
+         | "<ProcessName>.diagram.xml" and "<ProcessName>.diagram.jpg"; the
+         | jpg file although generated it's not needed to be included in the
+         | deployment in order to the diagram do appear on EM.
+         -->
+        <exclude name="**/SCA-INF/**/${workflow.name}.diagram.jpg"/>
+        <exclude name="**/SCA-INF/**/classesscac_out.xml"/>
+      </fileset>
+    </zip>
+    <echo message="Copying composite archive from path ${deploy.dir} to ${destination.base}"/>
+    <for param="task" list="${destination.base}">
+      <sequential>
+        <copy todir="@{task}/soa" overwrite="true" preservelastmodified="false" verbose="no">
+          <fileset dir="${deploy.dir}">
+            <include  name="${composite.archive}.jar"/>
+          </fileset>
+        </copy>
+      </sequential>
+    </for>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create a partition
+  =====================================================================
+  -->
+  <target name="partition" description="Create a partition for composites">
+    <echo message="Creating partition for customized workflows on ${soa.server.host}:${soa.server.port}"/>
+    <workflow:manager contextRef="soa-context" partition="${workflow.partition}" operation="create"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the project artifacts
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploy a composite" depends="make">
+    <!-- verify if a configuration plan needs to be applied -->
+    <if>
+      <available file="../../.env/igd/${fmw.env}/soa-config.xml"/>
+      <then>
+        <echo message="Deploy composite archive ${deploy.dir}/${composite.archive}.jar on ${soa.server.host}:${soa.server.port} with configplan ${fmw.env}"/>
+        <workflow:deploy contextRef="soa-context">
+          <composite partition="${composite.partition}" name="${composite.name}" revision="${composite.revision}" location="${deploy.dir}/${composite.archive}.jar" plan="../../.env/igd/${fmw.env}/soa-config.xml"/>
+        </workflow:deploy>
+      </then>
+      <else>
+        <echo message="Deploy composite archive ${deploy.dir}/${composite.archive}.jar on ${soa.server.host}:${soa.server.port} without a configplan"/>
+        <workflow:deploy contextRef="soa-context">
+          <composite partition="${composite.partition}" name="${composite.name}" revision="${composite.revision}" location="${deploy.dir}/${composite.archive}.jar"/>
+        </workflow:deploy>
+      </else>
+    </if>
+    <workflow:configure contextRef="soa-context">
+      <composite partition="ocs" name="${composite.name}" revision="${composite.revision}">
+        <task name="ApprovalTask">
+          <flow host="${oim.service.host}" port="${oim.service.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+    </workflow:configure>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the project artifacts
+  =====================================================================
+  -->
+  <target name="undeploy" description="Undeploy a composite">
+    <workflow:undeploy contextRef="soa-context">
+      <composite partition="${composite.partition}" name="${composite.name}" revision="${composite.revision}"/>
+    </workflow:undeploy>
+  </target>
+</project>

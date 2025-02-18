@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-setup-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Multi-Language Support
+  ******************************************************************************
+  -->
+  <target name="0001" description="Configures the Federated Identity Management Environment Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0001 Multi-Language Support ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring Multi-Language Support for environment ${fmw.env} on ${oim.server.host}:${oim.server.home}"/>
+    <fmw:invoke contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}">
+      <domain name="oracle.iam">
+        <type name="IAMAppRuntimeMBean">
+          <bean name="MLSLanguageSeedingMBean">
+            <operation method="seedAllMLSLanguages"/>
+          </bean>
+        </type>
+      </domain>
+    </fmw:invoke>
+    <echo message="=================================================================="/>
+    <echo message="0001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the plugin store behavior
+  **           This includes:
+  **           o Plug-In Store Configuration
+  ******************************************************************************
+  -->
+  <target name="0002" description="Configures the Federated Identity Management Environment Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0002 Plug-In Store Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring Plug-In Store for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <fmw:modify contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" domain="oracle.iam" type="XMLConfig.PluginConfig.PluginStoreConfig,XMLConfig.PluginConfig=Plugin,XMLConfig=Config" bean="PluginStoreConfig">
+      <attribute name="ReloadingEnabled"  value="true" type="java.lang.Boolean"/>
+      <attribute name="ReloadingInterval" value="20"   type="java.lang.Integer"/>
+    </fmw:modify>
+    <echo message="=================================================================="/>
+    <echo message="0002 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Standard Workflow Configuration
+  ******************************************************************************
+  -->
+  <target name="0003" description="Configures the Federated Identity Management Environment Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0003 Standard Workflow Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring standard approval workflows human task task flows for environment ${fmw.env} on ${soa.server.host}:${soa.server.port}"/>
+    <workflow:configure contextRef="soa-context">
+      <!-- position composites in alphabetical order of their names -->
+      <composite name="BeneficiaryManagerApproval" revision="4.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="CertificationOverseerProcess" revision="2.0">
+        <task name="CertificationTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=CertificationTask_TaskFlow&amp;_document=WEB-INF/CertificationTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="CertificationProcess" revision="2.0">
+        <task name="CertificationTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=CertificationTask_TaskFlow&amp;_document=WEB-INF/CertificationTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DefaultOperationalApproval" revision="5.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+        <task name="ChallengeTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DefaultRequestApproval" revision="6.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+        <task name="ChallengeTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DefaultRoleApproval" revision="3.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DefaultSODApproval" revision="2.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+        <task name="ApprovalTask1">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DisconnectedProvisioning" revision="2.0">
+        <task name="ManualProvisioningTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ManualProvisioningTask_TaskFlow&amp;_document=WEB-INF/ManualProvisioningTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="IdentityAuditRemediation" revision="1.0">
+        <task name="IdentityAuditRemediationTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=IdentityAuditRemediationTask_TaskFlow&amp;_document=WEB-INF/IdentityAuditRemediationTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="OAACGRoleAssignSODCheck" revision="1.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="ProvideInformation" revision="3.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="RequesterManagerApproval" revision="3.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="RoleLCMApproval" revision="1.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+        <task name="ChallengeTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+    </workflow:configure>
+    <echo message="=================================================================="/>
+    <echo message="0003 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle WebLogic Server System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Notification Services
+  ******************************************************************************
+  -->
+  <target name="0004" description="Configures the Federated Identity Management Environment Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0004 Notification Services Configuration ${prompt.version}"/>
+    <echo message="=================================================================="/>
+    <echo message="Protecting User Messaging Server in ${jee.server.host}:${jee.server.port}"/>
+    <wsm:security contextRef="jmx-context">
+      <server location=${soa.server.name} name="usermessagingserver" service="{http://xmlns.oracle.com/ucs/messaging/}MessagingService" port="Messaging">
+        <attach>
+          <policy name="oracle/wss11_username_token_with_message_protection_service_policy"/>
+        </attach>
+      </server>
+    </wsm:security>
+    <echo message="Deleting User Messaging e-Mail Driver in ${jee.server.host}:${jee.server.port} for Managed Server ${soa.server.host}:${soa.server.port}"/>
+    <fmw:invoke contextRef="jmx-context" failonerror="false">
+      <domain name="oracle.ucs.messaging">
+        <type name="UmsDomainConfig">
+          <bean name="UmsDomainConfiguration">
+            <operation method="removeDriverServerConfig">
+              <parameter class="java.lang.String" value="EMailMessagingDriverConfig"/>
+              <parameter class="java.lang.String" value="email"/>
+              <parameter class="java.lang.String" value="${soa.server.name}"/>
+            </operation>
+          </bean>
+        </type>
+      </domain>
+    </fmw:invoke>
+    <echo message="Creating User Messaging e-Mail Driver in ${jee.server.host}:${jee.server.port} for Managed Server ${soa.server.host}:${soa.server.port}"/>
+    <fmw:invoke contextRef="jmx-context">
+      <domain name="oracle.ucs.messaging">
+        <type name="UmsDomainConfig">
+          <bean name="UmsDomainConfiguration">
+            <operation method="createDriverServerConfig">
+              <parameter class="java.lang.String" value="EMailMessagingDriverConfig"/>
+              <parameter class="java.lang.String" value="email"/>
+              <parameter class="java.lang.String" value="${soa.server.name}"/>
+            </operation>
+          </bean>
+        </type>
+      </domain>
+    </fmw:invoke>
+    <echo message="Configuring User Messaging e-Mail Driver in ${jee.server.host}:${jee.server.port}"/>
+    <fmw:modify contextRef="jmx-context" domain="oracle.ucs.messaging" type="UmsDomainConfig.DriverConfig,UmsDomainConfig=UmsDomainConfiguration" server=${soa.server.name} driverType="email" bean="EMailMessagingDriverConfig">
+      <property name="Capability"                 value="SEND"/>
+      <property name="DefaultSenderAddress"       value="EMAIL:${ums.smtp.sender}"/>
+      <property name="OutgoingMailServer"         value="${ums.smtp.host}"/>
+      <property name="OutgoingMailServerPort"     value="${ums.smtp.port}"/>
+      <property name="OutgoingMailServerSecurity" value="None"/>
+      <property name="OutgoingUsername"           value="${ums.smtp.username}"/>
+      <property name="OutgoingPassword"           value="${ums.smtp.password}"/>
+      <property name="IncomingMailServer"         value="${ums.imap.host}"/>
+      <property name="IncomingMailServerPort"     value="${ums.imap.port}"/>
+    </fmw:modify>
+    <echo message="Configuring Identity Manager Notification in ${jee.server.host}:${jee.server.port}"/>
+    <fmw:modify contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" domain="oracle.iam" type="IAMAppRuntimeMBean" bean="UMSEmailNotificationProviderMBean">
+      <attribute name="Policies" value="oracle/wss11_username_token_with_message_protection_client_policy"/>
+      <attribute name="WSUrl"    value="http://${soa.internal.host}:${soa.internal.port}/ucs/messaging/webservice"/>
+    </fmw:modify>
+    <echo message="=================================================================="/>
+    <echo message="0004 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o System Properties
+  ******************************************************************************
+  -->
+  <target name="0005" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0005 System Property Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0000 systemCustomization/xml">
+        <object:importFile name="oim-properties-dm.xml"/>
+        <object:importFile name="ps2-properties-dm.xml"/>
+        <object:importFile name="ps3-properties-dm.xml"/>
+        <object:importFile name="oim-lookup-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0005 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o System Properties
+  ******************************************************************************
+  -->
+  <target name="0006" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0006 Frontend Customization Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Copying Required Files for environment ${fmw.env} on ${oim.server.host}:${oim.server.home}"/>
+    <ssh-file dir="0000 systemCustomization/lib" file="bka.iam.identity.library.war"     location="${oim.server.home}/apps"/>
+    <ssh-file dir="0000 systemCustomization/lib" file="customResources.properties"       location="${oim.server.home}/customResources"/>
+    <ssh-file dir="0000 systemCustomization/lib" file="customResources_de.properties"    location="${oim.server.home}/customResources"/>
+    <ssh-file dir="0000 systemCustomization/lib" file="customResources_en.properties"    location="${oim.server.home}/customResources"/>
+    <ssh-file dir="0000 systemCustomization/lib" file="customResources_en_US.properties" location="${oim.server.home}/customResources"/>
+    <echo message="=================================================================="/>
+    <echo message="0006 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

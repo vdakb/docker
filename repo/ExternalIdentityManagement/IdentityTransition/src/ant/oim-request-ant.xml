@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Controller" basedir="../../deployment/oim">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../tpl/oim-context.xml"/>
+  <import file="../../tpl/ant/oim-request.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <target name       ="all"
+          description="Executes the task in order to deploy the workspace artifacts."
+          depends    ="000,001,003,004,006,007,008,009,010,011,012,013,014,015,016,017,018,019,020,021,022,023,9999"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <target name="000" description="Frontend Customization">
+    <call-targets package="0007"/>
+  </target>
+  <target name="001" description="System Customization and System Integration">
+    <call-targets package="0101"/>
+  </target>
+  <target name="003" description="OAM Identity Store Provisioning">
+    <call-targets package="0301"/>
+  </target>
+  <target name="004" description="Active Directory Terminal Server Provisioning">
+    <call-targets package="0401"/>
+  </target>
+  <target name="005" description="eFBS SCIM Service Provisioning">
+    <call-targets package="0501-01,0501-02"/>
+  </target>
+  <target name="006" description="Platform Service Controller Provisioning">
+    <call-targets package="0601"/>
+  </target>
+  <target name="007" description="Pivotal Cloud Foundry Provisioning">
+    <call-targets package="0701-01,0701-02"/>
+  </target>
+  <target name="008" description="PIAV Provisioning">
+    <call-targets package="0801"/>
+  </target>
+  <target name="009" description="Active Directory Terminal Server Provisioning">
+    <call-targets package="0901,0902"/>
+  </target>
+  <target name="010" description="Atlassian Jira Server Provisioning">
+    <call-targets package="1001"/>
+  </target>
+  <target name="011" description="Google Apigee Edge Provisioning">
+    <call-targets package="1101-01,1101-02,1101-03,1101-04,1101-05,1101-06,1101-07,1101-08"/>
+  </target>
+  <target name="012" description="Pivotal Cloud Foundry Provisioning">
+    <call-targets package="1201-01,1201-02"/>
+  </target>
+  <target name="013" description="Active Directory Domain Hermes Provisioning">
+    <call-targets package="1301"/>
+  </target>
+  <target name="014" description="openfire Provisioning">
+    <call-targets package="1401-PG,1401-AN,1401-BB,1401-BE,1401-BK,1401-BP,1401-BW,1401-BY,1401-HB,1401-HE,1401-HH,1401-MV,1401-NI,1401-NW,1401-RP,1401-SH,1401-SL,1401-SN,1401-TH,1401-ZF"/>
+  </target>
+  <target name="015" description="Phoenix Directory Service Provisioning">
+    <call-targets package="1501-01,1501-02,1501-03,1501-04"/>
+  </target>
+  <target name="016" description="Moodle Service Provisioning">
+    <call-targets package="1601"/>
+  </target>
+  <!--
+   | Attention:
+   | The 00-Task contains the schema extension belonging to N.SIS
+   | AND the UID; take care at the time the UID stuff get deployed
+   | to avoid the deployment of the schema extension again !
+   -->
+  <target name="017" description="N.SIS Service Provisioning">
+    <call-targets package="1701-00,1701-01,1701-02"/>
+  </target>
+  <target name="018" description="Identity Governance Service Provisioning">
+    <call-targets package="1801-01,1801-02"/>
+  </target>
+  <target name="019" description="Identity Governance Provisioning">
+    <call-targets package="1901"/>
+  </target>
+  <target name="020" description="LDAP APPs Service Provisioning">
+    <call-targets package="2001-01,2001-02,2001-03,2001-04,2001-05,2001-06,2001-07,2001-08,2001-09,2001-10"/>
+  </target>
+  <target name="021" description="PLX Provisioning">
+    <call-targets package="2101-00,2101-BB"/>
+  </target>
+  <target name="022" description="LDAP APPs Service Provisioning">
+    <call-targets package="2201-01,2201-02,2201-03,2201-04,2201-05,2201-06,2201-07,2201-08,2201-09,2201-10,2201-11,2201-12"/>
+  </target>
+  <target name="023" description="PKS Service Provisioning">
+    <call-targets package="2301"/>
+  </target>
+</project>

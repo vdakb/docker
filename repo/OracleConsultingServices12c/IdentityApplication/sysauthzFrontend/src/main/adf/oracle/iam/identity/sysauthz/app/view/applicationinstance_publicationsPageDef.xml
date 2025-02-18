@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="applicationinstance_publicationsPageDef"
+                Package="oracle.iam.identity.sysauthz.app.view">
+  <parameters/>
+  <executables>
+    <iterator     id="ApplicationInstanceIterator" Binds="ApplicationInstanceDetailVO" DataControl="ApplicationInstanceAMDataControl" RangeSize="20"/>
+    <iterator     id="EntityPublicationIterator"   Binds="EntityPublicationVO"         DataControl="ApplicationInstanceAMDataControl" RangeSize="20"/>
+    <searchRegion id="EntityPublicationCriteria"   Binds="EntityPublicationIterator"   Criteria="__ImplicitViewCriteria__" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+  </executables>
+  <bindings>
+    <tree id="EntityPublication" IterBinding="EntityPublicationIterator" >
+      <nodeDefinition Name="EntityPublicationNode" DefName="oracle.iam.identity.sysauthz.model.view.EntityPublicationVO">
+        <AttrNames>
+          <Item Value="publicationId"/>
+          <Item Value="entityId"/>
+          <Item Value="entityType"/>
+          <Item Value="scopeId"/>
+          <Item Value="scopeName"/>
+          <Item Value="scopeType"/>
+          <Item Value="hierarchicalScope"/>
+          <Item Value="pendingAction"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="ApplicationInstanceAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="ApplicationInstanceAMDataControl"/>
+    <methodAction id                 ="handleSelectTargets"
+                  DataControl        ="ApplicationInstancePublicationHandler"
+                  InstanceName       ="ApplicationInstancePublicationHandler.dataProvider"
+                  RequiresUpdateModel="true"
+                  Action             ="invokeMethod"
+                  MethodName         ="handleSelection"
+                  IsViewObjectMethod ="false">
+      <NamedData NDName="event" NDType="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+    </methodAction>
+    <methodAction id="refreshAttribute"
+                  DataControl        ="ApplicationInstanceAMDataControl"
+                  InstanceName       ="ApplicationInstanceAMDataControl.dataProvider"
+                  MethodName         ="refreshAttribute"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id                 ="requeryPublication"
+                  InstanceName       ="ApplicationInstanceAMDataControl.dataProvider"
+                  DataControl        ="ApplicationInstanceAMDataControl"
+                  Action             ="invokeMethod"
+                  MethodName         ="requeryPublication"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+      <NamedData NDName="pending"    NDType="java.util.List"/>
+    </methodAction>
+    <methodAction id                 ="applyPublication"
+                  InstanceName       ="ApplicationInstanceAMDataControl.dataProvider"
+                  DataControl        ="ApplicationInstanceAMDataControl"
+                  Action             ="invokeMethod"
+                  MethodName         ="applyPublication"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+      <NamedData NDName="pending"    NDType="java.util.List"/>
+    </methodAction>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+  <eventMap xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+    <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent">
+      <producer region="*">
+        <consumer handler="handleSelectTargets">
+          <parameters>
+            <parameter name="event" value="${payLoad}"/>
+          </parameters>
+        </consumer>
+      </producer>
+    </event>
+  </eventMap>
+</pageDefinition>

@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="using"
+         xml:lang="en"
+         version ="5.0">
+  <title>Using the openfire&#8482; Database Connector</title>
+  <para>
+    You can use the openfire&#8482; Database Connector for performing reconciliation and provisioning operations after configuring your application to meet your requirements.
+  </para>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      Guidelines on <xref linkend="using-guide" xrefstyle="select:title"/>
+      <para/>
+    </listitem>
+    <listitem>
+      Overview of <xref linkend="using-lku" xrefstyle="select:title"/>
+      <para/>
+    </listitem>
+    <listitem>
+      <xref linkend="using-lku-scheduler" xrefstyle="select:title"/>
+    </listitem>
+  </itemizedlist>
+  <section xml:id="using-guide">
+    <title>Using the Connector</title>
+    <para>
+      This section discusses the following topics:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <xref linkend="using-reconciliation" xrefstyle="select:title"/>
+        <para/>
+      </listitem>
+      <listitem>
+        <xref linkend="using-provisioning" xrefstyle="select:title"/>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="using-reconciliation">
+      <title>Configuring Reconciliation</title>
+      <para>
+        The following are guidelines that you must apply while configuring reconciliation:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>
+            Before a target resource reconciliation run is performed, lookup definitions must be synchronized with the lookup fields of the target system.
+            In other words, scheduled jobs for lookup field synchronization must be run before user reconciliation runs.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The scheduled job for user reconciliation must be run before the scheduled job for reconciliation of deleted user data.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            The scheduled job for user reconciliation must be run before the scheduled job for reconciliation of deleted user data.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section xml:id="using-provisioning">
+      <title>Performing Provisioning Operations</title>
+      <para>
+        The following are guidelines that you must apply while performing provisioning operations:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>
+            Before you perform provisioning operations, lookup definitions must be synchronized with the lookup fields of the target system.
+            In other words, scheduled tasks for lookup field synchronization must be run before provisioning operations.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Provisioning of groups is not supported by the connecttor.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </section>
+  </section>
+  <section xml:id="using-lku">
+    <title>Lookup Definitions Used During Connector Operations</title>
+    <para>
+      Know more about the lookup definitions used during connector operations
+    </para>
+    <para>
+      It can be categorized as follows:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <xref linkend="using-predefined-lku" xrefstyle="select:title"/>
+        <para>
+          About <xref linkend="using-predefined-lku" xrefstyle="select:title"/>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          Understanding <xref linkend="using-synchronized-lku" xrefstyle="select:title"/> with the Target System
+        </para>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="using-predefined-lku">
+      <title>Predefined Lookup Definitions</title>
+      <para>
+        This connector has no predefined Lookup Definitions.
+      </para>
+    </section>
+    <section xml:id="using-synchronized-lku">
+      <title>Synchronized Lookup Definitions</title>
+      <para>
+        During a provisioning operation, you use a lookup field on the process form to specify a single value from a set of values.
+        For example, you may want to select a group from a lookup field to specify the group being assigned to the user.
+      </para>
+      <para>
+        When you deploy the connector, an empty lookup definition <literal>OFS.Group</literal> is created.
+        The <literal>OFS.Group</literal> lookup definition is used to store values from a child table that must be displayed in a lookup field during provisioning.
+        Depending upon your environment, you can customize the <literal>OFS.Group</literal> lookup definition to suit your requirement.
+        Alternatively, you can create your own lookup definition for storing values to be displayed in a lookup field.
+        See <insert>xref</insert>Using Lookup Definitions for information about setting up lookup fields.
+      </para>
+      <para>
+        Lookup field synchronization involves obtaining the most current values from specific tables in the target system to the lookup definitions (used as an input source for lookup fields, for example <literal>OFS.Group</literal>) in Oracle&#174; Identity Governance.
+      </para>
+      <para>
+        The <literal>OFS Group Lookup Reconciliation</literal> scheduled job is used to synchronize values of these lookup definitions with the tables in the target system.
+        While configuring the <literal>OFS Group Lookup Reconciliation</literal> scheduled job, you specify the name of the lookup definition that you want to synchronize as the value of the <emphasis>Reconciliation Object</emphasis> attribute.
+        See <xref linkend="using-lku-scheduler" xrefstyle="select:title"/> for more information about this scheduled task.
+      </para>
+      <para>
+        After lookup definition synchronization, data is stored in the following format:
+      </para>
+    </section>
+  </section>
+  <section xml:id="using-scheduler">
+    <title>Understanding Reconciliation Scheduled Jobs</title>
+    <para>
+      When you run the Connector Installer, scheduled jobs are automatically created in Oracle&#174; Identity Governance.
+    </para>
+    <para>
+      This section discusses the following topics:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <xref linkend="using-lku-scheduler" xrefstyle="select:title"/>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Understanding <xref linkend="using-synchronized-lku" xrefstyle="select:title"/> with the Target System
+        </para>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="using-lku-scheduler">
+      <title>Scheduled Job for Lookup Field Synchronization</title>
+      <para>
+        The <literal>OFS Group Lookup Reconciliation</literal> scheduled job is used for lookup fields synchronization.
+      </para>
+      <note>
+        <itemizedlist mark='bullet'>
+          <listitem>
+            <para>
+              Attribute values are predefined in the connector XML file that you import.
+              Specify values only for those attributes that you want to change.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Values (either default or user-defined) must be assigned to all required attributes.
+              If even a single attribute value were left empty on those attributes, then reconciliation would not be performed
+            </para>
+          </listitem>
+        </itemizedlist>
+      </note>
+      <para>
+        You must specify values for the attributes of this scheduled job.
+      </para>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="10em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Attribute</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>IT Resource</entry>
+              <entry>
+                <para>
+                  Enter the name of the IT resource for the target system installation from which you want to reconcile records.
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>OFS.Endpoint</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Encoded Value</entry>
+              <entry>
+                <para>
+                  The name of the entity attribute that has to be stored as the encoded value.
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>__UID__</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Decoded Value</entry>
+              <entry>
+                <para>
+                  Enter the name of the attribute that is used to populate the <emphasis>Decode</emphasis> attribute of the lookup definition (specified as the value of the Lookup Name attribute).
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>description</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Entitlement Prefix Required</entry>
+              <entry>
+                <para>
+                  Select the option <emphasis>Yes</emphasis> if the entitlements loaded needs to be prefixed with the internal system identifier and/or the name of the <emphasis>IT Resource</emphasis>.
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>Yes</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Reconciliation Source</entry>
+              <entry>
+                <para>
+                  The identifier of the source (aka ObjectClass) that has to be used to reconcile.
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>Group</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Reconciliation Object</entry>
+              <entry>
+                <para>
+                  The name of the object to reconcile.
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>OFS.Group</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Reconciliation Operation</entry>
+              <entry>
+                <para>
+                  The operation to perform on the object to reconcile. Has to be either <emphasis>Refresh</emphasis> or <emphasis>Update</emphasis>.
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>Update</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Last Reconciled</entry>
+              <entry>
+                <para>
+                  Holds the timestamp when this task was last executed successfully.
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>0</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Gather Only</entry>
+              <entry>
+                <para>
+                  Select the option <emphasis>Yes</emphasis> if the data should only be gathered from the reconciliation source.
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>No</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Lookup Group</entry>
+              <entry>
+                <para>
+                  The value written to <emphasis>Lookup Group</emphasis> attribute in case the operation on a particular Lookup Definition has to create it (Reconciliation Operation set as <emphasis>Refresh</emphasis>).
+                </para>
+                <para>
+                  This attribute is required.
+                </para>
+                <para>
+                  Default value: <emphasis>OFS</emphasis>
+                </para>
+              </entry>
+            </row>
+            <row>
+              <entry>Dependent Job</entry>
+              <entry>Specifies the name of the Job that will be started by this Job on successfully completion.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="using-job-scheduler">
+      <title>Attributes of the Scheduled Jobs</title>
+      <note>
+        <para>
+          Only account reconciliation is supported by the connector.
+        </para>
+      </note>
+      <para>
+        This section discusses the attributes of the following scheduled jobs:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <xref linkend="using-usr-scheduler" xrefstyle="select:title"/>
+          <para/>
+        </listitem>
+        <listitem>
+          <xref linkend="using-inc-scheduler" xrefstyle="select:title"/>
+          <para/>
+        </listitem>
+        <listitem>
+          <xref linkend="using-del-scheduler" xrefstyle="select:title"/>
+        </listitem>
+      </itemizedlist>
+      <section xml:id="using-usr-scheduler">
+        <title>Reconciliation of User Records</title>
+        <para>
+          After you create the connector, the scheduled task for user data reconciliation is automatically created in Oracle&#174; Identity Governance.
+          The <literal>OFS Account Reconciliation</literal> scheduled job, which is an instance of this scheduled task is used to reconcile user data from the target system.
+        </para>
+        <para>
+          You must specify values for the attributes of this scheduled job.
+        </para>
+        <table colsep="0">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="10em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Attribute</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Batch Size</entry>
+                <entry>
+                  <para>
+                    Specifies the size of a batch read from the Service Provider.
+                  </para>
+                  <para>
+                    This attribute is optional.
+                  </para>
+                  <para>
+                    Default value: <emphasis>500</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Thread Pool Size</entry>
+                <entry>
+                  <para>
+                    Specifies that how many threads this task should create to distribute the workload.
+                  </para>
+                  <para>
+                    This attribute is optional.
+                  </para>
+                  <para>
+                    Default value: <emphasis>1</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>IT Resource</entry>
+                <entry>
+                  <para>
+                    Enter the name of the IT resource for the target system installation from which you want to reconcile user records.
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>OFS.Endpoint</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Reconciliation Object</entry>
+                <entry>
+                  <para>
+                    Enter the name of the resource object that is used for reconciliation.
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>OFS Account</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Reconciliation Descriptor</entry>
+                <entry>
+                  <para>
+                    Enter the path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the resource object to reconcile.
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>/metadata/ocs-features-reconciliation/dbs/ofs-account-reconciliation.xml</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Ignore Dublicates</entry>
+                <entry>
+                  <para>
+                    Select the option <emphasis>Yes</emphasis> to prevent event creation and processing of target system records that already exists in Identity Governance; otherwise select option <emphasis>No</emphasis>
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>Yes</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Search Filter</entry>
+                <entry>
+                  <para>
+                    Specifies which filter criteria has to be applied to retrieve entries. Must be a valid Service Provider search filter.
+                  </para>
+                  <para>
+                    This attribute is optional.
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Last Reconciled</entry>
+                <entry>
+                  <para>
+                    Holds the timestamp when this task was last executed successfully.
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>0</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Gather Only</entry>
+                <entry>
+                  <para>
+                    Select the option <emphasis>Yes</emphasis> if the data should only be gathered from the reconciliation source.
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>No</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Dependent Job</entry>
+                <entry>Specifies the name of the Job that will be started by this Job on successfully completion.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+      <section xml:id="using-inc-scheduler">
+        <title>Incremental Reconciliation of User Records</title>
+        <para>
+        </para>
+      </section>
+      <section xml:id="using-del-scheduler">
+        <title>Reconciliation of Deleted Users Records</title>
+        <para>
+          After you create the connector, the scheduled task for reconciling data about deleted users records is automatically created in Oracle&#174; Identity Governance.
+          The <literal>OFS Account Delete Reconciliation</literal> scheduled job, which is an instance of this scheduled task is used to reconcile user data from the target system.
+        </para>
+        <para>
+          You must specify values for the attributes of this scheduled job.
+        </para>
+        <table colsep="0">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="10em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Attribute</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Batch Size</entry>
+                <entry>
+                  <para>
+                    Specifies the size of a batch read from the Service Provider.
+                  </para>
+                  <para>
+                    This attribute is optional.
+                  </para>
+                  <para>
+                    Default value: <emphasis>500</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>IT Resource</entry>
+                <entry>
+                  <para>
+                    Enter the name of the IT resource for the target system installation from which you want to reconcile user records.
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>OFS.Endpoint</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Reconciliation Object</entry>
+                <entry>
+                  <para>
+                    Enter the name of the resource object that is used for reconciliation.
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>OFS Account</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Reconciliation Descriptor</entry>
+                <entry>
+                  <para>
+                    Enter the path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the resource object to reconcile.
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>/metadata/ocs-features-reconciliation/dbs/ofs-account-reconciliation.xml</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Last Reconciled</entry>
+                <entry>
+                  <para>
+                    Holds the timestamp when this task was last executed successfully.
+                  </para>
+                  <para>
+                    This attribute is required.
+                  </para>
+                  <para>
+                    Default value: <emphasis>0</emphasis>
+                  </para>
+                </entry>
+              </row>
+              <row>
+                <entry>Dependent Job</entry>
+                <entry>
+                  <para>
+                    Specifies the name of the Job that will be started by this Job on successfully completion.
+                  </para>
+                  <para>
+                    This attribute is optional.
+                  </para>
+                </entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+      <section xml:id="using-cfg-scheduler">
+        <title>Configuring Scheduled Jobs</title>
+        <para>
+          This section describes the procedure to configure scheduled jobs.
+          You can apply this procedure to configure the scheduled jobs for lookup field synchronization and reconciliation.
+        </para>
+        <itemizedlist mark='bullet'>
+          <listitem>
+            <xref linkend="using-lku-scheduler-cfg" xrefstyle="select:title"/>
+            <para/>
+          </listitem>
+          <listitem>
+            <xref linkend="using-job-scheduler-cfg" xrefstyle="select:title"/>
+          </listitem>
+        </itemizedlist>
+        <section xml:id="using-lku-scheduler-cfg">
+          <title>Lookup Field Synchronization and Reconciliation</title>
+          <para>
+            <insert>table-link</insert> lists the scheduled jobs that you can configure.
+          </para>
+          <table frame="topbot" colsep="0" rowsep="1">
+            <tgroup cols="2">
+              <colspec colname="c1" colwidth="1*"/>
+              <colspec colname="c2" colwidth="2*"/>
+              <thead>
+                <row>
+                  <entry>Scheduled Job</entry>
+                  <entry>Description</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry>OFS Group Lookup Reconciliation</entry>
+                  <entry>
+                    <para>
+                      This scheduled job is used for lookup field synchronization.
+                      See Scheduled Jobs for <xref linkend="using-lku-scheduler" xrefstyle="select:title"/> for information about this scheduled job.
+                    </para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>OFS Account Reconciliation</entry>
+                  <entry>
+                    <para>
+                      This scheduled job is used for user reconciliation when the target system is configured as a target resource.
+                      See Scheduled Jobs for <xref linkend="using-usr-scheduler" xrefstyle="select:title"/> for more information.
+                    </para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>OFS Account Delete Reconciliation</entry>
+                  <entry>
+                    <para>
+                      This scheduled job is used for reconciliation of deleted user records when the target system is configured as a target resource.
+                      See Scheduled Jobs for <xref linkend="using-del-scheduler" xrefstyle="select:title"/> for more information.
+                    </para>
+                  </entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+        </section>
+        <section xml:id="using-job-scheduler-cfg">
+          <title>Configuring Scheduled Jobs</title>
+          <para>
+            To configure a scheduled job:
+          </para>
+          <orderedlist>
+            <listitem>
+              <para>
+                Log in to Oracle&#174; Identity System Administration.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                In the left pane, under System Management, click <emphasis role="strong">Scheduler</emphasis>.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                Search for and open the scheduled task as follows:
+              </para>
+              <orderedlist>
+                <listitem>
+                  <para>
+                    On the left pane, in the Search field, enter the name of the scheduled job as the search criterion.
+                    Alternatively, you can click <emphasis role="strong">Advanced Search</emphasis> and specify the search criterion.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    In the search results table on the left pane, click the scheduled job in the Job Name column.
+                  </para>
+                </listitem>
+              </orderedlist>
+            </listitem>
+            <listitem>
+              <para>
+                On the Job Details tab, you can modify the following parameters:
+              </para>
+              <itemizedlist>
+                <listitem>
+                  <para>
+                    <emphasis role="strong">Retries</emphasis>
+                  </para>
+                  <para>
+                    Enter an integer value in this field.
+                    This number represents the number of times the scheduler tries to start the job before assigning the Stopped status to the job.
+                  </para>
+                </listitem>
+                <listitem>
+                  <para>
+                    <emphasis role="strong">Schedule Type</emphasis>
+                  </para>
+                  <para>
+                    Depending on the frequency at which you want the job to run, select the appropriate schedule type.
+                  </para>
+                  <note>
+                    <para>
+                      See <link xl:show="new" xl:href="http://www.oracle.com/pls/topic/lookup?ctx=E22999-01&amp;id=OMADM776" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Creating Jobs</citetitle></link> in <emphasis>Oracle Fusion Middleware Administering Oracle Identity Manager</emphasis> for detailed information about schedule types.
+                    </para>
+                  </note>
+                  <para>
+                    In addition to modifying the job details, you can enable or disable a job.
+                  </para>
+                </listitem>
+              </itemizedlist>
+            </listitem>
+            <listitem>
+              <para>
+                On the Job Details tab, in the Parameters region, specify values for the attributes of the scheduled task.
+              </para>
+              <note>
+                <itemizedlist>
+                  <listitem>
+                    <para>
+                      Attribute values are predefined in the connector XML file that you import. Specify values only for those attributes that you want to change.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      Values (either default or user-defined) must be assigned to all the attributes. If even a single attribute value is left empty, then reconciliation is not performed.
+                    </para>
+                  </listitem>
+                  <listitem>
+                    <para>
+                      Attributes of the scheduled task are discussed in <xref linkend="using-job-scheduler" xrefstyle="select:title"/>.
+                    </para>
+                  </listitem>
+                </itemizedlist>
+              </note>
+            </listitem>
+          </orderedlist>
+        </section>
+      </section>
+    </section>
+  </section>
+</chapter>

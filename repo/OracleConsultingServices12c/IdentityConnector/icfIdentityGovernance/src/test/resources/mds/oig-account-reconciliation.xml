@@ -1,0 +1,41 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="Identifier"
+            uniqueName    ="User Name"
+            status        ="Status"
+            transformation="false"
+            natively      ="false">
+  <attribute type="string" name="Identifier"        source="__UID__">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="User Name"         source="__NAME__">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="Status"            source="__ENABLE__"/>
+  <attribute type="string" name="Last Name"         source="lastName"/>
+  <attribute type="string" name="First Name"        source="firstName"/>
+  <attribute type="string" name="Display Name"      source="displayName"/>
+  <multivalue name="SystemRole" source="__GROUP__">
+    <attribute class="string" name="Name"      source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <multivalue name="GlobalRole" source="__GLOBAL__">
+    <attribute class="string" name="Name"      source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <multivalue name="ScopedRole" source="__SCOPED__">
+    <attribute class="string" name="Name"      source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute class="string" name="Scope"     source="scope">
+      <flag>required</flag>
+    </attribute>
+    <attribute class="string" name="Hierarchy" source="hierarchy">
+      <flag>required</flag>
+    </attribute>
+  </multivalue>
+</descriptor>

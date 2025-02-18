@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Oracle Consulting Identity ANT Task Definitions"
+         default        ="iam-instance-status"
+         basedir        =".."
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.iam.identity/server"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Generic Database Foundation
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Foundation Configuration. This includes:
+  **           o Lookup Definitions
+  **           o IT Resource Definitions
+  **           o Task Adapter
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="base" description="Deploys the Generic Database Foundation Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Generic Database Foundation Configuration ${application.release}"/>
+    <library-deploy dir="${deploy.dir}" file="dbs-common.jar"     location="${oim.remote.thirdparty}"/>
+    <library-deploy dir="${deploy.dir}" file="dbs-adapter.jar"    location="${oim.remote.adapter}"/>
+    <library-deploy dir="${deploy.dir}" file="dbs-diagnostic.jar" location="${oim.remote.adapter}"/>
+    <library-deploy dir="${deploy.dir}" file="dbs-scheduler.jar"  location="${oim.remote.scheduler}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/base">
+        <object:importFile name="dbs-resource-dm.xml"/>
+        <object:importFile name="dbs-adapter-dm.xml"/>
+        <object:importFile name="dbs-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <!-- purge the cache to ensure that the latest version will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="SchedulerTaskDefinition"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Oracle Database Target
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Oracle Database
+  **           Service Target Configuration. This includes:
+  **           o Lookup Definitions
+  **           o IT Resource
+  **           o Process Form Definiton
+  **           o Resource Object
+  **           o Provisioning Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Deploys the Connector Target Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Connector Target Configuration ${application.release}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/target">
+        <object:importFile name="orcl-resource-dm.xml"/>
+        <object:importFile name="orcl-lookup-dm.xml"/>
+        <object:importFile name="orcl-model-dm.xml"/>
+        <object:importFile name="orcl-process-dm.xml"/>
+        <object:importFile name="orcl-scheduler-dm.xml"/>
+        <!--
+        <object:importFile name="orcl-scheduler-ex.xml"/>
+        -->
+      </object:importSet>
+    </object:import>
+    <!-- purge the cache to ensure that the latest versions will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="LookupDefinition"/>
+      <category value="LookupValues"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Oracle Database Trusted
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Oracle Database
+  **           Service Trusted Configuration. This includes:
+  **           o Lookup Definitions
+  **           o Resource Object
+  **           o Provisioning Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="trusted" description="Deploys the Connector Trusted Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Connector Trusted Configuration ${application.release}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/trusted">
+        <object:importFile name="orcl-lookup-dm.xml"/>
+        <object:importFile name="orcl-process-dm.xml"/>
+        <object:importFile name="orcl-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <!-- purge the cache to ensure that the latest versions will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="LookupDefinition"/>
+      <category value="LookupValues"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Configures the Oracle Database Service Configuration.
+  **
+  ** Synopsis: The tasks configures the object definitions for Oracle Database
+  **           Service Configuration. This includes:
+  **           o IT Resource
+  ******************************************************************************
+  -->
+  <target name="config" description="Configures the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <!--
+    Update the IT Resource ORCL Server for testing purpose
+    -->
+    <echo message="Configuring Oracle Database Service IT Resource ORCL Server"/>
+    <operation:itresource contextRef="oim-context" operation="update">
+      <itresource type="Generic Database Service" name="ORCL Server">
+        <parameter name="Database Name"      value="METADATA"/>
+        <parameter name="Database URL"       value="jdbc:oracle:thin:@keaton.vm.oracle.com:1521:MDR"/>
+        <parameter name="Principal Name"     value="system"/>
+        <parameter name="Principal Password" value="Welcome1"/>
+        <parameter name="Secure Socket"      value="no"/>
+        <parameter name="Locale Country"     value="en"/>
+        <parameter name="Locale Language"    value="EN"/>
+        <parameter name="Locale TimeZone"    value="GMT+01:00"/>
+        <parameter name="Database Feature"   value="/metadata/ocs-features-configuration/instance-definition/orcl-feature.xml"/>
+      </itresource>
+    </operation:itresource>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Oracle Database Service
+  **           Metadata Configuration.
+  ******************************************************************************
+  -->
+  <target name="metadata" description="Deploys the Oracle Database Service Metadata Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy the Oracle Database Service Metadata Configuration ${application.release}"/>
+    <echo message="Deploying files to ${mds.server.host}@${mds.server.service} on partition ${oim.metadata.partition}"/>
+    <!-- Register the Configuration -->
+    <metadata:upload contextRef="oim-mds" forceOverride="true">
+      <namespace path="/metadata">
+        <importSet dir="${resource.dir}/mds" path="ocs-features-configuration/instance-definition">
+          <importFile name="orcl-feature.xml"/>
+          <importFile name="orcl-account-reconciliation.xml"/>
+          <importFile name="orcl-account-provisioning.xml"/>
+        </importSet>
+      </namespace>
+    </metadata:upload>
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <echo message="Clear object cache on ${oim.server.name}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="AdapterInformation"/>
+      <category value="API"/>
+      <category value="CallbackConfiguration"/>
+      <category value="ColumnMap"/>
+      <category value="ColumnMetaData"/>
+      <category value="ConnectorResourceBundle"/>
+      <category value="CustomDefaultBundle"/>
+      <category value="CustomResourceBundle"/>
+      <category value="DataObjectEventHandlers"/>
+      <category value="EmailDefinition"/>
+      <category value="FormDefinition"/>
+      <category value="GCProviders"/>
+      <category value="GenericConnector"/>
+      <category value="ITResourceKey"/>
+      <category value="LinguisticSort"/>
+      <category value="LookupDefinition"/>
+      <category value="LookupValues"/>
+      <category value="MetaData"/>
+      <category value="NoNeedToFlush"/>
+      <category value="PluginFramework"/>
+      <category value="ObjectDefinition"/>
+      <category value="OESDefinition"/>
+      <category value="OESResult"/>
+      <category value="OrgnizationName"/>
+      <category value="ProcessDefinition"/>
+      <category value="RecordExists"/>
+      <category value="RuleDefinition"/>
+      <category value="Reconciliation"/>
+      <category value="SchedulerTaskDefinition"/>
+      <category value="ServerProperties"/>
+      <category value="SystemProperties"/>
+      <category value="StoredProcAPI"/>
+      <category value="User"/>
+      <category value="UserDefinedColumns"/>
+      <category value="UserConfig"/>
+      <category value="UserGroups"/>
+      <category value="UserStatus"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Oracle Database Target
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Oracle Database
+  **           Service Target Configuration. This includes:
+  **           o Lookup Definitions
+  **           o IT Resource
+  **           o Process Form Definiton
+  **           o Resource Object
+  **           o Provisioning Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="request" description="Deploys the Request DataSet Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the ORCL Account Request Configuration ${application.release}"/>
+    <echo message="Deploying metadata on ${oim.server.name}:${oim.mbean.metadata}:${oim.mbean.version}"/>
+    <metadata:import contextRef  ="jee-context"
+                     location    ="${oim.server.name}"
+                     application ="${oim.mbean.metadata}"
+                     version     ="${oim.mbean.version}"
+                     fromLocation="/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimDatabase/mds">
+      <metadata:path>
+        <metadata:pathelement location="/custom/request/SelfProvisionResourceORCL Account.xml"/>
+        <metadata:pathelement location="/custom/request/ProvisionResourceORCL Account.xml"/>
+        <metadata:pathelement location="/custom/request/DeprovisionResourceORCL Account.xml"/>
+        <metadata:pathelement location="/custom/request/ModifyResourceORCL Account.xml"/>
+        <metadata:pathelement location="/custom/request/EnableProvisionedResourceORCL Account.xml"/>
+        <metadata:pathelement location="/custom/request/DisableProvisionedResourceORCL Account.xml"/>
+      </metadata:path>
+    </metadata:import>
+    <echo message="Clear metadata cache on ${oim.server.name}:${oim.mbean.metadata}:${oim.mbean.version}"/>
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Privilege Lookup Reconciliation task on the Oracle
+  **           Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Privilege Lookup Reconciliation tasks on
+  **           Oracle Database Service Configuration. This includes:
+  **           o Privilege Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-privilege" description="Executes Privilege Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Privilege Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Privilege Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:   Executes Role Lookup Reconciliation task on the Oracle Database
+  **            Service Configuration.
+  **
+  ** Synopsis: The tasks executes Role Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Role Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-role" description="Executes Role Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Role Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Role Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Profile Lookup Reconciliation task on the Oracle
+  **           Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Profile Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Profile Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-profile" description="Executes Profile Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Profile Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Profile Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Permanent Tablespace Lookup Reconciliation task on the
+  **           Oracle Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Profile Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Profile Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-permanent" description="Executes Permanent Tablespace Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Permanent Tablespace Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Permanent Tablespace Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Temporary Tablespace Lookup Reconciliation task on the
+  **           Oracle Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Profile Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Profile Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-temporary" description="Executes Temporary Tablespace Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Temporary Tablespace Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Temporary Tablespace Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Schema Lookup Reconciliation task on the Oracle
+  **           Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Schema Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Schema Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-schema" description="Executes Schema Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Schema Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Schema Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Synonym Lookup Reconciliation task on the Oracle
+  **           Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Synonym Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Synonym Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-synonym" description="Executes Synonym Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Synonym Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Synonym Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Sequence Lookup Reconciliation task on the Oracle
+  **           Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Sequence Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Sequence Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-sequence" description="Executes Sequence Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Sequence Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Sequence Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Table Lookup Reconciliation task on the Oracle Database
+  **           Service Configuration.
+  **
+  ** Synopsis: The tasks executes Table Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Table Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-table" description="Executes Table Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Table Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Table Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes View Lookup Reconciliation task on the Oracle Database
+  **           Service Configuration.
+  **
+  ** Synopsis: The tasks executes View Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o View Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-view" description="Executes View Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL View Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL View Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Type Lookup Reconciliation task on the Oracle Database
+  **           Service Configuration.
+  **
+  ** Synopsis: The tasks executes Type Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Type Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-type" description="Executes Type Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Type Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Type Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+<!--
+  ******************************************************************************
+  ** Purpose:  Executes Function Lookup Reconciliation task on the Oracle
+  **           Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Function Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Function Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-function" description="Executes Function Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Function Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Function Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Procedure Lookup Reconciliation task on the Oracle
+  **           Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Procedure Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Procedure Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-procedure" description="Executes Procedure Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Procedure Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Procedure Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Executes Package Lookup Reconciliation task on the Oracle
+  **           Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Package Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Package Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup-package" description="Executes Package Lookup Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Package Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Package Lookup Reconciliation" status="true" task="DBS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:   Executes System Lookup Reconciliation task on the Oracle
+  **            Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes System Lookup Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o System Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup" description="Executes System Lookup Reconciliation task on the Oracle Database Service Configuration"
+          depends="reconcile-lookup-privilege, reconcile-lookup-role, reconcile-lookup-profile, reconcile-lookup-permanent, reconcile-lookup-temporary
+                 , reconcile-lookup-schema, reconcile-lookup-synonym, reconcile-lookup-sequence, reconcile-lookup-table, reconcile-lookup-view
+                 , reconcile-lookup-type, reconcile-lookup-function, reconcile-lookup-procedure, reconcile-lookup-package"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:   Executes Account Target Reconciliation task on the Oracle
+  **            Database Service Configuration.
+  **
+  ** Synopsis: The tasks executes Account Target Reconciliation tasks on Oracle
+  **           Database Service Configuration. This includes:
+  **           o Account Target Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-account" description="Executes Account Target Reconciliation task on the Oracle Database Service Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="ORCL Account Target Reconciliation" status="true" task="DBS Account Target Reconciliation">
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="ORCL Account Target Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:   Executes Reconciliation task on the Oracle Database Service
+  **            Configuration.
+  **
+  ** Synopsis: The tasks executes tasks on Oracle Database Service
+  **           Configuration. This includes:
+  **           o System Lookup Reconciliation
+  **           o Account Target Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile" description="Executes Reconciliation task on the Oracle Database Service Configuration" depends="reconcile-lookup, reconcile-account"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance" depends="base, metadata, target, trusted, config, reconcile"/>
+</project>

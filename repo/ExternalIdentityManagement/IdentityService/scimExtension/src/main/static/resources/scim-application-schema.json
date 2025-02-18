@@ -1,0 +1,82 @@
+{
+  "schemas": [
+    "urn:ietf:params:scim:schemas:core:2.0:Schema"
+  ],
+  "id": "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Application",
+  "name": "Application",
+  "description": "Schema extension for application",
+  "meta": {
+    "resourceType": "Schema",
+    "location": "OIG_BASE_URI/Schemas/urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Application"
+  },
+  "attributes": [
+    {
+      "name": "applicationName",
+      "description": "The name of the application",
+      "type": "string",
+      "multiValued": false,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none",
+      "required": true,
+      "caseExact": false
+    },
+    {
+      "name": "namespaces",
+      "description": "List of namespaces associated with the application",
+      "type": "complex",
+      "multiValued": true,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none",
+      "required": true,
+      "subAttributes": [
+        {
+          "name": "namespace",
+          "description": "The namespace associated with the application",
+          "type": "string",
+          "multiValued": false,
+          "mutability": "readWrite",
+          "returned": "default",
+          "uniqueness": "none",
+          "required": true,
+          "caseExact": false
+        },
+        {
+          "name": "entitlements",
+          "description": "List of entitlements associated with the namespace",
+          "type": "complex",
+          "multiValued": true,
+          "mutability": "readWrite",
+          "returned": "default",
+          "uniqueness": "none",
+          "required": true,
+          "subAttributes": [
+            {
+              "name": "value",
+              "description": "Unique identifier for the entitlement",
+              "type": "string",
+              "multiValued": false,
+              "mutability": "readWrite",
+              "returned": "default",
+              "uniqueness": "none",
+              "required": true,
+              "caseExact": false
+            },
+            {
+              "name": "$ref",
+              "description": "Reference to the entitlement SCIM resource",
+              "type": "string",
+              "multiValued": false,
+              "mutability": "readOnly",
+              "returned": "default",
+              "uniqueness": "none",
+              "required": false,
+              "caseExact": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

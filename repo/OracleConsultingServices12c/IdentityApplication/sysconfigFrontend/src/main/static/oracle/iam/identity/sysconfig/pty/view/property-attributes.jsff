@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"   value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysconfig$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Configuration']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{!pageFlowScope.propertyTrain.saveEnabled}">
+    <f:attribute name="displayName"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysconfig$bundle.PTY_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysconfig$bundle.PTY_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysconfig$bundle.PTY_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysconfig$bundle.PTY_ATTRIBUTE}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysconfig$bundle.PTY_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysconfig$bundle.PTY_CREATE_TITLE : af:formatString(sysconfig$bundle.PTY_DETAIL, pageFlowScope.propertyName)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysconfig$bundle.PTY_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id            ="btn15"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysconfig$bundle.PTY_SINGLE)}"
+                   rendered      ="#{pageFlowScope.propertyTrain.saveEnabled}"
+                   disabled      ="#{!pageFlowScope.propertyTrain.flowDirty}"
+                   binding       ="#{backingBeanScope.propertyAttribute.submit}"
+                   action        ="#{pageFlowScope.propertyTrain.submit}"
+                   styleClass    ="whiteTextButton"
+                   inlineStyle   ="#{pageFlowScope.propertyTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+        <af:button id            ="btn16"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysconfig$bundle.PTY_SINGLE)}"
+                   rendered      ="#{pageFlowScope.propertyTrain.saveEnabled}"
+                   disabled      ="#{!pageFlowScope.propertyTrain.flowDirty}"
+                   binding       ="#{backingBeanScope.propertyAttribute.revert}"
+                   actionListener="#{pageFlowScope.propertyTrain.revert}"
+                   immediate     ="true">
+          <af:clientAttribute name="attribute" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical" inlineStyle="width:550px;">
+            <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="33%" fieldWidth="67%" binding="#{pageFlowScope.propertyTrain.formLayout}">
+              <af:spacer  id="sp211" width="0" height="15"/>
+              <af:inputText id                 ="it211"
+                            binding            ="#{backingBeanScope.propertyAttribute.propertyName}"
+                            value              ="#{bindings.propertyName.inputValue}"
+                            label              ="#{bindings.propertyName.hints.label}"
+                            required           ="#{pageFlowScope.mode == 'view' ? false : bindings.propertyName.hints.mandatory}"
+                            columns            ="#{bindings.propertyName.hints.displayWidth}"
+                            maximumLength      ="#{bindings.propertyName.hints.precision}"
+                            shortDesc          ="#{bindings.propertyName.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.propertyAttribute.changed}"
+                            disabled           ="#{pageFlowScope.mode == 'view'}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.name.validator}"/>
+              </af:inputText>
+              <af:spacer id="sp212" width="0" height="5"/>
+              <af:inputText id                 ="it212"
+                            value              ="#{bindings.value.inputValue}"
+                            label              ="#{bindings.value.hints.label}"
+                            required           ="#{pageFlowScope.mode == 'view' ? false : bindings.value.hints.mandatory}"
+                            columns            ="#{bindings.value.hints.displayWidth}"
+                            maximumLength      ="#{bindings.value.hints.precision}"
+                            shortDesc          ="#{bindings.value.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.propertyAttribute.changed}"
+                            disabled           ="#{pageFlowScope.mode == 'view'}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.value.validator}"/>
+              </af:inputText>
+              <af:spacer id="sp213" width="0" height="5"/>
+              <af:inputText id                 ="it213"
+                            value              ="#{bindings.name.inputValue}"
+                            label              ="#{bindings.name.hints.label}"
+                            required           ="#{pageFlowScope.mode == 'view' ? false : bindings.name.hints.mandatory}"
+                            columns            ="#{bindings.name.hints.displayWidth}"
+                            maximumLength      ="#{bindings.name.hints.precision}"
+                            shortDesc          ="#{bindings.name.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.propertyAttribute.changed}"
+                            disabled           ="#{pageFlowScope.mode == 'view'}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.name.validator}"/>
+              </af:inputText>
+              <af:spacer id="sp214" width="0" height="5"/>
+              <af:selectOneChoice id                 ="cb214"
+                                  value              ="#{bindings.dataLevel.inputValue}"
+                                  label              ="#{bindings.dataLevel.hints.label}"
+                                  required           ="#{pageFlowScope.mode == 'view' ? false : bindings.dataLevel.hints.mandatory}"
+                                  shortDesc          ="#{bindings.dataLevel.hints.tooltip}"
+                                  valueChangeListener="#{backingBeanScope.propertyAttribute.changed}"
+                                  disabled           ="#{pageFlowScope.mode == 'view'}"
+                                  autoSubmit         ="true">
+                <f:selectItems value="#{bindings.dataLevel.items}" id="si214"/>
+              </af:selectOneChoice>
+              <af:spacer id="sp215" width="0" height="5"/>
+              <af:selectOneRadio id                 ="rb215"
+                                 value              ="#{bindings.runOn.inputValue}"
+                                 label              ="#{bindings.runOn.hints.label}"
+                                 layout             ="horizontal"
+                                 required           ="#{pageFlowScope.mode == 'view' ? false : bindings.runOn.hints.mandatory}"
+                                 shortDesc          ="#{bindings.runOn.hints.tooltip}"
+                                 valueChangeListener="#{backingBeanScope.propertyAttribute.changed}"
+                                 disabled           ="#{pageFlowScope.mode == 'view'}"
+                                 autoSubmit         ="true">
+                <f:selectItems id="si215" value="#{bindings.runOn.items}"/>
+                <f:validator binding="#{bindings.runOn.validator}"/>
+              </af:selectOneRadio>
+              <af:spacer id="sp216" width="0" height="5"/>
+              <af:panelGroupLayout id="pgl216" layout="horizontal" valign="middle">
+                <af:selectBooleanCheckbox id                 ="cb215"
+                                          value              ="#{bindings.system.inputValue}"
+                                          label              ="#{bindings.system.hints.label}"
+                                          required           ="#{bindings.system.hints.mandatory}"
+                                          shortDesc          ="#{bindings.system.hints.tooltip}"
+                                          valueChangeListener="#{backingBeanScope.propertyAttribute.changed}"
+                                          disabled           ="#{pageFlowScope.mode == 'view'}"
+                                          autoSubmit         ="true"/>
+                <af:spacer id="sp217" width="10" height="0"/>
+                <af:selectBooleanCheckbox id                 ="cb217"
+                                          value              ="#{bindings.loginRequired.inputValue}"
+                                          label              ="#{bindings.loginRequired.hints.label}"
+                                          required           ="#{bindings.loginRequired.hints.mandatory}"
+                                          shortDesc          ="#{bindings.loginRequired.hints.tooltip}"
+                                          valueChangeListener="#{backingBeanScope.propertyAttribute.changed}"
+                                          disabled           ="#{pageFlowScope.mode == 'view'}"
+                                          autoSubmit         ="true"/>
+              </af:panelGroupLayout>
+              <!--
+                <af:spacer id="sp217" width="10" height="0"/>
+              <af:inputText id                 ="it218"
+                            value              ="#{bindings.note.inputValue}"
+                            label              ="#{bindings.note.hints.label}"
+                            required           ="#{pageFlowScope.mode == 'view' ? false : bindings.note.hints.mandatory}"
+                            columns            ="#{bindings.note.hints.displayWidth}"
+                            maximumLength      ="#{bindings.note.hints.precision}"
+                            shortDesc          ="#{bindings.note.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.propertyAttribute.changed}"
+                            disabled           ="#{pageFlowScope.mode == 'view'}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.note.validator}"/>
+              </af:inputText>
+              -->
+            </af:panelFormLayout>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

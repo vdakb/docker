@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<persistence xmlns             ="http://java.sun.com/xml/ns/persistence" version="2.0"
+             xmlns:xsi         ="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="uid" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <!--
+     | WebLogic/Glassfish/Payara deployes DataSource Modules in the namespace
+     | jdbc
+     -->
+    <jta-data-source>jdbc/idsDS</jta-data-source>
+    <non-jta-data-source>jdbc/idsDS</non-jta-data-source>
+    <!--
+     | Converters
+     -->
+    <class>oracle.hst.platform.jpa.converter.Boolean2Integer</class>
+    <!--
+     | Entities / Model
+     -->
+    <class>bka.iam.identity.igs.model.User</class>
+    <class>bka.iam.identity.igs.model.Role</class>
+    <class>bka.iam.identity.igs.model.Claim</class>
+    <class>bka.iam.identity.igs.model.Tenant</class>
+    <class>bka.iam.identity.igs.model.UserRole</class>
+
+    <class>bka.iam.identity.uid.model.Type</class>
+    <class>bka.iam.identity.uid.model.State</class>
+    <class>bka.iam.identity.uid.model.Country</class>
+    <class>bka.iam.identity.uid.model.Surrogate</class>
+    <class>bka.iam.identity.uid.model.Participant</class>
+    <class>bka.iam.identity.uid.model.ParticipantType</class>
+
+    <class>bka.iam.identity.zero.model.Entitlement</class>
+    <properties>
+      <!--
+       | Register the adapter that downstream the session context to the
+       | connected database
+       -->
+      <property name="eclipselink.session-event-listener" value="oracle.hst.platform.jpa.context.SessionAdapter"/>
+    </properties>
+  </persistence-unit>
+</persistence>

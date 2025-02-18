@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Identity Governance Context Definitions"
+         basedir     ="."
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../.env/igs/${fmw.env}/pgs-server.xml"/>
+  <import file="../.env/igs/${fmw.env}/wls-server.xml"/>
+  <import file="../.env/igs/${fmw.env}/oim-server.xml"/>
+  <import file="../.env/igs/${fmw.env}/scp-server.xml"/>
+  <import file="../.env/igs/${fmw.env}/jee-server.xml"/>
+  <!--
+  =====================================================================
+  == Import custom type and task definitions
+  =====================================================================
+  -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <taskdef resource="oracle/hst/deployment/ant-security-lib.xml"   uri="http://oracle.hst.deployment/security"/>
+  <taskdef resource="oracle/hst/deployment/ant-topology-lib.xml"   uri="http://oracle.hst.deployment/topology"/>
+  <!--
+  =====================================================================
+  == Oracle Glassfish Server properties
+  =====================================================================
+  -->
+  <presetdef name="asadmin">
+    <java jar="${pgs.server.home}/glassfish/modules/admin-cli.jar" fork="true" jvm="${java.home}/bin/java">
+      <arg line="-H ${pgs.server.host} -p ${pgs.server.port} -u ${pgs.server.username} -W ${pgs.server.password}"/>
+    </java>
+  </presetdef>
+  <!--
+  ==============================================================================
+  == Import custom type and task definitions
+  ==============================================================================
+  -->
+  <import file="igs-preferences.xml"/>
+  <!--
+  ==============================================================================
+  == Declaring the container specifiying connectivity to the remote systems
+  ==============================================================================
+  -->
+  <server:principal id="pgs-principal" username="${pgs.server.username}" password="${pgs.server.password}"/>
+  <server:jmx-context id="pgs-context" type="${pgs.server.type}" protocol="${pgs.server.protocol}" host="${pgs.server.host}" port="${pgs.server.port}" principalRef="pgs-principal"/>
+  
+  <property name="pgs.remote.application" value="${pgs.server.home}/apps"/>
+  <property name="oim.remote.application" value="${oim.server.home}/apps"/>
+</project>

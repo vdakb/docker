@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"  value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysadmin$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Administration']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{!pageFlowScope.jobTrain.saveEnabled}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysadmin$bundle.JOB_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysadmin$bundle.JOB_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysadmin$bundle.JOB_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysadmin$bundle.JOB_ATTRIBUTE}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysadmin$bundle.JOB_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysadmin$bundle.JOB_CREATE_TITLE : af:formatString(sysadmin$bundle.JOB_DETAIL, pageFlowScope.name)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysadmin$bundle.JOB_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01" partialTriggers="btn11 btn12 btn13 btn14">
+        <af:group id="gr01" rendered="#{pageFlowScope.mode == 'edit'}">
+          <af:button id             ="btn11"
+                     text           ="#{sysadmin$bundle.JOB_RUN_TEXT}"
+                     shortDesc      ="#{sysadmin$bundle.JOB_RUN_HINT}"
+                     rendered       ="#{bindings.status ne '5'}"
+                     action         ="#{pageFlowScope.jobTrain.start}"
+                     partialTriggers="btn12"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+          <af:button id             ="btn12"
+                     text           ="#{sysadmin$bundle.JOB_STOP_TEXT}"
+                     shortDesc      ="#{sysadmin$bundle.JOB_STOP_HINT}"
+                     rendered       ="#{bindings.status eq '5'}"
+                     action         ="#{pageFlowScope.jobTrain.stop}"
+                     partialTriggers="btn11"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+          <af:button id             ="btn13"
+                     text           ="#{sysadmin$bundle.JOB_ENABLE_TEXT}"
+                     shortDesc      ="#{sysadmin$bundle.JOB_ENABLE_HINT}"
+                     action         ="#{pageFlowScope.jobTrain.enable}"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+          <af:button id             ="btn14"
+                     text           ="#{sysadmin$bundle.JOB_DISABLE_TEXT}"
+                     shortDesc      ="#{sysadmin$bundle.JOB_DISABLE_HINT}"
+                     action         ="#{pageFlowScope.jobTrain.disable}"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+        </af:group>
+        <af:group id="gr02">
+          <af:button id             ="btn15"
+                     text           ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                     shortDesc      ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysadmin$bundle.JOB_SINGLE)}"
+                     rendered       ="#{pageFlowScope.jobTrain.saveEnabled}"
+                     disabled       ="#{!pageFlowScope.jobTrain.flowDirty}"
+                     binding        ="#{backingBeanScope.jobAttribute.submit}"
+                     action         ="#{pageFlowScope.jobTrain.submit}"
+                     styleClass     ="whiteTextButton"
+                     inlineStyle    ="#{pageFlowScope.jobTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+          <af:button id             ="btn16"
+                     text           ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                     shortDesc      ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysadmin$bundle.JOB_SINGLE)}"
+                     rendered       ="#{pageFlowScope.jobTrain.saveEnabled}"
+                     disabled       ="#{!pageFlowScope.jobTrain.flowDirty}"
+                     binding        ="#{backingBeanScope.jobAttribute.revert}"
+                     actionListener ="#{pageFlowScope.jobTrain.revert}"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+        </af:group>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical" inlineStyle="width:550px;">
+            <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="33%" fieldWidth="67%" binding="#{pageFlowScope.jobTrain.formLayout}">
+              <af:spacer  id="sp11" width="0" height="5"/>
+              <af:inputText id                 ="it11"
+                            value              ="#{bindings.name.inputValue}"
+                            label              ="#{bindings.name.hints.label}"
+                            disabled           ="#{pageFlowScope.mode != 'create'}"
+                            required           ="#{pageFlowScope.mode == 'view' ? false : bindings.name.hints.mandatory}"
+                            columns            ="#{bindings.name.hints.displayWidth}"
+                            maximumLength      ="#{bindings.name.hints.precision}"
+                            shortDesc          ="#{bindings.name.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.jobAttribute.changed}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.name.validator}"/>
+              </af:inputText>
+              <af:spacer  id="sp12" width="0" height="5"/>
+              <af:inputListOfValues id                 ="it12"
+                                    popupTitle         ="#{af:formatString(sysbase$bundle.SEARCH_SELECT, bindings.task.hints.label)}"
+                                    value              ="#{bindings.task.inputValue}"
+                                    model              ="#{bindings.task.listOfValuesModel}"
+                                    label              ="#{bindings.task.hints.label}"
+                                    required           ="#{bindings.task.hints.mandatory}"
+                                    columns            ="#{bindings.task.hints.displayWidth}"
+                                    maximumLength      ="#{bindings.task.hints.precision}"
+                                    shortDesc          ="#{bindings.task.hints.tooltip}"
+                                    valueChangeListener="#{backingBeanScope.jobAttribute.changed}"
+                                    disabled           ="#{pageFlowScope.mode != 'create'}"
+                                    autoSubmit         ="true">
+                <af:autoSuggestBehavior suggestedItems="#{bindings.task.suggestedItems}"/>
+              </af:inputListOfValues>
+              <af:spacer  id="sp13" width="0" height="5" rendered="#{pageFlowScope.mode != 'create'}"/>
+              <af:inputText id                 ="it13"
+                            value              ="#{bindings.statusDecode.inputValue}"
+                            label              ="#{bindings.status.hints.label}"
+                            columns            ="#{bindings.status.hints.displayWidth}"
+                            maximumLength      ="#{bindings.status.hints.precision}"
+                            shortDesc          ="#{bindings.status.hints.tooltip}"
+                            rendered           ="#{pageFlowScope.mode != 'create'}"/>
+              <af:spacer  id="sp14" width="0" height="5"/>
+              <af:inputText id                 ="it14"
+                            value              ="#{bindings.retryCount.inputValue}"
+                            label              ="#{bindings.retryCount.hints.label}"
+                            required           ="#{bindings.retryCount.hints.mandatory}"
+                            columns            ="#{bindings.retryCount.hints.displayWidth}"
+                            maximumLength      ="#{bindings.retryCount.hints.precision}"
+                            shortDesc          ="#{bindings.retryCount.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.jobAttribute.changed}"
+                            autoSubmit         ="true">
+                <af:convertNumber type="number" groupingUsed="false"/>
+                <f:validator binding="#{bindings.retryCount.validator}"/>
+              </af:inputText>
+              <af:spacer  id="sp15" width="0" height="5"/>
+              <af:selectOneRadio id                 ="sor15"
+                                 value              ="#{bindings.triggerType.inputValue}"
+                                 label              ="#{bindings.triggerType.hints.label}"
+                                 layout             ="horizontal"
+                                 required           ="#{bindings.triggerType.hints.mandatory}"
+                                 readOnly           ="#{pageFlowScope.mode == 'view'}"
+                                 autoSubmit         ="true">
+                <f:selectItems  id="si15" value="#{bindings.triggerType.items}"/>
+                <f:validator binding="#{bindings.triggerType.validator}"/>
+              </af:selectOneRadio>
+              <af:spacer  id="sp16" width="0" height="5" rendered="#{bindings.triggerType.inputValue eq 'Cron'}" partialTriggers="sor15"/>
+              <af:selectOneChoice id                 ="soc16"
+                                  value              ="#{bindings.cronType.inputValue}"
+                                  label              ="#{bindings.cronType.hints.label}"
+                                  required           ="#{bindings.cronType.hints.mandatory}"
+                                  rendered           ="#{bindings.triggerType.inputValue eq 'Cron'}"
+                                  readOnly           ="#{pageFlowScope.mode == 'view'}"
+                                  autoSubmit         ="true"
+                                  partialTriggers    ="sor15">
+                <f:selectItems  id="si16" value="#{bindings.cronType.items}"/>
+                <f:validator binding="#{bindings.cronType.validator}"/>
+              </af:selectOneChoice>
+              <af:spacer  id="sp17" width="0" height="5"/>
+              <af:selectBooleanCheckbox id                 ="cb17"
+                                        value              ="#{bindings.triggerStatus.inputValue}"
+                                        label              ="#{bindings.triggerStatus.label}"
+                                        shortDesc          ="#{bindings.triggerStatus.hints.tooltip}"
+                                        valueChangeListener="#{backingBeanScope.jobAttribute.changed}"
+                                        autoSubmit         ="true"/>
+            </af:panelFormLayout>
+            <af:panelHeader id="ph20" text="#{bindings.status.hints.label}" rendered="#{pageFlowScope.mode != 'create' and bindings.triggerStatus.inputValue}" partialTriggers="cb17">
+              <af:panelFormLayout id="pf20" maxColumns="1" labelWidth="33%" fieldWidth="67%">
+                <af:inputText id                 ="it21"
+                              value              ="#{bindings.triggerStart.inputValue}"
+                              label              ="#{bindings.triggerStart.hints.label}"
+                              readOnly           ="true"
+                              columns            ="#{bindings.triggerStart.hints.displayWidth}"
+                              maximumLength      ="#{bindings.triggerStart.hints.precision}"
+                              shortDesc          ="#{bindings.triggerStart.hints.tooltip}">
+                  <af:convertDateTime id="dt21" type="both" dateStyle="full"/>
+                </af:inputText>
+                <af:inputText id                 ="it22"
+                              value              ="#{bindings.triggerStop.inputValue}"
+                              label              ="#{bindings.triggerStop.hints.label}"
+                              readOnly           ="true"
+                              columns            ="#{bindings.triggerStop.hints.displayWidth}"
+                              maximumLength      ="#{bindings.triggerStop.hints.precision}"
+                              shortDesc          ="#{bindings.triggerStop.hints.tooltip}">
+                  <af:convertDateTime id="dt22" type="both" dateStyle="full"/>
+                </af:inputText>
+                <af:inputText id                 ="it23"
+                              value              ="#{bindings.triggerNext.inputValue}"
+                              label              ="#{bindings.triggerNext.hints.label}"
+                              readOnly           ="true"
+                              columns            ="#{bindings.triggerNext.hints.displayWidth}"
+                              maximumLength      ="#{bindings.triggerNext.hints.precision}"
+                              shortDesc          ="#{bindings.triggerNext.hints.tooltip}">
+                  <af:convertDateTime id="dt23" type="both" dateStyle="full"/>
+                </af:inputText>
+              </af:panelFormLayout>
+            </af:panelHeader>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

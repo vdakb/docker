@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="endpoint_searchPageDef"
+                Package="oracle.iam.identity.sysprov.svr.view">
+  <parameters/>
+  <executables>
+    <iterator     id="EndpointIterator" Binds="EndpointSearchVO" DataControl="EndpointAMDataControl" RangeSize="20"/>
+    <searchRegion id="EndpointCriteria" Binds="EndpointIterator" Criteria="EndpointVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="endpointName"/>
+  </executables>
+  <bindings>
+    <tree id="Endpoint" IterBinding="EndpointIterator">
+      <nodeDefinition Name="EndpointNode" DefName="oracle.iam.identity.sysprov.model.view.EndpointVO">
+        <AttrNames>
+          <Item Value="endpointKey"/>
+          <Item Value="endpointName"/>
+          <Item Value="endpointType"/>
+          <Item Value="remoteManager"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Rollback" DataControl="EndpointAMDataControl" RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

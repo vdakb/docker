@@ -1,0 +1,118 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Jan 29 10:41:40 CET 2025
+  Author:  adamvincze
+  Type: BPEL 2.0 Process
+  Purpose: Asynchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="RejectionProcess"
+         targetNamespace="http://xmlns.oracle.com/auto-rejection/reject"
+         xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:client="http://xmlns.oracle.com/auto-rejection/reject"
+         xmlns:ora="http://schemas.oracle.com/xpath/extension"
+         xmlns:ui="http://xmlns.oracle.com/soa/designer"
+         xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/auto-rejection/reject"
+         xmlns:ns2="http://wls.ws.workflowservice.platform.iam.oracle/"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:ess="http://xmlns.oracle.com/scheduler" xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns3="http://xmlns.oracle.com/request/RequestDetails">
+
+    <import ui:processWSDL="true" namespace="http://xmlns.oracle.com/auto-rejection/reject" location="../wsdl/rejection-process.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+    <partnerLinks>
+        <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+        <partnerLink name="RequestApprovalService" partnerLinkType="ns1:RejectionProcess" myRole="RejectionProcessProvider" partnerRole="RejectionProcessRequester"/>
+        <partnerLink name="CallbackService" partnerLinkType="ns2:CallbackServiceEndpoint"
+                     partnerRole="CallbackServiceProvider"/>
+    </partnerLinks>
+
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        VARIABLES                                                        
+        List of messages and XML documents used within this BPEL process 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <variables>
+        <!-- Reference to the message passed as input during initiation -->
+        <variable name="inputVariable" messageType="ns1:RejectionProcessRequestMessage"/>
+
+        <!-- Reference to the message that will be sent back to the requester during callback -->
+        <variable name="outputVariable" messageType="ns1:RejectionProcessResponseMessage"/>
+        <variable name="callbackServiceInput" messageType="ns2:callback"/>
+        <variable name="callbackServiceOutput" messageType="ns2:callbackResponse"/>
+    </variables>
+    <faultHandlers>
+        <catchAll>
+            <sequence name="Sequence1">
+                <assign name="initializeCallback">
+                    <copy>
+                        <from>ora:getFaultAsString()</from>
+                        <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg1</to>
+                    </copy>
+                    <copy>
+                        <from>ora:getConversationId()</from>
+                        <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg0</to>
+                    </copy>
+                </assign>
+                <invoke name="callbackError" bpelx:invokeAsDetail="no" partnerLink="CallbackService"
+                        portType="ns2:CallbackService" operation="callback" inputVariable="callbackServiceInput"
+                        outputVariable="callbackServiceOutput"/>
+            </sequence>
+        </catchAll>
+    </faultHandlers>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+       ORCHESTRATION LOGIC                                               
+       Set of activities coordinating the flow of messages across the    
+       services integrated within this business process                  
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    -->
+    <sequence name="main">
+        <!-- Receive input from requestor. (Note: This maps to operation defined in RejectionProcess.wsdl) -->
+        <receive name="receiveInput" partnerLink="RequestApprovalService" portType="client:RejectionProcess" operation="process" variable="inputVariable" createInstance="yes"/>
+        <assign name="rejected">
+            <copy>
+                <from>string('rejected')</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/ns1:result</to>
+            </copy>
+            <copy>
+                <from>string('rejected')</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg1</to>
+            </copy>
+            <copy>
+                <from>ora:getConversationId()</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg0</to>
+            </copy>
+        </assign>
+        <invoke name="callbackComplete" partnerLink="CallbackService"
+                portType="ns2:CallbackService" operation="callback"
+                inputVariable="callbackServiceInput" outputVariable="callbackServiceOutput" bpelx:invokeAsDetail="no"/>
+        <!-- 
+          Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+        -->
+        <invoke name="callbackClient" partnerLink="RequestApprovalService" portType="client:RejectionProcessCallback" operation="processResponse" inputVariable="outputVariable"/>
+    </sequence>
+</process>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/AccountData"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:jaxb          ="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc"
+            xmlns:xjc           ="http://java.sun.com/xml/ns/jaxb/xjc"
+            xmlns:general       ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData"
+            targetNamespace     ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/AccountData"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified">
+  <xsd:annotation>
+    <xsd:appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="oracle.iam.requestdataws.webservicestubs.types"/>
+      </jaxb:schemaBindings>
+    </xsd:appinfo>
+  </xsd:annotation>
+
+  <xsd:import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData" schemaLocation="request-service-type.xsd"/>
+
+  <xsd:element name="AccountKey"  type="xsd:string"/>
+  <xsd:element name="AccountData" type="AccountDataType"/>
+
+  <xsd:complexType name="AccountDataType">
+    <xsd:sequence>
+      <xsd:element name="AccountKey"              type="xsd:string" nillable="true"/>
+      <xsd:element name="ProcessInstanceKey"      type="xsd:string" nillable="true"/>
+      <xsd:element name="UserKey"                 type="xsd:string" nillable="true"/>
+      <xsd:element name="PolicyKey"               type="xsd:string" nillable="true"/>
+      <xsd:element name="AccountDescriptiveField" type="xsd:string" nillable="true"/>
+      <xsd:element name="AccountType" nillable="true">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="primary"/>
+            <xsd:enumeration value="secondery"/>
+            <xsd:enumeration value="admin"/>
+            <xsd:enumeration value="other"/>
+            <xsd:enumeration value="serviceaccount"/>
+            <xsd:enumeration value="unknown"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+      <xsd:element name="RequestKey"             type="xsd:string"  nillable="true"/>
+      <xsd:element name="IsServiceAccount"       type="xsd:boolean" nillable="true"/>
+      <xsd:element name="ApplicationInstanceKey" type="xsd:long"    nillable="true"/>
+      <xsd:element name="AccountData">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="FormKey"           type="xsd:string"           nillable="true"/>
+            <xsd:element name="UdTablePrimaryKey" type="xsd:string"           nillable="true"/>
+            <xsd:element name="ParentData"        type="general:MapValueType" nillable="true"/>
+            <xsd:element name="ChildData" nillable="true">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element name="Key" maxOccurs="unbounded" nillable="true">
+                    <xsd:complexType>
+                      <xsd:sequence>
+                        <xsd:element name="ChildTableRecord" maxOccurs="unbounded" nillable="true">
+                          <xsd:complexType>
+                            <xsd:sequence>
+                              <xsd:element name="RowKey" type="xsd:string" nillable="true"/>
+                              <xsd:element name="Action" nillable="true">
+                                <xsd:simpleType>
+                                  <xsd:restriction base="xsd:string">
+                                    <xsd:enumeration value="Add"/>
+                                    <xsd:enumeration value="Modify"/>
+                                    <xsd:enumeration value="Delete"/>
+                                  </xsd:restriction>
+                                </xsd:simpleType>
+                              </xsd:element>
+                              <xsd:element name="ChildData" type="general:MapValueType" nillable="true"/>
+                            </xsd:sequence>
+                          </xsd:complexType>
+                        </xsd:element>
+                      </xsd:sequence>
+                      <xsd:attribute name="ChildTableName" type="xsd:string"/>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

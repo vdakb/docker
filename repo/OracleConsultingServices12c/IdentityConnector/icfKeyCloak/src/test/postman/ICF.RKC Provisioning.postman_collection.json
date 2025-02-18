@@ -1,0 +1,2102 @@
+{
+	"info": {
+		"_postman_id": "26539838-f8b1-4845-980e-32cba1d6e506",
+		"name": "Keycloak REST API v22.0.1",
+		"description": "Keycloak Admin Rest API v22 ([https://www.keycloak.org/docs-api/22.0.1/rest-api/index.html](https://www.keycloak.org/docs-api/22.0.1/rest-api/index.html))",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12777809"
+	},
+	"item": [
+		{
+			"name": "Access Token",
+			"item": [
+				{
+					"name": "[UAT] Obtain Token for Regular User",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "admin-cli",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "rkcadmin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{serviceURL}}/realms/master/protocol/openid-connect/token",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"realms",
+								"master",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[SAT] Obtain Token for Service User",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "igaadmin",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "14uSMog8Lv3gzjv239rjDHbHpXZMjfFA",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{serviceURL}}/realms/{{realm}}/protocol/openid-connect/token",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"realms",
+								"{{realm}}",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "POST \\[UAT\\] Obtain access token for a user\n\n[<code>http://oliver.cinnamonstar.net:8080/realms/myrealm/protocol/openid-connect/token</code>](http://oliver.cinnamonstar.net:8080/realms/myrealm/protocol/openid-connect/token)\n\nObtain UAT = user access token from a user in realm\n\n### Headers\n\n| content-type | application/x-www-form-urlencoded |\n| --- | --- |\n\n### Body\n\n|  |  |\n| --- | --- |\n| grant_type | password |\n| client_id | admin-cli |\n| username | rkcadmin |\n| password | Welcome1 |\n\n## POST\\[SAT\\] Obtain accsess token from a service account\n\n[<code>http://oliver.cinnamonstar.net:8080/realms/myrealm/protocol/openid-connect/token</code>](http://oliver.cinnamonstar.net:8080/realms/myrealm/protocol/openid-connect/token)\n\nObtain SAT (service account token)\n\n### Headers\n\n| content-type | application/x-www-form-urlencoded |\n| --- | --- |\n\n### Body\n\n|  |  |\n| --- | --- |\n| grant_type | client_credentials |\n| client_id | service-account |\n| client_secret | Welcome1 |"
+		},
+		{
+			"name": "Service API",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "amusterfrau",
+							"item": [
+								{
+									"name": "create",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true,
+											"user-agent": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"username\"      : \"bp4711123\"\n, \"enabled\"       : true\n, \"lastName\"      : \"Musterfrau\"\n, \"firstName\"     : \"Agathe\"\n, \"email\"         : \"agathe.musterfrau@vm.oracle.com\"\n, \"emailVerified\" : true\n, \"totp\"          : true\n, \"attributes\"    : [\n    { \"phone\"            : [\"+49(0) 177 5948 437\"] }\n  , { \"mobile\"           : [\"+49(0) 177 5948 437\"] }\n  , { \"participant\"      : [\"BP\"] }\n  , { \"organization\"     : [\"BP\"] }\n  , { \"division\"         : [\"BP_1\"] }\n  , { \"organizationUnit\" : [\"BP_1_1\"] }\n  ]\n, \"requiredActions\" : [\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users"
+											]
+										},
+										"description": "Create a new user Username must be unique."
+									},
+									"response": []
+								},
+								{
+									"name": "lookup",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/a46513b9-7e94-46a0-9204-e5a5a9a79bfb",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"a46513b9-7e94-46a0-9204-e5a5a9a79bfb"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "resolve",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users?exact=true&username=bp4711123",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users"
+											],
+											"query": [
+												{
+													"key": "exact",
+													"value": "true"
+												},
+												{
+													"key": "username",
+													"value": "bp4711123"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "assign",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/d8a6a88f-3dde-4796-8d7e-541f4390ba8b/role-mappings/realm",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"d8a6a88f-3dde-4796-8d7e-541f4390ba8b",
+												"role-mappings",
+												"realm"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "assign-authz",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[ { \"id\"   : \"80504982-e090-4244-95ce-58a73bd97a28\"\n  , \"name\" : \"uma_authorization\" \n  }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/d8a6a88f-3dde-4796-8d7e-541f4390ba8b/role-mappings/realm",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"d8a6a88f-3dde-4796-8d7e-541f4390ba8b",
+												"role-mappings",
+												"realm"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "revoke-authz",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[ { \"id\"   : \"80504982-e090-4244-95ce-58a73bd97a28\"\n  , \"name\" : \"uma_authorization\" \n  }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/d8a6a88f-3dde-4796-8d7e-541f4390ba8b/role-mappings/realm",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"d8a6a88f-3dde-4796-8d7e-541f4390ba8b",
+												"role-mappings",
+												"realm"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "group",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/d8a6a88f-3dde-4796-8d7e-541f4390ba8bgroups",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"d8a6a88f-3dde-4796-8d7e-541f4390ba8bgroups"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "roles",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/d8a6a88f-3dde-4796-8d7e-541f4390ba8b/role-mappings/realm",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"d8a6a88f-3dde-4796-8d7e-541f4390ba8b",
+												"role-mappings",
+												"realm"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "credential",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/e08a24be-0e45-43ee-9882-36f3cca95ce0/credentials",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"e08a24be-0e45-43ee-9882-36f3cca95ce0",
+												"credentials"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/6520a4a0-4f67-4cb7-b0a4-920252ecd79b",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"6520a4a0-4f67-4cb7-b0a4-920252ecd79b"
+											]
+										},
+										"description": "Delete the user"
+									},
+									"response": []
+								},
+								{
+									"name": "update-email",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"email\"         : \"agathe.musterfrau@vm.oracle.com\"\n, \"emailVerified\" : true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/f650ac2c-ec12-44fd-ba22-44238904c4e1",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"f650ac2c-ec12-44fd-ba22-44238904c4e1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "amustermann",
+							"item": [
+								{
+									"name": "create",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true,
+											"user-agent": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"username\"      : \"bkbk4711123\"\n, \"enabled\"       : true\n, \"lastName\"      : \"Mustermann\"\n, \"firstName\"     : \"Max\"\n, \"email\"         : \"max.mustermann@vm.oracle.com\"\n, \"emailVerified\" : true\n, \"totp\"          : true\n, \"attributes\"    : {\n    \"phone\"            : [\"+49(0) 177 5948 437\"]\n  , \"mobile\"           : [\"+49(0) 177 5948 437\"]\n  , \"participant\"      : [\"AN\"]\n  , \"organization\"     : [\"AN\"]\n  , \"division\"         : [\"AN_1\"]\n  , \"organizationUnit\" : [\"AN_1_1\"]\n  }\n, \"requiredActions\" : [\n    \"VERIFY_EMAIL\"\n  , \"UPDATE_EMAIL\"\n  , \"UPDATE_PROFILE\"\n  , \"CONFIGURE_TOTP\"\n  , \"UPDATE_PASSWORD\"\n  , \"update_user_locale\"\n  , \"webauthn-register\"\n  , \"webauthn-register-passwordless\"\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users"
+											]
+										},
+										"description": "Create a new user Username must be unique."
+									},
+									"response": []
+								},
+								{
+									"name": "resolve",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users?exact=true&username=bkbk4711123",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users"
+											],
+											"query": [
+												{
+													"key": "exact",
+													"value": "true"
+												},
+												{
+													"key": "username",
+													"value": "bkbk4711123"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "roles",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/215f5345-9a3b-4aef-805e-e48040f8f72c/role-mappings/realm",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"215f5345-9a3b-4aef-805e-e48040f8f72c",
+												"role-mappings",
+												"realm"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/b7468ba9-0f1b-47d3-9c6b-02849684cd70",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"b7468ba9-0f1b-47d3-9c6b-02849684cd70"
+											]
+										},
+										"description": "Delete the user"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "azitterbacke",
+							"item": [
+								{
+									"name": "create",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true,
+											"user-agent": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"username\"      : \"an4711123\"\n, \"enabled\"       : true\n, \"firstName\"     : \"Alfons\"\n, \"lastName\"      : \"Zitterbacke\"\n, \"email\"         : \"alfons.zitterbacke@vm.oracle.com\"\n, \"emailVerified\" : true\n, \"totp\"          : true\n, \"attributes\"    : [\n    { \"phone\"            : [\"+49(0) 177 5948 437\"] }\n  , { \"mobile\"           : [\"+49(0) 177 5948 437\"] }\n  , { \"participant\"      : [\"AN\"] }\n  , { \"organization\"     : [\"AN\"] }\n  , { \"division\"         : [\"AN_1\"] }\n  , { \"organizationUnit\" : [\"AN_1_1\"] }\n  ]\n, \"credentials\" : [\n    { \"type\"      : \"password\"\n    , \"userLabel\" : \"Identity Manager\"\n    , \"value\"     : \"Welcome1\"\n    , \"temporary\" : false\n    }\n  ]\n, \"requiredActions\" : [\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users"
+											]
+										},
+										"description": "Create a new user Username must be unique."
+									},
+									"response": []
+								},
+								{
+									"name": "lookup",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/bc9a7537-dd1c-48cb-9497-8fc09e15c57a",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"bc9a7537-dd1c-48cb-9497-8fc09e15c57a"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "resolve",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users?exact=true&username=an4711123",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users"
+											],
+											"query": [
+												{
+													"key": "exact",
+													"value": "true"
+												},
+												{
+													"key": "username",
+													"value": "an4711123"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "roles",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/bc9a7537-dd1c-48cb-9497-8fc09e15c57a/role-mappings",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"bc9a7537-dd1c-48cb-9497-8fc09e15c57a",
+												"role-mappings"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "group",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/bc9a7537-dd1c-48cb-9497-8fc09e15c57a/groups",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"bc9a7537-dd1c-48cb-9497-8fc09e15c57a",
+												"groups"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "credential",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/bc9a7537-dd1c-48cb-9497-8fc09e15c57a/credentials",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"bc9a7537-dd1c-48cb-9497-8fc09e15c57a",
+												"credentials"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "rename",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"connection": true,
+											"accept-encoding": true,
+											"accept": true,
+											"user-agent": true
+										}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\"username\" : \"qzitterbacke\"}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/90f4df1c-6b3b-4afd-8506-0624711753ec",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"90f4df1c-6b3b-4afd-8506-0624711753ec"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "reset-password",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"connection": true,
+											"accept-encoding": true,
+											"accept": true,
+											"user-agent": true
+										}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"type\"      : \"password\"\n, \"userLabel\" : \"Identity Manager\"\n, \"value\"     : \"Welcome1\"\n, \"temporary\" : false\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/c2c856a0-d07d-4b3a-9d41-b5df86bf7bfe/reset-password",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"c2c856a0-d07d-4b3a-9d41-b5df86bf7bfe",
+												"reset-password"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/2d008e9b-178e-4550-9fec-c90686f30060",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"2d008e9b-178e-4550-9fec-c90686f30060"
+											]
+										},
+										"description": "Delete the user."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "gcambrault",
+							"item": [
+								{
+									"name": "create",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true,
+											"user-agent": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"username\"      : \"an4711124\"\n, \"enabled\"       : true\n, \"firstName\"     : \"Gerald\"\n, \"lastName\"      : \"Cambrault\"\n, \"email\"         : \"alfons.zitterbacke@vm.oracle.com\"\n, \"emailVerified\" : true\n, \"totp\"          : true\n, \"attributes\"    : [\n    { \"phone\"            : [\"+49(0) 177 5948 437\"] }\n  , { \"mobile\"           : [\"+49(0) 177 5948 437\"] }\n  , { \"participant\"      : [\"AN\"] }\n  , { \"organization\"     : [\"AN\"] }\n  , { \"division\"         : [\"AN_1\"] }\n  , { \"organizationUnit\" : [\"AN_1_1\"] }\n  ]\n, \"requiredActions\" : [\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users"
+											]
+										},
+										"description": "Create a new user Username must be unique."
+									},
+									"response": []
+								},
+								{
+									"name": "resolve",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users?exact=true&username=an4711124",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users"
+											],
+											"query": [
+												{
+													"key": "exact",
+													"value": "true"
+												},
+												{
+													"key": "username",
+													"value": "an4711124"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "credential",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/befc4669-0682-4ef0-8dcc-ff083a96b991/credentials",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"befc4669-0682-4ef0-8dcc-ff083a96b991",
+												"credentials"
+											]
+										},
+										"description": "Get representation of the user"
+									},
+									"response": []
+								},
+								{
+									"name": "reset-password",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"connection": true,
+											"accept-encoding": true,
+											"accept": true,
+											"user-agent": true
+										}
+									},
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"type\"      : \"password\"\n, \"userLabel\" : \"Identity Manager\"\n, \"value\"     : \"Sunset!Sunrise\"\n, \"temporary\" : false\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/befc4669-0682-4ef0-8dcc-ff083a96b991/reset-password",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"befc4669-0682-4ef0-8dcc-ff083a96b991",
+												"reset-password"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/2d008e9b-178e-4550-9fec-c90686f30060",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"realms",
+												"{{realm}}",
+												"users",
+												"2d008e9b-178e-4550-9fec-c90686f30060"
+											]
+										},
+										"description": "Delete the user."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "count",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/count",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"users",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "count-filtered",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/users/count?q=username:an",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"users",
+										"count"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "username:an"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/users",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search-filtered",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/users?q=username:an firstName:A lastName:Z",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"users"
+									],
+									"query": [
+										{
+											"key": "q",
+											"value": "username:an firstName:A lastName:Z"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search-paginated",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/users?first=0&max=100000000",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"users"
+									],
+									"query": [
+										{
+											"key": "first",
+											"value": "0"
+										},
+										{
+											"key": "max",
+											"value": "100000000"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Role",
+					"item": [
+						{
+							"name": "search",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/roles",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search-filtered",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/roles?search=uma",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"roles"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "uma"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup-authz",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/roles-by-id/80504982-e090-4244-95ce-58a73bd97a28",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"roles-by-id",
+										"80504982-e090-4244-95ce-58a73bd97a28"
+									]
+								},
+								"description": "Get representation of the user"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Group",
+					"item": [
+						{
+							"name": "search",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/groups",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "search-filtered",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/groups?search=uid",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"groups"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "uid"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "count",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/groups/count",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"groups",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup-pid-admin",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/groups/283c4e19-255a-4d39-9f68-56f7bfc7f119",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"groups",
+										"283c4e19-255a-4d39-9f68-56f7bfc7f119"
+									]
+								},
+								"description": "Get representation of the user"
+							},
+							"response": []
+						},
+						{
+							"name": "lookup-uid-admin",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/groups/27599b45-4694-457a-b8f4-62eaa5309e0a",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"groups",
+										"27599b45-4694-457a-b8f4-62eaa5309e0a"
+									]
+								},
+								"description": "Get representation of the user"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Action",
+					"item": [
+						{
+							"name": "list",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/authentication/required-actions",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"authentication",
+										"required-actions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/authentication/required-actions/CONFIGURE_TOTP",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"authentication",
+										"required-actions",
+										"CONFIGURE_TOTP"
+									]
+								},
+								"description": "Get representation of the user"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Provider",
+					"item": [
+						{
+							"name": "list",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/identity-provider/instances",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"identity-provider",
+										"instances"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Component",
+					"item": [
+						{
+							"name": "list",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/components",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"components"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Client",
+					"item": [
+						{
+							"name": "search",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{serviceURL}}/admin/realms/{{realm}}/clients",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"realms",
+										"{{realm}}",
+										"clients"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "clientSecret",
+				"value": "{{secret}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{client}}",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "{{serviceURL}}/realms/myrealm/protocol/openid-connect/token",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "client_credentials",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "rkc.cloudbums",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "rkcadmin",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "Welcome1",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "body",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "serviceURL",
+			"value": "https://rkc.cinnamonstar.net",
+			"type": "string"
+		},
+		{
+			"key": "realm",
+			"value": "myrealm",
+			"type": "string"
+		},
+		{
+			"key": "client",
+			"value": "igaadmin",
+			"type": "string"
+		},
+		{
+			"key": "secret",
+			"value": "14uSMog8Lv3gzjv239rjDHbHpXZMjfFA",
+			"type": "string"
+		}
+	]
+}

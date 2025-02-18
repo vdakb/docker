@@ -1,0 +1,516 @@
+<!--
+  ! This software is the confidential and proprietary information of
+  ! Oracle Corporation. ("Confidential Information").  You shall not
+  ! disclose such Confidential Information and shall use it only in
+  ! accordance with the terms of the license agreement you entered
+  ! into with Oracle.
+  !
+  ! ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+  ! SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  ! IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ! PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+  ! SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+  ! THIS SOFTWARE OR ITS DERIVATIVES.
+  !
+  ! Copyright &#xA9; 2015. All Rights reserved
+  !
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="java-iam"
+         xml:lang="en"
+         version ="5.0">
+  <title>Java Standards</title>
+  <section xml:id="java-iam-01">
+    <title>Packages</title>
+    <section xml:id="java-iam-01-01">
+      <title>Applicability</title>
+      <para>
+        All classes must belong to a particular package, i.e. each source file must contain a package statement.
+        If using J2SE 1.4 and later all classes must be in a package.
+      </para>
+    </section>
+    <section xml:id="java-iam-01-02">
+      <title>Naming</title>
+      <para>
+        Package names should be all lower case.
+      </para>
+      <para>
+        Package names should begin with <literal>oracle</literal> followed by the project name (on external projects it may be more appropriate to start package names with the customer’s name).
+      </para>
+      <para>
+        Package names belonging always to a specific product line.
+      </para>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Product Line</entry>
+              <entry>Package</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">Identity Manager</emphasis></entry>
+              <entry><literal>oracle.iam.identity</literal></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Access Manager</emphasis></entry>
+              <entry><literal>oracle.iam.access</literal></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Unified Directory</emphasis></entry>
+              <entry><literal>oracle.iam.directory</literal></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Internet Directory</emphasis></entry>
+              <entry><literal>oracle.iam.directory</literal></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Virtual Directory</emphasis></entry>
+              <entry><literal>oracle.iam.directory</literal></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Integration Directory</emphasis></entry>
+              <entry><literal>oracle.iam.directory</literal></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="java-iam-02">
+    <title>Classes</title>
+    <section xml:id="java-iam-02-01">
+      <title>Declarations</title>
+      <para>
+        At the beginning of the class definition, any extends declarations on the same line as the class declaration and any implements on the following line, for example,
+      </para>
+      <programlisting>
+public class GeneratorEngine extends    Object
+                             implements Generator {
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-02-02">
+      <title>Naming</title>
+      <para>
+        Class names should be a noun or noun phrase clearly representing its purpose but not overly long. Class names should be written in UpperCamelCase i.e. the first letter of every word in the name should be capitalized. For example,
+      </para>
+      <programlisting>
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-02-03">
+      <title>Constructor</title>
+      <para>
+        A default constructor should be explicitly supplied for each class, unless there is a good reason for not providing one (in which case the reason must be documented in the code).
+      </para>
+      <para>
+        Be sure to call the appropriate superclass constructor, using super() and the relevant arguments, as necessary.
+      </para>
+    </section>
+    <section xml:id="java-iam-02-04">
+      <title>Final classes</title>
+      <para>
+        Since the final keyword prevents any further derived classes of a class it requires a strong justification to be used (typically, security; optimization reasons are not sufficient).
+        As a case in point, <literal>java.util.Vector</literal> is declared as a final class, which means that you cannot derive from it, even though it would be very useful to do so.
+      </para>
+    </section>
+    <section xml:id="java-iam-02-05">
+      <title>Documentation</title>
+      <para>
+        Every class in a source file must be preceded by javadoc comments that describe the purpose of the class.
+        This should include the author, file version and links to any related packages (the source control system may be able to generate the first two automatically).
+        The first sentence of the javadoc should be on a separate line as it appears as a summary of the class javadoc.
+      </para>
+      <programlisting>
+/**
+ ** Object to encapsulate content settings in a project's configuration.
+ ** &#x3C;br&#x3E;
+ ** This object is added to the common data of a project when it is first
+ ** given a provider.
+ ** &#x3C;br&#x3E;
+ ** Provides access to content set information such as the root content
+ ** path under which the objects .xml files are stored.
+ ** &#x3C;br&#x3E;
+ ** This class use a hash data structure intended to be used as the
+ ** generic storage for project metadata that can be marshalled to and
+ ** from a persistent form without depending on custom marshalling code.
+ **
+ ** @author dieter.steding@oracle.com
+ ** @version 12.2.1.3.42.60.84
+ ** @since   12.2.1.3.42.60.83
+ */
+     </programlisting>
+    </section>
+  </section>
+  <section xml:id="java-iam-03">
+    <title>Interfaces</title>
+    <section xml:id="java-iam-03-01">
+      <title>Naming</title>
+      <para>
+        Interface names should be descriptive adjectives clearly representing their purpose but not overly long.
+        According to the defined principles, they should never begin with a capital ‘I’ to visualize that this is an interface rather than a class.
+        The first letter of every word in the name should be capitalized.
+      </para>
+    </section>
+    <section xml:id="java-iam-03-02">
+      <title>Documentation</title>
+      <para>
+        Interfaces should be documented as described for classes.
+      </para>
+    </section>
+  </section>
+  <section xml:id="java-iam-04">
+    <title>Methods</title>
+    <para>
+      All methods should have one specific task and be small in length.
+      This will encourage methods to be generic and enhance the possibility of code reuse.
+    </para>
+    <para>
+      Method prototypes should have the opening and closing braces at the same level, for example:
+    </para>
+    <programlisting>
+    </programlisting>
+  </section>
+  <section xml:id="java-iam-05">
+    <title>Miscellaneous</title>
+    <section xml:id="java-iam-05-01">
+      <title>Magic Numbers</title>
+      <para>
+        There should be no hard coded ‘magic numbers’ within source code.
+        All constant values should be declared as static final class variables and a comment included with the variable definition as to what it is used for.
+      </para>
+    </section>
+    <section xml:id="java-iam-05-02">
+      <title>Initialization</title>
+      <para>
+        All variables should be explicitly initialized, at their point of declaration.
+        Without explicit initialization the default type initialization is used, which may cause problems if someone subsequently changes the variable’s type.
+      </para>
+      <para>
+        One statement per line.
+      </para>
+      <para>
+        Code should be laid such that there is only one statement per line.
+        This improves readability and maintainability and makes debugging using a source code debugger easier.
+        For example the following code fragment:
+      </para>
+      <programlisting>
+if (state) { setEnabled(state); }
+      </programlisting>
+      <para>
+        should be written as follows:
+      </para>
+      <programlisting>
+if (state) {
+ setEnabled(state);
+}
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-05-03">
+      <title>Ternary Operator</title>
+      <para>
+        Used wisely, the ternary operator yields concise, readable code.
+        It should only be used when the expressions involved are simple and their purpose clear.
+        Parentheses should be used to aid readability. For example,
+      </para>
+      <programlisting>
+String stateLabel = (a.isModified()) ? "Modified" : "";
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-05-04">
+      <title>Dangling Else Problem</title>
+      <para>
+        Braces must always be used to delimit the branches of an if-else statement, even if the branch consists of a single statement.
+        This avoids the so-called ‘dangling else’ problem where even though the code layout and indentation suggests one mode of execution the reality is different.
+        For example, consider the following code fragment:
+      </para>
+      <programlisting>
+if (a == 1)
+ if (b == 3)
+  myString = “hello”;
+else
+ myString = “goodbye”;
+      </programlisting>
+      <para>
+        The indentation suggests that the <literal>else</literal> clause is intended to match the first <literal>if</literal> (i.e. <literal>a == 1</literal> but in fact it will be interpreted in the context of the second <literal>if</literal> (i.e. <literal>b == 3</literal>.
+        This ambiguity is avoided if braces are used:
+      </para>
+      <programlisting>
+if (a == 1) {
+ if (b == 3) {
+  myString = “hello”;
+ }
+}
+else {
+ myString = “goodbye”;
+}
+      </programlisting>
+      <para>
+        The same principle applies to other flow control and looping constructs such as switch statements (see section xxx.xxx), for, do-while and try-catch statements, in that all blocks of code used in these constructs must be delimited by braces - even if the block only consists of one line of code.
+      </para>
+    </section>
+    <section xml:id="java-iam-05-05">
+      <title>Switch Statements</title>
+      <para>
+        The <literal>case</literal> labels in a switch statement should be indented to the next level as the <literal>switch</literal> label - these are all parts of the same statement, much as the <literal>if</literal> and <literal>else</literal> labels in an if-else statement have the same level of indentation.
+      </para>
+      <para>
+        Each case statement must have its own <literal>break</literal> statement, unless it is explicitly intended that execution fall through to the next case statement.
+        If fall through is intended a comment must be included stating this.
+      </para>
+      <para>
+        All switch statements should have a <literal>default</literal> case statement; even if at the time of writing, no circumstance is envisaged where the <literal>default</literal> will be called.
+        As programs evolve, domains inevitably change and the presence of a <literal>default</literal> statement will help catch potential problems.
+      </para>
+      <para>
+       The code associated with each <literal>case</literal> statement should be delimited by its own set of braces.
+       This avoids unexpected problems with regard to the scope of variables.
+       For example, the following code fragment will not compile, since variable <literal>i</literal> is declared twice at switch-level scope:
+      </para>
+      <programlisting>
+...
+case 1: int i = 0;
+    // Some code using i...
+    break;
+case 2: int i = 0; // Will not compile
+    // Some further code using i...
+    break;
+      </programlisting>
+      <para>
+        whereas with the addition of case-level braces the code will compile:
+      </para>
+      <programlisting>
+...
+case 1: {
+     int i = 0;
+     // Some code using i...
+    }
+    break;
+case 2: {
+     int i = 0;
+     // Some further code using i...
+    }
+    break;
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-05-06">
+      <title>Empty Statements</title>
+      <para>There are situations where a statement is not required even though in general a statement would exist.
+       Typical this involves a looping construct where the necessary processing is done in the predicate of the construct itself.
+       Such scenarios must be fully commented since they may not be immediately obvious to anyone maintaining the code.
+       In addition, consideration must be given to rewriting the code in such a way as to improve its legibility.
+       For example:
+      </para>
+      <programlisting>
+for (int i = 0; i &#x3C; 10; a[i++] = i) {
+ // intentionally left blank
+}
+      </programlisting>
+      <para>
+        should be written
+      </para>
+      <programlisting>
+for (int i = 0; i &#x3C; 10; i++) {
+ a[i] = i + 1;
+}
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-05-07">
+      <title>String Manipulation</title>
+      <para>
+        Intensive manipulation of strings should be performed using the <literal>StringBuilder</literal> class rather than <literal>String</literal> as this is usually more efficient.
+        Instances of <literal>String</literal> are immutable, and operations such as concatenation are achieved using <literal>StringBuilder</literal> objects behind the scenes. For example,
+      </para>
+      <programlisting>
+String s = new String();
+s = "One,";
+s = s + "two,";
+s = s + "three";
+System.out.println(s);
+      </programlisting>
+      <para>
+        will probably result in the creation of several temporary <literal>StringBuilder</literal> objects, whilst a single <literal>StringBuilder</literal> object can be used to achieve the same effect:
+      </para>
+      <programlisting>
+StringBuilder builder = new StringBuilder();
+builder.append("One,");
+builder.append("two,");
+builder.append("three");
+System.out.println(builder.toString());
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-05-08">
+      <title>Garbage Collection</title>
+      <para>
+        Java’s garbage collector in general can be relied upon to reclaim the memory holding an object when no handles to that object remain.
+        However sometimes handles to an object continue to exist even when the object has ceased to be useful (for example, an object created and used at the start of a method but ignored for the rest of the method).
+        When large objects or arrays to become useful it is good practice to explicitly set all handles to them to null.
+        This will allow the garbage collector to reclaim the associated memory as soon as possible.
+      </para>
+      <para>
+        A class can define a finalize() method which will be called by the garbage collector when an instance of the class is being reclaimed.
+        However, Java makes no guarantees about when garbage collection will occur or what order objects will be collected in.
+        Indeed, an object may not be garbage collected at all.
+        This means that the finalize() method is of very little use and in particular should not be used to free non-memory resources such as file descriptors associated with an object.
+      </para>
+      <para>
+        The try/catch/finally method discussed in section xxx.xxx should be used to free resources instead.
+        For example a database connection should be closed in a finally block so it will be released irrespective of whether the JDBC code completed successfully or not.
+      </para>
+    </section>
+    <section xml:id="java-iam-05-09">
+      <title>Static Declarations</title>
+      <para>
+        When the value of a static class variable is changed, all instances of the class (within a single Java Virtual Machine (JVM)) see the new value.
+        Care should be taken when using static member variables to ensure that this is the desired behavior.
+      </para>
+      <note>
+       Static final variables are set at the point of declaration (to act as immutable constants) and cannot be changed later.
+      </note>
+      <para>
+        The use of static methods should also be considered carefully, since static methods can only reference static class variables and for the reasons already discussed these are potentially problematic.
+      </para>
+      <para>
+        Classes used in a completely static manner are reasonable when implementing pools of objects, shared resources and factory methods.
+        However, bear in mind that a static attribute is only static within a single JVM, which means they cannot be relied upon in multi-server and multi-process environments such as Oracle Application Server.
+        To ensure that classes such as these are only used in a static manner and never instantiated, the class constructor can be declared private.
+      </para>
+      <para>
+        When referring to a static attribute or class method, use the form:
+      </para>
+      <programlisting>
+ClassName.ATTRIBUTE_NAME
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-05-10">
+      <title>Exception Handling</title>
+      <para>
+        Make sure that exceptions are handled at the correct level.
+        If a method does not have sufficient knowledge to know how to treat an exception, it should pass it up to its calling method to deal with.
+      </para>
+      <para>
+        Catch blocks should only handle checked Exceptions that are thrown in the preceding try blocks.
+        A catch block should not catch <literal>java.lang.Exception</literal> or <literal>java.lang.Throwable</literal> this would lead to masking Errors or RuntimeExceptions.
+        The only exception to this rule is if the module is some form of server that must continue operation irrespective of any fault.
+      </para>
+      <para>
+        Each catch block must either handle the Exception or pass it up by rethrowing it wrapped as another Exception.
+        Catch blocks should always log the Exception to aid debugging.
+      </para>
+      <para>
+        Methods should never declare that they throw <literal>java.lang.Exceptiony</literal> as this forces code that uses it to catch <literal>java.lang.Exception</literal>.
+        Methods should always declare that they throw a specific sub class of Exception.
+        In most cases, this would be a custom Exception for the module.
+      </para>
+      <programlisting>
+try {
+ // Do something
+}
+catch (IOException e) {
+ // do something specific for this type of exception
+ e.printStackTrace();
+ throw new SpecificException(e);
+}
+finally {
+ // if anything always has to be done, even if an exception
+ // is caught, do it here...
+}
+      </programlisting>
+      <para>
+        Further, if the number of exceptions to be caught is large, or the processing involved is substantial, consider abstracting it out into a separate method.
+      </para>
+      <para>
+        The <literal>finally</literal> part of a try/catch statement always called even if an exception is thrown in the <literal>try</literal> part.
+        If your code locks or grabs a resource, such as opening a file or a database connection, you should use a try/catch/finally construct to ensure the resource always freed.
+        The general construct would be:
+      </para>
+      <programlisting>
+// grab resource here
+try {
+ // use resource here
+}
+// repeat for all exceptions
+catch (IOException e) {
+ // handle exception
+}
+finally {
+ // free the resource here
+}
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-05-11">
+      <title>Argument checking</title>
+      <para>
+        A useful defensive programming technique is for all methods to check the validity of their arguments, throwing an <literal>IllegalArgumentException</literal> when an invalid argument is received.
+        This is illustrated in the example below.
+      </para>
+      <note>
+        Since <literal>IllegalArgumentException</literal> is derived from <literal>RuntimeException</literal> it is not necessary to declare that the function may throw this exception.
+      </note>
+      <programlisting>
+public void addMoney(int total) {
+ if (total &#x3C; 0)  {
+  throw new IllegalArgumentException("'total' cannot be negative");
+ }
+
+ // ...do something with ‘total’
+}
+      </programlisting>
+    </section>
+    <section xml:id="java-iam-05-12">
+      <title>Thread Safety</title>
+      <para>
+        It is possible that Java code written on a project will be run in multi-threaded mode, the same instance of a class will be accessed by more than one client via a thread...
+        E.g. Servlets in WebLogic or JSF Action classes.
+        For this reason, thread safety must be a major consideration.
+      </para>
+      <para>
+        Consider the following class definition:
+      </para>
+      <programlisting>
+public class MyClass {
+ public void myFunction()  {
+  int l = 10;
+  // Some code...
+ }
+
+ private static String NAME = null;
+ private float value = 1;
+}
+      </programlisting>
+      <para>
+        In this example, in a single JVM:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>
+            All threads running through all instances of this class see the same value of the static variable <literal>NAME</literal>.
+          </para>
+          <para/>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            All threads running though a particular instance of this class see the same value of the instance variable <literal>value</literal>
+          </para>
+          <para/>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            All threads get their own stack, so each thread has its own copy of any local variables such as <literal>l</literal> in <literal>myFunction()</literal>.
+          </para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        As described in section xxx.xxx, static variables should generally be avoided even in single-threaded situations, since they are shared across class instances.
+        Further, in multi-threaded mode instance variables should be avoided unless you intend all threads running through a single class instance to see the same value.
+        Put another way, two threads running through a single class instance cannot maintain different states, i.e. different values of static or instance class variables.
+      </para>
+    </section>
+  </section>
+</chapter>

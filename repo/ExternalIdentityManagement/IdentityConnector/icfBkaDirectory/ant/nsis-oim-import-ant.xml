@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Importer NSIS"
+         basedir         ="../"
+         default         ="all"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-import-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager BKA Directory Service Foundation
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the metadata definitions for Generic Directory
+  **           Service Foundation Configuration. This includes:
+  **           o IT Resource Definitions
+  **           o Task Adapter
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="base" description="Deploys the BKA Directory Service Foundation Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the BKA Directory Service Foundation Configuration ${application.release}"/>
+    <library-deploy dir="${deploy.dir}" location="${oim.remote.thirdparty}" file="bds.identity.connector.common-12.2.1.3.jar"/>
+    <library-deploy dir="${deploy.dir}" location="${oim.remote.adapter}"    file="bds.identity.connector.adapter-12.2.1.3.jar"/>
+    <library-deploy dir="${deploy.dir}" location="${oim.remote.scheduler}"  file="bds.identity.connector.scheduler-12.2.1.3.jar"/>
+    <echo message="Deploying connector bundles for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <plugin:upload contextRef="oim-context" verbose="true">
+      <plugin:library location="ICFBundle" file="${deploy.dir}/bds.identity.connector.bundle-12.2.1.3.jar"/>
+    </plugin:upload>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/db/BKA Directory Account Reconciliation.xml"/>
+      <metadata:path path="/db/BKA Directory Lookup Reconciliation.xml"/>
+    </metadata:delete>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/base">
+        <object:importFile name="bds-resource-dm.xml"/>
+        <object:importFile name="bds-adapter-dm.xml"/>
+        <object:importFile name="bds-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+<!--     purge the cache to ensure that the latest version will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="SchedulerTaskDefinition"/>
+    </object:purgecache>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the BKA Directory Service Target
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Service Target Configuration. This includes:
+  **           o Lookup Definitions
+  **           o IT Resource
+  **           o Process Form Definition
+  **           o Resource Object
+  **           o Provisioning Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Deploys the Connector Target Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Connector Target Configuration ${application.release}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/nsis/xml/target">
+        <object:importFile name="nsis-lookup-dm.xml"/>
+        <object:importFile name="nsis-resource-dm.xml"/>
+        <object:importFile name="nsis-model-dm.xml"/>
+        <object:importFile name="nsis-process-dm.xml"/>
+        <object:importFile name="nsis-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/bka-features-configuration/nsis/nsis-feature.xml"/>
+      <metadata:path path="/metadata/bka-features-provisioning/nsis/nsis-account-provisioning.xml"/>
+      <metadata:path path="/metadata/bka-features-reconciliation/nsis/nsis-account-reconciliation.xml"/>
+    </metadata:delete>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/nsis/mds">
+        <object:importFile name="nsis-feature-dm.xml"/>
+        <object:importFile name="nsis-account-provisioning-dm.xml"/>
+        <object:importFile name="nsis-account-reconciliation-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <!-- purge the cache to ensure that the latest versions will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="LookupDefinition"/>
+      <category value="LookupValues"/>
+    </object:purgecache>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+
+  <target name="request" description="Deploys the NSIS System Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="NSIS Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+<!--    <object:import contextRef="oim-context">-->
+<!--      <object:importSet dir="${resource.dir}/nsis/xml/target">-->
+<!--        <object:importFile name="nsis-request-dm.xml"/>-->
+<!--      </object:importSet>-->
+<!--    </object:import>-->
+<!--    <echo message="Adjusting Access Request Configuration by modifying Entity Publication"/>-->
+<!--    <operation:application contextref="oim-context" operation="modify">-->
+<!--      <application name="NSISAccount" dataset="NSISRequest" entitlement="true">-->
+<!--        <publication value="enable">-->
+<!--          <recipient value="Organization" name="Top" hierarchy="true"/>-->
+<!--        </publication>-->
+<!--      </application>-->
+<!--    </operation:application>-->
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="${resource.dir}/nsis/mds/nsis-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Clear Identity Manager Caches.
+  **
+  ** Synopsis: The tasks prepares the Identity Manager Application Deployment.
+  **           This includes:
+  **           o Clearing several caches
+  ******************************************************************************
+  -->
+  <target name="9999" description="Clear Identity Manager Caches">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="9999 Clear Caches"/>
+    <echo message="============================================================="/>
+    <echo message="Clear metadata cache on ${oim.server.name}:${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}"/>
+    <echo message="Clear object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <echo message="============================================================="/>
+    <echo message="9999 completed"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance"/>
+</project>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ | Deployment Descriptor Precedence Order
+ |
+ | When multiple deployment descriptors are present in the same archive, the
+ | descriptors are processed with the following precedence order in default
+ | mode:
+ |
+ | WebLogic descriptor > Payara descriptor > GlassFish descriptor > Sun descriptor
+ -->
+<weblogic-web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.7/weblogic-web-app.xsd" xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app">
+  <security-role-assignment>
+    <role-name>Viewer</role-name>
+    <principal-name>authenticated-user</principal-name>
+  </security-role-assignment>
+  <security-role-assignment>
+    <role-name>Administrator</role-name>
+    <principal-name>uid.admin</principal-name>
+  </security-role-assignment>
+  <security-role-assignment>
+    <role-name>SystemAdministrator</role-name>
+    <principal-name>igs.admin</principal-name>
+  </security-role-assignment>
+  <session-descriptor>
+    <persistent-store-type>replicated_if_clustered</persistent-store-type>
+    <url-rewriting-enabled>false</url-rewriting-enabled>
+  </session-descriptor>
+  <context-root>/uid/sysadmin</context-root>
+  <jsp-descriptor>
+    <!--
+    When set to true, WebLogic Server automatically precompiles all JSPs when
+    the Web application is deployed or re-deployed or when starting WebLogic
+    Server.
+    -->
+    <precompile>true</precompile>
+    <!--
+    When set to true, WebLogic Server continues precompiling all JSPs even if
+    some of those JSPs fail during compilation.
+
+    Only takes effect when precompile is set to true.
+    -->
+    <precompile-continue>true</precompile-continue>
+    <!--
+    When set to true, compresses the HTML in the JSP template blocks to improve
+    run-time performance.
+    -->
+    <compress-html-template>true</compress-html-template>
+    <!--
+    When set to true, the JSP compiler optimizes Java expressions to improve
+    run-time performance.
+    -->
+    <optimize-java-expression>true</optimize-java-expression>
+  </jsp-descriptor>
+  <!--
+  libraries below are required to be included
+  -->
+  <library-ref>
+    <library-name>jstl</library-name>
+    <specification-version>2.2</specification-version>
+    <exact-match>false</exact-match>
+  </library-ref>
+</weblogic-web-app>

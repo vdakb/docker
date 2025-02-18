@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysauth$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Authorization']}"/>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="tabHeaderIcon"                   value="#{sysauth$bundle.RPT_ICON}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{af:formatString(sysauth$bundle.RPT_DETAIL, bindings.name.inputValue)}"/>
+    <f:attribute name="tabHeaderInstruction"            value="#{bindings.description.inputValue}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysauth$bundle.RPT_PARAMETER}"/>
+    <f:attribute name="trainOrSubTabs"                  value="subtabs"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id            ="btn15"
+                   text          ="#{sysauth$bundle.RPT_GENERATE}"/>
+        <af:button id            ="btn16"
+                   text          ="#{sysauth$bundle.RPT_EMAILME}"/>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <!--
+          we use columnStretching="multiple" to give us the opportunity to
+          size the columns by witdh="nn%"
+          The default width for a column is 100px. There is no auto sizing for
+          columns. Set the width attribute to ensure the column is wide enough
+          to accommodate the width of the contents. When the "multiple" option
+          is used in the table that contains the column, the width can be set
+          to a percentage.
+          -->
+          <af:table id                   ="rpt" var="row" varStatus="vs"
+                    value                ="#{bindings.Parameter.collectionModel}"
+                    rows                 ="#{bindings.Parameter.rangeSize}"
+                    fetchSize            ="#{bindings.Parameter.rangeSize}"
+                    binding              ="#{backingBeanScope.reportAttribute.searchTable}"
+                    summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                    selectedRowKeys      ="#{bindings.Parameter.collectionModel.selectedRow}"
+                    selectionListener    ="#{bindings.Parameter.collectionModel.makeCurrent}"
+                    filterVisible        ="false"
+                    columnStretching     ="multiple"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    autoHeightRows       ="0"
+                    rowSelection         ="single"
+                    columnSelection      ="none"
+                    verticalGridVisible  ="false"
+                    scrollPolicy         ="page"
+                    immediate            ="true"
+                    emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+            <af:column id="c10" rowHeader="true" width="20" headerText="#" align="right">
+              <af:outputText id="ot10" value="#{row.bindings.sequence.inputValue}"/>
+            </af:column>
+            <af:column id="c11" width="25%" headerText="#{bindings.Parameter.hints.label.label}">
+              <af:outputText id="ot11" value="#{row.bindings.label.inputValue}"/>
+            </af:column>
+            <af:column id="c12" width="75%" headerText="#{bindings.Parameter.hints.value.label}">
+              <af:inputText id="it12" value="#{row.bindings.value.inputValue}" autoSubmit="true"/>
+            </af:column>
+          </af:table>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

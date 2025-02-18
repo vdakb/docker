@@ -1,0 +1,49 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityManager\bkaSimulation\src\main\resources\dbs\pcf\obj\pct-usr.tab
+--
+-- Generated for Oracle Database 12c on Sun June 21 16:53:56 2020 by Server Generator 10.1.2.93.10
+
+PROMPT Creating Table 'pct_usr'
+CREATE TABLE pct_usr (
+  id           RAW      ( 16) NOT NULL DEFAULT sys_guid()
+, rowversion   VARCHAR2 ( 30) NOT NULL
+, created_on   DATE           NOT NULL
+, updated_on   DATE           NOT NULL
+, username     VARCHAR2 ( 48) NOT NULL
+, externalID   VARCHAR2 ( 24)
+, active       CHAR     (  1) NOT NULL
+, verified     CHAR     (  1) NOT NULL
+, lastname     VARCHAR2 (128) NOT NULL
+, firstname    VARCHAR2 (128) NOT NULL
+, email        VARCHAR2 (128)
+, phone        VARCHAR2 ( 24)
+, origin       VARCHAR2 ( 24)
+, zone         VARCHAR2 ( 24)
+)
+TABLESPACE &&pcfdata
+/
+COMMENT ON TABLE pct_usr IS 'Pivotal Account Repository'
+/
+COMMENT ON COLUMN pct_usr.id IS 'Public System Identifier'
+/
+COMMENT ON COLUMN pct_usr.rowversion IS 'Row Version of data record'
+/
+COMMENT ON COLUMN pct_usr.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN pct_usr.updated_on IS 'Last Modified Timestamp of data record'
+/
+COMMENT ON COLUMN pct_usr.username IS 'Public Unique Identifier'
+/
+COMMENT ON COLUMN pct_usr.username IS 'External user ID if authenticated through an external identity provider'
+/
+COMMENT ON COLUMN pct_usr.active IS 'Status Identifier'
+/
+COMMENT ON COLUMN pct_usr.verified IS 'Verification Identifier'
+/
+COMMENT ON COLUMN pct_usr.lastname IS 'Last Name'
+/
+COMMENT ON COLUMN pct_usr.firstname IS 'First Name'
+/
+COMMENT ON COLUMN pct_usr.email IS 'e-Mail Address'
+/
+COMMENT ON COLUMN pct_usr.phone IS 'Telephone Number'
+/

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="task_pickerPageDef"
+                Package="oracle.iam.identity.sysadmin.tsk.view">
+  <parameters/>
+  <executables>
+    <iterator     id="TaskVOIterator" Binds="TaskPickerVO" DataControl="TaskAMDataControl" RangeSize="20"/>
+    <searchRegion id="TaskVC" Binds="TaskVOIterator" Criteria="TaskVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="name"/>
+  </executables>
+  <bindings>
+    <tree id="Task" IterBinding="TaskVOIterator">
+      <nodeDefinition Name="TaskNode" DefName="oracle.iam.identity.sysadmin.model.view.TaskVO">
+        <AttrNames>
+          <Item Value="name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,80 @@
+// Regular Checkbox styles
+body .ui-chkbox {
+  margin:                        0;
+  .ui-chkbox-box {
+    background:                  var(--body-background);
+    border:                      2px solid $primary;
+    position:                    relative;
+    transition:                  $transition-base;
+    &:hover, &.ui-state-hover {
+      border-color:              var(--primary);
+    }
+    &:focus, &.ui-state-focus {
+      outline:                   0 none;
+    }
+    &.ui-state-error {
+      border-color:              var(--danger);
+    }
+    .ui-chkbox-icon {
+      color:                     var(--primary);
+      top:                       50%;
+      left:                      50%;
+      font-family:               FontAwesome;
+      font-size:                 $font-awesome-icon-size;
+      text-indent:               0;
+      position:                  absolute;
+      &.ui-icon-check {
+        margin-top:              -5px;
+        margin-left:             -5px;
+        &:before {
+          content:               "\f00c";
+        }
+      }
+      &.ui-icon-closethick {
+        margin-top:              -5px;
+        margin-left:             -4px;
+        &:before {
+          content:               "\f00d";
+        }
+      }
+    }
+  }
+  .ui-chkbox-label {
+    margin:                      4px 16px 4px 8px;
+  }
+}
+body .ui-selectmanycheckbox.ui-grid-responsive {
+  //prime 6.1 backward compatibility
+  .ui-grid-row, ui-g {
+    > div { 
+      padding:                   .2em;
+    }
+  }
+}
+@media (max-width: $screen-xs-min) {
+  body .ui-chkbox span.ui-chkbox-icon {
+    &:before {
+      top:                       0;
+      font-size:                 $font-awesome-icon-size;
+    }
+  }
+}
+// checkbox black
+body .ui-chkbox.black,
+body .ui-selectcheckboxmenu-panel.black,
+body .ui-selectmanycheckbox.black .ui-chkbox {
+  div.ui-chkbox-box span.ui-chkbox-icon.ui-icon-check:before {
+    color:                       #222d32;
+    margin-left:                 3px;
+  }
+  .ui-chkbox-box.ui-state-active {
+    color:                       #222d32;
+    border-color:                $gray-400;
+  }
+  div.ui-chkbox-box.ui-state-focus.ui-state-active {
+    color:                       #222d32;
+  }
+  div.ui-chkbox-box {
+    background:                  var(--body-background);
+  }
+}

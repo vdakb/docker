@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name          ="Identity Manager Deployment Controller Patch"
+         basedir       ="../../../deployment/oim"
+         xmlns:object  ="http://oracle.iam.identity/object"
+         xmlns:metadata="http://oracle.iam.identity/metadata">
+  <!--
+  ==============================================================================
+  == properties specific to the deployment environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <import file="../../../IdentityTransition/tpl/ant/oim-patch.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <target name="001" description="Deploys the Base System Integration Configuration">
+    <call-targets package="0101"/>
+  </target>
+  <target name="020" description="LDAP APPs Service Provisioning">
+    <call-targets package="2001-01,2001-02,2001-03,2001-04,2001-05,2001-06,2001-07,2001-08,2001-09,2001-10"/>
+  </target>
+  <target name="022" description="LDAP APPs Service Provisioning">
+    <call-targets package="2201-01,2201-02,2201-03,2201-04,2201-05,2201-06,2201-07,2201-08,2201-09,2201-10,2201-11,2201-12"/>
+  </target>
+  <target name       ="all"
+          description="Deploys and configures the project artifacts on the target host and the Oracle WebLogic Domain Servers"
+          depends    ="001,9999">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="All patches done"/>
+    <echo message="Restart WebLogic Managed Servers belonging to Identity Manager"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Clear Identity Manager Caches.
+  **
+  ** Synopsis: The tasks prepares the Identity Manager Application Deployment.
+  **           This includes:
+  **           o Clearing several caches
+  ******************************************************************************
+  -->
+  <target name="9999" description="Clear Identity Manager Caches">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="9999 Clear Caches"/>
+    <echo message="============================================================="/>
+    <echo message="Clear metadata cache for environment ${fmw.env} on ${oim.server.name}:${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="oracle.iam.console.identity.sysadmin.ear" version="V2.0"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="oracle.iam.console.identity.self-service.ear" version="V2.0"/>
+    <echo message="Clear object cache for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <echo message="============================================================="/>
+    <echo message="9999 completed"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

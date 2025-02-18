@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Importer"
+         basedir        =".."
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-config-ant.log"/>
+  <!--
+  =====================================================================
+  == ANT target to configure the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name       ="all"
+          description="Participant Trusted Source Reconciliation"
+          depends    ="018"/>
+  <!--
+  =====================================================================
+  == ANT target to compose system configuration shortcuts
+  =====================================================================
+  -->
+  <target name       ="018"
+          description="Identity Governance Service Provisioning"
+          depends    ="1801-01"/>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####        ######
+  **             #    #     # #     #       #     #
+  **             #    #       #             #     #
+  **             #    #   ###  #####   ###  ######
+  **             #    #     #       #       #
+  **             #    #     # #     #       #
+  **           #####   #####   #####        #
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Google Apigee Edge
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="1801-01" description="Configure IGSP Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 Configure IT Resource IGSP Endpoint ${version.number}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Generic WebService Endpoint" name="IGSP Endpoint">
+        <parameter name="Connector Server"      value="IM.JCS Endpoint"/>
+        <parameter name="Server Name"           value="dieters-macbook-pro.fritz.box"/>
+        <parameter name="Server Port"           value="8081"/>
+        <parameter name="Root Context"          value="/igs/scim/v2"/>
+        <parameter name="Secure Socket"         value="false"/>
+        <parameter name="Content Type"          value="application/scim+json"/>
+        <parameter name="Accept Type"           value="application/scim+json"/>
+        <parameter name="Authentication Scheme" value="oauth-password"/>
+        <parameter name="Authorization Server"  value="https://sso.cinnamonstar.oam/oauth2/rest/token"/>
+        <parameter name="Principal Name"        value="igssysadm"/>
+        <parameter name="Principal Password"    value="Welcome1"/>
+        <parameter name="Client Identifier"     value="igsservice"/>
+        <parameter name="Client Secret"         value="Welcome1"/>
+        <parameter name="Server Feature"        value="/metadata/bka-features-configuration/gws/igs-p-feature.xml"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

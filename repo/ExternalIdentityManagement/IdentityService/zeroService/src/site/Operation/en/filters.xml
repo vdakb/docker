@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="filters"
+         xml:lang="en"
+         version ="5.0">
+  <title>Using Filters</title>
+  <para>
+    The following chapter describer filtering facilities used through all <emphasis role="strong">search</emphasis> operations where filtering is referenced.
+  </para>
+  <para>
+    Filtering is employed by providing left-hand-side (LHS) <emphasis role="strong">attribute</emphasis>, comparison <emphasis role="strong">operator</emphasis> followed by right-hand-side (RHS) <emphasis role="strong">value</emphasis>.
+    It is invoked by supplying the optional <emphasis role="string">filter</emphasis> query parameter as follows: <literal>filter=&lt;LHS&gt; &lt;OP&gt; &lt;RHS&gt;</literal>.
+  </para>
+  <section xml:id="filters-lhs">
+    <title>LHS - Attributes</title>
+    <para>
+      List of available attributes differs per-operation and will be listed there. In general, LHS attributes correspond to object attribute names (<emphasis role="strong">case-insensitive</emphasis>) as received in response JSON.
+    </para>
+  </section>
+  <section xml:id="filters-op">
+    <title>Operators</title>
+    <para>
+      Unless specified otherwise for individual operations the following operators are available:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <para>
+          <emphasis role="strong">eq</emphasis>
+          (equals) for text, boolean, temporal and numerical values
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">sw</emphasis>
+          (starts with) for text values
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">eq</emphasis>
+          (ends with) for text values
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">co</emphasis>
+          (contains) for text values
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">gt</emphasis>
+          (greater than) for numerical and temporal values
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">ge</emphasis>
+          (greater than or equal) for numerical and temporal values
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">lt</emphasis>
+          (less than) for numerical and temporal values
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">le</emphasis>
+          (less than or equal) for numerical and temporal values
+        </para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="filters-rhs">
+    <title>RHS - Values</title>
+    <para>
+      The values are supplied in one of the following formats:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="strong">"string"</emphasis>
+          literal string value enclosed in double quotes
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">number</emphasis>
+          literal numerical value not enclosed in double quotes
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">"date"</emphasis>
+          literal temporal value in the format "yyyy-MM-dd", e.g. "2023-03-15"
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">"date time"</emphasis>
+          literal temporal value in the format "yyyy-MM-dd HH:mm:ss", e.g. "2023-03-15 12:34:56"
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">"boolean"</emphasis>
+          boolean value in the format "0" (false) or "1" (true)
+        </para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="api-ent-search-flt-simple">
+    <title>Simple filters</title>
+    <para>
+      The following are examples of valid simple filters:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="strong">key eq 3</emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">name sw "GDPD SZ2 End"</emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">itResourceName co "SZ2"</emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">updateDate gt "2023-02-22"</emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">createDate le "2023-02-22 13:43:46"</emphasis>
+        </para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="api-ent-search-flt-multiple">
+    <title>Multiple filters</title>
+    <para>
+      Simple filters can chained using <emphasis role="strong">AND</emphasis> and <emphasis role="strong">OR</emphasis> operators, or inverted using <emphasis role="strong">NOT</emphasis> operator. In the last case the sub-filter must be enclosed in round brackets:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="strong">name sw "GDPD SZ2 Endpoint" AND key eq 2</emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">name co "SZ2" OR name co "SZ3"</emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">appInstanceName co "SZ2" AND createDate gt "2022-02-12"</emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">NOT (appInstanceName co "SZ2")</emphasis>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">NOT (name co "NSIS" OR key eq 3)</emphasis>
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      Attributes and the opeaSimple filters can chained using <emphasis role="strong">AND</emphasis> and <emphasis role="strong">OR</emphasis> operators, or inverted using <emphasis role="strong">NOT</emphasis> operator. In the last case the sub-filter must be enclosed in round brackets:
+    </para>
+  </section>
+</chapter>

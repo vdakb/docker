@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Generic Identity Service" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"            value="Identity Manager Generic Identity Service"/>
+  <property name="application"            value="gis-connector"/>
+  <property name="adapter"                value="gis-adapter"/>
+  <property name="scheduler"              value="gis-scheduler"/>
+  <property name="thirdparty"             value="gis-common"/>
+  <property name="diagnostic"             value="gis-diagnostic"/>
+
+  <property name="destination.base"       value="../../deployment/oim/0102 systemIntegration"/>
+  <property name="destination.target"     value="../../deployment/oim/0301 systemConnector GIS"/>
+
+  <property name="packagepath.adapter"    value="oracle/iam/identity/gis/adapter/**/*.class oracle/iam/identity/gis/service/provisioning/**/*.class"/>
+  <property name="packagepath.scheduler"  value="oracle/iam/identity/gis/service/reconciliation/**/*.class"/>
+  <property name="packagepath.diagnostic" value="oracle/iam/identity/gis/service/diagnostic/**/*.class"/>
+  <!--
+  =====================================================================
+  == the integration deployment descriptors of this connector project
+  =====================================================================
+  -->
+  <patternset id="descriptor.pattern.base">
+    <include name="gis-resource-dm.xml"/>
+    <include name="gis-adapter-dm.xml"/>
+    <include name="gis-scheduler-dm.xml"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == the target system deployment descriptors of this connector project
+  =====================================================================
+  -->
+  <patternset id="descriptor.pattern.target">
+    <include name="gis-resource-dm.xml"/>
+    <include name="gis-lookup-dm.xml"/>
+    <include name="gis-model-dm.xml"/>
+    <include name="gis-process-dm.xml"/>
+    <include name="gis-request-dm.xml"/>
+    <include name="gis-approval-dm.xml"/>
+    <include name="gis-scheduler-dm.xml"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == the trusted source deployment descriptors of this connector project
+  =====================================================================
+  -->
+  <patternset id="descriptor.pattern.trusted">
+    <include name="gis-lookup-dm.xml"/>
+    <include name="gis-process-dm.xml"/>
+    <include name="gis-scheduler-dm.xml"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oim-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish a possible plugin runtime path
+  =====================================================================
+  -->
+  <path id="oracle.ocs.iam.runtime">
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="oracle.ocs.oim.foundation"/>
+    <path refid="oracle.ocs.oim.utility"/>
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.mds"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.oim.adapter"/>
+    <path refid="oracle.fmw.oim.scheduler"/>
+    <path refid="oracle.ocs.iam.runtime"/>
+  </path>
+</project>

@@ -1,0 +1,1131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+    <title>Patch Instructions Oracle&reg; Unified Directory</title>
+    <meta http-equiv="Content-Type"        content="text/html; charset=us-ascii"/>
+    <meta http-equiv="Content-Style-Type"  content="text/css"/>
+    <meta http-equiv="Content-Script-Type" content="text/javascript"/>
+    <meta name="robots"   content="noarchive"/>
+    <meta name="doctitle" content="Oracle&reg; Unified Directory Patch Instructions, Release FIM 1.0"/>
+    <meta name="relnum"   content="Release FIM 1.0"/>
+    <meta name="partnum"  content="oud"/>
+    <meta name="docid"    content="no_value_supplied"/>
+    <style type="text/css">
+      /*
+      Copyright 2022, Oracle and/or its affiliates. All rights reserved.
+      Author: Dieter Steding
+      Version: 2022.05.17
+      */
+      body {
+        color:               #222;
+        background-color:    white;
+        font-family:         Tahoma, sans-serif;
+        font-size:           small;
+      }
+      * html body {
+        /* Modified SBMH (Tan hack) */
+        font-size:           x-small; /* for IE5.x/win */
+        f\ont-size:          small;  /* for other IE versions */
+      }
+      h1 {
+        line-height:         normal;
+        font-size:           165%;
+        font-weight:         bold;
+        border-bottom:       1px solid #ddd;
+        width:               100%;
+      }
+      h2 {
+        line-height:         normal;
+        font-size:           152%;
+        font-weight:         bold;
+      }
+      h3 {
+        line-height:         normal;
+        font-size:           139%;
+        font-weight:         bold;
+      }
+      h4 {
+        line-height:         normal;
+        font-size:           126%;
+        font-weight:         bold;
+      }
+      a:link {
+        color:               #039;
+        background:          inherit;
+      }
+      a:visited {
+        color:               #72007c;
+        background:          inherit;
+      }
+      a:hover {
+        text-decoration:     underline;
+      }
+      table {
+        font-size:           small; /* for ICEBrowser */
+      }
+      td {
+        vertical-align:      top;
+      }
+      th {
+        font-weight:         bold;
+        text-align:          left;
+        vertical-align:      bottom;
+        padding:             0.25em;
+        padding-right:       1em;
+      }
+      table[dir="rtl"] th {
+        font-weight:         bold;
+        text-align:          right;
+        vertical-align:      bottom;
+      }
+      .section {
+        witdh:              600px;
+      }
+      table {
+        border-collapse:     collapse;
+       }
+      table.configuration th {
+        background-color:    #d1d1d1;
+      }
+      table.configuration tr:not(:first-child) {
+        border-bottom:       1pt solid black;
+      }
+      table.configuration td {
+         padding:            0.25em;
+         padding-right:      1em;
+      }
+      ol ol {
+        list-style-type:     lower-alpha;
+      }
+      ol ol ol {
+        list-style-type:     lower-roman;
+      }
+      table.table-border {
+        border-top:          1px solid #ccc;
+        border-left:         1px solid #ccc;
+      }
+      table.table-border th {
+        color:               black;
+        background-color:    #f7f7ea;
+        padding:             0.5ex 0.25em;
+        border-right:        1px solid #ccc;
+        border-bottom:       1px solid #ccc;
+      }
+      table.table-border td {
+        padding:             0.5ex 0.25em;
+        border-right:        1px solid #ccc;
+        border-bottom:       1px solid #ccc;
+      }
+      td p:first-child, td pre:first-child {
+        margin-top:          0;
+        margin-bottom:       0;
+      }
+      p.horizontal-rule {
+        width:               100%;
+        border:              #cc9 solid;
+        border-width:        0 0 1px 0;
+        margin-bottom:       4ex;
+      }
+      div.clear {
+        float:               none !important;
+        clear:               left !important;
+      }
+      div.commandline {
+        color:               #000000;
+        background:          #cce6ff;
+        width:               800px;
+        margin-top:          2ex;
+        margin-bottom:       2ex;
+        margin-right:        2ex;
+        padding:             2ex;
+        border-top:          2pt solid #003399;
+        border-bottom:       2pt solid #003399;
+      }
+      div.commandline .content {
+        width:               760px;
+      }
+      div.commandline .symbol {
+        width:               45px;
+        height:              45px;
+        background:          url('data:image/png;base64,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');
+        background-repeat:   no-repeat;
+        background-clip:     content-box;
+        background-origin:   content-box;
+        padding-top:         1em;
+        padding-bottom:      1em;
+        padding-right:       1em;
+        float:               left;
+      }
+      div.information {
+        color:               #000000;
+        background:          #f3f781;
+        width:               800px;
+        margin-top:          2ex;
+        margin-bottom:       2ex;
+        margin-right:        2ex;
+        padding:             2ex;
+        border-top:          2pt solid #d7df01;
+        border-bottom:       2pt solid #d7df01;
+      }
+      div.information .content {
+        width:               760px;
+      }
+      div.information .symbol {
+        width:               64px;
+        height:              64px;
+        background:          url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAADAFBMVEUAAAD////3+v36/P78/f74+frr7O3z+Pzy9/vo7/Tx9/v4+/3k7vTO09b0+fzz+Psgc6Ana5BNnMdMf5tXiqZtqMh2nbONudGUvNK11ujK4e7O5PDR5O/U5/LN3+nb6/Th7fTn8vjm8ffr9Pnq8/i3vsLv9vru9fkTbZwVcqQYf7YUapYbgbccgLQcfK8XZ5IYZ5Eabpoeeqsge6wkhrokhbkgeKYie6opibwicpwqh7ghaZApgK4la5Axjb4yirgseKEzjLo1j782j782kL8vfKQ5ksE5jrs1galBlsQycZFCkrw8g6lHmsZCj7dImsZJmsU2cpJDjLM8faBLm8RDirBChqpPn8lAeJVXoslUnMJZpMtBd5RUl7tgqM1hqM5cn8NWlLVZmbpJfZhhpMdNgp1nrNBnq89oqctrrc9urMxmnrxzstNUgZl1s9R1stJon7t3tdVror9vpsN7ttV3sc5wpsNahZx9uNZ8ttVkkqp9ttODu9l9s8+CutZkjqOGvNl5qcOCttF7rMaLwNuKv9qNwNt/rMSRw92TxN6Sw92RwduUxd6TxN2Uxd2Wxt6Uw9tylqiKtMqYx96ayN+cyeCEqb2ey+GdyuChzOKgy+GjzeOkzeOlzuOoz+Snz+Op0OSr0eWs0eWny96u0+at0uWjxdew1Oay1eeiwdG01uey0+SszN2buMe21+iJoa642Omx0OC52em72uq62em92+q62Oe/3OvB3ey92Oa/2efF3+2Tp7HG4O2wx9Ohtb/J4e7Q5fDR5vHT5/HO4evV6PLR4+zY6vPX6fK3xs7c7PTb6/Pe7fXh7/bg7vXd6vHg7PLl8ffp8/jt9fne4OGOwtuv1Oau0+W72unA3evB3uu61eLF4O3E3+zJ4u7L4+7N5O/b7PTW5ezf7vXj8Pbt9vrT6PHm8vfs8/bh6Ov1+vzu9vn5/P3Hy8z+/v78/Pz7+/v5+fn29vb19fXy8vLw8PDv7+/s7Ozp6enn5+fh4eHe3t7Z2dnW1tbT09P///9g+3LLAAABAHRSTlP///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8AU/cHJQAAAAFiS0dEAIgFHUgAAAAMY21QUEpDbXAwNzEyAAAAA0gAc7wAAAMJSURBVDhPY2AkEjAQqY5xMCm8NDsvzTc8r2YHmuPR3LhQyMQ/Lr0wJy7azSJPFlktisJ5AZ6FHV2dnT09nZ1drfEmNYoIpUgKWSrtSvr6+idPmTF9+owpk/v7rkbqzIGrRChUyxfq7Qcqmz5nwaJFC2bPmNLf319h2g1TiVCYHzkFCKbOmr98w9atG67NnzUVyG01nQ9VCVdYHTIDBKbPvXajRUurZdP1udNB/DpdGYhKmMJtVlNngsCchZLrtLS0THZILpwDFsjMQlUYVTIXDBYs37wVpHDvpiXzICKOq5FN3OW+AAKWSm5/MFlLq//A5hWLICJ1UcgKE6qXgsH1FZvuHjx97vGJ+9sll0OEltqDXQlxI7/ekhVgsGrD9gNHH198curg3c2SEKEVGbUIhbe910HAhs13G4BO1NI6cW/7JqjYBD+EQvGUzRCwdccB2S0ghacO3tkOFVthhFBYXHoTAm7deXD8uRNQ4ZOj9+9CxW4aX4a7MbtpNxQcOCh/CaRQUf7gAZiYzQW4wqLae1Dw4NkZZZBC5TPPHsDEzDnhCttFpaHg0IlzYIWXz544BBWS0mSFK1wZexgKjp5+ou4MVKj25OEJqNBGj3dwhS/NThyHAPnHz7lcgAq5FM/JQ4WashG+/hi2+BQEnHlyiQOkkF/lyRmoUNA+hMJ3a2PPQsATxct8IIV8TxUvQkR2OXxBSmZsGjsvgoGishpY4Ss1ZUUlsEjStPdICj9MC1W6BAQqype5DoBiZhGXurIKSGRN8HeUhPtNpOwyCLzmmgKOa602LjUQ/4jA2g8oCt9fSZXgAgIOdr5XTNzcTK/42DmAXAUPsc+oKZzxw8nkZj4gePWKCQxevQJyjrlWfQMFIlKeYWT8yCuceJ4bBN4AAZixzHAiGwt6LgSq/FWv3cjDDAcbfSL2f4Wah8iFIH0fvr8tNwibdFvuxSO5ZQWWget/f4KrQytIP/74tyfXy1bfWjBmourvLzBrUd0Iccv7zz9///n798+v7x8RpmFTCHU6JkX9MhwAYqu8q+lQ3dgAAAAASUVORK5CYII=');
+        background-repeat:   no-repeat;
+        background-clip:     content-box;
+        background-origin:   content-box;
+        padding-top:         1em;
+        padding-bottom:      1em;
+        padding-right:       1em;
+        float:               left;
+      }
+      div.warning {
+        width:               800px;
+        margin-top:          2ex;
+        margin-bottom:       2ex;
+        margin-right:        2ex;
+        padding-top:         0.25em;
+        padding-bottom:      0.25em;
+        padding-right:       45px;
+        border-top:          1pt solid black;
+        border-bottom:       1pt solid black;
+      }
+      div.warning .content {
+        width:               760px;
+      }
+      div.warning .symbol {
+        width:               64px;
+        height:              64px;
+        background:          url('data:image/png;base64,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');
+        background-repeat:   no-repeat;
+        background-clip:     content-box;
+        background-origin:   content-box;
+        padding-top:         1em;
+        padding-bottom:      1em;
+        padding-right:       1em;
+        float:               left;
+      }
+      div.checkpoint {
+        width:               785px;
+        margin-top:          2ex;
+        margin-bottom:       2ex;
+        margin-right:        2ex;
+        padding-top:         0.25em;
+        padding-bottom:      0.25em;
+        padding-right:       45px;
+        border-top:          1pt solid black;
+        border-bottom:       1pt solid black;
+      }
+      div.checkpoint .content {
+        width:               760px;
+      }
+      div.checkpoint .symbol {
+        width:               64px;
+        height:              64px;
+        background:          url('data:image/png;base64,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');
+        background-repeat:   no-repeat;
+        background-clip:     content-box;
+        background-origin:   content-box;
+        padding-top:         1em;
+        padding-bottom:      1em;
+        padding-right:       1em;
+        float:               left;
+      }
+      /* http://webaim.org/techniques/skipnav/ */
+      .zz-skip-header a, .zz-skip-header a:hover, .zz-skip-header a:visited {
+        position:            absolute;
+        left:                0;
+        top:                 -500px;
+        width:               1px;
+        height:              1px;
+        overflow:            hidden;
+      }
+      .zz-skip-header a:active, .zz-skip-header a:focus {
+        position:            static;
+        width:               auto;
+        height:              auto;
+      }
+    </style>
+  </head>
+  <body>
+    <a id="top"></a>
+    <div class="zz-skip-header"><a href="#BEGIN">Go to primary content</a></div>
+      <table summary="" cellspacing="0" cellpadding="0" width="100%">
+      <tr>
+        <td align="left" valign="top">
+          <b>Patch Instructions Oracle&reg; Unified Directory</b>
+          <br/>
+          <b>Federal Criminal Police Office FIM 1.0</b>
+          <br/>
+        </td>
+        <td valign="bottom" align="right">
+          <table summary="" cellspacing="0" cellpadding="0" width="225">
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+          </table>
+        </td>
+      </tr>
+      </table>
+      <hr/>
+    </div>
+    <a id="BEGIN"></a>
+    <h1>Oracle&reg; Unified Directory</h1>
+    <p class="booktitle">Patch Instructions</p>
+    <p><span class="revnumber">Federal Criminal Police Office FIM 1.0</span></p>
+    <p class="date">May 2022</p>
+    <div class="section">
+      <p>Diese Dokument beschreibt</p>
+      <ul>
+        <li>
+          <p><a href="#A01">Patch Anforderungen</a></p>
+        </li>
+        <li>
+          <p><a href="#A02">Datensicherung</a></p>
+        </li>
+        <li>
+          <p><a href="#A03">Patch Konfiguration</a></p>
+        </li>
+        <li>
+          <p><a href="#A04">Bereitstellungsprozess</a></p>
+        </li>
+      </ul>
+    </div>
+    <div class="section">
+      <a id="A01"><h2 class="sect1"><span class="secnum">1</span> Patch Anforderungen</h2></a>
+      <h3><span class="secnum">1.1</span> Hardware und Software Zertifizierung</h3>
+      <p>
+        Die plattformspezifischen Hardware und Softwareanforderungen, die in diesem Instruktionen aufgef&uuml;hrt werden, sind g&uuml;ltig f&uuml;r den Zeitpunkt zu<br>dem, dieses Dokument erstellt wurde.
+        Da neue Plattformen und Betriebssysteme zertifiziert werden k&ouml;nnen, nachdem dieses Dokument<br>ver&ouml;ffentlicht wurde, wird empfohlen die Zertifizierungsmatrix auf Oracle Technology Network heranzuziehen.
+        Dort befinden sich die<br>aktuellsten Aussagen zu zertifizierten Plattformen und Betriebssystemen.
+      </p>
+      <p>
+        Die jeweilige Zertifizierungsmatrix f&uuml;r Produkte der Oracle&reg; Unified Directory sind unter folgenden URLs verf&uuml;gbar:
+      </p>
+      <ul>
+        <li>
+          <p>
+            <a href="https://www.oracle.com/technetwork/middleware/fmw-122130-certmatrix-3867828.xlsx">Oracle&reg; Fusion Middleware 12c (12.2.1.3.0)</a>
+          </p>
+        </li>
+      </ul>
+      <h3><span class="secnum">1.1</span> &Uuml;berpr&uuml;fung der Anforderungen</h3>
+      <h4><span class="secnum">1.1.1</span> Erforderliche Komponentenversionen</h4>
+      <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+      <tr>
+        <th width="20%">Komponente</th>
+        <th width="80%">Version</th>
+      </tr>
+      <tr>
+        <td>Java Development Kit</td>
+        <td>JDK 1.8.0_133 oder h&ouml;her</td>
+      </tr>
+      <tr>
+        <td>Applikationsserver</td>
+        <td>Oracle&reg; WebLogic 12c (12.2.1.3.0)</td>
+      </tr>
+      <tr>
+        <td>Oracle Datenbank</td>
+        <td>Oracle&reg; RDBMS 12c (12.1.2.0 oder h&ouml;her</td>
+      </tr>
+      <tr>
+        <td>Oracle Access Manager</td>
+        <td>Oracle&reg; Access Manager 12c Release 12.2.1.3.0</td>
+      </tr>
+      <tr>
+        <td>Oracle Unified Directory</td>
+        <td>Oracle&reg; Identity Manager 12c Release 12.2.1.3.0</td>
+      </tr>
+      </table>
+      <h4><span class="secnum">1.1.2</span> Erforderliche Patches</h4>
+      <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+      <tr>
+        <th width="20%">Komponente</th>
+        <th width="80%"Patches</th>
+      </tr>
+      <tr>
+        <td>Oracle Unified Directory</td>
+        <td>Patch 28463358 (Oracle&reg; Identity Management Suite Bundle Patch 12.2.1.3.190115)<br>Patch 28463358</td>
+      </tr>
+      <tr>
+        <td>Oracle Access Manager</td>
+        <td>Patch 29053439 (Oracle&reg; Identity Management Suite Bundle Patch 12.2.1.3.190115)<br>Patch 29053439</td>
+      </tr>
+      </table>
+      <h4><span class="secnum">1.1.3</span> Erforderliche Software</h4>
+      <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+      <tr>
+        <th width="20%">Komponente</th>
+        <th width="80%">Version</th>
+      </tr>
+      <tr>
+        <td>Version Control System Repository</td>
+        <td>Apache&trade; Subversion&reg; 1.9 oder h&ouml;her</td>
+      </tr>
+      <tr>
+        <td>Version Control System Commandline</td>
+        <td>Apache&trade; Subversion&reg; 1.9 oder h&ouml;her</td>
+      </tr>
+      </table>
+    </div>
+    <div class="section">
+      <a id="A02"><h2 class="sect1"><span class="secnum">2</span> Datensicherung</h2></a>
+      <p>
+        Bevor mit der Bereitstellung der Konfiguration begonnen wird, wird empfohlen eine vollst&auml;ndige Datensicherung der bestehenden Konfiguration<br>vorzunehmen.
+        Diese Datensicherung erlaubt es den urspr&uuml;nglichen Zustand wiederherzustellen, f&uuml;r den Fall, das w&auml;hrend der Bereitstellung<br>irreversible Fehler auftreten.
+      <p>
+    </div>
+    <div class="section">
+      <a id="A03"><h2 class="sect1"><span class="secnum">3</span> Patch Konfiguration</h2></a>
+      <p>
+        F&uuml;r die halbautomatische Bereitstellung sind einige vorbereitende Schritte notwendig, um das Deployment durchf&uuml;hren zu k&ouml;nnen.<br>
+        Diese Schritte sind im Einzelnen:
+        <ol>
+          <li>
+            <p>
+              <a href="#A03.01" name="#A03.01">Bezug der Ablaufsteuerung</a>
+            </p>
+          </li>
+          <li>
+            <p>
+              <a href="#A03.02" name="#A03.02">Festlegung der Konfiguration</a>
+            </p>
+          </li>
+          <li>
+            <p>
+              <a href="#A03.03" name="#A03.03">Bezug des Deployment</a>
+            </p>
+          </li>
+        </ol>
+      </p>
+    </div>
+    <div class="section">
+      <a id="A03.01" name="A03.01"><h3><span class="secnum">3.1</span> Bezug der Ablaufsteuerung</h3></a>
+      <p>
+        Die Steuerung des Deployment wird &uuml;ber das Version Control System bezogen.<br>
+        Der Bezug wird durch folgende die Kommandozeilenfolge vorgenommen:
+      </p>
+      <div class="commandline">
+        <code>mkdir ?p <i>&lt;working&gt;</i></code>
+        <br/>
+        <code>cd <i>&lt;working&gt;</i></code>
+        <br/>
+        <code>svn --username <i>&lt;username&gt;</i> export --force <i>&lt;sourceurl&gt;</i> .</code>
+      </div>
+      <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+      <tr>
+        <th width="20%">Parameter</th>
+        <th width="80%">Beschreibung</th>
+      </tr>
+      <tr>
+        <td><i>&lt;working&gt;</i></td>
+        <td>Der Name des Verzeichnisses, in das der Bezug vorgenommen wird und aus dem heraus alle nachfolgenden Operationen gestartet werden.</td>
+      </tr>
+      <tr>
+        <td><i>&lt;username&gt;</i></td>
+        <td>Der Benutzername der durch das Kommando <code>svn</code> f&uumlr die Anmeldung am Versions Control System zu verwenden ist.</td>
+      </tr>
+      <tr>
+        <td><i>&lt;sourceurl&gt;</i></td>
+        <td>Die URL zum Versions Control System &uumlber die die Ablaufsteuerung in des lokale Dateisystem exportiert wird.<br/><br/><b>Beispiel</b>:<br/>https://gcdpsource.oracle.com/svn/iam-bka/external/1.0/trunk/DirectoryTransition</td>
+      </tr>
+      </table>
+      <p>
+        <b>Beispiel</b>:
+      </p>
+      <div class="information">
+        <code>svn --username dieter.steding@oracle.com export --force https://gcdpsource.oracle.com/svn/iam-bka/external/1.0/trunk/DirectoryTransition .</code>
+      </div>
+      <p>
+        Anschlie&szlig;end sollte das aktuelle Arbeitsverzeichnis gegen unberechtigte Zugriffe gesch&uuml;tzt werden<br>
+        Dazu wird folgende Kommandozeilen verwendet:
+      </p>
+      <div class="commandline">
+        <code>find ./ -type f -exec chmod 600 {} \;</code><br>
+        <code>find ./ -type d -exec chmod 700 {} \;</code>
+      </div>
+      <p>
+        Anschlie&szlig;end ist f&uuml;r das zentrale Shell-Skript der Ausf&uuml;hrungsmodus auf Benutzerebene freizugeben.<br>
+        Dazu wird folgende Kommandozeile verwendet:
+      </p>
+      <div class="commandline">
+        <code>chmod u+x install patchAll</code>
+      </div>
+    </div>
+    <div class="section">
+      <a id="A03.02" name="A03.02"><h3><span class="secnum">3.2</span> Festlegung der Konfiguration</h3></a>
+      <p>Das Deployment kann von einem zentralen Server aus auf alle f&uuml;r diesen Server erreichbaren Systemkomponenten vorgenommen werden.<br>
+      Dazu wurden aus dem Version Control System die Umgebungskonfiguration als Vorlagen exportiert.<br>
+      Diese werden durch die nachfolgenden Schritte auf die jeweilige Zielkonfiguration angepasst.</p>
+      <p>
+        <ol>
+          <li>
+            <p>
+              <a href="#A03.02.01" name="#A03.02.01">Anlegen und Einrichten des Wallet</a>
+            </p>
+          </li>
+          <li>
+            <p>
+              <a href="#A03.02.02" name="#A03.02.02">Anlegen und Einrichten der Parameter</a>
+            </p>
+          </li>
+          <li>
+            <p>
+              <a href="#A03.02.03" name="#A03.02.03">Substitution der Platzhalter in der Konfiguration</a>
+            </p>
+          </li>
+        </ol>
+      </p>
+    </div>
+    <div class="section">
+      <a id="A03.02.01" name="A03.02.01"><h4><span class="secnum">3.2.1</span> Anlegen und Einrichten des Wallet</h4></a>
+      <div class="section">
+        <p>Die Kennw&ouml;rter werden &uuml;ber ein Wallet, welches durch Oracle Platform Security Services verwaltet wird, isoliert.<br>
+        Das vorgegebene Verzeichnis f&uumlr das Wallet ist:</p>
+        <div class="commandline">
+          <code>./jps/directory</code>
+        </div>
+        <p>Zum Anlegen des Wallet wird das Werkzeug <code>mkstore</code> verwendet.<br>
+        Der Aufruf zum Anlegen sieht folgenderma&szlig;en aus:</p>
+        <div class="commandline">
+          <code>. iam.env</code><br>
+          <code>export PATH=${FMW_HOME}/oracle_common/bin:${PATH}</code><br>
+          <code>mkstore -wrl ./jps/directory/ -create</code>
+        </div>
+        <p>Es wird ein Passwort abgefragt, mit dem das Wallet vor unbefugtem &Ouml;ffnen gesch&uuml;tzt wird.</p>
+        <p>Die Eintr&auml;ge erfolgen wiederum mit <code>mkstore</code> nach dem Muster:</p>
+        <div class="commandline">
+          <code>echo <i>&lt;credential&gt;</i> | mkstore -wrl ./jps/directory/ -createUserCredential <i>&lt;stage&gt;</i> <i>&lt;alias&gt;</i> <i>&lt;password&gt;</i></code>
+        </div>
+        <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+        <tr>
+          <th width="20%">Parameter</th>
+          <th width="80%">Beschreibung</th>
+        </tr>
+        <tr>
+          <td><i>&lt;credential&gt;</i></td>
+          <td>Das Kennwort, das bei der Anlage des Wallet vergeben wurde.</td>
+        </tr>
+        <tr>
+          <td><i>&lt;stage&gt;</i></td>
+          <td>Der Name der logischen Gruppe von Credential&apos;s.</td>
+        </tr>
+        <tr>
+          <td><i>&lt;alias&gt;</i></td>
+          <td>Der Aliasname des Credential&apos;s welcher sp&auml;ter im Schritt Substitution f&uumlr die Extraktion des Kennworts verwendet wird.</td>
+        </tr>
+        <tr>
+          <td><i>&lt;password&gt;</i></td>
+          <td>Das Credential welches im Schritt Substitution zu verwenden ist.</td>
+        </tr>
+        </table>
+        <p>
+          <b>Beispiel</b>:
+        </p>
+        <div class="information">
+          <code>echo Welcome1 | mkstore -wrl ./jps/directory -createUserCredential extdev scp@oud oracle Welcome!</code>
+        </div>
+        <p>Eine Aufstellung der notwendigen Aliase befindet sich im <a href="#X01.01" name="#X01.01">Anhang</a>.</p>
+      </div>
+    </div>
+    <div class="section">
+      <a id="A03.02.02" name="A03.02.02"><h4><span class="secnum">3.2.2</span> Anlegen und Einrichten der Parameter</h4></a>
+      <div class="section">
+        <p>Die Parameter f&uumlr die Substitution der &uumlbrigen Parameter wird &uuml;ber Textdateien vorgenommen.<br>
+        Das vorgegebene Verzeichnis f&uumlr die Dateien ist:</p>
+        <div class="commandline">
+          <code>./src/cfg</code>
+        </div>
+        <p>Zum Anlegen einer Datei wird die Vorlage <code>extoud.properties</code> verwendet.<br>
+        Der Aufruf zum Anlegen sieht folgenderma&szlig;en aus:</p>
+        <div class="commandline">
+          <code>mkdir -p ./src/cfg</code>
+          <br>
+          <code>cp ./tpl/cfg/extoud.properties ./src/cfg/<i>&lt;stage&gt;</i>.properties</code>
+        </div>
+        <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+        <tr>
+          <th width="20%">Parameter</th>
+          <th width="80%">Beschreibung</th>
+        </tr>
+        <tr>
+          <td><i>&lt;stage&gt;</i></td>
+          <td>Der Name der logischen Gruppe von Parametern.</td>
+        </tr>
+        </table>
+        <p>Die Namen dieser Dateien sollten der Namensgebung des Parameters <i>&lt;stage&gt;</i> beim Anlegen des Wallet folgen</p>
+        <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+        <tr>
+          <th width="20%">Datei</th>
+          <th width="80%">Beschreibung</th>
+        </tr>
+        <tr>
+          <td><i>extdev</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Entwicklungsumgebung des Externen Identity Managements.</td>
+        </tr>
+        <tr>
+          <td><i>extint</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Integrationsumgebung des Externen Identity Managements.</td>
+        </tr>
+        <tr>
+          <td><i>extedu</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Schulungsumgebung des Externen Identity Managements.</td>
+        </tr>
+        <tr>
+          <td><i>extppr</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Pre-Produktionsumgebung des Externen Identity Managements.</td>
+        </tr>
+        <tr>
+          <td><i>extppa</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Produktionsumgebung des Externen Identity Managements.</td>
+        </tr>
+        </table>
+        <p>
+          <b>Beispiel</b>:
+        </p>
+        <div class="information">
+          <code>mkdir -p ./src/cfg</code>
+          <br>
+          <code>cp ./tpl/cfg/extoud.properties ./src/cfg/extdev.properties</code>
+        </div>
+        <p>Anschlie&szlig;end sind die Werte f&uuml;r die Parameter in einem Texteditor auf ihre erforderlichen Werte anzupassen.</p>
+        <p>Eine Aufstellung der notwendigen Parameter befindet sich im <a href="#X01.02" name="#X01.02">Anhang</a>.</p>
+      </div>
+    </div>
+    <div class="section">
+      <a id="A03.02.03" name="A03.02.03"><h4 class="sect1"><span class="secnum">3.2.3</span> Substitution der Platzhalter in der Konfiguration</h4></a>
+      <div class="section">
+        <p>Die Substitution der Platzhalter in den Konfigurationsdateien erfolgt &uuml;ber eine Shell Skript.<br>
+        F&uuml;r dessen Ausf&uuml;hrung werden Umgebungsvariablen vorausgesetzt.<br>
+        Diese Umgebungsvariablen werden vorzugsweise in einer Datei global f&uuml;r alle die Infrastruktur umfassenden Systemkomponenten erzeugt.<br>
+        Somit wird sichergestellt, dass unabh&auml;ngig von einem Systemkomponenten-Deployment alle notwendigen Informationen deklariert sind.<br>
+        Vorzugsweise ist die Datei im Dateipfad des ausf&uuml;hrenden Benutzers auffindbar.</p>
+        <p>Die empfohlene Lokation f&uuml;r diese Datei ist:</p>
+        <div class="commandline">
+          <code>${HOME}/bin</code>
+        </div>
+       </div>
+    </div>
+    <div class="section">
+      <a id="A03.02.03.01" name="A03.02.03.01"><h4 class="sect1"><span class="secnum">3.2.3.1</span> Umgebungsdefinition</h4></a>
+        <p>Die Namen dieser Dateien sollten der Namensgebung des Parameters <i>&lt;stage&gt;</i> beim Anlegen des Wallet folgen</p>
+        <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+        <tr>
+          <th width="20%">Datei</th>
+          <th width="80%">Beschreibung</th>
+        </tr>
+        <tr>
+          <td><i>extdev</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Entwicklungsumgebung des Externen Identity Managements.</td>
+        </tr>
+        <tr>
+          <td><i>extint</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Integrationsumgebung des Externen Identity Managements.</td>
+        </tr>
+        <tr>
+          <td><i>extedu</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Schulungsumgebung des Externen Identity Managements.</td>
+        </tr>
+        <tr>
+          <td><i>extppr</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Pre-Produktionsumgebung des Externen Identity Managements.</td>
+        </tr>
+        <tr>
+          <td><i>extppa</i></td>
+          <td>Deklaration der Umgebungsvariablen f&uuml;r die Produktionsumgebung des Externen Identity Managements.</td>
+        </tr>
+        </table>
+        <p>F&uuml;r die Ausf&uuml;hrung des Shell-Skript werden die nachfolgend aufgef&uuml;hrten Umgebungsvariablen vorausgesetzt:</p>
+        <table class="table-border" class="configuration" summary="" cellspacing="0" cellpadding="0" width="825px">
+        <tr>
+          <th width="20%">Umgebungsvariable</th>
+          <th width="80%">Bedeutung</th>
+        </tr>
+        <tr>
+          <td>ANT_HOME</td>
+          <td>
+            Location of the ANT installation. It is usually under <i>FMW_HOME</i>.
+            <br/>
+            <br/>
+            <b>Example</b>:
+            <code>${FMW_HOME}/modules/thirdparty/org.apache.ant/1.9.8.0.0/apache-ant-1.9.8</code>
+          </td>
+        </tr>
+        <tr>
+          <td>FMW_HOME</td>
+          <td>Location of the middleware home location on which Oracle Unified Directory is installed.
+            <br/>
+            <br/>
+            <b>Example</b>:
+            <code>/opt/oracle/product/fmw/12.2.1</code>
+            <br/>
+          </td>
+        </tr>
+        <tr>
+          <td>JAVA_HOME</td>
+          <td>
+            Location of the Java Development Kit installation. It is usually parallel to <i>FMW_HOME</i>.
+            <br/>
+            <br/>
+            <b>Example</b>:
+            <code>${FMW_HOME}/../jdk</code>
+          </td>
+        </tr>
+        <tr>
+          <td>JAVA_VENDOR</td>
+          <td>
+            Specifies the vendor of the JDK.
+            <br/>
+            <br/>
+            <b>Example</b>:
+            <code>Sun</code>
+          </td>
+        </tr>
+        <tr>
+          <td>ORACLE_BASE</td>
+          <td>The root of the Oracle Component directory tree. If you install an OFA-compliant database using Oracle Universal Installer defaults, then ORACLE_BASE is <code>/opt/oracle/product.</code></td>
+        </tr>
+        <tr>
+          <td>OUD_HOME</td>
+          <td>
+            Directory on which Oracle Unified Directory is installed. It is usually under <i>FMW_HOME</i>.
+            <br/>
+            <br/>
+            <b>Example</b>:
+            <code>${FMW_HOME}/oud</code>
+            <br/>
+          </td>
+        </tr>
+        <tr>
+          <td>OUD_PREFIX</td>
+          <td>
+            The deployment specific prefix to pick up Unified Directory related artifacts during the deployment.
+            <br/>
+            <br/>
+            <b>Example</b>:
+            <code>extdev</code>
+            <br/>
+          </td>
+        </tr>
+        <tr>
+          <td>OUD_SRC_URL</td>
+          <td>
+            The URL from which Unified Directory related deployment artifacts are exported.
+            <br/>
+            <br/>
+            <b>Example</b>:
+            <code>https://gcdpsource.oracle.com/svn/iam-bka/external/1.0/trunk/deployment</code>
+            <br/>
+          </td>
+        </tr>
+        <tr>
+          <td>SOA_HOME</td>
+          <td>
+            Directory on which Oracle SOA Suite is installed. It is usually under <i>FMW_HOME</i>.
+            <br/>
+            <br/>
+            <b>Example</b>:
+            <code>${FMW_HOME}/soa</code>
+            <br/>
+          </td>
+        </tr>
+        <tr>
+          <td>WLS_HOME</td>
+          <td>
+            Directory on which WebLogic server is installed. It is usually under <i>FMW_HOME</i>.
+            <br/>
+            <br/>
+            <b>Example</b>:
+            <code>${FMW_HOME}/wlserver</code>
+            <br/>
+          </td>
+        </tr>
+        </table>
+      </div>
+    </div>
+    <div class="section">
+      <a id="A03.02.03.02" name="A03.02.03.02"><h4 class="sect1"><span class="secnum">3.2.3.2</span> Substitution</h4></a>
+      <div class="section">
+        <div class="checkpoint">
+          <div class="symbol"></div>
+          <div class="content">
+            <p><b>Checkpoint</b></p>
+            <p>Ab diesem Zeitpunkt ist das technische System, auf dem die weiteren Schritte der Bereitstellung vorgenommen, als unsicher zu betrachten.</p>
+          </div>
+        </div>
+        <div class="commandline">
+          <code>. <i>&lt;stage&gt;</i></code>
+          <br>
+          <code>./install replace</code>
+        </div>
+        <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+        <tr>
+          <th width="20%">Parameter</th>
+          <th width="80%">Beschreibung</th>
+        </tr>
+        <tr>
+          <td><i>&lt;stage&gt;</i></td>
+          <td>Der logische Name des Infrastrukturumgebung.</td>
+        </tr>
+        </table>
+        <p>
+          <b>Beispiel</b>:
+        </p>
+        <div class="information">
+          <code>. extdev</code>
+          <br>
+          <code>./install replace</code>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <a id="A03.03" name="A03.03"><h3 class="sect1"><span class="secnum">3.3</span> Bezug des Deployment</h3></a>
+      <div class="section">
+        <p>Ist das Deployment bereits vorhanden kann es mittels</p>
+        <div class="commandline">
+          <code>./install verify</code>
+        </div>
+        <p>&uuml;berpr&uuml;ft werden. Es wird eine Konsistenzpr&uuml;fung der exportierten Konfigurationsdateien und eine Syntaxpr&uuml;fung aller XML Dateien ausgef&uuml;hrt.</p>
+        <p><b><i>Alternativ</i></b> wird das Deployment ebenfalls &uuml;ber das Version Control System bezogen. Der Bezug wird durch die Kommandozeile</p>
+        <div class="commandline">
+          <code>./install update</code>
+        </div>
+        <p>ausgef&uuml;hrt.</p>
+        <p>Diese Operation f&uuml;hrt neben dem Bezug des Deployment eine Konsistenzpr&uuml;fung der exportierten Konfigurationsdateien und eine Syntaxpr&uuml;fung<br>aller XML Dateien aus.</p>
+      </div>
+    </div>
+    <div class="section">
+      <a id="A04" name="A04"><h2 class="sect1"><span class="secnum">4</span> Bereitstellungsprozess</h2></a>
+      <div class="section">
+        <p>Das Deployment ist ein Prozess, der in seinem Ablauf die Bereitstellung von Konfigurationen, Entit&auml;ten sowie den Bezug von Daten aus diversen<br>Quellsystemen umfasst.
+        Dabei sind zu einem gegebenen Zeitpunkt Artefakte des Deployment auf bereist geladene Daten angewiesen, um<br>fehlerfrei im Oracle Unified Directory bereitgestellt werden zu k&ouml;nnen.
+        Andererseits haben einzelne Artefakte Abh&auml;ngigkeiten untereinander, die<br>die Einhaltung einer bestimmten Reihenfolge innerhalb des Bereitstellungsprozesses erfordern.</p>
+        <p>Der Bereitstellungprozess selbst untergliedert sich in wesentliche Teilprozesse:</p>
+        <img src="data:image/png;base64,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"/>
+        <ol>
+          <li>
+            <p>
+              <a href="#A04.01" name="#A04.01">Patching</a>
+            </p>
+          </li>
+        </ol>
+        <a id="A04.01" name="A04.01"><h3 class="sect1"><span class="secnum">4.1</span> Patching</h3></a>
+        <div class="section">
+          <p>Im Teilprozess Patching werden die Entwicklungsartefakte in Oracle Unified Directory eingebracht und konfiguriert.</p>
+          <p>Der Prozess wird &uuml;ber die Kommandozeile</p>
+          <div class="commandline">
+            <code>./patchAll</code>
+          </div>
+          <p>zur Ausf&uuml;hrung gebracht.</p>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <a id="X01"><h2 class="sect1"><span class="secnum">A</span> Anhang</h2></a>
+      <p>
+        <ol>
+          <li>
+            <p>
+              <a href="#X01.01" name="#X01.01">Kennwort Aliase</a>
+            </p>
+          </li>
+          <li>
+            <p>
+              <a href="#X01.01" name="#X01.01">Parameter</a>
+            </p>
+          </li>
+        </ol>
+      </p>
+      <div>
+      <a id="X01.01" name="X01.01"><h3 class="sect1"><span class="secnum">A.1</span> Kennwort Aliase</h3></a>
+      <p>
+        Zur&uuml;ck zu <a href="#A03.02.01" name="#A03.02.01">Anlegen und Einrichten des Wallet</a>
+      </p>
+      <div class="section">
+        <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+        <tr>
+          <th width="3%">Alias</th>
+          <th width="3%">Ziel</th>
+          <th width="69%">Beschreibung</th>
+          <th width="25%">Beispiel</th>
+        </tr>
+        <tr>
+          <td><i>adm@ods</i></td>
+          <td>__OUD_PASS__</td>
+          <td>Das Kennwort das f&uuml;r den Standard Administrator des Unified Directory vergeben wurde.</td>
+          <td><code>wmkah1mdFh@nuhr</code></td>
+        </tr>
+        <tr>
+          <td><i>dbs@ods</i></td>
+          <td>__DBS_PASS__</td>
+          <td>Das Kennwort des Datenbankbenutzers, f&uuml;r den das Datenbankschema des Metadata Repository angelegt wurde.</td>
+          <td><code>wmkah1mdFh@nuhr</code></td>
+        </tr>
+        <tr>
+          <td><i>iam@ods</i></td>
+          <td>__IAM_PASS__</td>
+          <td>Das Kennwort das f&uuml;r den Standard Administrator des Oracle Identity und Access Management Suite vergeben wird.</td>
+          <td><code>wmkah1mdFh@nuhr</code></td>
+        </tr>
+        <tr>
+          <td><i>jee@ods</i></td>
+          <td>__JEE_PASS__</td>
+          <td>Das Kennwort f&uuml;r den Standard Administrator der WebLogic Domain vergeben wurde.</td>
+          <td><code>wmkah1mdFh@nuhr</code></td>
+        </tr>
+        <tr>
+          <td><i>oam@ods</i></td>
+          <td>__OAM_PASS__</td>
+          <td>Das Kennwort das Oracle Access Manager f&uuml;r den Verbindungsaufbau verwendet.</td>
+          <td><code>wmkah1mdFh@nuhr</code></td>
+        </tr>
+        <tr>
+          <td><i>oim@ods</i></td>
+          <td>__OIM_PASS__</td>
+          <td>Das Kennwort das Oracle Identity Manager f&uuml;r den Verbindungsaufbau verwendet.</td>
+          <td><code>wmkah1mdFh@nuhr</code></td>
+        </tr>
+        <tr>
+          <td><i>scp@ods</i></td>
+          <td>__SCP_PASS__</td>
+          <td>Das Kennwort Benutzerkonto des Zielsystems des Deployments mit dem der Transfer von Dateien vorgenommen wird.</td>
+          <td><code>wmkah1mdFh@nuhr</code></td>
+        </tr>
+        <tr>
+          <td><i>bka@ods</i></td>
+          <td>__BKA_PASS__</td>
+          <td>The password assigned to the default administrator of the Unified Directory.</td>
+          <td><code>wmkah1mdFh@nuhr</code></td>
+        </tr>
+        </table>
+      </div>
+      <p>
+        Zur&uuml;ck zu <a href="#A03.02.01" name="#A03.02.01">Anlegen und Einrichten des Wallet</a>
+      </p>
+      <a id="X01.02" name="X01.02"><h3 class="sect1"><span class="secnum">A.2</span> Parameter</h3></a>
+      <p>
+        Zur&uuml;ck zu <a href="#A03.02.02" name="#A03.02.02">Anlegen und Einrichten der Parameter</a>
+      </p>
+      <div class="section">
+        <table class="table-border" summary="" cellspacing="0" cellpadding="0" width="825px">
+        <tr>
+          <th width="3%">Wert</th>
+          <th width="3%">Ziel</th>
+          <th width="69%">Beschreibung</th>
+          <th width="25%">Default</th>
+        </tr>
+        <tr>
+          <td><i>ADM_AUTH</i></td>
+          <td>__ADM_AUTH__</td>
+          <td>Der absolute Pfade zur Kennwortdatei</td>
+          <td><code>~/.secret/credential/directory</code></td>
+        </tr>
+        <tr>
+          <td><i>ADM_PORT</i></td>
+          <td>__ADM_PORT__</td>
+          <td>Der Port, der der Unified Directory Instanz zugewiesen wurde, um Admin-Anfragen zu bearbeiten.</td>
+          <td><code>7441</code></td>
+        </tr>
+        <tr>
+          <td><i>ADM_USER</i></td>
+          <td>__ADM_USER__</td>
+          <td>Der Name des Benutzerkontos, das als Standard Administrator eingerichtet wurde.</td>
+          <td><code>vm.oracle.com\Administrator</code></td>
+        </tr>
+        <tr>
+          <td><i>DBS_HOST</i></td>
+          <td>__DBS_HOST__</td>
+          <td>Der vollqualifizierte DNS-Name des technischen Systems, auf dem der Oracle Listener f&uuml;r das Oracle Identity Manager zugeordnete Metadata Repository bereitgestellt wurde.</td>
+          <td><code>buster.vm.oracle.com</code></td>
+        </tr>
+        <tr>
+          <td><i>DBS_PORT</i></td>
+          <td>__DBS_PORT__</td>
+          <td>Der Port, der durch den Oracle Listener verwendet wird, um den Zugriff auf die Datenbank des Metadata Repository zu vermitteln.</td>
+          <td><code>7021</code></td>
+        </tr>
+        <tr>
+          <td><i>DBS_NAME</i></td>
+          <td>__DBS_NAME__</td>
+          <td>Der Service Name, den Oracle Listener verwendet, um den Zugriff auf die Datenbank des Metadata Repository zu vermitteln.</td>
+          <td><code>mdr.vm.oracle.com</code></td>
+        </tr>
+        <tr>
+          <td><i>DBS_USER</i></td>
+          <td>__DBS_USER__</td>
+          <td>Der Name des Datenbankbenutzers, f&uuml;r den ein Datenbankschema im Metadata Repository von Oracle Identity Manager erzeugt wurde.</td>
+          <td><code>weblogic</code></td>
+        </tr>
+        <tr>
+          <td><i>FIM_BASE</i></td>
+          <td>__FIM_BASE__</td>
+          <td>Der Basiskontext des Verzeichnisdienstes f&uuml;r die Teilnehmer.</td>
+          <td><code>dc=fim,dc=bund,dc=de</code></td>
+        </tr>
+        <tr>
+          <td><i>JEE_PROT</i></td>
+          <td>__JEE_PROT__</td>
+          <td>Protokoll, das w&auml;hrend des Deployments f&uuml;r die Kommunikation mit dem Admin Server der WebLogic Domain verwendet wird.</td>
+          <td><code>t3</code></td>
+        </tr>
+        <tr>
+          <td><i>JEE_HOST</i></td>
+          <td>__JEE_HOST__</td>
+          <td>Der vollqualifizierte DNS-Name des technischen Systems, auf dem der Admin Server der WebLogic Domain bereitgestellt ist</td>
+          <td><code>buster.vm.oracle.com</code></td>
+        </tr>
+        <tr>
+          <td><i>JEE_PORT</i></td>
+          <td>__JEE_PORT__</td>
+          <td>Der Port, der dem Admin Server der WebLogic Server Domain zugewiesen wurde, um Anfragen zu bearbeiten.</td>
+          <td><code>7001</code></td>
+        </tr>
+        <tr>
+          <td><i>JEE_NAME</i></td>
+          <td>__JEE_NAME__</td>
+          <td>Der Name des Admin Servers, der w&auml;hrend der Erzeugung der WebLogic Domain festgelegt wurde.</td>
+          <td><code>adm</code></td>
+        </tr>
+        <tr>
+          <td><i>JEE_USER</i></td>
+          <td>__JEE_USER__</td>
+          <td>Der Name des Benutzerkontos, das w&auml;hrend der Erzeugung der WebLogic Server Domain als Domain Administrator festgelegt wurde.</td>
+          <td><code>weblogic</code></td>
+        </tr>
+        <tr>
+          <td><i>JEE_HOME</i></td>
+          <td>__JEE_HOME__</td>
+          <td>Das Oracle Home Verzeichnis, in das die Softwareinstallation des Oracle WebLogic Servers vorgenommen wurde.</td>
+          <td><code>/opt/oracle/product/fmw/12.2.1/wlserver</code></td>
+        </tr>
+        <tr>
+          <td><i>OUD_HOME</i></td>
+          <td>__OUD_HOME__</td>
+          <td>Das Oracle Home Verzeichnis, in das die Softwareinstallation des Oracle Unified Directory vorgenommen wurde.</td>
+          <td><code>/opt/oracle/product/fmw/12.2.1/oud</code></td>
+        </tr>
+        <tr>
+          <td><i>OUD_HOST</i></td>
+          <td>__OUD_HOST__</td>
+          <td>Der vollqualifizierte DNS-Name des technischen Systems, auf dem das Unified Directory bereitgestellt ist.</td>
+          <td><code>buster.vm.oracle.com</code></td>
+        </tr>
+        <tr>
+          <td><i>OUD_PATH</i></td>
+          <td>__OUD_PATH__</td>
+          <td>Der absolute Name des Verzeichnises in dem die Unified Directory Instanz erzeugt wurde</td>
+          <td><code>/dbs/oracle/ODS/bka.bund.de</code></td>
+        </tr>
+        <tr>
+          <td><i>OUD_PORT</i></td>
+          <td>__OUD_PORT__</td>
+          <td>Der Port, der der Unified Directory Instanz zugewiesen wurde, um LDAP-Anfragen zu bearbeiten.</td>
+          <td><code>7389</code></td>
+        </tr>
+        <tr>
+          <td><i>OUD_ROOT</i></td>
+          <td>__OUD_ROOT__</td>
+          <td>Der Name der Unified Directory Domain</td>
+          <td><code>dc=bka,dc=bund,dc=de</code></td>
+        </tr>
+        <tr>
+          <td><i>SCP_HOST</i></td>
+          <td>__SCP_HOST__</td>
+          <td>Der vollqualifizierte DNS-Name des technischen Systems, gegen&uml;ber dem das Deployment vorgenommen werden soll.</td>
+          <td><code>buster.vm.oracle.com</code></td>
+        </tr>
+        <tr>
+          <td><i>SCP_PORT</i></td>
+          <td>__SCP_PORT__</td>
+          <td>Der Port, der f&uuml;r den SSH Daemon konfiguriert wurde, um Anfragen zu bearbeiten.</td>
+          <td><code>7022</code></td>
+        </tr>
+        <tr>
+          <td><i>SCP_CERT</i></td>
+          <td>__SCP_NAME__</td>
+          <td>Der Pfad zur Datei des &ouml;ffentlichen Schl&uuml;ssels des Benutzerkontos das f&uuml;r den Transfer der Dateien verwendet wird.</td>
+          <td><code>/home/oracle/.ssh/dieter.steding@oracle.com</code></td>
+        </tr>
+        <tr>
+          <td><i>SOA_PROT</i></td>
+          <td>__SOA_PROT__</td>
+          <td>Protokoll, das w&auml;hrend des Deployments f&uuml;r die Kommunikation mit dem Managed Server der WebLogic Domain verwendet wird.</td>
+          <td><code>t3</code></td>
+        </tr>
+        <tr>
+          <td><i>SOA_HOST</i></td>
+          <td>__SOA_HOST__</td>
+          <td>Der vollqualifizierte DNS-Name des technischen Systems, auf dem die Oracle SOA Suite w&aumlhrend der Erzeugung der WebLogic Server Domain bereitgestellt wurde.</td>
+          <td><code>buster.vm.oracle.com</code></td>
+        </tr>
+        <tr>
+          <td><i>SOA_PORT</i></td>
+          <td>__SOA_PORT__</td>
+          <td>Der Port, der dem Managed Server der WebLogic Server Domain zugewiesen wurde, um Anfragen zu bearbeiten.</td>
+          <td><code>8001</code></td>
+        </tr>
+        <tr>
+          <td><i>SOA_NAME</i></td>
+          <td>__SOA_NAME__</td>
+          <td>Der Name des Managed Servers, der w&auml;hrend der Erzeugung der WebLogic Domain festgelegt wurde.</td>
+          <td><code>soa</code></td>
+        </tr>
+        <tr>
+          <td><i>SOA_USER</i></td>
+          <td>__SOA_USER__</td>
+          <td>Der Name des Benutzerkontos, das w&aumlhrend der Erzeugung der WebLogic Server Domain als Standard Administrator festgelegt wurde.</td>
+          <td><code>xelsysadm</code></td>
+        </tr>
+        <tr>
+          <td><i>SOA_HOME</i></td>
+          <td>__SOA_HOME__</td>
+          <td>Das Oracle Home Verzeichnis, in das die Softwareinstallation der Systemkomponente vorgenommen wurde.</td>
+          <td><code>/opt/oracle/product/fmw/12.2.1/soa</code></td>
+        </tr>
+        <tr>
+          <td><i>BKA_HOME</i></td>
+          <td>__BKA_HOME__</td>
+          <td>Das Oracle Home Verzeichnis, in das die Softwareinstallation des Oracle Unified Directory vorgenommen wurde.</td>
+          <td><code>/opt/oracle/product/fmw/12.2.1/oud</code></td>
+        </tr>
+        <tr>
+          <td><i>BKA_HOST</i></td>
+          <td>__BKA_HOST__</td>
+          <td>Der vollqualifizierte DNS-Name des technischen Systems, auf dem das Unified Directory bereitgestellt ist.</td>
+          <td><code>buster.vm.oracle.com</code></td>
+        </tr>
+        <tr>
+          <td><i>BKA_PATH</i></td>
+          <td>__BKA_PATH__</td>
+          <td>Der absolute Name des Verzeichnises in dem die Unified Directory Instanz erzeugt wurde</td>
+          <td><code>/dbs/oracle/ODS/bka.bund.de</code></td>
+        </tr>
+        <tr>
+          <td><i>BKA_PORT</i></td>
+          <td>__BKA_PORT__</td>
+          <td>Der Port, der der Unified Directory Instanz zugewiesen wurde, um LDAP-Anfragen zu bearbeiten.</td>
+          <td><code>1389</code></td>
+        </tr>
+        <tr>
+          <td><i>BKA_ROOT</i></td>
+          <td>__BKA_ROOT__</td>
+          <td>Der Name der Unified Directory Domain</td>
+          <td><code>dc=bka,dc=bund,dc=de</code></td>
+        </tr>
+        <tr>
+          <td><i>BKA_USER</i></td>
+          <td>__BKA_USER__</td>
+          <td>Der Name des Benutzerkontos, das als Standard Administrator eingerichtet wurde.</td>
+          <td><code>cn=Directory Manager</code></td>
+        </tr>
+        </table>
+      </div>
+      <p>
+        Zur&uuml;ck zu <a href="#A03.02.02" name="#A03.02.02">Anlegen und Einrichten der Parameter</a>
+      </p>
+    </div>
+  </body>
+</html>

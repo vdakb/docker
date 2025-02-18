@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="applicationinstance_accountsPageDef"
+                Package="oracle.iam.identity.sysauthz.app.view">
+  <parameters/>
+  <executables>
+    <iterator     id="ApplicationInstanceIterator" Binds="ApplicationInstanceDetailVO" DataControl="ApplicationInstanceAMDataControl" RangeSize="20"/>
+    <iterator     id="AccountListIterator"         Binds="AccountListVO"               DataControl="ApplicationInstanceAMDataControl" RangeSize="20"/>
+    <searchRegion id="AccountListCriteria"         Binds="AccountListIterator"         Criteria="AccountVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+  </executables>
+  <bindings>
+    <tree id="Account" IterBinding="AccountListIterator" >
+      <nodeDefinition Name="AccountNode" DefName="oracle.iam.identity.sysauthz.model.view.AccountVO">
+        <AttrNames>
+          <Item Value="accountKey"/>
+          <Item Value="accountType"/>
+          <Item Value="accountMechanism"/>
+          <Item Value="accountRiskMechanism"/>
+          <Item Value="accountRiskMechanismIcon"/>
+          <Item Value="accountRiskItem"/>
+          <Item Value="accountRiskIcon"/>
+          <Item Value="accountRiskSummary"/>
+          <Item Value="resourceKey"/>
+          <Item Value="resourceName"/>
+          <Item Value="processInstanceStatus"/>
+          <Item Value="beneficiaryKey"/>
+          <Item Value="beneficiaryLogin"/>
+          <Item Value="beneficiaryFirstName"/>
+          <Item Value="beneficiaryLastName"/>
+          <Item Value="organizationKey"/>
+          <Item Value="organizationName"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="ApplicationInstanceAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="ApplicationInstanceAMDataControl"/>
+    <methodAction id="refreshAttribute"
+                  DataControl        ="ApplicationInstanceAMDataControl"
+                  InstanceName       ="ApplicationInstanceAMDataControl.dataProvider"
+                  MethodName         ="refreshAttribute"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id                 ="requeryPublication"
+                  InstanceName       ="ApplicationInstanceAMDataControl.dataProvider"
+                  DataControl        ="ApplicationInstanceAMDataControl"
+                  Action             ="invokeMethod"
+                  MethodName         ="requeryPublication"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+      <NamedData NDName="pending"    NDType="java.util.List"/>
+    </methodAction>
+    <methodAction id                 ="applyPublication"
+                  InstanceName       ="ApplicationInstanceAMDataControl.dataProvider"
+                  DataControl        ="ApplicationInstanceAMDataControl"
+                  Action             ="invokeMethod"
+                  MethodName         ="applyPublication"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+      <NamedData NDName="pending"    NDType="java.util.List"/>
+    </methodAction>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

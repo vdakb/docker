@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Authorization Console Application" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description" value="Identity Authorization Console Application"/>
+  <property name="application" value="oracle.iam.console.identity.sysauthz"/>
+  <property name="destination" value="../../deployment/oim/0000 systemCustomization"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import   file="../../adf-targets.xml"/>
+  <!--
+  =====================================================================
+  == ANT macro to cleanup a project
+  =====================================================================
+  -->
+  <macrodef name="cleanup-project">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Project @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <exec executable="svn">
+        <arg value="cleanup"/>
+        <arg value="--remove-unversioned"/>
+        <arg value="../@{path}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <macrodef name="clean-project">
+    <attribute name="file"/>
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Project @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <call-subproject target="clean" file="@{file}" path="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.jee"/>
+    <path refid="oracle.fmw.jsf"/>
+    <path refid="oracle.fmw.xml"/>
+    <path refid="oracle.fmw.adf.view"/>
+    <path refid="oracle.fmw.adf.model"/>
+    <path refid="oracle.fmw.adf.platform"/>
+    <path refid="oracle.fmw.adf.controller"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.oim.adapter"/>
+    <path refid="oracle.fmw.oim.backend"/>
+    <path refid="oracle.fmw.oim.frontend"/>
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="oracle.ocs.hst.faces"/>
+    <path refid="oracle.ocs.oim.foundation"/>
+    <path refid="oracle.ocs.oim.frontend"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT target to remove particular unversioned files
+  =====================================================================
+  -->
+  <target name="cleanup" description="Remove particular unversioned filess">
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Oracle Identity Authorization Console"/>
+    <echo message="============================================================="/>
+    <cleanup-project path="frontendLibrary"   component="Identity Administration Frontend Library"/>
+    <cleanup-project path="sysprovBackend"    component="Identity Provisioning Backend Library"/>
+    <cleanup-project path="sysconfigBackend"  component="Identity Configuration Backend Library"/>
+    <cleanup-project path="sysadminBackend"   component="Identity Administration Backend Library"/>
+    <cleanup-project path="sysauthzBackend"   component="Identity Authorization Backend Library"/>
+    <cleanup-project path="sysprovFrontend"   component="Identity Provisioning Frontend Module"/>
+    <cleanup-project path="sysconfigFrontend" component="Identity Configuration Frontend Module"/>
+    <cleanup-project path="sysadminFrontend"  component="Identity Administration Frontend Module"/>
+    <cleanup-project path="sysauthzFrontend"  component="Identity Authorization Frontend Module"/>
+    <cleanup-project path="frontendDashboard" component="Identity Authorization Console Application"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables">
+    <echo message="============================================================="/>
+    <echo message="Clean of Oracle Identity Authorization Console"/>
+    <echo message="============================================================="/>
+    <clean-project file="adf-library-ant.xml" path="${wks.base.oim}/frontendLibrary"   component="Identity Administration Frontend Library"/>
+    <clean-project file="adf-library-ant.xml" path="${wks.base.oim}/sysprovBackend"    component="Identity Provisioning Backend Library"/>
+    <clean-project file="adf-library-ant.xml" path="${wks.base.oim}/sysconfigBackend"  component="Identity Configuration Backend Library"/>
+    <clean-project file="adf-library-ant.xml" path="${wks.base.oim}/sysadminBackend"   component="Identity Administration Backend Library"/>
+    <clean-project file="adf-library-ant.xml" path="${wks.base.oim}/sysauthzBackend"   component="Identity Authorization Backend Library"/>
+    <clean-project file="adf-module-ant.xml"  path="${wks.base.oim}/sysprovFrontend"   component="Identity Provisioning Frontend Module"/>
+    <clean-project file="adf-module-ant.xml"  path="${wks.base.oim}/sysconfigFrontend" component="Identity Configuration Frontend Module"/>
+    <clean-project file="adf-module-ant.xml"  path="${wks.base.oim}/sysadminFrontend"  component="Identity Administration Frontend Module"/>
+    <clean-project file="adf-module-ant.xml"  path="${wks.base.oim}/sysauthzFrontend"  component="Identity Authorization Frontend Module"/>
+    <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+    <echo message="Cleanup Project Identity Authorization Console Module"/>
+    <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the frontend application to be deployed on
+  == the JEE application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="init,manifest">
+    <echo message="Packaging Identity Frontend Application ${application} from path ${output.dir} and ${static.dir}"/>
+    <call-subproject target="make"    file="adf-library-ant.xml" path="${wks.base.oim}/frontendLibrary"/>
+    <call-subproject target="make"    file="adf-library-ant.xml" path="${wks.base.oim}/sysprovBackend"/>
+    <call-subproject target="make"    file="adf-library-ant.xml" path="${wks.base.oim}/sysconfigBackend"/>
+    <call-subproject target="make"    file="adf-library-ant.xml" path="${wks.base.oim}/sysadminBackend"/>
+    <call-subproject target="make"    file="adf-library-ant.xml" path="${wks.base.oim}/sysauthzBackend"/>
+    <call-subproject target="make"    file="adf-module-ant.xml"  path="${wks.base.oim}/sysprovFrontend"/>
+    <call-subproject target="make"    file="adf-module-ant.xml"  path="${wks.base.oim}/sysconfigFrontend"/>
+    <call-subproject target="make"    file="adf-module-ant.xml"  path="${wks.base.oim}/sysadminFrontend"/>
+    <call-subproject target="make"    file="adf-module-ant.xml"  path="${wks.base.oim}/sysauthzFrontend"/>
+    <call-subproject target="compile" file="adf-console-ant.xml" path="${wks.base.oim}/frontendDashboard"/>
+    <jar destfile="${deploy.dir}/adf-loc.jar">
+      <manifest>
+        <attribute name="Class-Path" value="../adf"/>
+      </manifest>
+    </jar>
+    <adf-war-module description="${description}" module="${application}"/>
+    <ear compress="false" destfile="${deploy.dir}/${application}.ear" appxml="${wks.base.oim}/.src/META-INF/application.xml"  manifest="${manifest}">
+      <metainf dir="${wks.base.oim}/.src/META-INF">
+        <exclude name="cwallet.sso"/>
+        <exclude name="jazn-data.xml"/>
+        <exclude name="jps-config.xml"/>
+        <exclude name="cwallet.sso.lck"/>
+        <exclude name="application.xml"/>
+        <exclude name="jazn-data-sysadmin.xml"/>
+      </metainf>
+      <zipfileset prefix="adf"         dir="${wks.base.oim}/.adf">
+        <exclude name="**/connections.xml"/>
+        <exclude name="**/wsm-assembly.xml"/>
+      </zipfileset>
+      <zipfileset prefix="lib"         file="${deploy.dir}/adf-loc.jar"/>
+      <zipfileset prefix="APP-INF/lib" file="${hst.home}/hstFoundation/lib/hst-foundation.jar"/>
+      <zipfileset prefix="APP-INF/lib" file="${ocs.base.oim}/oimFoundation/lib/ocs-foundation.jar"/>
+      <zipfileset prefix="APP-INF/lib" file="${wks.base.oim}/sysauthzBackend/lib/oracle.iam.identity.sysauthz.jar"/>
+      <zipfileset prefix="APP-INF/lib" file="${wks.base.oim}/sysconfigBackend/lib/oracle.iam.identity.sysconfig.jar"/>
+      <zipfileset prefix="APP-INF/lib" file="${wks.base.oim}/sysadminBackend/lib/oracle.iam.identity.sysadmin.jar"/>
+      <zipfileset prefix="APP-INF/lib" file="${wks.base.oim}/sysprovBackend/lib/oracle.iam.identity.sysprov.jar"/>
+      <fileset    file="${wks.base.oim}/frontendDashboard/${deploy.dir}/${application}.war"/>
+    </ear>
+    <delete file="${deploy.dir}/adf-loc.jar"/>
+    <delete file="${deploy.dir}/${application}.war"/>
+    <copy todir="${destination}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+      <fileset dir="${deploy.dir}">
+        <include  name="${application}.ear"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the service application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="deploy" depends="make">
+    <adf-ear-deploy application="${application}.ear" target="${oim.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the service application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="redeploy">
+    <adf-ear-redeploy application="${application}.ear" target="${oim.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the service application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="undeploy">
+    <adf-ear-undeploy application="${application}.ear"/>
+  </target>
+</project>

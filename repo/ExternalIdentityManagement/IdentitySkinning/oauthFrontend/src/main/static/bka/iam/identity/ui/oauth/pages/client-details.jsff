@@ -1,0 +1,522 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:h="http://java.sun.com/jsf/html">
+  <c:set var="oauthBundle" value="#{adfBundle['bka.iam.identity.ui.oauth.OAuthBundle']}"/>
+  <c:set var="oimBundle" value="#{adfBundle['oracle.iam.ui.OIMUIBundle']}"/>  
+  <af:panelStretchLayout id="psl1" topHeight="80px">
+     <f:facet name="top">
+      <af:panelGroupLayout id="pgl3" layout="vertical">
+        <af:panelHeader text="#{oauthBundle['client-details-header']}: #{pageFlowScope.client_id}" type="default"
+                        id="panelHeader1" icon="/images/User_ena.png" styleClass="hideHeaderLine">
+          <af:panelGroupLayout id="pgl11" layout="horizontal">
+            <af:toolbar id="toolb3" stretchId="stretcher" flex="1">
+             <af:spacer id="stretcher" clientComponent="true"/>
+              <af:commandToolbarButton text="#{oimBundle['GENERIC_APPLY']}"
+                                       id="ctb11" 
+                                       action="#{pageFlowScope.clientMB.saveClient}"
+                                       styleClass = "whiteTextButton"  
+                                       inlineStyle = "background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;"
+                                       rendered="#{pageFlowScope.mode eq 'EDIT'}"/>
+              <af:commandToolbarButton text="#{oimBundle['GENERIC_CANCEL']}"
+                                       id="ctb12"
+                                       action="cancel"
+                                       rendered="#{pageFlowScope.mode eq 'EDIT'}"/>
+              <af:commandToolbarButton text="#{oimBundle['GENERIC_SAVE']}"
+                                       id="ctb13" 
+                                       action="#{pageFlowScope.clientMB.createClient}"
+                                       styleClass = "whiteTextButton"  
+                                       inlineStyle = "background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;"
+                                       rendered="#{pageFlowScope.mode eq 'CREATE'}"/>
+              <af:commandToolbarButton text="#{oimBundle['GENERIC_CANCEL']}"
+                                       id="ctb14"
+                                       action="cancel"
+                                       rendered="#{pageFlowScope.mode eq 'CREATE'}"/>
+            </af:toolbar>
+          </af:panelGroupLayout>
+        </af:panelHeader>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="center">
+      <af:panelGroupLayout id="pgl1" layout="vertical" styleClass="AFStretchWidth">
+        <af:showDetailHeader text="#{oauthBundle['client-details-client-attributes']}"
+                             disclosed="true" id="sdh1" size="2">
+          <af:panelFormLayout id="pfl2" maxColumns="2" fieldWidth="200" labelWidth="200" rows="2">
+            <af:inputText value="#{bindings.id.inputValue}" label="#{oauthBundle['client-details-id']}"
+                          required="#{bindings.id.hints.mandatory}" columns="#{bindings.id.hints.displayWidth}"
+                          maximumLength="#{bindings.id.hints.precision}" shortDesc="#{bindings.id.hints.tooltip}"
+                          id="it1" readOnly="#{!(pageFlowScope.mode eq 'CREATE')}">
+              <f:validator binding="#{bindings.id.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.name.inputValue}" label="#{oauthBundle['client-details-name']}"
+                          required="true" columns="#{bindings.name.hints.displayWidth}"
+                          maximumLength="#{bindings.name.hints.precision}" shortDesc="#{bindings.name.hints.tooltip}"
+                          id="it2">
+              <f:validator binding="#{bindings.name.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.description.inputValue}" label="#{oauthBundle['client-details-description']}"
+                          required="#{bindings.description.hints.mandatory}"
+                          columns="#{bindings.description.hints.displayWidth}"
+                          maximumLength="#{bindings.description.hints.precision}"
+                          shortDesc="#{bindings.description.hints.tooltip}" id="it3">
+              <f:validator binding="#{bindings.description.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.secret.inputValue}" label="#{oauthBundle['client-details-secret']}"
+                          required="#{bindings.secret.hints.mandatory}"
+                          columns="#{bindings.secret.hints.displayWidth}"
+                          maximumLength="#{bindings.secret.hints.precision}"
+                          shortDesc="#{bindings.secret.hints.tooltip}" id="it3s"
+                          rendered="#{pageFlowScope.mode eq 'CREATE'}" secret="true">
+            </af:inputText>
+            <af:inputText label="#{oauthBundle['client-details-secret-confirmation']}"
+                          id="it3sc" binding="#{pageFlowScope.clientMB.secretConfirmation}"
+                          rendered="#{pageFlowScope.mode eq 'CREATE'}"
+                          secret="true">
+            </af:inputText>
+            <af:selectOneChoice value="#{bindings.clientType.inputValue}" required="true" autoSubmit="true"
+                          label="#{oauthBundle['client-details-client-type']}" editable="always">
+                    <f:selectItem itemLabel="CONFIDENTIAL_CLIENT" itemValue="CONFIDENTIAL_CLIENT"/>
+                    <f:selectItem itemLabel="PUBLIC_CLIENT" itemValue="PUBLIC_CLIENT"/>
+                    <f:selectItem itemLabel="MOBILE_CLIENT" itemValue="MOBILE_CLIENT"/>
+            </af:selectOneChoice>
+            <af:selectOneChoice value="#{bindings.usePKCE.inputValue}" required="false" autoSubmit="true"
+                          label="#{oauthBundle['client-details-use-pkce']}" editable="always">
+                    <f:selectItem itemLabel="" itemValue=""/>
+                    <f:selectItem itemLabel="NON_STRICT" itemValue="NON_STRICT"/>
+                    <f:selectItem itemLabel="STRICT" itemValue="STRICT"/>
+            </af:selectOneChoice>
+            <af:selectOneChoice value="#{bindings.tokenEndpointAuthMethod.inputValue}" required="false" autoSubmit="true"
+                                label="#{oauthBundle['client-details-token-endpoint-auth-method']}" editable="always">
+                    <f:selectItem itemLabel=""     itemValue=""/>
+                    <f:selectItem itemLabel="tls_client_auth"     itemValue="tls_client_auth"/>
+                    <f:selectItem itemLabel="self_signed_tls_client_auth" itemValue="self_signed_tls_client_auth"/>
+                    <f:selectItem itemLabel="private_key_jwt"     itemValue="private_key_jwt"/>
+                    <f:selectItem itemLabel="client_secret_basic" itemValue="client_secret_basic"/>
+            </af:selectOneChoice>
+            <af:panelLabelAndMessage label="#{oauthBundle['client-details-default-scope']}"
+                                     id="plm31">
+                  <af:panelGroupLayout valign="top" layout="horizontal" id="pgl171">
+                    <af:inputText value="#{bindings.defaultScope.inputValue}"
+                                  id="defaultScope" 
+                                  autoSubmit="true"
+                                  binding="#{pageFlowScope.clientMB.defaultScopeInputText}"/>
+                    <af:commandImageLink icon="/images/func_search_16_ena.png"
+                          actionListener="#{pageFlowScope.clientMB.launchScopePicker}"
+                          inlineStyle="margin-left: 5px;"
+                          id="defaultScopeSearch"
+                          immediate="true"/>
+                  </af:panelGroupLayout>
+            </af:panelLabelAndMessage>
+            <af:inputText value="#{bindings.tlsClientAuthSANDNS.inputValue}"
+                          label="#{oauthBundle['client-details-tls-client-auth-san-dns']}"
+                          required="#{bindings.tlsClientAuthSANDNS.hints.mandatory}"
+                          columns="#{bindings.tlsClientAuthSANDNS.hints.displayWidth}"
+                          maximumLength="#{bindings.tlsClientAuthSANDNS.hints.precision}"
+                          shortDesc="#{bindings.tlsClientAuthSANDNS.hints.tooltip}" id="it9">
+              <f:validator binding="#{bindings.tlsClientAuthSANDNS.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.tlsClientAuthSANEmail.inputValue}"
+                          label="#{oauthBundle['client-details-tls-client-auth-san-email']}"
+                          required="#{bindings.tlsClientAuthSANEmail.hints.mandatory}"
+                          columns="#{bindings.tlsClientAuthSANEmail.hints.displayWidth}"
+                          maximumLength="#{bindings.tlsClientAuthSANEmail.hints.precision}"
+                          shortDesc="#{bindings.tlsClientAuthSANEmail.hints.tooltip}" id="it10">
+              <f:validator binding="#{bindings.tlsClientAuthSANEmail.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.tlsClientAuthSANIP.inputValue}"
+                          label="#{oauthBundle['client-details-tls-client-auth-san-ip']}"
+                          required="#{bindings.tlsClientAuthSANIP.hints.mandatory}"
+                          columns="#{bindings.tlsClientAuthSANIP.hints.displayWidth}"
+                          maximumLength="#{bindings.tlsClientAuthSANIP.hints.precision}"
+                          shortDesc="#{bindings.tlsClientAuthSANIP.hints.tooltip}" id="it11">
+              <f:validator binding="#{bindings.tlsClientAuthSANIP.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.tlsClientAuthSANURI.inputValue}"
+                          label="#{oauthBundle['client-details-tls-client-auth-san-uri']}"
+                          required="#{bindings.tlsClientAuthSANURI.hints.mandatory}"
+                          columns="#{bindings.tlsClientAuthSANURI.hints.displayWidth}"
+                          maximumLength="#{bindings.tlsClientAuthSANURI.hints.precision}"
+                          shortDesc="#{bindings.tlsClientAuthSANURI.hints.tooltip}" id="it12">
+              <f:validator binding="#{bindings.tlsClientAuthSANURI.validator}"/>
+            </af:inputText>
+            <af:inputText value="#{bindings.tlsClientAuthSubjectDN.inputValue}"
+                          label="#{oauthBundle['client-details-tls-client-auth-subject-dn']}"
+                          required="#{bindings.tlsClientAuthSubjectDN.hints.mandatory}"
+                          columns="#{bindings.tlsClientAuthSubjectDN.hints.displayWidth}"
+                          maximumLength="#{bindings.tlsClientAuthSubjectDN.hints.precision}"
+                          shortDesc="#{bindings.tlsClientAuthSubjectDN.hints.tooltip}" id="it13">
+              <f:validator binding="#{bindings.tlsClientAuthSubjectDN.validator}"/>
+            </af:inputText>
+            <af:selectBooleanCheckbox id="sbc1"
+                                      value="#{bindings.issueTLSClientCertificateBoundAccessTokens.inputValue}"
+                                      label="#{oauthBundle['client-details-issue-tls-client-certificate-bound-access-token']}"/>
+          </af:panelFormLayout>
+        </af:showDetailHeader>
+        <af:spacer width="10" height="10" id="s2"/>
+        <af:panelTabbed id="pt1">
+          <af:showDetailItem id="sdi2" text="#{oauthBundle['client-details-scopes']}" >
+            <af:panelCollection id="pc2" styleClass="AFStretchWidth" featuresOff="statusBar">
+              <f:facet name="toolbar">
+                <af:toolbar id="tb2">
+                  <af:commandToolbarButton id="ctb_2a" text="#{oauthBundle['button-add']}" 
+                                           icon="/images/func_add_16_ena.png" 
+                                           hoverIcon="/images/func_add_16_hov.png"
+                                           disabledIcon="/images/func_add_16_dis.png"
+                                           depressedIcon="/images/func_add_16_act.png" immediate="true"
+                                           actionListener="#{pageFlowScope.clientMB.launchScopesPicker}"/>
+                  <af:commandToolbarButton id="ctb_2b" text="#{oauthBundle['button-delete']}" 
+                                           icon="/images/func_delete_16_ena.png" 
+                                           hoverIcon="/images/func_delete_16_hov.png"
+                                           disabledIcon="/images/func_delete_16_dis.png" immediate="true"
+                                           depressedIcon="/images/func_delete_16_act.png"
+                                           actionListener="#{bindings.removeScope.execute}"/>
+                </af:toolbar>
+              </f:facet>
+              <f:facet name="menus">
+                <af:menu id="m2" text="#{oauthBundle['oam-servers-actions']}" >
+                  <af:commandMenuItem id="cmi_2a" text="#{oauthBundle['button-add']}" icon="/images/func_add_16_ena.png"
+                                      immediate="true" actionListener="#{pageFlowScope.clientMB.launchScopesPicker}"/>
+                  <af:commandMenuItem id="cmi_2b" text="#{oauthBundle['button-delete']}"
+                                      icon="/images/func_delete_16_ena.png" immediate="true"
+                                      actionListener="#{bindings.removeScope.execute}"/>
+                </af:menu>
+              </f:facet>
+              <af:table id="t1" value="#{bindings.scopes.collectionModel}" var="row" rows="#{bindings.scopes.rangeSize}"
+                        emptyText="#{bindings.scopes.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" selectedRowKeys="#{bindings.scopes.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.scopes.collectionModel.makeCurrent}" rowSelection="single"
+                        fetchSize="#{bindings.scopes.rangeSize}"  columnStretching="last"
+                        binding="#{pageFlowScope.clientMB.scopesTable}">
+                <af:column rowHeader="true" width="30" headerText="" align="right" id="c_e1"></af:column>
+                <af:column headerText="#{oauthBundle['client-details-scope-name']}" id="c1">
+                  <af:outputText value="#{row.bindings.value.inputValue}" id="ot14" />
+                  <!--af:inputText value="#{row.bindings.value.inputValue}" label="#{bindings.scopes.hints.value.label}"
+                                required="#{bindings.scopes.hints.value.mandatory}"
+                                columns="#{bindings.scopes.hints.value.displayWidth}"
+                                maximumLength="#{bindings.scopes.hints.value.precision}"
+                                shortDesc="#{bindings.scopes.hints.value.tooltip}" id="it14">
+                    <f:validator binding="#{row.bindings.value.validator}"/>
+                  </af:inputText-->
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailItem>
+          <af:showDetailItem id="sdi3" text="#{oauthBundle['client-details-redirec-uris']}" >
+          <af:panelCollection id="pc3" styleClass="AFStretchWidth" featuresOff="statusBar">
+              <f:facet name="toolbar">
+                <af:toolbar id="tb3">
+                  <af:commandToolbarButton id="ctb_3a" text="#{oauthBundle['button-add']}" 
+                                           icon="/images/func_add_16_ena.png" 
+                                           hoverIcon="/images/func_add_16_hov.png"
+                                           disabledIcon="/images/func_add_16_dis.png"
+                                           depressedIcon="/images/func_add_16_act.png" immediate="true"
+                                           actionListener="#{bindings.addRedirectURI.execute}"/>
+                  <af:commandToolbarButton id="ctb_3b" text="#{oauthBundle['button-delete']}" 
+                                           icon="/images/func_delete_16_ena.png" 
+                                           hoverIcon="/images/func_delete_16_hov.png"
+                                           disabledIcon="/images/func_delete_16_dis.png" immediate="true"
+                                           depressedIcon="/images/func_delete_16_act.png"
+                                           actionListener="#{bindings.removeRedirectURI.execute}"/>
+                </af:toolbar>
+              </f:facet>
+              <f:facet name="menus">
+                <af:menu id="m3" text="#{oauthBundle['oam-servers-actions']}" >
+                  <af:commandMenuItem id="cmi_3a" text="#{oauthBundle['button-add']}" icon="/images/func_add_16_ena.png"
+                                      immediate="true" actionListener="#{bindings.addRedirectURI.execute}"/>
+                  <af:commandMenuItem id="cmi_3b" text="#{oauthBundle['button-delete']}"
+                                      icon="/images/func_delete_16_ena.png" immediate="true"
+                                      actionListener="#{bindings.removeRedirectURI.execute}"/>
+                </af:menu>
+              </f:facet>
+            <af:table value="#{bindings.redirectURIs.collectionModel}" var="row"
+                      rows="#{bindings.redirectURIs.rangeSize}"
+                      emptyText="#{bindings.redirectURIs.viewable ? 'No data to display.' : 'Access Denied.'}"
+                      rowBandingInterval="0" selectedRowKeys="#{bindings.redirectURIs.collectionModel.selectedRow}"
+                      selectionListener="#{bindings.redirectURIs.collectionModel.makeCurrent}" rowSelection="single"
+                      fetchSize="#{bindings.redirectURIs.rangeSize}" id="t3" columnStretching="last">
+              <af:column rowHeader="true" width="30" headerText="" align="right" id="c_e2"></af:column>
+              <af:column headerText="#{bindings.redirectURIs.hints.url.label}" id="c2">
+                <af:inputText value="#{row.bindings.url.inputValue}" label="#{bindings.redirectURIs.hints.url.label}"
+                              required="#{bindings.redirectURIs.hints.url.mandatory}"
+                              columns="#{bindings.redirectURIs.hints.url.displayWidth}"
+                              maximumLength="#{bindings.redirectURIs.hints.url.precision}"
+                              shortDesc="#{bindings.redirectURIs.hints.url.tooltip}" id="it15">
+                  <f:validator binding="#{row.bindings.url.validator}"/>
+                </af:inputText>
+              </af:column>
+              <af:column headerText="#{bindings.redirectURIs.hints.isHttps.label}" id="c3">
+                <af:selectBooleanCheckbox id="sbc2" value="#{row.bindings.isHttps.inputValue}"/>
+              </af:column>
+            </af:table>
+            </af:panelCollection>
+          </af:showDetailItem>
+          <af:showDetailItem id="sdi4" text="#{oauthBundle['client-details-grant-types']}">
+           <af:panelCollection id="pc4" styleClass="AFStretchWidth" featuresOff="statusBar">
+              <f:facet name="toolbar">
+                <af:toolbar id="tb4">
+                  <af:commandToolbarButton id="ctb_4a" text="#{oauthBundle['button-add']}" 
+                                           icon="/images/func_add_16_ena.png" 
+                                           hoverIcon="/images/func_add_16_hov.png"
+                                           disabledIcon="/images/func_add_16_dis.png"
+                                           depressedIcon="/images/func_add_16_act.png" immediate="true"
+                                           actionListener="#{bindings.addGrantType.execute}"/>
+                  <af:commandToolbarButton id="ctb_4b" text="#{oauthBundle['button-delete']}" 
+                                           icon="/images/func_delete_16_ena.png" 
+                                           hoverIcon="/images/func_delete_16_hov.png"
+                                           disabledIcon="/images/func_delete_16_dis.png" immediate="true"
+                                           depressedIcon="/images/func_delete_16_act.png"
+                                           actionListener="#{bindings.removeGrantType.execute}"/>
+                </af:toolbar>
+              </f:facet>
+              <f:facet name="menus">
+                <af:menu id="m4" text="#{oauthBundle['oam-servers-actions']}" >
+                  <af:commandMenuItem id="cmi_4a" text="#{oauthBundle['button-add']}" icon="/images/func_add_16_ena.png"
+                                      immediate="true" actionListener="#{bindings.addGrantType.execute}"/>
+                  <af:commandMenuItem id="cmi_4b" text="#{oauthBundle['button-delete']}"
+                                      icon="/images/func_delete_16_ena.png" immediate="true"
+                                      actionListener="#{bindings.removeGrantType.execute}"/>
+                </af:menu>
+              </f:facet>
+              <af:table value="#{bindings.grantTypes.collectionModel}" var="row" rows="#{bindings.grantTypes.rangeSize}"
+                        emptyText="#{bindings.grantTypes.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" selectedRowKeys="#{bindings.grantTypes.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.grantTypes.collectionModel.makeCurrent}" rowSelection="single"
+                        fetchSize="#{bindings.grantTypes.rangeSize}" id="t4" columnStretching="last">
+                <af:column rowHeader="true" width="30" headerText="" align="right" id="c_e3"></af:column>
+                <af:column headerText="#{bindings.grantTypes.hints.value.label}" id="c41">
+                  <af:selectOneChoice value="#{row.bindings.value.inputValue}" required="false">
+                    <f:selectItem itemLabel="AUTHORIZATION_CODE" itemValue="AUTHORIZATION_CODE"/>
+                    <f:selectItem itemLabel="CLIENT_CREDENTIALS" itemValue="CLIENT_CREDENTIALS"/>
+                    <f:selectItem itemLabel="JWT_BEARER"         itemValue="JWT_BEARER"/>
+                    <f:selectItem itemLabel="PASSWORD"           itemValue="PASSWORD"/>
+                    <f:selectItem itemLabel="REFRESH_TOKEN"      itemValue="REFRESH_TOKEN"/>
+                    <f:selectItem itemLabel="TOKEN_EXCHANGE"     itemValue="TOKEN_EXCHANGE"/>
+                  </af:selectOneChoice>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailItem>
+          <af:showDetailItem id="sdi5" text="#{oauthBundle['client-details-custom-attributes']}">
+            <af:panelCollection id="pc5" styleClass="AFStretchWidth" featuresOff="statusBar">
+              <f:facet name="toolbar">
+                <af:toolbar id="tb5">
+                  <af:commandToolbarButton id="ctb_5a" text="#{oauthBundle['button-add']}" 
+                                           icon="/images/func_add_16_ena.png" 
+                                           hoverIcon="/images/func_add_16_hov.png"
+                                           disabledIcon="/images/func_add_16_dis.png"
+                                           depressedIcon="/images/func_add_16_act.png" immediate="true"
+                                           actionListener="#{bindings.addAttribute.execute}"/>
+                  <af:commandToolbarButton id="ctb_5b" text="#{oauthBundle['button-delete']}" 
+                                           icon="/images/func_delete_16_ena.png" 
+                                           hoverIcon="/images/func_delete_16_hov.png"
+                                           disabledIcon="/images/func_delete_16_dis.png" immediate="true"
+                                           depressedIcon="/images/func_delete_16_act.png"
+                                           actionListener="#{bindings.removeAttribute.execute}"/>
+                </af:toolbar>
+              </f:facet>
+              <f:facet name="menus">
+                <af:menu id="m5" text="#{oauthBundle['oam-servers-actions']}" >
+                  <af:commandMenuItem id="cmi_5a" text="#{oauthBundle['button-add']}" icon="/images/func_add_16_ena.png"
+                                      immediate="true" actionListener="#{bindings.addAttribute.execute}"/>
+                  <af:commandMenuItem id="cmi_5b" text="#{oauthBundle['button-delete']}"
+                                      icon="/images/func_delete_16_ena.png" immediate="true"
+                                      actionListener="#{bindings.removeAttribute.execute}"/>
+                </af:menu>
+              </f:facet>
+              <af:table value="#{bindings.attributes.collectionModel}" var="row" rows="#{bindings.attributes.rangeSize}"
+                        emptyText="#{bindings.attributes.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0" selectedRowKeys="#{bindings.attributes.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.attributes.collectionModel.makeCurrent}" rowSelection="single"
+                        fetchSize="#{bindings.attributes.rangeSize}" id="t5" columnStretching="last">
+                <af:column rowHeader="true" width="30" headerText="" align="right" id="c_e4"></af:column>
+                <af:column headerText="#{bindings.attributes.hints.attrName.label}" id="c5">
+                  <af:inputText value="#{row.bindings.attrName.inputValue}"
+                                label="#{bindings.attributes.hints.attrName.label}"
+                                required="#{bindings.attributes.hints.attrName.mandatory}"
+                                columns="#{bindings.attributes.hints.attrName.displayWidth}"
+                                maximumLength="#{bindings.attributes.hints.attrName.precision}"
+                                shortDesc="#{bindings.attributes.hints.attrName.tooltip}" id="it18">
+                    <f:validator binding="#{row.bindings.attrName.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column headerText="#{bindings.attributes.hints.attrValue.label}" id="c6">
+                  <af:inputText value="#{row.bindings.attrValue.inputValue}"
+                                label="#{bindings.attributes.hints.attrValue.label}"
+                                required="#{bindings.attributes.hints.attrValue.mandatory}"
+                                columns="#{bindings.attributes.hints.attrValue.displayWidth}"
+                                maximumLength="#{bindings.attributes.hints.attrValue.precision}"
+                                shortDesc="#{bindings.attributes.hints.attrValue.tooltip}" id="it19">
+                    <f:validator binding="#{row.bindings.attrValue.validator}"/>
+                  </af:inputText>
+                </af:column>
+                <af:column headerText="#{bindings.attributes.hints.attrType.label}" id="c7">
+                <af:selectOneChoice value="#{row.bindings.attrType.inputValue}" required="false">
+                    <f:selectItem itemLabel="STATIC" itemValue="STATIC"/>
+                    <f:selectItem itemLabel="DYNAMIC" itemValue="DYNAMIC"/>
+                  </af:selectOneChoice>
+                  
+                  <!--<af:inputText value="#{row.bindings.attrType.inputValue}"
+                                label="#{bindings.attributes.hints.attrType.label}"
+                                required="#{bindings.attributes.hints.attrType.mandatory}"
+                                columns="#{bindings.attributes.hints.attrType.displayWidth}"
+                                maximumLength="#{bindings.attributes.hints.attrType.precision}"
+                                shortDesc="#{bindings.attributes.hints.attrType.tooltip}" id="it20">
+                    <f:validator binding="#{row.bindings.attrType.validator}"/>
+                  </af:inputText>-->
+                  
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailItem>
+          <af:showDetailItem id="sdi6" text="#{oauthBundle['client-details-access-token-custom-claims']}">
+            <af:panelCollection id="pc6" styleClass="AFStretchWidth" featuresOff="statusBar">
+              <f:facet name="toolbar">
+                <af:toolbar id="tb6">
+                  <af:commandToolbarButton id="ctb_6a" text="#{oauthBundle['button-add']}" 
+                                           icon="/images/func_add_16_ena.png" 
+                                           hoverIcon="/images/func_add_16_hov.png"
+                                           disabledIcon="/images/func_add_16_dis.png"
+                                           depressedIcon="/images/func_add_16_act.png" immediate="true"
+                                           actionListener="#{bindings.addAccessTokenCustomClaim.execute}"/>
+                  <af:commandToolbarButton id="ctb_6b" text="#{oauthBundle['button-delete']}" 
+                                           icon="/images/func_delete_16_ena.png" 
+                                           hoverIcon="/images/func_delete_16_hov.png"
+                                           disabledIcon="/images/func_delete_16_dis.png" immediate="true"
+                                           depressedIcon="/images/func_delete_16_act.png"
+                                           actionListener="#{bindings.removeAccessTokenCustomClaim.execute}"/>
+                </af:toolbar>
+              </f:facet>
+              <f:facet name="menus">
+                <af:menu id="m6" text="#{oauthBundle['oam-servers-actions']}" >
+                  <af:commandMenuItem id="cmi_6a" text="#{oauthBundle['button-add']}" icon="/images/func_add_16_ena.png"
+                                      immediate="true" actionListener="#{bindings.addAccessTokenCustomClaim.execute}"/>
+                  <af:commandMenuItem id="cmi_6b" text="#{oauthBundle['button-delete']}"
+                                      icon="/images/func_delete_16_ena.png" immediate="true"
+                                      actionListener="#{bindings.removeAccessTokenCustomClaim.execute}"/>
+                </af:menu>
+              </f:facet>
+              <af:table value="#{bindings.accessTokenCustomClaims.collectionModel}" var="row"
+                        rows="#{bindings.accessTokenCustomClaims.rangeSize}"
+                        emptyText="#{bindings.accessTokenCustomClaims.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.accessTokenCustomClaims.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.accessTokenCustomClaims.collectionModel.makeCurrent}"
+                        rowSelection="single" fetchSize="#{bindings.accessTokenCustomClaims.rangeSize}" id="t6"
+                        columnStretching="last">
+                <af:column rowHeader="true" width="30" headerText="" align="right" id="c_e5"></af:column>
+                <af:column headerText="#{oauthBundle['client-details-access-token-custom-claims']}" id="c8">
+                  <af:inputText value="#{row.bindings.value.inputValue}"
+                                label="#{bindings.accessTokenCustomClaims.hints.value.label}"
+                                required="#{bindings.accessTokenCustomClaims.hints.value.mandatory}"
+                                columns="#{bindings.accessTokenCustomClaims.hints.value.displayWidth}"
+                                maximumLength="#{bindings.accessTokenCustomClaims.hints.value.precision}"
+                                shortDesc="#{bindings.accessTokenCustomClaims.hints.value.tooltip}" id="it21">
+                    <f:validator binding="#{row.bindings.value.validator}"/>
+                  </af:inputText>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailItem>
+          <af:showDetailItem id="sdi7" text="#{oauthBundle['client-details-id-token-custom-claims']}">
+           <af:panelCollection id="pc7" styleClass="AFStretchWidth" featuresOff="statusBar">
+              <f:facet name="toolbar">
+                <af:toolbar id="tb7">
+                  <af:commandToolbarButton id="ctb_7a" text="#{oauthBundle['button-add']}" 
+                                           icon="/images/func_add_16_ena.png" 
+                                           hoverIcon="/images/func_add_16_hov.png"
+                                           disabledIcon="/images/func_add_16_dis.png"
+                                           depressedIcon="/images/func_add_16_act.png" immediate="true"
+                                           actionListener="#{bindings.addIdTokenCustomClaim.execute}"/>
+                  <af:commandToolbarButton id="ctb_7b" text="#{oauthBundle['button-delete']}" 
+                                           icon="/images/func_delete_16_ena.png" 
+                                           hoverIcon="/images/func_delete_16_hov.png"
+                                           disabledIcon="/images/func_delete_16_dis.png" immediate="true"
+                                           depressedIcon="/images/func_delete_16_act.png"
+                                           actionListener="#{bindings.removeIdTokenCustomClaim.execute}"/>
+                </af:toolbar>
+              </f:facet>
+              <f:facet name="menus">
+                <af:menu id="m7" text="#{oauthBundle['oam-servers-actions']}" >
+                  <af:commandMenuItem id="cmi_7a" text="#{oauthBundle['button-add']}" icon="/images/func_add_16_ena.png"
+                                      immediate="true" actionListener="#{bindings.addIdTokenCustomClaim.execute}"/>
+                  <af:commandMenuItem id="cmi_7b" text="#{oauthBundle['button-delete']}"
+                                      icon="/images/func_delete_16_ena.png" immediate="true"
+                                      actionListener="#{bindings.removeIdTokenCustomClaim.execute}"/>
+                </af:menu>
+              </f:facet>
+              <af:table value="#{bindings.idTokenCustomClaims.collectionModel}" var="row"
+                        rows="#{bindings.idTokenCustomClaims.rangeSize}"
+                        emptyText="#{bindings.idTokenCustomClaims.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.idTokenCustomClaims.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.idTokenCustomClaims.collectionModel.makeCurrent}"
+                        rowSelection="single" fetchSize="#{bindings.idTokenCustomClaims.rangeSize}" id="t7"
+                        columnStretching="last">
+                <af:column rowHeader="true" width="30" headerText="" align="right" id="c_e7"></af:column>
+                <af:column headerText="#{oauthBundle['client-details-id-token-custom-claims']}" id="c9">
+                  <af:inputText value="#{row.bindings.value.inputValue}"
+                                label="#{bindings.idTokenCustomClaims.hints.value.label}"
+                                required="#{bindings.idTokenCustomClaims.hints.value.mandatory}"
+                                columns="#{bindings.idTokenCustomClaims.hints.value.displayWidth}"
+                                maximumLength="#{bindings.idTokenCustomClaims.hints.value.precision}"
+                                shortDesc="#{bindings.idTokenCustomClaims.hints.value.tooltip}" id="it22">
+                    <f:validator binding="#{row.bindings.value.validator}"/>
+                  </af:inputText>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailItem>
+          <af:showDetailItem id="sdi8" text="#{oauthBundle['client-details-user-info-custom-claims']}">
+           <af:panelCollection id="pc8" styleClass="AFStretchWidth" featuresOff="statusBar">
+              <f:facet name="toolbar">
+                <af:toolbar id="tb8">
+                  <af:commandToolbarButton id="ctb_8a" text="#{oauthBundle['button-add']}" 
+                                           icon="/images/func_add_16_ena.png" 
+                                           hoverIcon="/images/func_add_16_hov.png"
+                                           disabledIcon="/images/func_add_16_dis.png"
+                                           depressedIcon="/images/func_add_16_act.png" immediate="true"
+                                           actionListener="#{bindings.addUserInfoCustomClaim.execute}"/>
+                  <af:commandToolbarButton id="ctb_8b" text="#{oauthBundle['button-delete']}" 
+                                           icon="/images/func_delete_16_ena.png" 
+                                           hoverIcon="/images/func_delete_16_hov.png"
+                                           disabledIcon="/images/func_delete_16_dis.png" immediate="true"
+                                           depressedIcon="/images/func_delete_16_act.png"
+                                           actionListener="#{bindings.removeUserInfoCustomClaim.execute}"/>
+                </af:toolbar>
+              </f:facet>
+              <f:facet name="menus">
+                <af:menu id="m8" text="#{oauthBundle['oam-servers-actions']}" >
+                  <af:commandMenuItem id="cmi_8a" text="#{oauthBundle['button-add']}" icon="/images/func_add_16_ena.png"
+                                      immediate="true" actionListener="#{bindings.addUserInfoCustomClaim.execute}"/>
+                  <af:commandMenuItem id="cmi_8b" text="#{oauthBundle['button-delete']}"
+                                      icon="/images/func_delete_16_ena.png" immediate="true"
+                                      actionListener="#{bindings.removeUserInfoCustomClaim.execute}"/>
+                </af:menu>
+              </f:facet>
+              <af:table value="#{bindings.userInfoCustomClaims.collectionModel}" var="row"
+                        rows="#{bindings.userInfoCustomClaims.rangeSize}"
+                        emptyText="#{bindings.userInfoCustomClaims.viewable ? 'No data to display.' : 'Access Denied.'}"
+                        rowBandingInterval="0"
+                        selectedRowKeys="#{bindings.userInfoCustomClaims.collectionModel.selectedRow}"
+                        selectionListener="#{bindings.userInfoCustomClaims.collectionModel.makeCurrent}"
+                        rowSelection="single" fetchSize="#{bindings.userInfoCustomClaims.rangeSize}" id="t8"
+                        columnStretching="last">
+                <af:column rowHeader="true" width="30" headerText="" align="right" id="c_e8"></af:column>
+                <af:column headerText="#{oauthBundle['client-details-user-info-custom-claims']}" id="c10">
+                  <af:inputText value="#{row.bindings.value.inputValue}"
+                                label="#{bindings.userInfoCustomClaims.hints.value.label}"
+                                required="#{bindings.userInfoCustomClaims.hints.value.mandatory}"
+                                columns="#{bindings.userInfoCustomClaims.hints.value.displayWidth}"
+                                maximumLength="#{bindings.userInfoCustomClaims.hints.value.precision}"
+                                shortDesc="#{bindings.userInfoCustomClaims.hints.value.tooltip}" id="it23">
+                    <f:validator binding="#{row.bindings.value.validator}"/>
+                  </af:inputText>
+                </af:column>
+              </af:table>
+            </af:panelCollection>
+          </af:showDetailItem>
+        </af:panelTabbed>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:panelStretchLayout>
+</jsp:root>

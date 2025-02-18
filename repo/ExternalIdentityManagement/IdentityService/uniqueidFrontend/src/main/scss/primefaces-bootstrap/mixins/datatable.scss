@@ -1,0 +1,25 @@
+@mixin datatableBoxColors($color, $text-color) {
+  .ui-datatable-header, .ui-treetable-header {
+    border-top:                  3px solid $color;
+  }
+  &.box-solid {
+    .ui-datatable-header, .ui-treetable-header, .ui-datatable-footer, .ui-treetable-footer {
+      color:                     $text-color;
+      background-color:          $color;
+    }
+    thead tr[role="row"] {
+      background-color:          $color;
+    }
+    th[role="columnheader"] {
+      span.ui-column-title {
+        color:                   $text-color
+      }
+      .ui-sortable-column-icon:before {
+        color:                   $text-color;
+      }
+      &.ui-state-default.ui-sortable-column.ui-state-active {
+        background-image:        linear-gradient(top, $color, darken($color, 20%));
+      }
+    }
+  }
+}

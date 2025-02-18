@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns              = "http://xmlns.oracle.com/iam/identity"
+            xmlns:xsd          = "http://www.w3.org/2001/XMLSchema"
+            xmlns:oim          = "http://www.oracle.com/schema/oim/mapping"
+            targetNamespace    = "http://www.oracle.com/schema/oim/mapping"
+            elementFormDefault = "qualified">
+  <xsd:element name="descriptor">
+    <xsd:annotation>
+      <xsd:documentation>The references where an entry can occur in a Target System</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence minOccurs="1">
+        <xsd:element name="source"         type="oim:source" minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="transformation" type="xsd:boolean" default="false"/>
+      <xsd:attribute name="fieldname"      type="xsd:boolean" default="false"/>
+    </xsd:complexType>
+  </xsd:element>
+  <!-- the definition of an source -->
+  <xsd:complexType name="source">
+    <xsd:sequence>
+      <xsd:element name="target"      type="oim:target" minOccurs="1" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="name"        type="xsd:string" use="required"/>
+  </xsd:complexType>
+  <!-- the definition of a target -->
+  <xsd:complexType name="target">
+    <xsd:attribute name="name"        type="xsd:string" use="required"/>
+    <xsd:attribute name="transformer" type="xsd:string" use="required"/>
+  </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Volkswagen Financial Services Identity Manager Deployment Importer"
+         basedir         ="../../deployment"
+         default         ="001"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="../log/oim-loader-ant.log"/>
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Synchronize Identity Manager with the current state of the target system" depends="system-permission,global-permission,scoped-permission,organization-scope,entitlement-list"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile Lookup
+  **           Definition for Identity Service System Permission.
+  ******************************************************************************
+  -->
+  <target name="system-permission" description="Reconcile Identity Service System Permission Lookup">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Reconciling System Permission from Identity Manager"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GIS System Permission Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile Lookup
+  **           Definition for Identity Service Global Permission.
+  ******************************************************************************
+  -->
+  <target name="global-permission" description="Reconcile Identity Service Global Permission Lookup">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Reconciling Global Permission from Identity Manager"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GIS Global Permission Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile Lookup
+  **           Definition for Identity Service Scoped Permission.
+  ******************************************************************************
+  -->
+  <target name="scoped-permission" description="Reconcile Identity Service Scoped Permission Lookup">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Reconciling Scoped Permission from Identity Manager"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GIS Scoped Permission Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile Lookup
+  **           Definition for Identity Service Organization Scopes.
+  ******************************************************************************
+  -->
+  <target name="organization-scope" description="Reconcile Identity Service Organization Scope Lookup">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Reconciling Organization Scope from Identity Manager"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GIS Organization Scope Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile Lookup
+  **           Definition for Identity Service Global Permission.
+  ******************************************************************************
+  -->
+  <target name="entitlement-list" description="Reconcile Identity Service Global Permission Lookup">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Reconciling Entitlements in Identity Manager"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="Entitlement List">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

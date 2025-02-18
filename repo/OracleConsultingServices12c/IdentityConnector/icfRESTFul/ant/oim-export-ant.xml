@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter"
+         basedir         ="../"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-export-ant.log"/>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Identity Manager System Integration Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="gws-base" description="Exports the Connector Base Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gws-resource-dm.xml"
+                        description="Generic WebService IT Resource Type Configuration ${application.release}">
+        <object:category value="ITResourceDef" name="Generic WebService Endpoint"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gws-adapter-dm.xml"
+                        description="SCIM Adpater Configuration ${application.release}">
+        <object:category value="TaskAdapter"   name="adpSCIMACCOUNTCREATE"/>
+        <object:category value="TaskAdapter"   name="adpSCIMACCOUNTREVOKE"/>
+        <object:category value="TaskAdapter"   name="adpSCIMACCOUNTMODIFY"/>
+        <object:category value="TaskAdapter"   name="adpSCIMACCOUNTUPDATE"/>
+        <object:category value="TaskAdapter"   name="adpSCIMACCOUNTACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpSCIMACCOUNTDEACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpSCIMACCOUNTASSIGNATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpSCIMACCOUNTREVOKEATTRIBUTE"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gws-scheduler-dm.xml"
+                        description="SCIM Scheduler Configuration ${application.release}">
+        <object:category value="scheduledTask" name="SCIM Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="SCIM Delete Reconciliation"/>
+        <object:category value="scheduledTask" name="SCIM Account Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Generic WebService Provider Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Lookup Definition
+  **           o Resource Form
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="scim-target" description="Exports the Connector Target Configuration ${application.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the Lookup configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/scim-lookup-dm.xml"
+                        description="SCIM Connector Configuration ${application.release}">
+        <object:category value="Lookup"        name="SCIM.Group"/>
+      </object:exportSet>
+      <!-- export the IT Resource configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/scim-resource-dm.xml"
+                        description="SCIM Connector Configuration ${application.release}">
+        <object:category value="ITResource"    name="SCIM.Endpoint"/>
+      </object:exportSet>
+      <!-- export the User Defined Form configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/scim-model-dm.xml"
+                        description="SCIM Connector Configuration ${application.release}">
+        <object:category value="Process Form" name="UD_SCIM_UGP"/>
+        <object:category value="Process Form" name="UD_SCIM_USR"/>
+      </object:exportSet>
+      <!-- export the Provisioning Process configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/scim-process-dm.xml"
+                        description="SCIM Connector Configuration Configuration ${application.release}">
+        <object:category value="Resource"     name="SCIM Account"/>
+        <object:category value="Process"      name="SCIM Account"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/scim-scheduler-dm.xml"
+                        description="SCIM Connector Configuration ${application.release}">
+        <object:category value="Job"          name="SCIM Group Reconciliation"/>
+        <object:category value="Job"          name="SCIM Delete Reconciliation"/>
+        <object:category value="Job"          name="SCIM Account Reconciliation"/>
+      </object:exportSet>
+      <!-- export the Request Catalog configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/scim-request-dm.xml"
+                        description="Pivotal Cloud Foundry Connector Configuration ${application.release}">
+        <object:category value="RequestDataset"      name="SCIMRequest"/>
+        <object:category value="ApplicationInstance" name="SCIMAccount"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Identity Manager System Integration Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="pcf-base" description="Exports the Connector Base Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/base/pcf-resource-dm.xml"
+                        description="Pivotal Cloud Foundry IT Resource Type Configuration ${application.release}">
+        <object:category value="ITResourceDef" name="Pivotal Cloud Foundry"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/pcf-lookup-dm.xml"
+                        description="Pivotal Cloud Foundry Lookup Configuration ${application.release}">
+        <object:category value="Lookup"        name="PCF.UAA.Origin"/>
+        <object:category value="Lookup"        name="PCF.ORL.Scope"/>
+        <object:category value="Lookup"        name="PCF.SRL.Scope"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/pcf-adapter-dm.xml"
+                        description="Pivotal Cloud Foundry Adapter Configuration ${application.release}">
+        <object:category value="TaskAdapter"   name="adpPCFACCOUNTCREATE"/>
+        <object:category value="TaskAdapter"   name="adpPCFACCOUNTMODIFY"/>
+        <object:category value="TaskAdapter"   name="adpPCFACCOUNTMODIFYATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpPCFACCOUNTASSIGNATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpPCFACCOUNTREVOKEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpPCFACCOUNTREVOKE"/>
+        <object:category value="TaskAdapter"   name="adpPCFACCOUNTACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpPCFACCOUNTDEACTIVATE"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/pcf-scheduler-dm.xml"
+                        description="Pivotal Cloud Foundry Scheduler Configuration ${application.release}">
+        <object:category value="scheduledTask" name="PCF Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="PCF Delete Reconciliation"/>
+        <object:category value="scheduledTask" name="PCF Account Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Generic WebService Provider Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Lookup Definition
+  **           o Resource Form
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="pcf-target" description="Exports the Connector Target Configuration ${application.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the Lookup configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-lookup-dm.xml"
+                        description="Pivotal Cloud Foundry Configuration ${application.release}">
+        <object:category value="Lookup"        name="PCF.UGP"/>
+        <object:category value="Lookup"        name="PCF.ORL"/>
+        <object:category value="Lookup"        name="PCF.OSC"/>
+        <object:category value="Lookup"        name="PCF.SRL"/>
+        <object:category value="Lookup"        name="PCF.SSC"/>
+      </object:exportSet>
+      <!-- export the IT Resource configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-resource-dm.xml"
+                        description="Pivotal Cloud Foundry Configuration ${application.release}">
+        <object:category value="ITResource"    name="PCF.Endpoint"/>
+      </object:exportSet>
+      <!-- export the User Defined Form configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-model-dm.xml"
+                        description="Pivotal Cloud Foundry Connector Configuration ${application.release}">
+        <object:category value="Process Form" name="UD_PCF_SRL"/>
+        <object:category value="Process Form" name="UD_PCF_ORL"/>
+        <object:category value="Process Form" name="UD_PCF_UGP"/>
+        <object:category value="Process Form" name="UD_PCF_USR"/>
+      </object:exportSet>
+      <!-- export the Provisioning Process configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-process-dm.xml"
+                        description="Pivotal Cloud Foundry Connector Configuration ${application.release}">
+        <object:category value="Resource"     name="PCF Account"/>
+        <object:category value="Process"      name="PCF Account"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-scheduler-dm.xml"
+                        description="Pivotal Cloud Foundry Configuration ${application.release}">
+        <object:category value="Job"          name="PCF Group Reconciliation"/>
+        <object:category value="Job"          name="PCF Tenant Reconciliation"/>
+        <object:category value="Job"          name="PCF Space Reconciliation"/>
+        <object:category value="Job"          name="PCF Delete Reconciliation"/>
+        <object:category value="Job"          name="PCF Account Reconciliation"/>
+      </object:exportSet>
+      <!-- export the Request Catalog configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-request-dm.xml"
+                        description="Pivotal Cloud Foundry Connector Configuration ${application.release}">
+        <object:category value="RequestDataset"      name="PCFRequest"/>
+        <object:category value="ApplicationInstance" name="PCFAccount"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Exports the project artifacts from the target host and Identity Manager Instance"/>
+</project>

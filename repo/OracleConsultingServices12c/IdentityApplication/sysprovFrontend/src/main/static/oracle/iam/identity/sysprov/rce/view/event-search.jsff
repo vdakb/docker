@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysprov$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Provisioning']}"/>
+  <af:panelHeader id="ph10" text="#{sysprov$bundle.RCE_MULTIPLE}" icon="#{sysprov$bundle.RCE_ICON}">
+    <!--
+    the panel which renders the search criteria and the controls belonging to
+    this panel
+    -->
+    <af:panelGroupLayout id="pgl0" styleClass="AFStretchWidth">
+      <af:declarativeComponent id="dc10" viewId="/searchQuickSearch.jspx" viewCriteriaQuery="#{bindings.EventCriteria}" resultComponentId="pc10:svr" advancedMaxColumns="2" advancedRows="5"/>
+      <!--
+      the panel collection which renders the search result and the controls
+      belonging to this panel
+      -->
+      <af:panelCollection id="pc10" styleClass="AFStretchWidth" featuresOff="statusBar">
+        <f:facet name="menus">
+          <af:menu id="m10" partialTriggers="::dc10" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{pageFlowScope.eventSearch.actionMenu}" clientComponent="true">
+            <af:commandMenuItem id            ="cmi11"
+                                icon          ="/images/func_close_16_ena.png"
+                                text          ="#{sysprov$bundle.RCE_CLOSE_LABEL}"
+                                shortDesc     ="#{sysprov$bundle.RCE_CLOSE_HINT}"
+                                disabled      ="#{pageFlowScope.eventSearch.closeDisabled}"
+                                action        ="#{pageFlowScope.eventSearch.refresh}"/>
+            <af:commandMenuItem id            ="cmi12"
+                                icon          ="/images/func_userresetpassword_16_ena.png"
+                                text          ="#{sysprov$bundle.RCE_REEVALUATE_LABEL}"
+                                shortDesc     ="#{sysprov$bundle.RCE_REEVALUATE_HINT}"
+                                disabled      ="#{pageFlowScope.eventSearch.linkDisabled}"
+                                action        ="#{pageFlowScope.eventSearch.refresh}"/>
+            <af:commandMenuItem id            ="cmi13"
+                                icon          ="/images/func_reassign_16_ena.png"
+                                text          ="#{sysprov$bundle.RCE_LINK_LABEL}"
+                                shortDesc     ="#{sysprov$bundle.RCE_LINK_HINT}"
+                                disabled      ="#{pageFlowScope.eventSearch.linkDisabled}"
+                                action        ="#{pageFlowScope.eventSearch.refresh}"/>
+            <af:commandMenuItem id            ="cmi14"
+                                icon          ="/images/func_refresh_16_ena.png"
+                                text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                action        ="#{pageFlowScope.eventSearch.refresh}"/>
+          </af:menu>
+        </f:facet>
+        <f:facet name="toolbar">
+          <af:toolbar id="t10" partialTriggers="::dc10" binding="#{pageFlowScope.eventSearch.toolbar}">
+            <af:group id="g10">
+              <af:button id            ="btn11"
+                         text          ="#{sysprov$bundle.RCE_CLOSE_LABEL}"
+                         icon          ="/images/func_close_16_ena.png"
+                         hoverIcon     ="/images/func_close_16_hov.png"
+                         disabledIcon  ="/images/func_close_16_dis.png"
+                         depressedIcon ="/images/func_close_16_act.png"
+                         disabled      ="#{pageFlowScope.eventSearch.closeDisabled}"
+                         shortDesc     ="#{sysprov$bundle.RCE_CLOSE_HINT}"
+                         action        ="#{pageFlowScope.eventSearch.refresh}"
+                         partialSubmit ="true"/>
+              <af:button id            ="btn12"
+                         text          ="#{sysprov$bundle.RCE_REEVALUATE_LABEL}"
+                         icon          ="/images/func_userresetpassword_16_ena.png"
+                         hoverIcon     ="/images/func_userresetpassword_16_hov.png"
+                         disabledIcon  ="/images/func_userresetpassword_16_dis.png"
+                         depressedIcon ="/images/func_userresetpassword_16_act.png"
+                         disabled      ="#{pageFlowScope.eventSearch.linkDisabled}"
+                         shortDesc     ="#{sysprov$bundle.RCE_REEVALUATE_HINT}"
+                         action        ="#{pageFlowScope.eventSearch.refresh}"
+                         partialSubmit ="true"/>
+              <af:button id            ="btn13"
+                         text          ="#{sysprov$bundle.RCE_LINK_LABEL}"
+                         icon          ="/images/func_reassign_16_ena.png"
+                         hoverIcon     ="/images/func_reassign_16_hov.png"
+                         disabledIcon  ="/images/func_reassign_16_dis.png"
+                         depressedIcon ="/images/func_reassign_16_act.png"
+                         disabled      ="#{pageFlowScope.eventSearch.linkDisabled}"
+                         shortDesc     ="#{sysprov$bundle.RCE_LINK_HINT}"
+                         action        ="#{pageFlowScope.eventSearch.refresh}"
+                         partialSubmit ="true"/>
+              <af:button id            ="btn14"
+                         text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         icon          ="/images/func_refresh_16_ena.png"
+                         hoverIcon     ="/images/func_refresh_16_hov.png"
+                         disabledIcon  ="/images/func_refresh_16_dis.png"
+                         depressedIcon ="/images/func_refresh_16_act.png"
+                         disabled      ="false"
+                         shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         action        ="#{pageFlowScope.eventSearch.refresh}"
+                         partialSubmit ="true"/>
+            </af:group>
+          </af:toolbar>
+        </f:facet>
+        <!--
+        we use columnStretching="multiple" to give us the opportunity to size
+        the columns by witdh="nn%"
+        The default width for a column is 100px. There is no auto sizing for
+        columns. Set the width attribute to ensure the column is wide enough to
+        accommodate the width of the contents. When the "multiple" option is
+        used in the table that contains the column, the width can be set to a
+        percentage.
+        -->
+        <af:table id                   ="svr" var="row" varStatus="vs"
+                  value                ="#{bindings.Event.collectionModel}"
+                  rows                 ="#{bindings.Event.rangeSize}"
+                  fetchSize            ="#{bindings.Event.rangeSize}"
+                  binding              ="#{pageFlowScope.eventSearch.searchTable}"
+                  summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                  filterVisible        ="false"
+                  filterModel          ="#{bindings.EventCriteria.queryDescriptor}"
+                  queryListener        ="#{bindings.EventCriteria.processQuery}"
+                  selectionListener    ="#{pageFlowScope.eventSearch.searchSelect}"
+                  columnStretching     ="multiple"
+                  columnBandingInterval="0"
+                  rowBandingInterval   ="1"
+                  autoHeightRows       ="0"
+                  rowSelection         ="multiple"
+                  columnSelection      ="none"
+                  verticalGridVisible  ="false"
+                  scrollPolicy         ="page"
+                  immediate            ="true"
+                  emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}"
+                  partialTriggers      =":::dc10">
+          <af:column id="c10" rowHeader="true" width="20" headerText="" align="right"/>
+          <af:column id="c11" width="10%" filterable="true" sortable="true" sortProperty="eventKey" headerText="#{bindings.Event.hints.eventKey.label}">
+            <af:link id="ci11" text="#{row.eventKey}" action="#{pageFlowScope.eventSearch.launch}" icon="#{sysprov$bundle.RCE_LIST}"/>
+          </af:column>
+          <af:column id="c12" width="10%" filterable="true" sortable="true" sortProperty="entityType" headerText="#{bindings.Event.hints.entityType.label}">
+            <af:outputText id="ot12" value="#{row.entityType}"/>
+          </af:column>
+          <af:column id="c13" width="30%" filterable="true" sortable="true" sortProperty="objectName" headerText="#{bindings.Event.hints.objectName.label}">
+            <af:outputText id="ot13" value="#{row.objectName}"/>
+          </af:column>
+          <af:column id="c14" width="20%" filterable="true" headerText="#{bindings.Event.hints.changeType.label}">
+            <af:outputText id="ot14" value="#{row.changeType}"/>
+          </af:column>
+          <af:column id="c15" width="20%" filterable="true" sortable="true" sortProperty="status" headerText="#{bindings.Event.hints.status.label}">
+            <af:outputText id="ot15" value="#{row.status}"/>
+          </af:column>
+          <af:column id="c16" width="10%" filterable="true" sortable="true" sortProperty="actionDate" headerText="#{bindings.Event.hints.actionDate.label}">
+            <af:outputText id="ot16" value="#{row.actionDate}"/>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup id="pid11" contentDelivery="lazyUncached">
+              <af:menu id="m20" clientComponent="true">
+                <af:commandMenuItem id            ="cmi24"
+                                    icon          ="/images/func_refresh_16_ena.png"
+                                    text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    disabled      ="false"
+                                    shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    action        ="#{pageFlowScope.eventSearch.refresh}"/>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelHeader>
+</jsp:root>

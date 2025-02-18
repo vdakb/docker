@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="job_parametersPageDef"
+                Package="oracle.iam.identity.sysadmin.job.view">
+  <parameters/>
+  <executables>
+    <iterator id="JobIterator"       Binds="JobDetailVO"    DataControl="JobAMDataControl" RangeSize="20"/>
+    <iterator id="ParameterIterator" Binds="JobParameterVO" DataControl="JobAMDataControl" RangeSize="20"/>
+  </executables>
+  <bindings>
+    <attributeValues id="name" IterBinding="JobIterator">
+      <AttrNames>
+        <Item Value="name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="status" IterBinding="JobIterator">
+      <AttrNames>
+        <Item Value="status"/>
+      </AttrNames>
+    </attributeValues>
+    <tree id="Parameter" IterBinding="ParameterIterator" >
+      <nodeDefinition Name="ParameterNode" DefName="oracle.iam.identity.sysadmin.model.view.JobParameterVO">
+        <AttrNames>
+          <Item Value="jobName"/>
+          <Item Value="parameterKey"/>
+          <Item Value="name"/>
+          <Item Value="dataType"/>
+          <Item Value="value"/>
+          <Item Value="required"/>
+          <Item Value="encrypted"/>
+          <Item Value="helpText"/>
+          <Item Value="pendingAction"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="JobAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="JobAMDataControl"/>
+    <methodAction id                 ="commitDetail"
+                  DataControl        ="JobAMDataControl"
+                  InstanceName       ="JobAMDataControl.dataProvider"
+                  MethodName         ="commitDetail"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="mode" NDType="java.lang.String"/>
+      <NamedData NDName="bean" NDType="oracle.iam.identity.sysadmin.schema.JobAdapter"/>
+    </methodAction>
+    <methodAction id                 ="refreshAttribute"
+                  DataControl        ="JobAMDataControl"
+                  InstanceName       ="JobAMDataControl.dataProvider"
+                  MethodName         ="refreshAttribute"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id                 ="refreshParameter"
+                  InstanceName       ="JobAMDataControl.dataProvider"
+                  DataControl        ="JobAMDataControl"
+                  Action             ="invokeMethod"
+                  MethodName         ="refreshParameter"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="jobName"  NDType="java.lang.String"/>
+      <NamedData NDName="taskName" NDType="java.lang.String"/>
+      <NamedData NDName="pending"  NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id                 ="refreshHistory"
+                  DataControl        ="JobAMDataControl"
+                  InstanceName       ="JobAMDataControl.dataProvider"
+                  MethodName         ="refreshHistory"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id                 ="jobStart"
+                  DataControl        ="JobAMDataControl"
+                  InstanceName       ="JobAMDataControl.dataProvider"
+                  MethodName         ="start"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id                 ="jobStop"
+                  DataControl        ="JobAMDataControl"
+                  InstanceName       ="JobAMDataControl.dataProvider"
+                  MethodName         ="stop"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id                 ="jobEnable"
+                  DataControl        ="JobAMDataControl"
+                  InstanceName       ="JobAMDataControl.dataProvider"
+                  MethodName         ="enable"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id                 ="jobDisable"
+                  DataControl        ="JobAMDataControl"
+                  InstanceName       ="JobAMDataControl.dataProvider"
+                  MethodName         ="disable"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

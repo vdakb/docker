@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<process name="ApprovalProcess"
+         xmlns          ="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:bpws     ="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ora      ="http://schemas.oracle.com/xpath/extension"
+         xmlns:bpelx    ="http://schemas.oracle.com/bpel/extension"
+         xmlns:wf       ="http://schemas.oracle.com/bpel/extension/workflow"
+         xmlns:task     ="http://xmlns.oracle.com/bpel/workflow/task"
+         xmlns:wfcommon ="http://xmlns.oracle.com/bpel/workflow/common"
+         xmlns:client   ="http://xmlns.oracle.com/iam/oim/approval/process"
+         xmlns:ns1      ="http://wls.ws.workflowservice.platform.iam.oracle/"
+         xmlns:ns2      ="http://xmlns.oracle.com/bpel/workflow/taskService"
+         xmlns:ns4      ="http://xmlns.oracle.com/iam/oim/request/details"
+         xmlns:ns3      ="http://xmlns.oracle.com/iam/oim/approval/process"
+         xmlns:ns5      ="http://xmlns.oracle.com/bpel/workflow/TaskEvidenceService"
+         xmlns:ns6      ="http://xmlns.oracle.com/bpel/workflow/routingSlip"
+         xmlns:ns7      ="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:ns8      ="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns9      ="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:ns10     ="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns11     ="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ns12     ="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:ns13     ="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:ns14     ="http://www.w3.org/2005/08/addressing"
+         targetNamespace="http://xmlns.oracle.com/iam/oim/workflowApprovalProcess">
+  <!--
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    PARTNERLINKS
+    List of services participating in this BPEL process
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <partnerLinks>
+    <!--
+    The 'client' role represents the requester of this service. It is
+    used for callback. The location and correlation information associated
+    with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="RequestApprovalService"   partnerLinkType="client:ApprovalProcess" partnerRole="ApprovalProcessRequester" myRole="ApprovalProcessProvider"/>
+    <partnerLink name="CallbackService"          partnerLinkType="ns1:CallbackService_PL" partnerRole="CallbackService_Role"/>
+    <partnerLink name="ApprovalTask.TaskService" partnerLinkType="ns2:TaskService"        partnerRole="TaskService"              myRole="TaskServiceCallbackListener"/>
+  </partnerLinks>
+  <!--
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    VARIABLES
+    List of messages and XML documents used within this BPEL process
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <variable name="partnerLink"                  element="ns14:EndpointReference"/>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable"                messageType="client:ApprovalProcessRequestMessage"/>
+    <!-- Reference to the message that will be sent back to the requester during callback -->
+    <variable name="outputVariable"               messageType="client:ApprovalProcessResponseMessage"/>
+    <variable name="ApprovalTaskVariable"         messageType="ns2:taskMessage"/>
+    <variable name="InvokeCallbackInputVariable"  messageType="ns1:callback"/>
+    <variable name="InvokeCallbackOutputVariable" messageType="ns1:callbackResponse"/>
+  </variables>
+
+   <faultHandlers>
+     <catchAll>
+       <sequence>
+         <assign name="AssignCatchAll">
+           <copy>
+             <from expression="ora:getFaultAsString()"/>
+             <to variable="outputVariable" part="payload" query="/ns3:processResponse/ns3:result"/>
+           </copy>
+           <copy>
+             <from expression="ora:getConversationId()"/>
+             <to variable="InvokeCallbackInputVariable" part="parameters" query="/ns1:callback/arg0"/>
+           </copy>
+           <copy>
+             <from expression="ora:getFaultAsString()"/>
+             <to variable="InvokeCallbackInputVariable" part="parameters" query="/ns1:callback/arg1"/>
+           </copy>
+           <copy>
+             <from>
+               <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+                 <Address/>
+               </EndpointReference>
+             </from>
+             <to variable="partnerLink"/>
+           </copy>
+           <copy>
+             <from variable="inputVariable" part="payload" query="/ns3:process/ns4:url"/>
+             <to query="/ns14:EndpointReference/ns14:Address" variable="partnerLink"/>
+           </copy>
+           <copy>
+             <from variable="partnerLink"/>
+             <to partnerLink="CallbackService"/>
+           </copy>
+         </assign>
+         <invoke name="InvokeErrorCallback"
+                 inputVariable="InvokeCallbackInputVariable"
+                 outputVariable="InvokeCallbackOutputVariable"
+                 portType="ns1:CallbackService"
+                 partnerLink="CallbackService"
+                 operation="callback"/>
+       </sequence>
+     </catchAll>
+   </faultHandlers>
+  <!--
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ORCHESTRATION LOGIC
+    Set of activities coordinating the flow of messages across the
+    services integrated within this business process
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+    <!-- Receive input from requestor. (Note: This maps to operation defined in ApprovalProcess.wsdl) -->
+    <receive name="receiveInput" partnerLink="RequestApprovalService" portType="client:ApprovalProcess" operation="process" variable="inputVariable" createInstance="yes"/>
+    <!--
+    Asynchronous callback to the requester. (Note: the callback location and correlation id is transparently handled using WS-addressing.)
+    -->
+    <scope name="ApprovalTask" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:wf="http://schemas.oracle.com/bpel/extension/workflow" wf:key="ApprovalTaskVariable">
+      <bpelx:annotation xmlns:bpelx="http://schemas.oracle.com/bpel/extension">
+        <bpelx:pattern patternName="bpelx:workflow"></bpelx:pattern>
+      </bpelx:annotation>
+      <variables>
+        <variable name="initiateTaskInput"           messageType="ns2:initiateTaskMessage"/>
+        <variable name="initiateTaskResponseMessage" messageType="ns2:initiateTaskResponseMessage"/>
+      </variables>
+      <sequence>
+        <assign name="ApprovalTaskAssignTaskAttributes">
+          <copy>
+            <from expression="number(3)"/>
+            <to variable="initiateTaskInput" part="payload"
+                query="/ns2:initiateTask/task:task/task:priority"/>
+          </copy>
+          <copy>
+            <from>
+              <payload xmlns="http://xmlns.oracle.com/bpel/workflow/task">
+                <RequestID              xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                <RequestModel           xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                <RequestTarget          xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                <url                    xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                <RequesterDetails       xmlns="http://xmlns.oracle.com/iam/oim/request/details"/>
+                <BeneficiaryDetails     xmlns="http://xmlns.oracle.com/iam/oim/request/details"/>
+                <ObjectDetails          xmlns="http://xmlns.oracle.com/iam/oim/request/details"/>
+                <OtherDetails           xmlns="http://xmlns.oracle.com/iam/oim/request/details"/>
+                <RequesterDisplayName   xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                <BeneficiaryDisplayName xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                <Requester              xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+              </payload>
+            </from>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:RequestID"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:RequestID"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:RequestModel"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:RequestModel"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:RequestTarget"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:RequestTarget"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:url"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:url"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:RequesterDetails"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/ns4:RequesterDetails"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:BeneficiaryDetails"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/ns4:BeneficiaryDetails"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:ObjectDetails"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/ns4:ObjectDetails"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:OtherDetails"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/ns4:OtherDetails"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:RequesterDetails/ns4:DisplayName"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:RequesterDisplayName"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:BeneficiaryDetails/ns4:DisplayName"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:BeneficiaryDisplayName"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:RequesterDetails/ns4:Login"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:payload/task:Requester"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:RequestID"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:identificationKey"/>
+          </copy>
+          <copy>
+            <from variable="inputVariable"   part="payload" query="/ns3:process/ns4:RequesterDetails/ns4:Login"/>
+            <to variable="initiateTaskInput" part="payload" query="/ns2:initiateTask/task:task/task:creator"/>
+          </copy>
+        </assign>
+        <invoke  name="initiateTaskApprovalTask"
+                 partnerLink="ApprovalTask.TaskService"
+                 portType="ns2:TaskService"
+                 operation="initiateTask"
+                 inputVariable="initiateTaskInput"
+                 outputVariable="initiateTaskResponseMessage"/>
+        <receive name="receiveCompletedTaskApprovalTask"
+                 partnerLink="ApprovalTask.TaskService"
+                 portType="ns2:TaskServiceCallback"
+                 operation="onTaskCompleted"
+                 variable="ApprovalTaskVariable"
+                 createInstance="no"/>
+      </sequence>
+    </scope>
+    <switch name="taskSwitch">
+      <case condition="bpws:getVariableData('ApprovalTaskVariable', 'payload', '/task:task/task:systemAttributes/task:state') = 'COMPLETED' and bpws:getVariableData('ApprovalTaskVariable', 'payload', '/task:task/task:systemAttributes/task:outcome') = 'REJECT'">
+        <bpelx:annotation>
+          <bpelx:pattern>Task outcome is REJECT</bpelx:pattern>
+          <bpelx:general>
+            <bpelx:property name="userLabel">Task outcome is REJECT</bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <sequence>
+          <assign name="AssignOutcomeReject">
+            <copy>
+              <from expression="string('rejected')"/>
+              <to variable="outputVariable" part="payload" query="/ns3:processResponse/ns3:result"/>
+            </copy>
+            <copy>
+              <from expression="ora:getConversationId()"/>
+              <to variable="InvokeCallbackInputVariable" part="parameters" query="/ns1:callback/arg0"/>
+            </copy>
+            <copy>
+              <from expression="string('rejected')"/>
+               <to variable="InvokeCallbackInputVariable" part="parameters" query="/ns1:callback/arg1"/>
+            </copy>
+          </assign>
+        </sequence>
+      </case>
+      <case condition="bpws:getVariableData('ApprovalTaskVariable', 'payload', '/task:task/task:systemAttributes/task:state') = 'COMPLETED' and bpws:getVariableData('ApprovalTaskVariable', 'payload', '/task:task/task:systemAttributes/task:outcome') = 'APPROVE'">
+        <bpelx:annotation>
+          <bpelx:pattern>Task outcome is APPROVE</bpelx:pattern>
+          <bpelx:general>
+            <bpelx:property name="userLabel">Task outcome is APPROVE</bpelx:property>
+          </bpelx:general>
+        </bpelx:annotation>
+        <sequence>
+          <assign name="AssignOutcomeApprove">
+            <copy>
+              <from expression="string('approved')"/>
+              <to variable="outputVariable" part="payload" query="/ns3:processResponse/ns3:result"/>
+            </copy>
+            <copy>
+              <from expression="ora:getConversationId()"/>
+              <to variable="InvokeCallbackInputVariable" part="parameters" query="/ns1:callback/arg0"/>
+            </copy>
+            <copy>
+              <from expression="string('approved')"/>
+              <to variable="InvokeCallbackInputVariable" part="parameters" query="/ns1:callback/arg1"/>
+            </copy>
+          </assign>
+        </sequence>
+      </case>
+      <otherwise>
+        <sequence>
+          <assign name="AssignOutcomeOtherwise">
+            <copy>
+              <from expression="bpws:getVariableData('ApprovalTaskVariable','payload','/task:task/task:systemAttributes/task:state')"/>
+              <to variable="outputVariable" part="payload" query="/ns3:processResponse/ns3:result"/>
+            </copy>
+            <copy>
+              <from expression="ora:getConversationId()"/>
+              <to variable="InvokeCallbackInputVariable" part="parameters" query="/ns1:callback/arg0"/>
+            </copy>
+            <copy>
+              <from expression="bpws:getVariableData('ApprovalTaskVariable','payload','/task:task/task:systemAttributes/task:state')"/>
+              <to variable="InvokeCallbackInputVariable" part="parameters" query="/ns1:callback/arg1"/>
+            </copy>
+          </assign>
+        </sequence>
+      </otherwise>
+    </switch>
+    <assign name="AssignCallbackService">
+      <copy>
+        <from>
+          <EndpointReference xmlns="http://www.w3.org/2005/08/addressing">
+            <Address/>
+          </EndpointReference>
+        </from>
+        <to variable="partnerLink"/>
+      </copy>
+      <copy>
+        <from variable="inputVariable" part="payload" query="/ns3:process/ns4:url"/>
+        <to   variable="partnerLink" query="/ns14:EndpointReference/ns14:Address"/>
+      </copy>
+      <copy>
+        <from variable="partnerLink"/>
+        <to partnerLink="CallbackService"/>
+      </copy>
+    </assign>
+    <invoke name="InvokeCallbackService"
+            partnerLink="CallbackService"
+            inputVariable="InvokeCallbackInputVariable"
+            outputVariable="InvokeCallbackOutputVariable"
+            portType="ns1:CallbackService"
+            operation="callback"/>
+    <invoke name="callbackClient"
+            partnerLink="RequestApprovalService"
+            inputVariable="outputVariable"
+            portType="client:ApprovalProcessCallback"
+            operation="processResponse"/>
+  </sequence>
+</process>

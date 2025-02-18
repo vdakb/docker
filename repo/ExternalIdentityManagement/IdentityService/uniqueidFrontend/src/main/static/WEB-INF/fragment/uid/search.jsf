@@ -1,0 +1,104 @@
+<u:composition xmlns   ="http://www.w3.org/1999/xhtml"
+               xmlns:f ="http://xmlns.jcp.org/jsf/core"
+               xmlns:h ="http://xmlns.jcp.org/jsf/html"
+               xmlns:p ="http://primefaces.org/ui"
+               xmlns:e ="http://primefaces.org/ui/extensions"
+               xmlns:u ="http://java.sun.com/jsf/facelets">
+  <h:form id="f01">
+    <p:dataTable id                       ="t01"
+                 var                      ="item"
+                 liveResize               ="true"
+                 stripedRows              ="true"
+                 resizableColumns         ="true"
+                 value                    ="#{identifier}"
+                 rows                     ="#{identifier.pageSize}"
+                 selection                ="#{identifier.selected}"
+                 selectionMode            ="single"
+                 sortMode                 ="multiple"
+                 allowUnsorting           ="true"
+                 paginator                ="true"
+                 paginatorPosition        ="top"
+                 paginatorTemplate        ="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                 paginatorAlwaysVisible   ="true"
+                 rowsPerPageTemplate      ="5,10,15,20,25,50,100"
+                 widgetVar                ="identifier">
+      <p:ajax event="rowSelect"   update=":f01:t01:cb02 :f01:t01:cb03"/>
+      <p:ajax event="rowUnselect" update=":f01:t01:cb02 :f01:t01:cb03"/>
+      <!--p:ajax event="page"        oncomplete="rowsPerPageUpdate()"/-->
+      <p:column id="c00" width="1px" sortable="false" draggable="false" resizable="false" selectRow="true" filterable="false" toggleable="true"/>
+      <p:column id="c01" headerText="#{uid$bundle['uid.tenant.label']}" sortBy="#{item.tenant}" filterable="#{identifier.filter}" filterBy="#{item.tenant}" width="8rem">
+        <p:commandLink id ="cl01" process="t01" action="#{identifier.modify}" value="#{item.tenant}">
+          <f:setPropertyActionListener target="#{identifier.selected}" value="#{item}"/>
+          <e:selectDetailLevel step="2"/>
+        </p:commandLink>
+      </p:column>
+      <p:column id="c02" headerText="#{uid$bundle['uid.type.label']}" sortBy="#{item.active}" filterable="#{identifier.filter}" filterBy="#{item.type}" width="8rem">
+        <p:commandLink id ="cl02" process="t01" action="#{identifier.modify}" value="#{item.type}">
+          <f:setPropertyActionListener target="#{identifier.selected}" value="#{item}"/>
+          <e:selectDetailLevel step="2"/>
+        </p:commandLink>
+      </p:column>
+      <p:column id="c03" headerText="#{uid$bundle['uid.external.label']}" sortBy="#{item.name}" filterable="#{identifier.filter}" filterBy="#{item.external}">
+        <p:commandLink id ="cl03" process="t01" action="#{identifier.modify}" value="#{item.external}">
+          <f:setPropertyActionListener target="#{identifier.selected}" value="#{item}"/>
+          <e:selectDetailLevel step="2"/>
+        </p:commandLink>
+      </p:column>
+      <f:facet name="header">
+        <p:toolbar id="tb01" styleClass="ml-3">
+          <p:toolbarGroup id="tg01" align="left" styleClass="mr-4">
+            <p:commandButton id        ="cb01"
+                             icon      ="fa fa-plus"
+                             title     ="#{app$bundle['action.create.hint']}"
+                             action    ="#{identifier.create}"
+                             rendered  ="#{request.isUserInRole('Administrator')}"
+                             styleClass="mr-2 ui-button-success">
+            <e:selectDetailLevel step="2"/>
+          </p:commandButton>
+          <p:commandButton id        ="cb02"
+                           icon      ="fa fa-pencil"
+                           title     ="#{app$bundle['action.modify.hint']}"
+                           action    ="#{identifier.modify}"
+                           rendered  ="#{request.isUserInRole('Administrator')}"
+                           disabled  ="#{identifier.selected == null}">
+            <e:selectDetailLevel step="2"/>
+          </p:commandButton>
+          <p:divider layout="vertical"/>
+          <p:commandButton id        ="cb03"
+                           icon      ="fa fa-trash"
+                           title     ="#{app$bundle['action.delete.hint']}"
+                           action    ="#{identifier.delete}"
+                           update    =":msg :f01:t01"
+                           rendered  ="#{request.isUserInRole('Administrator')}"
+                           disabled  ="#{identifier.selected == null}"
+                           styleClass="ui-button-danger">
+            <p:confirm header="#{app$bundle['dialog.title.confirm']}" message="#{uid$bundle['uid.delete.confirm']}" icon="pi pi-exclamation-triangle"/>
+          </p:commandButton>
+          <p:divider layout="vertical"/>
+          <p:commandButton id="cb04" icon="fa fa-refresh" title="#{app$bundle['action.refresh.hint']}" action="#{identifier.refresh}" update=":msg :f01:t01"/>
+          <p:divider layout="vertical"/>
+          <p:commandButton id        ="cb05"
+                           icon      ="fa fa-filter"
+                           title     ="#{app$bundle['action.filter.hint']}"
+                           action    ="#{identifier.filter}"
+                          update    ="@form">
+            <e:selectDetailLevel step="-1"/>
+          </p:commandButton>
+          <p:inputText id="it06" styleClass="ml-2 mr-2" onkeyup="PF('identifier').filter()" placeholder="#{app$bundle['action.search.value']}"/>
+          <p:commandButton id        ="cb06"
+                           icon      ="fa fa-search"
+                           title     ="#{app$bundle['action.search.hint']}"
+                           action    ="PF('identifier').filter()"
+                           update    ="@form"/>
+          <p:commandButton id        ="cb07"
+                           icon      ="fa fa-recycle"
+                           title     ="#{app$bundle['action.search.erase']}"
+                           process   ="@this"
+                           onclick   ="$('#f01\\:t01\\:it06').val('').keyup(); return false;"/>
+          </p:toolbarGroup>
+        </p:toolbar>
+      </f:facet>
+    </p:dataTable>
+  </h:form>
+</u:composition>

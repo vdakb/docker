@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+            Name                  ="LookupValueVO"
+            UseGlueCode           ="false"
+            BindingStyle          ="OracleName"
+            FetchMode             ="FETCH_AS_NEEDED"
+            AccessMode            ="RANGE_PAGING"
+            RangeSize             ="25"
+            CustomQuery           ="false"
+            FromList              ="LKV LookupValueEO"
+            PageIterMode          ="Full"
+            InheritPersonalization="merge"
+            ComponentClass        ="oracle.iam.identity.sysconfig.model.view.LookupValueVOImpl"
+            RowClass              ="oracle.iam.identity.sysconfig.model.view.LookupValueVORowImpl">
+  <DesignTime>
+    <Attr Name="_isCodegen"    Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
+    <Attr Name="_diagramName"  Value="Lookup Value View"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL        ResId="lkv.single"/>
+      <LABEL_PLURAL ResId="lkv.multiple"/>
+      <TOOLTIP      ResId="lkv.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <EntityUsage Name="LookupValueEO" Entity="oracle.iam.identity.sysconfig.model.entity.LookupValueEO"/>
+  <ViewAttribute Name="valueKey" PrecisionRule="true" EntityUsage="LookupValueEO" EntityAttrName="valueKey" AliasName="VALUEKEY" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="lookupKey" PrecisionRule="true" EntityUsage="LookupValueEO" EntityAttrName="lookupKey" AliasName="LOOKUPKEY" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="encoded" PrecisionRule="true" EntityUsage="LookupValueEO" EntityAttrName="encoded" AliasName="ENCODED"
+    IsPersistent="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="decoded" PrecisionRule="true" EntityUsage="LookupValueEO" EntityAttrName="decoded" AliasName="DECODED"
+    IsPersistent="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="disabled" PrecisionRule="true" EntityUsage="LookupValueEO" EntityAttrName="disabled" AliasName="DISABLED"
+    IsPersistent="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="note" PrecisionRule="true" EntityUsage="LookupValueEO" EntityAttrName="note" AliasName="NOTE" IsQueriable="false"
+    IsPersistent="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="pendingAction" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" AliasName="PENDINGACTION" IsPersistent="false" PrecisionRule="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="lookupName" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" AliasName="LOOKUPNAME" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewAttribute Name="add" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" AliasName="ADD" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewAttribute Name="del" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" AliasName="DEL" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewAttribute Name="mod" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" AliasName="MOD" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewCriteria Name="LookupValueVC" ViewObjectName="oracle.iam.identity.sysconfig.model.view.LookupValueVO" Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property Name="mode"                     Value="Basic"/>
+        <Property Name="showInList"               Value="true"/>
+        <Property Name="autoExecute"              Value="false"/>
+        <Property Name="displayOperators"         Value="InAdvancedMode"/>
+        <Property Name="allowConjunctionOverride" Value="true"/>
+        <Property Name="displayName"              ResId="lkv.search"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow Name="vcrLKV" UpperColumns="1">
+      <ViewCriteriaItem Name="encoded"  ViewAttribute="encoded"  Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="decoded"  ViewAttribute="decoded"  Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="disabled" ViewAttribute="disabled" Operator="EQUALS"     Conjunction="AND" Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ViewCriteria Name="LookupPickerVC" ViewObjectName="oracle.iam.identity.sysconfig.model.view.LookupValueVO" Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property Name="mode"                     Value="Basic"/>
+        <Property Name="showInList"               Value="true"/>
+        <Property Name="autoExecute"              Value="false"/>
+        <Property Name="displayOperators"         Value="InAdvancedMode"/>
+        <Property Name="allowConjunctionOverride" Value="true"/>
+        <Property Name="displayName"              ResId="lkv.search"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow Name="vcrLKV" UpperColumns="1">
+      <ViewCriteriaItem Name="encoded"  ViewAttribute="encoded"  Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="decoded"  ViewAttribute="decoded"  Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="disabled" ViewAttribute="disabled" Operator="="          Conjunction="AND" Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysconfig.bundle.Backend"/>
+  </ResourceBundle>
+</ViewObject>

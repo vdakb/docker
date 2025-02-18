@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@buster.cinnamonstar.net:7021/mdr.cinnamonstar.net" description="openfire Database Connector Configuration 12.2.1.3 Project Group" exported-date="1597846956397" user="XELSYSADM" version="12.2.1.3.0">
+  <eventhandlers mds-file="ofs-pg-account-reconciliation.xml" mds-path="/metadata/bka-features-reconciliation/dbs" name="/metadata/bka-features-reconciliation/dbs" repo-type="MDS">
+    <completeXml>
+      <descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+                  identifier    ="User Name"
+                  uniqueName    ="User Name"
+                  status        ="Status"
+                  password      ="Password"
+                  transformation="false"
+                  natively      ="false">
+        <attribute type="string"  name="User Name"       source="__UID__">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string"  name="Name"            source="name">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string"  name="E-Mail"          source="email"/>
+        <attribute type="boolean" name="Administrator"   source="administrator"/>
+        <multivalue name="Group" source="__GROUP__">
+          <attribute type="string" name="Name"           source="__UID__">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+          <attribute type="boolean" name="Administrator" source="administrator">
+            <flag>required</flag>
+          </attribute>
+        </multivalue>
+      </descriptor>
+    </completeXml>
+  </eventhandlers>
+</xl-ddm-data>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@buster.vm.oracle.com:7021/mdr.vm.oracle.com" description="Pivotal Cloud Foundry Metadata Configuration Revision 1.0.0.0" exported-date="1597846956397" user="XELSYSADM" version="12.2.1.3.0">
+  <eventhandlers mds-file="pcf-sz4-account-reconciliation.xml" mds-path="/metadata/bka-features-reconciliation/gws" name="/metadata/bka-features-reconciliation/gws" repo-type="MDS">
+    <completeXml>
+      <descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+                  identifier    ="Identifier"
+                  uniqueName    ="User Name"
+                  status        ="Status"
+                  transformation="true">
+        <attribute type="string" name="Identifier"        source="__UID__">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string" name="User Name"         source="__NAME__">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string" name="Status"            source="__ENABLE__">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string" name="Verified"          source="verified">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string" name="Identity Origin"   source="origin"/>
+        <attribute type="string" name="Identity Provider" source="zoneId"/>
+        <attribute type="string" name="External Name"     source="externalId"/>
+        <attribute type="string" name="Last Name"         source="name.familyName"/>
+        <attribute type="string" name="First Name"        source="name.givenName"/>
+        <attribute type="string" name="e-Mail"            source="emails.value"/>
+        <attribute type="string" name="Phone"             source="phoneNumbers.value"/>
+        <transformer name="UD_PCF4_USR_VFD" class="oracle.iam.identity.utility.NumericToBooleanDefaultTrue"/>
+        <multivalue name="Group" source="__GROUP__">
+          <attribute class="string" name="Name"  source="__UID__">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+        </multivalue>
+        <multivalue name="Tenant" source="__TENANT__">
+          <attribute class="string" name="Name"  source="__UID__">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+          <attribute class="string" name="Scope" source="__NAME__">
+            <flag>required</flag>
+          </attribute>
+        </multivalue>
+        <multivalue name="Space" source="__SPACE__">
+          <attribute class="string" name="Name"  source="__UID__">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+          <attribute class="string" name="Scope" source="__NAME__">
+            <flag>required</flag>
+          </attribute>
+        </multivalue>
+      </descriptor>
+    </completeXml>
+  </eventhandlers>
+</xl-ddm-data>

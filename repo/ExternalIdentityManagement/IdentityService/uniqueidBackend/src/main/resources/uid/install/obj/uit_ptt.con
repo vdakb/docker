@@ -1,0 +1,40 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityService/uniqueidBackend/src/main/resources/install/uid/obj/uit_ptt.con
+--
+--   Einfuehrung einer personenbezogenen ID im Progamm Polizei 2020
+--   Unique Identifier (UID)
+--   Version 1.2 | Stand 15.03.2022
+--
+--   Reference to Page 20 Table Row 1 CodeList
+--   Vorgabe durch P20 IAM: CodeList: TH=T Partner:P
+--
+-- Generated for Oracle Database 12c on Sun Feb 11 08:26:42 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Constraints on 'uit_participant_types'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key 'uit_ptt_pk' on 'uit_participant_types'
+ALTER TABLE uit_participant_types
+  ADD (
+    CONSTRAINT uit_ptt_pk PRIMARY KEY (
+      id
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Unique Key 'uit_ptt_uk' on 'uit_participant_types'
+ALTER TABLE uit_participant_types
+  ADD (
+    CONSTRAINT uit_ptt_uk UNIQUE (
+      name
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Check Constraint 'uit_ptt_ck1' on 'uit_participant_types'
+ALTER TABLE uit_participant_types
+  ADD (
+    CONSTRAINT uit_ptt_ck1 CHECK (
+      active IN (0, 1)
+    )
+  )
+/

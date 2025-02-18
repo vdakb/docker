@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland BV & Co. KG
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#xA9; 2022. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="pid-backend-install"
+         xml:lang="en"
+         version ="5.0">
+  <title>Install the Database Schema</title>
+  <para>
+    This chapter describes how to install the data model objects of the PID generator belonging to <emphasis>Identity Governance Services</emphasis>.
+  </para>
+  <para>
+     This chapter does not describe how to set up an instance of the target database.
+     Consult the manufactor's documentation for creating an instance for the target database.
+    <important>
+      <emphasis>PID Generator</emphasis> supports at the time being Oracle&#xAE; as a target database only.
+    </important>
+  </para>
+  <para>
+    To install the database schema required for <emphasis>Identity Governance Services</emphasis>, a set of scripts provided with prepared DDL statements.
+    Those scripts create all required tables and default indices.
+  </para>
+  <para>
+    To be able to install any objects you need access to the Oracle Database either locally or remotely.
+    An installation of <emphasis>SQL*Plus</emphasis> is required to be able to execute the provided scripts.
+  </para>
+  <warning>
+    The database role <emphasis role="strong">DBA</emphasis> is required to perform the installation.
+  </warning>
+  <para>
+    The installation of the generator schema objects as part of the <emphasis>Identity Governance Services</emphasis> consists of:
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend='pid-backend-install'>Create Schema Objects</link>
+      </listitem>
+    </itemizedlist>
+  </para>
+  <section xml:id="pid-backend-install-all">
+    <title>Create Schema Objects</title>
+    <para>
+      To install the generator schema objects execute the steps:
+    </para>
+    <orderedlist>
+      <listitem>
+        <para>
+          Open a command line for the operating system from which access to the database instance is possible.
+        </para>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Locate the directory of the provided scripts and navigate to it:
+        </para>
+        <programlisting>cd <emphasis>&#x3C;IGS_BASE&#x3E;</emphasis>/anonymousidBackend/src/main/resources/pid</programlisting>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Load the database schema of <emphasis>PID Generator</emphasis> by executing the following command:
+        </para>
+        <programlisting>sqlplus / as sysdba @create</programlisting>
+      </listitem>
+    </orderedlist>
+    <para>
+       After running the script to install the database schema, the log files should be checked for errors during execution.
+       These log files are in the same directory as the script used to load the database schema (see step 3).
+    </para>
+    <note>
+      When running the script for the first time, it is normal to encounter errors like <emphasis>ORA-04080</emphasis> or <emphasis>ORA-00942</emphasis>.
+    </note>
+  </section>
+</chapter>

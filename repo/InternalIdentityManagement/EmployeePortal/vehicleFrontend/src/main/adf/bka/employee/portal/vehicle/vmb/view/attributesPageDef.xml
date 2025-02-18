@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id="attributesPageDef"
+                Package="bka.employee.portal.vehicle.vmb.view">
+  <parameters/>
+  <executables>
+    <iterator id="BrandIterator" Binds="BrandDetailVO" DataControl="AdministrationAMDataControl" RangeSize="25"/>
+  </executables>
+  <bindings>
+    <attributeValues id="id" IterBinding="BrandIterator">
+      <AttrNames>
+        <Item Value="id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="name" IterBinding="BrandIterator">
+      <AttrNames>
+        <Item Value="name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="icon" IterBinding="BrandIterator">
+      <AttrNames>
+        <Item Value="icon"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="AdministrationAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="AdministrationAMDataControl"/>
+    <methodAction id="refreshBrandAttribute"
+                  DataControl="AdministrationAMDataControl"
+                  InstanceName="AdministrationAMDataControl.dataProvider"
+                  MethodName="refreshBrandAttribute"
+                  Action="invokeMethod" 
+                  IsViewObjectMethod="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+    </methodAction>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseRefreshLaunchAreaEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.RefreshLaunchAreaEvent"/>
+      </events>
+    </eventBinding>
+    <tree id="Brand" IterBinding="BrandIterator">
+      <nodeDefinition DefName="bka.employee.portal.vehicle.model.view.BrandVO" Name="BrandDetailVO0">
+        <AttrNames>
+          <Item Value="id"/>
+          <Item Value="icon"/>
+          <Item Value="name"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

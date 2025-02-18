@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="applicationsPageDef"
+                Package="bka.iam.identity.ui.oauth.pages">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="root" RangeSize="25" DataControl="IdentityDomainSessionFacade"
+              id="IdentityDomainSessionFacadeIterator"/>
+    <accessorIterator MasterBinding="IdentityDomainSessionFacadeIterator" Binds="applications" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.Application"
+                      id="applicationsIterator"/>
+    <searchRegion Binds="applicationsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="applicationsQuery"/>
+  </executables>
+  <bindings>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <tree IterBinding="applicationsIterator" id="applications">
+      <nodeDefinition DefName="bka.iam.identity.ui.oauth.model.Application" Name="applications0">
+        <AttrNames>
+          <Item Value="resourceServerId"/>
+          <Item Value="name"/>
+          <Item Value="description"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="deleteApplication" RequiresUpdateModel="true" Action="invokeMethod" MethodName="deleteApplication"
+                  IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.deleteApplication.dataControl.dataProvider">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+      <NamedData NDName="identityDomainName" NDType="java.lang.String"/>
+      <NamedData NDName="applicationId" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="refreshApplications" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshApplications" IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.refreshApplications.dataControl.dataProvider"/>
+  </bindings>
+</pageDefinition>

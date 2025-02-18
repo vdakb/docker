@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysauth$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Authorization']}"/>
+  <af:panelHeader id="ph10" text="#{sysauth$bundle.CAT_MULTIPLE}" icon="#{sysauth$bundle.CAT_ICON}">
+    <!--
+    the panel which renders the search criteria and the controls belonging to
+    this panel
+    -->
+    <af:panelGroupLayout id="pgl0" styleClass="AFStretchWidth">
+      <af:declarativeComponent id="dc10" viewId="/searchQuickSearch.jspx" viewCriteriaQuery="#{bindings.CatalogItemCriteria}" resultComponentId="pc10:cat" advancedMaxColumns="2" advancedRows="5"/>
+      <!--
+      the panel collection which renders the search result and the controls
+      belonging to this panel
+      -->
+      <af:panelCollection id="pc10" styleClass="AFStretchWidth" featuresOff="statusBar">
+        <f:facet name="menus">
+          <af:menu id="m10" partialTriggers="::dc10" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{pageFlowScope.catalogItemSearch.actionMenu}" clientComponent="true">
+            <af:commandMenuItem id            ="cmi12"
+                                text          ="#{sysbase$bundle.SEARCH_MODIFYDOT}"
+                                icon          ="/images/func_open_16_ena.png"
+                                shortDesc     ="#{sysauth$bundle.CAT_MODIFY_HINT}"
+                                action        ="#{pageFlowScope.catalogItemSearch.modify}"
+                                disabled      ="#{pageFlowScope.catalogItemSearch.modifyDisabled}"
+                                partialSubmit ="true"/>
+            <af:commandMenuItem id           ="cmi13"
+                                icon         ="/images/func_delete_16_ena.png"
+                                text         ="#{sysbase$bundle.SEARCH_DELETE}"
+                                shortDesc    ="#{sysauth$bundle.CAT_DELETE_HINT}"
+                                disabled     ="#{pageFlowScope.catalogItemSearch.deleteDisabled}">
+              <af:clientAttribute name="actionName" value="GENERIC_DELETE"/>
+              <af:showPopupBehavior alignId="btn13" align="afterStart" popupId="::confirmPopup"/>
+            </af:commandMenuItem>
+            <af:commandMenuItem id            ="cmi14"
+                                icon          ="/images/func_refresh_16_ena.png"
+                                text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                action        ="#{pageFlowScope.catalogItemSearch.refresh}"/>
+          </af:menu>
+        </f:facet>
+        <f:facet name="toolbar">
+          <af:toolbar id="t10" partialTriggers="::dc10" binding="#{pageFlowScope.catalogItemSearch.toolbar}">
+            <af:group id="g10">
+              <af:button id           ="btn12"
+                         text         ="#{sysbase$bundle.SEARCH_MODIFY}"
+                         icon         ="/images/func_open_16_ena.png"
+                         hoverIcon    ="/images/func_open_16_hov.png"
+                         disabledIcon ="/images/func_open_16_dis.png"
+                         depressedIcon="/images/func_open_16_act.png"
+                         shortDesc    ="#{sysauth$bundle.CAT_MODIFY_HINT}"
+                         action       ="#{pageFlowScope.catalogItemSearch.modify}"
+                         disabled     ="#{pageFlowScope.catalogItemSearch.modifyDisabled}"
+                         partialSubmit="true"/>
+              <af:button id           ="btn13"
+                         text         ="#{sysbase$bundle.SEARCH_DELETE}"
+                         icon         ="/images/func_delete_16_ena.png"
+                         hoverIcon    ="/images/func_delete_16_hov.png"
+                         disabledIcon ="/images/func_delete_16_dis.png"
+                         depressedIcon="/images/func_delete_16_act.png"
+                         shortDesc    ="#{sysauth$bundle.CAT_DELETE_HINT}"
+                         disabled     ="#{pageFlowScope.catalogItemSearch.deleteDisabled}">
+                <af:clientAttribute name="actionName" value="GENERIC_DELETE"/>
+                <af:showPopupBehavior alignId="btn13" align="afterStart" popupId="::confirmPopup"/>
+              </af:button>
+              <af:button id           ="btn14"
+                         text         ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         icon         ="/images/func_refresh_16_ena.png"
+                         hoverIcon    ="/images/func_refresh_16_hov.png"
+                         disabledIcon ="/images/func_refresh_16_dis.png"
+                         depressedIcon="/images/func_refresh_16_act.png"
+                         disabled     ="false"
+                         shortDesc    ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         action       ="#{pageFlowScope.catalogItemSearch.refresh}"
+                         partialSubmit="true"/>
+            </af:group>
+          </af:toolbar>
+        </f:facet>
+        <!--
+        we use columnStretching="multiple" to give us the opportunity to size
+        the columns by witdh="nn%"
+        The default width for a column is 100px. There is no auto sizing for
+        columns. Set the width attribute to ensure the column is wide enough to
+        accommodate the width of the contents. When the "multiple" option is
+        used in the table that contains the column, the width can be set to a
+        percentage.
+        -->
+        <af:table id                   ="cat" var="row" varStatus="vs"
+                  value                ="#{bindings.CatalogItem.collectionModel}"
+                  rows                 ="#{bindings.CatalogItem.rangeSize}"
+                  fetchSize            ="#{bindings.CatalogItem.rangeSize}"
+                  binding              ="#{pageFlowScope.catalogItemSearch.searchTable}"
+                  summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                  filterVisible        ="false"
+                  filterModel          ="#{bindings.CatalogItemCriteria.queryDescriptor}"
+                  queryListener        ="#{bindings.CatalogItemCriteria.processQuery}"
+                  selectionListener    ="#{pageFlowScope.catalogItemSearch.searchSelect}"
+                  columnStretching     ="multiple"
+                  columnBandingInterval="0"
+                  rowBandingInterval   ="1"
+                  autoHeightRows       ="0"
+                  rowSelection         ="multiple"
+                  columnSelection      ="none"
+                  verticalGridVisible  ="false"
+                  scrollPolicy         ="page"
+                  immediate            ="true"
+                  emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}"
+                  partialTriggers      =":::dc10">
+          <af:column id="c10" rowHeader="true" width="20" headerText="" align="right"/>
+          <af:column id="c11" width="40%" filterable="true" sortable="true" sortProperty="entityName" headerText="#{bindings.CatalogItem.hints.entityName.label}">
+            <af:link id="ci11" text="#{row.entityName}" action="#{pageFlowScope.catalogItemSearch.modify}" icon="#{row.entityIcon}"/>
+          </af:column>
+          <af:column id="c12" width="5%" sortable="false" headerText="#{bindings.CatalogItem.hints.risk.label}">
+            <af:image id="im12" source="#{row.riskIcon}" shortDesc="#{sysbase$bundle[af:formatString(sysbase$bundle.RISK_LEVEL, af:formatString('RISK_LEVEL_{0}', row.risk))]}"/>
+          </af:column>
+          <af:column id="c13" width="34%" filterable="true" sortable="true" sortProperty="entityDisplayName" headerText="#{bindings.CatalogItem.hints.entityDisplayName.label}">
+            <af:outputText id="ot13" value="#{row.entityDisplayName}"/>
+          </af:column>
+          <af:column id="c14" width="7%" filterable="true" sortable="true" sortProperty="auditable" headerText="#{bindings.CatalogItem.hints.auditable.label}">
+            <af:selectBooleanCheckbox id="cb14" simple="true" value="#{row.auditable}"/>
+          </af:column>
+          <af:column id="c15" width="7%" filterable="true" sortable="true" sortProperty="requestable" headerText="#{bindings.CatalogItem.hints.requestable.label}">
+            <af:selectBooleanCheckbox id="cb15" simple="true" value="#{row.requestable}"/>
+          </af:column>
+          <af:column id="c16" width="7%" filterable="true" sortable="true" sortProperty="certifiable" headerText="#{bindings.CatalogItem.hints.certifiable.label}">
+            <af:selectBooleanCheckbox id="cb16" simple="true" value="#{row.certifiable}"/>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup id="pid11" contentDelivery="lazyUncached">
+              <af:menu id="m20" clientComponent="true">
+                <af:commandMenuItem id            ="cmi22"
+                                    icon          ="/images/func_open_16_ena.png"
+                                    text          ="#{sysbase$bundle.SEARCH_MODIFYDOT}"
+                                    shortDesc     ="#{sysauth$bundle.CAT_MODIFY_HINT}"
+                                    action        ="#{pageFlowScope.catalogItemSearch.modify}"
+                                    disabled      ="#{pageFlowScope.catalogItemSearch.modifyDisabled}"
+                                    partialSubmit ="true"/>
+                <af:commandMenuItem id            ="cmi23"
+                                    icon          ="/images/func_delete_16_ena.png"
+                                    text          ="#{sysbase$bundle.SEARCH_DELETEDOT}"
+                                    shortDesc     ="#{sysauth$bundle.CAT_DELETE_HINT}"
+                                    disabled      ="#{pageFlowScope.catalogItemSearch.deleteDisabled}">
+                  <af:clientAttribute name="actionName" value="GENERIC_DELETE"/>
+                  <af:showPopupBehavior alignId="::btn13" align="afterStart" popupId="::::confirmPopup"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem id            ="cmi24"
+                                    icon          ="/images/func_refresh_16_ena.png"
+                                    text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    disabled      ="false"
+                                    shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    action        ="#{pageFlowScope.catalogItemSearch.refresh}"/>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+      </af:panelCollection>
+      <af:popup id             ="confirmPopup"
+                launcherVar    ="source"
+                eventContext   ="launcher"
+                contentDelivery="lazyUncached">
+        <af:setPropertyListener type="popupFetch" from="#{source.attributes.actionName}" to="#{pageFlowScope.catalogItemSearch.actionName}"/>
+          <af:dialog id                         ="dlg01"
+                     type                       ="yesNo"
+                     title                      ="#{sysbase$bundle.GENERIC_WARNING}"
+                     titleIconSource            ="/images/warning.png"
+                     dialogListener             ="#{pageFlowScope.catalogItemSearch.dialogListener}"
+                     affirmativeTextAndAccessKey="#{pageFlowScope.catalogItemSearch.localizedAction}"
+                     cancelTextAndAccessKey     ="#{sysbase$bundle.GENERIC_CANCEL}"
+                     noTextAndAccessKey         ="#{sysbase$bundle.GENERIC_CANCEL}">
+            <af:panelGroupLayout id="pg10" inlineStyle="width:auto;height:auto;">
+              <af:spacer id="sp11" height="5"/>
+              <af:panelGroupLayout id="pg20" layout="vertical" inlineStyle="width:350px;">
+                <af:outputFormatted id="of21" value="#{af:formatString(sysbase$bundle.GENERIC_CONFIRM, pageFlowScope.catalogItemSearch.localizedAction)}" inlineStyle="font-weight:bold; font-size:small;"/>
+                <af:spacer id="sp21" height="10"/>
+                <af:outputText id="ot22" value="#{pageFlowScope.catalogItemSearch.localizedMessage}"/>
+              </af:panelGroupLayout>
+              <af:spacer id="sp12" height="15"/>
+              <af:table id                     ="cat2" var="row" width="99%" inlineStyle="height:200px"
+                        value                  ="#{pageFlowScope.catalogItemSearch.selectedRow}"
+                        rows                   ="#{pageFlowScope.catalogItemSearch.selectedRowCount}"
+                        fetchSize              ="#{pageFlowScope.catalogItemSearch.selectedRowCount}"
+                        columnStretching       ="last"
+                        rowBandingInterval     ="1"
+                        rendered               ="#{pageFlowScope.catalogItemSearch.selectedRowCount > 1}"
+                        allDetailsEnabled      ="false"
+                        disableColumnReordering="true">
+              <af:column id="ch" headerText="#{sysauth$bundle.CAT_SINGLE}" align="left" minimumWidth="20" rowHeader="unstyled">
+                <af:outputText id="ot11" value="#{row.entityName}"/>
+              </af:column>
+            </af:table>
+          </af:panelGroupLayout>
+        </af:dialog>
+      </af:popup>
+    </af:panelGroupLayout>
+  </af:panelHeader>
+</jsp:root>

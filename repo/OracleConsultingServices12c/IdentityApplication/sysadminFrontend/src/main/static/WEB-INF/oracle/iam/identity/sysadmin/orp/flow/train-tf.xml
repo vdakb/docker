@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<adfc-config id="__01" xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="train-tf">
+    <default-activity id="__02">orchestrationprocess-fetch</default-activity>
+    <data-control-scope id="__03">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__10">
+      <name id="__11">uiShell</name>
+      <value id="__12">#{pageFlowScope.uiShell}</value>
+      <class id="__13">oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__15">taskFlowId</name>
+      <value id="__16">#{pageFlowScope.taskFlowId}</value>
+      <class id="__17">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__18">
+      <name id="__19">mode</name>
+      <value id="__20">#{pageFlowScope.mode}</value>
+      <class id="__21">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__22">
+      <name id="__23">processId</name>
+      <value id="__24">#{pageFlowScope.processId}</value>
+      <class id="__25">java.lang.Long</class>
+    </input-parameter-definition>
+    <managed-bean id="__61">
+      <managed-bean-name id="__62">orchestrationTrain</managed-bean-name>
+      <managed-bean-class id="__63">oracle.iam.identity.sysadmin.orp.state.Train</managed-bean-class>
+      <managed-bean-scope id="__64">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__65">
+      <managed-bean-name id="__66">orchestrationAttribute</managed-bean-name>
+      <managed-bean-class id="__67">oracle.iam.identity.sysadmin.orp.backing.AttributeState</managed-bean-class>
+      <managed-bean-scope id="__68">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__69">
+      <managed-bean-name id="__70">orchestrationEvent</managed-bean-name>
+      <managed-bean-class id="__71">oracle.iam.identity.sysadmin.orp.backing.EventState</managed-bean-class>
+      <managed-bean-scope id="__72">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="process-attributes">
+      <page id="__101">/oracle/iam/identity/sysadmin/orp/view/orchestrationprocess-attributes.jsff</page>
+      <train-stop id="__102">
+        <display-name id="__103">#{adfBundle['oracle.iam.identity.bundle.Administration']['ORC_ATTRIBUTE']}</display-name>
+        <sequential id="__104">false</sequential>
+      </train-stop>
+    </view>
+    <view id="process-events">
+      <page id="__106">/oracle/iam/identity/sysadmin/orp/view/orchestrationprocess-events.jsff</page>
+      <train-stop id="__107">
+        <display-name id="__108">#{adfBundle['oracle.iam.identity.bundle.Administration']['ORC_EVENT']}</display-name>
+        <sequential id="__109">false</sequential>
+      </train-stop>
+    </view>
+    <view id="process-summary">
+      <page id="__121">/oracle/iam/identity/sysadmin/orp/view/orchestrationprocess-summary.jsff</page>
+      <train-stop id="__122">
+        <display-name id="__123">#{adfBundle['oracle.iam.identity.bundle.Administration']['ORC_SUMMARY']}</display-name>
+        <sequential id="__124">false</sequential>
+        <ignore id="__125">#{pageFlowScope.mode == 'request' or pageFlowScope.mode == 'edit' or pageFlowScope.mode == 'view'}</ignore>
+      </train-stop>
+    </view>
+    <method-call id="orchestrationprocess-fetch">
+      <method id="__164">#{pageFlowScope.orchestrationTrain.fetch}</method>
+      <outcome id="__165">
+        <fixed-outcome id="__166">fetched</fixed-outcome>
+      </outcome>
+    </method-call>
+    <train/>
+    <control-flow-rule id="__198">
+      <from-activity-id id="__199">orchestrationprocess-fetch</from-activity-id>
+      <control-flow-case id="__200">
+        <from-outcome id="__201">fetched</from-outcome>
+        <to-activity-id id="__202">process-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,28 @@
+-- <?xml version = '1.0' encoding = 'UTF-8'?>
+-- <procedure xmlns="http://xmlns.oracle.com/jdeveloper/1211/offlinedb">
+--   <name>QMS$EXECUTE</name>
+--   <properties>
+--     <entry>
+--       <key>OfflineDBConstants.IMPORT_SOURCE_CONNECTION</key>
+--       <value class="java.lang.String">igs@hardy</value>
+--     </entry>
+--     <entry>
+--       <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+--       <value class="oracle.javatools.db.ReferenceID">
+--         <name>QMS$EXECUTE</name>
+--         <identifier class="java.math.BigDecimal">46653</identifier>
+--         <schemaName>IGD_IGS</schemaName>
+--         <type>PROCEDURE</type>
+--       </value>
+--     </entry>
+--   </properties>
+-- </procedure>
+
+CREATE OR REPLACE
+PROCEDURE qms$execute(p_command in varchar2)
+IS
+BEGIN
+  -- performance enhancement: use NDS instead-of dbms_sql
+  EXECUTE IMMEDIATE p_command;
+END qms$execute;
+/

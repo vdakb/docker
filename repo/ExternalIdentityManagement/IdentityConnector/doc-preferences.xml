@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Governance Library Documentation Preferences"
+         basedir        ="..">
+  <!--
+  =====================================================================
+  == properties specific to control the compiler progress
+  =====================================================================
+  -->
+  <import   file = "../wks-preferences.xml"/>
+  <!--
+  =====================================================================
+  == properties specific to the project installation
+  =====================================================================
+  -->
+  <property name="ocs.base.doc" location="${ocs.home}/FoundationFramework/hstDocbook"/>
+  <property name="ocs.base.fop" location="${ocs.base.doc}/fop"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="ocs.base.doc: ${ocs.base.doc} doesn't exist.">
+    <condition>
+      <not><available file="${ocs.base.doc}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="### ERROR: module for PDF FOP rendering not installed. Please download it, and reinstall the styler using 'ant -f ant-build.docbook.xml install'">
+    <condition>
+      <not><available file="${ocs.base.fop}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == properties specific to the docbook installation
+  =====================================================================
+  -->
+  <property name="docbook.site" location="${docbook}"/>
+  <property name="docbook.temp" location="${docbook}/tmp"/>
+  <!--
+  =====================================================================
+  == properties specific to the project installation
+  =====================================================================
+  -->
+  <!-- ## override these properties, if needed -->
+  <property name="docbook.styles" location="${ocs.base.doc}/lib/styles/docbook"/>
+  <property name="website.styles" location="${ocs.base.doc}/lib/styles/website"/>
+</project>

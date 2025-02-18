@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="asserter"
+         xml:lang="en"
+         version ="5.0">
+  <title>Identity Asserter Function with Oracle Access Manager</title>
+  <para>
+    This topic describes and illustrates the use of the Identity Asserter function with Oracle Access Manager WebGates.
+    Processing is similar, with few exceptions, whether you have OAM 12c with 12c (or 11g, 10g) WebGates or OAM 10g with 10g WebGates).
+    For instance, with Oracle Access Manager 12c, the Access Server is known as the OAM Server.
+  </para>
+  <para>
+    All requests are first routed to a reverse proxy Web server and requests are
+    intercepted by WebGate. The user is challenged for credentials based on the authentication scheme that is configured within Oracle Access Manager.
+  </para>
+  <para>
+    The Identity Asserter function relies on perimeter authentication performed by WebGate on the Web Tier.
+    Triggering the Identity Asserter function requires the appropriate chosen Active Type for your WebGate release.
+  </para>
+  <para>
+    After triggering the Identity Asserter function, configured Authentication Providers (Login Modules) for constructing the Subject and populating it with the appropriate Principals are invoked.
+  </para>
+  <note>
+    <para>
+      The only difference between using the Identity Asserter function with 12c/11g WebGates versus 10g WebGates is the provider's chosen Active Type.
+    </para>
+  </note>
+  <section xml:id="asserter-trigger">
+    <title>Chosen Active Types</title>
+    <para>
+      The Identity Asserter function's Active Type configuration parameter lists supported values under the Available UI section.
+      One of the following must be selected as the "Chosen" type to trigger the Identity Asserter function:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <emphasis role="strong">Identity Assertion</emphasis>
+        <para>
+          Triggers Identity Assertion based on the trusted header <emphasis>OAM_IDENTITY_ASSERTION</emphasis>.
+        </para>
+        <para><?linebreak?></para>
+      </listitem>
+      <listitem>
+        <emphasis role="strong">Remote User</emphasis>
+        <para>
+          Triggers Identity Assertion based on <emphasis>OAM_REMOTE_USER</emphasis> header.
+        </para>
+        <para><?linebreak?></para>
+      </listitem>
+      <listitem>
+        <emphasis role="strong">ObSSOCookie</emphasis>
+        <para>
+          Triggers Identity Assertion based on <emphasis>ObSSOCookie</emphasis>.
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      <emphasis>OAM_REMOTE_USER</emphasis> header includes the uid of the logged in user.
+      Configuring <emphasis>OAM_REMOTE_USER</emphasis> as the chosen Active Type for the Identity Asserter requires Oracle Access Manager policies that set <emphasis>OAM_REMOTE_USER</emphasis> as part of the authorization success response headers.
+    </para>
+    <note>
+      <para>
+      </para>
+    </note>
+  </section>
+</chapter>  

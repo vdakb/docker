@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" 
+                version="12.2.1.22.48" id="identity_domainPageDef"
+                Package="bka.iam.identity.ui.oauth.pages">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="root" RangeSize="25" DataControl="IdentityDomainSessionFacade"
+              id="IdentityDomainSessionFacadeIterator"/>
+    <accessorIterator MasterBinding="IdentityDomainSessionFacadeIterator" Binds="identityDomains" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade"
+                      BeanClass="bka.iam.identity.ui.oauth.model.IdentityDomain" id="identityDomainsIterator"/>
+    <searchRegion Binds="identityDomainsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="identityDomainsQuery"/>
+  </executables>
+  <bindings>
+     <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+   <methodAction id="loadIdentityDomains" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="init" IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.loadIdentityDomains.dataControl.dataProvider">
+      <NamedData NDName="oamConnectionName" NDValue="#{pageFlowScope.oam_connection_name}" NDType="java.lang.String"/>
+    </methodAction>
+ 
+    <tree IterBinding="identityDomainsIterator" id="identityDomains">
+      <nodeDefinition DefName="bka.iam.identity.ui.oauth.model.IdentityDomain" Name="identityDomains0">
+        <AttrNames>
+          <Item Value="name"/>
+          <Item Value="description"/>
+          <Item Value="consentPageURL"/>
+          <Item Value="errorPageURL"/>
+          <Item Value="identityProvider"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="refreshIdentityDomains" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="refreshIdentityDomains" IsViewObjectMethod="false"
+                  DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.refreshIdentityDomains.dataControl.dataProvider"/>
+    <methodAction id="deleteIdentityDomain" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="deleteIdentityDomain" IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.deleteIdentityDomain.dataControl.dataProvider"
+                  ReturnName="data.IdentityDomainSessionFacade.methodResults.deleteIdentityDomain_deleteIdentityDomain_dataControl_dataProvider_deleteIdentityDomain_result">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+      <NamedData NDName="identityDomainName" NDType="java.lang.String"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

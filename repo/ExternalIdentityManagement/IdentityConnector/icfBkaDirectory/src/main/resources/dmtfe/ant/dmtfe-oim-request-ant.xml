@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Configuration DMTFE"
+         basedir="../"
+         default="all"
+         xmlns:fmw="http://oracle.hst.deployment/fusion"
+         xmlns:jps="http://oracle.hst.deployment/security"
+         xmlns:wsm="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:plugin="http://oracle.iam.identity/plugin"
+         xmlns:metadata="http://oracle.iam.identity/metadata"
+         xmlns:object="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job="http://oracle.iam.identity/job"
+         xmlns:sandbox="http://oracle.iam.identity/sandbox">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-request-ant.log"/>
+
+  <!-- Exports the actual CatalogAM.xml file-->
+  <target name="exportCatalog">
+    <metadata:exportVersion contextRef="jmx-context" location="${oim.server.name}" application="oracle.iam.console.identity.sysadmin.ear" version="V2.0" toArchive="/home/oidm/out.zip" documentPath="/persdef/oracle/iam/ui/catalog/model/am/CatalogAM.xml" maxVersions="1">
+    </metadata:exportVersion>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the BKA Directory Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in BKA Directory connector. This includes:
+  **           o Application Instance
+  **           o Request Dataset
+  **           o Entity Publication
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="request" description="Deploys the DMTFE System Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="DMTFE Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/dmtfe/xml/target">
+        <object:importFile name="dmtfe-request-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Adjusting Access Request Configuration by modifying Entity Publication"/>
+    <operation:application contextref="oim-context" operation="modify">
+      <application name="DMTFEAccount" dataset="DMTFERequest" entitlement="true">
+        <publication value="enable">
+          <recipient value="Organization" name="Top" hierarchy="true"/>
+        </publication>
+      </application>
+    </operation:application>
+    <echo message="Generating Sandbox for application DMTFEAccount"/>
+    <sandbox:generate contextRef="oim-context" catalogPath="${catalog.workdir}">
+      <instance name          ="dmtfe-account-sysadmin"
+                description   ="User Interface Customization&apos;s along with the DMTFE Account request and administration task flows."
+                dataSet       ="DMTFERequest"
+                resource      ="DMTFE Account"
+                cleanup       ="true"
+                forceOverride ="never"
+                path          ="deployment/oim/2201 systemConnector APPS/mds">
+        <bundle  class="bka.iam.identity.resource.CatalogBundle" scope="bkaBundle"/>
+        <account name="UD_DMTFE_U">
+          <panel name="basic" row="5" column="2" labelWidth="120" disclosed="true" header="#{bkaBundle.CAT_BASIC_HEADER}">
+            <attribute name="UD_DMTFE_U_SID"          label="#{bkaBundle.CAT_USR_IDENTIFIER_LABEL}"      hint="#{bkaBundle.ODS_USR_IDENTIFIER_HINT}" readOnly="true"/>
+            <attribute name="UD_DMTFE_U_NAME"         label="#{bkaBundle.CAT_USR_LOGIN_NAME_LABEL}"      hint="#{bkaBundle.ODS_USR_LOGIN_NAME_HINT}"/>
+            <attribute name="UD_DMTFE_U_UPN"          label="#{bkaBundle.CAT_USR_PRINCIPAL_NAME_LABEL}"  hint="#{bkaBundle.CAT_USR_PRINCIPAL_NAME_HINT}"/>
+            <attribute name="UD_DMTFE_U_UID"          label="#{bkaBundle.CAT_USR_UNIFIED_LABEL}"         hint="#{bkaBundle.CAT_USR_UNIFIED_HINT}"/>
+            <attribute name="UD_DMTFE_U_PID"          label="#{bkaBundle.CAT_USR_ANONYMIZED_LABEL}"      hint="#{bkaBundle.CAT_USR_ANONYMIZED_HINT}"/>
+            <attribute name="UD_DMTFE_U_SAM"          label="#{bkaBundle.CAT_USR_SAM_LABEL}"             hint="#{bkaBundle.CAT_USR_SAM_HINT}"/>
+            <attribute name="UD_DMTFE_U_PWD"          label="#{bkaBundle.CAT_USR_PASSWORD_LABEL}"        hint="#{bkaBundle.ODS_USR_PASSWORD_HINT}"/>
+          </panel>
+          <panel name="account" row="5" column="2" labelWidth="120" disclosed="true" header="#{bkaBundle.CAT_ACCOUNT_HEADER}">
+            <attribute name="UD_DMTFE_U_TITLE"        label="#{bkaBundle.CAT_USR_TITLE_LABEL}"           hint="#{bkaBundle.CAT_USR_TITLE_HINT}"/>
+            <attribute name="UD_DMTFE_U_SN"           label="#{bkaBundle.CAT_USR_LAST_NAME_LABEL}"       hint="#{bkaBundle.CAT_USR_LAST_NAME_HINT}"/>
+            <attribute name="UD_DMTFE_U_GIVEN_NAME"   label="#{bkaBundle.CAT_USR_FIRST_NAME_LABEL}"      hint="#{bkaBundle.CAT_USR_FIRST_NAME_HINT}"/>
+            <attribute name="UD_DMTFE_U_INITIALS"     label="#{bkaBundle.CAT_USR_INITIALS_LABEL}"        hint="#{bkaBundle.CAT_USR_INITIALS_HINT}"/>
+            <attribute name="UD_DMTFE_U_CN"           label="#{bkaBundle.CAT_USR_COMMON_NAME_LABEL}"     hint="#{bkaBundle.CAT_USR_COMMON_NAME_HINT}"/>
+            <attribute name="UD_DMTFE_U_DISPLAY_NAME" label="#{bkaBundle.CAT_USR_DISPLAY_NAME_LABEL}"    hint="#{bkaBundle.CAT_USR_DISPLAY_NAME_HINT}"/>
+            <attribute name="UD_DMTFE_U_TYPE"         label="#{bkaBundle.CAT_USR_TYPE_LABEL}"            hint="#{bkaBundle.CAT_USR_TYPE_HINT}"/>
+            <attribute name="UD_DMTFE_U_LANGUAGE"     label="#{bkaBundle.CAT_USR_LANGUAGE_LABEL}"        hint="#{bkaBundle.CAT_USR_LANGUAGE_HINT}" title="#{bkaBundle.CAT_USR_LANGUAGE_TITLE}"/>
+            <attribute name="serviceaccount"           label="#{bkaBundle.CAT_USR_SERVICE_ACCOUNT_LABEL}" hint="#{bkaBundle.CAT_USR_SERVICE_ACCOUNT_HINT}"/>
+          </panel>
+          <panel name="contact" row="5" column="2" labelWidth="120" disclosed="false" header="#{bkaBundle.CAT_CONTACT_HEADER}">
+            <attribute name="UD_DMTFE_U_EMAIL"        label="#{bkaBundle.CAT_USR_EMAIL_LABEL}"           hint="#{bkaBundle.CAT_USR_EMAIL_HINT}"/>
+            <attribute name="UD_DMTFE_U_PHONE"        label="#{bkaBundle.CAT_USR_PHONE_LABEL}"           hint="#{bkaBundle.CAT_USR_PHONE_HINT}"/>
+            <attribute name="UD_DMTFE_U_MOBILE"       label="#{bkaBundle.CAT_USR_MOBILE_LABEL}"          hint="#{bkaBundle.CAT_USR_MOBILE_HINT}"/>
+            <attribute name="UD_DMTFE_U_FAX"          label="#{bkaBundle.CAT_USR_FAX_LABEL}"             hint="#{bkaBundle.CAT_USR_FAX_HINT}"/>
+            <attribute name="UD_DMTFE_U_PAGER"        label="#{bkaBundle.CAT_USR_PAGER_LABEL}"           hint="#{bkaBundle.CAT_USR_PAGER_HINT}"/>
+            <attribute name="UD_DMTFE_U_STATE"        label="#{bkaBundle.CAT_USR_STATE_LABEL}"           hint="#{bkaBundle.CAT_USR_STATE_HINT}"/>
+            <attribute name="UD_DMTFE_U_STREET"       label="#{bkaBundle.CAT_USR_STREET_LABEL}"          hint="#{bkaBundle.CAT_USR_STREET_HINT}"/>
+            <attribute name="UD_DMTFE_U_POSTALCODE"   label="#{bkaBundle.CAT_USR_POSTALCODE_LABEL}"      hint="#{bkaBundle.CAT_USR_POSTALCODE_HINT}"/>
+            <attribute name="UD_DMTFE_U_LOCALITY"     label="#{bkaBundle.CAT_USR_LOCALITY_LABEL}"        hint="#{bkaBundle.CAT_USR_LOCALITY_HINT}"/>
+            <attribute name="UD_DMTFE_U_POSTALADR"    label="#{bkaBundle.CAT_USR_POSTALADR_LABEL}"       hint="#{bkaBundle.CAT_USR_POSTALADR_HINT}"/>
+            <attribute name="UD_DMTFE_U_POBOX"        label="#{bkaBundle.CAT_USR_POBOX_LABEL}"           hint="#{bkaBundle.CAT_USR_POBOX_HINT}"/>
+          </panel>
+          <panel name="organization" row="3" column="2" labelWidth="120" disclosed="false" header="#{bkaBundle.CAT_ORGANIZATION_HEADER}">
+            <attribute name="UD_DMTFE_U_O"            label="#{bkaBundle.CAT_USR_ORGANIZATION_LABEL}"    hint="#{bkaBundle.CAT_USR_ORGANIZATION_HINT}"/>
+            <attribute name="UD_DMTFE_U_OU"           label="#{bkaBundle.CAT_USR_DIVISION_LABEL}"        hint="#{bkaBundle.CAT_USR_DIVISION_HINT}"/>
+            <attribute name="UD_DMTFE_U_DEPT"         label="#{bkaBundle.CAT_USR_DEPARTMENT_LABEL}"      hint="#{bkaBundle.CAT_USR_DEPARTMENT_HINT}"/>
+            <attribute name="UD_DMTFE_U_PTS"          label="#{bkaBundle.CAT_USR_PARTICIPANT_LABEL}"     hint="#{bkaBundle.CAT_USR_PARTICIPANT_HINT}"/>
+          </panel>
+          <form name="UD_DMTFE_G" header="#{bkaBundle.CAT_UGP_HEADER_TEXT}">
+            <attribute name="UD_DMTFE_G_SID"          label="#{bkaBundle.CAT_FORM_NAME_LABEL}"           hint ="#{bkaBundle.ODS_UGP_NAME_HINT}" title="#{bkaBundle.ODS_UGP_LOOKUP_TITLE}"/>
+          </form>
+        </account>
+      </instance>
+    </sandbox:generate>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="${resource.dir}/dmtfe/mds/dmtfe-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+
+  <target name="configure" description="Configure DMTFE.Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="Configure IT Resource DMTFE.Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+      <itresource type="BKA Directory Service" name="DMTFE.Endpoint">
+        <parameter name="Distinguished Name Relative" value="yes"/>
+        <parameter name="Locale Country" value="EN"/>
+        <parameter name="Locale Language" value="en"/>
+        <parameter name="Locale TimeZone" value="GMT+01:00"/>
+        <parameter name="Principal Name" value="__BKA_USER__"/>
+        <parameter name="Principal Password" value="__BKA_PASS__"/>
+        <parameter name="Root Context" value="ou=DMTFE,cn=Services,dc=bka,dc=bund,dc=de"/>
+        <parameter name="Secure Socket" value="__BKA_SSL__"/>
+        <parameter name="Server Feature" value="/metadata/bka-features-configuration/dmtfe/dmtfe-feature.xml"/>
+        <parameter name="Server Name" value="__BKA_HOST__"/>
+        <parameter name="Server Port" value="__BKA_PORT__"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Clear Identity Manager Caches.
+  **
+  ** Synopsis: The tasks prepares the Identity Manager Application Deployment.
+  **           This includes:
+  **           o Clearing several caches
+  ******************************************************************************
+  -->
+  <target name="9999" description="Clear Identity Manager Caches">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="9999 Clear Caches"/>
+    <echo message="============================================================="/>
+    <echo message="Clear metadata cache on ${oim.server.name}:${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}"/>
+    <echo message="Clear object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <echo message="============================================================="/>
+    <echo message="9999 completed"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance"/>
+</project>

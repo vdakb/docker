@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter"
+         basedir         ="../"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-export-ant.log"/>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Identity Manager System Integration Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports the Connector Base Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gws-resource-dm.xml"
+                        description="Apache Archiva IT Resource Type Configuration ${application.release}">
+        <object:category value="ITResourceDef" name="Apache Archiva Endpoint"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/archiva-resource-dm.xml"
+                        description="Apache Archiva IT Resource Type Configuration ${application.release}">
+        <object:category value="ITResourceDef" name="Apache Archiva"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/archiva-lookup-dm.xml"
+                        description="Apache Archiva Lookup Configuration ${application.release}">
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/archiva-adapter-dm.xml"
+                        description="Apache Archiva Adapter Configuration ${application.release}">
+        <object:category value="TaskAdapter"   name="adpARCHIVAACCOUNTCREATE"/>
+        <object:category value="TaskAdapter"   name="adpARCHIVAACCOUNTMODIFY"/>
+        <object:category value="TaskAdapter"   name="adpARCHIVAACCOUNTMODIFYATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpARCHIVAACCOUNTASSIGNATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpARCHIVAACCOUNTREVOKEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpARCHIVAACCOUNTREVOKE"/>
+        <object:category value="TaskAdapter"   name="adpARCHIVAACCOUNTACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpARCHIVAACCOUNTDEACTIVATE"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/archiva-scheduler-dm.xml"
+                        description="Apache Archiva Scheduler Configuration ${application.release}">
+        <object:category value="scheduledTask" name="ARCHIVA Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="ARCHIVA Delete Reconciliation"/>
+        <object:category value="scheduledTask" name="ARCHIVA Account Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Apache Archiva Provider Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Lookup Definition
+  **           o Resource Form
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Exports the Connector Target Configuration ${application.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the Lookup configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/archiva-lookup-dm.xml"
+                        description="Apache Archiva Configuration ${application.release}">
+      </object:exportSet>
+      <!-- export the IT Resource configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/archiva-resource-dm.xml"
+                        description="Apache Archiva Configuration ${application.release}">
+        <object:category value="ITResource"    name="ARCHIVA.Endpoint"/>
+      </object:exportSet>
+      <!-- export the User Defined Form configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-model-dm.xml"
+                        description="Apache Archiva Connector Configuration ${application.release}">
+        <object:category value="Process Form" name="UD_ARCHIVA_PRJ"/>
+        <object:category value="Process Form" name="UD_ARCHIVA_URL"/>
+        <object:category value="Process Form" name="UD_ARCHIVA_USR"/>
+      </object:exportSet>
+      <!-- export the Provisioning Process configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-process-dm.xml"
+                        description="Apache Archiva Connector Configuration ${application.release}">
+        <object:category value="Resource"     name="ARCHIVA Account"/>
+        <object:category value="Process"      name="ARCHIVA Account"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-scheduler-dm.xml"
+                        description="Apache Archiva Configuration ${application.release}">
+        <object:category value="Job"          name="ARCHIVA Role Reconciliation"/>
+        <object:category value="Job"          name="ARCHIVA Project Reconciliation"/>
+        <object:category value="Job"          name="ARCHIVA Delete Reconciliation"/>
+        <object:category value="Job"          name="ARCHIVA Account Reconciliation"/>
+      </object:exportSet>
+      <!-- export the Request Catalog configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/pcf-request-dm.xml"
+                        description="Apache Archiva Connector Configuration ${application.release}">
+        <object:category value="RequestDataset"      name="ARCHIVARequest"/>
+        <object:category value="ApplicationInstance" name="ARCHIVAAccount"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Exports the project artifacts from the target host and Identity Manager Instance"/>
+</project>

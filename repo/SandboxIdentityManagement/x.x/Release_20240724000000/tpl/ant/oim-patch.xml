@@ -1,0 +1,1009 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-patch-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Customization Library
+  ******************************************************************************
+  -->
+  <target name="0007" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0007 Frontend Customization Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Copying Required Files for environment ${fmw.env} on ${oim.server.host}:${oim.server.home}"/>
+    <ssh-file dir="0000 systemCustomization/lib" file="bka.iam.identity.library.war"     location="${oim.server.home}/apps"/>
+    <echo message="=================================================================="/>
+    <echo message="0007 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####  #     #
+  **           #     #    #    ##   ##
+  **           #     #    #    # # # #
+  **           #     #    #    #  #  #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager System Adapter Configuration
+  **           To be able to compile adapter correctly and register scheduled
+  **           jobs this target deploys the necessary libraries to the remote
+  **           host
+  **
+  ** Synopsis: The tasks deploys the object definitions for System Adapter
+  **           Configuration. This includes:
+  **           o Java Binary Archives
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  **           o Event Handler
+  ******************************************************************************
+  -->
+  <target name="0100" description="Deploys the System Framework Configuration ${application.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 System Framework Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <plugin-deploy  dir="0100 systemFramework/lib" location="${oim.remote.plugin}"     file="zero-handler.zip"/>
+    <echo message="Configure system property required in ${oim.server.host}:${oim.server.port}"/>
+    <operation:systemproperty contextRef="oim-context" operation="create">
+      <systemproperty name="BKA.Mail.Header"         description="BKA.Mail.Header"                  value="&lt;!DOCTYPE html&gt; &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt; &lt;head&gt; &lt;title&gt;IAM Notification&lt;/title&gt; &lt;meta http-equiv=Content-Type content=&quot;text/html; charset=UTF-8&quot;/&gt; &lt;style&gt; .police { font-family:&quot;Segoe UI&quot;; } .bloc-header { width: 100.0%; background: #B4D7F2; border-spacing: 0px; } .margin-header { padding:10.5pt 12.0pt 10.5pt 12.0pt; } .background { background:#EFEFEF; padding:10.5pt 16.5pt 10.5pt 16.5pt } .logo-container { width:15.0pt; height:7.5pt } .logo { height: 58px; width: 103px } .message-container { border-spacing: 0px; padding: 0px; width: 100%; background:#C9F3FB } .message { font-size:10.5pt; font-family:&quot;Segoe UI&quot;; color:#212121; font-weight:normal } .summary-title { font-size:12.0pt; font-family:&quot;Segoe UI&quot;; color:black } .detail-title { font-size:10.5pt; font-family:&quot;Segoe UI&quot;; color:#212121 } .detail-h1 { font-size:15.0pt; font-family:&quot;Segoe UI&quot;; color:#212121 } .detail-h2 { font-size:10.5pt; font-family:&quot;Segoe UI&quot;; color:#616161 } .detail-h4 { font-size:10.5pt; font-family:&quot;Segoe UI&quot;; color:#616161; font-weight:normal; width:100.0% } .font { margin:0in } .sub-section { background:#EFEFEF; padding:0in 12.0pt 0in 12.0pt } .table-sub-section { width:100.0%; background:white; border-spacing: 0px; padding: 0px } .title { width:100.0%; border-collapse:collapse; border-spacing: 0px; padding: 0px; font-family:&quot;Segoe UI&quot;; } .title-link { font-size:11.0pt; font-family:&quot;Calibri&quot;; color:#212121; text-decoration:none } .symbol { width:13.5pt; height:6.4pt; width:18pt; } .section { background:#EFEFEF; padding:12.0pt 12.0pt 0in 12.0pt } .first-row { width: 10% } .table-detail { margin:0in; line-height:15.0pt } .detail-first-section { border-bottom:solid #EBEBEB 1.0pt; background:white; padding:.25in 12.0pt 12.0pt 12.0pt } .detail-other-section { background:white; padding:12.0pt 12.0pt 12.0pt 12.0pt }&lt;/style&gt; &lt;/head&gt; &lt;body&gt; &lt;div align=center&gt;&lt;table style=&quot;border-collapse: collapse; &quot;&gt;&lt;tr&gt;&lt;td class='background'&gt; &lt;table width=&quot;100%&quot;&gt; &lt;tr&gt; &lt;td&gt; &lt;table class='title'&gt; &lt;tr&gt; &lt;td style='padding:0in 9.0pt 0in 0in'&gt; &lt;p align=right&gt;&lt;span&gt;&lt;a class='title-link' href=&quot;https://oim.silverid.fr/identity&quot;&gt; &lt;b&gt;Identity &amp; Access Management Team&lt;/b&gt; &lt;/a&gt; &lt;/span&gt; &lt;/p&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; &lt;/td&gt; &lt;td style='width: 10%;'&gt; &lt;img alt=&quot;bka_logo&quot; style='padding: 17pt 0pt 12.0pt 12.0pt' width=74 height=20 src=&quot;http://oig.silverid.fr:14000/identity/images/Participant/provider.png&quot;/&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/table&gt;&lt;/td&gt; &lt;/tr&gt;"/>
+      <systemproperty name="BKA.Mail.Footer"         description="BKA.Mail.Footer"                  value="&lt;tr&gt; &lt;td style=&quot;background:#EFEFEF&quot;&gt; &lt;div align=center&gt;&lt;table&gt;&lt;tr&gt;&lt;td width=873 style=&quot;width:654.65pt;border-spacing: 0&quot;&gt; &lt;/tr&gt; &lt;tr&gt; &lt;td&gt; &lt;table style=&quot;width:100.0%&quot;&gt; &lt;tr&gt; &lt;td style=&quot;padding:12.0pt 12.0pt 12.0pt 12.0pt&quot;&gt; &lt;p class=font&gt;&lt;b&gt;&lt;span style=&quot;font-size:9.0pt;color:#212121&quot;&gt;Bundeskriminalamt&lt;/span&gt; &lt;/b&gt; &lt;/p&gt; &lt;p class=font&gt;&lt;span style=&quot;font-size:9.0pt;color:#616161&quot;&gt;This email is intended for %s&lt;/span&gt; &lt;/p&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; &lt;/div&gt; &lt;/td&gt; &lt;/tr&gt; &lt;/table&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;"/>
+    </operation:systemproperty>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####  #     #
+  **           #     #    #    ##   ##
+  **           #     #    #    # # # #
+  **           #     #    #    #  #  #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager System Integration
+  **           Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Oracle Identity
+  **           Sytsem integration connectors. This includes:
+  **           o Java Binary Archives
+  **           o IT Resource Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  **           o Workflows
+  ******************************************************************************
+  -->
+  <target name="0102" description="Deploys the Base System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0102 System Integration Foundation ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.thirdparty}" file="bka-zero-model.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.thirdparty}" file="bka-zero-backend.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.scheduler}"  file="zero-scheduler.jar"/>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/zero-features-provisioning/NotificationEvent.xml"/>
+      <metadata:path path="/db/ZeroLegacyProvisioning.xml"/>
+    </metadata:delete>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0102 systemIntegration/xml">
+        <object:importFile name="zero-notification-dm.xml"/>
+        <object:importFile name="zero-account-legacy-provisioning-dm.xml"/>
+        <object:importFile name="zero-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0102 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ######   #####
+  **              #    #     # #     #
+  **              #    #     # #
+  **              #    #     #  #####
+  **              #    #     #       #
+  **              #    #     # #     #
+  **            #####  ######   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager OAM Identity Store
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for OAM Identity Store
+  **           Target Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="0301" description="Deploys the OAM Identity Store System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0301 OAM Identity Store System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0301 systemConnector IDS/fix">
+        <object:importFile name="ids-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0301 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####
+  **           #     #    #    #     #
+  **           #          #    #
+  **           #          #     #####
+  **           #          #          #
+  **           #     #    #    #     #
+  **            #####     #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Citrix Terminal Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Citrix Terminal Server
+  **           Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="0401" description="Deploys the Citrix Terminal Server System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0401 Citrix Terminal Server System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0401 systemConnector CTS/fix">
+        <object:importFile name="ads-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0401 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####   #####
+  **           #     # #     # #     #
+  **           #     # #       #
+  **           ######   #####  #
+  **           #             # #
+  **           #       #     # #     #
+  **           #        #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager VMware Platform Service
+  **           Controller ADS Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for VMware Platform
+  **           Service Controller ADS Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="0601" description="Deploys the VMware Platform Service Controller System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0601 VMware Platform Service Controller ADS Connector Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0601 systemConnector PSC/fix">
+        <object:importFile name="ads-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0601 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      ######
+  **           #       #       #           #
+  **           #       #     # #           #
+  **           #        #####  #           #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Pivotal Cloud Foundry
+  **           Production Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Pivotal Cloud
+  **           Foundry Target Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+ <target name="0701-01" description="Deploys the Pivotal Cloud Foundry Production System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 Pivotal Cloud Foundry Production System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0701 systemConnector PCF/fix">
+        <object:importFile name="pcf-p-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      #     #
+  **           #       #       #           #     #
+  **           #       #     # #           #     #
+  **           #        #####  #           ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Pivotal Cloud Foundry
+  **           Development Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Pivotal Cloud
+  **           Foundry Target Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="0701-02" description="Deploys the Pivotal Cloud Foundry Development System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 Pivotal Cloud Foundry Development System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0701 systemConnector PCF/fix">
+        <object:importFile name="pcf-d-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####     #     #     #
+  **           #     #    #      # #    #     #
+  **           #     #    #     #   #   #     #
+  **           ######     #    #     #  #     #
+  **           #          #    #######   #   #
+  **           #          #    #     #    # #
+  **           #        #####  #     #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager PIAV Integration
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for PIAV Target
+  **           Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+  <target name="0801" description="Deploys the PIAV Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0801 PIAV Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0801 systemConnector PIAV/fix">
+        <object:importFile name="piav-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0801 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######     #    ######
+  **           #     #   # #   #     #
+  **           #     #  #   #  #     #
+  **           ######  #     # ######
+  **           #       ####### #
+  **           #       #     # #
+  **           #       #     # #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager PAP Active Directory Service
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for PAP Active Directory
+  **           Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="0901" description="Deploys the PAP Active Directory System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0901 PAP Active Directory System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0901 systemConnector PAP/fix">
+        <object:importFile name="ads-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0901 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **               #    #######  #####
+  **              # #         # #     #
+  **             #   #        # #
+  **            #     #       #  #####
+  **            #######       #       #
+  **            #     # #     # #     #
+  **            #     #  #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Atlasian Jira Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Atlasian Jira Server
+  **           Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+  <target name="1001" description="Deploys the Atlasian Jira Server Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1001 Atlasian Jira Server System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1001 systemConnector AJS/fix">
+        <object:importFile name="ajs-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######
+  **            #     #   # #   #          #     #
+  **            #        #   #  #          #     #
+  **            # ##### #     # #####      ######
+  **            #     # ####### #          #
+  **            #     # #     # #          #
+  **             #####  #     # #######    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Google Apigee Edge Production
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Google Apigee Edge
+  **           Target Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1101-01" description="Deploys the Google Apigee Edge Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 Google Apigee Edge Production System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1101 systemConnector GAE/fix">
+        <object:importFile name="gae-p-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######
+  **            #     #   # #   #             #
+  **            #        #   #  #             #
+  **            # ##### #     # #####         #
+  **            #     # ####### #             #
+  **            #     # #     # #             #
+  **             #####  #     # #######       #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Google Apigee Edge
+  **           Pre-Production Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Google Apigee Edge
+  **           Target Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+  <target name="1101-02" description="Deploys the Google Apigee Edge Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 Google Apigee Edge Pre-Production System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1101 systemConnector GAE/fix">
+        <object:importFile name="gae-t-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######      #####  #######  #####
+  **           #     # #     # #           #     #      #  #     #
+  **           #     # #       #           #           #         #
+  **           ######  #       ######       #####     #     #####
+  **           #       #       #                 #   #           #
+  **           #       #     # #           #     #  #      #     #
+  **           #        #####  #            #####  #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Pivotal Cloud Foundry
+  **           IuA Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Pivotal Cloud
+  **           Foundry Target Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="1201-01" description="Deploys the Pivotal Cloud Foundry IuA System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 Pivotal Cloud Foundry IuA System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1201 systemConnector PCF/fix">
+        <object:importFile name="pcf-sz3-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######      #####  #######     ##
+  **           #     # #     # #           #     #      #     # #
+  **           #     # #       #           #           #     #  #
+  **           ######  #       ######       #####     #     #   #
+  **           #       #       #                 #   #     #######
+  **           #       #     # #           #     #  #           #
+  **           #        #####  #            #####  #######      #
+  **
+  ******************************************************************************
+  **
+  ** Synopsis: The tasks deploys the object definitions for Pivotal Cloud
+  **           Foundry Target Configuration. This includes:
+  **           o Lookup Definition
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="1201-02" description="Deploys the Pivotal Cloud Foundry ARES System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1201-02 Pivotal Cloud Foundry ARES System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1201 systemConnector PCF/fix">
+        <object:importFile name="pcf-sz4-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1201-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ####### ######  #     # #######  #####
+  **           #     # #       #     # ##   ## #       #     #
+  **           #     # #       #     # # # # # #       #
+  **           ####### ######  ######  #  #  # ######   #####
+  **           #     # #       #  #    #     # #             #
+  **           #     # #       #   #   #     # #       #     #
+  **           #     # ####### #    #  #     # #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Active Directory Domain Hermes
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Active Directory
+  **           Domain Hermes Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="1301" description="Deploys the Active Directory Domain Hermes System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1301 Active Directory Domain Hermes System Integration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1301 systemConnector ADH/fix">
+        <object:importFile name="ads-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1301 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######  #
+  **           ##   ## #     # #
+  **           # # # # #     # #
+  **           #  #  # #     # #
+  **           #     # #     # #
+  **           #     # #     # #
+  **           #     # ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Moodle Service Configuration
+  **           for Production Environment
+  **
+  ** Synopsis: The tasks deploys the object definitions for Moodle Service
+  **           Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="1601" description="Deploys the Moodle Service Integration Configuration for Production Environment">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1601 Moodle Service Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1601 systemConnector MDL/fix">
+        <object:importFile name="mdl-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1601 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####        ######
+  **           ##    #    #     #    #    #     #       #     #
+  **           # #   #    #          #    #             #     #
+  **           #  #  #     #####     #     #####   ###  ######
+  **           #   # #          #    #          #       #
+  **           #    ## ## #     #    #    #     #       #
+  **           #     # ##  #####   #####   #####        #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager N.SIS Configuration for
+  **           Production Environment
+  **
+  ** Synopsis: The tasks deploys the object definitions for N.SIS Service
+  **           Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="1701-01" description="Deploys the N.SIS System Integration Configuration for Production Environment">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1701-01 N.SIS System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1701 systemConnector N.SIS/fix">
+        <object:importFile name="nsis-p-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1701-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####       #######
+  **           ##    #    #     #    #    #     #         #
+  **           # #   #    #          #    #               #
+  **           #  #  #     #####     #     #####   ###    #
+  **           #   # #          #    #          #         #
+  **           #    ## ## #     #    #    #     #         #
+  **           #     # ##  #####   #####   #####          #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager N.SIS Configuration for Test
+  **           Environment
+  **
+  ** Synopsis: The tasks deploys the object definitions for N.SIS Service
+  **           Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="1701-02" description="Deploys the N.SIS System Integration Configuration for Test Environment">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1701-02 N.SIS System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1701 systemConnector N.SIS/fix">
+        <object:importFile name="nsis-t-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1701-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####        ######
+  **             #    #     # #     #       #     #
+  **             #    #       #             #     #
+  **             #    #   ###  #####   ###  ######
+  **             #    #     #       #       #
+  **             #    #     # #     #       #
+  **           #####   #####   #####        #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Identity Governance Service
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity Governance
+  **           Service Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="1801-01" description="Deploys the Identity Governance Service System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 Identity Governance Service System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1801 systemConnector IGS/fix">
+        <object:importFile name="igs-p-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####       #######
+  **             #    #     # #     #         #
+  **             #    #       #               #
+  **             #    #   ###  #####   ###    #
+  **             #    #     #       #         #
+  **             #    #     # #     #         #
+  **           #####   #####   #####          #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Identity Governance Service
+  **           Test Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity Governance
+  **           Service Test Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+ <target name="1801-02" description="Deploys the Identity Governance Service System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 Identity Governance Service System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1801 systemConnector IGS/fix">
+        <object:importFile name="igs-t-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####  #     #  ######
+  **                #     #    ##   ##  #     #
+  **               #      #    # # # #  #     #
+  **              #       #    #  #  #  ######
+  **             #        #    #     #  #
+  **            #         #    #     #  #
+  **           #######  #####  #     #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the BKA Directory Service Target
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Service Target Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+  <target name="2001-01" description="Deploys the Connector Target Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-01 Deploys the ZIMP System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/bka-features-provisioning/zimp/zimp-account-provisioning.xml"/>
+      <metadata:path path="/metadata/bka-features-reconciliation/zimp/zimp-account-reconciliation.xml"/>
+    </metadata:delete>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2001 systemConnector APPS/mds">
+        <object:importFile name="zimp-account-provisioning-dm.xml"/>
+        <object:importFile name="zimp-account-reconciliation-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2001 systemConnector APPS/fix">
+        <object:importFile name="zimp-model-dm.xml"/>
+        <object:importFile name="zimp-process-dm.xml"/>
+        <object:importFile name="zimp-request-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/zimp-account-sysadmin-01.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######  ######
+  **           #     # #     # #     #
+  **           #     # #     # #     #
+  **           ######  #     # ######
+  **           #     # #     # #
+  **           #     # #     # #
+  **           ######  ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager BDP Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for
+  **           BDP Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+  <target name="2001-02" description="Deploys the BDP System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-02 Deploys the BDP System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/bka-features-provisioning/bdp/bdp-account-provisioning.xml"/>
+      <metadata:path path="/metadata/bka-features-reconciliation/bdp/bdp-account-reconciliation.xml"/>
+    </metadata:delete>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2001 systemConnector APPS/mds">
+        <object:importFile name="bdp-account-provisioning-dm.xml"/>
+        <object:importFile name="bdp-account-reconciliation-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2001 systemConnector APPS/fix">
+        <object:importFile name="bdp-model-dm.xml"/>
+        <object:importFile name="bdp-process-dm.xml"/>
+        <object:importFile name="bdp-request-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/bdp-account-sysadmin-01.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####
+  **           ##    #    #     #    #    #     #
+  **           # #   #    #          #    #
+  **           #  #  #     #####     #     #####
+  **           #   # #          #    #          #
+  **           #    ## ## #     #    #    #     #
+  **           #     # ##  #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager NSIS Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for
+  **           NSIS Configuration. This includes:
+  **           o Resource Object
+  ******************************************************************************
+  -->
+  <target name="2001-03" description="Deploys the NSIS System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 Deploys the NSIS System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/bka-features-provisioning/nsis/nsis-account-provisioning.xml"/>
+      <metadata:path path="/metadata/bka-features-reconciliation/nsis/nsis-account-reconciliation.xml"/>
+    </metadata:delete>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2001 systemConnector APPS/mds">
+        <object:importFile name="nsis-account-provisioning-dm.xml"/>
+        <object:importFile name="nsis-account-reconciliation-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2001 systemConnector APPS/fix">
+        <object:importFile name="nsis-model-dm.xml"/>
+        <object:importFile name="nsis-process-dm.xml"/>
+        <object:importFile name="nsis-request-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/nsis-account-sysadmin-01.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####     ######  #     #
+  **           #     # #   #  #     #    #     # #     #
+  **           #     # #  #   #          #     # #     #
+  **           ######  ###    #          #     # #######
+  **           #   #   #  #   #          #     # #     #
+  **           #    #  #   #  #     #    #     # #     #
+  **           #     # #    #  #####     ######  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Redhat Keycloak Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for
+  **           Redhat Keycloak Configuration. This includes:
+  **           o IT Resource Instance
+  **           o Lookup Definition
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="2101" description="Deploys the Redhat Keycloak System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101 Deploys the Redhat Keycloak System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2101 systemConnector RKC/xml">
+        <object:importFile name="rkc-dh-resource-dm.xml"/>
+        <object:importFile name="rkc-dh-lookup-dm.xml"/>
+        <object:importFile name="rkc-dh-model-dm.xml"/>
+        <object:importFile name="rkc-dh-process-dm.xml"/>
+        <object:importFile name="rkc-dh-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/bka-features-configuration/rkc/rkc-dh-feature.xml"/>
+      <metadata:path path="/metadata/bka-features-provisioning/rkc/rkc-dh-account-provisioning.xml"/>
+      <metadata:path path="/metadata/bka-features-reconciliation/rkc/rkc-dh-account-reconciliation.xml"/>
+    </metadata:delete>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2101 systemConnector RKC/mds">
+        <object:importFile name="rkc-dh-account-feature-dm.xml"/>
+        <object:importFile name="rkc-dh-account-provisioning-dm.xml"/>
+        <object:importFile name="rkc-dh-account-reconciliation-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="2101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

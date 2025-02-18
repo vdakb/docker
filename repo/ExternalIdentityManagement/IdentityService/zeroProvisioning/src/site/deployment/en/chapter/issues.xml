@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="igs-issues"
+         xml:lang="en"
+         version ="5.0">
+  <title>Issues</title>
+  <section>
+    <title>Codebase Grant</title>
+    <para>
+      Why the hell stametemant below can run without codebase grant?
+    </para>
+    <programlisting>
+final String home = System.getProperty("XL.HomeDir");
+    </programlisting>
+    <para>
+      The expected behavior is the the server shuold unwilling to perform, but it doesn't throw any exception.
+      As I understood Java Security at least either the deployment descriptor <literal>weblogic.xml</literal> or a security policy has to define:
+    </para>
+    <programlisting>
+<security-permission>
+  <description>
+    Allow reading the XL.HomeDir system property.
+  </description>
+  <security-permission-spec>
+    grant {
+      permission java.util.PropertyPermission "XL.HomeDir","read";
+    };
+  </security-permission-spec>
+</security-permission>
+    </programlisting>
+  </section>
+  <para>
+  </para>
+</chapter>

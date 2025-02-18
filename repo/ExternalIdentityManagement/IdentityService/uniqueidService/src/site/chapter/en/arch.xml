@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="uid-arch"
+         xml:lang="en"
+         version ="5.0">
+  <title>Reference Architecture</title>
+  <para>
+    The reference architecture illustrates the architecture components provisioned on the PSP for the UID generator.
+  </para>
+  <para>
+    Within the PSP VCN's there exist two types of subnets:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>public (Public Subnet)</para>
+    </listitem>
+    <listitem>
+      <para>private (Subnet and Data Subnet)</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+    Resources deployed into the public subnets will receive a public IP address and will be publicly visible on the CNP.
+    The Load Balancers upstream of the service instances are deployed here.
+  </para>
+  <para>
+    Resources deployed into the private subnets receive only a private IP address and hence are not publicly visible on the CNP, improving the security of those resources.
+    The service instances are deployed in private subnets.
+ </para>
+  <informalfigure id="uid-arch-ref">
+    <mediaobject>
+      <alt>Architecture</alt>
+      <imageobject>
+        <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/images/en/architecture.png" format="PNG"/>
+      </imageobject>
+    </mediaobject>
+  </informalfigure>
+  <section xml:id="uid-arch-cmp">
+    <title>Architecture Components</title>
+    <table colsep="0">
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="2em"/>
+        <colspec colname="c2" colwidth="10em"/>
+        <colspec colname="c3" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>#</entry>
+            <entry>Component</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="src/site/images/callout-oam.png"/>
+                </imageobject>
+              </inlinemediaobject>
+            </entry>
+            <entry>Authorization Server</entry>
+            <entry>
+              <para>
+                This is the server that presents the interface where the user approves or denies the request for authentication.
+              </para>
+              <para>
+                In smaller implementations, this may be the same server as the API server, but larger scale deployments will often build this as a separate component.
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="src/site/images/callout-svc.png"/>
+                </imageobject>
+              </inlinemediaobject>
+            </entry>
+            <entry>Resource Server</entry>
+            <entry>
+              <para>
+                The resource server is the API server used to access the information provided by the resources.
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="src/site/images/callout-cln.png"/>
+                </imageobject>
+              </inlinemediaobject>
+            </entry>
+            <entry>Client</entry>
+            <entry>
+              <para>
+                The client is the application that is attempting to get access to the user's account.
+                It needs to get permission from the user before it can do so.
+              </para>
+              <para>
+                A <emphasis>"Confidential Client"</emphasis> is an application that obtains credentials from the authorization server and in turn uses them to authenticate itself to the authorization server when, for example, it requests access tokens.
+                The credential can be a simple client secret or a more secure option such as a private key used to sign a JWT. 
+              </para>
+              <para>
+                The benefit of using any form of client authentication is that the authorization server knows that any requests made with those credentials are from a legitimate client, and thus client impersonation is not possible.
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="src/site/images/callout-usr.png"/>
+                </imageobject>
+              </inlinemediaobject>
+            </entry>
+            <entry>Resource Owner</entry>
+            <entry>
+              The resource owner is the person who grants access to part of their user account.
+            </entry>
+          </row>
+          <row>
+            <entry>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata fileref="src/site/images/callout-key.png"/>
+                </imageobject>
+              </inlinemediaobject>
+            </entry>
+            <entry>Trust</entry>
+            <entry>
+              <para>
+                A trust for the resource server to the authorization server is configured via key exchange.
+              </para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="uid-arch-authn">
+    <title>Authentication for the REST API</title>
+    <para>
+      <inlinemediaobject>
+        <imageobject>
+          <imagedata fileref="src/site/images/callout-toc.png"/>
+        </imageobject>
+      </inlinemediaobject>
+      All Requests to resources in the REST API <emphasis role="strong">MUST</emphasis> be made on behalf of a resource owner.
+      Before a request is processed, the authorization server authenticates the request to determine the resource owner.
+      The authorization server uses the OAuth 2.0 protocol for this purpose, and the process is based on access tokens as described below.
+    </para>
+    <para>
+      <inlinemediaobject>
+        <imageobject>
+          <imagedata fileref="src/site/images/callout-aut.png"/>
+        </imageobject>
+      </inlinemediaobject>
+      All REST API calls <emphasis role="strong">MUST</emphasis> be authorized.
+      Instead of passing the full credentials on every REST API call, REST uses an access token.
+      The access token is valid for a configurable amount of time and acts like a temporary password.
+    </para>
+    <para>
+      <inlinemediaobject>
+        <imageobject>
+          <imagedata fileref="src/site/images/callout-val.png"/>
+        </imageobject>
+      </inlinemediaobject>
+      After successful authorization, a permission check decides whether the resource owner is allowed to perform the requested action.
+      This check uses the existing permissions granted to the resource owner.
+    </para>
+  </section>
+  <section xml:id="uid-arch-authz">
+    <title>Authorize a request</title>
+    <para>
+      You <emphasis role="strong">MUST</emphasis> authorize your request by sending an access token in the <literal>Authorization</literal> header of your request.
+      In the following example, replace <emphasis>&lt;your-token&gt;</emphasis> with a reference to your access token:
+    </para>
+    <bridgehead renderas="sect6">Example</bridgehead>
+    <!--
+    Don't indent what's in the element below
+    -->
+    <programlisting language="bash">
+curl --request GET \
+     --url "https://&lt;service-host&gt;:&lt;service-port&gt;/igs/uid/v1" \
+     --header "Authorization: Bearer &lt;your-token&gt;"
+    </programlisting>
+    <note>
+      <title>Note</title>
+      <para>
+        In most cases, you can use <literal>Authorization: Bearer</literal> or <literal>Authorization: token</literal> to pass an access token.
+        However, if you are passing a JSON web token (JWT), you <emphasis role="strong">MUST</emphasis> use <literal>Authorization: Bearer</literal>.
+      </para>
+    </note>
+    <para>
+      If you try to use a REST resource without an access token or with an access token that has insufficient permissions, you will receive a <literal>401 Unauthorized</literal> or <literal>403 Forbidden</literal> response.
+    </para>
+  </section>
+  <section xml:id="uid-arch-token">
+    <title>Obtaining a Token</title>
+    <para>
+     The authentication process is based on the <link xl:show="new" xl:href="https://datatracker.ietf.org/doc/html/rfc6749#section-1.3.3" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Resource Owner Password Credentials</citetitle></link> flow.
+    </para>
+    <para>
+      The <link xl:show="new" xl:href="https://datatracker.ietf.org/doc/html/rfc6749#section-1.3.3" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Resource Owner Password Credentials</citetitle></link> flow requires a client to know the resource owner credentials.
+      To exchange the username and password for an access token, send an HTTPS POST request with the appropriate parameters to access token endpoint base URI of the Authorization Server.
+      The http connections are not accepted; use https.
+    </para>
+    <para>
+      The flow implemented relies on a <emphasis>"Confidential Client"</emphasis> hence it requires a <literal>client_id</literal> <emphasis role="strong">AND</emphasis> a <literal>client_secret</literal>.
+      Even though the <literal>client_id</literal> is public, it's best that it isn't guessable by third parties, so many implementations use something like a 32-character hex string.
+      The <literal>client_secret</literal> is obviously the application's own password.
+      It must be sufficiently random to not be guessable, which means it should be avoid using common UUID libraries which often take into account the timestamp or MAC address of the server generating it.
+    </para>
+    <section xml:id="uid-arch-token-p">
+      <title>Request Parameter</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Parameter</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>client_id</entry>
+              <entry>yes</entry>
+              <entry>The public identifier of an application obtained at client time.</entry>
+            </row>
+            <row>
+              <entry>client_secret</entry>
+              <entry>yes</entry>
+              <entry>A secret known only to the application and the authorization server.</entry>
+            </row>
+            <row>
+              <entry>grant_type</entry>
+              <entry>yes</entry>
+              <entry>Specify <literal>password</literal> as the value for this parameter.</entry>
+            </row>
+            <row>
+              <entry>username</entry>
+              <entry>yes</entry>
+              <entry>The login name of the user account to use.</entry>
+            </row>
+            <row>
+              <entry>password</entry>
+              <entry>yes</entry>
+              <entry>The password for the user account to use.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="uid-arch-token-r">
+      <title>Response Parameter</title>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Parameter</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>access_token</entry>
+              <entry>The OAuth 2.0 access token.</entry>
+            </row>
+            <row>
+              <entry>token_type</entry>
+              <entry>
+                The type of access token returned.
+                At this time, this is always <literal>Bearer</literal>.
+              </entry>
+            </row>
+            <row>
+              <entry>expires_in</entry>
+              <entry>The remaining lifetime of an access token.</entry>
+            </row>
+            <row>
+              <entry>refresh_token</entry>
+              <entry>
+                The refresh token is returned if a client application is registered for it.
+                This token can be used to refresh the access token when it expires.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <note>
+        <title>Note</title>
+        <para>
+          If validation fails, HTTP status 400 is returned with a JSON response containing <literal>error</literal> and <literal>error_description</literal> elements.
+        </para>
+      </note>
+      <bridgehead renderas="sect6">Example Request</bridgehead>
+      <para>
+        The following is an example of an access token request with whitespaces been preserved for readability.
+      </para>
+      <!--
+      Don't indent what's in the element below
+      -->
+      <programlisting language="bash">
+curl --location 'https://&lt;authorization-host&gt;:&lt;authorization-port&gt;/oauth2/rest/token' \
+     --header 'Accept: application/json' \
+     --header 'x-oauth-identity-domain-name: SecureDomain2' \
+     --header 'Content-Type: application/x-www-form-urlencoded' \
+     --header 'Authorization: Basic YmI3NzViMTItYmJkNC00MjNiLTgzZD...' \
+     --data-urlencode 'grant_type=password' \
+     --data-urlencode 'username=user1' \
+     --data-urlencode 'pass@123'
+      </programlisting>
+      <important>
+        <title>Identity Domain</title>
+        <para>
+          For security reasons the authorization server is segmented in identity domains.
+        </para>
+        <para>
+          The request header <literal>x-oauth-identity-domain-name</literal> is required if the client is not registered in the default identitiy domain.
+        </para>
+      </important>
+      <bridgehead renderas="sect6">Example Response</bridgehead>
+      <para>
+        A response retrieved from the authorization server looks like:
+      </para>
+      <!--
+      Don't indent what's in the element below
+      -->
+      <programlisting language="json">
+{ "access_token": "eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0IjoiSjFsVmdQ..."
+, "token_type": "Bearer"
+, "expires_in": 7200
+, "refresh_token": "LnE8w3KlOu5SN%2B0LEfVicg%3D%3D%7EUGKP%2BRWrPO..."
+}
+      </programlisting>
+    </section>
+  </section>
+</chapter>

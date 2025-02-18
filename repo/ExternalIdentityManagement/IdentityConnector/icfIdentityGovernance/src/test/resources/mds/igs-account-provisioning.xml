@@ -1,0 +1,46 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="UD_IGS_USR_SID"
+            uniqueName    ="UD_IGS_USR_UID"
+            transformation="false">
+  <attribute type="string" name="__UID__"                    source="UD_IGS_USR_SID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="__NAME__"                   source="UD_IGS_USR_UID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="__PASSWORD__"               source="UD_IGS_USR_PWD">
+    <flag>required</flag>
+    <flag>sensitive</flag>
+  </attribute>
+  <attribute type="string" name="name.familyName"            source="UD_IGS_USR_SN">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="name.givenName"             source="UD_IGS_USR_GN">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="preferredLanguage"          source="UD_IGS_USR_LANG">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="emails.work.value"          source="UD_IGS_USR_MAIL"/>
+  <attribute type="string" name="phoneNumbers.work.value"    source="UD_IGS_USR_PHONE"/>
+  <attribute type="string" name="phoneNumbers.mobile‚.value" source="UD_IGS_USR_MOBILE"/>
+  <!--
+   | child form providing access only on column names not labels hence so any
+   | clone of the connector we need a new decriptor; aaargggh
+   -->
+  <multivalue name="__GROUP__" source="UD_IGS_URL">
+    <attribute type="string" name="__UID__"                  source="UD_IGS_URL_UID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <multivalue name="__TENANT__" source="UD_IGS_UTN">
+    <attribute type="string" name="__UID__"                  source="UD_IGS_UTN_UID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="string" name="scope"                    source="UD_IGS_UTN_SID">
+      <flag>required</flag>
+    </attribute>
+  </multivalue>
+</descriptor>

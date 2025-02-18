@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Oracle Consulting Services Deployment Task Definitions"
+         default         ="all"
+         basedir         ="../.."
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  =====================================================================
+  == custom type and task definitions
+  =====================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name"     value="../log/oim-sandbox-ant.log"/>
+  <target name="0301-01">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0301-01 Generating Sandbox Identity Store Account"/>
+    <echo message="=================================================================="/>
+    <sandbox:generate contextRef="oim-context" catalogPath="D:/Project/Bundeskriminalamt12c/ExternalIdentityManagement/.env" reset="true">
+      <instance name       ="ids-account-sysadmin"
+                description="User Interface Customization's along with the Identity Store Account request and administration task flows."
+                dataSet    ="IDSRequest"
+                resource   ="IDS Account"
+                endpoint   ="AM.IDS Endpoint"
+                path       ="F:\xx\x">
+        <bundle  class="bka.iam.identity.resource.CatalogBundle" scope="bkaBundle"/>
+        <account name="UD_IDS_USR">
+          <attribute name="UD_IDS_USR_ORGANIZATION"   label="#{bkaBundle.ODS_USR_PARENTDN_LABEL}"        hint="#{bkaBundle.ODS_USR_PARENTDN_HINT}"/>
+          <attribute name="UD_IDS_USR_USERID"         label="#{bkaBundle.ODS_USR_UID_LABEL}"             hint="#{bkaBundle.ODS_USR_UID_HINT}"/>
+          <attribute name="UD_IDS_USR_PASSWORD"       label="#{bkaBundle.ODS_USR_PASSWORD_LABEL}"        hint="#{bkaBundle.ODS_USR_PASSWORD_HINT}"/>
+          <attribute name="UD_IDS_USR_COMMON_NAME"    label="#{bkaBundle.ODS_USR_COMMON_NAME_LABEL}"     hint="#{bkaBundle.ODS_USR_COMMON_NAME_HINT}"/>
+          <attribute name="UD_IDS_USR_UPN"            label="#{bkaBundle.ODS_USR_PRINCIPAL_NAME_LABEL}"  hint="#{bkaBundle.ODS_USR_PRINCIPAL_NAME_HINT}"/>
+          <attribute name="UD_IDS_USR_TITLE"          label="#{bkaBundle.ODS_USR_TITLE_LABEL}"           hint="#{bkaBundle.ODS_USR_TITLE_HINT}"/>
+          <attribute name="UD_IDS_USR_LAST_NAME"      label="#{bkaBundle.ODS_USR_LAST_NAME_LABEL}"       hint="#{bkaBundle.ODS_USR_LAST_NAME_HINT}"/>
+          <attribute name="UD_IDS_USR_FIRST_NAME"     label="#{bkaBundle.ODS_USR_FIRST_NAME_LABEL}"      hint="#{bkaBundle.ODS_USR_FIRST_NAME_HINT}"/>
+          <attribute name="UD_IDS_USR_MIDDLE_INITIAL" label="#{bkaBundle.ODS_USR_MIDDLE_NAME_LABEL}"     hint="#{bkaBundle.ODS_USR_MIDDLE_NAME_HINT}"/>
+          <attribute name="UD_IDS_USR_EMAIL"          label="#{bkaBundle.ODS_USR_EMAIL_LABEL}"           hint="#{bkaBundle.ODS_USR_EMAIL_HINT}"/>
+          <attribute name="UD_IDS_USR_TELEPHONE"      label="#{bkaBundle.ODS_USR_PHONE_LABEL}"           hint="#{bkaBundle.ODS_USR_PHONE_HINT}"/>
+          <attribute name="UD_IDS_USR_COMM_LANG"      label="#{bkaBundle.ODS_USR_LANGUAGE_LABEL}"        hint="#{bkaBundle.ODS_USR_LANGUAGE_HINT}" title="#{bkaBundle.ODS_USR_LANGUAGE_TITLE}"/>
+          <attribute name="UD_IDS_USR_DEPARTMENT"     label="#{bkaBundle.ODS_USR_DEPARTMENT_LABEL}"      hint="#{bkaBundle.ODS_USR_DEPARTMENT_HINT}"/>
+          <attribute name="UD_IDS_USR_LOCATION"       label="#{bkaBundle.ODS_USR_LOCALITY_LABEL}"        hint="#{bkaBundle.ODS_USR_LOCALITY_HINT}"/>
+          <attribute name="serviceaccount"            label="#{bkaBundle.ODS_USR_SERVICE_ACCOUNT_LABEL}" hint="#{bkaBundle.ODS_USR_SERVICE_ACCOUNT_HINT}"/>
+          <attribute name="UD_IDS_USR_NSUNIQUEID"     label="#{bkaBundle.ODS_USR_AID_LABEL}"             hint="#{bkaBundle.ODS_USR_AID_HINT}" readonly="true" rendered="#{oimcontext.currentUser.adminRoles['OrclOIMSystemAdministrator'] != null and pageFlowScope.requestFormContext.actionType == 'VIEW'}"/>
+          <form name="UD_IDS_GRP" header="#{bkaBundle.ODS_UGP_HEADER_TEXT}" entitlement="true">
+            <attribute name="UD_IDS_GRP_GROUP_NAME"   label="#{bkaBundle.ODS_UGP_NAME_LABEL}"            hint ="#{bkaBundle.ODS_UGP_NAME_HINT}" title="#{bkaBundle.ODS_UGP_LOOKUP_TITLE}"/>
+          </form>
+          <form name="UD_IDS_ROL" header="#{bkaBundle.ODS_URL_HEADER_TEXT}" entitlement="true">
+            <attribute name="UD_IDS_ROL_ROLE_NAME"    label="#{bkaBundle.ODS_URL_NAME_LABEL}"            hint ="#{bkaBundle.ODS_URL_NAME_HINT}" title="#{bkaBundle.ODS_URL_LOOKUP_TITLE}"/>
+          </form>
+        </account>
+      </instance>
+    </sandbox:generate>
+    <echo message="=================================================================="/>
+    <echo message="0301-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <target name="0501-01">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501-01 Generating Sandbox eFBS Production Account"/>
+    <echo message="=================================================================="/>
+    <sandbox:generate contextRef="oim-context" catalogPath="D:/Project/Bundeskriminalamt12c/ExternalIdentityManagement/.env">
+      <instance name       ="efbs-p-account-sysadmin"
+                description="User Interface Customization's along with the eFBS Production Account request and administration task flows."
+                dataSet    ="eFBSRequestProduction"
+                resource   ="eFBS Account Production"
+                endpoint   ="eFBS.Endpoint.Production"
+                path       ="F:\xx\x">
+        <bundle  class="bka.iam.identity.resource.CatalogBundle" scope="bkaBundle"/>
+        <account name="UD_EFBSP">
+          <attribute name="UD_EFBSP_USERNAME"        label="#{bkaBundle.FBS_USR_UID_LABEL}"             hint="#{bkaBundle.FBS_USR_UID_HINT}"/>
+          <attribute name="UD_EFBSP_NAME_GIVENNAME"  label="#{bkaBundle.FBS_USR_FIRST_NAME_LABEL}"      hint="#{bkaBundle.FBS_USR_FIRST_NAME_HINT}"/>
+          <attribute name="UD_EFBSP_NAME_FAMILYNAME" label="#{bkaBundle.FBS_USR_LAST_NAME_LABEL}"       hint="#{bkaBundle.FBS_USR_LAST_NAME_HINT}"/>
+          <attribute name="UD_EFBSP_EMAIL"           label="#{bkaBundle.FBS_USR_EMAIL_LABEL}"           hint="#{bkaBundle.FBS_USR_EMAIL_HINT}"/>
+          <attribute name="UD_EFBSP_PHONE"           label="#{bkaBundle.FBS_USR_PHONE_LABEL}"           hint="#{bkaBundle.FBS_USR_PHONE_HINT}"/>
+          <attribute name="UD_EFBSP_ORGANIZATION"    label="#{bkaBundle.FBS_USR_ORGANIZATION_LABEL}"    hint="#{bkaBundle.FBS_USR_ORGANIZATION_HINT}"/>
+          <attribute name="UD_EFBSP_DIVISION"        label="#{bkaBundle.FBS_USR_DIVISION_LABEL}"        hint="#{bkaBundle.FBS_USR_DIVISION_HINT}"/>
+          <attribute name="UD_EFBSP_DEPARTMENT"      label="#{bkaBundle.FBS_USR_VALID_FROM_LABEL}"      hint="#{bkaBundle.FBS_USR_VALID_FROM_HINT}"/>
+          <attribute name="UD_EFBSP_VALIDFROM"       label="#{bkaBundle.FBS_USR_VALID_FROM_LABEL}"      hint="#{bkaBundle.FBS_USR_VALID_FROM_HINT}"/>
+          <attribute name="UD_EFBSP_VALIDTO"         label="#{bkaBundle.FBS_USR_VALID_TO_LABEL}"        hint="#{bkaBundle.FBS_USR_VALID_TO_HINT}"/>
+          <attribute name="serviceaccount"           label="#{bkaBundle.FBS_USR_SERVICE_ACCOUNT_LABEL}" hint="#{bkaBundle.FBS_USR_SERVICE_ACCOUNT_HINT}"/>
+          <attribute name="UD_EFBSP_ID"              label="#{bkaBundle.FBS_USR_AID_LABEL}"             hint="#{bkaBundle.FBS_USR_AID_HINT}" readonly="true" rendered="#{oimcontext.currentUser.adminRoles['OrclOIMSystemAdministrator'] != null and pageFlowScope.requestFormContext.actionType == 'VIEW'}"/>
+          <form name="UD_EFBSP_M" header="#{bkaBundle.FBS_M_HEADER_TEXT}" entitlement="false" rendered="#{oimcontext.currentUser.adminRoles['OrclOIMSystemAdministrator'] != null and pageFlowScope.requestFormContext.actionType == 'VIEW'}">
+            <attribute name="UD_EFBSP_M_VALUE"       label="#{bkaBundle.FBS_M_VALUE_LABEL}"             hint ="#{bkaBundle.FBS_M_VALUE_HINT}" sortable="false"  filterable="false"/>
+          </form>
+          <form name="UD_EFBSP_P" header="#{bkaBundle.FBS_P_HEADER_TEXT}" entitlement="false" rendered="#{oimcontext.currentUser.adminRoles['OrclOIMSystemAdministrator'] != null and pageFlowScope.requestFormContext.actionType == 'VIEW'}">
+            <attribute name="UD_EFBSP_P_VALUE"       label="#{bkaBundle.FBS_P_VALUE_LABEL}"             hint ="#{bkaBundle.FBS_P_VALUE_HINT}" sortable="false"  filterable="false"/>
+          </form>
+        </account>
+      </instance>
+    </sandbox:generate>
+    <echo message="=================================================================="/>
+    <echo message="0501-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <target name="0501-02">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501-02 Generating Sandbox eFBS Education Account"/>
+    <echo message="=================================================================="/>
+    <sandbox:generate contextRef="oim-context" catalogPath="D:/Project/Bundeskriminalamt12c/ExternalIdentityManagement/.env">
+      <instance name       ="efbs-e-account-sysadmin"
+                description="User Interface Customization's along with the eFBS Education Account request and administration task flows."
+                dataSet    ="eFBSRequestEducation"
+                resource   ="eFBS Account Education"
+                endpoint   ="eFBS.Endpoint.Education"
+                working    ="F:/xx">
+        <bundle  class="bka.iam.identity.resource.CatalogBundle" scope="bkaBundle"/>
+        <account name="UD_EFBSE">
+          <attribute name="UD_EFBSE_USERNAME"        label="#{bkaBundle.FBS_USR_UID_LABEL}"             hint="#{bkaBundle.FBS_USR_UID_HINT}"/>
+          <attribute name="UD_EFBSE_NAME_GIVENNAME"  label="#{bkaBundle.FBS_USR_FIRST_NAME_LABEL}"      hint="#{bkaBundle.FBS_USR_FIRST_NAME_HINT}"/>
+          <attribute name="UD_EFBSE_NAME_FAMILYNAME" label="#{bkaBundle.FBS_USR_LAST_NAME_LABEL}"       hint="#{bkaBundle.FBS_USR_LAST_NAME_HINT}"/>
+          <attribute name="UD_EFBSE_EMAIL"           label="#{bkaBundle.FBS_USR_EMAIL_LABEL}"           hint="#{bkaBundle.FBS_USR_EMAIL_HINT}"/>
+          <attribute name="UD_EFBSE_PHONE"           label="#{bkaBundle.FBS_USR_PHONE_LABEL}"           hint="#{bkaBundle.FBS_USR_PHONE_HINT}"/>
+          <attribute name="UD_EFBSE_ORGANIZATION"    label="#{bkaBundle.FBS_USR_ORGANIZATION_LABEL}"    hint="#{bkaBundle.FBS_USR_ORGANIZATION_HINT}"/>
+          <attribute name="UD_EFBSE_DIVISION"        label="#{bkaBundle.FBS_USR_DIVISION_LABEL}"        hint="#{bkaBundle.FBS_USR_DIVISION_HINT}"/>
+          <attribute name="UD_EFBSE_DEPARTMENT"      label="#{bkaBundle.FBS_USR_VALID_FROM_LABEL}"      hint="#{bkaBundle.FBS_USR_VALID_FROM_HINT}"/>
+          <attribute name="UD_EFBSE_VALIDFROM"       label="#{bkaBundle.FBS_USR_VALID_FROM_LABEL}"      hint="#{bkaBundle.FBS_USR_VALID_FROM_HINT}"/>
+          <attribute name="UD_EFBSE_VALIDTO"         label="#{bkaBundle.FBS_USR_VALID_TO_LABEL}"        hint="#{bkaBundle.FBS_USR_VALID_TO_HINT}"/>
+          <attribute name="serviceaccount"           label="#{bkaBundle.FBS_USR_SERVICE_ACCOUNT_LABEL}" hint="#{bkaBundle.FBS_USR_SERVICE_ACCOUNT_HINT}"/>
+          <attribute name="UD_EFBSE_ID"              label="#{bkaBundle.FBS_USR_AID_LABEL}"             hint="#{bkaBundle.FBS_USR_AID_HINT}" readonly="true" rendered="#{oimcontext.currentUser.adminRoles['OrclOIMSystemAdministrator'] != null and pageFlowScope.requestFormContext.actionType == 'VIEW'}"/>
+          <form name="UD_EFBSE_M" header="#{bkaBundle.FBS_M_HEADER_TEXT}">
+            <attribute name="UD_EFBSE_M_VALUE"       label="#{bkaBundle.FBS_M_VALUE_LABEL}"             hint="#{bkaBundle.FBS_M_VALUE_HINT}" sortable="false"  filterable="false"/>
+          </form>
+          <form name="UD_EFBSE_P" header="#{bkaBundle.FBS_P_HEADER_TEXT}">
+            <attribute name="UD_EFBSE_P_VALUE"       label="#{bkaBundle.FBS_P_VALUE_LABEL}"             hint="#{bkaBundle.FBS_P_VALUE_HINT}" sortable="false"  filterable="false"/>
+          </form>
+        </account>
+      </instance>
+    </sandbox:generate>
+    <echo message="=================================================================="/>
+    <echo message="0501-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <target name="0501-03">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501-03 Generating Sandbox eFBS Production Account"/>
+    <echo message="=================================================================="/>
+    <sandbox:generate contextRef="oim-context" catalogPath="D:/Project/Bundeskriminalamt12c/ExternalIdentityManagement/.env">
+      <instance name       ="efbs-p-account-sysadmin"
+                description="User Interface Customization's along with the eFBS Production Account request and administration task flows."
+                dataSet    ="eFBSRequestProduction"
+                resource   ="eFBS Account Production"
+                endpoint   ="eFBS.Endpoint.Production"
+                working    ="F:/xx">
+        <bundle  class="bka.iam.identity.resource.CatalogBundle" scope="bkaBundle"/>
+        <account name="UD_EFBSP">
+          <attribute name="UD_EFBSP_USERNAME"        label="#{bkaBundle.FBS_USR_UID_LABEL}"             hint="#{bkaBundle.FBS_USR_UID_HINT}"/>
+          <attribute name="UD_EFBSP_NAME_GIVENNAME"  label="#{bkaBundle.FBS_USR_FIRST_NAME_LABEL}"      hint="#{bkaBundle.FBS_USR_FIRST_NAME_HINT}"/>
+          <attribute name="UD_EFBSP_NAME_FAMILYNAME" label="#{bkaBundle.FBS_USR_LAST_NAME_LABEL}"       hint="#{bkaBundle.FBS_USR_LAST_NAME_HINT}"/>
+          <panel name="com" row="1" column="2">
+            <attribute name="UD_EFBSP_EMAIL"         label="#{bkaBundle.FBS_USR_EMAIL_LABEL}"           hint="#{bkaBundle.FBS_USR_EMAIL_HINT}"/>
+            <attribute name="UD_EFBSP_PHONE"         label="#{bkaBundle.FBS_USR_PHONE_LABEL}"           hint="#{bkaBundle.FBS_USR_PHONE_HINT}"/>
+          </panel>
+          <panel name="org" row="3" column="1" header="#{bkaBundle.FBS_USR_ORGANIZATION_HEADER_TEXT}">
+            <attribute name="UD_EFBSP_ORGANIZATION"  label="#{bkaBundle.FBS_USR_ORGANIZATION_LABEL}"    hint="#{bkaBundle.FBS_USR_ORGANIZATION_HINT}"/>
+            <attribute name="UD_EFBSP_DIVISION"      label="#{bkaBundle.FBS_USR_DIVISION_LABEL}"        hint="#{bkaBundle.FBS_USR_DIVISION_HINT}"/>
+            <attribute name="UD_EFBSP_DEPARTMENT"    label="#{bkaBundle.FBS_USR_VALID_FROM_LABEL}"      hint="#{bkaBundle.FBS_USR_VALID_FROM_HINT}"/>
+          </panel>
+          <panel name="acc" row="2" column="2" header="#{bkaBundle.FBS_USR_ACCOUNT_HEADER_TEXT}">
+            <attribute name="UD_EFBSP_VALIDFROM"     label="#{bkaBundle.FBS_USR_VALID_FROM_LABEL}"      hint="#{bkaBundle.FBS_USR_VALID_FROM_HINT}"/>
+            <attribute name="UD_EFBSP_VALIDTO"       label="#{bkaBundle.FBS_USR_VALID_TO_LABEL}"        hint="#{bkaBundle.FBS_USR_VALID_TO_HINT}"/>
+            <attribute name="serviceaccount"         label="#{bkaBundle.FBS_USR_SERVICE_ACCOUNT_LABEL}" hint="#{bkaBundle.FBS_USR_SERVICE_ACCOUNT_HINT}"/>
+            <attribute name="UD_EFBSP_ID"            label="#{bkaBundle.FBS_USR_AID_LABEL}"             hint="#{bkaBundle.FBS_USR_AID_HINT}" readonly="true" rendered="#{oimcontext.currentUser.adminRoles['OrclOIMSystemAdministrator'] != null and pageFlowScope.requestFormContext.actionType == 'VIEW'}"/>
+          </panel>
+          <form name="UD_EFBSP_M" header="#{bkaBundle.FBS_M_HEADER_TEXT}" entitlement="false">
+            <attribute name="UD_EFBSP_M_VALUE"       label="#{bkaBundle.FBS_M_VALUE_LABEL}"             hint="#{bkaBundle.FBS_M_VALUE_HINT}" sortable="false"  filterable="false"/>
+          </form>
+          <form name="UD_EFBSP_P" header="#{bkaBundle.FBS_P_HEADER_TEXT}" entitlement="false">
+            <attribute name="UD_EFBSP_P_VALUE"       label="#{bkaBundle.FBS_P_VALUE_LABEL}"             hint="#{bkaBundle.FBS_P_VALUE_HINT}" sortable="false"  filterable="false"/>
+          </form>
+        </account>
+      </instance>
+    </sandbox:generate>
+    <echo message="=================================================================="/>
+    <echo message="0501-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <target name="0501-04">
+    <metadata:exportVersion contextRef="jmx-context" location="${oim.server.name}" application="oracle.iam.console.identity.sysadmin.ear" version="V2.0" toArchive="/home/oracle/test1.zip" documentPath="/persdef/oracle/iam/ui/catalog/model/am/CatalogAM.xml" maxVersions="1">
+    </metadata:exportVersion>
+  </target>
+  <target name="1201-01">
+    <echo message="=================================================================="/>
+    <echo message="1201-01 Generating Sandbox Pivotal Cloud Foundry Account"/>
+    <echo message="=================================================================="/>
+    <sandbox:generate contextRef="oim-context" catalogPath="D:/Project/Bundeskriminalamt12c/ExternalIdentityManagement/.env">
+      <instance name       ="pcf-sz3-account-sysadmin"
+                description="User Interface Customization's along with the Pivotal Cloud Foundry Security Zone 3 request and administration task flows."
+                dataSet    ="PCFRequestIUA"
+                resource   ="PCF Account IuA"
+                endpoint   ="PCF.Endpoint.IUA"
+                path       ="F:/xx">
+        <bundle  class="bka.iam.identity.resource.CatalogBundle" scope="bkaBundle"/>
+        <account name="UD_PCF3_USR">
+          <attribute name="UD_PCF3_USR_UID"   label="#{bkaBundle.PCF_USR_UID_LABEL}"             hint="#{bkaBundle.PCF_USR_UID_HINT}"/>
+          <attribute name="UD_PCF3_USR_PWD"   label="#{bkaBundle.PCF_USR_PWD_LABEL}"             hint="#{bkaBundle.PCF_USR_PWD_HINT}"/>
+          <attribute name="UD_PCF3_USR_SN"    label="#{bkaBundle.PCF_USR_SN_LABEL}"              hint="#{bkaBundle.PCF_USR_SN_HINT}"/>
+          <attribute name="UD_PCF3_USR_GN"    label="#{bkaBundle.PCF_USR_GN_LABEL}"              hint="#{bkaBundle.PCF_USR_GN_HINT}"/>
+          <attribute name="UD_PCF3_USR_MAIL"  label="#{bkaBundle.PCF_USR_MAIL_LABEL}"            hint="#{bkaBundle.PCF_USR_MAIL_HINT}"/>
+          <attribute name="UD_PCF3_USR_PHONE" label="#{bkaBundle.PCF_USR_PHONE_LABEL}"           hint="#{bkaBundle.PCF_USR_PHONE_HINT}"/>
+          <attribute name="UD_PCF3_USR_OID"   label="#{bkaBundle.PCF_USR_OID_LABEL}"             hint="#{bkaBundle.PCF_USR_OID_HINT}"/>
+          <attribute name="UD_PCF3_USR_IDP"   label="#{bkaBundle.PCF_USR_IDP_LABEL}"             hint="#{bkaBundle.PCF_USR_IDP_HINT}"/>
+          <attribute name="UD_PCF3_USR_EID"   label="#{bkaBundle.PCF_USR_EID_LABEL}"             hint="#{bkaBundle.PCF_USR_EID_HINT}"/>
+          <attribute name="UD_PCF3_USR_SID"   label="#{bkaBundle.PCF_USR_SID_LABEL}"             hint="#{bkaBundle.PCF_USR_SID_HINT}"/>
+          <attribute name="UD_PCF3_USR_VFD"   label="#{bkaBundle.PCF_USR_VFD_LABEL}"             hint="#{bkaBundle.FBS_USR_VALID_TO_HINT}"/>
+          <attribute name="serviceaccount"    label="#{bkaBundle.PCF_USR_SERVICE_ACCOUNT_LABEL}" hint="#{bkaBundle.PCF_USR_SERVICE_ACCOUNT_HINT}"/>
+          <form name="UD_PCF3_UGP" header="#{bkaBundle.PCF_UGP_HEADER}" entitlement="true">
+            <attribute name="UD_PCF3_UGP_SID" label="#{bkaBundle.PCF_UGP_SID_LABEL}"             hint="#{bkaBundle.PCF_UGP_SID_HINT}" title="#{bkaBundle.PCF_UGP_SID_TITLE}"/>
+          </form>
+          <form name="UD_PCF3_ORL" header="#{bkaBundle.PCF_ORL_HEADER}" entitlement="true">
+            <attribute name="UD_PCF3_ORL_SID" label="#{bkaBundle.PCF_ORL_SID_LABEL}"             hint="#{bkaBundle.PCF_ORL_SID_HINT}" title="#{bkaBundle.PCF_ORL_SID_TITLE}"/>
+            <attribute name="UD_PCF3_ORL_SCP" label="#{bkaBundle.PCF_ORL_SCP_LABEL}"             hint="#{bkaBundle.PCF_ORL_SCP_HINT}" title="#{bkaBundle.PCF_ORL_SCP_TITLE}"/>
+          </form>
+          <form name="UD_PCF3_SRL" header="#{bkaBundle.PCF_SRL_HEADER}" entitlement="true">
+            <attribute name="UD_PCF3_SRL_SID" label="#{bkaBundle.PCF_SRL_SID_LABEL}"             hint="#{bkaBundle.PCF_SRL_SID_HINT}" title="#{bkaBundle.PCF_SRL_SID_TITLE}"/>
+            <attribute name="UD_PCF3_SRL_SCP" label="#{bkaBundle.PCF_SRL_SCP_LABEL}"             hint="#{bkaBundle.PCF_SRL_SCP_HINT}" title="#{bkaBundle.PCF_SRL_SCP_TITLE}"/>
+          </form>
+        </account>
+      </instance>
+    </sandbox:generate>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <target name="1201-02">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1201-02 Generating Sandbox Pivotal Cloud Foundry Account"/>
+    <echo message="=================================================================="/>
+    <sandbox:generate contextRef="oim-context" catalogPath="D:/Project/Bundeskriminalamt12c/ExternalIdentityManagement/.env">
+      <instance name       ="pcf-sz4-account-sysadmin"
+                description="User Interface Customization's along with the Pivotal Cloud Foundry Security Zone 4 request and administration task flows."
+                dataSet    ="PCFRequestARES"
+                resource   ="PCF Account Ares"
+                endpoint   ="PCF.Endpoint.ARES"
+                working    ="F:/xx">
+        <bundle  class="bka.iam.identity.resource.CatalogBundle" scope="bkaBundle"/>
+        <account name="UD_PCF3_USR">
+          <attribute name="UD_PCF4_USR_UID"   label="#{bkaBundle.PCF_USR_UID_LABEL}"             hint="#{bkaBundle.PCF_USR_UID_HINT}"/>
+          <attribute name="UD_PCF4_USR_PWD"   label="#{bkaBundle.PCF_USR_PWD_LABEL}"             hint="#{bkaBundle.PCF_USR_PWD_HINT}"/>
+          <attribute name="UD_PCF4_USR_SN"    label="#{bkaBundle.PCF_USR_SN_LABEL}"              hint="#{bkaBundle.PCF_USR_SN_HINT}"/>
+          <attribute name="UD_PCF4_USR_GN"    label="#{bkaBundle.PCF_USR_GN_LABEL}"              hint="#{bkaBundle.PCF_USR_GN_HINT}"/>
+          <attribute name="UD_PCF4_USR_MAIL"  label="#{bkaBundle.PCF_USR_MAIL_LABEL}"            hint="#{bkaBundle.PCF_USR_MAIL_HINT}"/>
+          <attribute name="UD_PCF4_USR_PHONE" label="#{bkaBundle.PCF_USR_PHONE_LABEL}"           hint="#{bkaBundle.PCF_USR_PHONE_HINT}"/>
+          <attribute name="UD_PCF4_USR_OID"   label="#{bkaBundle.PCF_USR_OID_LABEL}"             hint="#{bkaBundle.PCF_USR_OID_HINT}"/>
+          <attribute name="UD_PCF4_USR_IDP"   label="#{bkaBundle.PCF_USR_IDP_LABEL}"             hint="#{bkaBundle.PCF_USR_IDP_HINT}"/>
+          <attribute name="UD_PCF4_USR_EID"   label="#{bkaBundle.PCF_USR_EID_LABEL}"             hint="#{bkaBundle.PCF_USR_EID_HINT}"/>
+          <attribute name="UD_PCF4_USR_SID"   label="#{bkaBundle.PCF_USR_SID_LABEL}"             hint="#{bkaBundle.PCF_USR_SID_HINT}"/>
+          <attribute name="UD_PCF4_USR_VFD"   label="#{bkaBundle.PCF_USR_VFD_LABEL}"             hint="#{bkaBundle.FBS_USR_VALID_TO_HINT}"/>
+          <attribute name="serviceaccount"    label="#{bkaBundle.PCF_USR_SERVICE_ACCOUNT_LABEL}" hint="#{bkaBundle.PCF_USR_SERVICE_ACCOUNT_HINT}"/>
+          <form name="UD_PCF4_UGP" header="#{bkaBundle.PCF_UGP_HEADER}" entitlement="true">
+            <attribute name="UD_PCF4_UGP_SID" label="#{bkaBundle.PCF_UGP_SID_LABEL}"             hint="#{bkaBundle.PCF_UGP_SID_HINT}" title="#{bkaBundle.PCF_UGP_SID_TITLE}"/>
+          </form>
+          <form name="UD_PCF4_ORL" header="#{bkaBundle.PCF_ORL_HEADER}" entitlement="true">
+            <attribute name="UD_PCF4_ORL_SID" label="#{bkaBundle.PCF_ORL_SID_LABEL}"             hint="#{bkaBundle.PCF_ORL_SID_HINT}" title="#{bkaBundle.PCF_ORL_SID_TITLE}"/>
+            <attribute name="UD_PCF4_ORL_SCP" label="#{bkaBundle.PCF_ORL_SCP_LABEL}"             hint="#{bkaBundle.PCF_ORL_SCP_HINT}" title="#{bkaBundle.PCF_ORL_SCP_TITLE}"/>
+          </form>
+          <form name="UD_PCF4_SRL" header="#{bkaBundle.PCF_SRL_HEADER}" entitlement="true">
+            <attribute name="UD_PCF4_SRL_SID" label="#{bkaBundle.PCF_SRL_SID_LABEL}"             hint="#{bkaBundle.PCF_SRL_SID_HINT}" title="#{bkaBundle.PCF_SRL_SID_TITLE}"/>
+            <attribute name="UD_PCF4_SRL_SCP" label="#{bkaBundle.PCF_SRL_SCP_LABEL}"             hint="#{bkaBundle.PCF_SRL_SCP_HINT}" title="#{bkaBundle.PCF_SRL_SCP_TITLE}"/>
+          </form>
+        </account>
+      </instance>
+    </sandbox:generate>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

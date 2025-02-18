@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Identity Governance Service Preferences"
+         basedir     =".."
+         default     ="make"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"      value="Identity Governance Service Module"/>
+  <property name="application"      value="bka-uid-service"/>
+  <property name="module"           value="${application}"/>
+  <property name="package"          value="bka/**/*.*"/>
+  <property name="destination.base" value="../../deployment/igs/0100 systemServices"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import   file="../../igs-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish a possible customization runtime path
+  =====================================================================
+  -->
+  <path id="bka.igs.runtime">
+    <path refid="oracle.ocs.hst.jpa"/>
+    <path refid="bka.iam.igs.backend"/>
+    <path refid="bka.iam.uid.backend"/>
+    <path refid="bka.iam.igs.service"/>
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.jee"/>
+    <path refid="oracle.fmw.jps"/>
+    <path refid="oracle.fmw.cdi"/>
+    <path refid="oracle.fmw.jpa"/>
+    <path refid="oracle.fmw.jdbc"/>
+    <path refid="oracle.fmw.json"/>
+    <path refid="glassfish.jmx.core"/>
+    <path refid="glassfish.jps.core"/>
+    <path refid="glassfish.jps.authn"/>
+    <path refid="oracle.ocs.hst.core"/>
+    <path refid="oracle.ocs.hst.json"/>
+    <path refid="oracle.ocs.hst.rest"/>
+    <path refid="bka.iam.igs.authn"/>
+    <path refid="bka.igs.runtime"/>
+  </path>
+</project>

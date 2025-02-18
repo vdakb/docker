@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelGridLayout id="pg10" inlineStyle="width:850.0px;">
+    <af:gridRow id="gr10" height="auto" marginTop="5px" marginBottom="5px">
+      <af:gridCell id="gc11" width="100%" marginStart="5px" marginEnd="5px" halign="start">
+        <af:panelGroupLayout id="pgl11" layout="horizontal">
+          <af:image  id="im11" source="#{request$bundle.FIM_SYMBOL}" shortDesc="#{request$bundle.FIM_HEADER}"/>
+          <af:outputText id="ot11" value="#{request$bundle.FIM_HEADER}" styleClass="AFLabelText" inlineStyle ="font-size:135%; font-weight:bold;"/>
+        </af:panelGroupLayout>
+      </af:gridCell>
+      <af:gridCell id="gc12" width="100%" marginStart="5px" marginEnd="5px" halign="end">
+        <af:panelGroupLayout id="pgl12" layout="horizontal">
+          <af:outputText id="ot12" value="#{bindings.beneficiaryName}" styleClass="AFLabelText" inlineStyle ="font-size:135%; font-weight:bold;"/>
+          <af:image  id="im12" source="#{system$bundle.USER_HEADER_ICON}" shortDesc="#{bindings.beneficiaryName}" rendered="#{backingBeanScope.account.prepared}"/>
+        </af:panelGroupLayout>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr20" height="auto" marginTop="20px" marginBottom="10px">
+      <af:gridCell id="gc21" width="100%" marginStart="5px" marginEnd="5px">
+        <af:outputText id="ot21" value="#{request$bundle.FIM_INSTRUCTION}" styleClass="AFLabelText" inlineStyle="font-weight:bolder; color:Black;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr30" height="auto" marginTop="5px" marginBottom="5px">
+      <af:gridCell id="gc31" width="100%" marginStart="5px" marginEnd="5px" halign="start">
+        <af:panelGroupLayout id="pgl31" layout="horizontal" valign="top">
+          <af:selectOneChoice id             ="soc31"
+                              value          ="#{backingBeanScope.account.environmentValue}"
+                              label          ="#{request$bundle.FIM_ENVIRONMENT_LABEL}"
+                              shortDesc      ="#{request$bundle.FIM_ENVIRONMENT_HINT}"
+                              autoSubmit     ="true">
+            <f:selectItems id="si31" value="#{backingBeanScope.account.environmentList}"/>
+          </af:selectOneChoice>
+          <af:spacer id="sp31" width="10" height="0"/>
+          <af:selectOneChoice id             ="soc32"
+                              value          ="#{backingBeanScope.account.templateValue}"
+                              label          ="#{request$bundle.FIM_TEMPLATE_LABEL}"
+                              shortDesc      ="#{request$bundle.FIM_TEMPLATE_HINT}"
+                              autoSubmit     ="true"
+                              partialTriggers="soc31">
+            <f:selectItems id="si32" value="#{backingBeanScope.account.templateList}"/>
+          </af:selectOneChoice>
+        </af:panelGroupLayout>
+      </af:gridCell>
+      <af:gridCell id="gc32" width="100%" marginStart="5px" marginEnd="5px" halign="end">
+        <af:button id             ="cb31"
+                   text           ="#{system$bundle.GENERIC_SUBMIT}"
+                   binding        ="#{backingBeanScope.account.action}"
+                   action         ="#{backingBeanScope.account.submit}"
+                   disabled       ="#{backingBeanScope.account.submitDisbaled}"
+                   partialTriggers="soc31 soc32"/>
+        <af:spacer id="sp32" width="5" height="1"/>
+        <af:button id="cb32" text="#{system$bundle.GENERIC_CANCEL}" action="cancel"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow  id="gr40" height="auto" marginTop="20px" marginBottom="10px">
+      <af:gridCell id="gc41" width="100%" marginStart="5px" marginEnd="5px">
+        <af:outputText id="ot31" value="#{request$bundle.FIM_REQUEST_INFO}" styleClass="AFLabelText" inlineStyle="font-weight:bolder; color:Black;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow  id="gr42" height="auto" marginTop="5px" marginBottom="5px">
+      <af:gridCell id="gc42" width="100%" marginStart="5px" marginEnd="5px">
+        <af:panelGroupLayout id="pgl42" layout="vertical" partialTriggers="soc31 soc32">
+          <af:iterator id="it42" value="#{backingBeanScope.account.request.account}" var="app" varStatus="vsApp">
+            <af:showDetailHeader id="sdh42" text="#{app.id}" disclosed="false">
+              <af:table id                   ="att" var="row" varStatus="vs"
+                        value                ="#{app.attribute}"
+                        rows                 ="6"
+                        fetchSize            ="6"
+                        emptyText            ="#{system$bundle.SEARCH_NO_DATA}"
+                        scrollPolicy         ="page"
+                        rowSelection         ="none"
+                        columnSelection      ="none"
+                        columnStretching     ="multiple"
+                        columnBandingInterval="0"
+                        rowBandingInterval   ="1">
+                <af:column id="c40" rowHeader="true" width="20" headerText="" align="right"/>
+                <af:column id="c41" width="20%" headerText="#{request$bundle.FIM_ATTRIBUTE_NAME_LABEL}">
+                  <af:outputText id="ot41" value="#{row.label}"/>
+               </af:column>
+                <af:column id="c42" width="80%" headerText="#{request$bundle.FIM_ATTRIBUTE_VALUE_LABEL}">
+                  <af:outputText id="ot42" value="#{row.value}"/>
+                </af:column>
+              </af:table>
+            </af:showDetailHeader>
+          </af:iterator>
+          <af:showDetailHeader id="sdh43" text="#{request$bundle.FIM_ENTITLEMENT_MULTIPLE}" disclosed="false">
+            <af:table id                   ="ent" var="row" varStatus="vs"
+                      value                ="#{backingBeanScope.account.request.entitlement}"
+                      rows                 ="6"
+                      fetchSize            ="6"
+                      emptyText            ="#{system$bundle.SEARCH_NO_DATA}"
+                      scrollPolicy         ="page"
+                      rowSelection         ="none"
+                      columnSelection      ="none"
+                      columnStretching     ="multiple"
+                      columnBandingInterval="0"
+                      rowBandingInterval   ="1">
+              <af:column id="c60" rowHeader="true" width="20" headerText="" align="right"/>
+              <af:column id="c61" width="30%" headerText="#{request$bundle.FIM_ENDPOINT_SINGLE}">
+                <af:outputText id="ot61" value="#{row.key}"/>
+              </af:column>
+              <af:column id="c62" width="70%" headerText="#{request$bundle.FIM_ENTITLEMENT_SINGLE}">
+                <af:outputText id="ot62" value="#{row.value}"/>
+              </af:column>
+            </af:table>
+          </af:showDetailHeader>
+        </af:panelGroupLayout>
+      </af:gridCell>
+    </af:gridRow>
+  </af:panelGridLayout>
+</jsp:root>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Identity Access Context Definitions"
+         basedir     ="."
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../.env/icd/${fmw.env}/jee-server.xml"/>
+  <import file="../.env/icd/${fmw.env}/ppa-server.xml"/>
+  <!--
+  =====================================================================
+  == Import custom type and task definitions
+  =====================================================================
+  -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <taskdef resource="oracle/hst/deployment/ant-security-lib.xml"   uri="http://oracle.hst.deployment/security"/>
+  <taskdef resource="oracle/hst/deployment/ant-topology-lib.xml"   uri="http://oracle.hst.deployment/topology"/>
+  <!--
+  =====================================================================
+  == Oracle Glassfish Server properties
+  =====================================================================
+  -->
+  <presetdef name="asadmin">
+    <java jar="${jee.server.home}/glassfish/modules/admin-cli.jar" fork="true" jvm="${java.home}/bin/java">
+      <arg line="-H ${jee.server.host} -p ${jee.server.port} -u ${jee.server.username} -W ${jee.server.password}"/>
+    </java>
+  </presetdef>
+  <!--
+  ==============================================================================
+  == Import custom type and task definitions
+  ==============================================================================
+  -->
+  <import file="./pgs-preferences.xml"/>
+  <!--
+  ==============================================================================
+  == Declaring the container specifiying connectivity to the remote systems
+  ==============================================================================
+  -->
+  <server:principal id="ppa-principal" username="${ppa.server.username}" password="${ppa.server.password}"/>
+  <server:jmx-context id="ppa-context" type="${ppa.server.type}" protocol="${ppa.server.protocol}" host="${ppa.server.host}" port="${ppa.server.port}" principalRef="ppa-principal"/>
+</project>

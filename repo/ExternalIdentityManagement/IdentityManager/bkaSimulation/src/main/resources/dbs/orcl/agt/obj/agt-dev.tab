@@ -1,0 +1,50 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityManager\bkaSimulation\src\main\resources\dbs\agt\obj\agt-dev.tab
+--
+-- Generated for Oracle Database 12c on Sun January 21 16:53:56 2020 by Server Generator 10.1.2.93.10
+
+CREATE TABLE agt_developers (
+  id           VARCHAR   (128) DEFAULT sys_guid() NOT NULL
+, rowversion   VARCHAR   ( 30)                    NOT NULL
+, created_on   TIMESTAMP       DEFAULT SYSDATE    NOT NULL
+, created_by   VARCHAR   (128)                    NOT NULL
+, updated_on   TIMESTAMP       DEFAULT SYSDATE    NOT NULL
+, updated_by   VARCHAR   (128)                    NOT NULL
+, org          VARCHAR   (128)                    NOT NULL
+, email        VARCHAR   (128)                    NOT NULL
+, username     VARCHAR   (128)                    NOT NULL
+, lastname     VARCHAR   (128)                    NOT NULL
+, firstname    VARCHAR   (128)                    NOT NULL
+, status       VARCHAR   (  8) DEFAULT 'active'   NOT NULL
+, CONSTRAINT agt_dev_pk PRIMARY KEY (id)
+, CONSTRAINT agt_dev_uk1 UNIQUE (org, id)
+, CONSTRAINT agt_dev_uk2 UNIQUE (org, email)
+, CONSTRAINT agt_dev_uk3 UNIQUE (org, username)
+, CONSTRAINT agt_dev_org_fk FOREIGN KEY (org) REFERENCES agt_organizations (name) ON DELETE CASCADE
+)
+/
+COMMENT ON TABLE agt_developers IS 'Apigee Organization Developer Repository'
+/
+COMMENT ON COLUMN agt_developers.id IS 'Row Identifier of data record'
+/
+COMMENT ON COLUMN agt_developers.rowversion IS 'Row Version of data record'
+/
+COMMENT ON COLUMN agt_developers.created_by IS 'Creator of the data record'
+/
+COMMENT ON COLUMN agt_developers.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN agt_developers.updated_by IS 'Modifier of the data record'
+/
+COMMENT ON COLUMN agt_developers.updated_on IS 'Last Modified Timestamp of data record'
+/
+COMMENT ON COLUMN agt_developers.org IS 'The organization'
+/
+COMMENT ON COLUMN agt_developers.email IS 'e-Mail Address'
+/
+COMMENT ON COLUMN agt_developers.username IS 'User Name'
+/
+COMMENT ON COLUMN agt_developers.lastname IS 'Last Name'
+/
+COMMENT ON COLUMN agt_developers.firstname IS 'First Name'
+/
+COMMENT ON COLUMN agt_developers.status IS 'Activation Status'
+/

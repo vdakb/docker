@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Context Definitions"
+         basedir        ="."
+         xmlns:dbk      ="http://oracle.hst.deployment/docbook"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../.env/igd/${fmw.env}/scp-server.xml"/>
+  <import file="../.env/igd/${fmw.env}/jee-server.xml"/>
+  <import file="../.env/igd/${fmw.env}/oim-server.xml"/>
+  <import file="../.env/igd/${fmw.env}/mds-server.xml"/>
+  <!--
+  ==============================================================================
+  == properties globaly defined
+  ==============================================================================
+  -->
+  <import file="./hst-preferences.xml"/>
+  <!--
+  ==============================================================================
+  == Import custom type and task definitions
+  ==============================================================================
+  -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <taskdef resource="oracle/hst/deployment/ant-fusion-lib.xml"     uri="http://oracle.hst.deployment/fusion"/>
+  <taskdef resource="oracle/hst/deployment/ant-topology-lib.xml"   uri="http://oracle.hst.deployment/topology"/>
+  <taskdef resource="oracle/hst/deployment/ant-webservice-lib.xml" uri="http://oracle.hst.deployment/webservice"/>
+  <taskdef resource="oracle/hst/deployment/ant-security-lib.xml"   uri="http://oracle.hst.deployment/security"/>
+  <!--
+  ==============================================================================
+  == Declaring the container specifiying connectivity to the remote systems
+  ==============================================================================
+  -->
+  <!--
+  <server:principal id="jee-principal" username="${jee.server.username}" password="${jee.server.password}"/>
+  <server:principal id="oim-principal" username="${oim.server.username}" password="${oim.server.password}"/>
+
+  <server:jmx-context id="jmx-context" type="${jee.server.type}" protocol="${jee.server.protocol}" host="${jee.server.host}" port="${jee.server.port}" principalRef="jee-principal"/>
+  <server:rmi-context id="rmi-context" type="${oim.server.type}" contextFactory="weblogic.jndi.WLInitialContextFactory" contextURL="t3://${oim.server.host}:${oim.server.port}/oim" principalRef="jee-principal"/>
+  <server:oim-context id="oim-context" contextRef="rmi-context"  principalRef="oim-principal" authenticationConfig="${oim.server.authentication}"/>
+  -->
+  <!--
+  =====================================================================
+  == These properties specifies  the runtime environment of the local
+  == process
+  =====================================================================
+  -->
+  <property environment="system"/>
+  <!--
+  Windows machines use the COMPUTERNAME environment variable while 'nix
+  platforms use HOSTNAME. The system.COMPUTERNAME property condition is an
+  interesting tweak to get the host name of the machine running the build in a
+  cross-platform manner.
+  -->
+  <condition property="system.HOSTNAME" value="${system.COMPUTERNAME}">
+    <not>
+      <isset property="system.HOSTNAME"/>
+    </not>
+  </condition>
+  <!--
+  =====================================================================
+  == These properties specifies where the kernel runtime environment of
+  == Identity Manager are located
+  =====================================================================
+  -->
+  <condition property="oim.server.simple" value="true" else="false">
+    <equals arg1="${system.HOSTNAME}" arg2="${oim.server.host}" casesensitive="false"/>
+  </condition>
+  <condition property="oim.runtime.adapter"  value="JavaTask"  else="JavaTasks">
+    <istrue value="${oim.server.production}"/>
+  </condition>
+
+  <property name="oim.runtime.connector"      value="connectorResources"/>
+  <property name="oim.runtime.custom"         value="customResources"/>
+  <property name="oim.runtime.plugin"         value="plugins"/>
+  <property name="oim.runtime.scheduler"      value="ScheduleTask"/>
+  <property name="oim.runtime.shared"         value="ThirdParty"/>
+
+  <property name="oim.remote.application"     value="${oim.server.home}/apps"/>
+  <property name="oim.remote.config"          value="${oim.server.home}/config"/>
+  <property name="oim.remote.external"        value="${oim.server.home}/ext"/>
+  <property name="oim.remote.integration"     value="${oim.server.home}/XLIntegrations"/>
+
+  <condition property="oim.remote.connector"  value="${oim.runtime.connector}" else="${oim.server.home}/${oim.runtime.connector}">
+    <istrue value="${oim.server.production}"/>
+  </condition>
+  <condition property="oim.remote.custom"     value="${oim.runtime.custom}"    else="${oim.server.home}/${oim.runtime.custom}">
+    <istrue value="${oim.server.production}"/>
+  </condition>
+  <condition property="oim.remote.adapter"    value="${oim.runtime.adapter}"   else="${oim.server.home}/${oim.runtime.adapter}">
+    <istrue value="${oim.server.production}"/>
+  </condition>
+  <condition property="oim.remote.diagnostic" value="${oim.runtime.adapter}"   else="${oim.server.home}/${oim.runtime.adapter}">
+    <istrue value="${oim.server.production}"/>
+  </condition>
+  <condition property="oim.remote.scheduler"  value="${oim.runtime.scheduler}" else="${oim.server.home}/${oim.runtime.scheduler}">
+    <istrue value="${oim.server.production}"/>
+  </condition>
+  <condition property="oim.remote.thirdparty" value="${oim.runtime.shared}"    else="${oim.server.home}/${oim.runtime.shared}">
+    <istrue value="${oim.server.production}"/>
+  </condition>
+  <condition property="oim.remote.plugin"     value="${oim.runtime.plugin}"    else="${oim.server.home}/${oim.runtime.plugin}">
+    <istrue value="${oim.server.production}"/>
+  </condition>
+  <!--
+  =====================================================================
+  == ANT target to execute a remote command
+  =====================================================================
+  -->
+  <macrodef name="ssh-shell">
+    <attribute name="command"/>
+    <sequential>
+      <sshexec command="@{command}" keyfile="${scp.server.certificate}" host="${scp.server.host}" username="${scp.server.username}" password="${scp.server.password}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to copy library artifacts
+  =====================================================================
+  -->
+  <macrodef name="ssh-file">
+    <attribute name="file"/>
+    <attribute name="dir"/>
+    <attribute name="location"/>
+    <sequential>
+      <if>
+        <istrue value="${oim.server.simple}"/>
+          <then>
+            <echo message="Copying @{file} from @{dir} to @{location}"/>
+            <copy todir="@{location}">
+              <fileset dir="@{dir}" includes="@{file}"/>
+            </copy>
+          </then>
+          <else>
+            <echo message="Transfering @{file} from @{dir} to @{location} on ${scp.server.host}"/>
+            <scp todir="${scp.server.destination}:@{location}" port="${scp.server.port}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+              <fileset dir="@{dir}">
+                <include name="@{file}"/>
+              </fileset>
+            </scp>
+          </else>
+        </if>
+    </sequential>
+  </macrodef>
+</project>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:jaxb          ="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc"
+        xmlns:xjc           ="http://java.sun.com/xml/ns/jaxb/xjc"
+        xmlns:general       ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData"
+        xmlns:tns           ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/AppInstanceData"
+        targetNamespace     ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/AppInstanceData"
+        elementFormDefault  ="qualified"
+        attributeFormDefault="unqualified">
+
+  <annotation>
+    <appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="oracle.iam.requestdataws.webservicestubs.types"/>
+      </jaxb:schemaBindings>
+    </appinfo>
+  </annotation>
+
+  <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData" schemaLocation="request-service-type.xsd"/>
+
+  <element name="AppInstanceKey"  type="string"/>
+  <element name="AppInstanceData" type="tns:AppInstanceDataType"/>
+
+  <complexType name="AppInstanceDataType">
+    <sequence>
+      <element name="ApplicationInstanceKey"    type="long"                nillable="true"/>
+      <element name="ApplicationInstanceName"   type="string"              nillable="true"/>
+      <element name="DisplayName"               type="string"              nillable="true"/>
+      <element name="Description"               type="string"              nillable="true"/>
+      <element name="ObjectKey"                 type="long"                nillable="true"/>
+      <element name="ObjectName"                type="string"              nillable="true"/>
+      <element name="DataSetName"               type="string"              nillable="true"/>
+      <element name="ItResourceKey"             type="long"                nillable="true"/>
+      <element name="ItResourceName"            type="string"              nillable="true"/>
+      <element name="ParentKey"                 type="long"                nillable="true"/>
+      <element name="SoftDelete"                type="boolean"             nillable="true"/>
+      <element name="IsApplicableToEntitlement" type="boolean"             nillable="true"/>
+      <element name="AccountForm"               type="tns:AccountFormType" nillable="true"/>
+      <element name="ChildForms"                type="tns:AccountFormType" nillable="true" maxOccurs="unbounded"/>
+      <element name="Type" nillable="true">
+        <simpleType>
+          <restriction base="string">
+            <enumeration value="DOBBased"/>
+            <enumeration value="Disconnected"/>
+            <enumeration value="SPMLBased"/>
+            <enumeration value="ICFBased"/>
+          </restriction>
+        </simpleType>
+      </element>
+    </sequence>
+  </complexType>
+
+  <complexType name="AccountFormType">
+    <sequence>
+      <element name="Name"          type="string"  nillable="true"/>
+      <element name="FormKey"       type="long"    nillable="true"/>
+      <element name="Description"   type="string"  nillable="true"/>
+      <element name="LatestVersion" type="string"  nillable="true"/>
+      <element name="ActiveVersion" type="string"  nillable="true"/>
+      <element name="IsChild"       type="boolean" nillable="true"/>
+      <element name="FormFields"                   nillable="true" maxOccurs="unbounded">
+        <complexType>
+          <sequence>
+            <element name="Name"         type="string"               nillable="true"/>
+            <element name="FldKey"       type="long"                 nillable="true"/>
+            <element name="Label"        type="string"               nillable="true"/>
+            <element name="Type"         type="string"               nillable="true"/>
+            <element name="DefaultValue" type="string"               nillable="true"/>
+            <element name="IsEncrypted"  type="boolean"              nillable="true"/>
+            <element name="Properties"   type="general:MapValueType" nillable="true"/>
+          </sequence>
+        </complexType>
+      </element>
+    </sequence>
+  </complexType>
+</schema>

@@ -1,0 +1,2251 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Include"
+         xmlns:fmw="http://oracle.hst.deployment/fusion"
+         xmlns:jps="http://oracle.hst.deployment/security"
+         xmlns:wsm="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:plugin="http://oracle.iam.identity/plugin"
+         xmlns:metadata="http://oracle.iam.identity/metadata"
+         xmlns:object="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job="http://oracle.iam.identity/job"
+         xmlns:sandbox="http://oracle.iam.identity/sandbox"
+         xmlns:workflow="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-patch-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####  #     #
+  **           #     #    #    ##   ##
+  **           #     #    #    # # # #
+  **           #     #    #    #  #  #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Deleting sandbox metadata
+  ******************************************************************************
+  -->
+  <target name="0000" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0000 Deleting previously deployed metadata ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deleting previously deployed sandbox metadata for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="oracle.iam.console.identity.self-service.ear" version="V2.0" failonerror="false">
+      <metadata:path path="/oracle/iam/ui/runtime/form/view/pages/mdssys/cust/user/**"/>
+    </metadata:delete>
+    <echo message="Clear metadata cache for environment ${fmw.env} on ${oim.server.name}:${oim.mbean.identity}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="oracle.iam.console.identity.self-service.ear" version="V2.0"/>
+    <echo message="=================================================================="/>
+    <echo message="0000 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ######   #####
+  **              #    #     # #     #
+  **              #    #     # #
+  **              #    #     #  #####
+  **              #    #     #       #
+  **              #    #     # #     #
+  **            #####  ######   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the OAM Identity Store Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0301" description="Deploys OAM Identity Store Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0301 OAM Identity Store Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0301 systemConnector IDS/mds/ids-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0301 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####
+  **           #     #    #    #     #
+  **           #          #    #
+  **           #          #     #####
+  **           #          #          #
+  **           #     #    #    #     #
+  **            #####     #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Citrix Terminal Server Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Citrix Terminal Server connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0401" description="Deploys Citrix Terminal Server Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0401 Citrix Terminal Server Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0401 systemConnector CTS/mds/cts-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0401 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **                   ####### ######   #####      ######
+  **                   #       #     # #     #     #     #
+  **            #####  #       #     # #           #     #
+  **           #     # ######  ######   #####      ######
+  **           # ####  #       #     #       #     #
+  **           #       #       #     # #     #     #
+  **            #####  #       ######   #####      #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the eFBS SCIM Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0501-01" description="Deploys eFBS SCIM Service Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501-01 eFBS SCIM Service Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0501 systemConnector eFBS/mds/efbs-p-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0501-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **                   ####### ######   #####      #######
+  **                   #       #     # #     #     #
+  **            #####  #       #     # #           #
+  **           #     # ######  ######   #####      ######
+  **           # ####  #       #     #       #     #
+  **           #       #       #     # #     #     #
+  **            #####  #       ######   #####      #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the eFBS SCIM Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0501-02" description="Deploys eFBS SCIM Service Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501-02 eFBS SCIM Service Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0501 systemConnector eFBS/mds/efbs-e-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0501-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####   #####
+  **           #     # #     # #     #
+  **           #     # #       #
+  **           ######   #####  #
+  **           #             # #
+  **           #       #     # #     #
+  **           #        #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the VMware Platform Service Controller Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in VMware Platform Service Controller connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0601" description="Deploys VMware Platform Service Controller Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0601 VMware Platform Service Controller Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0601 systemConnector PSC/mds/psc-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0601 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      ######
+  **           #       #       #           #
+  **           #       #     # #           #
+  **           #        #####  #           #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Pivotal Cloud Foundry Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0701-01" description="Deploys Pivotal Cloud Foundry Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 Pivotal Cloud Foundry Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0701 systemConnector PCF/mds/pcf-p-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      #     #
+  **           #       #       #           #     #
+  **           #       #     # #           #     #
+  **           #        #####  #           ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Pivotal Cloud Foundry Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0701-02" description="Deploys Pivotal Cloud Foundry Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 Pivotal Cloud Foundry Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0701 systemConnector PCF/mds/pcf-d-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####     #     #     #
+  **           #     #    #      # #    #     #
+  **           #     #    #     #   #   #     #
+  **           ######     #    #     #  #     #
+  **           #          #    #######   #   #
+  **           #          #    #     #    # #
+  **           #        #####  #     #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the PAIV Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0801" description="Deploys Pivotal Cloud Foundry Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0801 PIAV Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0801 systemConnector PIAV/mds/piav-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0801 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######     #    ######
+  **           #     #   # #   #     #
+  **           #     #  #   #  #     #
+  **           ######  #     # ######
+  **           #       ####### #
+  **           #       #     # #
+  **           #       #     # #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the PSP Active Directory Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0901" description="Deploys PSP Actice Directory Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0901 PSP Actice Directory Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0901 systemConnector PAP/mds/pap-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0901 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######     ##
+  **           #     #      #     # #
+  **           #           #     #  #
+  **            #####     #     #   #
+  **                 #   #     #######
+  **           #     #  #           #
+  **            #####  #######      #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the SZ4 Active Directory Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="0902" description="Deploys SZ4 Actice Directory Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0902 SZ4 Actice Directory Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0902 systemConnector SZ4/mds/sz4-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="0902 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **               #    #######  #####
+  **              # #         # #     #
+  **             #   #        # #
+  **            #     #       #  #####
+  **            #######       #       #
+  **            #     # #     # #     #
+  **            #     #  #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Atlasisn Jira Server Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1001" description="Deploys Atlasisn Jira Server Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1001 Atlasisn Jira Server Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1001 systemConnector AJS/mds/ajs-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######
+  **            #     #   # #   #          #     #
+  **            #        #   #  #          #     #
+  **            # ##### #     # #####      ######
+  **            #     # ####### #          #
+  **            #     # #     # #          #
+  **             #####  #     # #######    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Google Apigee Edge Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1101-01" description="Deploys Google Apigee Edge Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 Google Apigee Edge Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1101 systemConnector GAE/mds/gae-p-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######
+  **            #     #   # #   #             #
+  **            #        #   #  #             #
+  **            # ##### #     # #####         #
+  **            #     # ####### #             #
+  **            #     # #     # #             #
+  **             #####  #     # #######       #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Google Apigee Edge Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1101-02" description="Deploys Google Apigee Edge Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 Google Apigee Edge Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1101 systemConnector GAE/mds/gae-t-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####     #
+  **            #     #   # #   #          #     #   #     # #    ##   ##
+  **            #        #   #  #          #     #   #     # #   # #  # #
+  **            # ##### #     # #####      ######    #     # #  #  #    #
+  **            #     # ####### #          #         #     # # #   #    #
+  **            #     # #     # #          #         #     # ##    #    #
+  **             #####  #     # #######    #         ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Google Apigee Edge Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1101-03" description="Deploys the Google Apigee Edge Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-03 Google Apigee Edge Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1101 systemConnector GAE/mds/d01-p-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####   #####
+  **            #     #   # #   #          #     #   #     # #    ## #     #
+  **            #        #   #  #          #     #   #     # #   # #       #
+  **            # ##### #     # #####      ######    #     # #  #  #   ####
+  **            #     # ####### #          #         #     # # #   #  #
+  **            #     # #     # #          #         #     # ##    # #
+  **             #####  #     # #######    #         ######   #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Google Apigee Edge Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1101-04" description="Deploys the Google Apigee Edge Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-04 Google Apigee Edge Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1101 systemConnector GAE/mds/d02-p-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####   #####
+  **            #     #   # #   #          #     #   #     # #    ## #     #
+  **            #        #   #  #          #     #   #     # #   # #       #
+  **            # ##### #     # #####      ######    #     # #  #  #   ####
+  **            #     # ####### #          #         #     # # #   #       #
+  **            #     # #     # #          #         #     # ##    # #     #
+  **             #####  #     # #######    #         ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Google Apigee Edge Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1101-05" description="Deploys the Google Apigee Edge Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-05 Google Apigee Edge Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1101 systemConnector GAE/mds/d03-p-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-05 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######   ######   #####     #
+  **            #     #   # #   #             #      #     # #    ##   ##
+  **            #        #   #  #             #      #     # #   # #  # #
+  **            # ##### #     # #####         #      #     # #  #  #    #
+  **            #     # ####### #             #      #     # # #   #    #
+  **            #     # #     # #             #      #     # ##    #    #
+  **             #####  #     # #######       #      ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Google Apigee Edge Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1101-06" description="Deploys the Google Apigee Edge Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-06 Google Apigee Edge Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1101 systemConnector GAE/mds/d01-t-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-06 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######   ######   #####   #####
+  **            #     #   # #   #             #      #     # #    ## #     #
+  **            #        #   #  #             #      #     # #   # #       #
+  **            # ##### #     # #####         #      #     # #  #  #   ####
+  **            #     # ####### #             #      #     # # #   #  #
+  **            #     # #     # #             #      #     # ##    # #
+  **             #####  #     # #######       #      ######   #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Google Apigee Edge Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1101-07" description="Deploys the Google Apigee Edge Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-07 Google Apigee Edge Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1101 systemConnector GAE/mds/d02-t-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-07 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######   ######   #####   #####
+  **            #     #   # #   #             #      #     # #    ## #     #
+  **            #        #   #  #             #      #     # #   # #       #
+  **            # ##### #     # #####         #      #     # #  #  #   ####
+  **            #     # ####### #             #      #     # # #   #       #
+  **            #     # #     # #             #      #     # ##    # #     #
+  **             #####  #     # #######       #      ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Google Apigee Edge Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1101-08" description="Deploys the Google Apigee Edge Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-08 Google Apigee Edge Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1101 systemConnector GAE/mds/d03-t-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1101-08 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######      #####  #######  #####
+  **           #     # #     # #           #     #      #  #     #
+  **           #     # #       #           #           #         #
+  **           ######  #       ######       #####     #     #####
+  **           #       #       #                 #   #           #
+  **           #       #     # #           #     #  #      #     #
+  **           #        #####  #            #####  #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Pivotal Cloud Foundry Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1201-01" description="Deploys Pivotal Cloud Foundry Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 Pivotal Cloud Foundry Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1201 systemConnector PCF/mds/pcf-sz3-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######      #####  #######     ##
+  **           #     # #     # #           #     #      #     # #
+  **           #     # #       #           #           #     #  #
+  **           ######  #       ######       #####     #     #   #
+  **           #       #       #                 #   #     #######
+  **           #       #     # #           #     #  #           #
+  **           #        #####  #            #####  #######      #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Pivotal Cloud Foundry Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Oracle Identity Manager connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1201-02" description="Deploys Pivotal Cloud Foundry Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1201-02 Pivotal Cloud Foundry Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1201 systemConnector PCF/mds/pcf-sz4-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1201-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ####### ######  #     # #######  #####
+  **           #     # #       #     # ##   ## #       #     #
+  **           #     # #       #     # # # # # #       #
+  **           ####### ######  ######  #  #  # ######   #####
+  **           #     # #       #  #    #     # #             #
+  **           #     # #       #   #   #     # #       #     #
+  **           #     # ####### #    #  #     # #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Active Directory Domain Hermes Access Request
+  **           Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1301" description="Deploys Active Directory Domain Hermes Access Request Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1301 Active Directory Domain Hermes Access Request ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1301 systemConnector ADH/mds/adh-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1301 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######   #####
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ######  # #####
+  **           #     # #             #     #       #     #
+  **           #     # #       #     #     #       #     #
+  **            #####  #        #####      #        #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-PG" description="Deploys the openfire Access Request Customization for Project Group">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-PG openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-pg-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-PG completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+ ******************************************************************************
+ **
+ **            #####  #######  #####         #    #     #
+ **           #     # #       #     #       # #   ##    #
+ **           #     # #       #            #   #  # #   #
+ **           #     # ######   #####      #     # #  #  #
+ **           #     # #             #     ####### #   # #
+ **           #     # #       #     #     #     # #    ##
+ **            #####  #        #####      #     # #     #
+ **
+ ******************************************************************************
+ ** Purpose:  Deploys the openfire Access Request Customizations.
+ **
+ ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+ **           in Active Directory Domain Hermes connector. This includes:
+ **           o Sandbox Metadata
+ ******************************************************************************
+ -->
+  <target name="1401-AN" description="Deploys the openfire Access Request Customization for Police Saxonia-Anhalt">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-AN openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-an-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-AN completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      ######  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-BB" description="Deploys the openfire Access Request Customization for Police Brandenburg">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BB openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-bb-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #######
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-BE" description="Deploys the openfire Access Request Customization for Police Berlin">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BE openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-be-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #    #
+  **           #     # #       #     #     #     # #   #
+  **           #     # #       #           #     # #  #
+  **           #     # ######   #####      ######  ###
+  **           #     # #             #     #     # #  #
+  **           #     # #       #     #     #     # #   #
+  **            #####  #        #####      ######  #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-BK"
+          description="Deploys the openfire Access Request Customization for Federal Criminal Police Office">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BK openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-bk-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BK completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-BP" description="Deploys the openfire Access Request Customization for Federal Police">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BP openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-bp-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #     #
+  **           #     # #       #     #     #     # #  #  #
+  **           #     # #       #           #     # #  #  #
+  **           #     # ######   #####      ######  #  #  #
+  **           #     # #             #     #     # #  #  #
+  **           #     # #       #     #     #     # #  #  #
+  **            #####  #        #####      ######   ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-BW" description="Deploys the openfire Access Request Customization for Police Baden-Wuerttemberg">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BW openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-bw-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     #  #   #
+  **           #     # ######   #####      ######    ###
+  **           #     # #             #     #     #    #
+  **           #     # #       #     #     #     #    #
+  **            #####  #        #####      ######     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-BY" description="Deploys the openfire Access Request Customization for Police Bavaria">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BY openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-by-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BY completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ####### ######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      #     # ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-HB" description="Deploys the openfire Access Request Customization for Police Bremen">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HB openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-hb-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-HB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #######
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ####### ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      #     # #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-HE" description="Deploys the openfire Access Request Customization for Police Hesse">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HE openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-he-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-HE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ####### #######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-HH" description="Deploys the openfire Access Request Customization for Police Hamburg">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HH openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-hh-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-HH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     ##   ## #     #
+  **           #     # #       #           # # # # #     #
+  **           #     # ######   #####      #  #  # #     #
+  **           #     # #             #     #     #  #   #
+  **           #     # #       #     #     #     #   # #
+  **            #####  #        #####      #     #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-MV"
+          description="Deploys the openfire Access Request Customization for Police Mecklenburg-Western Pomerania">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-MV openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-mv-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-MV completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     #  #####
+  **           #     # #       #     #     ##    #    #
+  **           #     # #       #           # #   #    #
+  **           #     # ######   #####      #  #  #    #
+  **           #     # #             #     #   # #    #
+  **           #     # #       #     #     #    ##    #
+  **            #####  #        #####      #     #  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-NI" description="Deploys the openfire Access Request Customization for Police Lower Saxony">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-NI openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-ni-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-NI completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     ##    # #  #  #
+  **           #     # #       #           # #   # #  #  #
+  **           #     # ######   #####      #  #  # #  #  #
+  **           #     # #             #     #   # # #  #  #
+  **           #     # #       #     #     #    ## #  #  #
+  **            #####  #        #####      #     #  ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-NW"
+          description="Deploys the openfire Access Request Customization for Police North Rhine-Westphalia">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-NW openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-nw-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-NW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #  #    #
+  **           #     # #       #     #     #   #   #
+  **            #####  #        #####      #    #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-RP"
+          description="Deploys the openfire Access Request Customization for Police Rhineland-Palatinate">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-RP openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-rp-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-RP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #       #     #
+  **           #     # ######   #####       #####  #######
+  **           #     # #             #           # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####       #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-SH" description="Deploys the openfire Access Request Customization for Police Schleswig-Holstein">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SH openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-sh-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-SH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #       #
+  **           #     # ######   #####       #####  #
+  **           #     # #             #           # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####       #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-SL" description="Deploys the openfire Access Request Customization for Police Saarland">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SL openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-sl-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-SL completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #     #
+  **           #     # #       #     #     #     # ##    #
+  **           #     # #       #           #       # #   #
+  **           #     # ######   #####       #####  #  #  #
+  **           #     # #             #           # #   # #
+  **           #     # #       #     #     #     # #    ##
+  **            #####  #        #####       #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-SN" description="Deploys the openfire Access Request Customization for Police Saxonia">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SN openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-sn-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-SN completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ####### #     #
+  **           #     # #       #     #        #    #     #
+  **           #     # #       #              #    #     #
+  **           #     # ######   #####         #    #######
+  **           #     # #             #        #    #     #
+  **           #     # #       #     #        #    #     #
+  **            #####  #        #####         #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-TH" description="Deploys the openfire Access Request Customization for Police Thuringia">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-TH openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-th-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-TH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ####### #######
+  **           #     # #       #     #          #  #
+  **           #     # #       #               #   #
+  **           #     # ######   #####         #    ######
+  **           #     # #             #       #     #
+  **           #     # #       #     #      #      #
+  **            #####  #        #####      ####### #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the openfire Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1401-ZF"
+          description="Deploys the openfire Access Request Customization for Customs Investigation Bureau">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-ZF openfire Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1401 systemConnector OFS/mds/ofs-zf-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-ZF completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     ######
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        #     #
+  **           #       #     #   # #       #     #
+  **           #       #     #  #   #      #     #
+  **           #       #     # #     #     ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Phoenix Directory Service Access Request
+  **           Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1501-01"
+          description="Deploys the Phoenix Directory Service Access Request Customization for Customs Investigation Bureau">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-01 Phoenix Directory Service Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1501 systemConnector PHX/mds/phx-d-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1501-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     #######
+  **           #     # #     #  #   #         #
+  **           #     # #     #   # #          #
+  **           ######  #######    #           #
+  **           #       #     #   # #          #
+  **           #       #     #  #   #         #
+  **           #       #     # #     #        #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Phoenix Directory Service Access Request
+  **           Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1501-02"
+          description="Deploys the Phoenix Directory Service Access Request Customization for Customs Investigation Bureau">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-02 Phoenix Directory Service Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1501 systemConnector PHX/mds/phx-t-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1501-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #      #####
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        #     #
+  **           #       #     #   # #       #  #  #
+  **           #       #     #  #   #      #   # #
+  **           #       #     # #     #      #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Phoenix Directory Service Access Request
+  **           Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1501-03"
+          description="Deploys the Phoenix Directory Service Access Request Customization for Customs Investigation Bureau">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-03 Phoenix Directory Service Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1501 systemConnector PHX/mds/phx-q-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1501-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     ######
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        ######
+  **           #       #     #   # #       #
+  **           #       #     #  #   #      #
+  **           #       #     # #     #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Phoenix Directory Service Access Request
+  **           Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Active Directory Domain Hermes connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1501-04"
+          description="Deploys the Phoenix Directory Service Access Request Customization for Customs Investigation Bureau">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-04 Phoenix Directory Service Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1501 systemConnector PHX/mds/phx-p-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1501-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######  #
+  **           ##   ## #     # #
+  **           # # # # #     # #
+  **           #  #  # #     # #
+  **           #     # #     # #
+  **           #     # #     # #
+  **           #     # ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Moodle Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Moodle Service connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1601" description="Deploys the Moodle Service Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1601 Moodle Service Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1601 systemConnector MDL/mds/mdl-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1601 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####        ######
+  **           ##    #    #     #    #    #     #       #     #
+  **           # #   #    #          #    #             #     #
+  **           #  #  #     #####     #     #####   ###  ######
+  **           #   # #          #    #          #       #
+  **           #    ## ## #     #    #    #     #       #
+  **           #     # ##  #####   #####   #####        #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the N.SIS Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in N.SIS Service connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1701-01" description="Deploys the N.SIS Service Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1701-01 N.SIS Service Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1701 systemConnector N.SIS/mds/nsis-p-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1701-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####        #######
+  **           ##    #    #     #    #    #     #          #
+  **           # #   #    #          #    #                #
+  **           #  #  #     #####     #     #####   ###     #
+  **           #   # #          #    #          #          #
+  **           #    ## ## #     #    #    #     #          #
+  **           #     # ##  #####   #####   #####           #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the N.SIS Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in N.SIS Service connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1701-02" description="Deploys the N.SIS Service Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1701-02 N.SIS Service Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1701 systemConnector N.SIS/mds/nsis-t-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1701-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####        ######
+  **             #    #     # #     #       #     #
+  **             #    #       #             #     #
+  **             #    #   ###  #####   ###  ######
+  **             #    #     #       #       #
+  **             #    #     # #     #       #
+  **           #####   #####   #####        #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Identity Governance Service
+  **           Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Service connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1801-01" description="Deploys the Identity Governance Service Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 Identity Governance Service Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1801 systemConnector IGS/mds/igs-p-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####       #######
+  **             #    #     # #     #         #
+  **             #    #       #               #
+  **             #    #   ###  #####   ###    #
+  **             #    #     #       #         #
+  **             #    #     # #     #         #
+  **           #####   #####   #####          #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Identity Governance Service
+  **           Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Service connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1801-02" description="Deploys the Identity Governance Service Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 Identity Governance Service Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1801 systemConnector IGS/mds/igs-t-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####   #####
+  **           #     #    #    #     #
+  **           #     #    #    #
+  **           #     #    #    #   ###
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Identity Governance
+  **           Provisioning Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="1901" description="Deploys the Identity Governance Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1901 Identity Governance Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="1901 systemConnector OIG/mds/oig-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="1901 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####  #     #  ######
+  **                #     #    ##   ##  #     #
+  **               #      #    # # # #  #     #
+  **              #       #    #  #  #  ######
+  **             #        #    #     #  #
+  **            #         #    #     #  #
+  **           #######  #####  #     #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the ZIMP Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-01" description="Deploys the ZIMP Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-01 ZIMP Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/zimp-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######  ######
+  **           #     # #     # #     #
+  **           #     # #     # #     #
+  **           ######  #     # ######
+  **           #     # #     # #
+  **           #     # #     # #
+  **           ######  ######  #
+  **
+  ********************************************************************************
+  ** Purpose:  Deploys the BDP Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-02" description="Deploys the BDP Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-02 BDP Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/bdp-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####
+  **           ##    #    #     #    #    #     #
+  **           # #   #    #          #    #
+  **           #  #  #     #####     #     #####
+  **           #   # #          #    #          #
+  **           #    ## ## #     #    #    #     #
+  **           #     # ##  #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the NSIS Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-03" description="Deploys the NSIS Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 NSIS Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/nsis-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ####### #    #    #
+  **           #     # #       #   #    # #
+  **           #     # #       #  #    #   #
+  **           #     # ######  ###    #     #
+  **            #   #  #       #  #   #######
+  **             # #   #       #   #  #     #
+  **              #    #       #    # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the VFKA Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-04" description="Deploys the VFKA Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-04 VFKA Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/vfka-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #    # ##### #     # #     #
+  **           #   #    #   #     # #     #
+  **           #  #     #   #     # #     #
+  **           ###      #   #     # #     #
+  **           #  #     #    #   #  #     #
+  **           #   #    #     # #   #     #
+  **           #    # #####    #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the KIVU Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-05" description="Deploys the KIVU Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-05 KIVU Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/kivu-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-05 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #     #  #####  #####
+  **           #     # #     # #     #   #
+  **           #       #     # #         #
+  **            #####  #     #  #####    #
+  **                 # #     #       #   #
+  **           #     # #     # #     #   #
+  **            #####   #####   #####  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the SUSI Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-06" description="Deploys the SUSI Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-06 SUSI Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/susi-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-06 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####  #####  ######  #
+  **             #   #     # #     # #
+  **             #   #       #     # #
+  **             #    #####  ######  #
+  **             #         # #       #
+  **             #   #     # #       #
+  **           #####  #####  #       #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the ISPL Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-07" description="Deploys the ISPL Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-07 ISPL Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/ispl-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-07 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ##### ####### #     #
+  **           #     #   #      #    #     #
+  **           #         #      #    #     #
+  **            #####    #      #    #     #
+  **                 #   #      #    #     #
+  **           #     #   #      #    #     #
+  **            #####  #####    #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the SITU Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-08" description="Deploys the SITU Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-08 SITU Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/situ-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-08 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######   #####
+  **           #     # #     # #     #
+  **           #     # #     # #
+  **           #     # ######  #
+  **           #     # #       #
+  **           #     # #       #     #
+  **            #####  #        #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the UPC Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-09" description="Deploys the UPC Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-09 UPC Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/upc-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-09 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     #  #####  #######
+  **           #     # #     # #     # #
+  **           #     # #     # #     # #
+  **           #     # ####### #     # ######
+  **           #     # #     # #     # #
+  **           #     # #     # #     # #
+  **           ######  #     #  #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the DH Production Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2001-10" description="Deploys the DH Production Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-10 DH Production Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2001 systemConnector APPS/mds/dhoe-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2001-10 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #      #     #     ######  ######
+  **           #     # #       #   #      #     # #     #
+  **           #     # #        # #       #     # #     #
+  **           ######  #         #        ######  ######
+  **           #       #        # #       #     # #     #
+  **           #       #       #   #      #     # #     #
+  **           #       #####  #     #     ######  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the PLX Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2101-BB" description="Deploys the PLX Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101-BB PLX Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2101 systemConnector PLX/mds/plx-bb-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2101-BB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #######  ####### #######
+  **           #     # ##   ##    #     #       #
+  **           #     # # # # #    #     #       #
+  **           #     # #  #  #    #     ######  #####
+  **           #     # #     #    #     #       #
+  **           #     # #     #    #     #       #
+  **           ######  #     #    #     #       #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the DMTFEAccount Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2201-01" description="Deploys the DMTFEAccount Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2201-01 DMTFEAccount Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2201 systemConnector APPS/mds/dmtfe-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2201-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #######  ######  #######
+  **           #     # ##   ##    #     #     # #
+  **           #     # # # # #    #     #     # #
+  **           #     # #  #  #    #     ######  #####
+  **           #     # #     #    #     #     # #
+  **           #     # #     #    #     #     # #
+  **           ######  #     #    #     ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the DMTBEAccount Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2201-02" description="Deploys the DMTBEAccount Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2201-02 DMTBEAccount Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2201 systemConnector APPS/mds/dmtbe-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2201-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####   #####   ######  #######
+  **              #    #     # #     #  #     # #
+  **              #    #       #        #     # #
+  **              #     #####   #####   ######  #####
+  **              #          #       #  #     # #
+  **              #    #     # #     #  #     # #
+  **              #     #####   #####   ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the TSSBEAccount Service Access Request Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Governance Provisioning connector. This includes:
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="2201-03" description="Deploys the TSSBEAccount Provisioning Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2201-03 TSSBEAccount Provisioning Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="2201 systemConnector APPS/mds/tssbe-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="2201-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

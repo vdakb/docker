@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="System Health Configuration 12.2.1.3" exported-date="1589195070595" user="XELSYSADM" version="12.2.1.3.0">
+  <scheduledTask mds-file="AccessPolicyHouseKeeping.xml" mds-path="/db" name="AccessPolicyHouseKeeping" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+          <name>AccessPolicyHouseKeeping</name>
+          <class>bka.iam.identity.service.health.AccessPolicyHouseKeeping</class>
+          <description>An Access Policy HouseKeeping Job instance removes entitlements and multi-valued attributes that are no longer avalaible in the target system belonging to access policies</description>
+          <retry>0</retry>
+          <parameters>
+            <string-param  required="true"  encrypted="false" helpText="The IT Resource used to establish the connection to the Target System">IT Resource</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Holds the timestamp when this job was last executed successfully">Last Reconciled</string-param>
+            <boolean-param required="true"  encrypted="false" helpText="Select the option Yes if all affected Access Policies should be cleaned up; otherwise select option No">Cleanup Policy</boolean-param>
+            <string-param  required="true"  encrypted="false" helpText="The name of the object to reconcile">Reconciliation Object</string-param>
+            <string-param  required="true"  encrypted="false" helpText="The name of the template used to send notification about the changes to the policy owner(s)">Notification Template</string-param>
+            <string-param  required="false" encrypted="false" helpText="Specifies the name of the Job that will be started by this Job on successfully completion">Dependent Job</string-param>
+          </parameters>
+        </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+  <scheduledTask mds-file="IncidentDigestObserver.xml" mds-path="/db" name="IncidentDigestObserver" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+          <name>IncidentDigestObserver</name>
+          <class>bka.iam.identity.service.health.IncidentDigestObserver</class>
+          <description>An System Health Digest Job Notification instance reporting metrics that needs attention of an administrator.</description>
+          <retry>0</retry>
+          <parameters>
+            <string-param  required="true"  encrypted="false" helpText="The name of the template used to send notification about the metrics discovered">Notification Template</string-param>
+            <number-param  required="true"  encrypted="false" helpText="The period (in days) to be considered retrospectively">Reporting Period</number-param>
+            <boolean-param required="true"  encrypted="false" helpText="Select the option Yes if the amount of Open Tasks has to be reported; otherwise select option No">Open Tasks</boolean-param>
+            <boolean-param required="true"  encrypted="false" helpText="Select the option Yes if the amount of Jobs has to be reported that are stopped with exception; otherwise select option No">Failed Jobs</boolean-param>
+            <boolean-param required="true"  encrypted="false" helpText="Select the option Yes if the amount of Jobs has to be reported that are interrupted; otherwise select option No">Interrupted Jobs</boolean-param>
+            <boolean-param required="true"  encrypted="false" helpText="Select the option Yes if the amount of Reconciliation Events has to be reported that are in state No User Match Found; otherwise select option No">No User Match Found</boolean-param>
+            <boolean-param required="true"  encrypted="false" helpText="Select the option Yes if the amount of Reconciliation Events has to be reported that are in state Data Validation Failed; otherwise select option No">Data Validation Failed</boolean-param>
+            <boolean-param required="true"  encrypted="false" helpText="Select the option Yes if the amount of Orchestration Processes has to be reported that are in state Failed; otherwise select option No">Orchestration Process</boolean-param>
+            <string-param  required="false" encrypted="false" helpText="The name of an Admin Role to advise to whom the notifictaion have to be sent. If the value is omitted the notification will be sent to the members of OrclOIMSystemAdministrator.">Admin Role</string-param>
+            <string-param  required="false" encrypted="false" helpText="Specifies the name of the Job that will be started by this Job on successfully completion">Dependent Job</string-param>
+          </parameters>
+        </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+  <scheduledTask mds-file="PropagateProcessFormAttribute.xml" mds-path="/db" name="PropagateProcessFormAttribute" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+          <name>PropagateProcessFormAttribute</name>
+          <class>bka.iam.identity.process.PropagateProcessFormAttribute</class>
+          <description>A Propagate Process Form Attribute Job instance call provisioning workflows from the specified attributes fied for the provided resource object name</description>
+          <retry>0</retry>
+          <parameters>
+            <string-param  required="true"  encrypted="false" helpText="The name of the resource object">Resource Object</string-param>
+            <string-param  required="true"  encrypted="false" helpText="List of the attributes separated by semicolomns that need to be update on the resource">Attributes</string-param>
+            <string-param  required="false" encrypted="false" helpText="List of the users separated by semicolomns where the provisioning workflow will be call for the specified attributes.If the value is omitted, every user belonging to the resource object will be call.">Users</string-param>
+          </parameters>
+        </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+  <scheduledTask mds-file="P20 Directory Synchronization.xml" mds-path="/db" name="P20 Directory Synchronization"  repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+          <name>P20 Directory Synchronization</name>
+          <class>bka.iam.identity.service.ldap.DirectorySynchronization</class>
+          <description>P20 Directory Synchronization Job instance synchronize sub-entries (i.e Role, Group and Intermediate OU) from a source to a target</description>
+          <retry>0</retry>
+          <parameters>
+            <string-param required="true"  encrypted="false" helpText="The IT Resource used to establish the connection to the Source System">IT Resource Source</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Organization search base to retrieve entries from the Source system.">Search Base Organization Source</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Role search base to retrieve entries from the Source system.">Search Base Role Source</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Intermediate search base to retrieve entries from the Source system.">Search Base Intermediate Source</string-param>
+            <string-param required="true"  encrypted="false" helpText="The IT Resource used to establish the connection to the Target System">IT Resource Target</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Organization search base to retrieve entries from the Target system.">Search Base Organization Target</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Role search base to retrieve entries from the Target system.">Search Base Role Target</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Intermediate search base to retrieve entries from the Target system.">Search Base Intermediate Target</string-param>
+            <string-param required="false" encrypted="false" helpText="Type of object classes that will be copied in the provided dn entries. Multiple values must be separated by '|'">Object Classes</string-param>
+            <string-param required="false" encrypted="false" helpText="Specifies an additional filter criteria that could be applied to retrieve directory entries. Must be a valid LDAP search filter">Search Filter</string-param>
+            <string-param required="false" encrypted="false" helpText="Specifies the attributes of an entry to synchronize. Multiple values must be separated by '|'">Attributes</string-param>
+            <string-param required="false" encrypted="false" helpText="Specifies the size of a block read from the reading source">Batch Size</string-param>
+          </parameters>
+        </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+</xl-ddm-data>

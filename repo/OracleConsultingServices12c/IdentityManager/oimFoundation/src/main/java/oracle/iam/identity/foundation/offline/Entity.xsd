@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:oim           ="http://www.oracle.com/schema/oim/offline"
+            targetNamespace     ="http://www.oracle.com/schema/oim/offline"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="entity"
+            version             ="1.0.0.0">
+  <xsd:complexType name="entity">
+    <xsd:sequence>
+      <xsd:element name="attribute"    minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="oim:token">
+              <xsd:attribute name="id" type="oim:token"     use="required"/>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id"            type="oim:token"     use="required"/>
+  </xsd:complexType>
+
+  <simpleType name="token">
+    <xsd:restriction base="xsd:token">
+      <xsd:whiteSpace value="collapse"/>
+    </xsd:restriction>
+  </simpleType>
+</xsd:schema>

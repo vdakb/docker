@@ -1,0 +1,439 @@
+{
+	"info": {
+		"_postman_id": "43fd0c73-b9ae-41aa-81de-740514f29710",
+		"name": "Unified Directory",
+		"description": "This collection contains 2 subfolders:  \nREST Administration - used for performing administration  \nREST Data Management - used for managing data using REST API  \nSCIM Data Management - used for managing data using SCIM API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12777809"
+	},
+	"item": [
+		{
+			"name": "REST Administration",
+			"item": [
+				{
+					"name": "root-dse",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{admin-service-rest}}",
+							"host": [
+								"{{admin-service-rest}}"
+							]
+						},
+						"description": "Get details about the OUD Server instance."
+					},
+					"response": []
+				}
+			],
+			"description": "This Admin REST API collection allows you to manage the configuration of OUD using the endpoint /rest/v1/admin.\n\nIn all these requests the {{admin-service-rest}} environemnt variable should be replaced with https://hostname.domain:port where is the hostname.domain where the Unified Directory Server resides, and port is the httpAdminConnectorPort of Unified Directory."
+		},
+		{
+			"name": "REST Data Management",
+			"item": [
+				{
+					"name": "People",
+					"item": [
+						{
+							"name": "System",
+							"item": [
+								{
+									"name": "list",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{directory-service-rest}}/ou=People,dc=bka,dc=bund,dc=de?scope=one",
+											"host": [
+												"{{directory-service-rest}}"
+											],
+											"path": [
+												"ou=People,dc=bka,dc=bund,dc=de"
+											],
+											"query": [
+												{
+													"key": "scope",
+													"value": "one"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "list",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{directory-service-rest}}/dc=bka,dc=bund,dc=de?scope=sub&filter=(objectClass=inetOrgPerson)",
+									"host": [
+										"{{directory-service-rest}}"
+									],
+									"path": [
+										"dc=bka,dc=bund,dc=de"
+									],
+									"query": [
+										{
+											"key": "scope",
+											"value": "sub"
+										},
+										{
+											"key": "filter",
+											"value": "(objectClass=inetOrgPerson)"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Group",
+					"item": [
+						{
+							"name": "ZIMP",
+							"item": [
+								{
+									"name": "ZIMP_ADMIN",
+									"item": [
+										{
+											"name": "lookup",
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"accept-encoding": true,
+													"accept": true,
+													"connection": true
+												}
+											},
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "{{directory-service-rest}}/cn=ZIMP_ADMIN,ou=Groups,ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de",
+													"host": [
+														"{{directory-service-rest}}"
+													],
+													"path": [
+														"cn=ZIMP_ADMIN,ou=Groups,ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create",
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"user-agent": true,
+													"accept": true,
+													"accept-encoding": true,
+													"connection": true
+												}
+											},
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{ \"msgType\"       : \"urn:ietf:params:rest:schemas:oracle:oud:1.0:AddRequest\"\n, \"dn\"            : \"cn=ZIMP_ADMIN,ou=Groups,ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de\"\n, \"attributes\"    : {\n    \"objectClass\" : [\n      \"top\"\n    , \"groupOfuniwueNames\"\n    ]\n  , \"cn\"          : \"ZIMP_ADMIN\"\n  , \"description\" : \"ZIMP Admin\"\n  }\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{directory-service-rest}}",
+													"host": [
+														"{{directory-service-rest}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "modify",
+											"request": {
+												"method": "PATCH",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{ \"msgType\"       : \"urn:ietf:params:rest:schemas:oracle:oud:1.0:ModifyRequest\"\n, \"operations\" : [\n    { \"opType\"    : \"add\"\n    , \"attribute\" : \"description\"\n    , \"values\"    : [\n        \"ZIMP Administrator\"\n      ]\n    }\n  ]\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{directory-service-rest}}/cn=ZIMP_ADMIN,ou=Groups,ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de",
+													"host": [
+														"{{directory-service-rest}}"
+													],
+													"path": [
+														"cn=ZIMP_ADMIN,ou=Groups,ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete",
+											"protocolProfileBehavior": {
+												"disabledSystemHeaders": {
+													"user-agent": true,
+													"accept": true,
+													"accept-encoding": true,
+													"connection": true
+												}
+											},
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "{{directory-service-rest}}/cn=ZIMP_ADMIN,ou=Groups,ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de",
+													"host": [
+														"{{directory-service-rest}}"
+													],
+													"path": [
+														"cn=ZIMP_ADMIN,ou=Groups,ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "list",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{directory-service-rest}}/ou=Groups,ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de?scope=one",
+											"host": [
+												"{{directory-service-rest}}"
+											],
+											"path": [
+												"ou=Groups,ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de"
+											],
+											"query": [
+												{
+													"key": "scope",
+													"value": "one"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "System",
+							"item": [
+								{
+									"name": "list",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"user-agent": true,
+											"accept": true,
+											"accept-encoding": true,
+											"connection": true
+										}
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{directory-service-rest}}/ou=Groups,dc=bka,dc=bund,dc=de?scope=one",
+											"host": [
+												"{{directory-service-rest}}"
+											],
+											"path": [
+												"ou=Groups,dc=bka,dc=bund,dc=de"
+											],
+											"query": [
+												{
+													"key": "scope",
+													"value": "one"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "list",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{directory-service-rest}}/dc=bka,dc=bund,dc=de?scope=sub&filter=(objectClass=groupOfUniqueNames)",
+									"host": [
+										"{{directory-service-rest}}"
+									],
+									"path": [
+										"dc=bka,dc=bund,dc=de"
+									],
+									"query": [
+										{
+											"key": "scope",
+											"value": "sub"
+										},
+										{
+											"key": "filter",
+											"value": "(objectClass=groupOfUniqueNames)"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "SCIM Data Management",
+			"item": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{principal-password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{principal-username}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

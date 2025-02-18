@@ -1,0 +1,1345 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name                ="Identity Access Setup Include"
+         xmlns:fmw           ="http://oracle.hst.deployment/fusion"
+         xmlns:jps           ="http://oracle.hst.deployment/security"
+         xmlns:wsm           ="http://oracle.hst.deployment/webservice"
+         xmlns:server        ="http://oracle.hst.deployment/topology"
+         xmlns:ids           ="http://oracle.iam.access/identitystore"
+         xmlns:accessagent   ="http://oracle.iam.access/accessagent"
+         xmlns:accesspolicy  ="http://oracle.iam.access/accesspolicy"
+         xmlns:accessservice ="http://oracle.iam.access/accessservice"
+         xmlns:identitydomain="http://oracle.iam.oauth/domain"
+         xmlns:resourceclient="http://oracle.iam.oauth/client"
+         xmlns:resourceserver="http://oracle.iam.oauth/resource">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name" value="${log.env}/fed-import-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   ######    #####
+  **              #     #     #  #     #
+  **              #     #     #  #
+  **              #     #     #   #####
+  **              #     #     #        #
+  **              #     #     #  #     #
+  **            #####   ######    #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Access Manager Identity Store Configuration
+  **
+  ** Synopsis: The tasks deploys the Identity Store
+  **           This includes:
+  **           o Primary User Identity Store (FederationIdentityStore)
+  ******************************************************************************
+  -->
+  <target name="0100" description="Creating Federation Identity Store in Oracle Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 Create Federation Identity Store Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <ids:create contextRef="jmx-context">
+      <ids:instance name="FederationIdentityStore">
+        <ids:parameter value="primary"               name="true"/>
+        <ids:parameter value="description"           name="Identity Store used to translate external User Principal Names to internal User Principal Names."/>
+        <ids:parameter value="serviceType"           name="${fed.server.type}"/>
+        <ids:parameter value="serviceProvider"       name="${fed.server.type}"/>
+        <ids:parameter value="serviceURL"            name="${fed.server.protocol}://${fed.server.host}:${fed.server.port}"/>
+        <ids:parameter value="servicePrincipal"      name="${fed.server.username}"/>
+        <ids:parameter value="serviceCredential"     name="${fed.server.password}"/>
+        <ids:parameter value="groupSearchBase"       name="${fed.server.base.group}"/>
+        <ids:parameter value="groupObjectClass"      name="groupOfUniqueNames"/>
+        <ids:parameter value="groupNameAttribute"    name="cn"/>
+        <ids:parameter value="groupCacheEnabled"     name="false"/>
+        <ids:parameter value="userSearchBase"        name="${fed.server.base.user}"/>
+        <ids:parameter value="userObjectClass"       name="inetOrgPerson"/>
+        <ids:parameter value="userNameAttribute"     name="uid"/>
+        <ids:parameter value="userPasswordAttribute" name="userPassword"/>
+        <ids:parameter value="prefetchedAttributes"  name="uid,cn,mail"/>
+      </ids:instance>
+    </ids:create>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####    #####    #####
+  **          #     #  #     #  #     #
+  **          #        #        #     #
+  **           #####    #####   #     #
+  **                #        #  #     #
+  **          #     #  #     #  #     #
+  **           #####    #####    #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys partially the Access Manager Authentication/Authorization
+  **           Policy Configuration
+  **
+  ** Synopsis: The tasks register Access Agents
+  **           This includes:
+  **           o Access Agent FederationIdentityAgent
+  ******************************************************************************
+  -->
+ <target name="0101" description="Register Access Agents in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0101 Register Access Agent Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <accessagent:create contextRef="www-context" verbose="true">
+      <instance name="FederationIdentityAgent">
+        <parameter value="virtualHost"                   name="true"/>
+        <parameter value="security"                      name="open"/>
+        <parameter value="autoCreatePolicy"              name="false"/>
+        <!--
+         | parameter below are in the same order they apeare in the UI
+         -->
+        <parameter value="cacheElementsMax"              name="100000"/>
+        <parameter value="cacheTimeout"                  name="1800"/>
+        <parameter value="tokenValidityPeriod"           name="3600"/>
+        <parameter value="connectionMax"                 name="1"/>
+        <parameter value="failoverThreshold"             name="1"/>
+        <parameter value="preferredHost"                 name="SERVER_NAME"/>
+        <parameter value="logoutCallbackURL"             name="/oam_logout_success"/>
+        <parameter value="logoutRedirectURL"             name="https://sso.cinnamonstar.oam/oam/server/logout"/>
+
+        <parameter value="denyNotProtected"              name="true"/>
+        <parameter value="sleep"                         name="60"/>
+        <parameter value="browserCachePragmaHeader"      name="no-cache"/>
+        <parameter value="browserCacheControlHeader"     name="no-cache"/>
+        <parameter value="debug"                         name="true"/>
+        <parameter value="allowManagementOperation"      name="true"/>
+        <!--
+        <logoutURL>
+          <url value="/oamsso/logout.html"/>
+        </logoutURL>
+        -->
+        <userDefined>
+          <userProperty name="EnableHostPortValidation">
+            <userValue value="false"/>
+          </userProperty>
+          <userProperty name="URLInUTF8Format">
+            <userValue value="true"/>
+          </userProperty>
+          <userProperty name="client_request_retry_attempts">
+            <userValue value="1"/>
+          </userProperty>
+          <userProperty name="enableDiagnosticPage">
+            <userValue value="true"/>
+          </userProperty>
+          <userProperty name="inactiveReconfigPeriod">
+            <userValue value="10"/>
+          </userProperty>
+          <userProperty name="maxSessionTimeUnits">
+            <userValue value="minutes"/>
+          </userProperty>
+          <userProperty name="proxySSLHeaderVar">
+            <userValue value="IS_SSL"/>
+          </userProperty>
+          <userProperty name="OAMServerCommunicationMode">
+            <userValue value="HTTPS"/>
+          </userProperty>
+          <userProperty name="OAMRestEndPointHostName">
+            <userValue value="sso.cinnamonstar.oam"/>
+          </userProperty>
+          <userProperty name="OAMRestEndPointPort">
+            <userValue value="443"/>
+          </userProperty>
+        </userDefined>
+        <serverPrimary>
+          <server host="oam" connectionMax="1"/>
+        </serverPrimary>
+        <serverSecondary/>
+       <variations>
+          <server host="sso.cinnamonstar.oam" port="443"/>
+       </variations>
+      </instance>
+    </accessagent:create>
+    <echo message="=================================================================="/>
+    <echo message="0101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####    #####    #####
+  **          #     #  #     #  #     #
+  **          #        #        #     #
+  **           #####    #####   #     #
+  **                #        #  #     #
+  **          #     #  #     #  #     #
+  **           #####    #####    #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Authentication/Authorization
+  **           Policy Configuration
+  **
+  ** Synopsis: The tasks deploys the certain Policies
+  **           This includes:
+  **           o Authentication/Authorization Policy Single Sign On Domain
+  ******************************************************************************
+  -->
+  <target name="0102" description="Creating Authentication/Authorization in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0102 Create Authentication/Authorization Policy Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <accesspolicy:create contextRef="jmx-context">
+      <instance name="Single Sign On Domain">
+        <parameter value="description"      name="The security policies enabling Access Manager Agent to protect resources involved in the authentication and authorization flows."/>
+        <parameter value="idleTimeout"      name="0"/>
+        <parameter value="policyOrdering"   name="false"/>
+        <variations name       ="FederationAgent"
+                    description="The Host Name variations that can occur accessing resources during authentication and authorization flows.">
+          <server host="sso.cinnamonstar.oam" port="443"/>
+        </variations>
+        <authentication>
+          <authenticationPolicy name                ="authn-public"
+                                description         ="Authenticate access to public resources in Single Sign On Domain."
+                                authenticationScheme="AnonymousScheme">
+            </authenticationPolicy>
+            <authenticationPolicy name              ="authn-protected"
+                                description         ="Authenticate access to protected resources in Single Sign On Domain."
+                                authenticationScheme="FederationIdentityScheme">
+            </authenticationPolicy>
+            <authenticationPolicy name              ="openid-protected"
+                                description         ="Authenticate access to protected resources in Single Sign On Domain leveraging an OpenIdConnect 3-leg flow."
+                                authenticationScheme="OpenIDLocalScheme">
+            </authenticationPolicy>
+            openid-protected
+          </authentication>
+          <authorization>
+            <authorizationPolicy name                ="authz-public"
+                                 description         ="Authorize access to public resources in Single Sign On Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+            <authorizationPolicy name                ="authz-protected"
+                                 description         ="Authorize access to protected resources in Single Sign On Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+          </authorization>
+        <resourcePublic/>
+        <resourceProtected>
+          <uri value="/p20/consent"               hostIdentifier="FederationAgent" queryString="" description="Context URL to cover customized user consent of a 3-legged OAuth authentication flow in the Single Sign On Domain."/>
+          <uri value="/oam/pages/consent.jsp"     hostIdentifier="FederationAgent" queryString="" description="Context URL to cover standard user consent of a 3-legged OAuth authentication flow in the Single Sign On Domain."/>
+          <uri value="/oauth2/rest/approval/skip" hostIdentifier="FederationAgent" queryString="" description="Context URL to cover user approval of a 3-legged OAuth authentication flow in the Single Sign On Domain."/>
+          <uri value="/oauth2/rest/approval"      hostIdentifier="FederationAgent" queryString="" description="Context URL to cover user approval of a 3-legged OAuth authentication flow in the Single Sign On Domain."/>
+        </resourceProtected>
+        <resourceExcluded>
+          <uri value="/oam/**"                hostIdentifier="FederationAgent" queryString="" description="Context URL to cover all of the resources being accessed in the application Access Manager Challenge Response operations in the Single Sign On Domain."/>
+          <uri value="/oamsso/**"             hostIdentifier="FederationAgent" queryString="" description="Context URL to cover all of the resources being accessed in the Access Manager Single Sign On flows in the Single Sign On Domain."/>
+          <uri value="/oamfed/**"             hostIdentifier="FederationAgent" queryString="" description="Context URL to cover all of the resources being accessed in the Identity Federation Services provided by the Single Sign On Domain."/>
+          <uri value="/otpfp/**"              hostIdentifier="FederationAgent" queryString="" description="Context URL to cover all of the resources being accessed in the Access Manager Forgotten Password capabilities in the Single Sign On Domain."/>
+          <uri value="/.well-known/**"        hostIdentifier="FederationAgent" queryString="" description="Context URL to cover all of the resources being accessed in the OpenID Connect endpoint discovery provided by OAuth in the Single Sign On Domain."/>
+          <uri value="/oauth2/rest/**"        hostIdentifier="FederationAgent" queryString="" description="Context URL to cover the Runtime REST APIs for 2-legged and 3-legged OAuth Services flowc in the Single Sign On Domain."/>
+          <uri value="/ecc/**"                hostIdentifier="FederationAgent" queryString="" description="Context URL to cover all the resources being accessed in the Access Manager Embedded Credential Collector forms in the Single Sign On Domain."/>
+          <uri value="/p20/**"                hostIdentifier="FederationAgent" queryString="" description="Context URL to cover all the resources being accessed in the Access Manager Embedded Credential Collector forms in the Single Sign On Domain."/>
+          <uri value="/favicon.ico"           hostIdentifier="FederationAgent" queryString="" description="Context URL to the page bookmark icon in the Single Sign On Domain."/>
+        </resourceExcluded>
+      </instance>
+    </accesspolicy:create>
+    <echo message="=================================================================="/>
+    <echo message="0102 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     ######
+  **              #       # #    #     #
+  **              #      #   #   #     #
+  **              #     #     #  #     #
+  **              #     #######  #     #
+  **              #     #     #  #     #
+  **            #####   #     #  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Authentication/Authorization
+  **           Policy Configuration
+  **
+  ** Synopsis: The tasks deploys the certain Policies
+  **           This includes:
+  **           o Authentication/Authorization Policy Identity Access Domain
+  ******************************************************************************
+  -->
+  <target name="0103" description="Creating Authentication/Authorization in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0103 Create Authentication/Authorization Policy Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <accesspolicy:create contextRef="jmx-context">
+      <instance name="Identity Access Domain">
+        <parameter value="description"      name="The security policies enabling Access Manager Agent to protect resources deployed in the Identity Access Domain."/>
+        <parameter value="idleTimeout"      name="0"/>
+        <parameter value="policyOrdering"   name="false"/>
+        <variations name       ="FederationAccess"
+                    description="The Host Name variations that can occur accessing resources belonging to Identity Access Domain.">
+          <server host="iad.cinnamonstar.oam" port="443"/>
+        </variations>
+        <authentication>
+          <authenticationPolicy name                ="authn-public"
+                                description         ="Authenticate access to public resources in Identity Access Domain."
+                                authenticationScheme="AnonymousScheme">
+            </authenticationPolicy>
+            <authenticationPolicy name              ="authn-protected"
+                                description         ="Authenticate access to public resources in Identity Access Domain."
+                                authenticationScheme="FederationIdentityScheme">
+            </authenticationPolicy>
+          </authentication>
+          <authorization>
+            <authorizationPolicy name       ="authz-public"
+                                 description="Authorize access to public resources in Identity Access Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+            <authorizationPolicy name       ="authz-protected"
+                                 description="Authorize access to protected resources in Identity Access Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+          </authorization>
+        <resourceProtected/>
+        <resourcePublic/>
+        <resourceExcluded>
+          <uri value="/console/**"     hostIdentifier="FederationAccess" queryString="" description="Context URL to the WebLogic Administration Console in the Identity Access Domain."/>
+          <uri value="/consolehelp/**" hostIdentifier="FederationAccess" queryString="" description="Context URL to the WebLogic Administration Console in the Identity Access Domain."/>
+          <uri value="/em/**"          hostIdentifier="FederationAccess" queryString="" description="Context URL to the Fusion Middleware Control in the Identity Access Domain."/>
+          <uri value="/oamconsole/**"  hostIdentifier="FederationAccess" queryString="" description="Context URL to the Access Manager Configuration Console in the Identity Access Domain."/>
+          <uri value="/access/**"      hostIdentifier="FederationAccess" queryString="" description="Context URL to the Policy Manager Console in the Identity Access Domain."/>
+          <uri value="/oudsm/**"       hostIdentifier="FederationAccess" queryString="" description="Context URL to the Directory Service Manager Console in the Identity Access Domain."/>
+          <uri value="/iam/**"         hostIdentifier="FederationAccess" queryString="" description="Context URL to the Access Manager Administration in the Identity Access Domain."/>
+          <uri value="/oam/**"         hostIdentifier="FederationAccess" queryString="" description="Context URL to the Access Manager Services in the Identity Access Domain."/>
+          <uri value="/opss/**"        hostIdentifier="FederationAccess" queryString="" description="Context URL to the Platform Security Services in the Identity Access Domain."/>
+          <uri value="/favicon.ico"    hostIdentifier="FederationAccess" queryString="" description="Context URL to the page bookmark icon in the Identity Access Domain."/>
+        </resourceExcluded>
+      </instance>
+    </accesspolicy:create>
+    <echo message="=================================================================="/>
+    <echo message="0103 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####   ######
+  **              #    #     #  #     #
+  **              #    #        #     #
+  **              #    #  ####  #     #
+  **              #    #     #  #     #
+  **              #    #     #  #     #
+  **            #####   #####   ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Authentication/Authorization
+  **           Policy Configuration
+  **
+  ** Synopsis: The tasks deploys the certain Policies
+  **           This includes:
+  **           o Authentication/Authorization Policy Identity Governance Domain
+  ******************************************************************************
+  -->
+  <target name="0104" description="Creating Authentication/Authorization in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0104 Create Authentication/Authorization Policy Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <accesspolicy:create contextRef="jmx-context">
+      <instance name="Identity Governance Domain">
+        <parameter value="description"      name="The security policies to enabling Access Manager Agent protect resources deployed in the Identity Governance Domain."/>
+        <parameter value="idleTimeout"      name="0"/>
+        <parameter value="policyOrdering"   name="false"/>
+        <variations name       ="FederationIdentity"
+                    description="The Host Name variations that can occur accessing resources belonging to Identity Governance Domain.">
+          <server host="igd.cinnamonstar.oam" port="443"/>
+        </variations>
+        <authentication>
+          <authenticationPolicy name                ="authn-public"
+                                description         ="Authenticate access to public resources in Identity Governance Domain."
+                                authenticationScheme="AnonymousScheme">
+              <response>
+                <responseSuccess name="authn-public-cookie"  type="Cookie"  value="123"/>
+                <responseSuccess name="authn-public-session" type="Session" value="234"/>
+                <responseSuccess name="authn-public-header"  type="Header"  value="345"/>
+              </response>
+            </authenticationPolicy>
+            <authenticationPolicy name              ="authn-protected"
+                                description         ="Authenticate access to public resources in Identity Governance Domain."
+                                authenticationScheme="DirectoryDefaultScheme">
+              <response>
+                <responseSuccess name="authn-protected-cookie"  type="Cookie"  value="123"/>
+                <responseSuccess name="authn-protected-session" type="Session" value="234"/>
+                <responseSuccess name="authn-protected-header"  type="Header"  value="345"/>
+              </response>
+            </authenticationPolicy>
+          </authentication>
+          <authorization>
+            <authorizationPolicy name       ="authz-public"
+                                 description="Authorize access to public resources in Identity Governance Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+            <authorizationPolicy name       ="authz-protected"
+                                 description="Authorize access to protected resources in Identity Governance Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+          </authorization>
+        <resourceProtected/>
+        <resourcePublic/>
+        <resourceExcluded>
+          <uri value="/console/**"    hostIdentifier="FederationGovernance" queryString="" description="Context URL to the WebLogic Administration Console in the Identity Governance Domain."/>
+          <uri value="/em/**"         hostIdentifier="FederationGovernance" queryString="" description="Context URL to the Fusion Middleware Control in the Identity Governance Domain."/>
+          <uri value="/sysadmin/**"   hostIdentifier="FederationGovernance" queryString="" description="Context URL to the System Administration Console in the Identity Governance Domain."/>
+          <uri value="/identity/**"   hostIdentifier="FederationGovernance" queryString="" description="Context URL to the Self-Service Console in the Identity Governance Domain."/>
+          <uri value="/sysauthz/**"   hostIdentifier="FederationGovernance" queryString="" description="Context URL to the System Authorization Console in the Identity Governance Domain."/>
+          <uri value="/favicon.ico"   hostIdentifier="FederationGovernance" queryString="" description="Context URL to the page bookmark icon in the Identity Access Domain."/>
+        </resourceExcluded>
+      </instance>
+    </accesspolicy:create>
+    <echo message="=================================================================="/>
+    <echo message="0104 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####   ######
+  **              #    #     #  #     #
+  **              #    #        #     #
+  **              #    #        #     #
+  **              #    #        #     #
+  **              #    #     #  #     #
+  **            #####   #####   ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Authentication/Authorization
+  **           Policy Configuration
+  **
+  ** Synopsis: The tasks deploys the certain Policies
+  **           This includes:
+  **           o Authentication/Authorization Policy Identity Config Domain
+  ******************************************************************************
+  -->
+  <target name="0105" description="Creating Authentication/Authorization in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0105 Create Authentication/Authorization Policy Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <accesspolicy:create contextRef="jmx-context">
+      <instance name="Identity Config Domain">
+        <parameter value="description"      name="The security policies to enabling Access Manager Agent protect resources deployed in the Identity Config Domain."/>
+        <parameter value="idleTimeout"      name="0"/>
+        <parameter value="policyOrdering"   name="false"/>
+        <variations name.      ="FederationConfig"
+                    description="The Host Name variations that can occur accessing resources belonging to Identity Config Domain.">
+          <server host="icd.cinnamonstar.oam" port="443"/>
+        </variations>
+        <authentication>
+          <authenticationPolicy name                ="authn-public"
+                                description         ="Authenticate access to public resources in Identity Config Domain."
+                                authenticationScheme="AnonymousScheme">
+              <response>
+                <responseSuccess name="authn-public-cookie"  type="Cookie"  value="123"/>
+                <responseSuccess name="authn-public-session" type="Session" value="234"/>
+                <responseSuccess name="authn-public-header"  type="Header"  value="345"/>
+              </response>
+            </authenticationPolicy>
+            <authenticationPolicy name              ="authn-protected"
+                                description         ="Authenticate access to public resources in Identity Config Domain."
+                                authenticationScheme="DirectoryDefaultScheme">
+              <response>
+                <responseSuccess name="authn-protected-cookie"  type="Cookie"  value="123"/>
+                <responseSuccess name="authn-protected-session" type="Session" value="234"/>
+                <responseSuccess name="authn-protected-header"  type="Header"  value="345"/>
+              </response>
+            </authenticationPolicy>
+          </authentication>
+          <authorization>
+            <authorizationPolicy name      ="authz-public"
+                                 description="Authorize access to public resources in Identity Config Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+            <authorizationPolicy name       ="authz-protected"
+                                 description="Authorize access to protected resources in Identity Config Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+          </authorization>
+        <resourceProtected/>
+        <resourcePublic/>
+        <resourceExcluded>
+          <uri value="/console/**"    hostIdentifier="FederationConfig" queryString="" description="Context URL to the WebLogic Administration Console in the Identity Config Domain."/>
+          <uri value="/em/**"         hostIdentifier="FederationConfig" queryString="" description="Context URL to the Fusion Middleware Control in the Identity Config Domain."/>
+          <uri value="/oudsm/**"      hostIdentifier="FederationConfig" queryString="" description="Context URL to the Directory Service Manager Console in the Identity Configuration Domain."/>
+          <uri value="/xmlpserver/**" hostIdentifier="FederationConfig" queryString="" description="Context URL to the BI Publisher Console in the Identity Configuration Domain."/>
+          <uri value="/favicon.ico"   hostIdentifier="FederationConfig" queryString="" description="Context URL to the page bookmark icon in the Identity Access Domain."/>
+        </resourceExcluded>
+      </instance>
+    </accesspolicy:create>
+    <echo message="=================================================================="/>
+    <echo message="0105 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####    #####    #####
+  **          #     #  #     #  #     #
+  **          #        #        #     #
+  **           #####    #####   #     #
+  **                #        #  #     #
+  **          #     #  #     #  #     #
+  **           #####    #####    #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Authentication/Authorization
+  **           Policy Configuration
+  **
+  ** Synopsis: The tasks deploys the certain Policies
+  **           This includes:
+  **           o Authentication/Authorization Policy Single Sign On Domain
+  ******************************************************************************
+  -->
+  <target name="0106" description="Creating Authentication/Authorization in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0106 Create Authentication/Authorization Policy Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <accesspolicy:create contextRef="jmx-context">
+      <instance name="Identity Service Domain">
+        <parameter value="description"      name="The security policies enabling Access Manager Agent to protect resources involved in the Identity Service Domain."/>
+        <parameter value="idleTimeout"      name="0"/>
+        <parameter value="policyOrdering"   name="false"/>
+        <variations name       ="FederationService"
+                    description="The Host Name variations that can occur accessing resources belonging to Identity Service Domain.">
+          <server host="isd.cinnamonstar.oam" port="443"/>
+        </variations>
+        <authentication>
+          <authenticationPolicy name                ="authn-public"
+                                description         ="Authenticate access to public resources in Identity Service Domain."
+                                authenticationScheme="AnonymousScheme">
+            </authenticationPolicy>
+            <authenticationPolicy name              ="authn-protected"
+                                description         ="Authenticate access to protected resources in Identity Service Domain leveraging an OpenIdConnect 3-leg flow."
+                                authenticationScheme="OpenIDLocalScheme">
+            </authenticationPolicy>
+          </authentication>
+          <authorization>
+            <authorizationPolicy name                ="authz-public"
+                                 description         ="Authorize access to public resources in Identity Service Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+            <authorizationPolicy name                ="authz-protected"
+                                 description         ="Authorize access to protected resources in Identity Service Domain.">
+              <conditions>
+                <condition name="TRUE" type="True"/>
+              </conditions>
+              <rules>
+                <rule effect="ALLOW">
+                  <combiner type="SIMPLE">
+                    <mode mode="ALL">
+                      <conditionNames>
+                        <ref value="TRUE"/>
+                      </conditionNames>
+                    </mode>
+                  </combiner>
+                </rule>
+              </rules>
+            </authorizationPolicy>
+          </authorization>
+        <resourcePublic/>
+        <resourceProtected>
+          <uri value="/**"           hostIdentifier="FederationService" queryString="" description="Context URL to cover all resources."/>
+        </resourceProtected>
+        <resourceExcluded>
+          <uri value="/favicon.ico"  hostIdentifier="FederationService" queryString="" description="Context URL to the page bookmark icon in the Identity Service Domain."/>
+        </resourceExcluded>
+      </instance>
+    </accesspolicy:create>
+    <echo message="=================================================================="/>
+    <echo message="0106 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Access Manager OAuth Identity Domain
+  **           Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o OAuth Identity Domain
+  **              - SecureDomain1
+  **              - SecureDomain2
+  **              - SecureDomain3
+  ******************************************************************************
+  -->
+  <target name="0201" description="Configures the OIDC/OAuth Identity Domains">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0201 OIDC/OAuth Identity Domain ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Identity Domain for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <identitydomain:create contextRef="api-context">
+      <!--
+       | Identity Domain Secure Domain 1
+       -->
+      <identitydomain:instance name="SecureDomain1">
+        <identitydomain:parameter value="identityProvider"        name="FederationIdentityStore"/>
+        <identitydomain:parameter value="description"             name="The Federation Identity Domains that contain all artifacts required to provide standard OAuth Services belonging to business applications deployed in Serurity Domain 1."/>
+        <identitydomain:parameter value="errorPageURL"            name="/p20/error"/>
+        <identitydomain:parameter value="consentPageURL"          name="/p20/consent"/>
+        <!--
+         | PKCE is enabled for all client types.
+         |
+         | If the PKCE parameters code_verifier and code_challenge are not
+         | provided in the authorization_code and token_access request, the
+         | authorization flow switches to the non-PKCE 3-legged OAuth flow and
+         | completes. 
+        -->
+        <identitydomain:attribute id="usePKCE"                            value="ALL_CLIENTS_TYPES"/>
+        <!--
+         | Expiry of issued token
+         |
+         | If no value is specified for the parameter at the validaty time of
+         | the issued is set to tokenExpiry value for ACCESS_TOKEN
+         (Existing setting).
+        -->
+        <identitydomain:attribute id="TokenExchange_TokenExpiryInSeconds" value="300"/>
+        <!--
+         | Enable Delegation of Token Exchange/impersonation
+        -->
+        <identitydomain:attribute id="TokenExchange_DelegationEnabled" value="true"/>
+        <!--
+         | The claims to be copied from the subject token to the issued token.
+         |
+         | The value is a ',' separated list indicating claims to be copied from
+         | subject token to issued token.
+        <identitydomain:attribute id="TokenExchange_DelegationClaimsToBeCopied" value="upn,groups"/>
+        -->
+        <!--
+         | Enable Impersonation of Token Exchange/impersonation
+        -->
+        <identitydomain:attribute id="TokenExchange_ImpersonationEnabled" value="true"/>
+        <!--
+         | The claims to be copied from the subject token to the issued token.
+         |
+         | The value is a ',' separated list indicating claims to be copied from
+         | subject token to issued token.
+        <identitydomain:attribute id="TokenExchange_ImpersonationClaimsToBeCopied" value="upn,groups"/>
+        -->
+        <!--
+         | If no value is specified for the parameter at the time of creating an
+         | Identity Domain then the default value for the domain cert becomes
+         | approximately 5 years.
+         | Suppose, we set it to 3650 days (10 years) then the domain cert
+         | becomes valid to 10 years.
+         | The value we use follows the default of 5 years.
+         -->
+        <identitydomain:attribute id="domainCertValidityInDays"   value="1825"/>
+        <!--
+         | Suppose, we provide a value of 1440 (i.e. 24 hours)? for this
+         | parameter, then the consent screen will be presented to the user
+         | during the time of first login. After that the consent provided will
+         | be saved for the next 24 hours and the consent screen would be only
+         | presented to the user after 24 hours.
+         -->
+        <identitydomain:attribute id="consentExpiryTimeInMinutes" value="180"/>
+        <identitydomain:token type="access" expiry="7200" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+        <identitydomain:token type="authz" expiry="900" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+        <identitydomain:token type="link" expiry="86400" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+      </identitydomain:instance>
+      <!--
+       | Identity Domain Secure Zone 2
+       -->
+      <identitydomain:instance name="SecureDomain2">
+        <identitydomain:parameter value="identityProvider"        name="FederationIdentityStore"/>
+        <identitydomain:parameter value="description"             name="The Federation Identity Domains that contain all artifacts required to provide standard OAuth Services belonging to business applications deployed in Serurity Domain 2."/>
+        <identitydomain:parameter value="errorPageURL"            name="/p20/error"/>
+        <identitydomain:parameter value="consentPageURL"          name="/p20/consent"/>
+        <!--
+         | PKCE is enabled for all client types.
+         |
+         | If the PKCE parameters code_verifier and code_challenge are not
+         | provided in the authorization_code and token_access request, the
+         | authorization flow switches to the non-PKCE 3-legged OAuth flow and
+         | completes. 
+        -->
+        <identitydomain:attribute id="usePKCE" value="ALL_CLIENTS_TYPES"/>
+        <!--
+         | Expiry of issued token
+         |
+         | If no value is specified for the parameter at the validaty time of
+         | the issued is set to tokenExpiry value for ACCESS_TOKEN
+         (Existing setting).
+        -->
+        <identitydomain:attribute id="TokenExchange_TokenExpiryInSeconds" value="300"/>
+        <!--
+         | Enable Delegation of Token Exchange/impersonation
+        -->
+        <identitydomain:attribute id="TokenExchange_DelegationEnabled" value="true"/>
+        <!--
+         | The claims to be copied from the subject token to the issued token.
+         |
+         | The value is a ',' separated list indicating claims to be copied from
+         | subject token to issued token.
+        <identitydomain:attribute id="TokenExchange_DelegationClaimsToBeCopied" value="abc,xyz"/>
+        -->
+        <!--
+         | Enable Impersonation of Token Exchange/impersonation
+        -->
+        <identitydomain:attribute id="TokenExchange_ImpersonationEnabled" value="true"/>
+        <!--
+         | The claims to be copied from the subject token to the issued token.
+         |
+         | The value is a ',' separated list indicating claims to be copied from
+         | subject token to issued token.
+        <identitydomain:attribute id="TokenExchange_ImpersonationClaimsToBeCopied" value="123,987"/>
+        -->
+        <!--
+         | If no value is specified for the parameter at the time of creating an
+         | Identity Domain then the default value for the domain cert becomes
+         | approximately 5 years.
+         | Suppose, we set it to 3650 days (10 years) then the domain cert
+         | becomes valid to 10 years.
+         | The value we use follows the default of 5 years.
+         -->
+        <identitydomain:attribute id="domainCertValidityInDays"   value="1825"/>
+        <!--
+         | Suppose, we provide a value of 1440 (i.e. 24 hours)? for this
+         | parameter, then the consent screen will be presented to the user
+         | during the time of first login. After that the consent provided will
+         | be saved for the next 24 hours and the consent screen would be only
+         | presented to the user after 24 hours.
+         -->
+        <identitydomain:attribute id="consentExpiryTimeInMinutes" value="180"/>
+        <identitydomain:token type="access" expiry="7200" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+        <identitydomain:token type="authz" expiry="900" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+        <identitydomain:token type="link" expiry="86400" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+      </identitydomain:instance>
+      <!--
+       | Identity Domain Secure Zone 3
+       -->
+      <identitydomain:instance name="SecureDomain3">
+        <identitydomain:parameter value="identityProvider"        name="FederationIdentityStore"/>
+        <identitydomain:parameter value="description"             name="The Federation Identity Domains that contain all artifacts required to provide standard OAuth Services belonging to business applications deployed in Serurity Domain 3."/>
+        <identitydomain:parameter value="errorPageURL"            name="/p20/error"/>
+        <identitydomain:parameter value="consentPageURL"          name="/p20/consent"/>
+        <!--
+         | PKCE is enabled for all client types.
+         |
+         | If the PKCE parameters code_verifier and code_challenge are not
+         | provided in the authorization_code and token_access request, the
+         | authorization fails. 
+        -->
+        <identitydomain:attribute id="usePKCE"                            value="ALL_CLIENTS_TYPES_STRICT"/>
+        <!--
+         | Expiry of issued token
+         |
+         | If no value is specified for the parameter at the validaty time of
+         | the issued is set to tokenExpiry value for ACCESS_TOKEN
+         (Existing setting).
+        -->
+        <identitydomain:attribute id="TokenExchange_TokenExpiryInSeconds" value="300"/>
+        <!--
+         | Enable Delegation of Token Exchange/impersonation
+        -->
+        <identitydomain:attribute id="TokenExchange_DelegationEnabled" value="true"/>
+        <!--
+         | The claims to be copied from the subject token to the issued token.
+         |
+         | The value is a ',' separated list indicating claims to be copied from
+         | subject token to issued token.
+        <identitydomain:attribute id="TokenExchange_DelegationClaimsToBeCopied" value="abc,xyz"/>
+        -->
+        <!--
+         | Enable Impersonation of Token Exchange/impersonation
+        -->
+        <identitydomain:attribute id="TokenExchange_ImpersonationEnabled" value="true"/>
+        <!--
+         | The claims to be copied from the subject token to the issued token.
+         |
+         | The value is a ',' separated list indicating claims to be copied from
+         | subject token to issued token.
+        <identitydomain:attribute id="TokenExchange_ImpersonationClaimsToBeCopied" value="123,987"/>
+        -->
+        <!--
+         | If no value is specified for the parameter at the time of creating an
+         | Identity Domain then the default value for the domain cert becomes
+         | approximately 5 years.
+         | Suppose, we set it to 3650 days (10 years) then the domain cert
+         | becomes valid to 10 years.
+         | The value we use follows the default of 5 years.
+         -->
+        <identitydomain:attribute id="domainCertValidityInDays"   value="1825"/>
+        <!--
+         | Suppose, we provide a value of 1440 (i.e. 24 hours)? for this
+         | parameter, then the consent screen will be presented to the user
+         | during the time of first login. After that the consent provided will
+         | be saved for the next 24 hours and the consent screen would be only
+         | presented to the user after 24 hours.
+         -->
+        <identitydomain:attribute id="consentExpiryTimeInMinutes" value="180"/>
+        <identitydomain:token type="access" expiry="7200" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+        <identitydomain:token type="authz" expiry="900" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+        <identitydomain:token type="link" expiry="86400" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+      </identitydomain:instance>
+    </identitydomain:create>
+    <echo message="=================================================================="/>
+    <echo message="0201 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####    #####    #####
+  **              #     #     #  #     #
+  **              #     #        #
+  **              #     #  ####   #####
+  **              #     #     #        #
+  **              #     #     #  #     #
+  **            #####    #####    #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Access Manager OAuth Resource Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o OAuth Resource Server Identity Governance Service
+  ******************************************************************************
+  -->
+  <target name="0202" description="Configures the Identity Governance Service OAuth Resource Server Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0202 Identity Governance Service OAuth Resource Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Resource Server for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceserver:create contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="igsresource">
+          <parameter value="description" name="The security policy handles authenticated requests after the application has obtained an access token."/>
+
+          <scope name="all"     description="All permissions"/>
+          <scope name="openid"  description="This is the only mandatory scope and will return a sub claim which represents a unique identifier for the authenticated user."/>
+          <scope name="profile" description="This scope value requests access to the End-User's default profile Claims."/>
+          <scope name="email"   description="To know where to send the welcome email"/>
+          <!--
+           | MP-JWT 1.1 4.1
+           -->
+          <tokenAttribute id="groups"             type="dynamic" value="$user.groups"/>
+          <!--
+           | MP-JWT 1.1 4.2
+           -->
+          <tokenAttribute id="upn"                type="dynamic" value="$user.attr.uid"/>
+          <!--
+           | attribute name may be casesensitive ?
+           -->
+          <tokenAttribute id="full_name"          type="dynamic" value="$user.attr.cn"/>
+          <tokenAttribute id="family_name"        type="dynamic" value="$user.attr.sn"/>
+          <tokenAttribute id="given_name"         type="dynamic" value="$user.attr.givenName"/>
+          <tokenAttribute id="email"              type="dynamic" value="$user.attr.mail"/>
+        </instance>
+      </domain>
+    </resourceserver:create>
+    <echo message="=================================================================="/>
+    <echo message="0202 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####    #####    #####
+  **              #     #     #  #     #
+  **              #     #        #
+  **              #     #  ####   #####
+  **              #     #     #        #
+  **              #     #     #  #     #
+  **            #####    #####    #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager OAuth Resource Client Configuration
+  **           The client support credentials grant type.
+  **
+  ** Synopsis: The tasks deploys the Resource Client
+  **           This includes:
+  **           o OAuth Resource Client Identity Governance Service
+  ******************************************************************************
+  -->
+  <target name="0203" description="Creating Unique Identifier Service OAuth Resource Client in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0203 Create Unique Identifier Service OAuth Resource Client Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Resource Client for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceclient:create contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="igsservice" type="confidential">
+          <parameter value="id"           name="igsservice"/>
+          <parameter value="secret"       name="Welcome1"/>
+          <parameter value="defaultScope" name="igsresource.all"/>
+          <parameter value="description"  name="The client application making resource requests on behalf of the resource owner with the resource owners authorization."/>
+          <scope     prefix="igsresource" name="all"/>
+          <scope     prefix="igsresource" name="openid"/>
+          <scope     prefix="igsresource" name="profile"/>
+          <scope     prefix="igsresource" name="email"/>
+          <grant     type="authorization"/>
+          <grant     type="credential"/>
+          <grant     type="bearer"/>
+          <grant     type="exchange"/>
+          <grant     type="password"/>
+          <grant     type="refresh"/>
+          <attribute id="sessionId"  type="dynamic" value="$session.id"/>
+          <redirect  url="https://igs.cinnamonstar.oam/uid/sysadmin"/>
+          <redirect  url="https://igs.cinnamonstar.net/callback"/>
+          <redirect  url="https://sso.cinnamonstar.oam:443/oam/server/auth_cred_submit"/>
+        </instance>
+      </domain>
+    </resourceclient:create>
+    <echo message="=================================================================="/>
+    <echo message="0203 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #  #####  ######
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Access Manager OAuth Resource Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o OAuth Resource Server Unique Identifier Service
+  ******************************************************************************
+  -->
+  <target name="0204" description="Configures the Unique Identifier Service OAuth Resource Server Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0204 Unique Identifier Service OAuth Resource Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Resource Server for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceserver:create contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="uidresource">
+          <parameter value="description" name="The security policy handles authenticated requests after the application has obtained an access token."/>
+
+          <scope name="openid"  description="This is the only mandatory scope and will return a sub claim which represents a unique identifier for the authenticated user."/>
+          <scope name="profile" description="This scope value requests access to the End-User's default profile Claims."/>
+          <scope name="email"   description="To know where to send the welcome email"/>
+          <scope name="all"     description="All permissions"/>
+          <!--
+           | MP-JWT 1.1 4.1
+           -->
+          <tokenAttribute id="groups"             type="dynamic" value="$user.groups"/>
+          <!--
+           | MP-JWT 1.1 4.2
+           -->
+          <tokenAttribute id="pid"                type="dynamic" value="$user.attr.policeAnonymousName"/>
+          <tokenAttribute id="uid"                type="dynamic" value="$user.attr.policeIdentifierName"/>
+          <tokenAttribute id="preferred_username" type="dynamic" value="$user.attr.uid"/>
+          <!--
+           | attribute name may be casesensitive ?
+           -->
+          <tokenAttribute id="full_name"          type="dynamic" value="$user.attr.cn"/>
+          <tokenAttribute id="family_name"        type="dynamic" value="$user.attr.sn"/>
+          <tokenAttribute id="given_name"         type="dynamic" value="$user.attr.givenName"/>
+          <tokenAttribute id="email"              type="dynamic" value="$user.attr.mail"/>
+        </instance>
+      </domain>
+    </resourceserver:create>
+    <echo message="=================================================================="/>
+    <echo message="0204 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #  #####  ######
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager OAuth Resource Client Configuration
+  **           The client support credentials grant type.
+  **
+  ** Synopsis: The tasks deploys the Resource Client
+  **           This includes:
+  **           o OAuth Resource Client Unique Identifier Service
+  ******************************************************************************
+  -->
+  <target name="0205" description="Creating Unique Identifier Service OAuth Resource Client in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0205 Create Unique Identifier Service OAuth Resource Client Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Resource Client for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceclient:create contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="uidservice" type="confidential">
+          <parameter value="id"           name="uidservice"/>
+          <parameter value="secret"       name="Welcome1"/>
+          <parameter value="defaultScope" name="uidresource.all"/>
+          <parameter value="description"  name="The client application making resource requests on behalf of the resource owner with the resource owners authorization."/>
+          <scope     prefix="uidresource" name="all"/>
+          <scope     prefix="uidresource" name="openid"/>
+          <scope     prefix="uidresource" name="profile"/>
+          <scope     prefix="uidresource" name="email"/>
+          <grant     type="password"/>
+          <grant     type="credential"/>
+          <grant     type="bearer"/>
+          <grant     type="exchange"/>
+          <grant     type="refresh"/>
+          <grant     type="authorization"/>
+          <attribute id="sessionId"  type="dynamic" value="$session.id"/>
+          <redirect  url="https://sso.cinnamonstar.oam:443/oam/server/auth_cred_submit"/>
+          <redirect  url="https://uid.cinnamonstar.net/callback"/>
+        </instance>
+      </domain>
+    </resourceclient:create>
+    <echo message="=================================================================="/>
+    <echo message="0205 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  ######
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           ######     #    #     #
+  **           #          #    #     #
+  **           #          #    #     #
+  **           #        #####  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Access Manager OAuth Resource Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o OAuth Resource Server Anonymous Identifier Service
+  ******************************************************************************
+  -->
+  <target name="0206" description="Configures the Anonymous Identifier Service OAuth Resource Server Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0206 Anonymous Identifier Service OAuth Resource Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Resource Server for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceserver:create contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="pidresource">
+          <parameter value="description" name="The security policy handles authenticated requests after the application has obtained an access token."/>
+
+          <scope name="openid"  description="This is the only mandatory scope and will return a sub claim which represents a unique identifier for the authenticated user."/>
+          <scope name="profile" description="This scope value requests access to the End-User's default profile Claims."/>
+          <scope name="email"   description="To know where to send the welcome email"/>
+          <scope name="all"     description="All permissions"/>
+
+          <audienceClaim subject="pidservice"/>
+
+          <!--
+           | RFC 8693 OAuth 2.0 Token Exchange
+           -->
+          <tokenAttribute id="TokenExchange_AllowedClientsForDelegation"    type="static"  value="pidservice"/>
+          <tokenAttribute id="TokenExchange_AllowedClientsForImpersonation" type="static"  value="pidservice"/>
+          <!--
+           | MP-JWT 1.1 4.1
+           -->
+          <tokenAttribute id="groups"             type="dynamic" value="$user.groups"/>
+          <!--
+           | MP-JWT 1.1 4.2
+           -->
+          <tokenAttribute id="upn"                type="dynamic" value="$user.attr.policeIdentifierName"/>
+          <tokenAttribute id="preferred_username" type="dynamic" value="$user.attr.uid"/>
+          <tokenAttribute id="pid"                type="dynamic" value="$user.attr.policeAnonymousName"/>
+          <!--
+           | attribute name may be casesensitive ?
+           -->
+          <tokenAttribute id="full_name"          type="dynamic" value="$user.attr.cn"/>
+          <tokenAttribute id="family_name"        type="dynamic" value="$user.attr.sn"/>
+          <tokenAttribute id="given_name"         type="dynamic" value="$user.attr.givenName"/>
+          <tokenAttribute id="email"              type="dynamic" value="$user.attr.mail"/>
+        </instance>
+      </domain>
+    </resourceserver:create>
+    <echo message="=================================================================="/>
+    <echo message="0206 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  ######
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           ######     #    #     #
+  **           #          #    #     #
+  **           #          #    #     #
+  **           #        #####  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager OAuth Resource Client Configuration
+  **           The client support credentials grant type.
+  **
+  ** Synopsis: The tasks deploys the Resource Client
+  **           This includes:
+  **           o OAuth Resource Client Anonymous Identifier Service
+  ******************************************************************************
+  -->
+  <target name="0207" description="Creating Anonymous Identifier Service OAuth Resource Client in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0207 Create Anonymous Identifier Service OAuth Resource Client Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Resource Client for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceclient:create contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="pidservice" type="confidential">
+          <parameter value="id"           name="pidservice"/>
+          <parameter value="secret"       name="Welcome1"/>
+          <parameter value="defaultScope" name="pidresource.all"/>
+          <parameter value="description"  name="The client application making resource requests on behalf of the resource owner with the resource owners authorization."/>
+          <scope     prefix="pidresource" name="all"/>
+          <scope     prefix="pidresource" name="openid"/>
+          <scope     prefix="pidresource" name="profile"/>
+          <scope     prefix="pidresource" name="email"/>
+          <grant     type="password"/>
+          <grant     type="credential"/>
+          <grant     type="bearer"/>
+          <grant     type="exchange"/>
+          <grant     type="refresh"/>
+          <grant     type="authorization"/>
+          <attribute id="sessionId"  type="dynamic" value="$session.id"/>
+          <redirect  url="https://sso.cinnamonstar.oam:443/oam/server/auth_cred_submit"/>
+          <redirect  url="https://pid.cinnamonstar.net/callback"/>
+        </instance>
+      </domain>
+    </resourceclient:create>
+    <echo message="=================================================================="/>
+    <echo message="0207 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Identity Domain Configuration
+  **
+  ** Synopsis: The tasks reports the Identity Domain configuration
+  **           This includes:
+  **
+  ** Synopsis: The tasks reports the Identity Domain configuration
+  **           This includes:
+  **           o OAuth Identity Domain SecureDomain2
+  **           o OAuth Resource Server uidresource
+  **           o OAuth Resource Server pidresource
+  **           o OAuth Resource Client uidservice
+  **           o OAuth Resource Client pidservice
+  ******************************************************************************
+  -->
+  <target name="0208" description="Report Identity Domains in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0208 Report Identity Domain Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <identitydomain:report contextRef="api-context" failonerror="false" verbose="true">
+      <identitydomain:instance name="SecureDomain2"/>
+    </identitydomain:report>
+    <resourceserver:report contextRef="api-context" failonerror="false" verbose="true">
+      <domain name="SecureDomain2">
+        <instance name="igsresource"/>
+        <instance name="uidresource"/>
+        <instance name="pidresource"/>
+      </domain>
+    </resourceserver:report>
+    <resourceclient:report contextRef="api-context" failonerror="false">
+      <domain name="SecureDomain2">
+        <instance name="igsservice"/>
+        <instance name="uidservice"/>
+        <instance name="pidservice"/>
+      </domain>
+    </resourceclient:report>
+    <echo message="==================================================================="/>
+    <echo message="0208 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

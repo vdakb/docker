@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name                ="Identity Access Deployment Controller"
+         basedir             ="../../../deployment/fed"
+         xmlns:fmw           ="http://oracle.hst.deployment/fusion"
+         xmlns:jps           ="http://oracle.hst.deployment/security"
+         xmlns:wsm           ="http://oracle.hst.deployment/webservice"
+         xmlns:server        ="http://oracle.hst.deployment/topology"
+         xmlns:ids           ="http://oracle.iam.access/identitystore"
+         xmlns:service       ="http://oracle.iam.access/accessservice"
+         xmlns:ams           ="http://oracle.iam.access/accessserver"
+         xmlns:agent         ="http://oracle.iam.access/accessagent"
+         xmlns:policy        ="http://oracle.iam.access/accesspolicy"
+         xmlns:identitydomain="http://oracle.iam.oauth/domain"
+         xmlns:resourceclient="http://oracle.iam.oauth/client"
+         xmlns:resourceserver="http://oracle.iam.oauth/resource">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name" value="${log.env}/fed-delete-ant.log"/>
+  <!--
+  ==============================================================================
+  == properties specific to the deployment environment
+  ==============================================================================
+  -->
+  <import file="../../oam-context.xml"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Delete the Oracle Access Manager OAuth Identity Domain
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deletes the environment
+  **           This includes:
+  **           o OAuth Identity Domain PlayGroundDomain
+  ******************************************************************************
+  -->
+  <target name="0201" description="Delete the OAuth Identity Domain Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0201 OAuth Identity Domain ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Identity Domain PlayGroundDomain from environment ${fmw.env} on ${jee.server.host}:${jee.server.port}"/>
+    <identitydomain:delete contextRef="api-context">
+      <instance name="PlayGroundDomain"/>
+    </identitydomain:delete>
+    <echo message="=================================================================="/>
+    <echo message="0201 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+ <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deletes the Oracle Access Manager OAuth Resource Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deletes the environment
+  **           This includes:
+  **           o OAuth Resource Server PlayGroundResource
+  ******************************************************************************
+  -->
+  <target name="0202" description="Delete the Identity Governance Service OAuth Resource Server Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0202 Identity Governance Service OAuth Resource Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Resource Server PlayGroundResource from environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceserver:delete contextRef="api-context">
+      <domain name="PlayGroundDomain">
+        <instance name="PlayGroundResource"/>
+      </domain>
+    </resourceserver:delete>
+    <echo message="=================================================================="/>
+    <echo message="0202 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deletes the Access Manager OAuth Resource Client Configuration
+  **           The client support credentials grant type.
+  **
+  ** Synopsis: The tasks delete the Resource Client
+  **           This includes:
+  **           o OAuth Resource Client PlayGroundClient
+  ******************************************************************************
+  -->
+  <target name="0203" description="Deleting Identity Governance Service OAuth Resource Client in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0203 Delete OAuth Resource Client PlayGroundClient ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Resource Client PlayGroundClient from environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceclient:delete contextRef="api-context">
+      <domain name="PlayGroundDomain">
+        <instance name="PlayGroundClient"/>
+      </domain>
+    </resourceclient:delete>
+    <echo message="=================================================================="/>
+    <echo message="0203 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

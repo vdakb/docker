@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+	<title>Geometric Data Types</title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+	<meta name="description" content="The official site for the PostgreSQL JDBC Driver" />
+	<meta name="copyright" content="The PostgreSQL Global Development Group" />
+
+	<style type="text/css" media="screen" title="Normal Text">@import url("media/css/docs.css");</style>
+
+	<link rel="shortcut icon" href="media/favicon.ico" />
+</head>
+
+<body>
+	<div id="docHeader">
+		<div id="docHeaderLogo">
+			<a href="http://www.postgresql.org/" title="PostgreSQL"><img src="media/img/layout/hdr_left3a.png" alt="PostgreSQL" height="80" width="390" /></a>
+		</div>
+	</div>
+
+	<div id="docContainerWrap">
+		<div id="docContainer">
+			<div id="docContent">
+
+				<div class="NAVHEADER">
+					<table summary="Header navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+						<tr>
+							<th colspan="3" valign="bottom" align="center">
+								<h2 class="TITLE">Chapter 9. PostgreSQL™ Extensions to the JDBC API</h2>
+							</th>
+						</tr>
+						<tr>
+							<td valign="top" width="20%" align="left">
+								<a title="Chapter 9. PostgreSQL™ Extensions to the JDBC API" href="ext.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="bottom" width="60%" align="center">&nbsp;</td>
+							<td valign="top" width="20%" align="right">
+								<a title="Large Objects" href="largeobjects.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+  					</tbody>
+					</table>
+					<hr class="c1" width="100%" />
+				</div> <!-- NAVHEADER -->
+
+				<div class="CHAPTER">
+  					<h1>Geometric Data Types</h1>
+					
+					<p>PostgreSQL™ has a set of data types that can store geometric features into a
+table. These include single points, lines, and polygons.  We support these types
+in Java with the org.postgresql.geometric package. Please consult the Javadoc
+for the details of available classes and features metioned in <a href="reading.html">Chapter 12, <em>Further Reading</em></a>.</p>
+
+<p><a name="geometric-circle-example"></a>
+<strong>Example 9.1. Using the CIRCLE datatype JDBC</strong></p>
+
+<p>import java.sql.*;</p>
+
+<p>import org.postgresql.geometric.PGpoint;
+import org.postgresql.geometric.PGcircle;</p>
+
+<p>public class GeometricTest {</p>
+
+<pre><code>public static void main(String args[]) throws Exception {
+    Class.forName(&quot;org.postgresql.Driver&quot;);
+    String url = &quot;jdbc:postgresql://localhost:5432/test&quot;;
+
+    Connection conn = DriverManager.getConnection(url,&quot;test&quot;,&quot;&quot;);
+
+    Statement stmt = conn.createStatement();
+    stmt.execute(&quot;CREATE TEMP TABLE geomtest(mycirc circle)&quot;);
+    stmt.close();
+
+    insertCircle(conn);
+    retrieveCircle(conn);
+    conn.close();
+}
+
+private static void insertCircle(Connection conn) throws SQLException {
+
+    PGpoint center = new PGpoint(1, 2.5);
+    double radius = 4;
+    PGcircle circle = new PGcircle(center, radius);
+
+    PreparedStatement ps = conn.prepareStatement(&quot;INSERT INTO geomtest(mycirc) VALUES (?)&quot;);
+    ps.setObject(1, circle);
+    ps.executeUpdate();
+    ps.close();
+}
+
+private static void retrieveCircle(Connection conn) throws SQLException {
+    Statement stmt = conn.createStatement();
+    ResultSet rs = stmt.executeQuery(&quot;SELECT mycirc, area(mycirc) FROM geomtest&quot;);
+    rs.next();
+    PGcircle circle = (PGcircle)rs.getObject(1);
+    double area = rs.getDouble(2);
+
+    PGpoint center = circle.center;
+    double radius = circle.radius;
+
+    System.out.println(&quot;Center (X, Y) = (&quot; + center.x + &quot;, &quot; + center.y + &quot;)&quot;);
+    System.out.println(&quot;Radius = &quot; + radius);
+    System.out.println(&quot;Area = &quot; + area);
+}
+</code></pre>
+
+<p>}</p>
+
+				</div>
+
+				<div class="NAVFOOTER">
+					<hr class="c1" width="100%" />
+					<table summary="Footer navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td valign="top" width="33%" align="left">
+								<a href="ext.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="top" width="34%" align="center">
+								<a href="index.html" accesskey="H">Home</a>
+							</td>
+							<td valign="top" width="33%" align="right">
+								<a href="largeobjects.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+						<tr>
+							<td valign="top" width="33%" align="left">Chapter 9. PostgreSQL™ Extensions to the JDBC API</td>
+							<td valign="top" width="34%" align="center">&nbsp;</td>
+							<td valign="top" width="33%" align="right">Large Objects</td>
+						</tr>
+					</tbody>
+					</table>
+				</div> <!-- NAVFOOTER -->
+
+
+			</div> <!-- docContent -->
+			
+			<div id="docComments"></div>
+
+			<div id="docFooter">
+				<a class="navFooter" href="http://www.postgresql.org/about/privacypolicy">Privacy Policy</a> |
+				<a class="navFooter" href="http://www.postgresql.org/about/">About PostgreSQL</a><br/>
+				Copyright &copy; 1996-2013 The PostgreSQL Global Development Group
+			</div> <!-- pgFooter -->
+		</div> <!-- docContainer -->
+	</div> <!-- docContainer -->
+</body>
+</html>

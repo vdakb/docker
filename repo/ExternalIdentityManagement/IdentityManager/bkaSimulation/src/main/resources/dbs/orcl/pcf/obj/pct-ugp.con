@@ -1,0 +1,44 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityManager\bkaSimulation\src\main\resources\dbs\pcf\obj\pct-ugp.con
+--
+-- Generated for Oracle Database 12c on Sun June 21 16:53:56 2020 by Server Generator 10.1.2.93.10
+
+PROMPT Creating Primary Key 'pct_ugp_pk' on 'pct_ugp'
+ALTER TABLE pct_ugp
+  ADD (
+    CONSTRAINT pct_ugp_pk PRIMARY KEY (
+      id
+    )
+    USING INDEX TABLESPACE &&pcfdata
+  )
+/
+PROMPT Creating Unique Key 'pct_ugp_uk' on 'pct_ugp'
+ALTER TABLE pct_ugp
+  ADD (
+    CONSTRAINT pct_ugp_uk UNIQUE (
+      usr_id, rol_id
+    )
+    USING INDEX TABLESPACE &&pcfdata
+  )
+/
+PROMPT Creating Foreign Key 'pct_ugp_usr_fk' on 'pct_ugp'
+ALTER TABLE pct_ugp
+  ADD (
+    CONSTRAINT pct_ugp_usr_fk FOREIGN KEY (
+      usr_id
+    )
+    REFERENCES pct_usr (
+      id
+    )
+  )
+/
+PROMPT Creating Foreign Key 'pct_ugp_grp_fk' on 'pct_ugp'
+ALTER TABLE pct_ugp
+  ADD (
+    CONSTRAINT pct_ugp_grp_fk FOREIGN KEY (
+      grp_id
+    )
+    REFERENCES pct_grp (
+      id
+    )
+  )
+/

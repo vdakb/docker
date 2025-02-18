@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Governance Connector Generator"
+         default         ="all"
+         basedir         ="../../.."
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the deployment environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-sandbox-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      ######
+  **           #       #       #           #
+  **           #       #     # #           #
+  **           #        #####  #           #
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Connector for application
+  **           PCFAccountProduction.
+  ******************************************************************************
+  -->
+ <target name="0701-01" description="Generates the Identity Governance Connector for application PCFAccountProduction">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 Generating Connector for application PCFAccountProduction"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####       ######
+  **             #    #     # #     #      #     #
+  **             #    #       #            #     #
+  **             #    #   ###  #####       ######
+  **             #    #     #       #      #
+  **             #    #     # #     #      #
+  **           #####   #####   #####       #
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Connector for application
+  **           IGSPAccount.
+  ******************************************************************************
+  -->
+ <target name="1801-01" description="Generates the Identity Governance Connector for application IGSPAccount">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 Generating Connector for application IGSPAccount"/>
+    <echo message="=================================================================="/>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####       #######
+  **             #    #     # #     #         #
+  **             #    #       #               #
+  **             #    #   ###  #####          #
+  **             #    #     #       #         #
+  **             #    #     # #     #         #
+  **           #####   #####   #####          #
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Connector for application
+  **           IGSTAccount.
+  ******************************************************************************
+  -->
+ <target name="1801-02" description="Generates the Identity Governance Connector for application IGSTAccount">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 Generating Connector for application IGSTAccount"/>
+    <echo message="=================================================================="/>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####   #####
+  **           #     #    #    #     #
+  **           #     #    #    #      
+  **           #     #    #    #   ###
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Sandbox for application
+  **           OIGAccount.
+  ******************************************************************************
+  -->
+ <target name="1901" description="Generates the Identity Governance Connector for application OIGAccount">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1901 Generating Connector for application OIGAccount"/>
+    <echo message="=================================================================="/>
+    <echo message="=================================================================="/>
+    <echo message="1901 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####  #     #  ######
+  **                #     #    ##   ##  #     #
+  **               #      #    # # # #  #     #
+  **              #       #    #  #  #  ######
+  **             #        #    #     #  #
+  **            #         #    #     #  #
+  **           #######  #####  #     #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Sandbox for application
+  **           ZIMPAccount.
+  ******************************************************************************
+  -->
+  <target name="2001-01" description="Generates the Identity Governance Connector for application ZIMPAccount">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-01 Generating Connector for application ZIMPAccount"/>
+    <echo message="=================================================================="/>
+    <copy todir="deployment/oim/2001 systemConnector APPS/xml" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/ids/xml">
+        <include name="ids*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="zimp"/>
+          <token key="TMP"  value="ZIMP"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="ids*" to="zimp*"/>
+    </copy>
+    <copy todir="deployment/oim/2001 systemConnector APPS/mds" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/ids//mds">
+        <include name="ids*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="zimp"/>
+          <token key="TMP"  value="ZIMP"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="ids*" to="zimp*"/>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="2001-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######  ######
+  **           #     # #     # #     #
+  **           #     # #     # #     #
+  **           ######  #     # ######
+  **           #     # #     # #
+  **           #     # #     # #
+  **           ######  ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Sandbox for application
+  **           BDPAccount.
+  ******************************************************************************
+  -->
+  <target name="2001-02" description="Generates the Identity Governance Connector for application BDPAccount">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-02 Generating Connector for application BDPAccount"/>
+    <echo message="=================================================================="/>
+    <copy todir="deployment/oim/2001 systemConnector APPS/xml" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/ids/xml">
+        <include name="ids*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="bdp"/>
+          <token key="TMP"  value="BDP"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="ids*" to="bdp*"/>
+    </copy>
+    <copy todir="deployment/oim/2001 systemConnector APPS/mds" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/ids//mds">
+        <include name="ids*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="bdp"/>
+          <token key="TMP"  value="BDP"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="ids*" to="bdp*"/>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="2001-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####
+  **           ##    #    #     #    #    #     #
+  **           # #   #    #          #    #
+  **           #  #  #     #####     #     #####
+  **           #   # #          #    #          #
+  **           #    ## ## #     #    #    #     #
+  **           #     # ##  #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Sandbox for application
+  **           NSISAccount.
+  ******************************************************************************
+  -->
+  <target name="2001-03" description="Generates the Identity Governance Connector for application NSISAccount">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 Generating Connector for application NSISAccount"/>
+    <echo message="=================================================================="/>
+    <copy todir="deployment/oim/2001 systemConnector APPS/xml" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/ids/xml">
+        <include name="ids*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="nsis"/>
+          <token key="TMP"  value="NSIS"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="ids*" to="nsis*"/>
+    </copy>
+    <copy todir="deployment/oim/2001 systemConnector APPS/mds" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/ids//mds">
+        <include name="ids*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="nsis"/>
+          <token key="TMP"  value="NSIS"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="ids*" to="nsis*"/>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####      ######  #     #
+  **           #     # #   #  #     #     #     # #     #
+  **           #     # #  #   #           #     # #     #
+  **           ######  ###    #           #     # #######
+  **           #   #   #  #   #           #     # #     #
+  **           #    #  #   #  #     #     #     # #     #
+  **           #     # #    #  #####      ######  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Connector for application
+  **           RKDHAccount.
+  ******************************************************************************
+  -->
+  <target name="2101-01" description="Generates the Identity Governance Connector for application RKDHAccount">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101-01 Generating Connector for application RKDHAccount"/>
+    <echo message="=================================================================="/>
+    <copy todir="deployment/oim/2101 systemConnector RKC/xml" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/rkc/xml">
+        <include name="rkc*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="rkc-dh"/>
+          <token key="TMP"  value="RKDH"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="rkc*" to="rkc-dh*"/>
+    </copy>
+    <copy todir="deployment/oim/2101 systemConnector RKC/mds" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/rkc/mds">
+        <include name="rkc*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="rkc-dh"/>
+          <token key="TMP"  value="RKDH"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="rkc*" to="rkc-dh*"/>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="2101-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####       #####  #######  #####
+  **           #     # #   #  #     #     #     #      #  #     #
+  **           #     # #  #   #           #           #         #
+  **           ######  ###    #            #####     #      ####
+  **           #   #   #  #   #                 #   #      #
+  **           #    #  #   #  #     #     #     #  #      #  
+  **           #     # #    #  #####       #####  ####### ######
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Sandbox for application
+  **           RKC2Account.
+  ******************************************************************************
+  -->
+  <target name="2101-02" description="Generates the Identity Governance Connector for application RKC2Account">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101-02 Generating Connector for application RKC2Account"/>
+    <echo message="=================================================================="/>
+    <copy todir="deployment/oim/2101 systemConnector RKC/xml" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/rkc/xml">
+        <include name="rkc*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="rkc-sz2"/>
+          <token key="TMP"  value="RKC2"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="rkc*" to="rkc-sz2*"/>
+    </copy>
+    <copy todir="deployment/oim/2101 systemConnector RKC/mds" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/rkc/mds">
+        <include name="rkc*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="rkc-sz2"/>
+          <token key="TMP"  value="RKC2"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="rkc*" to="rkc-dh*"/>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="2101-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####       #####  #######  #####
+  **           #     # #   #  #     #     #     #      #  #     #
+  **           #     # #  #   #           #           #         #
+  **           ######  ###    #            #####     #     #####
+  **           #   #   #  #   #                 #   #           #
+  **           #    #  #   #  #     #     #     #  #      #     #
+  **           #     # #    #  #####       #####  #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Connector for application
+  **           RKC3Account.
+  ******************************************************************************
+  -->
+  <target name="2101-03" description="Generates the Identity Governance Connector for application RKC3Account">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101-03 Generating Connector for application RKC3Account"/>
+    <echo message="=================================================================="/>
+    <copy todir="deployment/oim/2101 systemConnector RKC/xml" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/rkc/xml">
+        <include name="rkc*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="rkc-sz3"/>
+          <token key="TMP"  value="RKC3"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="rkc*" to="rkc-sz3*"/>
+    </copy>
+    <copy todir="deployment/oim/2101 systemConnector RKC/mds" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/rkc/mds">
+        <include name="rkc*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="rkc-sz3"/>
+          <token key="TMP"  value="RKC3"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="rkc*" to="rkc-dh*"/>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="2101-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####       #####  #######     ##
+  **           #     # #   #  #     #     #     #      #     # #
+  **           #     # #  #   #           #           #     #  #
+  **           ######  ###    #            #####     #     #   #
+  **           #   #   #  #   #                 #   #     #######
+  **           #    #  #   #  #     #     #     #  #           #
+  **           #     # #    #  #####       #####  #######      #
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Connector for application
+  **           RKC4Account.
+  ******************************************************************************
+  -->
+  <target name="2101-04" description="Generates the Identity Governance Connector for application RKC4Account">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101-04 Generating Connector for application RKC4Account"/>
+    <echo message="=================================================================="/>
+    <copy todir="deployment/oim/2101 systemConnector RKC/xml" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/rkc/xml">
+        <include name="rkc*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="rkc-sz4"/>
+          <token key="TMP"  value="RKC4"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="rkc*" to="rkc-sz4*"/>
+    </copy>
+    <copy todir="deployment/oim/2101 systemConnector RKC/mds" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/rkc/mds">
+        <include name="rkc*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="tmp"  value="rkc-sz4"/>
+          <token key="TMP"  value="RKC4"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="rkc*" to="rkc-dh*"/>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="2101-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####      #######  #####
+  **           #     # #   #  #     #     #       #     #
+  **           #     # #  #   #           #       #     
+  **           ######  ###    #           ######   #####
+  **           #   #   #  #   #           #             #
+  **           #    #  #   #  #     #     #       #     #
+  **           #     # #    #  #####      #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Generates the Identity Governance Connector for application
+  **           RKESAccount.
+  ******************************************************************************
+  -->
+  <target name="2101-05" description="Generates the Identity Governance Connector for application RKESAccount">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101-05 Generating Connector for application RKESAccount"/>
+    <echo message="=================================================================="/>
+    <copy todir="deployment/oim/2101 systemConnector RKC/xml" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="template/oim/rkc/target">
+        <include name="rkc*.xml"/>
+      </fileset>
+      <filterchain>
+        <replacetokens begintoken="00_" endtoken="_00">
+          <token key="TMP"  value="RKES"/>
+        </replacetokens>
+      </filterchain>
+      <globmapper from="rkc*" to="rkc-es*"/>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="2101-05 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

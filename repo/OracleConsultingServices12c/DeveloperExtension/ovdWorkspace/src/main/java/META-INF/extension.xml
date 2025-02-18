@@ -1,0 +1,221 @@
+<extension id            ="oracle.ocs.workspace.ovd"
+           version       ="12.2.1.3.42.60.101"
+           esdk-version  ="2.0"
+           rsbundle-class="oracle.jdeveloper.workspace.ovd.Manifest"
+           xmlns         ="http://jcp.org/jsr/198/extension-manifest">
+  <name>${ovd}</name>
+  <owner>${ovd.vendor}</owner>
+  <trigger-hooks xmlns="http://xmlns.oracle.com/ide/extension">
+    <rules>
+      <rule id="ovd-extension-state" type="extension-is-enabled">
+        <parameters>
+          <param name="extension-id" value="oracle.ocs.workspace.ovd"/>
+        </parameters>
+      </rule>
+      <!--
+      This rule checks if context has a Project with a minimum technology scope
+      as specified.
+      The technology-keys parameter is a comma-separated list of technology
+      keys. The match parameter is optional, valid values are 'all' or 'any',
+      default is 'all'
+      -->
+      <rule id="ovd-technology-scope" type="project-has-techscope">
+        <parameters>
+          <param name="technology-keys" value="ovd.technology"/>
+        </parameters>
+      </rule>
+      <rule id="ovd-workspace" type="workspace-property-equals">
+        <parameters>
+          <param name="property-name" value="appTemplateId"/>
+          <param name="property-value" value="ovd.application"/>
+        </parameters>
+      </rule>
+      <composite-rule id="ovd-workspace-technology-scope">
+        <and>
+          <rule-reference id="ovd-workspace"/>
+          <rule-reference id="ovd-technology-scope"/>
+        </and>
+      </composite-rule>
+    </rules>
+    <triggers>
+      <technology-hook>
+        <!--
+        ========================================================================
+        == Virtual Directory                                                  ==
+        ========================================================================
+        -->
+        <technology>
+          <key>ovd.technology</key>
+          <name>${ovd.technology}</name>
+          <description>${ovd.description}</description>
+          <technology-dependencies>
+            <key>dsf.technology</key>
+          </technology-dependencies>
+        </technology>
+        <!--
+        ========================================================================
+        == Virtual Directory Adapter                                          ==
+        ========================================================================
+        -->
+        <technology>
+          <key>ovd.adapter</key>
+          <name>${ovd.adapter}</name>
+          <description>${ovd.adapter.description}</description>
+          <technology-dependencies>
+            <key>ovd.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Virtual Directory 12c Platform</name>
+              <description>${oracle-ovd-12c-platform}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Virtual Directory 12c Foundation</name>
+              <description>${oracle-ovd-12c-foundation}</description>
+            </library>
+          </library-dependencies>
+        </technology>
+      </technology-hook>
+      <actions xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+        <!--
+        ========================================================================
+        == the commmand that the ovd feature will use to regenerate the build ==
+        == hierarchy                                                          ==
+        ========================================================================
+        -->
+        <action id="ovd.jpr.configurator" canBePlacedOnMainToolbar="true">
+          <properties>
+            <property name="Name">${ovd.project.configurator}</property>
+            <property name="SmallIcon">${ovd.project.configurator.icon}</property>
+            <property name="LongDescription">${ovd.project.configurator.description}</property>
+          </properties>
+          <command-class>oracle.jdeveloper.workspace.ovd.project.Configurator</command-class>
+        </action>
+        <!--
+        ========================================================================
+        == the commmand that the ovd feature will use to regenerate the ANT   ==
+        == runtime classpath                                                  ==
+        ========================================================================
+        -->
+        <action id="ovd.jpr.runtime" canBePlacedOnMainToolbar="true">
+          <properties>
+            <property name="Name">${ovd.project.runtime}</property>
+            <property name="SmallIcon">${ovd.project.runtime.icon}</property>
+            <property name="LongDescription">${ovd.project.runtime.description}</property>
+          </properties>
+          <command-class>oracle.jdeveloper.workspace.ovd.project.Runtime</command-class>
+        </action>
+      </actions>
+      <settings-ui-hook>
+        <!--
+        ========================================================================
+        == the pages display in the Oracle JDeveloper Preference Navigator    ==
+        ========================================================================
+        -->
+        <page id="ovd" parent-idref="/preferences/iam">
+          <label>${ovd.name}</label>
+          <traversable-class>oracle.jdeveloper.workspace.ovd.preference.Panel</traversable-class>
+        </page>
+        <!--
+        ========================================================================
+        == the pages display in the Oracle JDeveloper Project Settings        ==
+        ========================================================================
+        -->
+        <page id="ovd" parent-idref="/Project/iam">
+          <label>${ovd.name}</label>
+          <traversable-class>oracle.jdeveloper.workspace.ovd.project.Panel</traversable-class>
+        </page>
+      </settings-ui-hook>
+      <gallery xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+        <folders>
+          <!--
+          ======================================================================
+          == The 'label' attribute allows the folder name to be translated;   ==
+          == the key must be in the extension manifest resource bundle.       ==
+          ==                                                                  ==
+          == Note to myself:                                                  ==
+          == Ensure always that the key defined here is the same that we used ==
+          == in the extension manifest resource bundle as the key of the      ==
+          == Please vistit Manifest.FEATURE to check                          ==
+          ======================================================================
+          -->
+          <name label="${ovd.name}">ovd</name>
+          <category>iam</category>
+        </folders>
+      </gallery>
+    </triggers>
+  </trigger-hooks>
+  <feature id="oracle.ocs.workspace.ovd" xmlns="http://xmlns.oracle.com/ide/extension">
+    <name>${ovd.name}</name>
+    <category-id>iam-category dsf-category</category-id>
+    <description>${ovd.description}</description>
+    <members/>
+    <type>
+      <technology key="ovd.technology"/>
+    </type>
+    <vendor>${ovd.vendor}</vendor>
+    <license>${ovd.license}</license>
+    <copyright>${ovd.copyright}</copyright>
+  </feature>
+  <hooks>
+    <jdeveloper-hook xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+      <context-menu-listeners>
+        <site idref="navigator"> <!-- or "editor", or "explorer" -->
+          <!--
+          ======================================================================
+          == the context menu listener in the navigator to display the menu   ==
+          == item for action ovd.jpr.configurator to regenerate the build     ==
+          == file hierarchy                                                   ==
+          ======================================================================
+          -->
+          <listener-class>oracle.jdeveloper.workspace.ovd.project.ConfiguratorContextListener</listener-class>
+          <!--
+          ======================================================================
+          == the context menu listener in the navigator to display the menu   ==
+          == item for action ovd.jpr.runtime to regenerate the ANT runtime    ==
+          == classpath                                                        ==
+          ======================================================================
+          -->
+          <listener-class>oracle.jdeveloper.workspace.ovd.project.RuntimeContextListener</listener-class>
+        </site>
+      </context-menu-listeners>
+      <addins>
+        <!--
+        ========================================================================
+        == The addin that initialize this extension                           ==
+        ==                                                                    ==
+        == All technologies and templates will be created by this             ==
+        == implementation. It was not possible to prevent JDeveloper to list  ==
+        == the templates that can be created by the template-hook.            ==
+        == All templates that are registered through the TemplateManager will ==
+        == be handled by NewObjectFromTemplate and the appropriate subclasses ==
+        == for applications and projects. Those wizards cannot be intercepted ==
+        == due to the classes are declared as final (really stupid).         ==
+        ==                                                                    ==
+        == Due to that reason we will not declare gallery items in the        ==
+        == section above like:                                                ==
+        ==                                                                    ==
+        ==   <item>                                                           ==
+        ==     <name>fullqualified class name</name>                          ==
+        ==     <folder>ovd</folder>                                           ==
+        ==     <technologyKey>ovd.technology</technologyKey>                  ==
+        ==   </item>                                                          ==
+        ==                                                                    ==
+        ========================================================================
+        -->
+        <addin headless="true">oracle.jdeveloper.workspace.ovd.Feature</addin>
+      </addins>
+    </jdeveloper-hook>
+  </hooks>
+</extension>

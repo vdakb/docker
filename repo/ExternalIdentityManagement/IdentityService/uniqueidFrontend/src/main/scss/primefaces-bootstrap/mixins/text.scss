@@ -1,0 +1,45 @@
+@mixin text-reset() {
+  font-family:                     $font-family-base;
+  // We deliberately do NOT reset  font-size or word-wrap.
+  font-style:                      normal;
+  font-weight:                     $font-weight-normal;
+  line-height:                     $line-height-base;
+  text-align:                      left; // Fallback for where `start` is not supported
+  text-align:                      start;
+  text-decoration:                 none;
+  text-shadow:                     none;
+  text-transform:                  none;
+  letter-spacing:                  normal;
+  word-break:                      normal;
+  word-spacing:                    normal;
+  white-space:                     normal;
+  line-break:                      auto;
+}
+// Typography
+@mixin text-emphasis-variant($parent, $color, $ignore-warning: false) {
+  #{$parent} {
+    color: $color !important;
+  }
+  @if $emphasized-link-hover-darken-percentage != 0 {
+    a#{$parent} {
+      @include hover-focus() {
+        color: darken($color, $emphasized-link-hover-darken-percentage) !important;
+      }
+    }
+  }
+}
+// CSS image replacement
+@mixin text-hide($ignore-warning: false) {
+  color:                           transparent;
+  background-color:                transparent;
+  border:                          0;
+  font:                            0/0 a;
+  text-shadow:                     none;
+}
+// Text truncate
+// Requires inline-block or block for proper styling
+@mixin text-truncate() {
+  white-space:                     nowrap;
+  text-overflow:                   ellipsis;
+  overflow:                        hidden;
+}

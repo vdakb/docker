@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Oracle Consulting Services Identity Manager Deployment Importer"
+         basedir         =".."
+         default         ="clear"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance" depends="code,base,cache"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Oracle Identity Governance
+  **           Foundation Configuration.
+  **
+  ** Synopsis: The tasks deploys the metadata definitions for Oracle Identity
+  **           Governance Foundation Configuration. This includes:
+  **           o IT Resource Definitions
+  **           o Task Adapter
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="code" description="Deploys the Identity Integration Framework Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Identity Integration Framework Configuration ${application.release}"/>
+    <library-deploy dir="${deploy.dir}" location="${oim.remote.thirdparty}" file="ocs-integration.jar"/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Identity Governance Service
+  **           Metadata Configuration.
+  **
+  ** Synopsis: The tasks deploys the metadata definitions for Identity Governance
+  **           Foundation Configuration. This includes:
+  **           o IT Resource Definitions
+  **           o Task Adapter
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="base" description="Deploys the Identity Integration Framework Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Identity Integration Framework Configuration 1.0.0.0"/>
+    <library-deploy dir="${deploy.dir}" file="ocs-integration.jar" location="${oim.remote.thirdparty}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="xml/base">
+        <object:importFile name="icf-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <!-- purge the cache to ensure that the latest version will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="SchedulerTaskDefinition"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Clear Identity Manager Caches.
+  **
+  ** Synopsis: The tasks prepares the Identity Manager Application Deployment.
+  **           This includes:
+  **           o Clearing several caches
+  ******************************************************************************
+  -->
+  <target name="cache" description="Clear Identity Manager caches Revision 1.0.0.0">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Clear metadata cache for environment ${fmw.env} on ${oim.server.name}:${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="oracle.iam.console.identity.sysadmin.ear"     version="V2.0"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="oracle.iam.console.identity.self-service.ear" version="V2.0"/>
+    <echo message="Clear object cache for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+</project>

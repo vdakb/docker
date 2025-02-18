@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="client-tf">
+    <template-reference>
+      <document>/WEB-INF/oracle/iam/ui/common/tfs/error-handler-flow-tf-template.xml</document>
+      <id>error-handler-flow-tf-template</id>
+    </template-reference>
+    <default-activity>loadClients</default-activity>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__1">
+      <name>oam_connection_name</name>
+      <value>#{pageFlowScope.oam_connection_name}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__2">
+      <name>identity_domain_name</name>
+      <value>#{pageFlowScope.identity_domain_name}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <managed-bean id="__5">
+      <managed-bean-name>clientMB</managed-bean-name>
+      <managed-bean-class>bka.iam.identity.ui.oauth.bean.ClientManagedBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="Client">
+      <page>/bka/iam/identity/ui/oauth/pages/client.jsff</page>
+    </view>
+    <method-call id="loadClients">
+      <method>#{bindings.loadClients.execute}</method>
+      <outcome>
+        <fixed-outcome>loadClients</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-return id="goToCallerTF">
+      <outcome>
+        <name>goToCallerTF</name>
+      </outcome>
+    </task-flow-return>
+    <control-flow-rule id="__3">
+      <from-activity-id>loadClients</from-activity-id>
+      <control-flow-case id="__4">
+        <from-outcome>loadClients</from-outcome>
+        <to-activity-id>Client</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>Client</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>success</from-outcome>
+        <to-activity-id>goToCallerTF</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__8">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>goToCallerTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

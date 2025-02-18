@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+           Name                  ="ResourceObjectAM"
+           ComponentClass        ="oracle.iam.identity.sysprov.module.ResourceObjectAMImpl"
+           ComponentInterface    ="oracle.iam.identity.sysprov.module.common.ResourceObjectAM"
+           ClientProxyName       ="oracle.iam.identity.sysprov.module.client.ResourceObjectAMClient"
+           InheritPersonalization="merge"
+           ClearCacheOnRollback  ="true">
+  <DesignTime>
+    <Attr Name="_deployType"  Value="0"/>
+    <Attr Name="_isCodegen"   Value="true"/>
+    <Attr Name="_diagramName" Value="Resource Object"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL        ResId="obj.single"/>
+      <LABEL_PLURAL ResId="obj.multiple"/>
+      <TOOLTIP      ResId="obj.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <!--
+  View Usages which are "exposed" by this application module
+  -->
+  <ViewUsage Name="AccountListVO"                   ViewObjectName="oracle.iam.identity.sysprov.model.view.AccountVO"                       RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="ResourceObjectSearchVO"          ViewObjectName="oracle.iam.identity.sysprov.model.view.ResourceObjectVO"                RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="ResourceObjectDetailVO"          ViewObjectName="oracle.iam.identity.sysprov.model.view.ResourceObjectVO"                RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="ResourceObjectPickerVO"          ViewObjectName="oracle.iam.identity.sysprov.model.view.ResourceObjectVO"                RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="ReconciliationProfileVO"         ViewObjectName="oracle.iam.identity.sysprov.model.view.ReconciliationProfileVO"         RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="ResourceObjectAdministratorVO"   ViewObjectName="oracle.iam.identity.sysprov.model.view.ResourceObjectAdministratorVO"   RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="ReconciliationProfileDataTypeVO" ViewObjectName="oracle.iam.identity.sysprov.model.view.ReconciliationProfileDataTypeVO" RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <!--
+  View Link Usages which are "exposed" by this application module
+  -->
+  <ViewLinkUsage Name              ="ResourceObjectAccountVL"
+                 ViewLinkObjectName="oracle.iam.identity.sysprov.model.view.link.ResourceObjectAccountVL"
+                 SrcViewUsageName  ="oracle.iam.identity.sysprov.module.ResourceObjectAM.ResourceObjectDetailVO"
+                 DstViewUsageName  ="oracle.iam.identity.sysprov.module.ResourceObjectAM.AccountListVO"
+                 Reversed          ="false"/>
+  <ViewLinkUsage Name              ="ResourceObjectAdministratorVL"
+                 ViewLinkObjectName="oracle.iam.identity.sysprov.model.view.link.ResourceObjectAdministratorVL"
+                 SrcViewUsageName  ="oracle.iam.identity.sysprov.module.ResourceObjectAM.ResourceObjectDetailVO"
+                 DstViewUsageName  ="oracle.iam.identity.sysprov.module.ResourceObjectAM.ResourceObjectAdministratorVO"
+                 Reversed          ="false"/>
+  <ViewLinkUsage Name              ="ResourceObjectReconciliationVL"
+                 ViewLinkObjectName="oracle.iam.identity.sysprov.model.view.link.ResourceObjectReconciliationVL"
+                 SrcViewUsageName  ="oracle.iam.identity.sysprov.module.ResourceObjectAM.ResourceObjectDetailVO"
+                 DstViewUsageName  ="oracle.iam.identity.sysprov.module.ResourceObjectAM.ReconciliationProfileVO"
+                 Reversed          ="false"/>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysprov.bundle.Backend"/>
+  </ResourceBundle>
+  <ClientInterface>
+    <Method Name="fetchByIdentifier">
+      <Return Type="void"/>
+      <Parameter Name="identifier" Type="java.lang.String"/>
+    </Method>
+    <Method Name="fetchByName">
+      <Return Type="void"/>
+      <Parameter Name="name" Type="java.lang.String"/>
+    </Method>
+    <Method Name="createDetail">
+      <Return Type="void"/>
+    </Method>
+    <Method Name="fetchDetail">
+      <Return Type="void"/>
+      <Parameter Name="name" Type="java.lang.String"/>
+    </Method>
+    <Method Name="refreshAttribute">
+      <Return Type="void"/>
+      <Parameter Name="identifier" Type="java.lang.String"/>
+    </Method>
+    <Method Name="refreshAdministrator">
+      <Return Type="void"/>
+      <Parameter Name="identifier" Type="java.lang.String"/>
+    </Method>
+    <Method Name="refreshReconciliation">
+      <Return Type="void"/>
+      <Parameter Name="identifier" Type="java.lang.String"/>
+    </Method>
+    <Method Name="refreshAccount">
+      <Return Type="void"/>
+      <Parameter Name="identifier" Type="java.lang.String"/>
+    </Method>
+  </ClientInterface>
+</AppModule>

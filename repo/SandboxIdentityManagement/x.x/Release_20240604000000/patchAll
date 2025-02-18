@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# Program.....: sh
+#
+# Requirements:
+#     The database and the listener are up and running.
+#     The administration server is up and running.
+#     The managed server is up and running
+#     iam.env, utility.env is present
+#
+# Purpose.....:
+#     This script patchs the development artifacts in an Oracle Identity
+#     Manager instance.
+#
+# -----------------------------------------------------------------------
+# IMPORTANT
+# Please note that script are NOT supported by Oracle Support and are
+# available for reference only. You may need to modify the script
+# according to your system and startup requirements. Oracle will not
+# support the use of these, and you may be required to abandon the use of
+# these scripts, if a problem arises.
+# -----------------------------------------------------------------------
+#
+# Author......: Dieter Steding, Oracle Consulting Berlin
+#
+# Revision   Date        Editor      Comment
+# ----------+-----------+-----------+------------------------------------
+# 1.0.0.0    2013-05-30  DSteding    First release version
+# 1.1.0.0    2015-02-10  UFischer    Added exitOnError functionality
+# 1.1.0.1    2015-02-11  UFischer    Added comments and new targets
+# 1.2.0.0    2015-02-12  UFischer    Refactored functions into separate
+#                                    file for readability and reusability
+#                                    also moved setup to setupAll
+#
+
+# set this to true to abort further execution if a build failure occurred in one of the steps
+ABORT_ON_ERROR=true
+
+#################### FUNCTIONS start ####################################
+# -----------------------------------------------------------------------
+# install() function
+# -----------------------------------------------------------------------
+# short-hand function which incorporates the error checking
+#   takes any number of arguments and passes them to the ./install script
+# -----------------------------------------------------------------------
+install() {
+  cmd="./install $*"
+  echo $cmd
+  $cmd
+  exitOnError $cmd
+}
+
+# -----------------------------------------------------------------------
+# exitOnError() function
+# -----------------------------------------------------------------------
+# checks the previous command's exit code and depending on the
+#  $ABORT_ON_ERROR variable exits the ./installation procedure
+# -----------------------------------------------------------------------
+exitOnError() {
+  errorCode=$?
+  if $ABORT_ON_ERROR ; then
+    if [ $errorCode -ne 0 ]; then
+      echo ABORTED: \'$*\' FAILED
+      echo exit code: $errorCode
+      exit $errorCode
+    fi
+  fi
+}
+#################### FUNCTIONS end ######################################
+
+#################### PATCH PROCEDURE #############################
+## System Setup, Entity Customization and System Integration
+# Fix AJS Account Reconciliation 
+install patch 001
+## Clear all caches before restart
+install patch 9999

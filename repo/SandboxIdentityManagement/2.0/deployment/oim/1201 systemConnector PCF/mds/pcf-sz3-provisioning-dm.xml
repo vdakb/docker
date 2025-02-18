@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@buster.vm.oracle.com:7021/mdr.vm.oracle.com" description="Pivotal Cloud Foundry Metadata Configuration Revision 1.0.0.0" exported-date="1597846956397" user="XELSYSADM" version="12.2.1.3.0">
+  <eventhandlers mds-file="pcf-sz3-account-provisioning.xml" mds-path="/metadata/bka-features-provisioning/gws" name="/metadata/bka-features-provisioning/gws" repo-type="MDS">
+    <completeXml>
+      <descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+                  identifier    ="UD_PCF3_USR_SID"
+                  uniqueName    ="UD_PCF3_USR_UID"
+                  transformation="true">
+        <attribute type="string" name="__UID__"             source="UD_PCF3_USR_SID">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string" name="__NAME__"            source="UD_PCF3_USR_UID">
+          <flag>required</flag>
+        </attribute>
+        <attribute class="string" name="__PASSWORD__"       source="UD_PCF3_USR_PWD">
+          <flag>sensitive</flag>
+        </attribute>
+        <attribute class="string" name="verified"           source="UD_PCF3_USR_VFD">
+          <flag>required</flag>
+        </attribute>
+        <attribute class="string" name="origin"             source="UD_PCF3_USR_OID">
+          <flag>required</flag>
+        </attribute>
+        <attribute class="string" name="zoneId"             source="UD_PCF3_USR_IDP">
+          <flag>required</flag>
+        </attribute>
+        <attribute class="string" name="name.familyName"    source="UD_PCF3_USR_SN"/>
+        <attribute class="string" name="name.givenName"     source="UD_PCF3_USR_GN"/>
+        <attribute class="string" name="externalId"         source="UD_PCF3_USR_EID"/>
+        <attribute class="string" name="emails.value"       source="UD_PCF3_USR_MAIL"/>
+        <attribute class="string" name="phoneNumbers.value" source="UD_PCF3_USR_PHONE"/>
+        <transformer name="UD_PCF3_USR_VFD" class="oracle.iam.identity.utility.NumericToBooleanDefaultTrue"/>
+        <!--
+         | child form providing access only on column names not labels hence for any
+         | clone of the connector we need a new decriptor; aaargggh
+         -->
+        <multivalue name="group" source="UD_PCF3_UGP">
+          <attribute class="string" name="__UID__" source="UD_PCF3_UGP_SID">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+        <!--
+         | child form providing access only on column names not labels hence for any
+         | clone of the connector we need a new decriptor; aaargggh
+         -->
+        </multivalue>
+        <multivalue name="tenant" source="UD_PCF3_ORL">
+          <attribute class="string" name="__UID__"   source="UD_PCF3_ORL_SID">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+          <attribute class="string" name="__NAME__"  source="UD_PCF3_ORL_SCP">
+            <flag>required</flag>
+          </attribute>
+        </multivalue>
+        <!--
+         | child form providing access only on column names not labels hence for any
+         | clone of the connector we need a new decriptor; aaargggh
+         -->
+        <multivalue name="space" source="UD_PCF3_SRL">
+          <attribute class="string" name="__UID__"  source="UD_PCF3_SRL_SID">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+          <attribute class="string" name="__NAME__" source="UD_PCF3_SRL_SCP">
+            <flag>required</flag>
+          </attribute>
+        </multivalue>
+      </descriptor>
+    </completeXml>
+  </eventhandlers>
+</xl-ddm-data>

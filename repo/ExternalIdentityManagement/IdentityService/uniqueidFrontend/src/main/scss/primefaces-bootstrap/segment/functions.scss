@@ -1,0 +1,47 @@
+// Retrieve color Sass maps
+@function color($key: "blue") {
+  @return map-get($colors, $key);
+}
+// Retrieve theme-color Sass maps
+@function theme-color($key: "primary") {
+  @return map-get($theme-colors, $key);
+}
+// Retrieve gray Sass maps
+@function gray($key: "100") {
+  @return map-get($grays, $key);
+}
+@function to-rgb($value) {
+  @return red($value), green($value), blue($value);
+}
+// See https://codepen.io/kevinweber/pen/dXWoRw
+//
+// Requires the use of quotes around data URIs.
+@function escape-svg($string) {
+  @if str-index($string, "data:image/svg+xml") {
+    @each $char, $encoded in $escaped-characters {
+      // Do not escape the url brackets
+      @if str-index($string, "url(") == 1 {
+        $string: url("#{str-replace(str-slice($string, 6, -3), $char, $encoded)}");
+      }
+      @else {
+        $string: str-replace($string, $char, $encoded);
+      }
+    }
+  }
+  @return $string;
+}
+// Color contrast
+@function color-yiq($color, $dark: $yiq-text-dark, $light: $yiq-text-light) {
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  $yiq: (($r * 299) + ($g * 587) + ($b * 114)) * .001;
+
+  @if ($yiq >= $yiq-contrasted-threshold) {
+    @return $dark;
+  }
+  @else {
+    @return $light;
+  }
+}

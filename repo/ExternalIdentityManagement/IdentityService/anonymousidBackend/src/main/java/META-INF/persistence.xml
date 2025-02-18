@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<persistence xmlns             ="http://java.sun.com/xml/ns/persistence" version="2.0"
+             xmlns:xsi         ="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="pid" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <!--
+     | WebLogic/Glassfish/Payara deployes DataSource Modules in the namespace
+     | jdbc
+     -->
+    <jta-data-source>jdbc/idsDS</jta-data-source>
+    <non-jta-data-source>jdbc/idsDS</non-jta-data-source>
+    <!--
+     | Converters
+     -->
+    <class>oracle.hst.platform.jpa.converter.Boolean2Integer</class>
+    <!--
+     | Entities / Model
+     -->
+    <class>bka.iam.identity.pid.model.Identifier</class>
+    <properties>
+      <!--
+       | Register the adapter that downstream the session context to the
+       | connected database
+       -->
+      <property name="eclipselink.session-event-listener" value="oracle.hst.platform.jpa.context.SessionAdapter"/>
+    </properties>
+  </persistence-unit>
+</persistence>

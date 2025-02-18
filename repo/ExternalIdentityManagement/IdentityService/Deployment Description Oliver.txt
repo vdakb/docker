@@ -1,0 +1,159 @@
+Payara Server Community Edition 5.2022.5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+export SOURCE=/Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/deployment/igs
+export INSTALL=/opt/oracle/product/pgs
+export VERSION=5.2022.5
+export ASADMIN=${INSTALL}/${VERSION}/bin/asadmin
+export DOMAIN=${INSTALL}/${VERSION}/glassfish/domains/igs
+
+Runtime GlassFish Server
+------------------------
+cp ${SOURCE}/0000\ systemCustomization/lib/primefaces-11.0.0.jar            /${INSTALL}/${VERSION}/glassfish/lib
+cp ${SOURCE}/0000\ systemCustomization/lib/primefaces-extensions-11.0.0.jar ${INSTALL}/${VERSION}/glassfish/lib
+cp ${SOURCE}/0000\ systemCustomization/lib/ocs-hst-core.jar                 ${INSTALL}/${VERSION}/glassfish/lib
+cp ${SOURCE}/0000\ systemCustomization/lib/ocs-hst-jps.jar                  ${INSTALL}/${VERSION}/glassfish/lib
+cp ${SOURCE}/0000\ systemCustomization/lib/ocs-hst-json.jar                 ${INSTALL}/${VERSION}/glassfish/lib
+cp ${SOURCE}/0000\ systemCustomization/lib/ocs-hst-rest.jar                 ${INSTALL}/${VERSION}/glassfish/lib
+cp ${SOURCE}/0000\ systemCustomization/lib/ocs-iad-saml.jar                 ${INSTALL}/${VERSION}/glassfish/lib
+cp ${SOURCE}/0000\ systemCustomization/lib/ocs-igd-scim.jar                 ${INSTALL}/${VERSION}/glassfish/lib
+cp ${SOURCE}/0000\ systemCustomization/lib/bka-igs-authn.jar                ${INSTALL}/${VERSION}/glassfish/lib
+
+Create Domain Identity
+----------------------
+${ASADMIN}
+delete-domain igs
+create-domain --domainproperties java.debugger.port=9001:domain.adminPort=8001:domain.instancePort=8081:http.ssl.port=8082:domain.jmxPort=8083:jms.port=8084:orb.listener.port=8085:orb.ssl.port=8086:orb.mutualauth.port=8087:osgi.shell.telnet.port=8003 igs
+  pgsadmin/Sophie20061990$
+
+start-domain --debug igs
+login --host Dieters-MacBook-Pro.fritz.box --port 8001
+  pgsadmin/Sophie20061990$
+exit
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin --host Dieters-MacBook-Pro.fritz.box --port 8001 enable-secure-admin
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin stop-domain igs
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin start-domain igs
+
+Configure JDBC dataSource
+-------------------------
+# jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(PORT=1521)(HOST=wi11s1e01-scan.exa.bka.bund.de))(ADDRESS=(PROTOCOL=TCP)(PORT=1521)(HOST=wi21s1e01-scan.exa.bka.bund.de)))(CONNECT_DATA=(SERVICE_NAME=acces1e_appl.s1e01.bka.bund.de)))
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 create-jdbc-connection-pool --restype javax.sql.DataSource --datasourceclassname oracle.jdbc.pool.OracleDataSource --property "user=igd_igs:password=Welcome1:url=jdbc\\:oracle\\:thin\\:@(DESCRIPTION\\=(ADDRESS_LIST\\=(ADDRESS\\=(PROTOCOL\\=TCP)(PORT\\=1521)(HOST\\=oliver.cinnamonstar.net)))(CONNECT_DATA\\=(SERVICE_NAME\\=mdr.cinnamonstar.net)))" identityServicePool
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 ping-connection-pool identityServicePool
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 create-jdbc-resource --connectionpoolid identityServicePool --target server jdbc/idsDS
+
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 create-jvm-options "-Doracle.jdbc.autoCommitSpecCompliant\=false"
+
+Configure Autenticator
+----------------------
+
+          <provider-config provider-type="server" provider-id="IdentifierAuthnModule" class-name="bka.iam.identity.oam.IdentityAsserter">
+            <property name="assertionType" description="The type of the assertion send by the authenticating authority." value="plain"></property>
+            <property name="assertionHeader" description="The request header providing the identity of user authenticated by Oracle Access Manager." value="oam_remote_user"></property>
+            <property name="dataSource" description="The JNDI name of the JDBC DataSource used for authentication and authotization purpose." value="jdbc/idsDS"></property>
+            <property name="permissionQuery" description="The SQL query to apply to authorize users based on specific key types." value="SELECT url.rol_id FROM igt_users usr,igt_userroles url WHERE url.usr_id = usr.id AND UPPER(usr.username) = UPPER(?)"></property>
+            <property name="principalQuery" description="The SQL query to apply for identity verification of authenticate users based on specific key types." value="SELECT usr.id FROM igt_users usr WHERE usr.username = ?"></property>
+            <property name="signingMaterial" description="The Base64 encoded PublicKey material of the signing authority." value=""></property>
+            <property name="signingLocation" description="The local filesystem location of the PEM encoded file providing the PublicKey material of the signing authority." value=""></property>
+            <response-policy></response-policy>
+            <request-policy></request-policy>
+          </provider-config>
+
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 \
+  list-message-security-providers --layer HttpServlet server
+
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 \
+  delete-message-security-provider \
+  --target server \
+  --layer HttpServlet \
+  IdentifierAuthnModule
+
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 \
+  create-message-security-provider \
+  --target server \
+  --layer HttpServlet \
+  --classname bka.iam.identity.oam.IdentityAsserter \
+  --property "assertionType=plain:assertionHeader=oam_remote_user:dataSource=jdbc/idsDS:principalQuery=SELECT usr.id FROM igt_users usr WHERE usr.username \\= ?:permissionQuery=SELECT url.rol_id FROM igt_users usr,igt_userroles url WHERE url.usr_id \\= usr.id AND UPPER(usr.username) \\= UPPER(?):signingMaterial= :signingLocation= " \
+  IdentifierAuthnModule
+
+Configure Logger Level
+----------------------
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 set-log-levels bka.iam.identity.AsserterStore=FINEST
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 set-log-levels bka.iam.identity.AssertionStore=FINEST
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 set-log-levels bka.iam.identity.AssertionMechanism=FINEST
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 set-log-levels bka.iam.identity.BearerAssertionStore=FINEST
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 set-log-levels bka.iam.identity.BearerAssertionMechanism=FINEST
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 set-log-levels bka.iam.identity.oam.IdentityAsserter=FINEST
+
+Deploy Application
+------------------
+
+cat > ${DOMAIN}/config/igsresource.json << EOF
+{"dataSource"        : "jdbc/idsDS"
+,"principalQuery"    : "SELECT usr.id FROM igt_users usr WHERE usr.username = ?"
+,"permissionQuery"   : "SELECT url.rol_id FROM igt_users usr,igt_userroles url WHERE url.usr_id = usr.id AND UPPER(usr.username) = UPPER(?)"
+,"tenantQuery"       : "SELECT clm.tnt_id FROM igt_users usr,uit_claims clm WHERE clm.usr_id = usr.id AND UPPER(usr.username) = UPPER(?)"
+,"oauthIssuer"       : "https://sso.cinnamonstar.oam:443/oauth2"
+,"oauthAudience"     : "igsresource"
+,"oauthTenant"       : "SecureDomain2"
+,"oauthClient"       : "igsservice"
+,"oauthSecret"       : "Sophie20061990$"
+,"signingLocation"   : "http://laurel.cinnamonstar.net:8009/oauth2/rest/security"
+,"oauthInfoEndpoint" : "http://laurel.cinnamonstar.net:8009/oauth2/oauth2/rest/token/info"
+}
+EOF
+
+cat > ${DOMAIN}/config/scimresource.json << EOF
+{"dataSource"        : "jdbc/idsDS"
+,"principalQuery"    : "SELECT usr.id FROM igt_users usr WHERE usr.username = ?"
+,"permissionQuery"   : "SELECT url.rol_id FROM igt_users usr,igt_userroles url WHERE url.usr_id = usr.id AND UPPER(usr.username) = UPPER(?)"
+,"tenantQuery"       : "SELECT clm.tnt_id FROM igt_users usr,uit_claims clm WHERE clm.usr_id = usr.id AND UPPER(usr.username) = UPPER(?)"
+,"oauthIssuer"       : "https://sso.cinnamonstar.oam:443/oauth2"
+,"oauthAudience"     : ["https://sso.cinnamonstar.oam:443/oauth2", "uidresource"]
+,"oauthTenant"       : "SecureDomain2"
+,"oauthClient"       : "uidservice"
+,"oauthSecret"       : "Sophie20061990$"
+,"signingLocation"   : "http://oliver.cinnamonstar.net:8009/oauth2/rest/security"
+,"oauthInfoEndpoint" : "http://oliver.cinnamonstar.net:8009/oauth2/oauth2/rest/token/info"
+}
+EOF
+
+cat > ${DOMAIN}/config/uidresource.json << EOF
+{"dataSource"        : "jdbc/idsDS"
+,"principalQuery"    : "SELECT usr.id FROM igt_users usr WHERE usr.username = ?"
+,"permissionQuery"   : "SELECT url.rol_id FROM igt_users usr,igt_userroles url WHERE url.usr_id = usr.id AND UPPER(usr.username) = UPPER(?)"
+,"tenantQuery"       : "SELECT clm.tnt_id FROM igt_users usr,uit_claims clm WHERE clm.usr_id = usr.id AND UPPER(usr.username) = UPPER(?)"
+,"oauthIssuer"       : "https://sso.cinnamonstar.oam:443/oauth2"
+,"oauthAudience"     : ["https://sso.cinnamonstar.oam:443/oauth2", "uidresource"]
+,"oauthTenant"       : "SecureDomain2"
+,"oauthClient"       : "uidservice"
+,"oauthSecret"       : "Sophie20061990$"
+,"signingLocation"   : "http://oliver.cinnamonstar.net:8009/oauth2/rest/security"
+,"oauthInfoEndpoint" : "http://oliver.cinnamonstar.net:8009/oauth2/rest/token/info"
+}
+EOF
+
+cat > ${DOMAIN}/config/pidresource.json << EOF
+{"dataSource"        : "jdbc/idsDS"
+,"principalQuery"    : "SELECT usr.id FROM igt_users usr WHERE usr.username = ?"
+,"permissionQuery"   : "SELECT url.rol_id FROM igt_users usr,igt_userroles url WHERE url.usr_id = usr.id AND UPPER(usr.username) = UPPER(?)"
+,"oauthIssuer"       : "https://sso.cinnamonstar.oam:443/oauth2"
+,"oauthAudience"     : ["https://sso.cinnamonstar.oam:443/oauth2", "pidresource"]
+,"oauthTenant"       : "SecureDomain2"
+,"oauthClient"       : "pidservice"
+,"oauthSecret"       : "Sophie20061990$"
+,"signingLocation"   : "http://oliver.cinnamonstar.net:8009/oauth2/rest/security"
+,"oauthInfoEndpoint" : "http://oliver.cinnamonstar.net:8009/oauth2/rest/token/info"
+}
+EOF
+
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 deploy ${SOURCE}/0100\ systemServices/lib/bka-igs-scim.war
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 deploy ${SOURCE}/0100\ systemServices/lib/bka-pid-service.war
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 deploy ${SOURCE}/0100\ systemServices/lib/bka-uid-service.war
+${ASADMIN} --host Dieters-MacBook-Pro.fritz.box --port 8001 deploy ${SOURCE}/0100\ systemServices/lib/bka-uid-frontend.war
+
+Operate Domain Identity
+------------------------
+${ASADMIN} stop-domain igs
+rm -rf ${DOMAIN}/logs/server.log
+${ASADMIN} start-domain --debug igs
+tail -F /opt/oracle/product/pgs/5.2022.5/glassfish/domains/igs/logs/server.log

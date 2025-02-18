@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter"
+         basedir         ="../"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-export-ant.log"/>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Identity Manager System Integration Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports the Connector Base Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gws-resource-dm.xml"
+                        description="Google Apigee Edge IT Resource Type Configuration ${application.release}">
+        <object:category value="ITResourceDef" name="Generic WebService Endpoint"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gae-lookup-dm.xml"
+                        description="Google Apigee Edge Lookup Configuration ${application.release}">
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gae-adapter-dm.xml"
+                        description="Google Apigee Edge Adapter Configuration ${application.release}">
+        <object:category value="TaskAdapter"   name="adpGAEACCOUNTCREATE"/>
+        <object:category value="TaskAdapter"   name="adpGAEACCOUNTMODIFY"/>
+        <object:category value="TaskAdapter"   name="adpGAEACCOUNTMODIFYATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGAEACCOUNTASSIGNATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGAEACCOUNTUPDATEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGAEACCOUNTREVOKEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGAEACCOUNTREVOKE"/>
+        <object:category value="TaskAdapter"   name="adpGAEACCOUNTACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpGAEACCOUNTDEACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpGAEDEVELOPERCREATE"/>
+        <object:category value="TaskAdapter"   name="adpGAEDEVELOPERMODIFY"/>
+        <object:category value="TaskAdapter"   name="adpGAEDEVELOPERMODIFYATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGAEDEVELOPERASSIGNATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGAEDEVELOPERUPDATEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGAEDEVELOPERREVOKEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGAEDEVELOPERREVOKE"/>
+        <object:category value="TaskAdapter"   name="adpGAEDEVELOPERACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpGAEDEVELOPERDEACTIVATE"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gae-scheduler-dm.xml"
+                        description="Google Apigee Edge Scheduler Configuration ${application.release}">
+        <object:category value="scheduledTask" name="GAE Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="GAE Delete Reconciliation"/>
+        <object:category value="scheduledTask" name="GAE Account Reconciliation"/>
+        <object:category value="scheduledTask" name="GAE Developer Account Reconciliation"/>
+        <object:category value="scheduledTask" name="GAE Developer Delete Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Google Apigee Edge Provider Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Lookup Definition
+  **           o Resource Form
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Exports the Connector Target Configuration ${application.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the Lookup configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gae-lookup-dm.xml"
+                        description="Google Apigee Edge Configuration ${application.release}">
+        <object:category value="Lookup"       name="GAE.Role"/>
+        <object:category value="Lookup"       name="GAE.Tenant"/>
+        <object:category value="Lookup"       name="GAE.Application"/>
+      </object:exportSet>
+      <!-- export the IT Resource configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gae-resource-dm.xml"
+                        description="Google Apigee Edge Configuration ${application.release}">
+        <object:category value="ITResource"    name="GAE Endpoint"/>
+      </object:exportSet>
+      <!-- export the User Defined Form configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gae-model-dm.xml"
+                        description="Google Apigee Edge Connector Configuration ${application.release}">
+        <object:category value="Process Form" name="UD_GAE_URL"/>
+        <object:category value="Process Form" name="UD_GAE_USR"/>
+      </object:exportSet>
+      <!-- export the Provisioning Process configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gae-process-dm.xml"
+                        description="Google Apigee Edge Connector Configuration ${application.release}">
+        <object:category value="Resource"     name="GAE Account"/>
+        <object:category value="Process"      name="GAE Account"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gae-scheduler-dm.xml"
+                        description="Google Apigee Edge Configuration ${application.release}">
+        <object:category value="Job"          name="GAE Role Reconciliation"/>
+        <object:category value="Job"          name="GAE Tenant Reconciliation"/>
+        <object:category value="Job"          name="GAE Application Reconciliation"/>
+        <object:category value="Job"          name="GAE Delete Reconciliation"/>
+        <object:category value="Job"          name="GAE Account Reconciliation"/>
+        <object:category value="Job"          name="GAE Developer Delete Reconciliation"/>
+        <object:category value="Job"          name="GAE Developer Account Reconciliation"/>
+      </object:exportSet>
+      <!-- export the Request Catalog configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gae-request-dm.xml"
+                        description="Google Apigee Edge Connector Configuration ${application.release}">
+        <object:category value="RequestDataset"      name="GAERequest"/>
+        <object:category value="ApplicationInstance" name="GAEAccount"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Exports the project artifacts from the target host and Identity Manager Instance"/>
+</project>

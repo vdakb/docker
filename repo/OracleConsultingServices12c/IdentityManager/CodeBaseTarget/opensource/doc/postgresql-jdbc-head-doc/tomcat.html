@@ -1,0 +1,200 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+	<title>Tomcat setup</title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+	<meta name="description" content="The official site for the PostgreSQL JDBC Driver" />
+	<meta name="copyright" content="The PostgreSQL Global Development Group" />
+
+	<style type="text/css" media="screen" title="Normal Text">@import url("media/css/docs.css");</style>
+
+	<link rel="shortcut icon" href="media/favicon.ico" />
+</head>
+
+<body>
+	<div id="docHeader">
+		<div id="docHeaderLogo">
+			<a href="http://www.postgresql.org/" title="PostgreSQL"><img src="media/img/layout/hdr_left3a.png" alt="PostgreSQL" height="80" width="390" /></a>
+		</div>
+	</div>
+
+	<div id="docContainerWrap">
+		<div id="docContainer">
+			<div id="docContent">
+
+				<div class="NAVHEADER">
+					<table summary="Header navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+						<tr>
+							<th colspan="3" valign="bottom" align="center">
+								<h2 class="TITLE">Chapter 11. Connection Pools and Data Sources</h2>
+							</th>
+						</tr>
+						<tr>
+							<td valign="top" width="20%" align="left">
+								<a title="Applications DataSource" href="ds-ds.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="bottom" width="60%" align="center">&nbsp;</td>
+							<td valign="top" width="20%" align="right">
+								<a title="Data Sources and JNDI" href="jndi.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+  					</tbody>
+					</table>
+					<hr class="c1" width="100%" />
+				</div> <!-- NAVHEADER -->
+
+				<div class="CHAPTER">
+  					<h1>Tomcat setup</h1>
+					
+					<h3>Note</h3>
+
+<p>The postgresql.jar file must be placed in $CATALINA_HOME/common/lib in both
+Tomcat 4 and 5.</p>
+
+<p>The absolute easiest way to set this up in either tomcat instance is to use the
+admin web application that comes with Tomcat, simply add the datasource to the
+context you want to use it in.</p>
+
+<p>Setup for Tomcat 4 place the following inside the &lt;Context&gt; tag inside
+conf/server.xml</p>
+
+<pre><code>
+&lt;Resource name="jdbc/postgres" scope="Shareable" type="javax.sql.DataSource"/&gt;
+&lt;ResourceParams name="jdbc/postgres"&gt;
+    &lt;parameter&gt;
+        &lt;name&gt;validationQuery&lt;/name&gt;
+        &lt;value&gt;select version();&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+        &lt;name&gt;url&lt;/name&gt;
+        &lt;value&gt;jdbc:postgresql://localhost/davec&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+        &lt;name&gt;password&lt;/name&gt;
+        &lt;value&gt;davec&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+        &lt;name&gt;maxActive&lt;/name&gt;
+        &lt;value&gt;4&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+        &lt;name&gt;maxWait&lt;/name&gt;
+        &lt;value&gt;5000&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+        &lt;name&gt;driverClassName&lt;/name&gt;
+        &lt;value&gt;org.postgresql.Driver&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+        &lt;name&gt;username&lt;/name&gt;
+        &lt;value&gt;davec&lt;/value&gt;
+    &lt;/parameter&gt;
+    &lt;parameter&gt;
+        &lt;name&gt;maxIdle&lt;/name&gt;
+        &lt;value&gt;2&lt;/value&gt;
+    &lt;/parameter&gt;
+&lt;/ResourceParams&gt; 
+</code></pre>
+
+<p>Setup for Tomcat 5, you can use the above method, except that it goes inside the
+&lt;DefaultContext&gt; tag inside the &lt;Host&gt; tag. eg. &lt;Host&gt; ... &lt;DefaultContext&gt; ...</p>
+
+<p>Alternatively there is a conf/Catalina/hostname/context.xml file. For example
+http://localhost:8080/servlet-example has a directory $CATALINA_HOME/conf/Catalina/localhost/servlet-example.xml file. 
+Inside this file place the above xml inside the &lt;Context&gt; tag</p>
+
+<p>Then you can use the following code to access the connection.</p>
+
+<pre><code>
+import javax.naming.*;
+import javax.sql.*;
+import java.sql.*;
+public class DBTest 
+{
+
+    String foo = "Not Connected";
+    int bar = -1;
+    
+    public void init() 
+    {
+        try
+        {
+            Context ctx = new InitialContext();
+            if(ctx == null )
+                throw new Exception("Boom - No Context");
+    
+            // /jdbc/postgres is the name of the resource above 
+            DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/postgres");
+        
+            if (ds != null) 
+            {
+                Connection conn = ds.getConnection();
+        
+                if(conn != null) 
+                {
+                    foo = "Got Connection "+conn.toString();
+                    Statement stmt = conn.createStatement();
+                    ResultSet rst = stmt.executeQuery("select id, foo, bar from testdata");
+                    
+                    if(rst.next())
+                    {
+                        foo=rst.getString(2);
+                        bar=rst.getInt(3);
+                    }
+                    conn.close();
+                }
+            }
+        }
+        catch(Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public String getFoo() { return foo; }
+
+    public int getBar() { return bar;}
+}
+</code></pre>
+
+				</div>
+
+				<div class="NAVFOOTER">
+					<hr class="c1" width="100%" />
+					<table summary="Footer navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td valign="top" width="33%" align="left">
+								<a href="ds-ds.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="top" width="34%" align="center">
+								<a href="index.html" accesskey="H">Home</a>
+							</td>
+							<td valign="top" width="33%" align="right">
+								<a href="jndi.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+						<tr>
+							<td valign="top" width="33%" align="left">Applications DataSource</td>
+							<td valign="top" width="34%" align="center">&nbsp;</td>
+							<td valign="top" width="33%" align="right">Data Sources and JNDI</td>
+						</tr>
+					</tbody>
+					</table>
+				</div> <!-- NAVFOOTER -->
+
+
+			</div> <!-- docContent -->
+			
+			<div id="docComments"></div>
+
+			<div id="docFooter">
+				<a class="navFooter" href="http://www.postgresql.org/about/privacypolicy">Privacy Policy</a> |
+				<a class="navFooter" href="http://www.postgresql.org/about/">About PostgreSQL</a><br/>
+				Copyright &copy; 1996-2013 The PostgreSQL Global Development Group
+			</div> <!-- pgFooter -->
+		</div> <!-- docContainer -->
+	</div> <!-- docContainer -->
+</body>
+</html>

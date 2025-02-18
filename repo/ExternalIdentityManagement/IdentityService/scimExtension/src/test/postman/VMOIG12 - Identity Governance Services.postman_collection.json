@@ -1,0 +1,2078 @@
+{
+	"info": {
+		"_postman_id": "85236e81-755f-4cee-8dc4-7eab40fd7d03",
+		"name": "VMOIG12 - Identity Governance Services",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17311767"
+	},
+	"item": [
+		{
+			"name": "Zero1 Services",
+			"item": [
+				{
+					"name": "Endpoint Applications",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/appinstances",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"appinstances"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list-1-to-10",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/appinstances?start=1&items=10",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"appinstances"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "1"
+										},
+										{
+											"key": "items",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/appinstances/eFBSAccountProduction",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"appinstances",
+										"eFBSAccountProduction"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "The /appinstances endpoint can be used for GET method to search or lookup individual\r\napplication instances provided by the BKA Identity Management implementation.\r\n\r\nThe /appinstances endpoint is read only.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Endpoint Entitlements",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/entitlements?count=2",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"entitlements"
+									],
+									"query": [
+										{
+											"key": "count",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list-1-to-10",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/entitlements?start=1&items=10",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"entitlements"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "1"
+										},
+										{
+											"key": "items",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list-filtered-active",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/entitlements?filter=active eq 1",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"entitlements"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "active eq 1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list-filtered-inactive",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/entitlements?filter=active eq 0",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"entitlements"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "active eq 0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/entitlements/1?attributes=key",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"entitlements",
+										"1"
+									],
+									"query": [
+										{
+											"key": "attributes",
+											"value": "key"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "This endpoint provides the ability to query existing entitlements grouped by application instance\r\nnames. Request supports pagination and filtering, see the Query Parameters and Filtering section\r\nfor more information.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Endpoint  Schema",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/appschemas/eFBSAccountProduction",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"appschemas",
+										"eFBSAccountProduction"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "The /appschemas endpoint can be used for GET method to request lookup of schema provided\r\nby the BKA Identity Management application instance.\r\n\r\nThe /appschemas endpoint is read only.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Endpoint Accounts",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-zero-context}}/accounts/st/appInstance/IDSAccount",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-zero-context}}",
+										"accounts",
+										"st",
+										"appInstance",
+										"IDSAccount"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "The /accounts endpoint can be used for GET method to search accounts provisioned by the BKA\r\nIdentity Management implementation.\r\n\r\nThe /accounts endpoint is read only.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "SCIMv2 Extended",
+			"item": [
+				{
+					"name": "Endpoint Discovery",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/scim+json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/ResourceTypes",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"ResourceTypes"
+									]
+								},
+								"description": "This endpoint provides the ability to list available resource types. Request supports filtering, sorting and limiting attributes to return, see the Query Parameters section for more information."
+							},
+							"response": []
+						}
+					],
+					"description": "The /ResourceTypes endpoint can be used for GET method to retrieve supported resource types\r\nsupported by this SCIM endpoint. The /ResourceTypes endpoint is read only.\r\nThe following API operations are supported by the IGS SCIM Extension /ResourceTypes endpoint\r\nimplementation:\r\n\r\n  o List Resource Types",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Schema Discovery",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Schemas",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Schemas"
+									]
+								},
+								"description": "The /Schemas endpoint can be used for GET method to retrieve supported SCIM schema. The schema provided consists of two parts:\no  Standard Oracle Identity Governance schema, described at https://docs.oracle.com/cd/E52734_01/oim/OMDEV/scim.htm\no Custom SCIM schema extension, described throughout the document Infrastructure Administrations - IGS SCIM Extension Operations."
+							},
+							"response": []
+						},
+						{
+							"name": "filtered",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Schemas?filter=id eq \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Schemas"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "id eq \"urn:ietf:params:scim:api:messages:2.0:PatchOp\""
+										}
+									]
+								},
+								"description": "The /Schemas endpoint can be used for GET method to retrieve supported SCIM schema. The schema provided consists of two parts:\no  Standard Oracle Identity Governance schema, described at https://docs.oracle.com/cd/E52734_01/oim/OMDEV/scim.htm\no Custom SCIM schema extension, described throughout the document Infrastructure Administrations - IGS SCIM Extension Operations."
+							},
+							"response": []
+						}
+					],
+					"description": "The /Schemas endpoint can be used for GET method to retrieve supported SCIM schema. The\r\nschema provided consists of two parts:\r\n\r\n  o Standard Oracle Identity Governance schema, described at https://docs.oracle.com/cd/E52734_01/oim/OMDEV/scim.htm,\r\n  o Custom SCIM schema extension, described throughout this document.\r\n\r\nThe /Schemas endpoint is read only.",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "User Endpoint",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Users",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Users"
+									]
+								},
+								"description": "This endpoint provides the ability to query SCIM resources. Request supports limiting attributes to return, see the Query Parameters section for more information."
+							},
+							"response": []
+						},
+						{
+							"name": "lookup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Users/USER.12",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Users",
+										"USER.12"
+									]
+								},
+								"description": "This endpoint provides the ability to query SCIM resources. Request supports limiting attributes to return, see the Query Parameters section for more information."
+							},
+							"response": []
+						}
+					],
+					"description": "The /Users endpoint can be used for full user management, so GET, POST, PUT and PATCH\r\nmethods are available to manipulate user entries.\r\n\r\nThe following API operations are supported by the IGS SCIM Extension /Users endpoint\r\nimplementation:\r\n  o List Users\r\n  o Lookup User\r\n  o Create User\r\n  o Modify User\r\n  o Delete User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Role Endpoint",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Groups",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Groups"
+									]
+								},
+								"description": "This endpoint provides the ability to query SCIM resources. Request supports limiting attributes to return, see the Query Parameters section for more information."
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Application Endpoint",
+					"item": [
+						{
+							"name": "Entitlements",
+							"item": [
+								{
+									"name": "list",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Applications/RRPTestLdapAppInst/UD_LDAP_GRP",
+											"host": [
+												"{{igd-serviceurl}}"
+											],
+											"path": [
+												"{{igd-scim-context}}",
+												"Applications",
+												"RRPTestLdapAppInst",
+												"UD_LDAP_GRP"
+											]
+										},
+										"description": "This endpoint provides the ability to list members for a particular entitlement. Since a single\r\nentitlement can contain multiple attributes (at least the entitlement attribute itself) all available\r\nattribute name-value pairs are returned alongside with members for each attribute name-value pair\r\nassigned."
+									},
+									"response": []
+								},
+								{
+									"name": "member",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/scim+json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Applications/AJSAccount/UD_AJS_PRJ/AJS.Endpoint~P20_DAPJ Testkoordination",
+											"host": [
+												"{{igd-serviceurl}}"
+											],
+											"path": [
+												"{{igd-scim-context}}",
+												"Applications",
+												"AJSAccount",
+												"UD_AJS_PRJ",
+												"AJS.Endpoint~P20_DAPJ Testkoordination"
+											]
+										},
+										"description": "This endpoint provides the ability to list members for a particular entitlement. Since a single\r\nentitlement can contain multiple attribute (at least the entitlement attributs itself) all available\r\nattribute name-value pairs are returned alongside with members for each attribute name-value pair\r\nassigned."
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Applications",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Applications"
+									]
+								},
+								"description": "This endpoint provides the ability to list available applications. In the result also list of namespaces\r\nand entitlements alongside with members are returned. Request supports limiting attributes to\r\nreturn, see the Query Parameters section for more information."
+							},
+							"response": []
+						},
+						{
+							"name": "lookup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Applications/APCAccount",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Applications",
+										"APCAccount"
+									]
+								},
+								"description": "This endpoint provides the ability to list entitlement namespaces available in a applications. In the\r\nresult also list of entitlements alongside with members are returned. Request supports limiting\r\nattributes to return, see the Query Parameters section for more information."
+							},
+							"response": []
+						}
+					],
+					"description": "The /Applications endpoint can be used retrieving list of available applications (alongside with\r\nall namespaces, entitlements and members), for listing available entitlement namespaces (alongside\r\nwith all entitlements and members) for a specific application, for listing available entitlements\r\n(alongside with all members) for a specific application namespace, for listing assigned members for a\r\nspecific per-application entitlement and modify entitlement assignmentfor entitlement membership\r\nmanagement using PATCH operation."
+				},
+				{
+					"name": "Application Attribute Endpoint",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/ApplicationAttributes//AJSAccount",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"ApplicationAttributes",
+										"",
+										"AJSAccount"
+									]
+								},
+								"description": "This endpoint provides the ability to list available applications. In the result also list of namespaces\r\nand entitlements alongside with members are returned. Request supports limiting attributes to\r\nreturn, see the Query Parameters section for more information."
+							},
+							"response": []
+						}
+					],
+					"description": "The /ApplicationAttributes endpoint can be used for retrieving schema attribute information for one particular application instance using the GET method.\n\nThe following API operations are supported by the IGS ZeRo Services /accounts endpoint\nimplementation:\n\n  o Lookup Application Attributes"
+				},
+				{
+					"name": "Policy Endpoint",
+					"item": [
+						{
+							"name": "list",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/scim+json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list filtered",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/scim+json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies?sortOrder=descending&count=2&startIndex=1&sortBy=description&filter=name sw \"T\"",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies"
+									],
+									"query": [
+										{
+											"key": "sortOrder",
+											"value": "descending"
+										},
+										{
+											"key": "count",
+											"value": "2"
+										},
+										{
+											"key": "startIndex",
+											"value": "1"
+										},
+										{
+											"key": "sortBy",
+											"value": "description"
+										},
+										{
+											"key": "filter",
+											"value": "name sw \"T\""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "list filtered Copy",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/scim+json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies?sortOrder=descending&count=2&startIndex=1&sortBy=description&filter=name sw \"T\"",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies"
+									],
+									"query": [
+										{
+											"key": "sortOrder",
+											"value": "descending"
+										},
+										{
+											"key": "count",
+											"value": "2"
+										},
+										{
+											"key": "startIndex",
+											"value": "1"
+										},
+										{
+											"key": "sortBy",
+											"value": "description"
+										},
+										{
+											"key": "filter",
+											"value": "name sw \"T\""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "schema - Policy",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/scim+json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Schemas/urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Policy",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Schemas",
+										"urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Policy"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup Copy",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://192.168.56.103:7201/igs/scim/v2/Policies/TestAP",
+									"protocol": "http",
+									"host": [
+										"192",
+										"168",
+										"56",
+										"103"
+									],
+									"port": "7201",
+									"path": [
+										"igs",
+										"scim",
+										"v2",
+										"Policies",
+										"TestAP"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Policy\"\n    ],\n    \"id\": \"TestAP999\",\n    \"description\": \"Description TestAP999\",\n    \"owner\": \"XELSYSADM\",\n    \"ownerType\": \"USER\",\n    \"priority\": 34,\n    \"applications\": [\n        {\n            \"applicationName\": \"APCAccount\",\n            \"applicationAttributes\": [\n                {\n                    \"name\": \"UD_APC_USR_USER_NAME\",\n                    \"value\": \"tomas.sebo\"\n                }\n            ],\n            \"namespaces\": [\n                {\n                    \"namespace\": \"UD_APC_GRP\",\n                    \"entitlements\": [\n                        {\n                            \"name\": \"UD_APC_GRP_NAME\",\n                            \"value\": \"184~APC Group3\",\n                            \"additionalAttributes\": [\n                                {\n                                    \"attributes\": [\n                                        {\n                                            \"name\": \"UD_APC_GRP_OUNAME\",\n                                            \"value\": \"ou3\"\n                                        }\n                                    ]\n                                }\n                            ]\n                        },\n                        {\n                            \"name\": \"UD_APC_GRP_NAME\",\n                            \"value\": \"184~APC Group1\",\n                            \"additionalAttributes\": [\n                                {\n                                    \"attributes\": [\n                                        {\n                                            \"name\": \"UD_APC_GRP_OUNAME\",\n                                            \"value\": \"ou1\"\n                                        }\n                                    ]\n                                }\n                            ]\n                        }\n                    ]\n                }\n            ]\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create onlyEnt",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Policy\"\n    ],\n    \"id\": \"TestAP999\",\n    \"description\": \"Description TestAP999\",\n    \"owner\": \"XELSYSADM\",\n    \"ownerType\": \"USER\",\n    \"priority\": 34,\n    \"applications\": [\n        {\n            \"applicationName\": \"APCAccount\",\n            \"applicationAttributes\": [\n                {\n                    \"name\": \"UD_APC_USR_USER_NAME\",\n                    \"value\": \"tomas.sebo\"\n                }\n            ],\n            \"namespaces\": [\n                {\n                    \"namespace\": \"UD_APC_GRP\",\n                    \"entitlements\": [\n                        {\n                            \"name\": \"UD_APC_GRP_NAME\",\n                            \"value\": \"184~APC Group3\"\n                        },\n                        {\n                            \"name\": \"UD_APC_GRP_NAME\",\n                            \"value\": \"184~APC Group1\"\n                        }\n                    ]\n                }\n            ]\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create Empty",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Policy\"\n    ],\n    \"id\": \"TestAP99999\",\n    \"description\": \"Description TestAP9999\",\n    \"owner\": \"XELSYSADM\",\n    \"ownerType\": \"USER\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "modify",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Policy\"\n    ],\n    \"id\": \"TestAP999\",\n    \"description\": \"Description TestAP999\",\n    \"owner\": \"XELSYSADM\",\n    \"ownerType\": \"USER\",\n    \"priority\": 34,\n    \"applications\": [\n        {\n            \"applicationName\": \"APCAccount\",\n            \"applicationAttributes\": [\n                {\n                    \"name\": \"UD_APC_USR_USER_NAME\",\n                    \"value\": \"tomas.sebo\"\n                }\n            ],\n            \"namespaces\": [\n                {\n                    \"namespace\": \"UD_APC_GRP\",\n                    \"entitlements\": [\n                        {\n                            \"name\": \"UD_APC_GRP_NAME\",\n                            \"value\": \"184~APC Group3\",\n                            \"additionalAttributes\": [\n                                {\n                                    \"attributes\": [\n                                        {\n                                            \"name\": \"UD_APC_GRP_OUNAME\",\n                                            \"value\": \"ou33\"\n                                        }\n                                    ]\n                                }\n                            ]\n                        },\n                        {\n                            \"name\": \"UD_APC_GRP_NAME\",\n                            \"value\": \"184~APC Group1\",\n                            \"additionalAttributes\": [\n                                {\n                                    \"attributes\": [\n                                        {\n                                            \"name\": \"UD_APC_GRP_OUNAME\",\n                                            \"value\": \"ou11\"\n                                        }\n                                    ]\n                                }\n                            ]\n                        }\n                    ]\n                }\n            ]\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "modify RemoveOptional",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Policy\"\n    ],\n    \"id\": \"TestAP999\",\n    \"description\": \"Description TestAP999\",\n    \"owner\": \"XELSYSADM\",\n    \"ownerType\": \"USER\",\n    \"priority\": 34,\n    \"applications\": [\n        {\n            \"applicationName\": \"APCAccount\",\n            \"applicationAttributes\": [\n                {\n                    \"name\": \"UD_APC_USR_USER_NAME\",\n                    \"value\": \"tomas.sebo\"\n                }\n            ],\n            \"namespaces\": [\n                {\n                    \"namespace\": \"UD_APC_GRP\",\n                    \"entitlements\": [\n                        {\n                            \"name\": \"UD_APC_GRP_NAME\",\n                            \"value\": \"184~APC Group3\"\n                        },\n                        {\n                            \"name\": \"UD_APC_GRP_NAME\",\n                            \"value\": \"184~APC Group1\",\n                            \"additionalAttributes\": [\n                                {\n                                    \"attributes\": [\n                                        {\n                                            \"name\": \"UD_APC_GRP_OUNAME\",\n                                            \"value\": \"ou1\"\n                                        }\n                                    ]\n                                }\n                            ]\n                        }\n                    ]\n                }\n            ]\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "description 1",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " { \"schemas\":\n      [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"],\n     \"Operations\":[\n       {\n        \"op\":\"replace\",\n        \"path\": \"description\",\n        \"value\": \"AP Description TestAP999 1\"\n       },\n       {\n        \"op\":\"replace\",\n        \"path\": \"priority\",\n        \"value\": 7\n       }\n     ]\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "description 2",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " { \"schemas\":\n      [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"],\n     \"Operations\":[\n       {\n        \"op\":\"replace\",\n        \"value\": {\n            \"description\":\"AP Description TestAP999 2\",\n            \"priority\": 2\n            }\n       }\n     ]\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add application RRPTestADAppInst",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " { \"schemas\":\n      [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"],\n     \"Operations\":[\n       {\n        \"op\":\"add\",\n        \"path\":\"applications\",\n        \"value\": {\n                        \"applicationName\": \"RRPTestADAppInst\",\n                        \"applicationAttributes\": [\n                            {\n                                \"name\": \"UD_ADUSER_PASWD_NOT_REQUIRE\",\n                                \"value\": \"0\"\n                            },\n                            {\n                                \"name\": \"UD_ADUSER_ALLOW_LOGIN\",\n                                \"value\": \"0\"\n                            },\n                            {\n                                \"name\": \"UD_ADUSER_NEVER\",\n                                \"value\": \"0\"\n                            },\n                            {\n                                \"name\": \"UD_ADUSER_LOCKED\",\n                                \"value\": \"0\"\n                            },\n                            {\n                                \"name\": \"UD_ADUSER_SERVER\",\n                                \"value\": \"184\"\n                            },\n                            {\n                                \"name\": \"UD_ADUSER_MUST\",\n                                \"value\": \"0\"\n                            }\n                        ],\n                        \"namespaces\": [\n                            {\n                                \"namespace\": \"UD_ADUSRC\",\n                                \"entitlements\": [\n                                    {\n                                        \"status\": \"\",\n                                        \"attributeValues\": [\n                                            {\n                                                \"attributes\": [\n                                                    {\n                                                        \"name\": \"UD_ADUSRC_GROUPNAME\",\n                                                        \"value\": \"46~CN=Backup Operators,CN=Builtin,DC=imguru,DC=eu\"\n                                                    }\n                                                ]\n                                            }\n                                        ]\n                                    }\n                                ]\n                            }\n                        ]\n                    }   \n       }\n     ]\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove application RRPTestADAppInst",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " { \"schemas\":\n      [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"],\n     \"Operations\":[\n       {\n        \"op\":\"remove\",\n        \"path\":\"applications[applicationName eq \\\"RRPTestADAppInst\\\"]\"\n       }\n     ]\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove application APCAccount",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " { \"schemas\":\n      [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"],\n     \"Operations\":[\n       {\n        \"op\":\"remove\",\n        \"path\":\"applications[applicationName eq \\\"APCAccount\\\"]\"\n       }\n     ]\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove applicationAttributes value",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " { \"schemas\":\n      [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"],\n     \"Operations\":[\n       {\n        \"op\":\"remove\",\n        \"path\":\"applications[applicationName eq \\\"APCAccount\\\"].applicationAttributes[name eq \\\"UD_APC_USR_USER_NAME\\\"]\"\n       }\n     ]\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove applicationAttributes values",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": " { \"schemas\":\n      [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"],\n     \"Operations\":[\n       {\n        \"op\":\"remove\",\n        \"path\":\"applications[applicationName eq \\\"APCAccount\\\"].applicationAttributes\"\n       }\n     ]\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD applicationAttributes value",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"add\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].applicationAttributes\",\n            \"value\": {\n                \"name\": \"UD_APC_USR_USER_NAME\",\n                \"value\": \"tomas.sebo modified\"\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD applicationAttributes values",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"add\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].applicationAttributes\",\n            \"value\": [{\n                \"name\": \"UD_APC_USR_USER_NAME_2\",\n                \"value\": \"tomas.sebo modified\"\n            },\n            {\n                \"name\": \"UD_APC_USR_USER_NAME_3\",\n                \"value\": \"tomas.sebo modified\"\n            }\n            ]\n            \n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "REPLACE applicationAttributes values",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].applicationAttributes\",\n            \"value\": [{\n                \"name\": \"UD_APC_USR_USER_NAME_5\",\n                \"value\": \"tomas.sebo modified\"\n            },\n            {\n                \"name\": \"UD_APC_USR_USER_NAME_6\",\n                \"value\": \"tomas.sebo modified\"\n            }\n            ]\n            \n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "REPLACE applicationAttributes value",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].applicationAttributes\",\n            \"value\": {\n                \"name\": \"UD_APC_USR_USER_NAME_X\",\n                \"value\": \"tomas.sebo modified\"\n            }\n            \n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD Namespace",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"add\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].namespaces\",\n            \"value\": {\n                \"namespace\": \"UD_APC_GRP\",\n                \"entitlements\": [\n                    {\n                        \"attributes\": [\n                            {\n                                \"name\": \"UD_APC_GRP_NAME\",\n                                \"value\": \"184~APC Group2\"\n                            }\n                        ],\n                        \"additionalAttributes\": [\n                            {\n                                \"attributes\": [\n                                    {\n                                        \"name\": \"UD_APC_GRP_OUNAME\",\n                                        \"value\": \"ou2\"\n                                    }\n                                ]\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD Entitlement",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"add\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].namespaces[namespace eq \\\"UD_APC_GRP\\\"].entitlements\",\n            \"value\":  {\n                            \"name\": \"UD_APC_GRP_NAME\",\n                            \"value\": \"184~APC Group2\",    \n                            \"additionalAttributes\": [\n                                {\n                                    \"attributes\": [\n                                        {\n                                            \"name\": \"UD_APC_GRP_OUNAME\",\n                                            \"value\": \"ou2\"\n                                        }\n                                    ]\n                                }\n                            ]\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Entitlement",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"remove\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].namespaces[namespace eq \\\"UD_APC_GRP\\\"].entitlements[value eq \\\"184~APC Group2\\\"] \"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove Entitlement Metadata",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n           \"op\": \"remove\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].namespaces[namespace eq \\\"UD_APC_GRP\\\"].entitlements[value eq \\\"184~APC Group1\\\"].additionalAttributes.attributes[value eq \\\"ou1\\\"] \"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADD Entitlement Metadata",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"add\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].namespaces[namespace eq \\\"UD_APC_GRP\\\"].entitlements[value eq \\\"184~APC Group1\\\"].additionalAttributes.attributes\",\n            \"value\": {\n                        \"name\": \"UD_APC_GRP_OUNAME\",\n                        \"value\": \"ou1\"\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UPDATE Entitlement Metadata",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].namespaces[namespace eq \\\"UD_APC_GRP\\\"].entitlements[value eq \\\"184~APC Group1\\\"].additionalAttributes.attributes[value eq \\\"ou199\\\"]\",\n            \"value\": {\n                \"value\": \"ou1\"\n            }\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UPDATE Entitlement",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].namespaces[namespace eq \\\"UD_APC_GRP\\\"].entitlements[value eq \\\"184~APC Group2\\\"].value\",\n            \"value\": \"184~APC Group1\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Replace applicationAttributes",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"schemas\": [\n        \"urn:ietf:params:scim:api:messages:2.0:PatchOp\"\n    ],\n    \"Operations\": [\n        {\n            \"op\": \"replace\",\n            \"path\": \"applications[applicationName eq \\\"APCAccount\\\"].applicationAttributes[name eq \\\"UD_APC_USR_USER_NAME\\\"].value\",\n            \"value\":\"tomas.sebo modified3\"\n            \n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/Policies/TestAP999",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"Policies",
+										"TestAP999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "xelsysadm",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{igd-serviceurl}}/iam/governance/scim/v1/Groups",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"iam",
+										"governance",
+										"scim",
+										"v1",
+										"Groups"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Request Copy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{igd-serviceurl}}/iam/governance/scim/v1/Groups/8",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"iam",
+										"governance",
+										"scim",
+										"v1",
+										"Groups",
+										"8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PasswdPolicy",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{igd-serviceurl}}/iam/governance/scim/v1/SystemProperties",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"iam",
+										"governance",
+										"scim",
+										"v1",
+										"SystemProperties"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Schemas",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{igd-serviceurl}}/iam/governance/scim/v1/Schemas",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"iam",
+										"governance",
+										"scim",
+										"v1",
+										"Schemas"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ResourceTypes",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/scim+json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/scim+json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{igd-serviceurl}}/{{igd-scim-context}}/ResourceTypes",
+									"host": [
+										"{{igd-serviceurl}}"
+									],
+									"path": [
+										"{{igd-scim-context}}",
+										"ResourceTypes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "username",
+				"value": "zero-internal",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "Welcome1",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "iad-serviceurl",
+			"value": "https://iad.dev.iam.services.psp.extrapol.de",
+			"type": "string"
+		},
+		{
+			"key": "igd-serviceurl",
+			"value": "https://igd.dev.iam.services.psp.extrapol.de",
+			"type": "string"
+		},
+		{
+			"key": "igs-serviceurl",
+			"value": "https://igd.dev.iam.services.psp.extrapol.de",
+			"type": "string"
+		},
+		{
+			"key": "igd-zero-context",
+			"value": "igs/zero/v1",
+			"type": "string"
+		},
+		{
+			"key": "igd-scim-context",
+			"value": "igs/scim/v2",
+			"type": "string"
+		}
+	]
+}

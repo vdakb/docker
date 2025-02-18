@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="Google Apigee Edge Connector Configuration 12.2.1.3" exported-date="1619161867277" user="XELSYSADM" version="12.2.1.3.0">
+  <Job name="GAEP D03 Application Reconciliation" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>186</taskKey>
+    <taskClassName>oracle.iam.identity.gws.service.reconciliation.apigee.LookupReconciliation</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">101</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">102</paramKey>
+          <paramValue type="string">GAEP.D03.Application</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Service Provider</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">103</paramKey>
+          <paramValue type="string">GAEP Endpoint</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Operation</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Operation</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The operation to perform on the object to reconcile. Has to be either Refresh or Update</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">104</paramKey>
+          <paramValue type="string">Update</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Container</key>
+        <value type="jobparameter">
+          <name type="string">Search Container</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the search object class to retrieve entries from the target system</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">105</paramKey>
+          <paramValue type="string">Tenant</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Encoded Value</key>
+        <value type="jobparameter">
+          <name type="string">Encoded Value</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the entity attribute that has to be stored as the encoded value</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">106</paramKey>
+          <paramValue type="string">__NAME__</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Lookup Group</key>
+        <value type="jobparameter">
+          <name type="string">Lookup Group</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The value written to Lookup Group in case the operation on a particular Lookup Definition has to create it</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">107</paramKey>
+          <paramValue type="string">GAE</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Source</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Source</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The identifier of the source (aka ObjectClass) that has to be used to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">108</paramKey>
+          <paramValue type="string">Application</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Decoded Value</key>
+        <value type="jobparameter">
+          <name type="string">Decoded Value</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the entity attribute that has to be stored as the decoded value</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">109</paramKey>
+          <paramValue type="string">attributes.DisplayName</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select this option if the data should only be gathered from the reconciliation source</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">110</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">111</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Search Base</key>
+        <value type="jobparameter">
+          <name type="string">Search Base</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the search base to retrieve entries from the target system</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">112</paramKey>
+          <paramValue type="string">schmutzdaten</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Entitlement Prefix Required</key>
+        <value type="jobparameter">
+          <name type="string">Entitlement Prefix Required</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entitlements loaded needs to be prefixed with the internal system identifier and/or the name of the IT Resource</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">113</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1619161867277</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="GAE Developer Application Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="GAE Developer Application Reconciliation"/>
+  </Job>
+  <Job name="GAEP D03 Account Reconciliation" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>187</taskKey>
+    <taskClassName>oracle.iam.identity.gws.service.reconciliation.apigee.DeveloperAccountReconciliation</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">121</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select this option if the data should only be gathered from the reconciliation source</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">122</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">123</paramKey>
+          <paramValue type="string">GAEP D03 Account</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Ignore Dublicates</key>
+        <value type="jobparameter">
+          <name type="string">Ignore Dublicates</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes to prevent event creation and processing of Service Provider data that already exists in Identity Manager; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">124</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Service Provider</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">125</paramKey>
+          <paramValue type="string">GAEP Endpoint</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">126</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Search Container</key>
+        <value type="jobparameter">
+          <name type="string">Search Container</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the search object class to retrieve entries from the target system</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">127</paramKey>
+          <paramValue type="string">Tenant</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">128</paramKey>
+          <paramValue type="string">/metadata/bka-features-reconciliation/gws/gae-p-d03-account-reconciliation.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Base</key>
+        <value type="jobparameter">
+          <name type="string">Search Base</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the search base to retrieve entries from the target system</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">129</paramKey>
+          <paramValue type="string">schmutzdaten</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1619161867277</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="GAE Developer Account Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="GAE Developer Account Reconciliation"/>
+  </Job>
+  <Job name="GAEP D03 Delete Reconciliation" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>188</taskKey>
+    <taskClassName>oracle.iam.identity.gws.service.reconciliation.apigee.DeveloperDeleteReconciliation</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">114</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">115</paramKey>
+          <paramValue type="string">GAEP D03 Account</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Service Provider</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">116</paramKey>
+          <paramValue type="string">GAEP Endpoint</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">117</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Search Container</key>
+        <value type="jobparameter">
+          <name type="string">Search Container</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the search object class to retrieve entries from the target system</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">118</paramKey>
+          <paramValue type="string">Tenant</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">119</paramKey>
+          <paramValue type="string">/metadata/bka-features-reconciliation/gws/gae-p-d03-account-reconciliation.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Base</key>
+        <value type="jobparameter">
+          <name type="string">Search Base</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the search base to retrieve entries from the target system</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">120</paramKey>
+          <paramValue type="string">schmutzdaten</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1619161867277</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="GAE Developer Delete Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="GAE Developer Delete Reconciliation"/>
+  </Job>
+  <Job name="GAEP D03 Access Policy Housekeeping" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>189</taskKey>
+    <taskClassName>bka.iam.identity.service.health.AccessPolicyHouseKeeping</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Notification Template</key>
+        <value type="jobparameter">
+          <name type="string">Notification Template</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the template used to send notification about the changes to the policy owner(s)</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">130</paramKey>
+          <paramValue type="string">bka-policy-modified</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this job was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">131</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">132</paramKey>
+          <paramValue type="string">GAEP D03 Account</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Target System</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">133</paramKey>
+          <paramValue type="string">GAEP Endpoint</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">134</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Cleanup Policy</key>
+        <value type="jobparameter">
+          <name type="string">Cleanup Policy</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if all affected Access Policies should be cleaned up; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">135</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1619161867277</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="AccessPolicyHouseKeeping" type="scheduledTask"/>
+    <taskName scheduledTask="AccessPolicyHouseKeeping"/>
+  </Job>
+</xl-ddm-data>

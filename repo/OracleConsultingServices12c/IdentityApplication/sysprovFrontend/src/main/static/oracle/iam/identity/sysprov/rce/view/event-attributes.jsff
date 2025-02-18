@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysprov$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Provisioning']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{pageFlowScope.mode == 'view'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysprov$bundle.RCE_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysprov$bundle.RCE_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysprov$bundle.RCE_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysprov$bundle.RCE_ATTRIBUTE}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysprov$bundle.RCE_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{af:formatString(sysprov$bundle.RCE_DETAIL, pageFlowScope.eventKey)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysprov$bundle.RCE_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="subtabs"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id            ="btn15"
+                   text          ="#{sysprov$bundle.RCE_REEVALUATE_LABEL}"
+                   shortDesc     ="#{sysprov$bundle.RCE_REEVALUATE_HINT}"
+                   rendered      ="#{pageFlowScope.mode != 'view' and pageFlowScope.eventTrain.link}"
+                   action        ="#{backingBeanScope.eventTrain.reevaluateEvent}"/>
+        <af:button id            ="btn16"
+                   text          ="#{sysprov$bundle.RCE_CLOSE_LABEL}"
+                   shortDesc     ="#{sysprov$bundle.RCE_CLOSE_HINT}"
+                   rendered      ="#{pageFlowScope.mode != 'view' and pageFlowScope.eventTrain.open}"
+                   action        ="#{pageFlowScope.eventTrain.closeEvent}"/>
+        <af:button id            ="btn17"
+                   text          ="#{sysprov$bundle.RCE_LINK_LABEL}"
+                   shortDesc     ="#{sysprov$bundle.RCE_LINK_HINT}"
+                   rendered      ="#{pageFlowScope.mode != 'view' and pageFlowScope.eventTrain.link}"
+                   action        ="#{pageFlowScope.eventTrain.linkEvent}"/>
+        <af:button id            ="btn18"
+                   text          ="#{sysprov$bundle.RCE_REFRESH_LABEL}"
+                   shortDesc     ="#{sysprov$bundle.RCE_REFRESH_HINT}"
+                   action        ="#{pageFlowScope.eventTrain.refreshEvent}"/>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical" inlineStyle="width:550px;">
+            <af:panelHeader id="ph11" size="2" text="#{sysprov$bundle.RCE_ATTRIBUTE_EVENT}"/>
+            <af:panelFormLayout id="pf11" rows="5" maxColumns="2" labelWidth="33%" fieldWidth="67%">
+              <af:inputText id                 ="it111"
+                            value              ="#{bindings.objectName.inputValue}"
+                            label              ="#{bindings.objectName.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.objectName.hints.displayWidth}"
+                            maximumLength      ="#{bindings.objectName.hints.precision}"
+                            shortDesc          ="#{bindings.objectName.hints.tooltip}"/>
+              <af:inputText id                 ="it112"
+                            value              ="#{bindings.changeType.inputValue}"
+                            label              ="#{bindings.changeType.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.changeType.hints.displayWidth}"
+                            maximumLength      ="#{bindings.changeType.hints.precision}"
+                            shortDesc          ="#{bindings.changeType.hints.tooltip}"/>
+              <af:inputText id                 ="it113"
+                            value              ="#{bindings.entityType.inputValue}"
+                            label              ="#{bindings.entityType.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.entityType.hints.displayWidth}"
+                            maximumLength      ="#{bindings.entityType.hints.precision}"
+                            shortDesc          ="#{bindings.entityType.hints.tooltip}"/>
+              <af:inputText id                 ="it114"
+                            value              ="#{bindings.status.inputValue}"
+                            label              ="#{bindings.status.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.status.hints.displayWidth}"
+                            maximumLength      ="#{bindings.status.hints.precision}"
+                            shortDesc          ="#{bindings.status.hints.tooltip}"/>
+              <af:inputText id                 ="it115"
+                            value              ="#{bindings.actionDate.inputValue}"
+                            label              ="#{bindings.actionDate.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.actionDate.hints.displayWidth}"
+                            maximumLength      ="#{bindings.actionDate.hints.precision}"
+                            shortDesc          ="#{bindings.actionDate.hints.tooltip}">
+                <af:convertDateTime pattern="#{sysprov$bundle.RCE_ATTRIBUTE_DATEPATTERN}"/>
+              </af:inputText>
+              <af:inputText id                 ="it116"
+                            value              ="#{bindings.eventKey.inputValue}"
+                            label              ="#{bindings.eventKey.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.eventKey.hints.displayWidth}"
+                            maximumLength      ="#{bindings.eventKey.hints.precision}"
+                            shortDesc          ="#{bindings.eventKey.hints.tooltip}"/>
+              <af:inputText id                 ="it117"
+                            value              ="#{bindings.jobKey.inputValue}"
+                            label              ="#{bindings.jobKey.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.jobKey.hints.displayWidth}"
+                            maximumLength      ="#{bindings.jobKey.hints.precision}"
+                            shortDesc          ="#{bindings.jobKey.hints.tooltip}"/>
+              <af:inputText id                 ="it118"
+                            value              ="#{bindings.batchKey.inputValue}"
+                            label              ="#{bindings.batchKey.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.batchKey.hints.displayWidth}"
+                            maximumLength      ="#{bindings.batchKey.hints.precision}"
+                            shortDesc          ="#{bindings.batchKey.hints.tooltip}"/>
+            </af:panelFormLayout>
+            <af:panelHeader id="ph12" size="2" text="#{sysprov$bundle.RCE_ATTRIBUTE_LINK}"/>
+            <af:panelFormLayout id="pf12" rows="3" maxColumns="2" labelWidth="33%" fieldWidth="67%">
+              <af:inputText id                 ="it121"
+                            value              ="#{bindings.linkSource.inputValue}"
+                            label              ="#{bindings.linkSource.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.linkSource.hints.displayWidth}"
+                            maximumLength      ="#{bindings.linkSource.hints.precision}"
+                            shortDesc          ="#{bindings.linkSource.hints.tooltip}"/>
+            </af:panelFormLayout>
+            <af:panelHeader id="ph13" size="2" text="#{sysprov$bundle.RCE_ATTRIBUTE_NOTE}"/>
+            <af:panelFormLayout id="pf13" rows="1" maxColumns="2" labelWidth="33%" fieldWidth="67%">
+              <af:inputText id                 ="it131"
+                            value              ="#{bindings.note.inputValue}"
+                            label              ="#{bindings.note.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.note.hints.displayWidth}"
+                            maximumLength      ="#{bindings.note.hints.precision}"
+                            shortDesc          ="#{bindings.note.hints.tooltip}"/>
+              <af:inputText id                 ="it132"
+                            value              ="#{bindings.reason.inputValue}"
+                            label              ="#{bindings.reason.hints.label}"
+                            readOnly           ="true"
+                            columns            ="#{bindings.reason.hints.displayWidth}"
+                            maximumLength      ="#{bindings.reason.hints.precision}"
+                            shortDesc          ="#{bindings.reason.hints.tooltip}"/>
+            </af:panelFormLayout>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

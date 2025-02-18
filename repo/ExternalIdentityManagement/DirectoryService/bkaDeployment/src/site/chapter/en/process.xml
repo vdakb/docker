@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<!--
+ | DSteding
+ | Bug: If the element becomes preface the title is rendered twice
+ -->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="dir-process"
+         xml:lang="en"
+         version ="5.0">
+  <title>Process</title>
+  <section xml:id="dir-process-source">
+    <title>Source</title>
+    <para>
+      The source directory has to provide following branches in a subtree that belongs to a target directory.
+    </para>
+    <table colsep="0">
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="8em"/>
+        <colspec colname="c2" colwidth="10em"/>
+        <colspec colname="c3" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Branch</entry>
+            <entry>Object Class</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Organization</entry>
+            <entry>organizationalUnit</entry>
+            <entry>
+              <para>Any entry in this subtree represents an organizational unit.</para>
+              <para>The entries in this subtree <emphasis role="strong">MAY</emphasis> organized in hierarchy.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>Global Roles</entry>
+            <entry>groupOfUniqueNames</entry>
+            <entry>
+              <para>Each entry in this subtree represents a global role.</para>
+              <para>The entries in this subtree <emphasis role="strong">MUST NOT</emphasis> organized in hierarchy.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>Scoped Roles</entry>
+            <entry>groupOfUniqueNames</entry>
+            <entry>
+              <para>Each entry in this subtree represents a global role mapped to an organizational unit (scoped role).</para>
+              <para>The mappeing is provided by concatenating the name of the organizational unit the role belongs to and the name of the role itself separated by an underscore.</para>
+              <para>The entries in this subtree <emphasis role="strong">MUST NOT</emphasis> organized in hierarchy.</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="dir-process-target">
+    <title>Target</title>
+    <para>
+      The target directory has to provide following branches in a subtree as a target of the synchronization process.
+    </para>
+    <table colsep="0">
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="8em"/>
+        <colspec colname="c2" colwidth="10em"/>
+        <colspec colname="c3" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Branch</entry>
+            <entry>Object Class</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Organization</entry>
+            <entry>organizationalUnit</entry>
+            <entry>
+              <para>Any entry in this subtree represents an organizational unit.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>Global Roles</entry>
+            <entry>groupOfUniqueNames</entry>
+            <entry>
+              <para>Each entry in this subtree represents a global role.</para>
+            </entry>
+          </row>
+          <row>
+            <entry>Scoped Roles</entry>
+            <entry>groupOfUniqueNames</entry>
+            <entry>
+              <para>Each entry in this subtree represents a global role mapped to an organizational unit (scoped role).</para>
+              <para>The mappeing is provided by concatenating the name of the organizational unit the role belongs to and the name of the role itself separated by an underscore.</para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+</chapter>

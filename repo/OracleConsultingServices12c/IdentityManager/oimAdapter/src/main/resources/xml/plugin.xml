@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<oimplugins xmlns:xsi          = "http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation = "http://www.oracle.com/schema/oim/plugin plugin.xsd">
+  <!--
+  =====================================================================
+  == Request Pre-Populate Adapter
+  =====================================================================
+  -->
+  <plugins pluginpoint="oracle.iam.request.plugins.PrePopulationAdapter">
+    <plugin pluginclass="oracle.iam.identity.request.LoginNameAdapter"       version="1.0.0.0" name="loginname"/>
+    <plugin pluginclass="oracle.iam.identity.request.PasswordAdapter"        version="1.0.0.0" name="password"/>
+    <plugin pluginclass="oracle.iam.identity.request.FirstNameAdapter"       version="1.0.0.0" name="firstname"/>
+    <plugin pluginclass="oracle.iam.identity.request.LastNameAdapter"        version="1.0.0.0" name="lastname"/>
+    <plugin pluginclass="oracle.iam.identity.request.MiddleNameAdapter"      version="1.0.0.0" name="middlename"/>
+    <plugin pluginclass="oracle.iam.identity.request.FullNameAdapter"        version="1.0.0.0" name="fullname"/>
+    <plugin pluginclass="oracle.iam.identity.request.CommonNameAdapter"      version="1.0.0.0" name="commonname"/>
+    <plugin pluginclass="oracle.iam.identity.request.DisplayNameAdapter"     version="1.0.0.0" name="displayname"/>
+    <plugin pluginclass="oracle.iam.identity.request.DescriptionAdapter"     version="1.0.0.0" name="description"/>
+    <plugin pluginclass="oracle.iam.identity.request.RoleAdapter"            version="1.0.0.0" name="role"/>
+    <plugin pluginclass="oracle.iam.identity.request.TypeAdapter"            version="1.0.0.0" name="type"/>
+    <plugin pluginclass="oracle.iam.identity.request.EmailAdapter"           version="1.0.0.0" name="email"/>
+    <plugin pluginclass="oracle.iam.identity.request.PhoneNumberAdapter"     version="1.0.0.0" name="phonenumber"/>
+    <plugin pluginclass="oracle.iam.identity.request.MobileNumberAdapter"    version="1.0.0.0" name="mobilenumber"/>
+    <plugin pluginclass="oracle.iam.identity.request.FacsimileNumberAdapter" version="1.0.0.0" name="facsimilenumber"/>
+    <plugin pluginclass="oracle.iam.identity.request.PagerNumberAdapter"     version="1.0.0.0" name="pagernumber"/>
+    <plugin pluginclass="oracle.iam.identity.request.CountryAdapter"         version="1.0.0.0" name="country"/>
+    <plugin pluginclass="oracle.iam.identity.request.StateAdapter"           version="1.0.0.0" name="state"/>
+    <plugin pluginclass="oracle.iam.identity.request.LocalityAdapter"        version="1.0.0.0" name="locality"/>
+    <plugin pluginclass="oracle.iam.identity.request.StreetAdapter"          version="1.0.0.0" name="street"/>
+    <plugin pluginclass="oracle.iam.identity.request.PostBoxAdapter"         version="1.0.0.0" name="postbox"/>
+    <plugin pluginclass="oracle.iam.identity.request.PostalCodeAdapter"      version="1.0.0.0" name="postalcode"/>
+    <plugin pluginclass="oracle.iam.identity.request.PostalAddressAdapter"   version="1.0.0.0" name="postaladdress"/>
+  </plugins>
+  <!--
+  =====================================================================
+  == User Name Policies
+  =====================================================================
+  -->
+  <plugins pluginpoint="oracle.iam.identity.usermgmt.api.UserNamePolicy">
+    <plugin pluginclass="oracle.iam.identity.policy.usr.LoginName"           version="1.0.0.0" name="OCSLoginNamePolicy"/>
+  </plugins>
+  <plugins pluginpoint="oracle.iam.ldapsync.api.CommonNamePolicy">
+    <plugin pluginclass="oracle.iam.identity.policy.usr.CommonName"          version="1.0.0.0" name="OCSCommonNamePolicy"/>
+  </plugins>
+  <!--
+  =====================================================================
+  == Event Handler
+  =====================================================================
+  -->
+  <plugins  pluginpoint="oracle.iam.platform.kernel.spi.EventHandler">
+    <plugin name       ="OrganizationTaskPreProcessor"
+            version    ="1.0.0.0"
+            pluginclass="oracle.iam.identity.event.organization.TaskTriggerPreProcessor">
+    </plugin>
+    <plugin name       ="OrganizationTaskPostProcessor"
+            version    ="1.0.0.0"
+            pluginclass="oracle.iam.identity.event.organization.TaskTriggerPostProcessor">
+    </plugin>
+    <plugin name       ="IdentityNamePreProcessor"
+            version    ="1.0.0.0"
+            pluginclass="oracle.iam.identity.policy.usr.NamePolicyPreProcess">
+    </plugin>
+    <plugin name       ="IdentityNamePostProcessor"
+            version    ="1.0.0.0"
+            pluginclass="oracle.iam.identity.policy.usr.NamePolicyPostProcess">
+    </plugin>
+    <plugin name       ="IdentityCredentialPreProcessor"
+            version    ="1.0.0.0"
+            pluginclass="oracle.iam.identity.event.spi.CredentialAction">
+    </plugin>
+    <plugin name       ="AccessPolicyProvisioningAction"
+            version    ="1.0.0.0"
+            pluginclass="oracle.iam.identity.event.spi.AccessPolicyProvisioningAction">
+    </plugin>
+<!--
+    <plugin name       ="GlobalUIDGenerator"
+            version    ="1.0.0.0"
+            pluginclass="oracle.iam.identity.event.spi.GlobalUID">
+      <metadata name="guid.generator">
+        <value>select uid_seq.nextval from dual</value>
+      </metadata>
+      <metadata name="guid.format">
+        <value>%1$08d</value>
+      </metadata>
+      <metadata name="guid.attribute">
+        <value>GLOBAL_UID</value>
+      </metadata>
+    </plugin>
+    <plugin name       ="RoleNotification"
+            version    ="1.0.0.0"
+            pluginclass="oracle.iam.identity.event.role.RoleNotification">
+      <metadata name="template.assigned">
+        <value>OCS Role Assigned</value>
+      </metadata>
+      <metadata name="template.revoked">
+        <value>OCS Role Revoked</value>
+      </metadata>
+    </plugin>
+-->
+  </plugins>
+  -->
+  <!--
+  =====================================================================
+  == Notification Event Resolver
+  =====================================================================
+  -->
+  <!--
+  <plugins  pluginpoint="oracle.iam.notification.impl.NotificationEventResolver">
+    <plugin name       ="Role Notification Resolver"
+            version    ="1.0.0.0"
+            pluginclass="oracle.iam.identity.event.role.RoleNotificationResolver"/>
+  </plugins>
+  -->
+</oimplugins>

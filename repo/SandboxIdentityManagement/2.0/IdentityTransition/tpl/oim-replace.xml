@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Substituter" basedir="." default="all">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="appication.release" value="12.2.1.3.0"/>
+  <property name="oim.recorder.name"  value="${log.env}/oim-replace.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Deployment Configuration.
+  **
+  ** Synopsis: The tasks configures the deployment environment
+  **           This includes:
+  **           o Substition of place holder values with real values of the
+  **             deployment target system
+  ******************************************************************************
+  -->
+  <target name="env">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring Deployment Environment ${appication.release} ..."/>
+    <echo message="=================================================================="/>
+    <property file="../src/cfg/${fmw.env}.properties" prefix="env"/>
+    <copy todir="../.env/${fmw.env}" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="./env">
+        <include name="bip-server.xml"/>
+        <include name="jee-server.xml"/>
+        <include name="mds-server.xml"/>
+        <include name="oim-server.xml"/>
+        <include name="scp-server.xml"/>
+        <include name="soa-server.xml"/>
+      </fileset>
+      <filterchain>
+        <filterreader classname="oracle.hst.deployment.jps.task.ReplacePasswords">
+          <param type="config"    name="path"       value="./jps/config.xml"/>
+          <param type="config"    name="context"    value="identity"/>
+          <param type="config"    name="map"        value="${fmw.env}"/>
+          <param type="tokenchar" name="begintoken" value="__"/>
+          <param type="tokenchar" name="endtoken"   value="__"/>
+          <!--
+          tokens releated to bip-server.xml
+          -->
+          <param type="token"     name="BIP_PASS"   value="bip@oig"/>
+          <!--
+          tokens releated to jee-server.xml
+          -->
+          <param type="token"     name="JEE_PASS"   value="jee@oig"/>
+          <!--
+          tokens releated to mds-server.xml
+          -->
+          <param type="token"     name="MDS_PASS"   value="mds@oig"/>
+          <param type="token"     name="OIM_PASS"   value="oim@oig"/>
+          <!--
+          tokens releated to scp-server.xml
+          -->
+          <param type="token"     name="SCP_PASS"   value="scp@oig"/>
+          <!--
+          tokens releated to soa-server.xml
+          -->
+          <param type="token"     name="SOA_PASS"   value="soa@oig"/>
+          <param type="token"     name="SMTP_PASS"  value="smtp@oig"/>
+          <param type="token"     name="IMAP_PASS"  value="imap@oig"/>
+        </filterreader>
+        <replacetokens begintoken="__" endtoken="__">
+          <!--
+          tokens releated to bip-server.xml
+          -->
+          <token key="BIP_PROT"  value="${env.BIP_PROT}"/>
+          <token key="BIP_HOST"  value="${env.BIP_HOST}"/>
+          <token key="BIP_PORT"  value="${env.BIP_PORT}"/>
+          <token key="BIP_USER"  value="${env.BIP_USER}"/>
+          <token key="BIP_HOME"  value="${env.BIP_HOME}"/>
+          <token key="BIP_CONF"  value="${env.BIP_CONF}"/>
+          <!--
+          tokens releated to jee-server.xml
+          -->
+          <token key="JEE_PROT"  value="${env.JEE_PROT}"/>
+          <token key="JEE_HOST"  value="${env.JEE_HOST}"/>
+          <token key="JEE_PORT"  value="${env.JEE_PORT}"/>
+          <token key="JEE_NAME"  value="${env.JEE_NAME}"/>
+          <token key="JEE_USER"  value="${env.JEE_USER}"/>
+          <token key="JEE_HOME"  value="${env.JEE_HOME}"/>
+          <!--
+          tokens releated to mds-server.xml
+          -->
+          <token key="MDS_HOST"  value="${env.MDS_HOST}"/>
+          <token key="MDS_PORT"  value="${env.MDS_PORT}"/>
+          <token key="MDS_NAME"  value="${env.MDS_NAME}"/>
+          <token key="MDS_USER"  value="${env.MDS_USER}"/>
+          <!--
+          tokens releated to oim-server.xml
+          -->
+          <token key="OIM_PROT"  value="${env.OIM_PROT}"/>
+          <token key="OIM_HOST"  value="${env.OIM_HOST}"/>
+          <token key="OIM_PORT"  value="${env.OIM_PORT}"/>
+          <token key="OIM_NAME"  value="${env.OIM_NAME}"/>
+          <token key="OIM_USER"  value="${env.OIM_USER}"/>
+          <token key="OIM_HOME"  value="${env.OIM_HOME}"/>
+          <token key="OIM_AUTH"  value="${env.OIM_AUTH}"/>
+          <token key="LBR_HOST"  value="${env.LBR_HOST}"/>
+          <token key="LBR_PORT"  value="${env.LBR_PORT}"/>
+          <!--
+          tokens releated to scp-server.xml
+          -->
+          <token key="SCP_HOST"  value="${env.SCP_HOST}"/>
+          <token key="SCP_PORT"  value="${env.SCP_PORT}"/>
+          <token key="SCP_USER"  value="${env.SCP_USER}"/>
+          <token key="SCP_CERT"  value="${env.SCP_CERT}"/>
+          <!--
+          tokens releated to soa-server.xml
+          -->
+          <token key="SOA_PROT"  value="${env.SOA_PROT}"/>
+          <token key="SOA_HOST"  value="${env.SOA_HOST}"/>
+          <token key="SOA_PORT"  value="${env.SOA_PORT}"/>
+          <token key="SOA_NAME"  value="${env.SOA_NAME}"/>
+          <token key="SOA_USER"  value="${env.SOA_USER}"/>
+          <token key="SOA_HOME"  value="${env.SOA_HOME}"/>
+          <token key="SMTP_HOST" value="${env.SMTP_HOST}"/>
+          <token key="SMTP_PORT" value="${env.SMTP_PORT}"/>
+          <token key="SMTP_ADDR" value="${env.SMTP_ADDR}"/>
+          <token key="SMTP_USER" value="${env.SMTP_USER}"/>
+          <token key="IMAP_HOST" value="${env.IMAP_HOST}"/>
+          <token key="IMAP_PORT" value="${env.IMAP_PORT}"/>
+          <token key="IMAP_ADDR" value="${env.IMAP_ADDR}"/>
+          <token key="IMAP_USER" value="${env.IMAP_USER}"/>
+          <!--
+          tokens releated to soa-config.xml
+          <token key="PROVIDER"  value="${env.OIM_PROT}://${env.OIM_HOST}:${env.OIM_PORT}"/>
+          -->
+        </replacetokens>
+      </filterchain>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="Deployment Environment ${appication.release} configured"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Deployment Configuration.
+  **
+  ** Synopsis: The tasks configures the deployment runtime
+  **           This includes:
+  **           o Substition of place holder values with real values of the
+  **             target systems
+  ******************************************************************************
+  -->
+  <target name="ctl">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring Deployment Configuration ${appication.release} ..."/>
+    <echo message="=================================================================="/>
+    <property file="../src/cfg/${fmw.env}.properties" prefix="cfg"/>
+    <copy todir="../src/ant/${fmw.env}" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="./ant">
+        <include name="oim-config-ant.xml"/>
+      </fileset>
+      <filterchain>
+        <filterreader classname="oracle.hst.deployment.jps.task.ReplacePasswords">
+          <param type="config"    name="path"         value="./jps/config.xml"/>
+          <param type="config"    name="context"      value="identity"/>
+          <param type="config"    name="map"          value="${fmw.env}"/>
+          <param type="tokenchar" name="begintoken"   value="__"/>
+          <param type="tokenchar" name="endtoken"     value="__"/>
+          <param type="token"     name="ADS_PASS_BK"  value="ads@bk"/>
+          <param type="token"     name="FBSE_PASS_BK" value="fbs@bk"/>
+          <param type="token"     name="FBSP_PASS_BK" value="fbs@bk"/>
+          <param type="token"     name="ICS_PASS_BK"  value="ics@bk"/>
+          <param type="token"     name="IDS_PASS_BK"  value="ids@bk"/>
+          <param type="token"     name="LDS_PASS_BB"  value="lds@bb"/>
+          <param type="token"     name="LDS_PASS_BK"  value="lds@bk"/>
+          <param type="token"     name="LDS_PASS_BP"  value="lds@bp"/>
+          <param type="token"     name="LDS_PASS_BW"  value="lds@bw"/>
+          <param type="token"     name="LDS_PASS_HE"  value="lds@he"/>
+          <param type="token"     name="LDS_PASS_HH"  value="lds@hh"/>
+          <param type="token"     name="PSC_PASS_BK"  value="psc@bk"/>
+          <param type="token"     name="PCFD_PASS_BK" value="pcfd@bk"/>
+          <param type="token"     name="PCFP_PASS_BK" value="pcfp@bk"/>
+          <param type="token"     name="PIAV_PASS_BK" value="piav@bk"/>
+        </filterreader>
+        <replacetokens begintoken="__" endtoken="__">
+          <token key="ADS_HOST_BK"  value="${cfg.ADS_HOST_BK}"/>
+          <token key="ADS_BASE_BK"  value="${cfg.ADS_BASE_BK}"/>
+          <token key="ADS_ROOT_BK"  value="${cfg.ADS_ROOT_BK}"/>
+          <token key="ADS_USER_BK"  value="${cfg.ADS_USER_BK}"/>
+          <token key="ADS_CONT_BK"  value="${cfg.ADS_CONT_BK}"/>
+          <token key="FBSE_HOST_BK" value="${cfg.FBSE_HOST_BK}"/>
+          <token key="FBSE_PORT_BK" value="${cfg.FBSE_PORT_BK}"/>
+          <token key="FBSE_BASE_BK" value="${cfg.FBSE_BASE_BK}"/>
+          <token key="FBSE_USER_BK" value="${cfg.FBSE_USER_BK}"/>
+          <token key="FBSP_HOST_BK" value="${cfg.FBSP_HOST_BK}"/>
+          <token key="FBSP_PORT_BK" value="${cfg.FBSP_PORT_BK}"/>
+          <token key="FBSP_BASE_BK" value="${cfg.FBSP_BASE_BK}"/>
+          <token key="FBSP_USER_BK" value="${cfg.FBSP_USER_BK}"/>
+          <token key="ICS_HOST_BK"  value="${cfg.ICS_HOST_BK}"/>
+          <token key="ICS_PORT_BK"  value="${cfg.ICS_PORT_BK}"/>
+          <token key="IDS_HOST_BK"  value="${cfg.IDS_HOST_BK}"/>
+          <token key="IDS_PORT_BK"  value="${cfg.IDS_PORT_BK}"/>
+          <token key="IDS_TLS1_BK"  value="${cfg.IDS_TLS1_BK}"/>
+          <token key="IDS_BASE_BK"  value="${cfg.IDS_BASE_BK}"/>
+          <token key="IDS_USER_BK"  value="${cfg.IDS_USER_BK}"/>
+          <token key="LDS_HOST_BB"  value="${cfg.LDS_HOST_BB}"/>
+          <token key="LDS_PORT_BB"  value="${cfg.LDS_PORT_BB}"/>
+          <token key="LDS_TLS1_BB"  value="${cfg.LDS_TLS1_BB}"/>
+          <token key="LDS_BASE_BB"  value="${cfg.LDS_BASE_BB}"/>
+          <token key="LDS_USER_BB"  value="${cfg.LDS_USER_BB}"/>
+          <token key="LDS_HOST_BK"  value="${cfg.LDS_HOST_BK}"/>
+          <token key="LDS_PORT_BK"  value="${cfg.LDS_PORT_BK}"/>
+          <token key="LDS_TLS1_BK"  value="${cfg.LDS_TLS1_BK}"/>
+          <token key="LDS_BASE_BK"  value="${cfg.LDS_BASE_BK}"/>
+          <token key="LDS_USER_BK"  value="${cfg.LDS_USER_BK}"/>
+          <token key="LDS_HOST_BP"  value="${cfg.LDS_HOST_BP}"/>
+          <token key="LDS_PORT_BP"  value="${cfg.LDS_PORT_BP}"/>
+          <token key="LDS_TLS1_BP"  value="${cfg.LDS_TLS1_BP}"/>
+          <token key="LDS_BASE_BP"  value="${cfg.LDS_BASE_BP}"/>
+          <token key="LDS_USER_BP"  value="${cfg.LDS_USER_BP}"/>
+          <token key="LDS_HOST_BW"  value="${cfg.LDS_HOST_BW}"/>
+          <token key="LDS_PORT_BW"  value="${cfg.LDS_PORT_BW}"/>
+          <token key="LDS_TLS1_BW"  value="${cfg.LDS_TLS1_BW}"/>
+          <token key="LDS_BASE_BW"  value="${cfg.LDS_BASE_BW}"/>
+          <token key="LDS_USER_BW"  value="${cfg.LDS_USER_BW}"/>
+          <token key="LDS_HOST_HE"  value="${cfg.LDS_HOST_HE}"/>
+          <token key="LDS_PORT_HE"  value="${cfg.LDS_PORT_HE}"/>
+          <token key="LDS_TLS1_HE"  value="${cfg.LDS_TLS1_HE}"/>
+          <token key="LDS_BASE_HE"  value="${cfg.LDS_BASE_HE}"/>
+          <token key="LDS_USER_HE"  value="${cfg.LDS_USER_HE}"/>
+          <token key="LDS_HOST_HH"  value="${cfg.LDS_HOST_HH}"/>
+          <token key="LDS_PORT_HH"  value="${cfg.LDS_PORT_HH}"/>
+          <token key="LDS_TLS1_HH"  value="${cfg.LDS_TLS1_HH}"/>
+          <token key="LDS_BASE_HH"  value="${cfg.LDS_BASE_HH}"/>
+          <token key="LDS_USER_HH"  value="${cfg.LDS_USER_HH}"/>
+          <token key="PSC_HOST_BK"  value="${cfg.PSC_HOST_BK}"/>
+          <token key="PSC_ROOT_BK"  value="${cfg.PSC_ROOT_BK}"/>
+          <token key="PSC_USER_BK"  value="${cfg.PSC_USER_BK}"/>
+          <token key="PSC_BASE_BK"  value="${cfg.PSC_BASE_BK}"/>
+          <token key="PSC_CONT_BK"  value="${cfg.PSC_CONT_BK}"/>
+          <token key="PCFP_SVCD_BK" value="${cfg.PCFP_SVCD_BK}"/>
+          <token key="PCFP_TLS1_BK" value="${cfg.PCFP_TLS1_BK}"/>
+          <token key="PCFP_USER_BK" value="${cfg.PCFP_USER_BK}"/>
+          <token key="PCFD_SVCD_BK" value="${cfg.PCFD_SVCD_BK}"/>
+          <token key="PCFD_TLS1_BK" value="${cfg.PCFD_TLS1_BK}"/>
+          <token key="PCFD_USER_BK" value="${cfg.PCFD_USER_BK}"/>
+          <token key="PIAV_HOST_BK" value="${cfg.PIAV_HOST_BK}"/>
+          <token key="PIAV_PORT_BK" value="${cfg.PIAV_PORT_BK}"/>
+          <token key="PIAV_TLS1_BK" value="${cfg.PIAV_TLS1_BK}"/>
+          <token key="PIAV_BASE_BK" value="${cfg.PIAV_BASE_BK}"/>
+          <token key="PIAV_USER_BK" value="${cfg.PIAV_USER_BK}"/>
+        </replacetokens>
+      </filterchain>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="Deployment Configuration ${appication.release} configured"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name       ="all"
+          description="Replace all paceholder values"
+          depends    ="env,ctl">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="Take care your environment is now unsecure"/>
+    <echo message="Use ./install clean to remove plain text passwords after you finished"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

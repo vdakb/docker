@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysprov$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Provisioning']}"/>
+  <af:panelGridLayout id="pg01" inlineStyle="width:850.0px;">
+    <af:gridRow id="gr01" height="auto" marginTop="5px">
+      <af:gridCell id="gc01" width="100%" marginStart="5px" marginEnd="5px">
+        <af:quickQuery id           ="qq01"
+                       label        ="#{sysbase$bundle.SEARCH}"
+                       searchDesc   ="#{sysbase$bundle.SEARCH}"
+                       value        ="#{bindings.ResourceObjectCriteria.quickQueryDescriptor}"
+                       model        ="#{bindings.ResourceObjectCriteria.queryModel}"
+                       queryListener="#{bindings.ResourceObjectCriteria.processQuery}">
+          <f:facet name="end">
+            <af:outputText id="gc01ot01" value="#{sysprov$bundle.OBJ_SEARCH_PICKER}"/>
+          </f:facet>
+        </af:quickQuery>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr02" height="auto" marginTop="5px">
+      <af:gridCell id="gc02" width="100%" marginStart="5px" marginEnd="5px">
+        <af:outputText id="gc02ot1" value="#{sysprov$bundle.OBJ_SEARCH_RESULT}" styleClass="AFLabelText" inlineStyle="font-weight:bolder; color:Black;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr03" height="auto" marginTop="5px" rendered="#{pageFlowScope.selectionType == 'multiple'}">
+      <af:gridCell id="gc03" width="100%" marginStart="5px" marginEnd="5px" halign="stretch">
+        <af:panelCollection id="pc01" featuresOff="detach statusBar" styleClass="AFStretchWidth">
+          <af:table id                   ="resId1" var="row" varStatus="vs"
+                    value                ="#{bindings.ResourceObject.collectionModel}"
+                    rows                 ="#{bindings.ResourceObject.rangeSize}"
+                    binding              ="#{backingBeanScope.resourcePicker.searchTable}"
+                    fetchSize            ="4"
+                    selectionListener    ="#{backingBeanScope.resourcePicker.selectionListener}"
+                    columnStretching     ="last"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    rowSelection         ="multiple"
+                    autoHeightRows       ="0"
+                    scrollPolicy         ="page"
+                    emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}"
+                    partialTriggers      =":::qq01">
+            <af:column id="t01c00" rowHeader="true" headerText=" " width="20"/>
+            <af:column id="t01c01" headerText="#{bindings.ResourceObject.hints.objectsName.label}">
+              <af:outputText id="t01ot01" value="#{row.objectsName}"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr04" height="auto" marginTop="5px">
+      <af:gridCell id="gc04" width="100%" marginStart="5px" marginEnd="5px" halign="center">
+        <af:toolbar id="gc04tb01">
+          <af:button id             ="gc04ctb01"
+                     text           ="#{sysbase$bundle.GENERIC_ADD_SELECTED}"
+                     binding        ="#{backingBeanScope.resourcePicker.addSelectedButton}"
+                     icon           ="/images/shuttle_down_ena.png"
+                     hoverIcon      ="/images/shuttle_down_ena.png"
+                     depressedIcon  ="/images/shuttle_down_ena.png"
+                     disabledIcon   ="/images/shuttle_down_dis.png"
+                     disabled       ="#{backingBeanScope.resourcePicker.addSelectedDisabled}"
+                     actionListener ="#{backingBeanScope.resourcePicker.addSelectedActionListener}"
+                     partialSubmit  ="true"
+                     partialTriggers="qq01"/>
+          <af:button id             ="gc04ctb02"
+                     text           ="#{sysbase$bundle.GENERIC_ADD_ALL}"
+                     binding        ="#{backingBeanScope.resourcePicker.addAllButton}"
+                     icon           ="/images/shuttle_down_all_ena.png"
+                     hoverIcon      ="/images/shuttle_down_all_ena.png"
+                     depressedIcon  ="/images/shuttle_down_all_ena.png"
+                     disabledIcon   ="/images/shuttle_down_all_dis.png"
+                     disabled       ="#{backingBeanScope.resourcePicker.addAllDisabled}"
+                     actionListener ="#{backingBeanScope.resourcePicker.addAllActionListener}"
+                     partialSubmit  ="true"
+                     partialTriggers="qq01"/>
+          <af:button id             ="gc04ctb03"
+                     binding        ="#{backingBeanScope.resourcePicker.removeSelectedButton}"
+                     text           ="#{sysbase$bundle.GENERIC_REMOVE_SELECTED}"
+                     icon           ="/images/shuttle_up_ena.png"
+                     disabledIcon   ="/images/shuttle_up_dis.png"
+                     hoverIcon      ="/images/shuttle_up_ena.png"
+                     depressedIcon  ="/images/shuttle_up_ena.png"
+                     disabled       ="#{backingBeanScope.resourcePicker.selectionEmpty}"
+                     actionListener ="#{backingBeanScope.resourcePicker.removeSelectedActionListener}"/>
+          <af:button id             ="gc04ctb04"
+                     binding        ="#{backingBeanScope.resourcePicker.removeAllButton}"
+                     text           ="#{sysbase$bundle.GENERIC_REMOVE_ALL}"
+                     icon           ="/images/shuttle_up_all_ena.png"
+                     hoverIcon      ="/images/shuttle_up_all_ena.png"
+                     depressedIcon  ="/images/shuttle_up_all_ena.png"
+                     disabledIcon   ="/images/shuttle_up_all_dis.png"
+                     disabled       ="#{backingBeanScope.resourcePicker.selectionEmpty}"
+                     actionListener ="#{backingBeanScope.resourcePicker.removeAllActionListener}"/>
+        </af:toolbar>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr05" height="auto" marginTop="5px">
+      <af:gridCell id="gc05" width="100%" marginStart="5px" marginEnd="5px">
+        <af:outputText id="gc04ot01" value="#{requestScope.overThousandResultsPicker}" partialTriggers="gc04ctb01 gc04ctb02 gc04ctb03 gc04ctb04 qq01" inlineStyle="font-size:small;padding-top:20px;padding-bottom:20px;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr06" marginTop="5px" height="auto" rendered="#{pageFlowScope.selectionType == 'multiple'}">
+      <af:gridCell id="gc06" width="100%" marginStart="5px" marginEnd="5px">
+        <af:outputText id="gc06ot01" value="#{sysprov$bundle.OBJ_SEARCH_SELECT}" inlineStyle="font-weight:bold;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr07" height="auto" marginTop="5px">
+      <af:gridCell id="gc07" width="100%" marginStart="5px" marginEnd="5px" halign="stretch">
+        <af:panelCollection id="pc05" featuresOff="detach statusBar" styleClass="AFStretchWidth">
+          <af:table id                   ="t02" var="row"
+                    value                ="#{backingBeanScope.resourcePicker.selectedItems}"
+                    binding              ="#{backingBeanScope.resourcePicker.selectionTable}"
+                    fetchSize            ="4"
+                    selectionListener    ="#{backingBeanScope.resourcePicker.selectedRowsSelectListener}"
+                    columnStretching     ="last"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    rowSelection         ="multiple"
+                    autoHeightRows       ="0"
+                    scrollPolicy         ="page"
+                    emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+            <af:column id="t02c00" rowHeader="true" headerText=" " width="20"/>
+            <af:column id="t02c01" headerText="#{bindings.ResourceObject.hints.objectsName.label}" filterable="false" sortable="false">
+              <af:outputText id="t02ot01" value="#{row.objectsName}"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr08" height="auto" marginTop="5px">
+      <af:gridCell id="gc08" width="100%" marginStart="5px" marginEnd="5px" halign="end">
+        <af:button id      ="gc06cb01"
+                   text    ="#{sysbase$bundle.GENERIC_SELECT}"
+                   binding ="#{backingBeanScope.resourcePicker.addButton}"
+                   action  ="#{backingBeanScope.resourcePicker.addSelectedRows}"
+                   disabled="#{backingBeanScope.resourcePicker.selectionEmpty}"/>
+        <af:spacer width="5" height="1" id="s23"/>
+        <af:button id      ="gc06cb02"
+                   text    ="#{sysbase$bundle.GENERIC_CANCEL}"
+                   action  ="cancel"/>
+      </af:gridCell>
+    </af:gridRow>
+  </af:panelGridLayout>
+</jsp:root>

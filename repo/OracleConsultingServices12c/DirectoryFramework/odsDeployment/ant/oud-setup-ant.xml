@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Oracle Consulting Services Deployment Task Definitions"
+         default     ="all"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:config="http://oracle.ods.deployment/config"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  =====================================================================
+  == custom type and task definitions
+  =====================================================================
+  -->
+  <import file="../../ods-context.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Configures standard approval workflows
+  ******************************************************************************
+  -->
+  <target name="0000" description="Configures the Directory Service">
+    <record name="../log/oud-setup-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0000 Standard Directory Setup"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring standard accounts on ${oud.server.host}:${oud.server.port}"/>
+    <entry:create contextRef="oud-context" contextRoot="ou=People,dc=vm,dc=oracle,dc=com">
+      <entry name="uid" value="test">
+        <attribute name="objectClass">
+          <value value="inetOrgPerson"/>
+          <value value="posixAccount"/>
+          <value value="orclUserV2"/>
+          <value value="orclIDXPerson"/>
+          <value value="orclIDXIPFPerson"/>
+          <value value="oblixOrgPerson"/>
+          <value value="oblixPersonPwdPolicy"/>
+          <value value="OIMPersonPwdPolicy"/>
+        </attribute>
+        <attribute name="cn"                value="Sophie Strecke"/>
+        <attribute name="sn"                value="Strecke"/>
+        <attribute name="givenName"         value="Sophie"/>
+        <attribute name="displayName"       value="Sophie Strecke"/>
+        <attribute name="street"            value="Reichstagsufer 8"/>
+        <attribute name="preferredLanguage" value="en"/>
+        <attribute name="gidNumber"         value="0"/>
+        <attribute name="uidNumber"         value="0"/>
+        <attribute name="homeDirectory"     value="/home/sstrecke"/>
+        <attribute name="userPassword"      value="Sophie20061990$"/>
+      </entry>
+    </entry:create>
+    <echo message="=================================================================="/>
+    <echo message="0000 completed"/>
+    <echo message="=================================================================="/>
+    <record name="../log/oud-setup-ant.log" action="stop"/>
+  </target>
+  <target name="0001" description="Configures the Directory Service">
+    <record name="../log/oud-setup-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0001 Standard Directory Setup"/>
+    <echo message="=================================================================="/>
+    <echo message="Modify standard accounts from ${oud.server.host}:${oud.server.port}"/>
+    <entry:modify contextRef="oud-context" contextRoot="ou=People,dc=vm,dc=oracle,dc=com">
+      <entry name="uid" value="test">
+        <attribute name="sn"        value="Zitterbacke"/>
+        <attribute name="uidNumber" value="1"/>
+        <attribute name="gidNumber" value="2"/>
+        <attribute name="l"         value="Dresden"/>
+        <attribute name="mobile"    value="+49 (0)177 59 48 437"/>
+      </entry>
+    </entry:modify>
+    <echo message="=================================================================="/>
+    <echo message="0001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="../log/oud-setup-ant.log" action="stop"/>
+  </target>
+  <target name="0002" description="Configures the Directory Service">
+    <record name="../log/oud-setup-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0002 Standard Directory Setup"/>
+    <echo message="=================================================================="/>
+    <echo message="Deleting standard accounts from ${oud.server.host}:${oud.server.port}"/>
+    <entry:delete contextRef="oud-context" contextRoot="ou=People,dc=vm,dc=oracle,dc=com">
+      <entry name="uid" value="test"/>
+    </entry:delete>
+    <echo message="=================================================================="/>
+    <echo message="0002 completed"/>
+    <echo message="=================================================================="/>
+    <record name="../log/oud-setup-ant.log" action="stop"/>
+   </target>
+</project>

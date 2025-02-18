@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Copyright (c) 2008, 2015, Oracle and/or its affiliates. All rights reserved.-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:h  ="http://java.sun.com/jsf/html"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=utf-8"/>
+  <f:view>
+    <af:document id       ="richOHWDocument"
+                 title    ="#{ohw.view.documentTitle}"
+                 maximized="true"
+                 theme    ="dark">
+      <f:facet name="metaContainer">
+        <af:group id="g01">
+          <af:resource type="css"        source="view.resource?name=richohwmain.css"/>
+          <af:resource type="javascript" source="view.resource?name=ohw_core.js"/>
+          <af:resource type="javascript" source="view.resource?name=vt_toolbar.js"/>
+        </af:group>
+      </f:facet>
+      <af:clientListener type="load" method="RichOHWContextPeer.onLoad"/>
+      <af:form id="richOHWForm">
+        <af:panelStretchLayout topHeight="0" id="psl1" dimensionsFrom="parent">
+          <f:facet name="top">
+            <af:group id="g2">
+              <af:outputText id             ="initOHWFaces"
+                             value          ="#{ohw.initFaces}"
+                             visible        ="false"
+                             partialTriggers=":selectActiveBook"/>
+              <h:inputHidden id="locale" value="#{ohw.locale}"/>
+              <h:inputHidden id="group"  value="#{ohw.group}"/>
+              <h:inputHidden id="config" value="#{ohw.config}"/>
+            </af:group>
+          </f:facet>
+          <f:facet name="center">
+            <af:panelSplitter id="headerGlobalSplitter" orientation="vertical" splitterPosition="#{ohw.view.brandings.brandingHeight}" clientComponent="true" partialTriggers=":restoreDefaultWindowLayout">
+              <f:facet name="first">
+                <af:panelGroupLayout layout="vertical" id="pgl1">
+                  <afh:tableLayout width="100%" id="tl1">
+                    <afh:rowLayout id="rl1">
+                      <!-- Branding -->
+                      <afh:cellFormat styleClass="AFBranding" id="cf1">
+                        <af:switcher id="s3" defaultFacet="defaultBranding" facetName="#{ohw.view.brandings.displayChild}">
+                          <f:facet name="text">
+                            <af:outputText id="ot1" value="#{ohw.view.brandings.text}"/>
+                          </f:facet>
+                          <f:facet name="image">
+                            <af:image id="i1" source="#{ohw.view.brandings.imageSource}" shortDesc="#{ohw.view.brandings.imageShortDesc}"/>
+                          </f:facet>
+                          <f:facet name="image_rel">
+                            <af:image id="i2" source="#{ohw.view.brandings.imageSource}" shortDesc="#{ohw.view.brandings.imageShortDesc}"/>
+                          </f:facet>
+                          <f:facet name="defaultBranding">
+                            <af:outputText id="ot2" value="#{ohw.view.defaultBranding}"/>
+                          </f:facet>
+                        </af:switcher>
+                      </afh:cellFormat>
+                    </afh:rowLayout>
+                  </afh:tableLayout>
+                  <afh:tableLayout id="tl2" width="100%">
+                    <afh:rowLayout id="rl2">
+                      <afh:cellFormat id="cf2">
+                        <af:group id="g3">
+                          <jsp:include page="globalToolbar.jspx"/>
+                        </af:group>
+                      </afh:cellFormat>
+                    </afh:rowLayout>
+                  </afh:tableLayout>
+                </af:panelGroupLayout>
+              </f:facet>
+              <f:facet name="second">
+                <af:panelSplitter id="auxiliaryGlobalSplitter" orientation="horizontal" splitterPosition="300" clientComponent="true" partialTriggers=":restoreDefaultWindowLayout">
+                  <af:clientListener type="propertyChange" method="RichOHWNavPeer.auxGlobalSplitterPropertyChanged"/>
+                  <f:facet name="first">
+                    <af:group id="g04">
+                      <jsp:include page="navigatorsPane.jspx"/>
+                    </af:group>
+                  </f:facet>
+                  <f:facet name="second">
+                    <!-- start of secondary decoration -->
+                    <af:decorativeBox id="db1" topHeight="0" theme="light">
+                      <f:facet name="center">
+                        <af:panelStretchLayout id="psl2" topHeight="30" bottomHeight="0">
+                          <f:facet name="top">
+                            <af:panelGroupLayout id="pgl2" layout="vertical">
+                              <af:group id="g05">
+                                <jsp:include page="viewTopicToolbar.jspx"/>
+                              </af:group>
+                            </af:panelGroupLayout>
+                          </f:facet>
+                          <f:facet name="center">
+                            <!-- start of main decoration -->
+                            <af:decorativeBox id="db2" theme="default">
+                              <f:facet name="center">
+                                <af:panelStretchLayout id="pgl3">
+                                  <f:facet name="center">
+                                    <af:inlineFrame id             ="viewTopicFrame"
+                                                    binding        ="#{ohw.view.topicInlineFrame}"
+                                                    source         ="#{ohw.topicNavigator.currentTopicContentFile}"
+                                                    visible        ="#{ohw.topicNavigator.displayTopicContent}"
+                                                    shortDesc      ="#{ohw.richResourceBundle['ohwabout.short_desc']}"
+                                                    clientComponent="true"/>
+                                  </f:facet>
+                                  <f:facet name="top">
+                                    <af:skipLinkTarget/>
+                                  </f:facet>
+                                  <f:facet name="bottom">
+                                    <af:panelHeader id="aboutOHWPanelHeader" text="#{ohw.richResourceBundle['ohwabout.title']}" visible="#{ohw.topicNavigator.displayAboutOHW}" size="-1" clientComponent="true">
+                                      <af:panelGroupLayout layout="vertical" id="pgl1_vt">
+                                        <af:outputText id="ot1_vt" value="#{ohw.richResourceBundle['ohwabout.line1']}"/>
+                                        <af:outputText id="ot2_vt" value="#{ohw.richResourceBundle['ohwabout.line2']}"/>
+                                        <af:spacer id="s1_vt" width="0" height="20"/>
+                                        <af:outputText id="ot3_vt" value="#{ohw.richResourceBundle['ohwabout.version']}"/>
+                                        <af:outputText id="ot4_vt" value="#{ohw.richResourceBundle['ohwabout.copyrights_info']}"/>
+                                      </af:panelGroupLayout>
+                                    </af:panelHeader>
+                                  </f:facet>
+                                </af:panelStretchLayout>
+                              </f:facet>
+                            </af:decorativeBox>
+                            <!-- end of main decoration -->
+                          </f:facet>
+                        </af:panelStretchLayout>
+                        <!-- end of secondary header/footer layout -->
+                      </f:facet>
+                    </af:decorativeBox>
+                    <!-- end of secondary decoration -->
+                  </f:facet>
+                </af:panelSplitter>
+                <!-- end of global auxiliary splitter -->
+              </f:facet>
+            </af:panelSplitter>
+            <!-- end of global top splitter -->
+          </f:facet>
+        </af:panelStretchLayout>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

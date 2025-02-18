@@ -1,0 +1,63 @@
+<antlib xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  ==============================================================================
+  == Register Custom Types within Ant
+  ==============================================================================
+  -->
+  <typedef name="type"          classname="oracle.hst.deployment.type.ServerType"/>
+  <typedef name="operation"     classname="oracle.hst.deployment.type.ServerControlOperation"/>
+
+  <typedef name="principal"     classname="oracle.hst.deployment.type.SecurityPrincipal"/>
+  <typedef name="rmi-context"   classname="oracle.hst.deployment.type.RMIServerContext"/>
+  <typedef name="oim-context"   classname="oracle.hst.deployment.type.OIMServerContext"/>
+  <typedef name="soa-context"   classname="oracle.hst.deployment.type.SOAServerContext"/>
+  <typedef name="jmx-context"   classname="oracle.hst.deployment.type.JMXServerContext"/>
+  <typedef name="dbs-context"   classname="oracle.hst.deployment.type.DBSServerContext"/>
+  <typedef name="mds-context"   classname="oracle.hst.deployment.type.MDSServerContext"/>
+  <typedef name="ods-context"   classname="oracle.hst.deployment.type.ODSServerContext"/>
+  <typedef name="api-context"   classname="oracle.hst.deployment.type.APIServerContext"/>
+  <typedef name="www-context"   classname="oracle.hst.deployment.type.WWWServerContext"/>
+  <!--
+  ==============================================================================
+  == Register Custom Types within Ant related to MDS
+  ==============================================================================
+  -->
+  <typedef name="class"         classname="oracle.hst.deployment.mds.type.Clazz"/>
+  <typedef name="match"         classname="oracle.hst.deployment.mds.type.Match"/>
+  <typedef name="metadata"      classname="oracle.hst.deployment.mds.type.Metadata"/>
+  <typedef name="namespace"     classname="oracle.hst.deployment.mds.type.Namespace"/>
+  <typedef name="customization" classname="oracle.hst.deployment.mds.type.Customization"/>
+  <!--
+  ==============================================================================
+  == Register Custom Types within Ant related to WLS
+  ==============================================================================
+  -->
+  <typedef name="user"          classname="oracle.hst.deployment.wls.type.User"/>
+  <typedef name="role"          classname="oracle.hst.deployment.wls.type.Role"/>
+  <typedef name="grant"         classname="oracle.hst.deployment.wls.type.Role$Grant"/>
+  <typedef name="revoke"        classname="oracle.hst.deployment.wls.type.Role$Revoke"/>
+  <!--
+  ==============================================================================
+  == Register Custom Tasks within Ant
+  ==============================================================================
+  -->
+  <taskdef name="deploy"       classname="weblogic.ant.taskdefs.management.WLDeploy"/>
+  <taskdef name="wlst"         classname="weblogic.ant.taskdefs.management.WLSTTask"/>
+
+  <!--
+  ******************************************************************************
+  ** Purpose:  Managing servers of an Oracle WebLogic Domain
+  **
+  ** Synopsis: The tasks are connection to the Administration Server
+  **           specified by the argument context.
+  **           A particular Managed Server is specified by attribute
+  **           serverName with the requested operation.
+  **
+  ** Note:     The Nodemanager needs not to be up and running on the host where
+  **           the component should be started.
+  ******************************************************************************
+  -->
+  <taskdef name="status"       classname="oracle.hst.deployment.wls.task.ServerStatus"/>
+  <taskdef name="control"      classname="oracle.hst.deployment.wls.task.ServerControl"/>
+  <taskdef name="security"     classname="oracle.hst.deployment.wls.task.ServerSecurity"/>
+</antlib>

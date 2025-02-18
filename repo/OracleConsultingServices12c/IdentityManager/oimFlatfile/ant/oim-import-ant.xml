@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Oracle Consulting Identity ANT Task Definitions"
+         default        ="iam-instance-status"
+         basedir        =".."
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.iam.identity/server"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager CSV Flatfile Foundation
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Adapter Foundation
+  **           Configuration. This includes:
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="base" description="Deploys the CSV Flatfile Foundation Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the CSV Flatfile Foundation Configuration ${application.release}"/>
+    <library-deploy dir="${deploy.dir}" file="csv-scheduler.jar"  location="${oim.remote.scheduler}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/base">
+        <object:importFile name="csv-scheduler-dm.xml"/>
+        <object:importFile name="txt-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <!-- purge the cache to ensure that the latest version will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="SchedulerTaskDefinition"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the CSV Flatfile Trusted
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for CSV Flatfile Trusted
+  **           Configuration. This includes:
+  **           o Lookup Definitions
+  **           o Resource Object
+  **           o Provisioning Process Definition
+  **           o Scheduled Jobs
+   depends="metadata">
+  ******************************************************************************
+  -->
+  <target name="trusted" description="Deploys the CSV Flatfile Trusted Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deleting previously deployed metadata descriptors on ${oim.server.name}/${oim.mbean.metadata}:${oim.mbean.version}"/>
+    <metadata:delete contextref="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}" failonerror="false">
+      <metadata:path path="/metadata/ocs-features-configuration/csv/organization-reconciliation.xml"/>
+    </metadata:delete>
+    <echo message="Deploying metadata descriptors on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextref="oim-context">
+      <object:importSet dir="metadata">
+        <object:importFile name="csv-organization-reconciliation-dm.xml"/>
+      </object:importSet>
+    </object:import>
+
+<!--
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/bosch">
+        <object:importFile name="org-process-dm.xml"/>
+        <object:importFile name="org-scheduler-dm.xml"/>
+        <object:importFile name="usr-process-dm.xml"/>
+        <object:importFile name="usr-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+
+    <echo message="Deploys the CSV Flatfile Trusted Configuration ${application.release}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/trusted">
+        <object:importFile name="org-process-dm.xml"/>
+        <object:importFile name="org-scheduler-dm.xml"/>
+        <object:importFile name="usr-process-dm.xml"/>
+        <object:importFile name="usr-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+-->
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager CSV Flatfile Service Metadata
+  **           Configuration.
+  ******************************************************************************
+  -->
+  <target name="metadata" description="Deploys the CSV Flatfile Trusted Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy the Deploys the CSV Flatfile Trusted Configuration ${application.release}"/>
+    <echo message="Registering the Reconciliation Configuration in ${oim.mbean.application}/${oim.mbean.metadata}/${oim.mbean.version}"/>
+    <metadata:import contextRef     ="jee-context"
+                     location       ="${oim.mbean.application}"
+                     application    ="${oim.mbean.metadata}"
+                     version        ="${oim.mbean.version}"
+                     fromLocation   ="/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimFlatfile"
+                     clearCache     ="true">
+      <metadata:path>
+        <metadata:pathelement location="/metadata/ocs-features-configuration/csv-organization-reconciliation.xml"/>
+        <metadata:pathelement location="/metadata/ocs-features-configuration/csv-organization-provisioning.xml"/>
+        <metadata:pathelement location="/metadata/ocs-features-configuration/csv-identity-reconciliation.xml"/>
+        <metadata:pathelement location="/metadata/ocs-features-configuration/csv-identity-provisioning.xml"/>
+      </metadata:path>
+    </metadata:import>
+    <!--
+    <echo message="Deploying files to ${mds.server.host}@${mds.server.service} on partition ${oim.metadata.partition}"/>
+    <metadata:upload contextRef="oim-mds">
+      <namespace path="/metadata">
+        <importSet dir="metadata/" path="ocs-features-configuration">
+          <importFile name="csv-identity-reconciliation.xml"/>
+        </importSet>
+      </namespace>
+    </metadata:upload>
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="MetaData"/>
+    </object:purgecache>
+    -->
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:   Executes task on the CSV Flatfile Trusted Configuration.
+  **
+  ** Synopsis: The tasks executes tasks on CSV Flatfile Trusted Configuration.
+  **           This includes:
+  **           o Identity Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-identity" description="Executes task on the CSV Flatfile Trusted Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="CSV Identity Reconciliation" status="true" task="CSV Identity Reconciliation">
+        <parameter name="Last Reconciled"     datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="CSV Identity Reconciliation" status="true" task="CSV Identity Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:   Executes task on the CSV Flatfile Trusted Configuration.
+  **
+  ** Synopsis: The tasks executes tasks on CSV Flatfile Trusted Configuration.
+  **           This includes:
+  **           o Organization Trusted Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-organization" description="Executes task on the CSV Flatfile Trusted Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="CSV Organization Trusted Reconciliation" status="true" task="CSV Organization Trusted Reconciliation">
+        <parameter name="Last Reconciled" datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="CSV Organization Trusted Reconciliation" status="true" task="CSV Organization Trusted Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:   Executes task on the CSV Flatfile Trusted Configuration.
+  **
+  ** Synopsis: The tasks executes tasks on CSV Flatfile Trusted Configuration.
+  **           This includes:
+  **           o Identity Provisioning
+  ******************************************************************************
+  -->
+  <target name="provision-identity" description="Executes task on the CSV Flatfile Trusted Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="CSV Identity Provisioning" status="true" task="CSV Identity Provisioning">
+        <parameter name="Last Reconciled"     datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="CSV Identity Provisioning" status="true" task="CSV Identity Provisioning">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:   Executes task on the CSV Flatfile Trusted Configuration.
+  **
+  ** Synopsis: The tasks executes tasks on CSV Flatfile Trusted Configuration.
+  **           This includes:
+  **           o Organization Trusted Provisioning
+  ******************************************************************************
+  -->
+  <target name="provision-organization" description="Executes task on the CSV Flatfile Trusted Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="CSV Organization Trusted Provisioning" status="true" task="CSV Organization Trusted Provisioning">
+        <parameter name="Last Reconciled"     datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="CSV Organization Trusted Provisioning" status="true" task="CSV Organization Trusted Provisioning">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:   Executes task on the CSV Flatfile Trusted Configuration.
+  **
+  ** Synopsis: The tasks executes tasks on CSV Flatfile Trusted Configuration.
+  **           This includes:
+  **           o Account Trusted Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup" description="Executes task on the CSV Flatfile Trusted Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="CSV Location Reconciliation" status="true" task="CSV Lookup Reconciliation">
+        <parameter name="Last Reconciled"     datatype="String"  encrypted="false" required="true" value="0"/>
+      </job>
+      <job name="CSV Location Reconciliation" status="true" task="CSV Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance" depends="base, trusted, reconcile-lookup, reconcile-identity"/>
+</project>

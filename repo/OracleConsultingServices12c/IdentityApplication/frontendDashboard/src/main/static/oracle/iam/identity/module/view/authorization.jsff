@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:cpl="/componentLib1">
+  <c:set var="launchpad$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Launchpad']}"/>
+  <af:resource type="css">.typ { font-family:Arial;font-size:16px; }</af:resource>
+  <af:panelGridLayout id="pgl1">
+    <af:gridRow id="gr10" height="266px" marginBottom="20px">
+      <af:gridCell id="gc11" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db11"
+                          titleText       ="#{launchpad$bundle.ROLE_POLICY_TITLE}"
+                          instructionText ="#{launchpad$bundle.ROLE_POLICY_HINT}"
+                          image           ="#{launchpad$bundle.ROLE_POLICY_ICON}"
+                          hoverImage      ="#{launchpad$bundle.ROLE_POLICY_HOVER}"
+                          colorStyle      ="blueTile"
+                          iconClickable   ="false"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}">
+          <f:facet name="popupMenu">
+            <af:menu  id="m11" text="menu 1">
+              <af:commandMenuItem id            ="cmi11"
+                                  text          ="#{launchpad$bundle.ROLE_TEXT}"
+                                  actionListener="#{backingBeanScope.dashboard.navigateRole}"/>
+              <af:commandMenuItem id            ="cmi12"
+                                  text          ="#{launchpad$bundle.ACCESSPOLICY_TEXT}"
+                                  rendered      ="#{(oimaccesspolicy.modify.allowed || oimaccesspolicy.view.allowed || oimaccesspolicy.search.allowed || oimaccesspolicy.create.allowed || oimaccesspolicy.delete.allowed)}"
+                                  actionListener="#{backingBeanScope.dashboard.navigateAccessPolicy}"/>
+            </af:menu>
+          </f:facet>
+        </cpl:DashboardBox>
+      </af:gridCell>
+      <af:gridCell id="gc12" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db12"
+                          titleText       ="#{launchpad$bundle.APPLICATION_TITLE}"
+                          instructionText ="#{launchpad$bundle.APPLICATION_HINT}"
+                          image           ="#{launchpad$bundle.APPLICATION_ICON}"
+                          hoverImage      ="#{launchpad$bundle.APPLICATION_HOVER}"
+                          colorStyle      ="purpleTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateApplication}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+      <af:gridCell id="gc13" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db13"
+                          titleText       ="#{launchpad$bundle.ENTITLEMENT_TITLE}"
+                          instructionText ="#{launchpad$bundle.ENTITLEMENT_HINT}"
+                          image           ="#{launchpad$bundle.ENTITLEMENT_ICON}"
+                          hoverImage      ="#{launchpad$bundle.ENTITLEMENT_HOVER}"
+                          colorStyle      ="purpleTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateEntitlement}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+      <af:gridCell id="gc14" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db14"
+                          titleText       ="#{launchpad$bundle.ADMINROLE_TITLE}"
+                          instructionText ="#{launchpad$bundle.ADMINROLE_HINT}"
+                          image           ="#{launchpad$bundle.ADMINROLE_ICON}"
+                          hoverImage      ="#{launchpad$bundle.ADMINROLE_HOVER}"
+                          colorStyle      ="greenTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateAdminRole}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr20" height="266px" marginBottom="20px">
+      <af:gridCell id="gc21" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db21"
+                          titleText       ="#{launchpad$bundle.CATALOG_TITLE}"
+                          instructionText ="#{launchpad$bundle.CATALOG_HINT}"
+                          image           ="#{launchpad$bundle.CATALOG_ICON}"
+                          hoverImage      ="#{launchpad$bundle.CATALOG_HOVER}"
+                          colorStyle      ="purpleTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateCatalog}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+      <af:gridCell id="gc22" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db22"
+                          titleText       ="#{launchpad$bundle.REPORT_TITLE}"
+                          instructionText ="#{launchpad$bundle.REPORT_HINT}"
+                          image           ="#{launchpad$bundle.REPORT_ICON}"
+                          hoverImage      ="#{launchpad$bundle.REPORT_HOVER}"
+                          colorStyle      ="purpleTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateReport}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+      <af:gridCell id="gc23" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+      </af:gridCell>
+      <af:gridCell id="gc24" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+      </af:gridCell>
+    </af:gridRow>
+  </af:panelGridLayout>
+</jsp:root>

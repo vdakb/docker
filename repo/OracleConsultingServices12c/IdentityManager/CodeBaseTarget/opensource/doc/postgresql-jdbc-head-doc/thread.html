@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+	<title>Chapter 10. Using the Driver in a Multithreaded or a Servlet Environment</title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+	<meta name="description" content="The official site for the PostgreSQL JDBC Driver" />
+	<meta name="copyright" content="The PostgreSQL Global Development Group" />
+
+	<style type="text/css" media="screen" title="Normal Text">@import url("media/css/docs.css");</style>
+
+	<link rel="shortcut icon" href="media/favicon.ico" />
+</head>
+
+<body>
+	<div id="docHeader">
+		<div id="docHeaderLogo">
+			<a href="http://www.postgresql.org/" title="PostgreSQL"><img src="media/img/layout/hdr_left3a.png" alt="PostgreSQL" height="80" width="390" /></a>
+		</div>
+	</div>
+
+	<div id="docContainerWrap">
+		<div id="docContainer">
+			<div id="docContent">
+
+				<div class="NAVHEADER">
+					<table summary="Header navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+						<tr>
+							<th colspan="3" valign="bottom" align="center">
+								<h2 class="TITLE">Chapter 10. Using the Driver in a Multithreaded or a Servlet Environment</h2>
+							</th>
+						</tr>
+						<tr>
+							<td valign="top" width="20%" align="left">
+								<a title="Server Prepared Statements" href="server-prepare.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="bottom" width="60%" align="center">&nbsp;</td>
+							<td valign="top" width="20%" align="right">
+								<a title="Chapter 11. Connection Pools and Data Sources" href="datasource.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+  					</tbody>
+					</table>
+					<hr class="c1" width="100%" />
+				</div> <!-- NAVHEADER -->
+
+				<div class="CHAPTER">
+  					<h1>Chapter 10. Using the Driver in a Multithreaded or a Servlet Environment</h1>
+					
+					<p>A problem with many JDBC drivers is that only one thread can use a <code>Connection</code>
+at any one time --- otherwise a thread could send a query while another one is
+receiving results, and this could cause severe confusion.</p>
+
+<p>The PostgreSQL™ JDBC driver is thread safe. Consequently, if your application
+uses multiple threads then you do not have to worry about complex algorithms to
+ensure that only one thread uses the database at a time.</p>
+
+<p>If a thread attempts to use the connection while another one is using it, it
+will wait until the other thread has finished its current operation.  If the
+operation is a regular SQL statement, then the operation consists of sending the
+statement and retrieving any <code>ResultSet</code> (in full). If it is a fast-path call
+(e.g., reading a block from a large object) then it consists of sending and
+retrieving the respective data.</p>
+
+<p>This is fine for applications and applets but can cause a performance problem
+with servlets. If you have several threads performing queries then each but one
+will pause. To solve this, you are advised to create a pool of connections. When
+ever a thread needs to use the database, it asks a manager class for a <code>Connection</code>
+object. The manager hands a free connection to the thread and marks it as busy.
+If a free connection is not available, it opens one.  Once the thread has
+finished using the connection, it returns it to the manager which can then either
+close it or add it to the pool. The manager would also check that the connection
+is still alive and remove it from the pool if it is dead.  The down side of a
+connection pool is that it increases the load on the server because a new session
+is created for each <code>Connection</code> object.  It is up to you and your applications&#39;s
+requirements.</p>
+
+				</div>
+
+				<div class="NAVFOOTER">
+					<hr class="c1" width="100%" />
+					<table summary="Footer navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td valign="top" width="33%" align="left">
+								<a href="server-prepare.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="top" width="34%" align="center">
+								<a href="index.html" accesskey="H">Home</a>
+							</td>
+							<td valign="top" width="33%" align="right">
+								<a href="datasource.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+						<tr>
+							<td valign="top" width="33%" align="left">Server Prepared Statements</td>
+							<td valign="top" width="34%" align="center">&nbsp;</td>
+							<td valign="top" width="33%" align="right">Chapter 11. Connection Pools and Data Sources</td>
+						</tr>
+					</tbody>
+					</table>
+				</div> <!-- NAVFOOTER -->
+
+
+			</div> <!-- docContent -->
+			
+			<div id="docComments"></div>
+
+			<div id="docFooter">
+				<a class="navFooter" href="http://www.postgresql.org/about/privacypolicy">Privacy Policy</a> |
+				<a class="navFooter" href="http://www.postgresql.org/about/">About PostgreSQL</a><br/>
+				Copyright &copy; 1996-2013 The PostgreSQL Global Development Group
+			</div> <!-- pgFooter -->
+		</div> <!-- docContainer -->
+	</div> <!-- docContainer -->
+</body>
+</html>

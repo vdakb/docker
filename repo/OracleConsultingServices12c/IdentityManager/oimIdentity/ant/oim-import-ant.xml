@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Oracle Consulting Services Identity Manager Deployment Importer"
+         basedir         =".."
+         default         ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance" depends="base,target,request,clear,config"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Generic Identity Service
+  **           Metadata Configuration.
+  **
+  ** Synopsis: The tasks deploys the metadata definitions for Generic Identity
+  **           Foundation Configuration. This includes:
+  **           o IT Resource Definitions
+  **           o Task Adapter
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="base" description="Deploys the Generic Identity Service Foundation Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Generic Identity Service Foundation Configuration ${application.release}"/>
+    <library-deploy dir="${deploy.dir}" file="gis-common.jar"     location="${oim.remote.thirdparty}"/>
+    <library-deploy dir="${deploy.dir}" file="gis-adapter.jar"    location="${oim.remote.adapter}"/>
+    <library-deploy dir="${deploy.dir}" file="gis-diagnostic.jar" location="${oim.remote.adapter}"/>
+    <library-deploy dir="${deploy.dir}" file="gis-scheduler.jar"  location="${oim.remote.scheduler}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/base">
+        <object:importFile name="gis-resource-dm.xml"/>
+        <object:importFile name="gis-adapter-dm.xml"/>
+        <object:importFile name="gis-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <!-- purge the cache to ensure that the latest version will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="SchedulerTaskDefinition"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Generic Identity Service
+  **           Target Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Identity
+  **           Service Target Configuration. This includes:
+  **           o IT Resource Definition
+  **           o Lookup Definition
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  **           o User Defined Forms
+  **           o Resource Object Definition
+  **           o Provisioning Processes
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="target" description="Deploys the Generic Identity Service Target Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/target">
+        <object:importFile name="gis-resource-dm.xml"/>
+        <object:importFile name="gis-lookup-dm.xml"/>
+        <object:importFile name="gis-model-dm.xml"/>
+        <object:importFile name="gis-process-dm.xml"/>
+        <object:importFile name="gis-scheduler-dm.xml"/>
+        <object:importFile name="gis-usergroup-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <operation:role contextref="oim-context" operation="modify" failonerror="true">
+      <role name="Administrators">
+        <membership value="assign">
+          <recipient value="Role" name="GIS Delegated Administrators"/>
+        </membership>
+      </role>
+      <role name="SYSTEM ADMINISTRATORS">
+        <membership value="assign">
+          <recipient value="Role" name="GIS Delegated System Administrators"/>
+        </membership>
+      </role>
+      <role name="OPERATORS">
+        <membership value="assign">
+          <recipient value="Role" name="GIS Delegated Operators"/>
+        </membership>
+      </role>
+      <role name="SELF OPERATORS">
+        <membership value="assign">
+          <recipient value="Role" name="GIS Delegated Self Operators"/>
+        </membership>
+      </role>
+    </operation:role>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Request Customization
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in Identity Manager connector. This includes:
+  **           o Application Instance
+  **           o Entity Publication
+  **           o Request Dataset
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="request" description="Deploys the Generic Identity Service Request Customization">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextref="oim-context">
+      <object:importSet dir="${resource.dir}/xml/target">
+        <object:importFile name="gis-request-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Apply hot-fix for SR 3-6696070089 and SR 3-6696070116 on service ${oim.server.host}:${oim.server.port}"/>
+    <operation:application contextref="oim-context" operation="modify" failonerror="false">
+      <application name="IdentityServiceAccount" dataset="IdentityServiceRequest" entitlement="true">
+        <publication value="enable">
+          <recipient value="Organization" name="Top" hierarchy="true"/>
+        </publication>
+      </application>
+    </operation:application>
+    <echo message="Deploying sandbox customizations on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextref="sdb-mds">
+      <sandbox:importfile publish="false" archive="customization/gis-account-sysadmin.zip"/>
+    </sandbox:import>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for OIM itself
+  ******************************************************************************
+  -->
+  <target name="config" description="Setup the OIM Configuration to work">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Configuring IT Resource GIS Server"/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+      <itresource type="Generic Identity Service" name="GIS Server">
+        <parameter name="Server Name"                value="${oim.server.host}"/>
+        <parameter name="Server Port"                value="${oim.server.port}"/>
+        <parameter name="Security Config"            value="${oim.server.home}/config/authwl.conf"/>
+        <parameter name="Server Principal Password"  value="${jee.server.password}"/>
+        <parameter name="Context Principal Password" value="${oim.server.password}"/>
+      </itresource>
+    </operation:itresource>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Clear Identity Manager Caches.
+  **
+  ** Synopsis: The tasks prepares the Identity Manager Application
+  **           Deployment. This includes:
+  **           o Clearing several caches
+  ******************************************************************************
+  -->
+  <target name="clear" description="Clear Identity Manager Caches">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Clear metadata cache on ${oim.server.name}:${oim.mbean.metadata}:${oim.mbean.version}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <echo message="Clear object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+</project>

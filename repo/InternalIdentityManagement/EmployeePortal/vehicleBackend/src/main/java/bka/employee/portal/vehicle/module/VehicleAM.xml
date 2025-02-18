@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Version="12.2.1.22.48"
+  Name="VehicleAM"
+  ComponentClass="bka.employee.portal.vehicle.module.VehicleAMImpl"
+  ComponentInterface="bka.employee.portal.vehicle.module.common.VehicleAM"
+  ClearCacheOnRollback="true"
+  InheritPersonalization="merge">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL ResId="vehicle.single"/>
+      <LABEL_PLURAL ResId="vehicle.multiple"/>
+      <TOOLTIP ResId="vehicle.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewUsage Name="VehicleSearchVO" ViewObjectName="bka.employee.portal.vehicle.model.view.VehicleVO" RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="VehicleDetailVO" ViewObjectName="bka.employee.portal.vehicle.model.view.VehicleVO" RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ClientInterface
+    Name="__clientInterface">
+    <Method Name="fetchVehicleByIdentifier" MethodName="fetchVehicleByIdentifier">
+      <Return    Name="_return_type_" Type="void"/>
+      <Parameter Name="identifier" Type="java.lang.String"/>
+    </Method>
+    <Method Name="createDetail" MethodName="createDetail">
+      <Return Name="_return_type_" Type="void"/>
+    </Method>
+    <Method Name="requeryAttribute" MethodName="requeryAttribute">
+      <Return    Name="_return_type_" Type="void"/>
+      <Parameter Name="identifier"    Type="java.lang.String"/>
+      <Parameter Name="pending"       Type="java.util.Map" IsGeneric="true">
+        <Element  Name="String"        Type="java.lang.String"/>
+        <Element  Name="Object"        Type="java.lang.Object"/>
+      </Parameter>
+    </Method>
+    <Method Name="refreshVehiculeAttribute" MethodName="refreshVehiculeAttribute">
+      <Return Name="_return_type_" Type="void"/>
+    </Method>
+  </ClientInterface>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="bka.employee.portal.vehicle.Backend"/>
+  </ResourceBundle>
+</AppModule>

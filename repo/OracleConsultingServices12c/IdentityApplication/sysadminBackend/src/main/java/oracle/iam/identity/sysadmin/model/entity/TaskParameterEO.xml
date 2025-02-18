@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+        Name                  ="TaskParameterEO"
+        AliasName             ="TaskParameterEO"
+        DBObjectType          ="table"
+        DBObjectName          ="TSA"
+        UseGlueCode           ="false"
+        BindingStyle          ="OracleName"
+        InheritPersonalization="merge"
+        RowClass              ="oracle.iam.identity.sysadmin.model.entity.TaskParameterEOImpl">
+  <DesignTime>
+    <Attr      Name="_isCodegen"   Value="true"/>
+    <Attr      Name="_diagramName" Value="Schedule Task Parameter Entity"/>
+    <Attr      Name="_superClass"  Value="oracle.iam.ui.platform.model.common.OIMProgrammaticEO"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute Name="task" ColumnName="TASK" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="100" PrimaryKey="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="tsk.name.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <!--
+  Generally spoken parameterKey is usually the primary key of a task parameter
+  Unfortunately the value for this attribute is never delivered by the API hence
+  we use the name of the task parameter for the purpose of the primary key
+  -->
+  <Attribute Name="name" ColumnName="NAME" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="100" IsNotNull="true">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The name attribute is a required attribute hence it can never be blank
+    furthermore it doesn't provided a range of values hence any comparator
+    belonging to a range of values is useless
+    -->
+    <CompOper Name="name" Oper=">="         ToDo="-1"/>
+    <CompOper Name="name" Oper=">"          ToDo="-1"/>
+    <CompOper Name="name" Oper="BETWEEN"    ToDo="-1"/>
+    <CompOper Name="name" Oper="NOTBETWEEN" ToDo="-1"/>
+    <CompOper Name="name" Oper="&lt;"       ToDo="-1"/>
+    <CompOper Name="name" Oper="&lt;="      ToDo="-1"/>
+    <CompOper Name="name" Oper="ISBLANK"    ToDo="-1"/>
+    <CompOper Name="name" Oper="ISNOTBLANK" ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="tsa.name.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="dataType" ColumnName="DATATYPE" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="128" IsNotNull="true">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The scheduleType attribute is a required attribute hence it can never
+    be blank furthermore it doesn't provided a range of values hence any
+    comparator belonging to a range of values is useless
+    -->
+    <CompOper Name="dataType" Oper=">="         ToDo="-1"/>
+    <CompOper Name="dataType" Oper=">"          ToDo="-1"/>
+    <CompOper Name="dataType" Oper="BETWEEN"    ToDo="-1"/>
+    <CompOper Name="dataType" Oper="NOTBETWEEN" ToDo="-1"/>
+    <CompOper Name="dataType" Oper="&lt;"       ToDo="-1"/>
+    <CompOper Name="dataType" Oper="&lt;="      ToDo="-1"/>
+    <CompOper Name="dataType" Oper="ISBLANK"    ToDo="-1"/>
+    <CompOper Name="dataType" Oper="ISNOTBLANK" ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="tsa.datatype.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="value" ColumnName="VALUE" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="128">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="tsa.value.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="required" ColumnName="REQUIRED" Type="java.lang.Boolean" ColumnType="BIGINT" SQLType="BIT" IsNotNull="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="tsa.required.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="encrypted" ColumnName="ENCRYPTED" Type="java.lang.Boolean" ColumnType="BIGINT" SQLType="BIT" IsNotNull="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="tsa.encrypted.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="helpText" ColumnName="HELPTEXT" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="128">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The helpText attribute is not a required attribute hence it doesn't provided
+    a range of values hence any comparator belonging to a range of values is
+    useless
+    -->
+    <CompOper Name="helpText" Oper=">="         ToDo="-1"/>
+    <CompOper Name="helpText" Oper=">"          ToDo="-1"/>
+    <CompOper Name="helpText" Oper="BETWEEN"    ToDo="-1"/>
+    <CompOper Name="helpText" Oper="NOTBETWEEN" ToDo="-1"/>
+    <CompOper Name="helpText" Oper="&lt;"       ToDo="-1"/>
+    <CompOper Name="helpText" Oper="&lt;="      ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="tsa.helptext.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Key Name="TaskParameterPK" PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="TSAPK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="oracle.iam.identity.sysadmin.model.entity.TaskParameterEO.name"/>
+    </AttrArray>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysadmin.bundle.Backend"/>
+  </ResourceBundle>
+  <Properties>
+    <CustomProperties>
+      <Property Name="USE_ALLOCATION_MANAGER" Value="false"/>
+    </CustomProperties>
+  </Properties>
+</Entity>

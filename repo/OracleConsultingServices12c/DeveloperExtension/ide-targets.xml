@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Oracle JDeveloper Extension Targets" basedir=".">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="./ide-preferences.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="cleanup" description="Clean the project build deliverables">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}"/>
+      <fileset dir="${webinf.dir}/temp"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables" depends="cleanup">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${deploy.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the build process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${deploy.dir}"/>
+    <mkdir dir="${deploy.doc}"/>
+    <mkdir dir="${output.dir}/META-INF"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to copy secific files to the output directory
+  =====================================================================
+  -->
+  <target name="copy" description="Copy files to output directory" depends="init">
+    <patternset id="copy.patterns">
+      <include name="**/*.mf"/>
+      <include name="**/*.png"/>
+      <include name="**/*.gif"/>
+      <include name="**/*.txt"/>
+      <include name="**/*.xml"/>
+      <include name="**/*.xsd"/>
+      <include name="**/*.wsdl"/>
+      <include name="**/*.decs"/>
+      <include name="**/*.bpel"/>
+      <include name="**/*.task"/>
+      <include name="**/*.rules"/>
+      <include name="**/*.componentType"/>
+    </patternset>
+    <copy todir="${output.dir}">
+      <fileset dir="${source.dir}">
+        <patternset refid="copy.patterns"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to compile all Java Source files
+  =====================================================================
+  -->
+  <target name="compile" description="Compile Java source files" depends="copy">
+    <javac executable       ="${jdk.compiler}"
+           source           ="${jdk.version}"
+           target           ="${jdk.version}"
+           debug            ="${javac.debug}"
+           nowarn           ="${javac.nowarn}"
+           destdir          ="${output.dir}"
+           encoding         ="${javac.encoding}"
+           deprecation      ="${javac.deprecation}"
+           classpathref     ="classpath"
+           includeantruntime="no">
+      <src path        ="${source.dir}"/>
+    </javac>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create a manifest used in the jar files
+  =====================================================================
+  -->
+  <target name="manifest" description="Create a manifest used in the jar files">
+    <!-- update to version properties -->
+    <propertyfile file="${version.file}" comment="Build version info">
+      <entry key="build.timest" type="date" value="now" pattern="dd/MM/yyyy hh:mm:ss aa"/>
+      <entry key="build.major"  type="int"  value="00"  pattern="00" default="00"/>
+      <entry key="build.minor"  type="int"  value="01"  pattern="00" default="00" operation="+" />
+    </propertyfile>
+    <!-- load the file -->
+    <property file="${version.file}"/>
+
+    <!-- build the package list based on source -->
+    <dirset id="export.dirset" dir="${source.dir}" includes="META-INF oracle/jdeveloper/workspace/*/** oracle/jdeveloper/connection/*/**" excludes="oracle.ocs.workspace.iam/** oracle.ocs.connection.iam/**"/>
+    <pathconvert property="export.package" refid="export.dirset" dirsep="." pathsep=",">
+      <map from="${basedir}/src/main/java/" to=""/>
+    </pathconvert>
+    <!-- update the manifest file -->
+    <copy file="${source.dir}/META-INF/MANIFEST.MF" todir="${output.dir}/META-INF" overwrite="true"/>
+    <manifest file="${manifest}" mode="update">
+      <attribute name="Export-Package"                value="${export.package}"/>
+      <attribute name="Oracle-Version"                value="${application.release}-${build.major}.${build.minor}"/>
+      <attribute name="Oracle-Built-By"               value="${user.name}"/>
+      <attribute name="Oracle-Built-At"               value="${build.timest}"/>
+      <attribute name="Oracle-Project-Type"           value="Developer Extension"/>
+      <attribute name="Oracle-Project-Name"           value="Identity and Access Management"/>
+      <attribute name="Oracle-Specification-Title"    value="${description}"/>
+      <attribute name="Oracle-Specification-Version"  value="${application.release}"/>
+      <attribute name="Oracle-Specification-Vendor"   value="Oracle Consulting Services"/>
+      <attribute name="Oracle-Implementation-Title"   value="${description}"/>
+      <attribute name="Oracle-Implementation-Version" value="${application.release}-${build.major}.${build.minor}"/>
+      <attribute name="Oracle-Implementation-Vendor"  value="Oracle Consulting Services"/>
+    </manifest>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the extension library
+  =====================================================================
+  -->
+  <target name="make-extension" description="Build the extension library" if="extension" depends="compile,manifest,copy">
+    <echo message="Packaging java archive from path ${output.dir}/${extension.package}"/>
+    <jar destfile="${deploy.dir}/${extension}.jar" manifest="${manifest}">
+      <fileset dir="${output.dir}" includes="${extension.package} META-INF/* **/*.xsd **/*.gif **/*.png" excludes="oracle.jdeveloper.workspace.iam oracle.**/*.cdi"/>
+    </jar>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the non-binary deliverables like source and
+  == javadoc files on top of the binaries
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="make-extension">
+    <!-- generate javadoc -->
+    <javadoc author       ="false"
+             classpathref ="classpath"
+             sourcepath   ="${source.dir}"
+             packagenames ="oracle.*"
+             destdir     ="${deploy.doc}"
+             encoding    ="${javac.encoding}"
+             docencoding ="${javac.encoding}"
+             charset     ="${javac.encoding}"/>
+    <!-- assemble javadoc -->
+    <jar destfile="${deploy.dir}/${extension}-doc.jar">
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </jar>
+
+    <!-- assemble source -->
+    <jar destfile="${deploy.dir}/${extension}-src.jar">
+      <fileset dir="${source.dir}" includes="**/*.*"/>
+    </jar>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the extension
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploy the project source and documentation" depends="make">
+    <copy todir="${ide.base.ext}" file="${deploy.dir}/${extension}.jar" failonerror="true" verbose="no" force="true">
+    </copy>
+  </target>
+</project>

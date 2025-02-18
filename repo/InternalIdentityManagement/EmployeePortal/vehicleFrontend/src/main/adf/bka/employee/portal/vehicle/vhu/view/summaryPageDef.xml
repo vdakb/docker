@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="12.2.1.22.48" id="summaryPageDef"
+                Package="bka.employee.portal.vehicle.vhu.view">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="VehicleDetailVO" RangeSize="25"
+              DataControl="VehicleAMDataControl" id="VehicleIterator"/>
+  </executables>
+  <bindings>
+    <attributeValues IterBinding="VehicleIterator" id="carPlateNumber">
+      <AttrNames>
+        <Item Value="carPlateNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="commit" DataControl="VehicleAMDataControl"
+            RequiresUpdateModel="true" Action="commitTransaction"/>
+    <action id="rollback" DataControl="VehicleAMDataControl"
+            RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <listOfValues id="brandKey" IterBinding="VehicleIterator" Uses="LOV_brandKey" StaticList="false"/>
+    <list id="typeKey"  IterBinding="VehicleIterator" Uses="LOV_typeKey"  SelectItemValueMode="ListObject" DTSupportsMRU="true" StaticList="false"/>
+    <list id="colorKey" IterBinding="VehicleIterator" Uses="LOV_colorKey" SelectItemValueMode="ListObject" DTSupportsMRU="true" StaticList="false"/>
+    <attributeValues IterBinding="VehicleIterator" id="brandIcon">
+      <AttrNames>
+        <Item Value="brandIcon"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="US-ASCII"?><xl-ddm-data database="" description="Zero Scheduler Configuration 12.2.1.3" exported-date="1720084882066" user="XELSYSADM" version="12.2.1.3.0">
+  <scheduledTask mds-file="ZeroLegacyProvisioning.xml" mds-path="/db" name="ZeroLegacyProvisioning" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+      <name>ZeroLegacyProvisioning</name>
+      <class>bka.iam.identity.zero.scheduler.ProvisioningLegacyTask</class>
+      <description>An Provisioning Task Job instance reads the entries from an LDAP Legacy source and send the provisionning request for OIM.</description>
+      <retry>0</retry>
+      <parameters>
+         <string-param encrypted="false" helpText="The IT Resource used to establish the connection to the LDAP Source System." required="true">IT Resource LDAP</string-param>
+         <string-param encrypted="false" helpText="The technical application name in OIM" required="true">Application Name</string-param>
+         <string-param encrypted="false" helpText="The DN entry where begin account and access descriptions." required="true">Application Root Context</string-param>
+         <string-param encrypted="false" helpText="The Organisation Name where the scheduled task will operate on." required="true">Organization</string-param>
+         <string-param encrypted="false" helpText="The RDN entry where application accesses are stored." required="true">Accounts RDN</string-param>
+         <string-param encrypted="false" helpText="The object class of the entry that represents accesses to the application." required="true">Account Object Class</string-param>
+         <string-param encrypted="false" helpText="The attribute name of the entry that holds members to the application." required="true">Account Member Attribute</string-param>
+         <string-param encrypted="false" helpText="User login for which the report will be send." required="true">Administrator Login</string-param>
+         <string-param encrypted="false" helpText="The notification template used for sending the report." required="true">Notification Template</string-param>
+      </parameters>
+   </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+  <scheduledTask mds-file="ZeroAccountProvisioning.xml" mds-path="/db" name="ZeroAccountProvisioning" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+      <name>ZeroAccountProvisioning</name>
+      <class>bka.iam.identity.zero.scheduler.ProvisioningTask</class>
+      <description>An Provisionning Task Job instance reads the entries from an LDAP source and send the provisioning task to OIM.</description>
+      <retry>0</retry>
+      <parameters>
+         <string-param encrypted="false" helpText="The IT Resource used to establish the connection to the LDAP Source System." required="true">IT Resource LDAP</string-param>
+         <string-param encrypted="false" helpText="The DN entry where begin account and access descriptions." required="true">Application Root Context</string-param>
+         <string-param encrypted="false" helpText="The Organisation Name where the scheduled task will operate on." required="true">Organization</string-param>
+         <string-param encrypted="false" helpText="The RDN entry where application accesses are stored." required="true">Accounts RDN</string-param>
+         <string-param encrypted="false" helpText="The object class of the entry that represents accesses to the application." required="true">Account Object Class</string-param>
+         <string-param encrypted="false" helpText="The attribute name of the entry that holds members to the application." required="true">Account Member Attribute</string-param>
+         <string-param encrypted="false" helpText="The root RDN entry where entitlements of the application are stored." required="false">Entitlement RDN</string-param>
+         <string-param encrypted="false" helpText="The object class of the entry that represents an entitlement in LDAP." required="false">Entitlement Object Class</string-param>
+         <string-param encrypted="false" helpText="The attribute name of the entry that holds the name of the entitlement (Default value: cn)." required="false">Entitlement Attribute</string-param>
+         <string-param encrypted="false" helpText="The attribute name of the entry that holds entitlement members." required="false">Entitlement Member Attribute</string-param>
+         <string-param encrypted="false" helpText="The name of the namespace where the entitlement belong to." required="false">Entitlement Namespace</string-param>
+         <string-param encrypted="false" helpText="The attribute name of the Child Form that holds entitlement value." required="false">ChildForm Attribute Name</string-param>
+         <string-param encrypted="false" helpText="User login for which the report will be send." required="true">Administrator Login</string-param>
+         <string-param encrypted="false" helpText="The notification template used for sending the report." required="true">Notification Template</string-param>
+      </parameters>
+   </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+  <scheduledTask mds-file="ZeroAccountRevoke.xml" mds-path="/db" name="ZeroAccountRevoke" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+      <name>ZeroAccountRevoke</name>
+      <class>bka.iam.identity.zero.scheduler.RevokeTask</class>
+      <description>A Revoking Task Job instance checks LDAP entries no longer available and send the revoke task to OIM.</description>
+      <retry>0</retry>
+      <parameters>
+         <string-param encrypted="false" helpText="The IT Resource used to establish the connection to the LDAP Source System." required="true">IT Resource LDAP</string-param>
+         <string-param encrypted="false" helpText="The DN entry where begin account and access descriptions." required="true">Application Root Context</string-param>
+         <string-param encrypted="false" helpText="The Organisation Name where the scheduled task will operate on." required="true">Organization</string-param>
+         <string-param encrypted="false" helpText="The RDN entry where application accesses are stored." required="true">Accounts RDN</string-param>
+         <string-param encrypted="false" helpText="The object class of the entry that represents accesses to the application." required="true">Account Object Class</string-param>
+         <string-param encrypted="false" helpText="The attribute name of the entry that holds members to the application." required="true">Account Member Attribute</string-param>
+         <string-param encrypted="false" helpText="User login for which the report will be send." required="true">Administrator Login</string-param>
+         <string-param encrypted="false" helpText="The notification template used for sending the report." required="true">Notification Template</string-param>
+      </parameters>
+   </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+</xl-ddm-data>

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+	<title>Configuring the Client</title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+	<meta name="description" content="The official site for the PostgreSQL JDBC Driver" />
+	<meta name="copyright" content="The PostgreSQL Global Development Group" />
+
+	<style type="text/css" media="screen" title="Normal Text">@import url("media/css/docs.css");</style>
+
+	<link rel="shortcut icon" href="media/favicon.ico" />
+</head>
+
+<body>
+	<div id="docHeader">
+		<div id="docHeaderLogo">
+			<a href="http://www.postgresql.org/" title="PostgreSQL"><img src="media/img/layout/hdr_left3a.png" alt="PostgreSQL" height="80" width="390" /></a>
+		</div>
+	</div>
+
+	<div id="docContainerWrap">
+		<div id="docContainer">
+			<div id="docContent">
+
+				<div class="NAVHEADER">
+					<table summary="Header navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+						<tr>
+							<th colspan="3" valign="bottom" align="center">
+								<h2 class="TITLE">Chapter 4. Using SSL</h2>
+							</th>
+						</tr>
+						<tr>
+							<td valign="top" width="20%" align="left">
+								<a title="Chapter 4. Using SSL" href="ssl.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="bottom" width="60%" align="center">&nbsp;</td>
+							<td valign="top" width="20%" align="right">
+								<a title="Custom SSLSocketFactory" href="ssl-factory.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+  					</tbody>
+					</table>
+					<hr class="c1" width="100%" />
+				</div> <!-- NAVHEADER -->
+
+				<div class="CHAPTER">
+  					<h1>Configuring the Client</h1>
+					
+					<p>Unlike psql and other libpq based programs the JDBC driver does server certificate
+validation by default.  This means that when establishing a SSL connection the
+JDBC driver will validate the server&#39;s identity preventing &quot;man in the middle&quot;
+attacks. It does this by checking that the server certificate is signed by a
+trusted authority. If you have a certificate signed by a global certificate
+authority (CA), there is nothing further to do because Java comes with copies of
+the most common CA&#39;s certificates. If you are dealing with a self-signed certificate
+though, you need to make this available to the Java client to enable it to validate
+the server&#39;s certificate.</p>
+
+<blockquote>
+<h3>Note</h3>
+
+<p>Only the JDBC 3 driver supports SSL. The 1.4 JDK was the first version to come
+bundled with SSL support. Previous JDK versions that wanted to use SSL could
+make use of the additional JSSE library, but it does not support the full range
+of features utilized by the PostgreSQL™ JDBC driver.</p>
+</blockquote>
+
+<p>To make the server certificate available to Java, the first step is to convert
+it to a form Java understands.</p>
+
+<p><code>openssl x509 -in server.crt -out server.crt.der -outform der</code></p>
+
+<p>From here the easiest thing to do is import this certificate into Java&#39;s system
+truststore.</p>
+
+<p><code>keytool -keystore $JAVA_HOME/lib/security/cacerts -alias postgresql -import -file server.crt.der</code></p>
+
+<p>The default password for the cacerts keystore is <code>changeit</code>. The alias to postgesql
+is not important and you may select any name you desire.</p>
+
+<p>If you do not have access to the system cacerts truststore you can create your
+own truststore.</p>
+
+<p><code>keytool -keystore mystore -alias postgresql -import -file server.crt.der.</code></p>
+
+<p>When starting your Java application you must specify this keystore and password
+to use.</p>
+
+<p><code>java -Djavax.net.ssl.trustStore=mystore -Djavax.net.ssl.trustStorePassword=mypassword com.mycompany.MyApp</code></p>
+
+<p>In the event of problems extra debugging information is available by adding
+<code>-Djavax.net.debug=ssl</code> to your command line.</p>
+
+<p>To instruct the JDBC driver to try and establish a SSL connection you must add
+the connection URL parameter <code>ssl=true</code>.</p>
+
+<p><a name="nonvalidating"></a></p>
+
+<h2>Using SSL without Certificate Validation</h2>
+
+<p>In some situations it may not be possible to configure your Java environment to
+make the server certificate available, for example in an applet.  For a large
+scale deployment it would be best to get a certificate signed by recognized
+certificate authority, but that is not always an option.  The JDBC driver provides
+an option to establish a SSL connection without doing any validation, but please
+understand the risk involved before enabling this option.</p>
+
+<p>A non-validating connection is established via a custom <code>SSLSocketFactory</code> class
+that is provided with the driver. Setting the connection URL parameter <code>sslfactory=org.postgresql.ssl.NonValidatingFactory</code>
+will turn off all SSL validation.</p>
+
+				</div>
+
+				<div class="NAVFOOTER">
+					<hr class="c1" width="100%" />
+					<table summary="Footer navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td valign="top" width="33%" align="left">
+								<a href="ssl.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="top" width="34%" align="center">
+								<a href="index.html" accesskey="H">Home</a>
+							</td>
+							<td valign="top" width="33%" align="right">
+								<a href="ssl-factory.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+						<tr>
+							<td valign="top" width="33%" align="left">Chapter 4. Using SSL</td>
+							<td valign="top" width="34%" align="center">&nbsp;</td>
+							<td valign="top" width="33%" align="right">Custom SSLSocketFactory</td>
+						</tr>
+					</tbody>
+					</table>
+				</div> <!-- NAVFOOTER -->
+
+
+			</div> <!-- docContent -->
+			
+			<div id="docComments"></div>
+
+			<div id="docFooter">
+				<a class="navFooter" href="http://www.postgresql.org/about/privacypolicy">Privacy Policy</a> |
+				<a class="navFooter" href="http://www.postgresql.org/about/">About PostgreSQL</a><br/>
+				Copyright &copy; 1996-2013 The PostgreSQL Global Development Group
+			</div> <!-- pgFooter -->
+		</div> <!-- docContainer -->
+	</div> <!-- docContainer -->
+</body>
+</html>

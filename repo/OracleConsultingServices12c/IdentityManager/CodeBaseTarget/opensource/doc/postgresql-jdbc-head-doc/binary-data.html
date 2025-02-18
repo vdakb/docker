@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+	<title>Chapter 7. Storing Binary Data</title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+	<meta name="description" content="The official site for the PostgreSQL JDBC Driver" />
+	<meta name="copyright" content="The PostgreSQL Global Development Group" />
+
+	<style type="text/css" media="screen" title="Normal Text">@import url("media/css/docs.css");</style>
+
+	<link rel="shortcut icon" href="media/favicon.ico" />
+</head>
+
+<body>
+	<div id="docHeader">
+		<div id="docHeaderLogo">
+			<a href="http://www.postgresql.org/" title="PostgreSQL"><img src="media/img/layout/hdr_left3a.png" alt="PostgreSQL" height="80" width="390" /></a>
+		</div>
+	</div>
+
+	<div id="docContainerWrap">
+		<div id="docContainer">
+			<div id="docContent">
+
+				<div class="NAVHEADER">
+					<table summary="Header navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+						<tr>
+							<th colspan="3" valign="bottom" align="center">
+								<h2 class="TITLE">Chapter 7. Storing Binary Data</h2>
+							</th>
+						</tr>
+						<tr>
+							<td valign="top" width="20%" align="left">
+								<a title="Chapter 6. Calling Stored Functions" href="callproc.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="bottom" width="60%" align="center">&nbsp;</td>
+							<td valign="top" width="20%" align="right">
+								<a title="Chapter 8. JDBC escapes" href="escapes.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+  					</tbody>
+					</table>
+					<hr class="c1" width="100%" />
+				</div> <!-- NAVHEADER -->
+
+				<div class="CHAPTER">
+  					<h1>Chapter 7. Storing Binary Data</h1>
+					
+					<p>PostgreSQL™ provides two distinct ways to store binary data.  Binary data can be
+stored in a table using the data type BYTEA or by using the Large Object feature
+which stores the binary data in a separate table in a special format and refers
+to that table by storing a value of type OID in your table.</p>
+
+<p>In order to determine which method is appropriate you need to understand the
+limitations of each method. The BYTEA data type is not well suited for storing
+very large amounts of binary data. While a column of type BYTEA can hold up to
+1 GB of binary data, it would require a huge amount of memory to process such a
+large value. The Large Object method for storing binary data is better suited to
+storing very large values, but it has its own limitations.  Specifically deleting
+a row that contains a Large Object reference does not delete the Large Object.
+Deleting the Large Object is a separate operation that needs to be performed.
+Large Objects also have some security issues since anyone connected to the
+database can view and/or modify any Large Object, even if they don&#39;t have 
+permissions to view/update the row containing the Large Object reference.</p>
+
+<p>Version 7.2 was the first release of the JDBC driver that supports the BYTEA
+data type. The introduction of this functionality in 7.2 has introduced a change
+in behavior as compared to previous releases. Since 7.2, the methods <code>getBytes()</code>,
+<code>setBytes()</code>, <code>getBinaryStream()</code>, and <code>setBinaryStream()</code> operate on the BYTEA
+data type. In 7.1 and earlier, these methods operated on the OID data type
+associated with Large Objects. It is possible to revert the driver back to the
+old 7.1 behavior by setting the property <code>compatible</code> on the <code>Connection</code> object
+to the value <code>7.1</code>. More details on connection properties are available in the
+section called <a href="connect.html#connection-parameters">“Connection Parameters”</a>.</p>
+
+<p>To use the BYTEA data type you should simply use the <code>getBytes()</code>, <code>setBytes()</code>,
+<code>getBinaryStream()</code>, or <code>setBinaryStream()</code> methods.</p>
+
+<p>To use the Large Object functionality you can use either the <code>LargeObject</code> class
+provided by the PostgreSQL™ JDBC driver, or by using the <code>getBLOB()</code> and <code>setBLOB()</code>
+methods.</p>
+
+<h3>Important</h3>
+
+<blockquote>
+<p>You must access Large Objects within an SQL transaction block.  You can start a
+transaction block by calling <code>setAutoCommit(false)</code>.</p>
+</blockquote>
+
+<p><a href="binary-data.html#binary-data-example">Example 7.1, “Processing Binary Data in JDBC”</a>
+contains some examples on how to process binary data using the PostgreSQL™ JDBC
+driver.</p>
+
+<p><a name="binary-data-example"></a>
+<strong><em>Example 7.1. Processing Binary Data in JDBC</em></strong></p>
+
+<p>For example, suppose you have a table containing the file names of images and you
+also want to store the image in a BYTEA column:</p>
+
+<p><code>CREATE TABLE images (imgname text, img bytea);</code></p>
+
+<p>To insert an image, you would use:</p>
+
+<p><code>File file = new File(&quot;myimage.gif&quot;);</code><br>
+<code>FileInputStream fis = new FileInputStream(file);</code><br>
+<code>PreparedStatement ps = conn.prepareStatement(&quot;INSERT INTO images VALUES (?, ?)&quot;);</code><br>
+<code>ps.setString(1, file.getName());</code><br>
+<code>ps.setBinaryStream(2, fis, (int)file.length());</code><br>
+<code>ps.executeUpdate();</code><br>
+<code>ps.close();</code><br>
+<code>fis.close();</code></p>
+
+<p>Here, <code>setBinaryStream()</code> transfers a set number of bytes from a stream into the
+column of type BYTEA. This also could have been done using the <code>setBytes()</code> method
+if the contents of the image was already in a <code>byte[]</code>. </p>
+
+<h3>Note</h3>
+
+<blockquote>
+<p>The length parameter to <code>setBinaryStream</code> must be correct. There is no way to
+indicate that the stream is of unknown length. If you are in this situation, you
+must read the stream yourself into temporary storage and determine the length.
+Now with the correct length you may send the data from temporary storage on to
+the driver.</p>
+</blockquote>
+
+<p>Retrieving an image is even easier. (We use <code>PreparedStatement</code> here, but the
+<code>Statement</code> class can equally be used.)</p>
+
+<p><code>PreparedStatement ps = conn.prepareStatement(&quot;SELECT img FROM images WHERE imgname = ?&quot;);</code><br>
+<code>ps.setString(1, &quot;myimage.gif&quot;);</code><br>
+<code>ResultSet rs = ps.executeQuery();</code><br>
+<code>while (rs.next())</code><br>
+<code>{</code><br>
+&nbsp;&nbsp;&nbsp;<code>byte[] imgBytes = rs.getBytes(1);</code><br>
+&nbsp;&nbsp;&nbsp;<code>// use the data in some way here</code><br>
+<code>}</code><br>
+<code>rs.close();</code><br>
+<code>ps.close();</code></p>
+
+<p>Here the binary data was retrieved as an <code>byte[]</code>.  You could have used a
+<code>InputStream</code> object instead.</p>
+
+<p>Alternatively you could be storing a very large file and want to use the
+<code>LargeObject</code> API to store the file:</p>
+
+<p><code>CREATE TABLE imageslo (imgname text, imgoid oid);</code></p>
+
+<p>To insert an image, you would use:</p>
+
+<p><code>// All LargeObject API calls must be within a transaction block</code><br>
+<code>conn.setAutoCommit(false);</code>`<br /></p>
+
+<p><code>// Get the Large Object Manager to perform operations with</code><br>
+<code>LargeObjectManager lobj = ((org.postgresql.PGConnection)conn).getLargeObjectAPI();</code><br /></p>
+
+<p><code>// Create a new large object</code><br>
+<code>long oid = lobj.createLO(LargeObjectManager.READ | LargeObjectManager.WRITE);</code><br /></p>
+
+<p><code>// Open the large object for writing</code><br>
+<code>LargeObject obj = lobj.open(oid, LargeObjectManager.WRITE);</code><br /></p>
+
+<p><code>// Now open the file</code><br>
+<code>File file = new File(&quot;myimage.gif&quot;);</code><br>
+<code>FileInputStream fis = new FileInputStream(file);</code><br /></p>
+
+<p><code>// Copy the data from the file to the large object</code><br>
+<code>byte buf[] = new byte[2048];</code><br>
+<code>int s, tl = 0;</code><br>
+<code>while ((s = fis.read(buf, 0, 2048)) &amp;gt; 0)</code><br>
+<code>{</code><br>
+&nbsp;&nbsp;&nbsp;<code>obj.write(buf, 0, s);</code><br>
+&nbsp;&nbsp;&nbsp;<code>tl += s;</code><br>
+<code>}</code><br /></p>
+
+<p><code>// Close the large object</code><br>
+<code>obj.close();</code><br /></p>
+
+<p><code>// Now insert the row into imageslo</code><br>
+<code>PreparedStatement ps = conn.prepareStatement(&quot;INSERT INTO imageslo VALUES (?, ?)&quot;);</code><br>
+<code>ps.setString(1, file.getName());</code><br>
+<code>ps.setLong(2, oid);</code><br>
+<code>ps.executeUpdate();</code><br>
+<code>ps.close();</code><br>
+<code>fis.close();</code><br /></p>
+
+<p><code>// Finally, commit the transaction.</code><br>
+<code>conn.commit();</code>  </p>
+
+<p>Retrieving the image from the Large Object:</p>
+
+<p><code>// All LargeObject API calls must be within a transaction block</code><br>
+<code>conn.setAutoCommit(false);</code><br /></p>
+
+<p><code>// Get the Large Object Manager to perform operations with</code><br>
+<code>LargeObjectManager lobj = ((org.postgresql.PGConnection)conn).getLargeObjectAPI();</code><br /></p>
+
+<p><code>PreparedStatement ps = conn.prepareStatement(&quot;SELECT imgoid FROM imageslo WHERE imgname = ?&quot;);</code><br>
+<code>ps.setString(1, &quot;myimage.gif&quot;);</code><br>
+<code>ResultSet rs = ps.executeQuery();</code><br>
+<code>while (rs.next())</code><br>
+<code>{</code><br>
+&nbsp;&nbsp;&nbsp;<code>// Open the large object for reading</code><br>
+&nbsp;&nbsp;&nbsp;<code>long oid = rs.getLong(1);</code><br>
+&nbsp;&nbsp;&nbsp;<code>LargeObject obj = lobj.open(oid, LargeObjectManager.READ);</code><br /></p>
+
+<p>&nbsp;&nbsp;&nbsp;<code>// Read the data</code><br>
+&nbsp;&nbsp;&nbsp;<code>byte buf[] = new byte[obj.size()];</code><br>
+&nbsp;&nbsp;&nbsp;<code>obj.read(buf, 0, obj.size());</code><br>
+&nbsp;&nbsp;&nbsp;<code>// Do something with the data read here</code><br /></p>
+
+<p>&nbsp;&nbsp;&nbsp;<code>// Close the object</code><br>
+&nbsp;&nbsp;&nbsp;<code>obj.close();</code><br>
+<code>}</code><br>
+<code>rs.close();</code><br>
+<code>ps.close();</code><br /></p>
+
+<p><code>// Finally, commit the transaction.</code><br>
+<code>conn.commit();</code></p>
+
+				</div>
+
+				<div class="NAVFOOTER">
+					<hr class="c1" width="100%" />
+					<table summary="Footer navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td valign="top" width="33%" align="left">
+								<a href="callproc.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="top" width="34%" align="center">
+								<a href="index.html" accesskey="H">Home</a>
+							</td>
+							<td valign="top" width="33%" align="right">
+								<a href="escapes.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+						<tr>
+							<td valign="top" width="33%" align="left">Chapter 6. Calling Stored Functions</td>
+							<td valign="top" width="34%" align="center">&nbsp;</td>
+							<td valign="top" width="33%" align="right">Chapter 8. JDBC escapes</td>
+						</tr>
+					</tbody>
+					</table>
+				</div> <!-- NAVFOOTER -->
+
+
+			</div> <!-- docContent -->
+			
+			<div id="docComments"></div>
+
+			<div id="docFooter">
+				<a class="navFooter" href="http://www.postgresql.org/about/privacypolicy">Privacy Policy</a> |
+				<a class="navFooter" href="http://www.postgresql.org/about/">About PostgreSQL</a><br/>
+				Copyright &copy; 1996-2013 The PostgreSQL Global Development Group
+			</div> <!-- pgFooter -->
+		</div> <!-- docContainer -->
+	</div> <!-- docContainer -->
+</body>
+</html>

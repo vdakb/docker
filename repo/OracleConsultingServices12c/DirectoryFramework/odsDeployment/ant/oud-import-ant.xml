@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Oracle Consulting Services Deployment Task Definitions"
+         default     ="all"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:config="http://oracle.ods.deployment/config"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  =====================================================================
+  == custom type and task definitions
+  =====================================================================
+  -->
+  <import file="../../ods-context.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Unified Directory
+  **
+  ** Synopsis: The tasks Imports base entries . This includes:
+  **           o System Users(Administrators)
+  **           o System Groups
+  **           o Context Tree (DIT)
+  ******************************************************************************
+  -->
+  <target name="0100" description="Imports the Base Configuration">
+    <record name="../log/oud-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 Base Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${oud.server.host}:${oud.server.port}"/>
+    <object:import contextRef="oud-context" contextRoot="dc=vm,dc=oracle,dc=com" failonerror="false">
+      <importSet dir="..">
+        <importFile name="ocs-system-user.dsml"    format="dsml" version="2.0"/>
+        <importFile name="ocs-system-group.dsml"   format="dsml" version="2.0"/>
+        <importFile name="ocs-system-context.dsml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="../log/oud-import-ant.log" action="stop"/>
+  </target>
+</project>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RoleData"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:jaxb          ="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc"
+            xmlns:xjc           ="http://java.sun.com/xml/ns/jaxb/xjc"
+            xmlns:general       ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData"
+            targetNamespace     ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RoleData"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified">
+  <xsd:annotation>
+    <xsd:appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="oracle.iam.requestdataws.webservicestubs.types"/>
+      </jaxb:schemaBindings>
+    </xsd:appinfo>
+  </xsd:annotation>
+
+  <xsd:import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData" schemaLocation="request-service-type.xsd"/>
+
+  <xsd:element name="RoleKey"  type="xsd:string"/>
+  <xsd:element name="RoleData" type="RoleDataType"/>
+
+  <xsd:complexType name="RoleDataType">
+    <xsd:sequence>
+      <xsd:element name="RoleKey"         type="general:MultiValueType" nillable="true"/>
+      <xsd:element name="RoleName"        type="general:MultiValueType" nillable="true"/>
+      <xsd:element name="RoleEmail"       type="general:MultiValueType" nillable="true"/>
+      <xsd:element name="RoleCategoryKey" type="general:MultiValueType" nillable="true"/>
+      <xsd:element name="RoleOwnerKey"    type="general:MultiValueType" nillable="true"/>
+      <xsd:element name="RoleDisplayName" type="general:MultiValueType" nillable="true"/>
+      <!-- Arbitrary Attribute Name and values -->
+      <xsd:element name="CustomAttribute" type="general:CustomAttributeType" nillable="true" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

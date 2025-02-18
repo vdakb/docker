@@ -1,0 +1,149 @@
+{
+  "schemas": [
+    "urn:ietf:params:scim:schemas:core:2.0:Schema"
+  ],
+  "id": "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Entitlement",
+  "name": "Entitlement",
+  "description": "Schema extension for entitlement",
+  "meta": {
+    "resourceType": "Schema",
+    "location": "OIG_BASE_URI/Schemas/urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Entitlement"
+  },
+  "attributes": [
+    {
+      "name": "id",
+      "description": "The unique identifier for the entitlement",
+      "type": "string",
+      "multiValued": false,
+      "mutability": "readOnly",
+      "returned": "default",
+      "uniqueness": "server",
+      "required": true,
+      "caseExact": false
+    },
+    {
+      "name": "schemas",
+      "description": "Schemas used for entitlement",
+      "type": "string",
+      "multiValued": true,
+      "mutability": "readOnly",
+      "returned": "default",
+      "uniqueness": "none",
+      "required": true,
+      "caseExact": false
+    },
+    {
+      "name": "displayName",
+      "description": "The display name of the entitlement",
+      "type": "string",
+      "multiValued": false,
+      "mutability": "readOnly",
+      "returned": "default",
+      "uniqueness": "none",
+      "required": false,
+      "caseExact": false
+    },
+    {
+      "name": "namespace",
+      "description": "The namespace for the entitlement",
+      "type": "string",
+      "multiValued": false,
+      "mutability": "readOnly",
+      "returned": "default",
+      "uniqueness": "none",
+      "required": false,
+      "caseExact": false
+    },
+    {
+      "name": "application",
+      "description": "The application associated with the entitlement",
+      "type": "string",
+      "multiValued": false,
+      "mutability": "readOnly",
+      "returned": "default",
+      "uniqueness": "none",
+      "required": false,
+      "caseExact": false
+    },
+    {
+      "name": "attributeValues",
+      "description": "The attributes for the entitlement",
+      "type": "complex",
+      "multiValued": true,
+      "mutability": "readWrite",
+      "returned": "default",
+      "uniqueness": "none",
+      "required": true,
+      "subAttributes": [
+        {
+          "name": "attributes",
+          "description": "List of entitlement attributes",
+          "type": "complex",
+          "multiValued": true,
+          "mutability": "readOnly",
+          "returned": "default",
+          "uniqueness": "none",
+          "required": false,
+          "subAttributes": [
+            {
+              "name": "name",
+              "description": "Name of the entitlement attribute",
+              "type": "string",
+              "multiValued": false,
+              "mutability": "readOnly",
+              "returned": "default",
+              "uniqueness": "none",
+              "required": false,
+              "caseExact": false
+            },
+            {
+              "name": "value",
+              "description": "Value of the entitlement attribute",
+              "type": "string",
+              "multiValued": false,
+              "mutability": "readOnly",
+              "returned": "default",
+              "uniqueness": "none",
+              "required": false,
+              "caseExact": false
+            }
+          ]
+        },
+        {
+          "name": "members",
+          "description": "Members associated with the entitlement",
+          "type": "complex",
+          "multiValued": true,
+          "mutability": "readWrite",
+          "returned": "default",
+          "uniqueness": "none",
+          "required": false,
+          "subAttributes": [
+            {
+              "name": "value",
+              "description": "Unique identifier for the member",
+              "type": "string",
+              "multiValued": false,
+              "mutability": "readWrite",
+              "returned": "default",
+              "uniqueness": "none",
+              "required": false,
+              "caseExact": false
+            },
+            {
+              "name": "$ref",
+              "description": "Reference to another SCIM resource (e.g., user)",
+              "type": "string",
+              "multiValued": false,
+              "mutability": "readWrite",
+              "returned": "default",
+              "uniqueness": "none",
+              "required": false,
+              "caseExact": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

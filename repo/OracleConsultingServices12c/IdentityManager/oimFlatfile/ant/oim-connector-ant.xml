@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Flatfile Connector" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"           value="Identity Manager Flatfile Connector"/>
+  <property name="application"           value="csv-connector"/>
+  <property name="scheduler"             value="csv-scheduler"/>
+
+  <property name="packagepath.scheduler" value="oracle/iam/identity/csv/**/*.class oracle/iam/identity/txt/**/*.class"/>
+
+  <property name="destination.base"      value="../../deployment/oim/0102 systemIntegration"/>
+  <property name="destination.trusted"   value="../../deployment/oim/0201 systemConnector CSV"/>
+  <!--
+  =====================================================================
+  == the integration deployment descriptors of this connector project
+  =====================================================================
+  -->
+  <patternset id="descriptor.pattern.base">
+    <include name="csv-scheduler-dm.xml"/>
+    <include name="txt-scheduler-dm.xml"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == the target system deployment descriptors of this connector project
+  =====================================================================
+  -->
+  <patternset id="descriptor.pattern.target">
+    <include name="org-target-dm.xml"/>
+    <include name="usr-target-dm.xml"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == the trusted source deployment descriptors of this connector project
+  =====================================================================
+  -->
+  <patternset id="descriptor.pattern.trusted">
+    <include name="lku-scheduler-dm.xml"/>
+    <include name="org-process-dm.xml"/>
+    <include name="org-scheduler-dm.xml"/>
+    <include name="usr-process-dm.xml"/>
+    <include name="usr-scheduler-dm.xml"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oim-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.mds"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.oim.adapter"/>
+    <path refid="oracle.fmw.oim.scheduler"/>
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="oracle.ocs.oim.foundation"/>
+    <path refid="oracle.ocs.oim.utility"/>
+ </path>
+</project>

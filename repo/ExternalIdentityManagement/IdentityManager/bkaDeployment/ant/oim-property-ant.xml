@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the deployment environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-setup-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o System Properties
+  ******************************************************************************
+  -->
+  <target name="0005" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0005 System Property Configuration ${version.number}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configure system property required in ${oim.server.host}:${oim.server.port}"/>
+    <operation:systemproperty contextRef="oim-context" operation="modify">
+      <!--
+       | This property is used by the DefaultComboPolicy to generate a user name
+       | in e-mail format.
+       -->
+      <systemproperty name="XL.UserNameDomain"                          value="bka.bund.de"/>
+      <!--
+       | Determines if notification is sent to the user when the user login and
+       | password are generated in postprocess event handler for user creation
+       | via trusted source reconciliation.
+       |
+       | If the value is set to [TRUE|true], then notification is sent when user
+       | login and password are generated in postprocess event handler for user
+       | creation via trusted source reconciliation.
+       | If the value is set to [FALSE|false], then notification is not sent
+       | when user login and password are generated in postprocess event handler
+       | for user creation via trusted source reconciliation.
+       -->
+      <systemproperty name="Recon.SEND_NOTIFICATION"                    value="FALSE"/>
+      <!--
+       | Specifies whether a user in the disabled state can be set as a manager
+       | for another user.
+       -->
+      <systemproperty name="AllowDisabledManagers"                      value="FALSE"/>
+      <!--
+       | Determines if access policy engine can link access policies to
+       | reconciled accounts and to accounts created by the Bulk Load Utility.
+       |
+       | This property is used in the context of evaluating access policies for
+       | reconciled accounts and to accounts created by the Bulk Load Utility.
+       -->
+      <systemproperty name="XL.AllowAPHarvesting"                       value="true"/>
+      <!--
+       | Determines if multiple instances of a resource can be provisioned to
+       | multiple target resources.
+       |
+       | When the value is [FALSE|false], provisioning multiple instances of
+       | resource object via access policy is not allowed.
+       | When the value is [TRUE|true], provisioning multiple instances of
+       | resource object via access policy is allowed.
+       -->
+      <systemproperty name="XL.AllowAPBasedMultipleAccountProvisioning" value="true"/>
+      <!--
+       | This property controls the amount of audit data collected when an
+       | operation is performed on a role, such as creation or modification.
+       | The supported levels are:
+       |
+       | o None:           No audit data is collected.
+       | o Role:           Creation, modification, and deletion of role is
+       |                   audited.
+       | o Role Hierarchy: Changes made to the role inheritance is audited.
+       -->
+      <systemproperty name="XL.RoleAuditLevel"                          value="Role"/>
+      <!--
+       | Determines if catalog auditing is enabled or disabled. The default
+       | value is none, which specifies that catalog auditing in disabled.
+       | To enable catalog auditing, set the value of this property to catalog.
+       -->
+      <systemproperty name="XL.CatalogAuditDataCollection"              value="catalog"/>
+      <!--
+       | This property is used to enable or disable blank text search in the
+       | Users, Roles, Organizations, and Administration Roles page.
+       |
+       | If the value is [TRUE|true], then blank text search is enabled.
+       | If the value is [FALSE|false], then blank text search is disabled.
+       -->
+      <systemproperty name="OIG.DisableDefaultTableSearches"            value="TRUE"/>
+      <!--
+       | When the value of this property is TRUE, role lifecycle management,
+       | Segregation of Duties (SoD), and identity certification are enabled.
+       |
+       | After modifying the value of this system property, you must restart
+       | Oracle Identity Manager server for the changes to take effect.
+       -->
+      <systemproperty name="OIG.IsIdentityAuditorEnabled"               value="TRUE"/>
+      <!--
+       | This property is used to control allowing role hierarchical access
+       | policy evaluation.
+       |
+       | When this system property is set to [TRUE|true], access from inherited
+       | access policies is given to the user.
+       | If set to [FALSE|false], access from access policies attached to
+       | inherited roles is not given to the user.
+       -->
+      <systemproperty name="XL.AllowRoleHierarchicalPolicyEval"         value="TRUE"/>
+      <!--
+       | This property is used to enable or disable blank text search in Catalog.
+       |
+       | If the value is [TRUE|true], then blank text search is disabled.
+       | If the value is [FALSE|false], then blank text search is enabled.
+       -->
+      <systemproperty name="CATALOG.DISABLE_BLANK_SEARCH"               value="FALSE"/>
+      <!--
+       | This property is used to link access policies to accounts that are
+       | provisioned through Request Provisioning.
+       |
+       | When this system property is set to [TRUE|true], the account which is
+       | provisioned through Request Provisioning is linked to the Access Policy
+       | based provisioned account.
+       | If set to [FALSE|false], then the account which is provisioned through
+       | Request Provisioning is not linked to the Access Policy based
+       | provisioned account.
+       -->
+      <systemproperty name="XL.APHarvestRequestAccount"                 value="TRUE"/>
+      <!--
+       | This property is used to link access policies to accounts that are
+       | provisioned through Direct Provisioning.
+       |
+       | When this system property is set to [TRUE|true], the account which is
+       | provisioned through Direct Provisioning is linked to the Access Policy
+       | based provisioned account.
+       | If set to [FALSE|false], then the account which is provisioned through
+       | Direct Provisioning is not linked to the Access Policy based
+       | provisioned account.
+       -->
+      <systemproperty name="XL.APHarvestDirectProvisionAccount"         value="TRUE"/>
+      <!--
+       | This property enforces the validation of the user login for
+       | special characters.
+       -->
+      <systemproperty name="XL.ValidateWhiteSpace"                      value="TRUE"/>
+      <!--
+       | This property contains the regular expression used to validate
+       | the login of a user when XL.ValidateWhiteSpace is set to true.
+       | If XL.LoginPattern is empty, then user login is validated against
+       | the default pattern.
+       |
+       | Default value: (^[A-z0-9@._-]{2,256}$)
+       -->
+      <systemproperty name="XL.LoginPattern"                            value="^[^&quot;&amp;&apos;/:&lt;&gt;@\s]{2,64}$"/>
+    </operation:systemproperty>
+    <operation:systemproperty contextRef="oim-context" operation="create">
+      <!--
+       | This system property is used to control the functionality of the
+       | following API:
+       |   tcITResourceInstanceOperationsBean.getITResourceInstanceParameters(long plITResourceInstanceKey)
+       |
+       | By default, this API masks the value of encrypted fields. This makes
+       | your deployment more secure.
+       | When the value is set to [FALSE|false], the encrypted parameter values
+       | are masked.
+       | When the value is set to [TRUE|true], the encrypted parameter values
+       | are returned by the above API.
+       -->
+      <systemproperty name="ServiceAccount.API.EncryptedParamsValue"    value="TRUE" description="Service Account Encrypted Parameter Value"/>
+      <!--
+       | This property is used to manage the storage of the parameter values of
+       | the IT resource parameters.
+       |
+       | When the property value is set to [FALSE|false], the parameter values
+       | are stored in the credential store.
+       | When the property value is set to [TRUE|true], the parameter values are
+       stored in the database.
+       -->
+      <systemproperty name="ServiceAccount.ParamsValue.DBStore"         value="TRUE" description="Service Account Parameters Value Store"/>
+
+      <systemproperty name="BKA.Branding.Path"                          value="/db/bka-branding-template.xml" description="BKA.Branding.Path"/>
+    </operation:systemproperty>
+    <echo message="=================================================================="/>
+    <echo message="0005 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####  #     #
+  **           #     #    #    ##   ##
+  **           #     #    #    # # # #
+  **           #     #    #    #  #  #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager System Adapter Configuration
+  **           To be able to compile adapter correctly and register scheduled
+  **           jobs this target deploys the necessary libraries to the remote
+  **           host
+  **
+  ** Synopsis: The tasks deploys the object definitions for System Adapter
+  **           Configuration. This includes:
+  **           o Java Binary Archives
+  **           o System Properties
+  **           o Lookup Definitions
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="0100" description="Deploys the System Framework Configuration ${version.number}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 System Framework Configuration ${version.number}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configure system property required in ${oim.server.host}:${oim.server.port}"/>
+    <operation:systemproperty contextRef="oim-context" operation="modify">
+      <systemproperty name="XL.DefaultCommonNamePolicyImpl"  value="oracle.iam.identity.policy.usr.CommonName"/>
+      <systemproperty name="SSO.DefaultCommonNamePolicyImpl" value="oracle.iam.identity.policy.usr.CommonName"/>
+    </operation:systemproperty>
+    <operation:systemproperty contextRef="oim-context" operation="create">
+      <systemproperty name="EFBS.Template.Path"      description="EFBS.Template.Path"               value="/db/efbs-request-template.xml"/>
+      <systemproperty name="BKA.Mail.Head"           description="BKA.Mail.Head"                    value="&lt;head&gt;&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot;/&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;&lt;style type=&quot;text/css&quot;&gt;body{font-family:Arial;width:640px;height:2rem}#content{color:#000;background-color:#fff;padding-left:3rem;padding-right:3rem}#header{color:#fff;background-color:#036;padding-left:3rem;font-size:1rem;font-weight:700;line-height:2rem;vertical-align:middle}#footer{color:#000;background-color:#fff;padding-left:3rem;font-size:.75rem;line-height:1rem;vertical-align:middle}hr{color:#036}h1.section,h2.section,h3.section,h4.section{color:#000;background-color:#fff;padding-bottom:.25rem;border-bottom:2px solid #036}h1.section{font-size:1.75rem;font-weight:700;line-height:2rem}h2.section{font-size:1.5rem;font-weight:700;line-height:1.5rem}h3.section{font-size:1.25rem;font-weight:700;line-height:1.25rem}h4.section{font-size:1rem;font-weight:700;font-style:italic;line-height:1rem}div.table{width:100%;border-collapse:collapse;display:table}div.th{color:#fff;background-color:#036;display:table-row}div.tr{display:table-row}div.td{padding-top:.5rem;padding-left:1rem;padding-right:1rem;padding-bottom:.5rem;display:table-cell}&lt;/style&gt;&lt;/head&gt;"/>
+      <systemproperty name="BKA.Policy.Organization" description="Permitted Participant Dictionary" value="^(?i)(an|bb|be|bk|bp|bw|bt|by|hb|he|hh|mv|ni|nw|rp|sh|sl|sn|th|zf)"/>
+    </operation:systemproperty>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Clear Identity Manager Caches.
+  **
+  ** Synopsis: The tasks prepares the Identity Manager Application Deployment.
+  **           This includes:
+  **           o Clearing several caches
+  ******************************************************************************
+  -->
+  <target name="9999" description="Clear Identity Manager Caches">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="9999 Clear Caches"/>
+    <echo message="============================================================="/>
+    <echo message="Clear metadata cache for environment ${fmw.env} on ${oim.server.name}:${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}"/>
+    <echo message="Clear object cache for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <echo message="============================================================="/>
+    <echo message="9999 completed"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

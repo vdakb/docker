@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Oracle Consulting Services DocBook Definitions"
+         basedir     ="../">
+  <!--
+  ==============================================================================
+  == properties specific to the runtime environment
+  ==============================================================================
+  -->
+  <import file="../../doc-targets.xml"/>
+  <!--
+  =====================================================================
+  == ANT to generate product deliverables
+  =====================================================================
+  -->
+  <target name="de"      depends="install-de,config-de,ldap-de,proxy-de"/>
+  <target name="en"      depends="install-en,config-en,ldap-en,proxy-en"/>
+  <target name="ldap"    depends="ldap-en,ldap-de"/>
+  <target name="proxy"   depends="proxy-en,proxy-de"/>
+  <target name="config"  depends="config-en,config-de"/>
+  <target name="install" depends="install-en,install-de"/>
+  <!--
+  =====================================================================
+  == ANT to generate product deliverables
+  =====================================================================
+  -->
+  <target name="install-de" depends="init">
+    <docbook.fop input ="de/AM.OIDC Extension Installation" style="p2020/2.0"/>
+    <docbook.pdf output="AM.OIDC Extension Installation-de"/>
+  </target>
+  <target name="proxy-de" depends="init">
+    <docbook.fop input ="de/AM.OIDC Loadbalancer Configuration" style="p2020/2.0"/>
+    <docbook.pdf output="AM.OIDC Loadbalancer Configuration-de"/>
+  </target>
+  <target name="ldap-de" depends="init">
+    <docbook.fop input ="de/AM.OIDC Directory Configuration" style="p2020/2.0"/>
+    <docbook.pdf output="AM.OIDC Directory Configuration-de"/>
+  </target>
+  <target name="config-de" depends="init">
+    <docbook.fop input ="de/AM.OIDC Extension Configuration" style="p2020/2.0"/>
+    <docbook.pdf output="AM.OIDC Extension Configuration-de"/>
+  </target>
+  <target name="install-en" depends="init">
+    <docbook.fop input ="en/AM.OIDC Extension Installation" style="p2020/2.0"/>
+    <docbook.pdf output="AM.OIDC Extension Installation-en"/>
+  </target>
+  <target name="proxy-en" depends="init">
+    <docbook.fop input ="en/AM.OIDC Loadbalancer Configuration" style="p2020/2.0"/>
+    <docbook.pdf output="AM.OIDC Loadbalancer Configuration-en"/>
+  </target>
+  <target name="config-en" depends="init">
+    <docbook.fop input ="de/AM.OIDC Extension Configuration" style="p2020/2.0"/>
+    <docbook.pdf output="AM.OIDC Extension Configuration-en"/>
+  </target>
+  <target name="ldap-en" depends="init">
+    <docbook.fop input ="en/AM.OIDC Directory Configuration" style="p2020/2.0"/>
+    <docbook.pdf output="AM.OIDC Directory Configuration-en"/>
+  </target>
+</project>

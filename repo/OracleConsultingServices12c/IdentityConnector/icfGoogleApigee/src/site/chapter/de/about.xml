@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="about"
+         xml:lang="de"
+         version ="5.0">
+  <title>Google Apigee Edge Connector</title>
+  <para>
+    Oracle&#174; Identity Governance ist eine zentralisierte L&#246;sung zu Verwaltung von Identit&#228;tsdaten, die Service-, Compliance-, Bereitstellungs- und Kennwortverwaltungsdienste f&#252;r Anwendungen vor Ort oder in der Cloud bereitstellt.
+    Oracle&#174; Identity Governance-Konnektoren werden verwendet, um Oracle&#174; Identity Governance in externe, identit&#228;tsbezogene Anwendungen zu integrieren.
+  </para>
+  <para>
+    Mit dem Konnektor f&#252;r Google Apigee Edge k&#246;nnen Sie dieses System als verwaltete (Ziel-) Quelle von Benutzerkonten erstellen und integrieren.
+    Im Modus der Benutzerkontenverwaltung (Zielressource) des Konnektor werden die Daten f&#252;r Benutzerkonten direkt im Zielsystem erstellt, ge&#228;ndert oder gel&#246;scht.
+    &#196;nderungen die im Zielsystem an bestehende Benutzerkonten vorgenommen wurden, werden mit Oracle&#174; Identity Governance abgeglichen.
+    Diese so bereitgestellten bzw. abgeglichenen Daten werden verwendet, um neue Berechtigungen zuzuweisen, zu aktualisieren oder zu entziehen, die Identit&#228;ten in Oracle&#174; Identity Governance zugewiesen wurden.
+    Diese in Oracle&#174; Identity Governance durchgef&#252;hrten Bereitstellungsvorg&#228;nge werden durch den Konnektor in die Erstellung oder Aktualisierung von Zielsystemkonten &#252;bersetzt.
+  </para>
+  <note>
+    <para>
+      In diesem Handbuch wird der Konnektor, der mit der Option <emphasis role="strong">Anwendungen</emphasis> auf der Registerkarte <emphasis role="strong">Verwalten</emphasis> die von Identity Self Service bereitgestellt wird, als <emphasis role="strong">AOB-Anwendung</emphasis> bezeichnet.
+      Der Konnektor, der mit der Option <emphasis role="strong">Manage Connector</emphasis> in Oracle Identity System Administration bereitgestellt wird, wird als <emphasis role="strong">CI-basierter Konnektor</emphasis> (Connector Installer-based Connector) bezeichnet.
+    </para>
+  </note>
+  <para>
+    Seit Oracle&#174; Identity Governance Version 12.2.1.3.0 wird die Bereitstellung von Konnektoren mithilfe der Funktion Anwendungs-Onboarding innerhalb von Oracle Identity Self Service vorgenommen.
+    Diese Funktion erm&#246;glicht es Endanwendern, Anwendungen mit minimalen Details und minimalem Aufwand zu integrieren.
+    Das Installationspaket eines Konnektors enth&#228;lt eine Zusammenstellung vordefinierter Vorlagen (XML-Dateien), die alle Informationen enthalten, die f&#252;r die Provisionierung nach und den Datenabgleich aus einer bestimmten Anwendung oder einem bestimmten Zielsystem erforderlich sind.
+    Diese Vorlagen enthalten auch grundlegende Verbindungs- und Konfigurationsdetails, die f&#252;r Ihr Zielsystem spezifisch sind.
+    Der Konnektor verwendet Informationen aus diesen vordefinierten Vorlagen, sodass Sie Ihre Anwendungen schnell und einfach &#252;ber eine einzige und vereinfachte Benutzeroberfl&#228;che integrieren k&#246;nnen.
+  </para>
+  <para>
+    Das <emphasis role="strong">On-Boarding von Anwendungen</emphasis> ist der Prozess der Registrierung oder Verkn&#252;pfung einer Anwendung mit Oracle Identity Governance und mach diese Anwendung f&#252;r die Provisionierung und den Abgleich von Benutzerinformationen verf&#252;gbar.
+  </para>
+  <para>
+    Die folgenden Themen bieten einen allgemeinen &#220;berblick &#252;ber den Google Apigee Edge Konnektor.
+  </para>
+  <itemizedlist>
+    <listitem>
+      <link linkend='about-component'>Anforderungen des Konnektors</link>
+    </listitem>
+    <listitem spacing="compact">
+      <link linkend='about-usage'>Nutzungsempfehlung</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-language'>Sprachen</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-operation'>Unterst&#252;zte Operationen</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-architecture'>Architektur des Konnektors</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-matrix'>Matrix der unterst&#252;tzten Funktionen</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-feature'>Funktionen des Konnektors</link>
+    </listitem>
+  </itemizedlist>
+  <note>
+    An einigen Stellen in diesem Handbuch wird Google Apigee Edge als <emphasis role="strong">Zielsystem</emphasis> bezeichnet.
+  </note>
+  <section xml:id="about-component">
+    <title>Anforderungen des Konnektors</title>
+    <para>
+      Die plattformspezifischen Anforderungen an Hardware und Software, die in diesem Dokument aufgef&#252;hrt werden, sind g&#252;ltig f&#252;r den Zeitpunkt zu dem, dieses Dokument erstellt wurde. Da neue Plattformen und Betriebssysteme zertifiziert werden k&#246;nnen, nachdem dieses Dokument ver&#246;ffentlicht wurde, wird empfohlen die Zertifizierungsmatrix auf Oracle Technology Network heranzuziehen. Dort befinden sich die aktuellen Aussagen zu zertifizierten Plattformen und Betriebssystemen.
+    </para>
+    <para>
+      Die jeweilige Zertifizierungsmatrix f&#252;r Produkte der Oracle Identity und Access Management Suite sind unter folgenden URLs verf&#252;gbar:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link xl:show="new" xl:href="https://www.oracle.com/technetwork/middleware/fmw-122130-certmatrix-3867828.xlsx" xl:role="http://docbook.org/xlink/role/olink">
+          <citetitle>Oracle&#174; Fusion Middleware 12c (12.2.1.3.0)</citetitle>
+        </link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="about-component-required">
+      <title>Erforderliche Komponentenversionen</title>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="1*"/>
+          <colspec colname="c2" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Komponente</entry>
+              <entry>Version</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Oracle&#174; Java Development Kit</entry>
+              <entry>JDK 1.8.0_131 oder h&#246;her</entry>
+            </row>
+            <row>
+              <entry>Oracle&#174; Infrastruktur</entry>
+              <entry>Oracle&#174; WebLogic 12c (12.2.1.3.0)</entry>
+            </row>
+            <row>
+              <entry>Oracle&#174; Datenbank</entry>
+              <entry>Oracle&#174; RDBMS 12c (12.2.0.1.0) oder h&#246;her</entry>
+            </row>
+            <row>
+              <entry>Oracle&#174; Identity Governance</entry>
+              <entry>Oracle&#174; Identity Governance 12c Release 12.2.1.3.0</entry>
+            </row>
+            <row>
+              <entry>Connector Server</entry>
+              <entry>12.2.1.3.0</entry>
+            </row>
+            <row>
+              <entry>Connector Server JDK</entry>
+              <entry>JDK oder JRE 1.8 und h&#246;her</entry>
+            </row>
+            <row>
+              <entry>Zielsystem</entry>
+              <entry>Oracle&#174; RDBMS 12c (12.2.0.1.0) oder h&#246;her</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="about-component-patch">
+      <title>Erforderliche Patches</title>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="1*"/>
+          <colspec colname="c2" colwidth="2*"/>
+          <thead>
+            <row>
+              <entry>Komponente</entry>
+              <entry>Version</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Oracle&#174; Identity Governance</entry>
+              <entry>Patch 30735905 Oracle&#174; Identity Governance Bundle Patch ID:200108.2108)</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="about-usage">
+    <title>Nutzungsempfehlung</title>
+    <para>
+      Dies sind die Empfehlungen f&#252;r die Version des Google Apigee Edge Konnektors, die Sie je nach verwendeter Identity Governance Version installieren und verwenden k&#246;nnen.
+    </para>
+    <note>
+      <para>
+        Oracle&#174; Identity Governance Version 11.1.x wird von diesem Konnektor nicht unterst&#252;tzt.
+      </para>
+    </note>
+    <para>
+      Wenn Sie Oracle&#174; Identity Governance 12c (12.2.1.3.0) verwenden, verwenden Sie die neueste 12.2.1.x-Version dieses Konnektors.
+      Stellen Sie den Konnektor mithilfe der Option <emphasis role="strong">Anwendungen</emphasis> auf der Registerkarte <emphasis role="strong">Verwalten</emphasis> des Identity Self Service bereit oder mithilfe der Option <emphasis role="strong">Manage Connector</emphasis> der Identity System Administration bereit.
+    </para>
+  </section>
+  <section xml:id="about-language">
+    <title>Sprachen</title>
+    <para>
+      Der Konnektor unterst&#252;tzt die folgenden Sprachen:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>Englisch</para>
+      </listitem>
+      <listitem>
+        <para>Franz&#246;sich</para>
+      </listitem>
+      <listitem>
+        <para>Deutsch</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="about-operation">
+    <title>Unterst&#252;zte Operationen</title>
+    <para>
+      Dies ist die Liste der Operationen, die der Konnektor f&#252;r Ihr Zielsystem unterst&#252;tzt.
+    </para>
+    <section xml:id="about-operation-account">
+      <title>Benutzerverwaltung</title>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="3*"/>
+          <colspec colname="c2" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Operation</entry>
+              <entry>Unterst&#252;tzt?</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Benutzerkonto erstellen</entry>
+              <entry>Ja</entry>
+            </row>
+            <row>
+              <entry>Benutzerkonto &#228;ndern</entry>
+              <entry>Ja</entry>
+            </row>
+            <row>
+              <entry>Benutzerkonto l&#246;schen</entry>
+              <entry>Ja</entry>
+            </row>
+            <row>
+              <entry>Benutzerkonto aktivieren</entry>
+              <entry>Nein</entry>
+            </row>
+            <row>
+              <entry>Benutzerkonto deaktivieren</entry>
+              <entry>Nein</entry>
+            </row>
+            <row>
+              <entry>Kennwort zur&#252;cksetzen</entry>
+              <entry>Ja</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="about-operation-organization">
+      <title>Organisationsverwaltung</title>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="3*"/>
+          <colspec colname="c2" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Operation</entry>
+              <entry>Unterst&#252;tzt?</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Organisation erstellen</entry>
+             <entry>Nein</entry>
+            </row>
+            <row>
+              <entry>Organisation &#228;ndern</entry>
+              <entry>Nein</entry>
+            </row>
+            <row>
+              <entry>Organisation l&#246;schen</entry>
+             <entry>Nein</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="about-operation-role">
+      <title>Rollenverwaltung</title>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="3*"/>
+          <colspec colname="c2" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Operation</entry>
+              <entry>Unterst&#252;tzt?</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Gruppe erstellen</entry>
+             <entry>Nein</entry>
+            </row>
+            <row>
+              <entry>Gruppe &#228;ndern</entry>
+              <entry>Nein</entry>
+            </row>
+            <row>
+              <entry>Gruppe l&#246;schen</entry>
+             <entry>Nein</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="about-operation-grant">
+      <title>Berechtigungsverwaltung</title>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="3*"/>
+          <colspec colname="c2" colwidth="1*"/>
+          <thead>
+            <row>
+              <entry>Operation</entry>
+              <entry>Unterst&#252;tzt?</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Zu Organization hinzuf&#252;gen</entry>
+              <entry>Ja</entry>
+            </row>
+            <row>
+              <entry>Aus Organization entfernen</entry>
+              <entry>Ja</entry>
+            </row>
+            <row>
+              <entry>Zu Rolle hinzuf&#252;gen</entry>
+              <entry>Ja</entry>
+            </row>
+            <row>
+              <entry>Aus Rolle entfernen</entry>
+              <entry>Ja</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="about-architecture">
+    <title>Architektur des Konnektors</title>
+    <para>
+      Mit dem Konnektor k&#246;nnen Sie Benutzerkonten auf dem Zielsystem verwalten.
+      Die Kontoverwaltung wird auch als Zielressourcenverwaltung bezeichnet.
+      Die Verwaltung der Benutzerkonten umfasst die folgenden Prozesse:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          <emphasis role="strong">Ressourcenprovisionierung</emphasis>
+        </para>
+        <para>
+          Die Provisionierung umfasst das Erstellen, Aktualisieren oder L&#246;schen von Benutzerkonten auf dem Zielsystem &#252;ber Oracle&#174; Identity Governance.
+          Wenn Sie einer Identi&#228;t eine Google Apigee Edge-Ressource zuweisen (oder bereitstellen), f&#252;hrt der Vorgang zur Erstellung eines Kontos in Google Apigee Edge f&#252;r diese Identit&#228;t.
+          Im Kontext von Oracle&#174; Identity Governance umfasst der Begriff Provisionierung auch Aktualisierungen, die am Zielsystemkonto &#252;ber Oracle&#174; Identity Governance vorgenommen wurden.
+          Diese Aktualisierungen umfassen auch die Aktivierung bzw. Deaktivierung von Benutzerkonten,
+        </para>
+        <para>
+          Bevor Sie Benutzerkonten f&#252;r die erforderlichen Organisationen und Rollen auf dem Zielsystem zuweisen k&#246;nnen, m&#252;ssen Sie die Liste aller auf dem Zielsystem verf&#252;gbaren Organisationen und Rollen nach Oracle&#174; Identity Governance synchronisieren.
+          Dies wird erreicht durch Verwendung der Hintergrundprozesse f&#252;r die Synchronisierung von Wertelisten erreicht.
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          <emphasis role="strong">Ressourcenabgleich</emphasis>
+        </para>
+        <para>
+          Beim Zielressourcenabgleich werden Daten zu im Zielsystem neu erstellten und ge&#228;nderten Benutzerkonten abgeglichen und mit bestehenden Identit&#228;ten und provisionierten Ressourcen verkn&#252;pft.
+          F&#252;r Zielressourcenabgleich werden Hintergrundprozess verwendet.
+          Der Konnektor wendet Filter an, um abzugleichende Benutzerdaten auf dem Zielsystem zu finden, und ruft dann die Attributwerte dieser Benutzerkonten ab.
+        </para>
+      </listitem>
+    </itemizedlist>
+    <figure>
+      <title>Google Apigee Edge Konnektor Architektur</title>
+      <mediaobject>
+        <imageobject>
+          <alt>Google Apigee Edge Konnektor Architektur</alt>
+          <!--
+           | The location of the image path must be absolute
+           -->
+          <imagedata format="PNG" scalefit="1" width="100%" contentdepth="100%" fileref="file:///D:/Project/OracleConsultingServices12c/IdentityConnector/icfGoogleApigee/src/site/images/architecture.png"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>
+      Wie aus der Abbildung hervorgeht, ist der Google Apigee Edge Konnektor als Zielressource von Oracle&#174; Identity Governance konfiguriert.
+      Durch Provisionierung, die in Oracle&#174; Identity Governance ausgef&#252;hrt wird, werden Konten f&#252;r Identit&#228;ten auf dem Zielsystem erstellt und aktualisiert.
+      Durch den Abgleich werden Kontodaten, die direkt auf dem Zielsystem erstellt und aktualisiert werden, in Oracle&#174; Identity Governance eingelesen und gegen die entsprechenden Identit&#228;ten gespeichert.
+    </para>
+    <para>
+      Der Google Apigee Edge Konnektor wird mithilfe des Identity Connector Framework (ICF) implementiert.
+      ICF ist eine erforderliche Komponente, die grundlegende Abstimmungs- und Bereitstellungsvorg&#228;nge bietet, die allen Konnektoren in Oracle&#174; Identity Governance gemeinsam sind.
+      Dar&#252;ber hinaus bietet ICF allgemeine Funktionen, die Entwickler sonst selbst implementieren m&#252;ssten, z.B. Verbindungspooling, Pufferung, Zeit&#252;berschreitungen und Filterung.
+      ICF wird zusammen mit Oracle&#174; Identity Governance ausgeliefert, daher m&#252;ssen Sie ICF nicht konfigurieren oder anpassen.
+    </para>
+    <note>
+      <para>
+        Der Google Apigee Edge Konnektor verwendet REST, um auf das Zielsystem zuzugreifen und unterst&#252;tzt <emphasis role="strong">ausschlie&#223;lich</emphasis> die Verwaltung von Benutzerkonten.
+      </para>
+    </note>
+  </section>
+  <section xml:id="about-matrix">
+    <title>Matrix der unterst&#252;tzten Funktionen</title>
+    <para>
+      Die Liste der Funktionen bereit, die von der <emphasis>AOB</emphasis> Applikation und dem <emphasis>CI</emphasis>-basierter Konnektor unterst&#252;tzt werden.
+    </para>
+    <table frame="topbot" colsep="0" rowsep="1">
+      <tgroup cols="3">
+        <colspec colname="c1" colwidth="3*"/>
+        <colspec colname="c2" colwidth="1*"/>
+        <colspec colname="c3" colwidth="1*"/>
+        <thead>
+          <row>
+            <entry>Funktion</entry>
+            <entry>AOB</entry>
+            <entry>CI</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Vollst&#228;ndiger Abgleich Benutzerkonten</entry>
+            <entry>Ja</entry>
+            <entry>Ja</entry>
+          </row>
+          <row>
+            <entry>Inkrementeller Abgleich Benutzerkonten</entry>
+            <entry>Ja</entry>
+            <entry>Ja</entry>
+          </row>
+          <row>
+            <entry>Eingeschr&#228;nkter Abgleich Benutzerkonten</entry>
+            <entry>Ja</entry>
+            <entry>Ja</entry>
+          </row>
+          <row>
+            <entry>Abgleich gel&#246;schter Benutzerkonten</entry>
+            <entry>Ja</entry>
+            <entry>Ja</entry>
+          </row>
+          <row>
+            <entry>Abgleich Rollen</entry>
+            <entry>Ja</entry>
+            <entry>Ja</entry>
+          </row>
+          <row>
+            <entry>Abgleich Organizationen</entry>
+            <entry>Ja</entry>
+            <entry>Ja</entry>
+          </row>
+          <row>
+            <entry>Sichere Kommunikation</entry>
+            <entry>Ja</entry>
+            <entry>Ja</entry>
+          </row>
+          <row>
+            <entry>Connector Server</entry>
+            <entry>Ja</entry>
+            <entry>Ja</entry>
+          </row>
+          <row>
+            <entry>Verbindungstest</entry>
+            <entry>Ja</entry>
+            <entry>Nein</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="about-features">
+    <title>Funktionen des Konnektors</title>
+    <para>
+      Zu den Funktionen des Konnektors geh&#246;ren neben der Provisionierung von Benutzerkonten, der vollst&#228;ndige Abgleich von Benutzerkonten und der Abgleich von gel&#246;schten Kontendaten:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend="about-feature-authn">Authentisierung</link>
+      </listitem>
+      <listitem>
+        <link linkend="about-feature-reconciliation">Vollst&#228;ndiger und inkrementeller Datenabgleich</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-recon-limited'>Eingeschr&#228;nkter Datenabgleich</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-recon-batch'>Batch Datenabgleich</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-recon-deleted'>Datenabgleich gel&#246;schter Benutzerkonten</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-recon-lookup'>Abgleich von Wertelisten mit dem Zielsystem</link>
+      </listitem>
+      <listitem>
+        <link linkend="about-feature-provisioning">Provisionierung von Benutzerkonten</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-connector-server'>Unterst&#252;tzung f&#252;r Connector-Server</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-connector-scripts'>Unterst&#252;tzung von Pre- und Post-Aktions-Skripten</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-transformation'>Transformation von Kontodaten</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-connection-security'>Sichere Kommunikation zum Zielsystem</link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="about-feature-authn">
+      <title>Authentisierung</title>
+      <para>
+        Standardm&#228;&#223;ig unterst&#252;tzt der Konnektor die HTTP-Basisauthentifizierung.
+      </para>
+      <para>
+        Wenn das Zielsystem nicht den vom Konnektor unterst&#252;tzten Authentifizierungsmechanismus anbietet, kann mithilfe der von diesem Konnektor bereitgestellten Plug-In's eine eigene Implementierung f&#252;r die Authentifizierung hinzugef&#252;gt werden.
+      </para>
+    </section>
+    <section xml:id="about-feature-reconciliation">
+      <title>Vollst&#228;ndiger und inkrementeller Datenabgleich</title>
+      <para>
+        Der vollst&#228;ndige Abgleich umfasst den Abgleich aller vorhandenen Benutzerdatens&#228;tze aus dem Zielsystem mit Oracle&#174; Identity Governance.
+      </para>
+      <para>
+        Beim inkrementellen Abgleich werden nur Datens&#228;tze durch Oracle&#174; Identity Governance abgerufen, die nach dem letzten Abgleichslauf hinzugef&#252;gt oder ge&#228;ndert wurden.
+      </para>
+      <para>
+        Nachdem Sie die Anwendung erstellt haben, f&#252;hren Sie zun&#228;chst einen vollst&#228;ndigen Datenbabgleich durch, um alle vorhandenen Benutzerkonten vom Zielsystem in Oracle&#174; Identity Governance zu &#252;bertragen.
+        Nach dem ersten vollst&#228;ndigen Abgleichslauf wird der inkrementelle Abgleich automatisch aktiviert.
+        Beim inkrementellen Abgleich werden dann nur noch die Benutzerkonten durch Oracle&#174; Identity Governance abgerufen, die seit dem letzten Abgleichslauf hinzugef&#252;gt oder ge&#228;ndert wurden.
+      </para>
+    </section>
+    <section xml:id="about-feature-recon-limited">
+      <title>Eingeschr&#228;nkter Datenabgleich</title>
+      <para>
+        Sie k&#246;nnen Datens&#228;tze von Benutzerkonten aus dem Zielsystem basierend auf festgelegten Filterkriterien abgleichen.
+        Diese Filterkriterien bestimmen die Teilmenge der hinzugef&#252;gten und ge&#228;nderten Zielsystemdatens&#228;tze, die w&#228;hrend der Ausf&#252;hrung des Abgleichs von Oracle&#174; Identity Governance abgerufen werden.
+      </para>
+    </section>
+    <section xml:id="about-feature-recon-batch">
+      <title>Batch Datenabgleich</title>
+      <para>
+        Abh&#228;ngig von der Anzahl der Datens&#228;tze, die abgeglichen werden sollen, kann eine Aufteilung in Stapel (Batches) konfiguriert werden.
+        Sie k&#246;nnen die Ausf&#252;hrung eines Abgleichs in Stapel aufteilen, indem Sie die Anzahl der Datens&#228;tze angeben, die in jedem Stapel enthalten sein m&#252;ssen.
+      </para>
+    </section>
+    <section xml:id="about-feature-recon-deleted">
+      <title>Datenabgleich gel&#246;schter Benutzerkonten</title>
+      <para>
+        Sie k&#246;nnen den Konnektor verwenden, um Benutzerdatens&#228;tze, die auf dem Zielsystem gel&#246;scht wurden, mit Oracle&#174; Identity Governance abzugleichen.
+      </para>
+      <para>
+        Weitere Informationen zu Hintergrundprozessen zum Datenabgleich dieser gel&#246;schten Datens&#228;tze finden Sie in einem der folgenden Abschnitte:
+      </para>
+      <insert>link</insert>
+    </section>
+    <section xml:id="about-feature-recon-lookup">
+      <title>Abgleich von Wertelisten mit dem Zielsystem</title>
+      <para>
+        W&#228;hrend eines Provisionierungsvorgangs verwenden Sie in einem Formular Wertelisten, um einen einzelnen Wert aus einer Reihe von Werten anzugeben.
+        Sie verwenden beispielsweise die Werteliste <emphasis>Land</emphasis> um ein Land aus der Liste von L&#228;nder im Formularfeld auszuw&#228;hlen.
+      </para>
+      <para>
+        Wenn Sie den Konnektor bereitstellen, werden in Oracle&#174; Identity Governance Definitionen von Wertelisten erstellt, die den Wertelistenfeldern auf dem Zielsystem entsprechen.
+        Die Synchronisierung der Wertelisten umfasst das Kopieren von Erg&#228;nzungen oder &#196;nderungen in die Wertelisten in Oracle&#174; Identity Governance, die an den Wertelistenfeldern des Zielsystems vorgenommen wurden.
+      </para>
+      <para>
+        Weitere Informationen zu Hintergrundprozessen f&#252;r den Abgleich von Wertelisten finden Sie in einem der folgenden Abschnitte:
+      </para>
+      <insert>link</insert>
+    </section>
+    <section xml:id="about-function-provisioning">
+      <title>Provisionierung von Benutzerkonten</title>
+      <para>
+        Sie k&#246;nnen den Konnektor verwenden, um Google Apigee Edge Benutzerkonten und Gruppenzuordnungen bereitzustellen. Sie k&#246;nnen einen neuen Benutzer in Oracle Identity Manager mithilfe der Seite Benutzer erstellen.
+      </para>
+    </section>
+    <section xml:id="about-feature-connector-server">
+      <title>Unterst&#252;tzung f&#252;r Connector-Server</title>
+      <para>
+        Connector-Server ist eine der Funktionen von ICF.
+        Durch die Verwendung von einem oder mehreren Connector-Server erm&#246;glicht die Architektur Ihrer Anwendung die Kommunikation mit extern bereitgestellten Bundles.
+      </para>
+      <para>
+        Ein Java-Connector-Server ist hilfreich, wenn Sie kein Java-Connector-Bundle in derselben VM wie Ihre Anwendung ausf&#252;hren m&#246;chten.
+        Es kann von Vorteil sein, einen Konnektor auf einem anderen Host auszuf&#252;hren, um die Leistung zu verbessern.
+      </para>
+      <para>
+        Informationen zum Installieren, Konfigurieren und Ausf&#252;hren des Connector-Servers und zum anschlie&#223;enden Installieren des Konnektors auf einem Connector-Server finden Sie unter <link xl:show="new" xl:href="https://docs.oracle.com/en/middleware/idm/identity-governance/12.2.1.3/omdev/understanding-identity-connector-framework.html#GUID-3456CEE2-CAFC-4B11-93AE-BE3234EB41DC" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Using an Identity Connector Server</citetitle></link> in <emphasis>Oracle Fusion Middleware Developing and Customizing Applications for Oracle Identity Governance</emphasis>.
+      </para>
+    </section>
+    <section xml:id="about-feature-connector-scripts">
+      <title>Support for Running Pre and Post Action Scripts</title>
+      <para>
+        Sie k&#246;nnen Pre- und Post-Action-Skripts auf einem Computer ausf&#252;hren, auf dem der Konnektor bereitgestellt wird.
+        Diese Skripte k&#246;nnen vom Typ SQL/StoredProc/Groovy sein.
+        Sie k&#246;nnen die Skripte so konfigurieren, dass sie vor oder nach dem Erstellen, Aktualisieren oder L&#246;schen eines Benutzerkontos ausgef&#252;hrt werden.
+      </para>
+      <para>
+        Weitere Informationen finden Sie unter, <link xl:show="new" xl:href="https://docs.oracle.com/en/middleware/idm/identity-governance/12.2.1.3/omusg/managing-application-onboarding.html#GUID-C34B1E37-2B3C-4379-8032-94F370DC9708" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Updating the Provisioning Configuration</citetitle></link> in <emphasis>Oracle Fusion Middleware Performing Self Service Tasks with Oracle Identity Governance</emphasis>.
+      </para>
+    </section>
+    <section xml:id="about-feature-transformation">
+      <title>Transformation von Kontodaten</title>
+      <para>
+        Sie k&#246;nnen die Umwandlung von Kontodaten konfigurieren, die w&#228;hrend der Abgleichsvorg&#228;nge nach Oracle&#174; Identity Governance &#252;bertragen und oder durch Provisionierungsvorg&#228;nge von dort gesendet werden, indem Sie beim Erstellen Ihrer Anwendung Groovy-Skripts einbinden.
+      </para>
+      <para>
+        Weitere Informationen finden Sie unter, <link xl:show="new" xl:href="https://docs.oracle.com/en/middleware/idm/identity-governance/12.2.1.3/omusg/managing-application-onboarding.html#GUID-E3D51F24-B419-4676-80D3-EFA56133DD56" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Validation and Transformation of Provisioning and Reconciliation Attributes</citetitle></link> in <emphasis>Oracle Fusion Middleware Performing Self Service Tasks with Oracle Identity Governance</emphasis>.
+      </para>
+    </section>
+    <section xml:id="about-feature-connection-security">
+      <title>Sichere Kommunikation zum Zielsystem</title>
+      <para>
+        Um eine sichere Kommunikation mit dem Zielsystem bereitzustellen, ist SSL erforderlich.
+        Sie k&#246;nnen SSL zwischen Oracle&#174; Identity Governance und dem Connector-Server sowie zwischen dem Connector-Server und dem Zielsystem konfigurieren.
+      </para>
+      <para>
+        Wenn Sie SSL nicht konfigurieren, k&#246;nnen Kennw&#246;rter im Klartext &#252;ber das Netzwerk &#252;bertragen werden.
+        Dieses Problem kann beispielsweise auftreten, wenn Sie einen Benutzerkonto erstellen oder das Kennwort eines Benutzerkontos &#228;ndern.
+      </para>
+      <para>
+        Weitere Informationen finden Sie unter <link linkend='install-post-ssl'>Sichere Kommunikation konfigurieren</link>.
+      </para>
+    </section>
+  </section>
+  <section xml:id="about-lookup">
+    <title>Wertelisten</title>
+    <para>
+      Wertelisten die w&#228;hrend des Datenabgleichs und Provisionierung verwendet werden, sind entweder vorkonfiguriert oder werden mit dem Zielsystem synchronisiert.
+    </para>
+    <para>
+      Wertelisten, die w&#228;hrend Konnektor Operationen verwendet werden, k&#246;nnen wie folgt kategorisiert werden:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend="about-lookup-static">Vorkonfigurierte Wertelisten</link>
+      </listitem>
+      <listitem>
+        <link linkend="about-lookup-reconciled">Synchronisierte Wertelisten</link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="about-lookup-static">
+      <title>Vorkonfigurierte Wertelisten</title>
+      <para>
+       Vorkonfigurierte Wertelisten werden in Oracle Identity Manager erstellt, wenn Sie den Konnektor bereitstellen.
+       Diese Wertelisten sind entweder mit Werten vorab ausgef&#252;llt oder m&#252;ssen nach der Bereitstellung des Konnektors manuell eingegeben werden.
+     </para>
+      <para>
+       Innerhalb dieser Kategorie von Wertelisten wird wiederum unterschieden nach:
+     </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <link linkend="about-lookup-static-global">Globale Wertelisten</link>
+        </listitem>
+        <listitem>
+          <link linkend="about-lookup-static-local">Lokale Wertelisten</link>
+        </listitem>
+      </itemizedlist>
+      <section xml:id="about-lookup-static-global">
+        <title>Globale Wertelisten</title>
+        <para>
+         Globale Wertelisten sind unabh&#228;ngig von einem spezifischen Zielsystem.
+       </para>
+      </section>
+      <section xml:id="about-lookup-static-local">
+        <title>Lokale Wertelisten</title>
+        <para>
+         Lokale Wertelisten sind nur innerhalb eines spezifischen Zielsystems (Stage) verf&#252;gbar.
+       </para>
+      </section>
+    </section>
+    <section xml:id="about-lookup-reconciled">
+      <title>Synchronisierte Wertelisten</title>
+      <para>
+       W&#228;hrend eines Bereitstellungsvorgangs verwenden Sie eine Werteliste im Prozessformular, um einen einzelnen Wert aus einer Reihe von Werten auszuw&#228;hlen. Beispielsweise m&#246;chten Sie m&#246;glicherweise eine Gruppe aus dem Suchfeld Gruppen ausw&#228;hlen, um die Gruppe anzugeben, die dem Benutzer zugewiesen wird. Wenn Sie den Konnektor bereitstellen, werden in Oracle Identity Manager Wertelisten erstellt, die den Wertelisten des Zielsystems entsprechen. Bei der Synchronisierung von Wertelisten werden Erg&#228;nzungen oder &#196;nderungen, die an bestimmten Feldern im Zielsystem vorgenommen wurden, in die Wertelisten in Oracle Identity Manager kopiert. Nach der Bereitstellung des Konnektors werden in Oracle Identity Manager automatisch die folgenden Wertelisten erstellt, die als Quelle f&#252;r Wertelisten verwendet werden:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>GAE.Role</listitem>
+        <listitem>GAE.Tenant</listitem>
+      </itemizedlist>
+      <para>
+       Die Wertelisten GAE.Role und GAE.Tenant werden mit Werten gef&#252;llt, die von den Hintergrundprozessen f&#252;r die Wertelisten-Synchronisation aus dem Zielsystem abgerufen werden.
+       W&#228;hrend eines Vorgangs zur Provisionierung eines Benutzerkontos verwenden Sie das Feld Name in der Registerkarte Gruppe im Prozessformular, um eine Gruppe dem entsprechenden Benutzerkonto zuzuweisen.
+       Die Wertelisten f&#252;r Gruppen und Organisationen werden mit Werten aus den Wertelisten GAE.Role bzw. GAE.Tenant gef&#252;llt, die beim Bereitstellen des Konnectors automatisch in Oracle Identity Manager erstellt werden.
+     </para>
+      <para>
+       Standardm&#228;&#223;ig sind diese Wertelisten leer.
+       Sie werden mit Werten gef&#252;llt, die vom Zielsystem abgerufen werden, wenn Sie den Hintergrundprozess f&#252;r die Synchronisierung von Wertelisten ausf&#252;hren.
+       Wenn Sie beispielsweise den Hintergrundprozess ausf&#252;hren, werden alle Gruppen auf dem Zielsystem von Oracle Identity Manager abgerufen und in die Werteliste GAE.Role eingetragen.
+     </para>
+      <para>
+       Nach der Synchronisierung werden die Daten in jeder der Wertelisten im folgenden Format gespeichert:
+     </para>
+      <table>
+        <thead>
+          <tr>
+            <td>Wert</td>
+            <td>Format</td>
+            <td>Beschreibung</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <emphasis role="strong">Encode</emphasis>
+            </td>
+            <td><emphasis>&lt;IT_RESOURCE_KEY&gt;</emphasis>~<emphasis>&lt;ID&gt;</emphasis></td>
+            <td>
+              <para>
+               <emphasis>IT_RESOURCE_KEY</emphasis> ist der numerische Code, der jeder IT-Ressource in Identity Manager zugewiesen wird.
+             </para>
+              <para>
+               <emphasis>ID</emphasis> ist der zielsystemspezifische Identifier, der jedem Eintrag einer Werteliste zugewiesen ist.
+               Dieser Wert wird basierend auf dem Attributnamen des Zielsystems ausgef&#252;llt, der im Encode-Attribut des Hintergrundprozesses f&#252;r die Synchronisierung von Wertelisten angegeben ist.
+             </para>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <emphasis role="strong">Decode</emphasis>
+            </td>
+            <td><emphasis>&lt;IT_RESOURCE&gt;</emphasis>~<emphasis>&lt;VALUE&gt;</emphasis></td>
+            <td>
+              <para>
+                <emphasis>IT_RESOURCE</emphasis> ist der Name, der IT-Ressource in Identity Manager.
+              </para>
+              <para>
+               <emphasis>VALUE</emphasis> ist der zielsystemspezifische Bezeichner, der jedem Eintrag einer Werteliste zugewiesen ist.
+               Dieser Wert wird basierend auf dem Attributnamen des Zielsystems ausgef&#252;llt, der im Decode-Attribut des Hintergrundprozesses f&#252;r die Synchronisierung von Wertelisten angegeben ist.
+             </para>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <para>
+         Die nachfolgende Table zeigt beispielhafte Eintr&#228;ge in der Werteliste GAE.Role:
+      </para>
+      <table>
+        <thead>
+          <tr>
+            <td>Encode</td>
+            <td>Decoded</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Encode</td>
+            <td>Decoded</td>
+         </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+</chapter>

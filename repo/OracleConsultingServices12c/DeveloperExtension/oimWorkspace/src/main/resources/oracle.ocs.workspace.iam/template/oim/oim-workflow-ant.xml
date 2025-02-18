@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="#{ant.project}"
+         default        ="#{ant.default}"
+         basedir        ="#{ant.basedir}"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:workflow ="http://oracle.iam.identity/workflow"
+         xmlns:composite="http://oracle.iam.identity/composite">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="workflow.partition"    value="#{oim.workflow.partition}"/>
+  <property name="workflow.name"         value="#{oim.workflow.name}"/>
+  <property name="workflow.revision"     value="#{oim.workflow.revision}"/>
+
+  <property name="description"           value="#{oim.description}"/>
+  <property name="application"           value="sca_${workflow.name}_rev${workflow.revision}"/>
+
+  <property name="destination.base"      value="#{oim.destination}"/>
+
+  <property name="packagepath.composite" value="#{oim.packagepath}"/>
+  <property name="compilepath.composite" location="${basedir}"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="#{soa.target}"/>
+</project>

@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+          
+  <c:set var="oauthBundle"
+         value="#{adfBundle['bka.iam.identity.ui.oauth.OAuthBundle']}"/>
+  <af:panelGroupLayout id="pgl1" styleClass="AFStretchWidth">
+    <af:panelCollection id="pc1" styleClass="AFStretchWidth" featuresOff="statusBar">
+      <f:facet name="toolbar">
+        <af:toolbar id="t2"
+                    binding="#{pageFlowScope.applicationMB.toolbar}">
+          <af:commandToolbarButton 
+            text="#{oauthBundle['button-create']}"
+            id="ctb1"
+            icon="/images/func_add_16_ena.png"
+            hoverIcon="/images/func_add_16_hov.png"
+            disabledIcon="/images/func_add_16_dis.png"
+            depressedIcon="/images/func_add_16_act.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.applicationMB.launchCreateApplication}"
+            />
+          <af:commandToolbarButton 
+            text="#{oauthBundle['button-edit']}"
+            id="ctb2" 
+            icon="/images/func_open_16_ena.png"
+            hoverIcon="/images/func_open_16_hov.png"
+            disabledIcon="/images/func_open_16_dis.png"
+            depressedIcon="/images/func_open_16_act.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.applicationMB.launchEditApplication}"
+            />
+          <af:commandToolbarButton 
+            text="#{oauthBundle['button-delete']}"
+            id="ctb3" 
+            icon="/images/func_delete_16_ena.png"
+            hoverIcon="/images/func_delete_16_hov.png"
+            disabledIcon="/images/func_delete_16_dis.png"
+            depressedIcon="/images/func_delete_16_act.png"
+            immediate="true"
+            >
+            <af:showPopupBehavior align="afterStart"
+                                  popupId="::confirmPopupForApplicationDelete"/>
+          </af:commandToolbarButton>
+          <af:commandToolbarButton 
+            text="#{oauthBundle['button-refresh']}"
+            id="ctb4" 
+            immediate="true"
+            actionListener="#{pageFlowScope.applicationMB.refreshApplications}"
+            icon="/images/func_refresh_16_ena.png"
+            hoverIcon="/images/func_refresh_16_hov.png"
+            disabledIcon="/images/func_refresh_16_dis.png"
+            depressedIcon="/images/func_refresh_16_act.png"/>
+        </af:toolbar>
+      </f:facet>
+      <f:facet name="menus">
+        <af:menu text="#{oauthBundle['oam-servers-actions']}" id="m1"
+                 binding="#{pageFlowScope.applicationMB.actionMenu}">
+          <af:commandMenuItem 
+            text="#{oauthBundle['button-create']}"
+            id="cmi1" 
+            icon="/images/func_add_16_ena.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.applicationMB.launchCreateApplication}"/>
+          <af:commandMenuItem 
+            text="#{oauthBundle['button-edit']}"
+            id="cmi3" icon="/images/func_modify_16_ena.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.applicationMB.launchEditApplication}"
+            />
+          <af:commandMenuItem 
+            text="#{oauthBundle['button-delete']}"
+            id="cmi4" icon="/images/func_delete_16_ena.png"
+            immediate="true">
+            <af:showPopupBehavior align="afterStart"
+                                  popupId="::confirmPopupForApplicationDelete"/>
+          </af:commandMenuItem>
+          <af:commandMenuItem 
+            text="#{oauthBundle['button-refresh']}"
+            id="cmi5" 
+            icon="/images/func_refresh_16_ena.png"
+            immediate="true"
+            actionListener="#{pageFlowScope.applicationMB.refreshApplications}"/>
+        </af:menu>
+      </f:facet>
+      <af:table value="#{bindings.applications.collectionModel}" var="row" rows="#{bindings.applications.rangeSize}"
+                emptyText="#{bindings.applications.viewable ? 'No data to display.' : 'Access Denied.'}"
+                rowBandingInterval="0" selectedRowKeys="#{bindings.applications.collectionModel.selectedRow}"
+                rowSelection="single"
+                fetchSize="#{bindings.applications.rangeSize}"
+                filterModel="#{bindings.applicationsQuery.queryDescriptor}" filterVisible="true"
+                queryListener="#{bindings.applicationsQuery.processQuery}" varStatus="vs" id="t1"
+                binding="#{pageFlowScope.applicationMB.searchTable}"
+                selectionListener="#{bindings.applications.collectionModel.makeCurrent}"
+                columnStretching="last"
+                >
+        <af:column rowHeader="true" width="30"
+                   headerText=""
+                   align="right" id="c8">
+        </af:column>
+        <af:column sortProperty="#{bindings.applications.hints.name.name}" filterable="true" sortable="true"
+                   headerText="#{oauthBundle['application-name']}" id="c1" width="300">
+          <af:commandLink text="#{row.name}" id="cl1"
+                   immediate="true"
+                   actionListener="#{pageFlowScope.applicationMB.launchEditApplication}"
+                   partialSubmit="true">
+           </af:commandLink>
+        </af:column>
+        <af:column sortProperty="#{bindings.applications.hints.description.name}" filterable="true" sortable="true"
+                   headerText="#{oauthBundle['application-description']}" id="c2">
+          <af:outputText value="#{row.description}" shortDesc="#{bindings.applications.hints.description.tooltip}"
+                         id="ot2"/>
+        </af:column>
+      </af:table>
+    </af:panelCollection>
+    <af:popup id="confirmPopupForApplicationDelete" launcherVar="source" eventContext="launcher"
+              contentDelivery="lazyUncached">
+      <af:dialog id="d1" type="yesNo" inlineStyle="width:500px"
+                 title="#{oauthBundle['dialog-warning']}"
+                 titleIconSource="/images/warning.png"
+                 dialogListener="#{pageFlowScope.applicationMB.deleteApplication}"
+                 affirmativeTextAndAccessKey="#{oauthBundle['dialog-button-delete']}"
+                 cancelTextAndAccessKey="#{oauthBundle['dialog-button-cancel']}"
+                 noTextAndAccessKey="#{oauthBundle['dialog-button-cancel']}">
+        <af:panelGroupLayout layout="scroll" id="pgl12" inlineStyle="width:auto;height:auto;">
+          <af:outputText id="ot22" value="#{oauthBundle['dialog-confirm-delete']}"
+                         inlineStyle="font-weight:bold; font-size:small;"/>
+          <af:spacer width="100%" height="10" id="s28"/>
+          <af:panelGroupLayout id="pgl13" layout="vertical" inlineStyle="width:350px;">
+            <af:outputText id="ot23"  value="#{pageFlowScope.applicationMB.actionWarningMessageDelete}"/>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:dialog>
+    </af:popup>
+    </af:panelGroupLayout>
+</jsp:root>

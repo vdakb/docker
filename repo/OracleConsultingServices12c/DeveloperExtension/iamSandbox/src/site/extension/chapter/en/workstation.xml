@@ -1,0 +1,182 @@
+<!--
+  ! This software is the confidential and proprietary information of
+  ! Oracle Corporation. ("Confidential Information").  You shall not
+  ! disclose such Confidential Information and shall use it only in
+  ! accordance with the terms of the license agreement you entered
+  ! into with Oracle.
+  !
+  ! ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+  ! SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  ! IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ! PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+  ! SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+  ! THIS SOFTWARE OR ITS DERIVATIVES.
+  !
+  ! Copyright &#xA9; 2015. All Rights reserved
+  !
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="workstation-iam"
+         xml:lang="en"
+         version ="5.0">
+  <title>Prepare your Workstation</title>
+  <important>
+    The sections belows belongs almost to an Microsoft Windows environment due to the lack of capabilities provided by this operating system out-of-the-box.
+  </important>
+  <section xml:id="workstation-iam-01">
+    <title>Secure Shell</title>
+    <para>
+      Most of the environments deployed on <emphasis role="strong">*NIX System</emphasis> environments.
+      To manage the Oracle Software Components you will need a SSH Client.
+      The preferred client is <emphasis role="strong">PuTTY</emphasis> a free implementation of Telnet and SSH for Win32 and UNIX platforms, along with an xterm terminal emulator.
+    </para>
+    <para>
+      <link xl:show="new"
+            xl:href="http://the.earth.li/~sgtatham/putty/latest/x86/putty.zip"
+            xl:role="http://docbook.org/xlink/role/olink">
+        <citetitle>Download</citetitle>
+      </link>
+      the ZIP-archive and unpack it in a directory of your choice.
+    </para>
+    <para>
+      If you want to use the graphical environment for the<emphasis role="strong">*NIX Systems</emphasis> each time you configuring a new connection don’t forget to enabling X11 forwarding to the host.
+      To do that you navigate in the <emphasis role="strong">PuTTY</emphasis> Configuration to <emphasis role="strong">Connection</emphasis> | <emphasis role="strong">SSH</emphasis> | <emphasis role="strong">X11</emphasis> and switch on the option <emphasis role="strong">Enable X11 forwarding</emphasis>.
+    </para>
+    <para>
+      <mediaobject>
+        <alt>enable X11 forwarding</alt>
+        <imageobject>
+          <!--
+           | The location of the image path must be relative to xml:base set
+           | at the enclosing book element
+           -->
+          <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/workstation-iam-ssh.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </para>
+  </section>
+  <section xml:id="workstation-iam-02">
+    <title>Graphical User Interface</title>
+    <para>
+      There are two options to access the <emphasis role="strong">*NIX System</emphasis> environments:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <formalpara>
+          <title>Virtual Network Computing (VNC)</title>
+          <para>
+            a graphical desktop sharing system that uses the RFB protocol to control another computer remotely.
+          </para>
+        </formalpara>
+        <para>
+          It transmits the keyboard and mouse events from one computer to another, relaying the graphical screen updates back in the other direction, over a network.
+        </para>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <formalpara>
+          <title>Xming X Server</title>
+          <para>
+            provides the basic framework, or primitives, for building such GUI environments: drawing and moving windows on the screen and interacting with a mouse and/or keyboard.
+            X Windows does not mandate the user interface — individual client programs handle this.
+            As such, the visual styling of X-based environments varies greatly; different programs may present radically different interfaces.
+            X windows is built as an additional application layer on top of the operating system kernel.
+          </para>
+        </formalpara>
+      </listitem>
+    </itemizedlist>
+    <note>
+      <para>
+        We recommend using the Xming X Server
+        <link xl:show="new"
+              xl:href="http://downloads.sourceforge.net/xming/Xming-6-9-0-31-setup.exe?use_mirror=mesh"
+              xl:role="http://docbook.org/xlink/role/olink">
+          <citetitle>Xming X Server</citetitle>
+        </link>
+        free unlimited X Window server for Microsoft Windows (XP/2003/Vista).
+      </para>
+      <para>
+        It is fully featured, small and fast, simple to use.
+      </para>
+    </note>
+    <note>
+      <para>
+        We recommend also to install
+        <link xl:show="new"
+              xl:href="http://sourceforge.net/projects/xming/files/Xming-fonts/7.5.0.25/Xming-fonts-7-5-0-25-setup.exe/download"
+              xl:role="http://docbook.org/xlink/role/olink">
+          <citetitle>optional font packages</citetitle>
+        </link>
+        for Microsoft Windows (XP/2003/Vista).It is fully featured, small and fast, simple to use.
+      </para>
+      <para>
+        It solves some problems that you will face using the java console <emphasis role="strong">dbca</emphasis>
+      </para>
+    </note>
+  </section>
+  <section xml:id="workstation-iam-03">
+    <title>File Transfer</title>
+    <para>
+      To transfer files to the UNIX systems you will need a SFTP client and FTP client.
+      Legacy SCP protocol should also supported by the client.
+      The preferred client is <emphasis role="strong">WinSCP</emphasis> an open source free SFTP client and FTP client for Windows.
+      Legacy SCP protocol is also supported.
+      Its main function is safe copying of files between a local and a remote computer.
+    </para>
+    <para>
+      <link xl:show="new"
+            xl:href="http://winscp.net/download/winscp418.exe"
+            xl:role="http://docbook.org/xlink/role/olink">
+        <citetitle>Download</citetitle>
+      </link>
+      the executable in a directory of your choice.
+    </para>
+  </section>
+  <section xml:id="workstation-iam-04">
+    <title>Version Control System</title>
+    <para>
+      For some activities, you need a separate Subversion Client to manage the Repository.
+      Following Subversion Clients are available:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <formalpara>
+          <title>TortoiseSVN</title>
+          <para>
+            is a free open-source client for the Subversion version control system.
+          </para>
+          <para>
+            TortoiseSVN integrates seamlessly into Windows Explorer.
+          </para>
+        </formalpara>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <formalpara>
+          <title>CollabNet Subversion Client</title>
+          <para>
+            is an enterprise-ready distribution of Subversion that includes certified binaries, platform-specific installers.
+          </para>
+        </formalpara>
+      </listitem>
+    </itemizedlist>
+    <note>
+      <para>
+        We recommend using TortoiseSVN on Microsoft Windows machines.
+      </para>
+      <para>
+        Please follow Setup TortoiseSVN to install and configure initially.
+      </para>
+    </note>
+  </section>
+  <section xml:id="workstation-iam-05">
+    <title>Design Console</title>
+    <para>
+      This topic describes how to install and configure Oracle Identity Governance (OIG) Design Console, which is supported on Windows operating systems.
+    </para>
+  </section>
+</chapter>

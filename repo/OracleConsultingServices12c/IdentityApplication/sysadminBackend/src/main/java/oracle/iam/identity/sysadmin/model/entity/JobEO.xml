@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+        Name                  ="JobEO"
+        AliasName             ="JobEO"
+        DBObjectType          ="table"
+        DBObjectName          ="JOB"
+        UseGlueCode           ="false"
+        BindingStyle          ="OracleName"
+        InheritPersonalization="merge"
+        RowClass              ="oracle.iam.identity.sysadmin.model.entity.JobEOImpl">
+  <DesignTime>
+    <Attr      Name="_isCodegen"   Value="true"/>
+    <Attr      Name="_diagramName" Value="Schedule Job Entity"/>
+    <Attr      Name="_superClass"  Value="oracle.iam.ui.platform.model.common.OIMProgrammaticEO"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute Name="name" ColumnName="NAME" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="100" PrimaryKey="true" IsNotNull="true">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The name attribute is a required attribute hence it can never be blank
+    furthermore it doesn't provided a range of values hence any comparator
+    belonging to a range of values is useless
+    -->
+    <CompOper Name="name" Oper=">="         ToDo="-1"/>
+    <CompOper Name="name" Oper=">"          ToDo="-1"/>
+    <CompOper Name="name" Oper="BETWEEN"    ToDo="-1"/>
+    <CompOper Name="name" Oper="NOTBETWEEN" ToDo="-1"/>
+    <CompOper Name="name" Oper="&lt;"       ToDo="-1"/>
+    <CompOper Name="name" Oper="&lt;="      ToDo="-1"/>
+    <CompOper Name="name" Oper="ISBLANK"    ToDo="-1"/>
+    <CompOper Name="name" Oper="ISNOTBLANK" ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.name.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="task" ColumnName="TASK" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="128" IsNotNull="true">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The scheduleType attribute is a required attribute hence it can never
+    be blank furthermore it doesn't provided a range of values hence any
+    comparator belonging to a range of values is useless
+    -->
+    <CompOper Name="task" Oper=">="         ToDo="-1"/>
+    <CompOper Name="task" Oper=">"          ToDo="-1"/>
+    <CompOper Name="task" Oper="BETWEEN"    ToDo="-1"/>
+    <CompOper Name="task" Oper="NOTBETWEEN" ToDo="-1"/>
+    <CompOper Name="task" Oper="&lt;"       ToDo="-1"/>
+    <CompOper Name="task" Oper="&lt;="      ToDo="-1"/>
+    <CompOper Name="task" Oper="ISBLANK"    ToDo="-1"/>
+    <CompOper Name="task" Oper="ISNOTBLANK" ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.task.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="status" ColumnName="STATUS" Type="java.lang.Integer" ColumnType="NUMBER" SQLType="NUMERIC" Precision="1" Scale="0" IsNotNull="true">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The triggerStatus attribute is not a required attribute hence it doesn't
+    provided a range of values therefor any comparator belonging to a range of
+    values is useless
+    -->
+    <CompOper Name="status" Oper="ISBLANK"        ToDo="-1"/>
+    <CompOper Name="status" Oper="ISNOTBLANK"     ToDo="-1"/>
+    <CompOper Name="status" Oper="CONTAINS"       ToDo="-1"/>
+    <CompOper Name="status" Oper="STARTSWITH"     ToDo="-1"/>
+    <CompOper Name="status" Oper="ENDSWITH"       ToDo="-1"/>
+    <CompOper Name="status" Oper="DOESNOTCONTAIN" ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.status.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="triggerStatus" ColumnName="TRIGGERSTATUS" Type="java.lang.Boolean" ColumnType="BIGINT" SQLType="BIT" IsNotNull="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.triggerstatus.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="triggerStart" ColumnName="TRIGGERSTART" Type="java.sql.Timestamp"  ColumnType="BIGINT" SQLType="TIMESTAMP">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.triggerstart.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="triggerStop" ColumnName="TRIGGERSTOP" Type="java.sql.Timestamp"  ColumnType="BIGINT" SQLType="TIMESTAMP">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.triggerstop.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="triggerNext" ColumnName="TRIGGERNEXT" Type="java.sql.Timestamp"  ColumnType="BIGINT" SQLType="TIMESTAMP">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.triggernext.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="concurrent" ColumnName="CONCURRENT" Type="java.lang.Boolean" ColumnType="BIGINT" SQLType="BIT">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.concurrent.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="retryCount" ColumnName="RETRYCOUNT" Type="java.lang.Integer" ColumnType="NUMBER" SQLType="NUMERIC" Precision="19" Scale="0" IsNotNull="true">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The retryCount attribute is a required attribute hence it can never be
+    blank furthermore it doesn't provided a string hence any comparator
+    belonging to a string is useless
+    -->
+    <CompOper Name="retryCount" Oper="ISBLANK"        ToDo="-1"/>
+    <CompOper Name="retryCount" Oper="ISNOTBLANK"     ToDo="-1"/>
+    <CompOper Name="retryCount" Oper="CONTAINS"       ToDo="-1"/>
+    <CompOper Name="retryCount" Oper="STARTSWITH"     ToDo="-1"/>
+    <CompOper Name="retryCount" Oper="ENDSWITH"       ToDo="-1"/>
+    <CompOper Name="retryCount" Oper="DOESNOTCONTAIN" ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.retrycount.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="triggerType" ColumnName="TRIGGERTYPE" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="128" IsNotNull="true">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The triggerType attribute is not a required attribute hence it doesn't
+    provided a range of values hence any comparator belonging to a range of
+    values is useless
+    -->
+    <CompOper Name="triggerType" Oper=">="         ToDo="-1"/>
+    <CompOper Name="triggerType" Oper=">"          ToDo="-1"/>
+    <CompOper Name="triggerType" Oper="BETWEEN"    ToDo="-1"/>
+    <CompOper Name="triggerType" Oper="NOTBETWEEN" ToDo="-1"/>
+    <CompOper Name="triggerType" Oper="&lt;"       ToDo="-1"/>
+    <CompOper Name="triggerType" Oper="&lt;="      ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.triggertype.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="cronType" ColumnName="CRONTYPE" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="128">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The cronType attribute is not a required attribute hence it doesn't provided
+    a range of values hence any comparator belonging to a range of values is
+    useless
+    -->
+    <CompOper Name="cronType" Oper=">="         ToDo="-1"/>
+    <CompOper Name="cronType" Oper=">"          ToDo="-1"/>
+    <CompOper Name="cronType" Oper="BETWEEN"    ToDo="-1"/>
+    <CompOper Name="cronType" Oper="NOTBETWEEN" ToDo="-1"/>
+    <CompOper Name="cronType" Oper="&lt;"       ToDo="-1"/>
+    <CompOper Name="cronType" Oper="&lt;="      ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="job.crontype.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <AccessorAttribute Name               ="JobParameterEO"
+                     Type               ="oracle.jbo.RowIterator"
+                     Association        ="oracle.iam.identity.sysadmin.model.entity.association.JobParameterAS"
+                     AssociationEnd     ="oracle.iam.identity.sysadmin.model.entity.association.JobParameterAS.JobParameterEO"
+                     AssociationOtherEnd="oracle.iam.identity.sysadmin.model.entity.association.JobParameterAS.JobEO"
+                     IsUpdateable       ="false"/>
+  <AccessorAttribute Name               ="JobHistoryEO"
+                     Type               ="oracle.jbo.RowIterator"
+                     Association        ="oracle.iam.identity.sysadmin.model.entity.association.JobHistoryAS"
+                     AssociationEnd     ="oracle.iam.identity.sysadmin.model.entity.association.JobHistoryAS.JobHistoryEO"
+                     AssociationOtherEnd="oracle.iam.identity.sysadmin.model.entity.association.JobHistoryAS.JobEO"
+                     IsUpdateable       ="false"/>
+  <Key Name="JobPK" PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="JOBPK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="oracle.iam.identity.sysadmin.model.entity.JobEO.name"/>
+    </AttrArray>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysadmin.bundle.Backend"/>
+  </ResourceBundle>
+  <Properties>
+    <CustomProperties>
+      <Property Name="USE_ALLOCATION_MANAGER" Value="false"/>
+    </CustomProperties>
+  </Properties>
+</Entity>

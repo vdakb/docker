@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="Identifier"
+            uniqueName    ="User Name"
+            status        ="Status"
+            transformation="false"
+            natively      ="false">
+  <attribute type="string" name="Identifier"        source="__UID__">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="User Name"         source="__NAME__">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="Status"            source="__ENABLE__"/>
+  <attribute type="string" name="Verified"          source="verified"/>
+  <attribute type="string" name="Identity Origin"   source="origin"/>
+  <attribute type="string" name="Identity Provider" source="zoneId"/>
+  <attribute type="string" name="External Name"     source="externalId"/>
+  <attribute type="string" name="Last Name"         source="name.familyName"/>
+  <attribute type="string" name="First Name"        source="name.givenName"/>
+  <attribute type="string" name="e-Mail"            source="emails.value"/>
+  <attribute type="string" name="Phone"             source="phoneNumbers.value"/>
+  <multivalue name="Group" source="__GROUP__">
+    <attribute type="string" name="Name" source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <multivalue name="Tenant" source="__TENANT__">
+    <attribute type="string" name="Name" source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="string" name="Scope"  source="__NAME__">
+      <flag>required</flag>
+    </attribute>
+  </multivalue>
+  <multivalue name="Space" source="__SPACE__">
+    <attribute type="string" name="Name" source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="string" name="Scope"  source="__NAME__">
+      <flag>required</flag>
+    </attribute>
+  </multivalue>
+</descriptor>

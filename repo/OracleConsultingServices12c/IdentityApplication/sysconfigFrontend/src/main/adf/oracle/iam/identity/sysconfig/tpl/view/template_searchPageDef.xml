@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="template_searchPageDef"
+                Package="oracle.iam.identity.sysconfig.tpl.view">
+  <parameters/>
+  <executables>
+    <iterator     id="NotificationTemplateIterator" Binds="NotificationTemplateSearchVO" DataControl="NotificationTemplateAMDataControl" RangeSize="20"/>
+    <searchRegion id="NotificationTemplateCriteria" Binds="NotificationTemplateIterator" Criteria="NotificationTemplateVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="name"/>
+  </executables>
+  <bindings>
+    <tree  id="NotificationTemplate" IterBinding="NotificationTemplateIterator">
+      <nodeDefinition Name="NotificationTemplateNode" DefName="oracle.iam.identity.sysconfig.model.view.NotificationTemplateVO">
+        <AttrNames>
+          <Item Value="id"/>
+          <Item Value="name"/>
+          <Item Value="event"/>
+          <Item Value="description"/>
+          <Item Value="status"/>
+          <Item Value="snmp"/>
+          <Item Value="dataLevel"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="NotificationTemplateAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="NotificationTemplateAMDataControl"/>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

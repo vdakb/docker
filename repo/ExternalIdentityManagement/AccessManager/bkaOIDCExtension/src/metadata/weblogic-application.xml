@@ -1,0 +1,57 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<weblogic-application xmlns             ="http://xmlns.oracle.com/weblogic/weblogic-application"
+                      xmlns:xsi         ="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-application http://xmlns.oracle.com/weblogic/weblogic-application/1.6/weblogic-application.xsd">
+  <library-ref>
+    <library-name>oracle.sdp.client</library-name>
+  </library-ref>
+  <library-ref>
+    <library-name>oam-jars</library-name>
+    <exact-match>false</exact-match>
+  </library-ref>
+  <library-context-root-override>
+    <context-root>/oam-jars</context-root>
+    <override-value>/oidc-oam-jars</override-value>
+  </library-context-root-override>
+  <library-ref>
+    <library-name>lib_idm_oam_thirdparty</library-name>
+    <exact-match>false</exact-match>
+  </library-ref>
+  <library-ref>
+    <library-name>oracle.idm.ipf</library-name>
+    <exact-match>false</exact-match>
+  </library-ref>
+  <prefer-application-packages>
+    <!--
+     | Configuration classes and related jmx classes are being deployed in the
+     | system classpath as well as the ear file. This is causing fatal
+     | exceptions during application startup.
+     | TODO: reconcile the two locations to a single location if possible.
+     |
+     | 07/16/2009
+     | The classpath conflict is also seen in the following situation.
+     | The OAMAuthnProvider.jar contains NAP library classes that are also
+     | included 
+     | in OAM 11g EAR. Hence, there are class loading issues due to different
+     | versions of classes. This is verified by deleting the oamAuthentcation
+     | jar files that are being shipped as a part of JRF.
+     | To fix this, the filtering is now applied to the
+     | oracle.security.am.common.*
+     | so that the ear file sees classes from the jar in the ear file.
+     -->
+    <package-name>org.apache.commons.logging.*</package-name>
+    <package-name>oracle.security.am.*</package-name>   
+    <package-name>com.tangosol.*</package-name>
+    <package-name>org.eclipse.higgins.configuration.*</package-name>
+    <!-- Added the below to isolate OAM to use packaged jython-2.5.2 library instead of weblogic.jar jython classes -->
+    <package-name>org.python.*</package-name>
+  </prefer-application-packages>
+  <!--
+   | entity-db.jar
+  <classloader-structure> 
+    <module-ref> 
+      <module-uri>oidc.extension.access.module.war</module-uri> 
+     </module-ref>
+  </classloader-structure>
+   -->
+</weblogic-application>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:igs           ="http://www.oracle.com/schema/igs"
+            targetNamespace     ="http://www.oracle.com/schema/igs"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="entitlement"
+            version             ="1.0.0.0">
+  <xsd:include schemaLocation="entity.xsd"/>
+  <!--
+   | Entitlement
+   -->
+  <xsd:complexType name="entitlement">
+    <annotation>
+      <documentation>
+        Entitlement wrappes the details of authorizations granted or revoked to
+        or from an account in a target system.
+
+        The public identifier of an entitlement refers to the namespace of the
+        authorization model in Identity Manager. In other words this id
+        represents the register tab displayed in the UI of an account detail
+        page.
+
+        The record of such an authorization can in turn consist of a number of
+        attributes, which in turn are specified by the authorization system of
+        the target system. For this reason, an entitlement maintains a
+        collection of attributes describing the entitlements.
+
+        An authorization can be granted or revoked. A modification of existing
+        authorizations is not planned. For this reason, entitlement as a
+        concrete implementation of igs:entity has been extended with an
+        attribute action, which declares assign and revoke as its canonical
+        values (assign is the default value for this attribute).
+      </documentation>
+    </annotation>
+    <xsd:sequence>
+      <xsd:element name="attributes" type="igs:attribute" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="action" use="required">
+      <xsd:simpleType>
+        <xsd:restriction base="igs:token">
+          <xsd:enumeration value="assign"/>
+          <xsd:enumeration value="revoke"/>
+          <xsd:enumeration value="modify"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+</xsd:schema>

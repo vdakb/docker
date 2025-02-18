@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="lookup_valuesPageDef"
+                Package="oracle.iam.identity.sysconfig.lku.view">
+  <parameters/>
+  <executables>
+    <iterator     id="LookupIterator"      Binds="LookupDetailVO" DataControl="LookupAMDataControl" RangeSize="20"/>
+    <iterator     id="LookupValueIterator" Binds="LookupValueVO"  DataControl="LookupAMDataControl" RangeSize="20"/>
+    <searchRegion id="LookupValueVCRegion" Binds="LookupValueIterator" Criteria="LookupValueVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="name"/>
+  </executables>
+  <bindings>
+    <tree id="LookupValue" IterBinding="LookupValueIterator">
+      <nodeDefinition Name="LookupValueNode" DefName="oracle.iam.identity.sysconfig.model.view.LookupValueVO">
+        <AttrNames>
+          <Item Value="lookupKey"/>
+          <Item Value="valueKey"/>
+          <Item Value="encoded"/>
+          <Item Value="decoded"/>
+          <Item Value="disabled"/>
+          <Item Value="pendingAction"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <button id="disabled" IterBinding="LookupValueIterator" DTSupportsMRU="false" StaticList="true">
+      <AttrNames>
+        <Item Value="disabled"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="0"/>
+        <Item Value="1"/>
+      </ValueList>
+    </button>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="LookupAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="LookupAMDataControl"/>
+    <methodAction id                 ="refreshAttribute"
+                  DataControl        ="LookupAMDataControl"
+                  InstanceName       ="LookupAMDataControl.dataProvider"
+                  MethodName         ="refreshAttribute"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id                 ="refreshValue"
+                  DataControl        ="LookupAMDataControl"
+                  InstanceName       ="LookupAMDataControl.dataProvider"
+                  MethodName         ="refreshValue"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id                 ="createValue"
+                  InstanceName       ="LookupAMDataControl.dataProvider"
+                  DataControl        ="LookupAMDataControl"
+                  Action             ="invokeMethod"
+                  MethodName         ="createValue"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+      <NamedData NDName="pending"    NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id                 ="requeryValue"
+                  InstanceName       ="LookupAMDataControl.dataProvider"
+                  DataControl        ="LookupAMDataControl"
+                  Action             ="invokeMethod"
+                  MethodName         ="requeryValue"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+      <NamedData NDName="pending"    NDType="java.util.Map"/>
+    </methodAction>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,243 @@
+#!/bin/sh
+#
+# Payara Variable Initialization
+#
+# DOMAIN will be the name used to reference the domain when working with some
+# Payara/Glassfish commands.
+#
+DOMAIN="igs"
+#
+# The VERSION variable points to your Payara version used.
+# The below path would be appropriate for Payara version 5.2022.5
+#
+VERSION="5.2022.5"
+#
+# The HOME variable points to your Payara install location. The below
+# path would be appropriate for Payara versions 5.2022.x
+#
+HOME="/opt/oracle/product/pgs/${VERSION}"
+#
+# The USERNAME variable points the administrative user.
+#
+USERNAME="pgsadmin"
+#
+# The PASSWORD variable points the password file location.
+#
+PASSWORD="/Users/dsteding/.gfclient/secret"
+#
+# The CLI variable points to the location of the asadmin script used to run the
+# Payara asadmin commands
+#
+CLI=${HOME}/bin/asadmin
+#
+# The PORT_ADMIN variable indicates the port will be used for administration
+# (defaults to 4848).
+# The PORT_ADMIN that Payara assigns by default or when using --portbase
+# (see below). You can access the admin console at http://yourserver:PORT_ADMIN
+PORT_ADMIN="8001"
+PORT_DEBUG="9001"
+PORT_OSGI="8003"
+PORT_HTTP="8081"
+PORT_HTTPS="8082"
+PORT_JMX="8083"
+PORT_JMS="8084"
+PORT_IIOP="8085"
+PORT_IIOPS="8086"
+PORT_IIOPA="8087"
+#
+# The DEPLOYMENT variable indicates the location of the application WAR file to
+# be deployed. The path needs to point to the Payara_Examples folder in this
+# instance.
+#
+DEPLOYMENT="/Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/deployment/igs"
+#
+# Copy required files to the server
+#
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/ojdbc8.jar                       ${HOME}/glassfish/lib
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/primefaces-11.0.0.jar            ${HOME}/glassfish/lib
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/primefaces-extensions-11.0.0.jar ${HOME}/glassfish/lib
+
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/ocs-hst-core.jar                 ${HOME}/glassfish/lib
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/ocs-hst-jps.jar                  ${HOME}/glassfish/lib
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/ocs-hst-json.jar                 ${HOME}/glassfish/lib
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/ocs-hst-rest.jar                 ${HOME}/glassfish/lib
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/ocs-iad-saml.jar                 ${HOME}/glassfish/lib
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/ocs-igd-scim.jar                 ${HOME}/glassfish/lib
+
+cp ${DEPLOYMENT}/0000\ systemCustomization/lib/bka-igs-authn.jar                ${HOME}/glassfish/lib
+
+#
+# Delete existing domains that either never been used or might be failed during setp
+#
+if [ -d ${HOME}/glassfish/domains/domain1 ]
+then
+  ${CLI} delete-domain domain1
+fi
+if [ -d ${HOME}/glassfish/domains/${DOMAIN} ]
+then
+  ${CLI} delete-domain ${DOMAIN}
+fi
+#
+# Uses the initialized variables to create the new domain using the asadmin
+# command create-domain. The command creates a Payara Server domain, a namespace
+# that complies with the Java EE standard and can have a configuration that is
+# different from other domains present on the server.
+#
+# The create-domain command has many options, although they cannot all be used
+# together. In this example command the options used are --domainproperties.
+#
+# The use of the DOMAIN_NAME variable at the end of the asadmin command is used
+# to determine the directory with which the domain's data is stored in within
+# your Payara install. The name must contain only ASCII characters and be valid
+# for a directory name on your operating system.
+#
+# More information regarding the use and option of the asadmin create-domain
+# command can be found at:
+#
+#   https://docs.oracle.com/html/E24938_01/create-domain.htm
+#
+${CLI} create-domain --domainproperties java.debugger.port=${PORT_DEBUG}:domain.adminPort=${PORT_ADMIN}:osgi.shell.telnet.port=${PORT_OSGI}:domain.instancePort=${PORT_HTTP}:http.ssl.port=${PORT_HTTPS}:domain.jmxPort=${PORT_JMX}:jms.port=${PORT_JMS}:orb.listener.port=${PORT_IIOP}:orb.ssl.port=${PORT_IIOPS}:orb.mutualauth.port=${PORT_IIOPA} ${DOMAIN}
+#
+# Copy required files to the domian
+#
+#mkdir -p ${HOME}/glassfish/domains/${DOMAIN}/config/saml/v2/xsd
+#cp ${DEPLOYMENT}/0000\ systemCustomization/config/saml/v2/xsd/* ${HOME}/glassfish/domains/${DOMAIN}/config/saml/v2/xsd
+#
+# Start the newly created igsDomain domain using the asadmin start-domain
+# command.
+#
+${CLI} start-domain ${DOMAIN}
+#
+# Runs the asadmin command to create a new cluster with the name "igc" on the
+# newly created domain igs.
+#
+# The option -p points the asadmin command to run on the port specified by the
+# PORT_ADMIN variable. In this case the admin port of the domain we wish to
+# create the cluster on is stored as the PORT_ADMIN variable.
+#
+# The create-cluster command will create an empty Payara server cluster, with
+# the name following the command being given as the cluster name.
+#
+# Options and their usage is detailed by the Oracle GlassFish documentation at:
+#
+#   https://docs.oracle.com/cd/E26576_01/doc.312/e24938/create-cluster.htm#GSRFM00017
+#
+# ${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} create-cluster igc
+#
+# Runs asadmin commands to create local instances on the cluster igc to form
+# a two node cluster on the new domain igs.
+#
+# The option -p points the asadmin command to run on the port specified by the
+# PORT_ADMIN variable. The PORT_ADMIN points to the domain which the cluster
+# just was created on, so that is used again.
+#
+# The create-local-instance asadamin subcommand creates a new Payara server
+# instance on the host which the subcommand was run on. Two
+# create-local-instance options are used here: --cluster and --portbase.
+#
+# --cluster:
+# The --cluster option tells Payara which cluster the created instance should
+# inherit its configuration from, creating a clustered instance. In this case
+# the instances are clustered to the just created igs-cluster.
+#
+# --portbase:
+# The --portbase option tells Payara where the port assignment should begin for
+# each instance. The --portbase option for the create-local-instance subcommand
+# works the same as is does for the create-domain subcommand because these
+# instances are being created on the same domain as was created earlier.
+#
+# Following the options each instance is given a name, igs1 and igs2
+# respectively.
+#
+# More options and their usage is detailed by the Oracle GlassFish documentation
+# at:
+#   https://docs.oracle.com/cd/E26576_01/doc.312/e24938/create-local-instance.htm#GSRFM00044
+#
+# ${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} create-local-instance --cluster igc --node local-igs --portbase ${PORT_BASE} igs1
+# ${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} create-local-instance --cluster igc --node local-igs --portbase ${PORT_BASE} igs2
+
+# asadmin subcommand to start the cluster
+#
+# The option -p specifies the port to run the start-cluster command on, in this
+# case it is run on the PORT_ADMIN for the created identity governance domain.
+#
+# The name of the cluster to start is provided following the start-cluster
+# command.
+# ${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} start-cluster igc
+
+# asadmin subcommand to enable hazelcast on the created cluster. The four
+# options used here are -p, --enabled, --dynamic and --target.
+#
+# The option -p specifies the port which the asadmin subcommand is run on, which
+# should be in this case the admin port the cluster runs on, given by the
+# PORT_ADMIN variable.
+#
+# --enabled:
+# The enabled option can be used to enable or disable hazelcast through
+# --enabled true and --enabled false respectively.
+#
+# --dynamic:
+# The dynamic command determines if the Hazelcast member embedded in the Payara
+# server will be restarted to apply changes made. To enable Hazelcast without
+# requiring the cluster to restart the option --dynamic true is added.
+#
+# --target:
+# To enable Hazelcast on the igs-cluster the --target option is used to point
+# the asadmin subcommand to the cluster that we want to enable Hazelcast on.
+#
+# Documentation on enabling Hazelcast (for 5.2022.4) can be seen at:
+#
+#   https://github.com/payara/Payara/wiki/Hazelcast-(Payara-5.2022.4)#3-enabling-hazelcast
+#
+# While documentation on configuring Hazelcast (for 5.2022.4) can be found at:
+#
+#   https://github.com/payara/Payara/wiki/Hazelcast-(Payara-5.2022.4)#4-configuring-hazelcast
+#
+# ${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} set-hazelcast-configuration --enabled true --dynamic true --target igc
+
+# asadmin subcommands to enable web container availability and change the
+# persistence type to hazelcast
+#
+# The asadmin subcommands are pointed towards the running cluster by the -p
+# option.
+#
+# The set subcommand is used to change the value of the web container
+# availability enabled value to true.
+#
+# Another set subcommand is then called so as to set the web container
+# persistence type to Hazelcast.
+# ${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} set igc-config.availability-service.web-container-availability.availability-enabled=true
+# ${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} set igc-config.availability-service.web-container-availability.persistence-type=hazelcast
+
+${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} create-jvm-options "-Doracle.jdbc.autoCommitSpecCompliant\=false"
+
+#
+# Create JDBC DataSource
+#
+${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} create-jdbc-connection-pool \
+   --restype javax.sql.DataSource \
+   --datasourceclassname oracle.jdbc.pool.OracleDataSource \
+   --property "user=igd_igs:password=Welcome1:url=jdbc\\:oracle\\:thin\\:@oliver.cinnamonstar.net\\:1521/mdr.cinnamonstar.net" \
+   identityServicePool
+${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} ping-connection-pool identityServicePool
+${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} create-jdbc-resource \
+   --connectionpoolid identityServicePool \
+   --target server jdbc/idsDS
+
+#
+# Create
+#
+${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} create-message-security-provider \
+  --target server \
+  --layer HttpServlet \
+  --classname bka.iam.identity.oam.IdentityAsserter \
+  --property "assertionType=plain:assertionHeader=oam_remote_user:dataSource=jdbc/idsDS:principalQuery=SELECT usr.id FROM igt_users usr WHERE usr.username \\= ?:permissionQuery=SELECT url.rol_id FROM igt_users usr,igt_userroles url WHERE url.usr_id \\= usr.id AND UPPER(usr.username) \\= UPPER(?):signingMaterial=\\"\\":signingLocation=\\"\\"" \
+  IdentifierAuthnModule
+#
+# Enable Remote Administration
+# The server requires a restart after it's enable.
+# This is done at the end of this script.
+#
+${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} enable-secure-admin
+${CLI} stop-domain  ${DOMAIN}
+${CLI} start-domain ${DOMAIN}

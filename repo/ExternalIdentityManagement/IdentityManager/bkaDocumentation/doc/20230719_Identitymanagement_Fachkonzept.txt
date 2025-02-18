@@ -1,0 +1,45 @@
+Weshalb wird das so nicht funktionieren!
+
+Das Fachkonzept "Identity Management Fachkonzept", Version 0.5 | Stand 19.07.2023 beschreibt zwei wesentliche Anforderungen zur bereitstellung von Benutzerkonten und den damit verbundenen Berechtigngen:
+
+1. LDAP Generic
+2. ZeRo
+
+Es wird nicht darauf eingegangen, in welcher Art und Weise diese beiden Prinzipien miteinander verbunden oder interagieren.
+Es kann lediglich aus einigen Kapiteln (siehe 2.10 Delta- & Vollsynchronisation) abgeleitet werden, das die Synchronisation aus Richtung F-IAM in Richtung Teilnehmer stattfindet.
+Der ausführende Akteur ist hierbei ein IT-System beim Teilnehmmer; Persistierung, bzw. Datenströme in Richtung LDAP Generic bzw. ZeRo bleiben weitestgehend offen.
+
+Folgende Anahmen werden getroffen:
+
+LDAP Generic
+Dieses Modell legt fest, dass ein auf eine Identität (DIT ou=Benutzer) durch eine Gruppenmitgliedschaft im untergeordneten Eintrag cn=Zugriff einer Anwendnung (DIT ou=AW1) eine Benutzerkonto in der symbolisch durch AW1 representierten Anwendung erhält.
+Durch die Zuweisung in den in den untergeordneten Einträgen ou=Funktionsrechte, ou=Rollen, ou=Intermediates Gruppenmitgiedschaften werden zuzüglich die jeweiligen Berechtigungen für die Anwendung AW1 vergeben.
+Die Zuweisung respektive der Entzug von Rechten kann prinzipiell in allen drei Kategorien stattfinden, jenachdem wie das eigentliche Zielsystem das auffasst.
+(z.B. für ein Active Directory wäre lediglich der Zweig ou=Funktionsrechte relevant, denn etwas anderes kennt ein Active Directory nicht).
+Diese Modell ist durch den Teilnehmer entsprechend zu pflegen.
+Damit enstehen Anforderungen an die Teilnehmer in diesem generischen Modell für jeden Typ von Anwednung den korrekten Abbildungsmodus für Berechtigungen zu finden.
+Um die Übertragung der somit entstehenden Berechtigungsobjekte in die Zielanwendung vorzunehmen wird zu einem bestimmten Zeitpunkt das Modell durch das F-IAM ausgelesen, in die entprechenden Benutzerkonten transformiert und schlussendlich unter Verwendung der besthenden Konnektor-Architektur in das Zielsystem provisioniert.
+Da jeder Teilnehmer diese in seinem spezifischen Verzeichnisdiesnt vornimmt, ist davon auszugehen, dass mehrere Ladeprozesse parallel ausgeführt werden.
+
+Zusammenfassend ist also das im Modell LDAP Generic eine Sollstellung abgebildet, die zu einem Istzustand im eigentlichen Zielsystem überführt wird.
+
+ZeRo
+Durch ZeRo wird der Versuch unternommen die im Modell LDAP Generic granular abzubildenden Rechtevektoren pro Anwednung in fachlich motivierte Rollen zu fassen.
+(Es ist zur Zeit nicht ersichtlich wie diese beiben Modell miteinander verbunden sind, und ob sie überhaupt verbunden sein sollen).
+Prinzipell wird in diesem Modell davon ausgegangen, dass einzelne Berechtigungen zu einer fachlichen Rolle zusammengefasst werden.
+(Es ist zum gegenwärtigen Zeitpunkt absolute unklar, was in diesem Zusammenhang Funktionsrechte mit OE Bezug darstellen sollen).
+Unter der Annahme das eine Möglichkeit gefunden wird diese Konstrukt zu einer eindeutigen Vergabe aufzulösen, ergeben sich folgende Fragestellungen:
+
+Synchronität:
+Beide Modelle sind als Entry-Master für die Erzeugung, bzw. den Entzug von Benutzerkonten zu betrachten.
+Somit ist zu einem gegebene Zeitpunkt das Gesamtsystem konfliktionäre, da die nicht vorgegeben wird das beide Modelle den gleichen Zustand wiederspiegeln müssen.
+(Es findet sich keinerlei Hinweis im Dokument, dass die Datenquelle hierbei direkt einzubeziehen ist).
+
+Damit lääst sich folgendes Szenario herleiten:
+Zu einem gegebenen Zeitpunkt wird die Rolle wird aufgelöst und der daraus resultierende Rechtevektor in die Anwendungssystem asynchron transformiert.
+Zu einem weiteren gegebenen Zeitpunkt werden die als Soll definierten Berechtigungsdaten des durch das Modell LDAP Generic in das entprechende Anwendungssystem asynchron transformiert.
+Dabei können Abweichungen zwischen beiden Modellen in der Datenquelle vorhanden sein, da die durch ZeRo angeforderten Berechtigungen noch nicht mit dem Ist des teilnehmerspezifischen IAM Systems abgeglichen wurde.
+
+Als Ergebnis beginnt diese Konstruktion zu schwingen bis sich über einen längeren Zeitraum hinweg eventuell ein eingeschwungener Zustand ergibt.
+In diesem Zeitraum, darf jedoch keine Änderung am Rollenmodell, bzw. der Steuerung der Benutzerkonten stattfinden, sonst schwingt das weiter.
+Es ist kaum abschätzbar, wann dieser eingeschwungene Zustand erreicht wird, denn dazu ist eine Vergleich der beiden Modelle notwendig.

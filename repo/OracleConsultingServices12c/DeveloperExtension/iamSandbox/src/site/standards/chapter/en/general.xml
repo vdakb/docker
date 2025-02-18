@@ -1,0 +1,215 @@
+<!--
+  ! This software is the confidential and proprietary information of
+  ! Oracle Corporation. ("Confidential Information").  You shall not
+  ! disclose such Confidential Information and shall use it only in
+  ! accordance with the terms of the license agreement you entered
+  ! into with Oracle.
+  !
+  ! ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+  ! SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  ! IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ! PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+  ! SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+  ! THIS SOFTWARE OR ITS DERIVATIVES.
+  !
+  ! Copyright &#xA9; 2015. All Rights reserved
+  !
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="general-iam"
+         xml:lang="en"
+         version ="5.0">
+  <title>General Guidelines</title>
+  <section xml:id="general-iam-01">
+    <title>Formatting Code</title>
+    <para>
+      Use two spaces of indentation per nesting level.
+      Use spaces rather than tabs to avoid problems with different tab definitions on printers and editors.
+      The length of each source line should not exceed 80 characters.
+    </para>
+    <para>
+      JDeveloper should be set up to use these defaults.
+    </para>
+    <para>
+      Go to <emphasis role="strong">Tools</emphasis> | <emphasis role="strong">Preferences</emphasis> | <emphasis role="strong">Code Editor</emphasis> | <emphasis role="strong">Code Style</emphasis>
+    </para>
+  </section>
+  <section xml:id="general-iam-02">
+    <title>Comments</title>
+    <para>
+      Comments must be produced in parallel with source code development, not tagged on afterwards.
+      Comments should be used as follows:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <para>
+          Javadoc comments (<literal>/**   */</literal>) should be used to generate appropriate class, method and variable documentation (see section X for more detail).
+        </para>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Single-line comments (<literal>//</literal>) should be used for any non-documentation comments within code.
+          If there are several consecutive lines of comment, each must begin with <literal>//</literal>.
+        </para>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          C-style comment markers (<literal>/*   */</literal>) should only be used to comment out blocks of code.
+          This should only be done as part of the development process or debugging, delivered modules should not contain any commented out code.
+        </para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="general-iam-03">
+    <title>Source Files</title>
+    <para>
+      A Java source file may contain only one public class or interface.
+      When top-level (i.e. package level) non-public classes and interfaces are associated with a public class, you can put them in the same source file as the public class.
+      The public class should be the first class or interface in the file.
+    </para>
+    <para>
+      In addition to top-level classes, defined in the context of the package, inner classes can be defined within the context of a parent class.
+      This includes member classes, local classes and anonymous classes (see [4] for more information).
+      There are some situations in which inner classes useful (for example, local and anonymous classes are often used in event-handling code).
+      However, they can also make the code difficult to follow.
+      In general, consider the justification for an inner class carefully (for example, the class will not be available outside the context of the parent class) and ensure that the inner class is fully commented.
+    </para>
+    <para>
+      Organize the material in each source file as follows:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <para>
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      The final three categories form a repeating group.
+      Public member variables, constructors and methods appear first.
+      This is then followed by protected member variables, constructors and methods, and so on for default (package level) and private visibilities.
+      Within each set of method definitions, group ‘get’ and ‘set’ functions for a particular attribute together and group other logically related methods together.
+    </para>
+    <section xml:id="general-iam-03-01">
+      <title>File Header</title>
+      <para>
+        Begin each file with a non-javadoc comment including:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>
+            Disclaimer, if applicable
+          </para>
+          <para/>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Copyright information, if applicable.
+          </para>
+          <para/>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Information identifying the file including the project, subsystem and filename.
+          </para>
+          <para/>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            A list of the classes or interfaces defined in the file, which will always include the one public class or interface included in the file plus any non-public top-level classes and any inner classes.
+          </para>
+          <para/>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            History table listing dates, authors, and summaries of changes.
+            Change summaries can often be generated automatically by source control systems, for example PVCS replaces the label $Log$ with the change history (although this is only useful if developers enter meaningful comments when checking files in).
+          </para>
+          <para/>
+          <para/>
+        </listitem>
+      </itemizedlist>
+      <para>
+        For example:
+      </para>
+      <programlisting>
+/*
+  Oracle Deutschland BV &#x26; Co. KG
+
+  This software is the confidential and proprietary information of
+  Oracle Corporation. ("Confidential Information"). You shall not
+  disclose such Confidential Information and shall use it only in
+  accordance with the terms of the license agreement you entered
+  into with Oracle.
+
+  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY
+  OF THE SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY
+  DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR
+  DISTRIBUTING THIS SOFTWARE OR ITS DERIVATIVES.
+
+  Copyright &#xA9; 2014. All Rights reserved
+
+  ----------------------------------------------------------------------
+
+  System      :  Oracle Access Authentication Plug-In Library
+  Subsystem   :  Common Shared Runtime Facilities
+
+  File        :  AccessPluginError.java
+
+  Purpose     :  This file implements the interface
+                 AccessPluginError.
+
+
+  Revisions    Date        Editor      Comment
+  ------------+-----------+-----------+---------------------------------
+  3.1.0.0      2014-28-10  DSteding    First release version
+      </programlisting>
+    </section>
+    <section xml:id="general-iam-03-02">
+      <title>Import Statements</title>
+      <para>
+        Although Java allows the use of an asterisk as a wildcard character in import statements, its use should be avoided, since it increases the chance of namespace clashes between packages.
+        Instead, explicitly import each class required.
+        This also makes maintenance easier, since a fully qualified import statement allows you to find documentation relating to the class quickly.
+      </para>
+      <para>
+        To improve clarity, imports should be listed in order of increasing package specialization with respect to the project.
+        <literal>java</literal> imports should be listed first, followed by <literal>javax</literal> imports and any other non-Oracle imports.
+        Then Oracle imports should be listed, again in order of increasing specialization - packages developed on other projects first followed by packages developed on the current project.
+        Multiple imports from a particular package should be listed alphabetically.
+      </para>
+      <para>
+        For example:
+      </para>
+      <programlisting>
+import java.util.Stack;
+import java.util.Enumeration;
+
+import oracle.abc.Utility;
+
+import oracle.iam.access.Employee;
+import oracle.iam.access.Location;
+      </programlisting>
+      <para>
+        JDeveloper can automatically sort the import statements in a class, removing duplicates and unused imports.
+        Right click in the code editor and select <emphasis role="string">Organize imports...</emphasis> and then one of the options.
+      </para>
+      <para>
+        Note that in general import statements should be used rather than the use of fully qualified class names within code.
+        This is unwieldy and, since the class name may be mentioned in several places, difficult to maintain as the code evolves.
+        The use of two identically named types (for example, <literal>java.util.Date</literal> and <literal>java.sql.Date</literal> is an exceptional case in which the more frequently used type should be imported and the least used type fully qualified within the code.
+      </para>
+    </section>
+  </section>
+</chapter>

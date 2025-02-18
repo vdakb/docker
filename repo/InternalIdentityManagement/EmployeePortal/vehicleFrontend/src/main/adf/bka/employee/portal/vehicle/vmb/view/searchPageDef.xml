@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.2.30"
+                id     ="searchPageDef"
+                Package="bka.employee.portal.vehicle.vmb.view">
+  <parameters/>
+  <executables>
+    <iterator     id="BrandIterator" Binds="BrandSearchVO" DataControl="AdministrationAMDataControl" RangeSize="20"/>
+    <searchRegion id="BrandCriteria" Binds="BrandIterator" Criteria="BrandVOCriteria" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="name"/>
+  </executables>
+  <bindings>
+    <tree  id="Brand" IterBinding="BrandIterator">
+      <nodeDefinition Name="BrandNode" DefName="bka.employee.portal.vehicle.model.view.BrandVO">
+        <AttrNames>
+          <Item Value="id"/>
+          <Item Value="name"/>
+          <Item Value="icon"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Rollback" DataControl="AdministrationAMDataControl" RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

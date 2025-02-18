@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:oim           ="http://www.oracle.com/schema/oim/policy"
+            targetNamespace     ="http://www.oracle.com/schema/oim/policy"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="businessrole"
+            version             ="1.0.0.0">
+
+  <xsd:element name="roles">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="role" minOccurs="1" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:complexContent>
+              <xsd:extension base="oim:entity">
+                <xsd:sequence>
+                  <xsd:element name="applications" minOccurs="1" maxOccurs="1">
+                    <xsd:complexType>
+                      <xsd:sequence>
+                        <xsd:element name="application" minOccurs="1" maxOccurs="unbounded">
+                          <xsd:complexType>
+                            <xsd:complexContent>
+                              <xsd:extension base="oim:entity">
+                                <xsd:sequence>
+                                  <xsd:element name="entitlements" minOccurs="1" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                      <xsd:complexContent>
+                                        <xsd:extension base="oim:entity">
+                                          <xsd:sequence>
+                                            <xsd:element name="entitlement" type="oim:entitlement" minOccurs="1" maxOccurs="unbounded"/>
+                                          </xsd:sequence>
+                                        </xsd:extension>
+                                      </xsd:complexContent>
+                                    </xsd:complexType>
+                                  </xsd:element>
+                                </xsd:sequence>
+                              </xsd:extension>
+                            </xsd:complexContent>
+                          </xsd:complexType>
+                        </xsd:element>
+                      </xsd:sequence>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+                <xsd:attribute name="risk" default="medium">
+                  <xsd:simpleType>
+                    <xsd:restriction base="oim:token">
+                      <xsd:enumeration value="low"/>
+                      <xsd:enumeration value="medium"/>
+                      <xsd:enumeration value="high"/>
+                    </xsd:restriction>
+                  </xsd:simpleType>
+                </xsd:attribute>
+              </xsd:extension>
+            </xsd:complexContent>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="entitlement">
+    <xsd:complexContent>
+      <xsd:extension base="oim:entity">
+        <xsd:attribute name="action" default="assign">
+          <xsd:simpleType>
+            <xsd:restriction base="oim:token">
+              <xsd:enumeration value="assign"/>
+              <xsd:enumeration value="revoke"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="entity">
+    <xsd:sequence>
+      <xsd:element name="attribute"    minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="oim:token">
+              <xsd:attribute name="id" type="oim:token"     use="required"/>
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id"            type="oim:token"     use="required"/>
+  </xsd:complexType>
+
+  <simpleType name="token">
+    <xsd:restriction base="xsd:token">
+      <xsd:whiteSpace value="collapse"/>
+    </xsd:restriction>
+  </simpleType>
+</xsd:schema>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<adfc-config id="__01" xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="train-tf">
+    <default-activity>event-fetch</default-activity>
+    <data-control-scope id="__03">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__10">
+      <name id="__11">uiShell</name>
+      <value id="__12">#{pageFlowScope.uiShell}</value>
+      <class id="__13">oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__15">taskFlowId</name>
+      <value id="__16">#{pageFlowScope.taskFlowId}</value>
+      <class id="__17">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__18">
+      <name id="__19">mode</name>
+      <value id="__20">#{pageFlowScope.mode}</value>
+      <class id="__21">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__22">
+      <name id="__23">eventKey</name>
+      <value id="__24">#{pageFlowScope.eventKey}</value>
+      <class id="__25">java.lang.Long</class>
+      <required/>
+    </input-parameter-definition>
+    <managed-bean id="__61">
+      <managed-bean-name id="__62">eventTrain</managed-bean-name>
+      <managed-bean-class id="__63">oracle.iam.identity.sysprov.rce.state.Train</managed-bean-class>
+      <managed-bean-scope id="__64">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__65">
+      <managed-bean-name id="__66">eventAttribute</managed-bean-name>
+      <managed-bean-class id="__67">oracle.iam.identity.sysprov.rce.backing.AttributeState</managed-bean-class>
+      <managed-bean-scope id="__68">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__69">
+      <managed-bean-name id="__70">eventData</managed-bean-name>
+      <managed-bean-class id="__71">oracle.iam.identity.sysprov.rce.backing.DataState</managed-bean-class>
+      <managed-bean-scope id="__72">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__73">
+      <managed-bean-name id="__74">eventAccount</managed-bean-name>
+      <managed-bean-class id="__75">oracle.iam.identity.sysprov.rce.backing.AccountState</managed-bean-class>
+      <managed-bean-scope id="__76">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__77">
+      <managed-bean-name id="__78">eventIdentity</managed-bean-name>
+      <managed-bean-class id="__79">oracle.iam.identity.sysprov.rce.backing.IdentityState</managed-bean-class>
+      <managed-bean-scope id="__80">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__81">
+      <managed-bean-name id="__82">eventHistory</managed-bean-name>
+      <managed-bean-class id="__83">oracle.iam.identity.sysprov.rce.backing.HistoryState</managed-bean-class>
+      <managed-bean-scope id="__84">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="step-attributes">
+      <page id="__101">/oracle/iam/identity/sysprov/rce/view/event-attributes.jsff</page>
+      <train-stop id="__102">
+        <display-name id="__103">#{adfBundle['oracle.iam.identity.bundle.Provisioning']['RCE_ATTRIBUTE']}</display-name>
+        <sequential id="__104">false</sequential>
+      </train-stop>
+    </view>
+    <view id="step-data">
+      <page id="__106">/oracle/iam/identity/sysprov/rce/view/event-data.jsff</page>
+      <train-stop id="__107">
+        <display-name id="__108">#{adfBundle['oracle.iam.identity.bundle.Provisioning']['RCE_DATA']}</display-name>
+        <sequential id="__109">false</sequential>
+      </train-stop>
+    </view>
+    <view id="step-accounts">
+      <page id="__110">/oracle/iam/identity/sysprov/rce/view/event-accounts.jsff</page>
+      <train-stop id="__111">
+        <display-name id="__112">#{adfBundle['oracle.iam.identity.bundle.Provisioning']['RCE_ACCOUNT']}</display-name>
+        <sequential id="__113">false</sequential>
+      </train-stop>
+    </view>
+    <view id="step-identities">
+      <page id="__114">/oracle/iam/identity/sysprov/rce/view/event-identities.jsff</page>
+      <train-stop id="__115">
+        <display-name id="__116">#{adfBundle['oracle.iam.identity.bundle.Provisioning']['RCE_IDENTITY']}</display-name>
+        <sequential id="__117">false</sequential>
+      </train-stop>
+    </view>
+    <view id="step-history">
+      <page id="__118">/oracle/iam/identity/sysprov/rce/view/event-histories.jsff</page>
+      <train-stop id="__119">
+        <display-name id="__120">#{adfBundle['oracle.iam.identity.bundle.Provisioning']['RCE_HISTORY']}</display-name>
+        <sequential id="__121">false</sequential>
+      </train-stop>
+    </view>
+    <task-flow-return id="train-commit">
+      <outcome id="__122">
+        <name id="__123">train-commit</name>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="train-cancel">
+      <outcome id="__124">
+        <name id="__125">train-cancel</name>
+      </outcome>
+    </task-flow-return>
+    <method-call id="event-fetch">
+      <method id="__164">#{pageFlowScope.eventTrain.fetch}</method>
+      <outcome id="__165">
+        <fixed-outcome id="__166">fetched</fixed-outcome>
+      </outcome>
+    </method-call>
+    <train/>
+    <control-flow-rule id="__180">
+      <from-activity-id id="__181">*</from-activity-id>
+      <control-flow-case id="__182">
+        <from-outcome id="__183">cancel</from-outcome>
+        <to-activity-id id="__184">train-cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__198">
+      <from-activity-id id="__199">event-fetch</from-activity-id>
+      <control-flow-case id="__200">
+        <from-outcome id="__201">fetched</from-outcome>
+        <to-activity-id id="__202">step-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__203">
+      <from-activity-id id="__204">step-history</from-activity-id>
+      <control-flow-case id="__205">
+        <from-outcome id="__206">cancel</from-outcome>
+        <to-activity-id id="__207">train-cancel</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__208">
+        <from-outcome id="__209">commit</from-outcome>
+        <to-activity-id id="__210">train-commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

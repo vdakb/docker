@@ -1,0 +1,25 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityService\identityIdentifier\src\main\resources\dbs\qms\obj\qms_rlp.con
+--
+-- Generated for Oracle 10g on Tue Mar 30 08:58:19 2010 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Constraints on 'qms_rulestack'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key on 'qms_rule_properties'
+ALTER TABLE qms_rule_properties
+  ADD (
+    CONSTRAINT qms_rlp_pk PRIMARY KEY (
+      process
+    , code
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Check Constraint on 'qms_rule_properties'
+ALTER TABLE qms_rule_properties
+  ADD (
+    CONSTRAINT qms_rlp_ck1 CHECK (
+      enabled IN ('Y', 'N')
+    )
+  )
+/

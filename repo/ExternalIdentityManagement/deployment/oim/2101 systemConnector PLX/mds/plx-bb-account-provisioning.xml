@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@buster.vm.oracle.com:7021/mdr.vm.oracle.com" description="PLX Metadata Configuration Police Brandenburgsyl Revision  1.0.0.0" exported-date="1597846956397" user="XELSYSADM" version="12.2.1.3.0">
+  <eventhandlers mds-file="plx-bb-account-provisioning.xml" mds-path="/metadata/ocs-features-provisioning" name="/metadata/ocs-features-provisioning" repo-type="MDS">
+    <completeXml>
+      <descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+                  identifier    ="UD_PLBB_USR_SID"
+                  uniqueName    ="UD_PLBB_USR_COMMON_NAME"
+                  transformation="false">
+        <attribute type="string" name="__UID__"                   source="UD_PLBB_USR_SID">
+          <flag>required</flag>
+        </attribute>
+        <template  type="string"  name="__NAME__"                 source="'cn=' + UD_PLBB_USR_COMMON_NAME.replace(',','\\,') + ',' + 'ou=' + UD_PLBB_USR_TENANT + ',' + 'ou=plxtds1,ou=Poliks Test,ou=Polizei,ou=PLXADS,dc=bb-psp,dc=xa'"/>
+        <template  type="string"  name="dn"                       source="'cn=' + UD_PLBB_USR_COMMON_NAME.replace(',','\\,') + ',' + 'ou=' + UD_PLBB_USR_TENANT + ',' + 'ou=plxtds1,ou=Poliks Test,ou=Polizei,ou=PLXADS,dc=bb-psp,dc=xa'"/>
+        <attribute class="string" name="cn"                       source="UD_PLBB_USR_COMMON_NAME">
+          <flag>required</flag>
+        </attribute>
+        <attribute class="string" name="tenant"                   source="UD_PLBB_USR_TENANT">
+          <flag>ignore</flag>
+        </attribute>
+        <attribute class="string" name="sn"                       source="UD_PLBB_USR_LAST_NAME">
+          <flag>required</flag>
+        </attribute>
+        <attribute class="string" name="givenName"                source="UD_PLBB_USR_GIVEN_NAME"/>
+        <attribute class="string" name="displayName"              source="UD_PLBB_USR_DISPLAY_NAME"/>
+        <template  type="string"  name="distinguishedName"        source="'cn=' + UD_PLBB_USR_COMMON_NAME.replace(',','\\,') + ',' + 'ou=' + UD_PLBB_USR_TENANT + ',' + 'ou=plxtds1,ou=Poliks Test,ou=Polizei,ou=PLXADS,dc=bb-psp,dc=xa'"/>
+        <attribute class="string" name="mail"                     source="UD_PLBB_USR_MAIL"/>
+        <attribute class="string" name="userPassword"             source="UD_PLBB_USR_PWD"/>
+        <attribute class="string" name="extensionAttribute1"      source="UD_PLBB_USR_EXT_ATTR1"/>
+        <attribute class="string" name="extensionAttribute3"      source="UD_PLBB_USR_EXT_ATTR3"/>
+        <attribute class="string" name="extensionAttribute4"      source="UD_PLBB_USR_EXT_ATTR4"/>
+        <attribute class="string" name="extensionAttribute6"      source="UD_PLBB_USR_EXT_ATTR6"/>
+        <attribute class="string" name="objectSID"                source="UD_PLBB_USR_OBJ_SID"/>
+        <attribute class="string" name="sAMAccountName"           source="UD_PLBB_USR_SAMACCOUNTNAME"/>
+        <attribute class="string" name="businessCategory"         source="UD_PLBB_USR_BUSINESS_CAT"/>
+        <attribute class="string" name="carLicense"               source="UD_PLBB_USR_CAR_LICENCE"/>
+        <attribute class="string" name="departmentNumber"         source="UD_PLBB_USR_DEPARTMENT_NB"/>
+        <attribute class="string" name="employeeNumber"           source="UD_PLBB_USR_EMPLOYEE_NB"/>
+        <attribute class="string" name="employeeType"             source="UD_PLBB_USR_EMPLOYEE_TYPE"/>
+        <attribute class="string" name="homePhone"                source="UD_PLBB_USR_HOME_PHONE"/>
+        <attribute class="string" name="homePostalAddress"        source="UD_PLBB_USR_HOME_POST_ADDR"/>
+        <attribute class="string" name="initials"                 source="UD_PLBB_USR_INITIALS"/>
+        <attribute class="string" name="manager"                  source="UD_PLBB_USR_MANAGER"/>
+        <attribute class="string" name="mobile"                   source="UD_PLBB_USR_MOBILE"/>
+        <attribute class="string" name="o"                        source="UD_PLBB_USR_ORG_NAME"/>
+        <attribute class="string" name="preferredLanguage"        source="UD_PLBB_USR_PREF_LANG"/>
+        <attribute class="string" name="roomNumber"               source="UD_PLBB_USR_ROOM_NB"/>
+        <attribute class="string" name="secretary"                source="UD_PLBB_USR_SECRETARY"/>
+        <attribute class="string" name="uid"                      source="UD_PLBB_USR_UID"/>
+        <attribute class="string" name="facsimileTelephoneNumber" source="UD_PLBB_USR_FAC_TEL_PHONE"/>
+        <attribute class="string" name="l"                        source="UD_PLBB_USR_LOC_NAME"/>
+        <attribute class="string" name="ou"                       source="UD_PLBB_USR_ORG_UNIT_NAME"/>
+        <attribute class="string" name="postalAddress"            source="UD_PLBB_USR_POST_ADDR"/>
+        <attribute class="string" name="postalCode"               source="UD_PLBB_USR_POST_CODE"/>
+        <attribute class="string" name="postOfficeBox"            source="UD_PLBB_USR_POST_OFFICE"/>
+        <attribute class="string" name="street"                   source="UD_PLBB_USR_STREET"/>
+        <attribute class="string" name="telephoneNumber"          source="UD_PLBB_USR_TEL_PHONE"/>
+        <attribute class="string" name="title"                    source="UD_PLBB_USR_TITLE"/>
+        <attribute class="string" name="description"              source="UD_PLBB_USR_DESC"/>
+        <!--
+         | child form providing access only on column names not labels hnce fo any
+         | clone of the connector we need a new decriptor; aaargggh
+         -->
+        <multivalue name="group" source="UD_PLBB_UGP" transformation="false">
+          <attribute class="string" name="__UID__" source="UD_PLBB_UGP_UGP">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+         </multivalue>
+        <multivalue name="proxy" source="UD_PLBB_UPX" transformation="false">
+          <attribute class="string" name="__UID__" source="UD_PLBB_UPX_PRX">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+         </multivalue>
+        <multivalue name="role" source="UD_PLBB_URL" transformation="false">
+          <attribute class="string" name="__UID__" source="UD_PLBB_URL_URL">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+         </multivalue>
+        <multivalue name="securityRegion" source="UD_PLBB_SCR" transformation="false">
+          <attribute class="string" name="__UID__" source="UD_PLBB_SCR_SCR">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+         </multivalue>
+        <multivalue name="task" source="UD_PLBB_TSK" transformation="false">
+          <attribute class="string" name="__UID__" source="UD_PLBB_TSK_TSK">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+         </multivalue>
+      </descriptor>
+    </completeXml>
+  </eventhandlers>
+</xl-ddm-data>

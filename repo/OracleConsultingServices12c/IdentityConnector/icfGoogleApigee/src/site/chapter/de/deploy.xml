@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="deploy"
+         xml:lang="de"
+         version ="5.0">
+  <title>Bereitstellung des Konnektors</title>
+  <para>
+    Sie m&#252;ssen den Konnektor in Oracle Identity Manager installieren.
+    Bei Bedarf k&#246;nnen Sie den Connector auch auf einem Connector-Server bereitstellen.
+  </para>
+  <para>
+    Die folgenden Themen enthalten Details zum Installieren und Konfigurieren Konnektors:
+  </para>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      <link linkend="deploy-pre">Vorbereitung</link>
+    </listitem>
+    <listitem>
+      <link linkend="deploy-install">Installation</link>
+    </listitem>
+    <listitem>
+      <link linkend="deploy-post">Postinstallation</link>
+    </listitem>
+  </itemizedlist>
+  <section xml:id="deploy-pre">
+    <title>Vorbereitung</title>
+    <para>
+      Die Vorbereitung f&#252;r den Konnektor umfasst die Implementierung einer benutzerdefinierten Authentifizierung und die Implementierung eines benutzerdefinierten Parsers.
+      F&#252;r den Connector werden diese Schritte vor der Metadatengenerierung ausgef&#252;hrt.
+    </para>
+    <para>
+      Die Vorbereitung umfasst die folgenden optionalen Verfahren:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend="deploy-pre-authn">Implementieren der benutzerdefinierten Authentifizierung</link>
+      </listitem>
+      <listitem>
+        <link linkend="deploy-pre-parse">Implementieren von benutzerdefiniertem Parsing</link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="deploy-pre-authn">
+      <title>Implementieren der benutzerdefinierten Authentifizierung</title>
+      <para>
+         Wenn das Zielsystem einen Authentifizierungsmechanismus verwendet, der von diesem Konnnektor nicht unterst&#252;tzt wird, m&#252;ssen Sie die vom Zielsystem verwendete Authentifizierung implementieren und sie dann mithilfe der von diesem Konnektor bereitgestellten Plug-In's an den Konnektor binden.
+      </para>
+      <para>
+         Die Implementierung einer benutzerdefinierten Authentifizierung umfasst:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          das Erstellen einer Java-Klasse
+        </listitem>
+        <listitem>
+          das &#220;berschreiben der Methode <emphasis>getAuthHeaders(Map&lt;String, Object&gt; parameter)</emphasis> von <emphasis>Map&lt;String, String&gt;</emphasis>, die den Autorisierungsheader in Form einer <emphasis>Map</emphasis> zur&#252;ckgibt
+        </listitem>
+        <listitem>
+          die Aktualisierung des Konnnektor-Installationsmediums, um die neue Java-Klasse.
+        </listitem>
+      </itemizedlist>
+      <para>
+        Alle Konfigurations- und Authentifizierungsdetails des Zielsystems, die zum Abrufen des Berechtigungsheaders erforderlich sein k&#246;nnen, werden &#252;ber bestimmte Parameter der IT Ressource an die Methode <emphasis>getAuthHeaders(Map&lt;String, Object&gt; parameter)</emphasis> &#252;bergeben.
+        Auf alle von diesem Konnektor bereitgestellten Konfigurationseigenschaften k&#246;nnen innerhalb dieser Methode als Teil von <emphasis>parameter</emphasis>emphasis> zugegriffen werden.
+      </para>
+      <para>
+        Die Implementierung einer benutzerdefinierten Authentifizierung erfolgt folgenderma&#223;en:
+      </para>
+      <orderedlist>
+        <listitem>
+          <para>
+            Erstellen Sie eine Java-Klasse zum Implementieren der benutzerdefinierten Authentifizierung.
+            Diese Klasse muss die Schnittstelle <emphasis>org.identityconnectors.scimcommon.auth.spi.AuthenticationPlugin</emphasis> implementieren.
+          </para>
+          <para>
+            Notieren Sie sich den Namen dieser Java-Klasse. Sie geben den Namen der Java-Klasse an, w&#228;hrend Sie die IT Ressource f&#252;r das Zielsystem konfigurieren, die sp#228;ter in diesem Handbuch beschrieben wird.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Packen Sie die Java-Klasse, die die benutzerdefinierte Authentifizierung implementiert, in eine JAR-Datei.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Packen Sie die JAR-Datei mit der benutzerdefinierten Authentifizierungsimplementierung wie folgt in die JAR des Connector-Bundles:
+          </para>
+        </listitem>
+      </orderedlist>
+    </section>
+    <section xml:id="deploy-pre-parse">
+      <title>Implementieren von benutzerdefiniertem Parsing</title>
+    </section>
+  </section>
+  <section xml:id="deploy-install">
+    <title>Installation</title>
+    <para>
+      Die folgenden Themen enthalten Details zur Installation des Connectors:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend="deploy-install-basic">Grundlagen der Installation</link>
+      </listitem>
+      <listitem>
+        <link linkend="deploy-install-config-01">Installation in Identity Manager</link>
+      </listitem>
+      <listitem>
+        <link linkend="deploy-install-config-20">Konfigurieren der IT-Ressource f&#252;r das Zielsystem</link>
+      </listitem>
+      <listitem>
+        <link linkend="deploy-install-config-03">Informationen zu Kategorien von Parameter von IT-Ressourcen</link>
+      </listitem>
+      <listitem>
+        <link linkend="deploy-install-config-04">Parameter von IT-Ressourcen</link>
+      </listitem>
+      <listitem>
+        <link linkend="deploy-install-config-05">Angeben von Werten f&#252;r Parameter einer IT-Ressource</link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="deploy-install-basic">
+      <title>Grundlagen der Installation</title>
+      <para>
+        Das Verfahren zum Verst&#228;ndnis der Installation des Konnektors ist in zwei Phasen unterteilt:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <link linkend="deploy-install-basic-01">Schritte zum Installieren des Konnektors</link>
+        </listitem>
+        <listitem>
+          <link linkend="deploy-install-basic-02">Informationen zur lokalen und Remote-Installation des Konnektors</link>
+        </listitem>
+      </itemizedlist>
+      <section xml:id="deploy-install-basic-01">
+        <title>Schritte zum Installieren des Konnektors</title>
+        <para>
+          F&#252;r die Installation dieses Connectors m&#252;ssen Sie das im Installationsmedium enthaltene Konnektor-Bundle installieren und anschlie&#223;end das Konnektor-Bundle (spezifisch f&#252;r Ihr Zielsystem) installieren.
+        </para>
+        <para>
+          Im Folgenden finden Sie eine Zusammenfassung der Schritte zum Installieren des Connectors:
+        </para>
+        <orderedlist>
+          <listitem>
+            <para>
+              F&#252;hren Sie das Konnektor-Installationsprogramm aus, um das Konnektor-Bundle (spezifisch f&#252;r Ihr Zielsystem) zu installieren.
+              Die Vorgehensweise zum Installieren des Connector-Pakets wird sp&#2228;ter in diesem Handbuch beschrieben
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Konfigurieren Sie die IT-Ressource.
+              <link linkend="deploy-install-config-20">Konfigurieren der IT-Ressource f&#252;r das Zielsystem</link>
+            </para>
+          </listitem>
+        </orderedlist>
+      </section>
+      <section xml:id="deploy-install-basic-02">
+        <title>Informationen zur lokalen und Remote-Installation des Konnektors</title>
+      </section>
+    </section>
+    <section xml:id="deploy-install-config-01">
+      <title>Installation in Identity Manager</title>
+    </section>
+    <section xml:id="deploy-install-config-20">
+      <title>Konfigurieren der IT-Ressource f&#252;r das Zielsystem</title>
+      <para>
+        Die IT Ressource f&#252;r das Zielsystem wird nach der Installation des Konnektors erstellt.
+        Eine IT Ressource besteht aus Parametern, in denen die Verbindung und andere allgemeine Informationen zu einem Zielsystem gespeichert sind.
+        Identity Manager verwendet diese Informationen, um eine Verbindung zu einer bestimmten Installation oder Instanz des Zielsystems herzustellen und Abgleichs- und Bereitstellungsvorg&#228;nge durchzuf&#252;hren.
+      </para>
+      <para>
+        Die Liste der Parameter der IT Ressource des Konnektors kann in die folgenden Kategorien unterteilt werden:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <link linkend="deploy-install-config-21">Verbindungsbezogene Parameter</link>
+        </listitem>
+        <listitem>
+          <link linkend="deploy-install-config-22">Authentifizierungsparameter</link>
+        </listitem>
+        <listitem>
+          <link linkend="deploy-install-config-23">Parser Parameter</link>
+        </listitem>
+        <listitem>
+          <link linkend="deploy-install-config-24">Zus&#228;tzliche Konfigurationsparameter</link>
+        </listitem>
+      </itemizedlist>
+      <note>
+        Sie k&#246;nnen die Liste der Parameter der IT-Ressourcen jederzeit aktualisieren, indem Sie die Definition des IT-Ressourcentyps mithilfe der Identity Manager Design Console &#228;ndern.
+        Es ist nicht erforderlich, den Konnektor neu zu erstellen und zu installieren, wenn Sie die Definition des IT-Ressourcentyps aktualisieren.
+      </note>
+      <para>
+        In diesem Abschnitt werden die folgenden Themen im Zusammenhang mit der Konfiguration von IT Ressourcen behandelt:
+      </para>
+    </section>
+    <section xml:id="deploy-install-config-03">
+      <title>Informationen zu Kategorien von Parameter von IT-Ressourcen</title>
+    </section>
+    <section xml:id="deploy-install-config-04">
+      <title>Parameter von IT-Ressourcen</title>
+    </section>
+    <section xml:id="deploy-install-config-05">
+      <title>Angeben von Werten f&#252;r Parameter einer IT-Ressource</title>
+    </section>
+    
+    
+  </section>
+  <section xml:id="deploy-post">
+    <title>Postinstallation</title>
+  </section>
+</chapter>

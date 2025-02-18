@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Workspace Preferences"
+         basedir         ="."
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox">
+  <!--
+  =====================================================================
+  == properties specific to the version control
+  =====================================================================
+  -->
+  <property name="application.release"     value="12.2.1.3"/>
+  <property name="specification.version"  value="${application.release}"/>
+  <property name="implementation.version" value="${application.release}"/>
+  <property name="application.version"    value="./${application}.version"/>
+  <!--
+  =====================================================================
+  == properties specific to control the compiler progress
+  =====================================================================
+  -->
+  <import file="../wks-preferences.xml"/>
+  <!--
+  =====================================================================
+  == properties specific to the project installation
+  =====================================================================
+  -->
+  <property name="ocs.base.oim" value="${ocs.home}/IdentityManager"/>
+  <property name="ocs.base.icf" value="${ocs.home}/IdentityConnector"/>
+  <property name="wks.base.oim" value="${wks.home}/IdentityManager"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="ocs.base.oim: ${ocs.base.oim} doesn't exist.">
+    <condition>
+      <not><available file="${ocs.base.oim}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="ocs.base.icf: ${ocs.base.icf} doesn't exist.">
+    <condition>
+      <not><available file="${ocs.base.icf}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="wks.base.oim: ${wks.base.oim} doesn't exist.">
+    <condition>
+      <not><available file="${wks.base.oim}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == properties specific to the product installation
+  =====================================================================
+  -->
+  <property name="oim.release"        value="12.2.1.3"/>
+  <property name="iam.server.library" value="${ocs.base.oim}/CodeBasePlatform/${oim.release}"/>
+  <property name="icf.server.library" value="${ocs.base.oim}/CodeBaseConnector/${oim.release}"/>
+  <property name="oim.server.library" value="${ocs.base.oim}/CodeBaseServer/${oim.release}"/>
+  <property name="oim.client.library" value="${ocs.base.oim}/CodeBaseClient/${oim.release}"/>
+  <property name="oim.target.library" value="${ocs.base.oim}/CodeBaseTarget"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="iam.server.library: ${iam.server.library} doesn't exist.">
+    <condition>
+      <not><available file="${iam.server.library}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="icf.server.library: ${icf.server.library} doesn't exist.">
+    <condition>
+      <not><available file="${icf.server.library}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="oim.server.library: ${oim.server.library} doesn't exist.">
+    <condition>
+      <not><available file="${oim.server.library}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="oim.client.library: ${oim.client.library} doesn't exist.">
+    <condition>
+      <not><available file="${oim.client.library}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="oim.target.library: ${oim.target.library} doesn't exist.">
+    <condition>
+      <not><available file="${oim.target.library}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == properties specifies to library declarations
+  =====================================================================
+  -->
+  <path id="oracle.fmw.iam.platform">
+    <pathelement location="${fmw.base.jrf}/oracle.toplink/eclipselink.jar"/>
+    <pathelement location="${iam.server.library}/lib/iam-platform-utils.jar"/>
+    <pathelement location="${iam.server.library}/lib/iam-platform-kernel.jar"/>
+    <pathelement location="${iam.server.library}/lib/iam-platform-context.jar"/>
+    <pathelement location="${iam.server.library}/lib/iam-platform-auth-client.jar"/>
+    <pathelement location="${iam.server.library}/lib/iam-platform-authopss-service.jar"/>
+    <pathelement location="${iam.server.library}/lib/iam-platform-entitymgr.jar"/>
+    <pathelement location="${iam.server.library}/lib/iam-platform-pluginframework.jar"/>
+    <pathelement location="${iam.server.library}/lib/iam-platform-workflowservice.jar"/>
+    <pathelement location="${iam.server.library}/lib/OIMServer.jar"/>
+  </path>
+  <path id="oracle.fmw.iam.connector">
+    <pathelement location="${icf.server.library}/lib/icf-oim-intg.jar"/>
+    <pathelement location="${icf.server.library}/lib/connector-framework.jar"/>
+    <pathelement location="${icf.server.library}/lib/connector-framework-internal.jar"/>
+  </path>
+  <path id="oracle.fmw.iam.oim.client">
+    <pathelement location="${oim.client.library}/lib/commons-logging.jar"/>
+    <pathelement location="${oim.client.library}/lib/oimclient.jar"/>
+  </path>
+  <path id="oracle.fmw.iam.oim.adapter">
+    <pathelement location="${oim.server.library}/lib/xlLogger.jar"/>
+    <pathelement location="${oim.server.library}/lib/xlUtils.jar"/>
+    <pathelement location="${oim.server.library}/lib/xlAdapterUtilities.jar"/>
+    <pathelement location="${oim.server.library}/lib/xlAPI.jar"/>
+    <pathelement location="${oim.server.library}/lib/xlVO.jar"/>
+    <pathelement location="${oim.server.library}/lib/xlGenConnector.jar"/>
+    <pathelement location="${oim.server.library}/lib/xlDataObjects.jar"/>
+    <pathelement location="${oim.server.library}/lib/xlRemoteManager.jar"/>
+    <pathelement location="${oim.server.library}/lib/xlCache.jar"/>
+    <pathelement location="${oim.server.library}/lib/xlAuditor.jar"/>
+  </path>
+  <path id="oracle.fmw.iam.oim.scheduler">
+    <pathelement location="${oim.server.library}/lib/xlScheduler.jar"/>
+  </path>
+  <path id="oracle.fmw.iam.oim.deploy">
+    <pathelement location="${oim.server.library}/lib/xlDDM.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.oim.foundation">
+    <pathelement location="${ocs.base.oim}/oimFoundation/lib/ocs-foundation.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.oim.utility">
+    <pathelement location="${ocs.base.oim}/oimUtility/lib/ocs-utility.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.oim.adapter">
+    <pathelement location="${ocs.base.oim}/oimAdapter/lib/ocs-adapter.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.oim.plugin">
+    <pathelement location="${ocs.base.oim}/oimAdapter/lib/ocs-plugin.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.icf.integration">
+    <pathelement location="${ocs.base.icf}/icfIntegration/lib/ocs-integration.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.oim.directory">
+    <pathelement location="${ocs.base.oim}/oimDirectory/lib/gds-common.jar"/>
+    <pathelement location="${ocs.base.oim}/oimDirectory/lib/gds-adapter.jar"/>
+    <pathelement location="${ocs.base.oim}/oimDirectory/lib/gds-scheduler.jar"/>
+    <pathelement location="${ocs.base.oim}/oimDirectory/lib/gds-diagnostic.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.oim.database">
+    <pathelement location="${ocs.base.oim}/oimDatabase/lib/dbs-common.jar"/>
+    <pathelement location="${ocs.base.oim}/oimDatabase/lib/dbs-adapter.jar"/>
+    <pathelement location="${ocs.base.oim}/oimDatabase/lib/dbs-scheduler.jar"/>
+    <pathelement location="${ocs.base.oim}/oimDatabase/lib/dbs-diagnostic.jar"/>
+  </path>
+  <path id="oracle.fmw.iam.oim.sun.jndi">
+    <pathelement location="${oim.target.library}/opensource/lib/ldapbp.jar"/>
+  </path>
+</project>

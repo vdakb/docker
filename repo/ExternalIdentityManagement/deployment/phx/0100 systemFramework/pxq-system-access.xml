@@ -1,0 +1,16 @@
+<dsml:batchRequest xmlns:dsml="urn:oasis:names:tc:DSML:2:0:core">
+  <dsml:modifyRequest dn="ou=People,dc=pxq,dc=bka,dc=bund,dc=de">
+    <dsml:attr name="aci" operation="add">
+      <dsml:value>(target="ldap:///ou=People,dc=pxq,dc=bka,dc=bund,dc=de")(targetattr="*")(targetscope="subtree")(version 3.0; acl "Read acces to People entries"; allow (search,read,compare)(userdn="ldap:///self" or groupdn="ldap:///cn=orclUserRead,ou=Groups,dc=pxq,dc=bka,dc=bund,dc=de");)</dsml:value>
+      <dsml:value>(target="ldap:///ou=People,dc=pxq,dc=bka,dc=bund,dc=de")(targetattr="+")(targetscope="subtree")(version 3.0; acl "Group read acces to People entries"; allow (search,read,compare) groupdn="ldap:///cn=orclUserRead,ou=Groups,dc=pxq,dc=bka,dc=bund,dc=de";)</dsml:value>
+      <dsml:value>(target="ldap:///ou=People,dc=pxq,dc=bka,dc=bund,dc=de")(targetattr="userPassword")(targetscope="subtree")(version 3.0; acl "Self write access to People"; allow (write) userdn="ldap:///self";)</dsml:value>
+      <dsml:value>(target="ldap:///ou=People,dc=pxq,dc=bka,dc=bund,dc=de")(targetattr="*")(targetscope="subtree")(version 3.0; acl "Allow orclUserWrite add, read and write access to all attributes"; allow (read,search,compare,write,add,delete,import,export)(groupdn="ldap:///cn=orclUserWrite,ou=Groups,dc=pxq,dc=bka,dc=bund,dc=de");)</dsml:value>
+    </dsml:attr>
+  </dsml:modifyRequest>
+  <dsml:modifyRequest dn="ou=Groups,dc=pxq,dc=bka,dc=bund,dc=de">
+    <dsml:attr name="aci" operation="add">
+      <dsml:value>(targetattr="* || +")(targetscope="subtree")(version 3.0; acl "Read access to Groups"; allow (search,read) groupdn="ldap:///cn=orclGroupRead,ou=Groups,dc=pxq,dc=bka,dc=bund,dc=de";)</dsml:value>
+      <dsml:value>(target="ldap:///ou=Groups,dc=pxq,dc=bka,dc=bund,dc=de")(targetattr="*")(targetscope="subtree")(version 3.0; acl "Allow orclGroupWrite add, read and write access to all attributes"; allow (read,search,compare,write,add,delete,import,export)(groupdn="ldap:///cn=orclGroupWrite,ou=Groups,dc=pxq,dc=bka,dc=bund,dc=de");)</dsml:value>
+    </dsml:attr>
+  </dsml:modifyRequest>
+</dsml:batchRequest>

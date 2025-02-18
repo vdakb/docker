@@ -1,0 +1,183 @@
+version: 1
+
+dn: dc=example,dc=org
+objectClass: organization
+objectClass: dcObject
+dc: example
+o: example
+
+dn: ou=users,dc=example,dc=org
+objectClass: organizationalUnit
+ou: users
+
+dn: cn=user01,ou=users,dc=example,dc=org
+objectClass: shadowAccount
+objectClass: posixAccount
+objectClass: inetOrgPerson
+cn: User1
+cn: user01
+gidNumber: 1000
+homeDirectory: /home/user01
+sn: Bar1
+uid: user01
+uidNumber: 1000
+userPassword: password1
+
+dn: cn=user02,ou=users,dc=example,dc=org
+objectClass: shadowAccount
+objectClass: posixAccount
+objectClass: inetOrgPerson
+cn: User2
+cn: user02
+gidNumber: 1001
+homeDirectory: /home/user02
+sn: Bar2
+uid: user02
+uidNumber: 1001
+userPassword: password2
+
+dn: cn=readers,ou=users,dc=example,dc=org
+objectClass: groupOfNames
+cn: readers
+member: cn=user01,ou=users,dc=example,dc=org
+member: cn=user02,ou=users,dc=example,dc=org
+
+dn: ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: AW2
+
+dn: ou=Funktionsrechte,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Funktionsrechte
+
+dn: ou=TN1,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: TN1
+
+dn: ou=Benutzer,ou=TN1,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Benutzer
+
+dn: cn=DE12-3456-7890-11-12-131415,ou=Benutzer,ou=TN1,ou=AW2,dc=example,dc=o
+ rg
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: DE12-3456-7890-11-12-131415
+sn: Musterlein
+
+dn: ou=Rollen,ou=TN1,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Rollen
+
+dn: ou=Intermediate,ou=TN1,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Intermediate
+
+dn: ou=Orgs,ou=TN1,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Orgs
+
+dn: ou=TN2,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: TN2
+
+dn: ou=Benutzer,ou=TN2,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Benutzer
+
+dn: ou=Intermediate,ou=TN2,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Intermediate
+
+dn: ou=Orgs,ou=TN2,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Orgs
+
+dn: ou=Rollen,ou=TN2,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Rollen
+
+dn: ou=TN3,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: TN3
+
+dn: ou=Benutzer,ou=TN3,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Benutzer
+
+dn: ou=Intermediate,ou=TN3,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Intermediate
+
+dn: ou=Orgs,ou=TN3,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Orgs
+
+dn: ou=Rollen,ou=TN3,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Rollen
+
+dn: cn=DE12-3456-7890-11-12-131416,ou=Benutzer,ou=TN1,ou=AW2,dc=example,dc=o
+ rg
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: DE12-3456-7890-11-12-131416
+sn: Musterlein
+
+dn: cn=lesen,ou=Funktionsrechte,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: lesen
+member: cn=Editor,ou=Rollen,ou=TN1,ou=AW2,dc=example,dc=org
+member: cn=Vollzugriff,ou=Rollen,ou=TN1,ou=AW2,dc=example,dc=org
+
+dn: cn=loeschen,ou=Funktionsrechte,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: loeschen
+member: cn=Vollzugriff,ou=Rollen,ou=TN1,ou=AW2,dc=example,dc=org
+
+dn: cn=schreiben,ou=Funktionsrechte,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: schreiben
+member: cn=Editor,ou=Rollen,ou=TN1,ou=AW2,dc=example,dc=org
+member: cn=Vollzugriff,ou=Rollen,ou=TN1,ou=AW2,dc=example,dc=org
+
+dn: cn=Editor,ou=Rollen,ou=TN1,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Editor
+member: cn=DE12-3456-7890-11-12-131415,ou=Benutzer,ou=TN1,ou=AW2,dc=example,
+ dc=org
+member: cn=DE12-3456-7890-11-12-131416,ou=Benutzer,ou=TN1,ou=AW2,dc=example,
+ dc=org
+
+dn: cn=Vollzugriff,ou=Rollen,ou=TN1,ou=AW2,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Vollzugriff
+member: cn=DE12-3456-7890-11-12-131416,ou=Benutzer,ou=TN1,ou=AW2,dc=example,
+ dc=org
+

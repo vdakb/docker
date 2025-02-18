@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="Atlassian Jira Server Metadata Configuration Revision 1.0.0.0" exported-date="1597846956397" user="XELSYSADM" version="12.2.1.3.0">
+  <eventhandlers mds-file="00_tmp_00-account-provisioning.xml" mds-path="/metadata/ocs-features-provisioning/gws" name="/metadata/ocs-features-provisioning/gws" repo-type="MDS">
+    <completeXml>
+      <descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+                  identifier    ="UD_00_AJS_00_USR_UID"
+                  uniqueName    ="UD_00_AJS_00_USR_UID"
+                  transformation="false">
+        <attribute type="string"  name="__NAME__"    source="UD_00_AJS_00_USR_UID">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string" name="__PASSWORD__" source="UD_00_AJS_00_USR_PWD">
+          <flag>sensitive</flag>
+        </attribute>
+        <attribute type="string" name="displayName"  source="UD_00_AJS_00_USR_DISPLAY_NAME">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string" name="emailAddress" source="UD_00_AJS_00_USR_EMAIL">
+          <flag>required</flag>
+        </attribute>
+        <!--
+         | child form providing access only on column names not labels hence for
+         | any clone of the connector we need a new decriptor; aaargggh
+         | -->
+        <multivalue name="project" source="UD_00_AJS_00_PRJ" transformation="false">
+          <attribute type="string" name="__UID__"  source="UD_00_AJS_00_PRJ_PID">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+         <attribute type="string" name="__NAME__" source="UD_00_AJS_00_PRJ_RID">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+        </multivalue>
+        <!--
+         | child form providing access only on column names not labels hence for
+         | any clone of the connector we need a new decriptor; aaargggh
+         | -->
+        <multivalue name="group" source="UD_00_AJS_00_GRP" transformation="false">
+          <attribute type="string" name="__UID__"  source="UD_00_AJS_00_GRP_GID">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+        </multivalue>
+      </descriptor>
+    </completeXml>
+  </eventhandlers>
+</xl-ddm-data>

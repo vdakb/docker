@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Oracle Identity Manager Workflow Properties" basedir=".">
+  <!--
+  =====================================================================
+  == These properties specifies where the remote runtime environment of
+  == SOA Suite server is located
+  =====================================================================
+  -->
+  <property name="soa.server.type"        value="weblogic"/>
+  <property name="soa.server.protocol"    value="__SOA_PROT__"/>
+  <property name="soa.server.host"        value="__SOA_HOST__"/>
+  <property name="soa.server.port"        value="__SOA_PORT__"/>
+  <property name="soa.server.name"        value="__SOA_NAME__"/>
+  <property name="soa.server.username"    value="__SOA_USER__"/>
+  <!--
+  Password must be plain text. To avoid storing the server password in
+  this script, it is stored in a wallet instead.
+  -->
+  <property name="soa.server.password"    value="__SOA_PASS__"/>
+  <property name="soa.server.home"        value="__SOA_HOME__"/>
+  <!--
+  ==============================================================================
+  == These properties specifies where the internal load balancer environment for
+  == SOA Suite server is located
+  ==============================================================================
+  -->
+  <property name="soa.internal.host"      value="__SOA_HOST__"/>
+  <property name="soa.internal.port"      value="__SOA_PORT__"/>
+  <property name="soa.internal.ssl"       value="false"/>
+  <!--
+  ==============================================================================
+  == These properties specifies where the external load balancer environment for
+  == SOA Suite server is located
+  ==============================================================================
+  -->
+  <property name="soa.external.host"      value="__LBR_HOST__"/>
+  <property name="soa.external.ssl"       value="false"/>
+  <!--
+  ==============================================================================
+  == These properties specifies where the user messaging e-mail environment is
+  == located
+  ==============================================================================
+  -->
+  <property name="ums.smtp.host"          value="__SMTP_HOST__"/>
+  <property name="ums.smtp.port"          value="__SMTP_PORT__"/>
+  <property name="ums.smtp.sender"        value="__SMTP_ADDR__"/>
+  <property name="ums.smtp.username"      value="__SMTP_USER__"/>
+  <property name="ums.smtp.password"      value="__SMTP_PASS__"/>
+  <property name="ums.imap.host"          value="__IMAP_HOST__"/>
+  <property name="ums.imap.port"          value="__IMAP_PORT__"/>
+  <property name="ums.imap.recipient"     value="__IMAP_ADDR__"/>
+  <property name="ums.imap.username"      value="__IMAP_USER__"/>
+  <property name="ums.imap.password"      value="__IMAP_PASS__"/>
+  <!--
+  ==============================================================================
+  == These properties specifies where the environment of metadata store of
+  == Oracle SOA Suite is located
+  ==============================================================================
+  -->
+  <property name="soa.metadata.partition" value="soa"/>
+  <!--
+  =====================================================================
+  == These properties specifies where the kernel runtime environment of
+  == Oracle SOA Suite are located
+  =====================================================================
+  -->
+  <property name="bam.server.application" value="${soa.server.home}/bam/applications"/>
+  <condition property="bam.remote.application" value="${scp.server.destination}:${bam.server.application}" else="${bam.server.application}">
+    <not><equals arg1="${scp.server.type}" arg2="windows"/></not>
+  </condition>
+  <property name="soa.server.application" value="${soa.server.home}/soa/applications"/>
+  <condition property="soa.remote.application" value="${scp.server.destination}:${soa.server.application}" else="${soa.server.application}">
+    <not><equals arg1="${scp.server.type}" arg2="windows"/></not>
+  </condition>
+  <property name="ums.server.application" value="${soa.server.home}/communications/applications"/>
+  <condition property="ums.remote.application" value="${scp.server.destination}:${ums.server.application}" else="${ums.server.application}">
+    <not><equals arg1="${scp.server.type}" arg2="windows"/></not>
+  </condition>
+</project>

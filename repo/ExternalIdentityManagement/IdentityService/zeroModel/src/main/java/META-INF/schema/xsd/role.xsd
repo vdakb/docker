@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:igs           ="http://www.oracle.com/schema/igs"
+            targetNamespace     ="http://www.oracle.com/schema/igs"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="role"
+            version             ="1.0.0.0">
+  <xsd:include schemaLocation="entity.xsd"/>
+  <xsd:include schemaLocation="publication.xsd"/>
+  <!--
+   | Role
+   -->
+  <xsd:complexType name="role">
+    <annotation>
+      <documentation>
+        Roles make it easier to assign access levels to identities and to audit
+        those assignments on an ongoing basis.
+
+        Identity Manager provides a comprehensive set of role-based access
+        control capabilities. Role-based access control ensures higher
+        visibility and ease in assigning and unassigning access privileges to
+        identities, enforces the notion of least privilege, and enables
+        compliance and audit insight.
+      </documentation>
+    </annotation>
+    <xsd:complexContent>
+      <xsd:extension base="igs:entity">
+        <xsd:sequence>
+          <xsd:element name="identities"    type="igs:member"      minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="organizations" type="igs:publication" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--
+   | Member
+   -->
+  <xsd:complexType name="member">
+    <annotation>
+      <documentation>
+        Member is a reference to an identity existing in Identity Manager.
+        The attribute id refers to the login name of the identity.
+
+        Granting or revoking a role to or from an identity is controlled by the
+        attribute action, where assign assigns the role, while revoke revokes
+        the role.
+      </documentation>
+    </annotation>
+    <xsd:attribute name="id"     type="igs:token"/>
+    <xsd:attribute name="action" default="assign">
+      <xsd:simpleType>
+        <xsd:restriction base="igs:token">
+        <xsd:enumeration value="assign"/>
+        <xsd:enumeration value="revoke"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+</xsd:schema>

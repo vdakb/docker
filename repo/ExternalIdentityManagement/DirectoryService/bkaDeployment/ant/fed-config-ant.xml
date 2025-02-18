@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Identity Directory Deployment Controller"
+         basedir     ="../../../deployment/fed"
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../ods-context.xml"/>
+  <import file="../../../DirectoryTransition/tpl/ant/fed-config.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name       ="all"
+          description="Deploys and configures the project artifacts on the target host and the Oracle Directory Servers">
+    <call-targets package="001,002"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <target name="001" description="Access Control Group and Extension Configuration">
+    <call-targets package="0100-00,0101-01,0101-02,0101-03"/>
+  </target>
+</project>

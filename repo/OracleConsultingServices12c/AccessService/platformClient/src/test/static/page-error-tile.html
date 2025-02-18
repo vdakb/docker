@@ -1,0 +1,24 @@
+    <script type="text/javascript">
+      var loadError  = false;
+      window.onerror = function(message, url, line) {
+        requirejs.onError(
+          { message: message
+          , stack:   url + ' Line: ' + line
+          }
+        );
+      }
+      requirejs.onError = function(error) {
+        loadError = true;
+        if (console)
+          console.log(error);
+        var message="<h4>Sorry an error occured whilst loading &nbsp;<i class='fa fa-refresh' onclick='document.location.reload(true)'></i></h4><br><pre>" + error.message + "<hr>" + error.stack + "</pre>";
+        var e = document.getElementById('loadError');
+        if (e)
+          e.innerHTML = message;
+      };
+      requirejs.onResourceLoad = function(context, map, dependencies) {
+      var s = document.getElementById('loadStatus');
+      if (s)
+        s.innerHTML=map.name;
+      }
+    </script>

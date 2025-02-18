@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Oracle Consulting Services Deployment Task Definitions"
+         default         ="all"
+         basedir         ="../../../deployment/oim"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  =====================================================================
+  == custom type and task definitions
+  =====================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name"     value="../log/oim-deploy-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Configures standard approval workflows
+  ******************************************************************************
+  -->
+  <target name="0000" description="Configures the Oracle Workflow Configuration Revision 1.0/2.0">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0000 Standard Workflow Configuration Revision 1.0/2.0"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring standard approval workflows on ${soa.server.host}:${soa.server.port}"/>
+    <workflow:configure contextRef="soa-context">
+      <composite name="BeneficiaryManagerApproval" revision="1.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="RequesterManagerApproval" revision="1.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DefaultRoleApproval" revision="1.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DefaultSODApproval" revision="1.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+        <task name="ApprovalTask1">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="OAACGRoleAssignSODCheck" revision="1.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DefaultOperationalApproval" revision="2.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+        <task name="ChallengeTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DefaultRequestApproval" revision="2.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+        <task name="ChallengeTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="DisconnectedProvisioning" revision="1.0">
+        <task name="ManualProvisioningTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=ManualProvisioningTask_TaskFlow&amp;_document=WEB-INF/ManualProvisioningTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+      <composite name="	CertificationProcess" revision="1.0">
+        <task name="CertificationTask">
+          <flow host="${oim.server.host}" port="${oim.server.port}" uri="/identity/faces/adf.task-flow?_id=CertificationTask_TaskFlow&amp;_document=WEB-INF/CertificationTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+    </workflow:configure>
+    <echo message="=================================================================="/>
+    <echo message="0000 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+   </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager System Adapter Configuration
+  **           To be able to compile adapter correctly and register scheduled
+  **           jobs this target deploys the necessary libraries to the remote
+  **           host
+  **
+  ** Synopsis: The tasks deploys the object definitions for System Adapter
+  **           Configuration. This includes:
+  **           o Lookup Definitions
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  ******************************************************************************
+  -->
+  <target name="0100" description="Deploys the Oracle Consulting Services Identity Manager System Setup Configuration Revision 1.0.0.0">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy the Oracle Consulting Services System Adapter Foundation Revision 1.0.0.0"/>
+    <echo message="Deploying files to ${oim.remote.thirdparty}"/>
+    <scp todir="${oim.remote.thirdparty}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset dir="0100 systemSetup/lib">
+        <include name="hst-foundation.jar"/>
+        <include name="ocs-foundation.jar"/>
+        <include name="ocs-utility.jar"/>
+        <include name="ocs-common.jar"/>
+      </fileset>
+    </scp>
+    <echo message="Deploying files to ${oim.remote.scheduler}"/>
+    <scp todir="${oim.remote.scheduler}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset file="0100 systemSetup/lib/ocs-scheduler.jar"/>
+    </scp>
+    <echo message="Deploying files to ${oim.remote.adapter}"/>
+    <scp todir="${oim.remote.adapter}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset file="0100 systemSetup/lib/ocs-adapter.jar"/>
+    </scp>
+    <echo message="Deploying files to ${oim.remote.plugin}"/>
+    <scp todir="${oim.remote.adapter}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset file="0100 systemSetup/lib/ocs-handler.zip"/>
+    </scp>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0100 systemSetup/xml">
+        <object:importFile name="ocs-lookup-dm.xml"/>
+        <object:importFile name="ocs-notification-dm.xml"/>
+        <object:importFile name="ocs-adapter-dm.xml"/>
+        <object:importFile name="ocs-scheduler-dm.xml"/>
+        <object:importFile name="ocs-handler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Clear metadata cache on ${oim.server.name}:${oim.mbean.metadata}:${oim.mbean.version}"/>
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <echo message="Clear object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <!--
+    <echo message="Configuring IT Resource Email Server"/>
+    <operation:itresource contextRef="oim-context" operation="create">
+      <itresource type="Mail Server" name="Email Server">
+        <parameter name="Server Name"        value="leslie.vm.oracle.com"/>
+        <parameter name="User Login"         value="xelsysadm@vm.oracle.com"/>
+        <parameter name="User Password"      value="Welcome1"/>
+        <parameter name="Authentication"     value="true"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="Changing e-mail Addresses of internal users"/>
+    <operation:user contextRef="oim-context" userID="xelsysadm" operation="modify">
+      <parameter name="Email" value="xelsysadm@vm.oracle.com"/>
+    </operation:user>
+    -->
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager CSV File Connector BASE
+  **           Configuration
+  **           To be able to compile adapter correctly and register scheduled
+  **           jobs this target deploys the necessary libraries to the remote
+  **           host
+  **
+  ** Synopsis: The tasks deploys the object definitions for System Adapter
+  **           Configuration. This includes:
+  **           o Lookup Definitions
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  ******************************************************************************
+  -->
+  <target name="0200" description="Deploys the Oracle Consulting Services System Loader CSV BASE Configuration Revision 1.0.0.0">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy the Oracle Consulting Services System Loader CSV BASE Configuration Revision 1.0.0.0"/>
+    <echo message="Deploying files to ${oim.remote.scheduler}"/>
+    <scp todir="${oim.remote.scheduler}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset file="0200 systemLoader BASE/lib/csv-scheduler.jar"/>
+    </scp>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 systemLoader BASE/xml">
+        <object:importFile name="lku-scheduler-dm.xml"/>
+        <!--
+        <object:importFile name="org-scheduler-dm.xml"/>
+        <object:importFile name="usr-scheduler-dm.xml"/>
+        -->
+      </object:importSet>
+    </object:import>
+    <echo message="Clear metadata cache on ${oim.server.name}:${oim.mbean.metadata}:${oim.mbean.version}"/>
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager CSV File Connector BASE
+  **           Configuration
+  **           To be able to compile adapter correctly and register scheduled
+  **           jobs this target deploys the necessary libraries to the remote
+  **           host
+  **
+  ** Synopsis: The tasks deploys the object definitions for System Adapter
+  **           Configuration. This includes:
+  **           o Lookup Definitions
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0201" description="Deploys the Oracle Consulting Services System Loader CSV USER Configuration Revision 1.0.0.0">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy the Oracle Consulting Services System Loader CSV v Configuration Revision 1.0.0.0"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0201 systemLoader USER/xml">
+        <object:importFile name="lku-lookup-dm.xml"/>
+        <object:importFile name="lku-scheduler-dm.xml"/>
+        <!--
+        <object:importFile name="org-lookup-dm.xml"/>
+        <object:importFile name="org-scheduler-dm.xml"/>
+        <object:importFile name="usr-lookup-dm.xml"/>
+        <object:importFile name="usr-scheduler-dm.xml"/>
+        -->
+      </object:importSet>
+    </object:import>
+    <echo message="Clear metadata cache on ${oim.server.name}:${oim.mbean.metadata}:${oim.mbean.version}"/>
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Generic Directory Service
+  **           Foundation Configuration.
+  **           To be able to compile adapter correctly and register scheduled
+  **           jobs this target deploys the necessary libraries to the remote
+  **           host.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Foundation Configuration. This includes:
+  **           o IT Resource Definitions
+  **           o Task Adapter
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="0300" description="Deploys the Oracle Consulting Services Generic Directory Service BASE Configuration Revision 1.0.0.0">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy Oracle Consulting Services Generic Directory Service BASE Configuration Revision 1.0.0.0"/>
+    <echo message="Deploying files to ${oim.remote.thirdparty}"/>
+    <scp todir="${oim.remote.thirdparty}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset dir="0300 gdsService/lib">
+        <include name="ldapbp.jar"/>
+        <include name="gds-common.jar"/>
+      </fileset>
+    </scp>
+    <echo message="Deploying files to ${oim.remote.scheduler}"/>
+    <scp todir="${oim.remote.scheduler}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset dir="0300 gdsService/lib">
+        <include name="gds-scheduler.jar"/>
+      </fileset>
+    </scp>
+    <echo message="Deploying files to ${oim.remote.adapter}"/>
+    <scp todir="${oim.remote.adapter}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset dir="0300 gdsService/lib">
+        <include name="gds-diagnostic.jar"/>
+        <include name="gds-adapter.jar"/>
+      </fileset>
+    </scp>
+    <!--
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0300 gdsService/xml">
+        <object:importFile name="gds-resource-dm.xml"/>
+        <object:importFile name="gds-adapter-dm.xml"/>
+        <object:importFile name="gds-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    -->
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Generic Directory Service
+  **           Target Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Service Trusted  Configuration. This includes:
+  **           o IT Resource Definition
+  **           o Lookup Definition
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  **           o User Defined Forms
+  **           o Resource Object Definition
+  **           o Provisioning Processes
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="0301" description="Deploys the Oracle Consulting Services Directory Configuration Revision 1.0.0.0">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy Oracle Consulting Services Generic Directory Service Target Configuration Revision 1.0.0.0"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0301 gdsService GDS/xml">
+        <object:importFile name="gds-resource-dm.xml"/>
+        <object:importFile name="gds-lookup-dm.xml"/>
+        <object:importFile name="gds-model-dm.xml"/>
+        <object:importFile name="gds-process-dm.xml"/>
+        <object:importFile name="gds-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deploying files to ${mds.server.host}@${mds.server.service} on partition ${oim.metadata.partition}"/>
+    <!-- Register the Configuration -->
+    <metadata:upload contextRef="oim-mds" forceOverride="true">
+      <namespace path="/metadata">
+        <importSet dir="0302 gdsService GDS/metadata" path="ocs-features-configuration">
+          <importFile name="oid-feature.xml"/>
+          <importFile name="gds-domain-target-reconciliation.xml"/>
+          <importFile name="gds-country-target-reconciliation.xml"/>
+          <importFile name="gds-locality-target-reconciliation.xml"/>
+          <importFile name="gds-organization-target-reconciliation.xml"/>
+          <importFile name="gds-account-reconciliation.xml"/>
+          <importFile name="gds-account-provisioning.xml"/>
+        </importSet>
+      </namespace>
+    </metadata:upload>
+    <!-- purge the caches to ensure that the latest versions will be used -->
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="MetaData"/>
+    </object:purgecache>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Generic Directory Service
+  **           Trusted Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Service Trusted Configuration. This includes:
+  **           o Lookup Definitions
+  **           o Resource Object
+  **           o Provisioning Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0302" description="Deploys the Oracle Consulting Services Directory Configuration Revision 1.0.0.0">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Generic Directory Service Trusted Revision 1.0.0.0"/>
+    <echo message="Deploying importable objects on ${oim.remote.host}:${oim.remote.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0302 gdsService GDS/xml">
+        <object:importFile name="gds-lookup-dm.xml"/>
+        <object:importFile name="gds-process-dm.xml"/>
+        <object:importFile name="gds-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deploying files to ${mds.server.host}@${mds.server.service} on partition ${oim.metadata.partition}"/>
+    <!-- Register the Configuration -->
+    <metadata:upload contextRef="oim-mds" forceOverride="true">
+      <namespace path="/metadata">
+        <importSet dir="0302 gdsService GDS/metadata" path="ocs-features-configuration">
+          <importFile name="gds-domain-trusted-reconciliation.xml"/>
+          <importFile name="gds-country-trusted-reconciliation.xml"/>
+          <importFile name="gds-locality-trusted-reconciliation.xml"/>
+          <importFile name="gds-organization-trusted-reconciliation.xml"/>
+          <importFile name="gds-identity-reconciliation.xml"/>
+        </importSet>
+      </namespace>
+    </metadata:upload>
+    <!-- purge the caches to ensure that the latest versions will be used -->
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="MetaData"/>
+    </object:purgecache>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Tivoli Access Management
+  **           Service Configuration.
+  **
+  ** Synopsis: The tasks deploys the metadata definitions for Tivoli Access
+  **           Management Service Foundation Configuration. This includes:
+  **           o IT Resource Definitions
+  **           o Task Adapter
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="0700" description="Deploys the Tivoli Access Management Service Foundation Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Tivoli Access Management Service Foundation Revision 1.0.0.0"/>
+    <echo message="Deploying files to ${oim.remote.thirdparty}"/>
+    <scp todir="${oim.remote.thirdparty}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset dir="0700 tamService/lib">
+        <include name="pd.jar"/>
+        <include name="tam-common.jar"/>
+      </fileset>
+    </scp>
+    <echo message="Deploying files to ${oim.remote.scheduler}"/>
+    <scp todir="${oim.remote.scheduler}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset dir="0700 tamService/lib">
+        <include name="tam-scheduler.jar"/>
+      </fileset>
+    </scp>
+    <echo message="Deploying files to ${oim.remote.adapter}"/>
+    <scp todir="${oim.remote.adapter}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+      <fileset dir="0700 tamService/lib">
+        <include name="tam-adapter.jar"/>
+        <include name="tam-diagnostic.jar"/>
+      </fileset>
+    </scp>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0700 tamService/xml">
+        <object:importFile name="tam-resource-dm.xml"/>
+        <object:importFile name="tam-adapter-dm.xml"/>
+        <object:importFile name="tam-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <!-- purge the cache to ensure that the latest version will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="SchedulerTaskDefinition"/>
+    </object:purgecache>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Tivoli Access Management
+  **           Service Target Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Tivoli Access
+  **           Management Service Target Configuration. This includes:
+  **           o IT Resource Definition
+  **           o Lookup Definition
+  **           o User Defined Forms
+  **           o Resource Object Definition
+  **           o Provisioning Processes
+  **           o Request DataSet
+  **           o Request Template
+  **           o Authorization Policies
+  **           o Approval Policies
+  **           o Scheduled Job Definitions
+  ******************************************************************************
+  -->
+  <target name="0701" description="Deploys the Tivoli Access Management Service Target Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Tivoli Access Management Service Target Revision 1.0.0.0"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0701 tamService TAM/xml">
+        <object:importFile name="tam-resource-dm.xml"/>
+        <object:importFile name="tam-lookup-dm.xml"/>
+        <object:importFile name="tam-model-dm.xml"/>
+        <object:importFile name="tam-process-dm.xml"/>
+        <object:importFile name="tam-request-dm.xml"/>
+        <object:importFile name="tam-approval-dm.xml"/>
+        <object:importFile name="tam-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!-- Build and install the entire project -->
+  <target name="all" description="Build,Deploy and Install the project artifacts on the target host"/>
+</project>

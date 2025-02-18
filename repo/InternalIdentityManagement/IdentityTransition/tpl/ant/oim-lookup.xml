@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-lookup-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **           ####### #     # #######
+  **           #       ##    #    #
+  **           #       # #   #    #
+  **           #####   #  #  #    #
+  **           #       #   # #    #
+  **           #       #    ##    #
+  **           ####### #     #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager Entitlement List Entity
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to synchronize the
+  **           Entitlement List Entity.
+  ******************************************************************************
+  -->
+  <target name="9901" description="Synchonize the Entitlement List">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="9901 Synchronization Entitlement List ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Synchronize Entitlement List Entity for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="Entitlement List">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="9901 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####     #    #######
+  **           #     #   ###      #
+  **           #        #   #     #
+  **           #       #     #    #
+  **           #       #######    #
+  **           #     # #     #    #
+  **            #####  #     #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the deployment
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to synchronize the
+  **           Access Request Catalog.
+  ******************************************************************************
+  -->
+  <target name="9902" description="Synchronization Access Request Catalog">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="9902 Synchronization Access Request Catalog ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Synchronize Access Request Catalog with Deployment for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="Catalog Synchronization Job">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="9902 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

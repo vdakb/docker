@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Framework 12c Sandbox" default="make" basedir=".">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../../../iam-12c-preferences.xml"/>
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="project-connector">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="oim-connector-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="project-library">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="oim-library-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="project-utility">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="oim-utility-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="project-cleanup">
+    <attribute name="subproject"/>
+    <sequential>
+      <exec executable="${svn.executable}">
+        <arg value="cleanup"/>
+        <arg value="--remove-unversioned"/>
+        <arg value="../../@{subproject}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to make projects
+  =====================================================================
+  -->
+  <macrodef name="make-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-connector subtarget="clean"   subproject="@{path}"/>
+      <project-connector subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="make-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-library subtarget="clean"   subproject="@{path}"/>
+      <project-library subtarget="compile" subproject="@{path}"/>
+      <project-library subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="make-utility">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Utility @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-utility subtarget="clean"   subproject="@{path}"/>
+      <project-utility subtarget="compile" subproject="@{path}"/>
+      <project-utility subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to deploy projects
+  =====================================================================
+  -->
+  <macrodef name="deploy-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-connector subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="deploy-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-library subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to cleanup projects
+  =====================================================================
+  -->
+  <macrodef name="cleanup-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-utility">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Utility @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to make the entire workspace
+  =====================================================================
+  -->
+  <target name="make" description="Package the entire workspace artifacts to the appropriate java archive">
+    <record name="./oim-framework-ant.log" action="start"/>
+    <echo message="============================================================="/>
+    <echo message="Build of Identity Manager Framework"/>
+    <echo message="============================================================="/>
+    <make-library   path="oimFoundation"     component="Framework Foundation"/>
+    <make-library   path="oimUtility"        component="Utility Foundation"/>
+    <make-library   path="oimAdapter"        component="Adapter Foundation"/>
+    <make-library   path="oimWorkflow"       component="Workflow Foundation"/>
+    <make-connector path="oimFlatfile"       component="CSV Flatfile Connector"/>
+    <make-connector path="oimLDIFFile"       component="LDIF Flatfile Connector"/>
+    <make-connector path="oimOffline"        component="Offline Target Service Connector"/>
+    <make-connector path="oimIdentity"       component="Generic Identity Service Connector"/>
+    <make-connector path="oimDatabase"       component="Generic Database Service Connector"/>
+    <make-connector path="oimDirectory"      component="Generic Directory Service Connector"/>
+    <make-connector path="eusDatabase"       component="Enterprise Security Connector"/>
+    <!--
+    <make-connector path="oimAnalytics"      component="Identity Analytics Connector"/>
+    <make-connector path="oimTivoliAccess"   component="Tivoli Access Manager Connector"/>
+    <make-connector path="sapUsermanagement" component="SAP User Management Connector"/>
+    -->
+    <make-utility   path="oimDeployment"     component="Deployment Extension"/>
+    <xslt style="oim-framework-log.xsl" out="../doc/changelog/oim-framework-log.html" force="true" in="oim-framework-log.xml"/>
+    <record name="./oim-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the entire workspace
+  ==
+  == There is no need to create a dependency on the make target because
+  == any deployment task on the ANT subproject has such dependency
+  == already
+  =====================================================================
+  -->
+  <target name="deploy" description="Deployment of the entire workspace artifacts to the appropriate destination">
+    <record name="./oim-framework-ant.log" action="start" append="true"/>
+    <echo message="============================================================="/>
+    <echo message="Deployment of Identity Manager Framework"/>
+    <echo message="============================================================="/>
+    <deploy-library   path="oimFoundation"     component="Framework Foundation"/>
+    <deploy-library   path="oimUtility"        component="Utility Foundation"/>
+    <deploy-library   path="oimAdapter"        component="Adapter Foundation"/>
+    <deploy-library   path="oimWorkflow"       component="Workflow Foundation"/>
+    <deploy-connector path="oimFlatfile"       component="CSV Flatfile"/>
+    <deploy-connector path="oimLDIFFile"       component="LDIF Flatfile"/>
+    <deploy-connector path="oimOffline"        component="Offline Target Service"/>
+    <deploy-connector path="oimIdentity"       component="Generic Identity Service"/>
+    <deploy-connector path="oimDatabase"       component="Generic Database Service"/>
+    <deploy-connector path="oimDirectory"      component="Generic Directory Service"/>
+    <deploy-connector path="eusDatabase"       component="Enterprise Security"/>
+    <!--
+    <deploy-connector path="oimAnalytics"      component="Identity Analytics"/>
+    <deploy-connector path="oimTivoliAccess"   component="Tivoli Access Manager"/>
+    <deploy-connector path="sapUsermanagement" component="SAP User Management"/>
+    -->
+    <record name="./oim-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the entire workspace by leveraging svn
+  == cleanup
+  =====================================================================
+  -->
+  <target name="cleanup" description="Cleanup of the entire workspace artifacts">
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Identity Manager Framework"/>
+    <echo message="============================================================="/>
+    <cleanup-library   path="oimFoundation"     component="Framework Foundation"/>
+    <cleanup-library   path="oimUtility"        component="Utility Foundation"/>
+    <cleanup-library   path="oimAdapter"        component="Adapter Foundation"/>
+    <cleanup-library   path="oimWorkflow"       component="Workflow Foundation"/>
+    <cleanup-connector path="oimFlatfile"       component="CSV Flatfile"/>
+    <cleanup-connector path="oimLDIFFile"       component="LDIF Flatfile"/>
+    <cleanup-connector path="oimOffline"        component="Offline Target Service"/>
+    <cleanup-connector path="oimIdentity"       component="Generic Identity Service"/>
+    <cleanup-connector path="oimDatabase"       component="Generic Database Service"/>
+    <cleanup-connector path="oimDirectory"      component="Generic Directory Service"/>
+    <cleanup-connector path="eusDatabase"       component="Enterprise Security"/>
+    <!--
+    <cleanup-connector path="oimAnalytics"      component="Identity Analytics"/>
+    <cleanup-connector path="oimTivoliAccess"   component="Tivoli Access Manager Connector"/>
+    <cleanup-connector path="sapUsermanagement" component="SAP User Management Connector"/>
+    -->
+    <cleanup-utility   path="oimDeployment"     component="Deployment Extension"/>
+    <cleanup-utility   path="oimSandbox"        component="Assembly Extension"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create the change documentation based on the data
+  == collected in the file ant/oim-framework-log.xml.
+  == It does some style sheet transformation to create an HTML file of the
+  == information.
+  =====================================================================
+  -->
+  <target name="changelog" description="Creates a changelog in html format">
+    <xslt style="oim-framework-log.xsl" out="../doc/changelog/oim-framework-log.html" force="true" in="oim-framework-log.xml"/>
+  </target>
+</project>

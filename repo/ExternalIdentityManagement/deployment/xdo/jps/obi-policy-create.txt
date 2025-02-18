@@ -1,0 +1,262 @@
+"""
+This script configures the Application Policy obi
+
+Usage: <wlst> obi-policy.py <servername> <serverport> weblogic <password>
+"""
+
+import sys
+
+url='t3://' + sys.argv[1] + ':' + sys.argv[2]
+username = sys.argv[3]
+password = sys.argv[4]
+
+# #####################################################################
+#
+# Connect to domain with the properties passed in
+#
+#
+# #####################################################################
+
+connect(username, password, url)
+
+# #####################################################################
+#
+# Create required resource types
+#
+# use listResourceTypes(appStripe="obi") to verify
+#
+# #####################################################################
+createResourceType(
+  appStripe       ="obi"
+, resourceTypeName="ESSMetadataPermission"
+, displayName     ="ESS Metadata Permission"
+, allowedActions  ="READ,EXECUTE"
+, delimiter       =","
+, matcher         ="oracle.as.scheduler.security.MetadataPermission"
+)
+createResourceType(
+  appStripe       ="obi"
+, resourceTypeName="oracle.bi.user"
+, displayName="BI User"
+, description     ="A user of Oracle BI"
+, allowedActions  ="impersonate, query"
+, delimiter       =","
+, matcher         ="oracle.security.jps.ResourcePermission"
+)
+createResourceType(
+  appStripe       ="obi"
+, resourceTypeName="oracle.bi.publisher.permission"
+, displayName     ="BI User"
+, description     ="BI Publisher Permission"
+, allowedActions  ="_all_"
+, delimiter       =","
+, matcher         ="oracle.security.jps.ResourcePermission"
+)
+# #####################################################################
+#
+# Create required resources
+#
+# use listResources(appStripe="obi") to verify
+#
+# #####################################################################
+createResource(
+  appStripe  ="obi"
+, type       ="ESSMetadataPermission"
+, name       ="oracle.bip.ess.JobDefinition.EssBipJob"
+, displayName="ESS BIP Job"
+)
+createResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.accessExcelReportAnalyzer"
+, displayName="BIP Access Excel Report Analyzer"
+)
+createResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.accessOnlineReportAnalyzer"
+, displayName="BIP Access Online Report Analyzer"
+)
+createResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.accessReportOutput"
+, displayName="BIP Access Report Output"
+)
+createResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.administerServer"
+, displayName="BIP Administer Server"
+)
+createResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.developDataModel"
+, displayName="BIP Develop Data Model"
+)
+createResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.developReport"
+, displayName="BIP Develop Report"
+)
+createResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.runReportOnline"
+, displayName="BIP Run Report Online"
+)
+createResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.scheduleReport"
+, displayName="BIP Schedule Report"
+)
+# #####################################################################
+#
+# Create required entitlements and assign resources
+#
+# use listEntitlements(appStripe="obi") to verify
+#
+# #####################################################################
+
+#
+# bip.consumer
+#
+createEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, displayName ="BI Publisher Consumer"
+, description ="BI Publisher Consumer Permissions"
+, resourceName="oracle.bi.publisher.accessOnlineReportAnalyzer"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+addResourceToEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bi.publisher.accessReportOutput"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+addResourceToEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bi.publisher.runReportOnline"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+addResourceToEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bi.publisher.scheduleReport"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+addResourceToEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bip.ess.JobDefinition.EssBipJob"
+, resourceType="ESSMetadataPermission"
+, actions     ="READ,EXECUTE"
+)
+addResourceToEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bi.publisher.accessExcelReportAnalyzer"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+#
+# bip.administrator
+#
+createEntitlement(
+  appStripe   ="obi"
+, name        ="bip.administrator"
+, displayName ="BI Publisher Administrator"
+, description ="BI Publisher Administration Permissions"
+, resourceName="oracle.bi.publisher.administerServer"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+#
+# bip.author
+#
+createEntitlement(
+  appStripe   ="obi"
+, name        ="bip.author"
+, displayName ="BI Publisher Author"
+, description ="BI Publisher Authoring Permissions"
+, resourceName="oracle.bi.publisher.developReport"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+addResourceToEntitlement(
+  appStripe   ="obi"
+, name        ="bip.author"
+, resourceName="oracle.bi.publisher.developDataModel"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+# #####################################################################
+#
+# Create required application roles
+#
+# use listAppRoles(appStripe="obi") to verify
+#
+# #####################################################################
+
+#
+# BIServiceAdministrator
+#
+updateAppRole(
+  appStripe  ="obi"
+, appRoleName="BIServiceAdministrator"
+, displayName="BI Service Administrator"
+, description="Enables the Administration link to access the Administration page and grants permission to set any of the system settings."
+)
+#
+# BIContentAuthor
+#
+updateAppRole(
+  appStripe  ="obi"
+, appRoleName="BIContentAuthor"
+, displayName="BI Content Author"
+, description ="Grants permission to create or edit data models, create or edit reports, style templates, and sub templates."
+)
+#
+# BIConsumer
+#
+updateAppRole(
+  appStripe  ="obi"
+, appRoleName="BIConsumer"
+, displayName="BI Consumer"
+, description ="Grants permission to open (execute) reports and view the generated document in the report viewer."
+)
+
+# #####################################################################
+#
+# Grant required entitlements to application roles
+#
+# use listGrantedEntitlements(appStripe="obi") to verify
+#
+# #####################################################################
+grantEntitlement(
+  appStripe      ="obi"
+, principalClass ="oracle.security.jps.service.policystore.ApplicationRole"
+, principalName  ="BIServiceAdministrator"
+, entitlementName="bip.administrator"
+)
+grantEntitlement(
+  appStripe      ="obi"
+, principalClass ="oracle.security.jps.service.policystore.ApplicationRole"
+, principalName  ="BIContentAuthor"
+, entitlementName="bip.author"
+)
+grantEntitlement(
+  appStripe      ="obi"
+, principalClass ="oracle.security.jps.service.policystore.ApplicationRole"
+, principalName  ="BIConsumer"
+, entitlementName="bip.consumer"
+)

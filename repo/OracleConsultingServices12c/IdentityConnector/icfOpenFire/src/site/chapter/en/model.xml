@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="model"
+         xml:lang="en"
+         version ="5.0">
+  <title>openfire&#8482; Database Connector Model</title>
+  <section xml:id="model-overview">
+    <title>Overview</title>
+    <para>
+      The figure below shows an overview of the data model of the connector.
+    </para>
+    <figure>
+      <title>openfire&#8482; Database Connector Model</title>
+      <mediaobject>
+        <alt>openfire&#8482; Database Connector Model</alt>
+        <imageobject>
+          <!--
+           | The location of the image path must be relative to the basedir of
+           | the ANT script
+           -->
+          <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/images/connector-model.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>
+      In addition to the <xref linkend="model-usr" xrefstyle="select:title"/> data model required by an openfire&#8482; Database, the data model of the connector supports the storage of groups and account-specific properties.
+    </para>
+    <itemizedlist>
+      <listitem>
+        <xref linkend="model-grp" xrefstyle="select:title"/>
+        <para/>
+      </listitem>
+      <listitem>
+        <xref linkend="model-pty" xrefstyle="select:title"/>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="model-usr">
+    <title>Account</title>
+    <para>
+      The account data are stored in the form UD_OFS_USR.
+     </para>
+    <section xml:id="model-usr-attribures">
+      <title>Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <colspec colname="c3" colwidth="4em"/>
+          <colspec colname="c4" colwidth="4em"/>
+          <thead>
+            <row>
+              <entry>Label</entry>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Length</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Service</entry>
+              <entry>UD_OFS_USR_SVC</entry>
+              <entry>Long</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>User Name</entry>
+              <entry>UD_OFS_USR_UID</entry>
+              <entry>String</entry>
+              <entry>256</entry>
+            </row>
+            <row>
+              <entry>Password</entry>
+              <entry>UD_OFS_PWD</entry>
+              <entry>String</entry>
+              <entry>200</entry>
+            </row>
+            <row>
+              <entry>Administrator</entry>
+              <entry>UD_OFS_USR_ADM</entry>
+              <entry>Boolean</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>Name</entry>
+              <entry>UD_OFS_USR_NAME</entry>
+              <entry>String</entry>
+              <entry>150</entry>
+            </row>
+            <row>
+              <entry>e-Mail</entry>
+              <entry>UD_OFS_USR_MAIL</entry>
+              <entry>String</entry>
+              <entry>256</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="model-usr-p">
+      <title>Prepopulation</title>
+      <para>
+        Rules are implemented for some of the attributes described above, which derive values for such an attribute from the profile of an identity the account belongs to.
+      </para>
+      <para>
+        The following sections describes the adapter configuration for:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <xref linkend="model-usr-p-01" xrefstyle="select:title"/>
+          <para/>
+        </listitem>
+        <listitem>
+          <xref linkend="model-usr-p-02" xrefstyle="select:title"/>
+          <para/>
+        </listitem>
+        <listitem>
+          <xref linkend="model-usr-p-03" xrefstyle="select:title"/>
+          <para/>
+        </listitem>
+        <listitem>
+          <xref linkend="model-usr-p-04" xrefstyle="select:title"/>
+        </listitem>
+      </itemizedlist>
+      <section xml:id="model-usr-p-01">
+        <title>User Name</title>
+        <table colsep="0">
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="8em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <colspec colname="c3" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Property</entry>
+                <entry>Value</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Adapter</entry>
+                <entry>OCS PrePopulate Required String Converted</entry>
+                <entry>The logical adapter applied to prepopulate the value for the attribute.</entry>
+              </row>
+              <row>
+                <entry>profileValue</entry>
+                <entry>User Login</entry>
+                <entry>The source for the value of the attribute in the user account, which is derived from the identity's profile.</entry>
+              </row>
+              <row>
+                <entry>convertRule</entry>
+                <entry>lower</entry>
+                <entry>The hint for the adapter to convert the value derived from the identity profile to lowercase.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+      <section xml:id="model-usr-p-02">
+        <title>Password</title>
+        <table colsep="0">
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="8em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <colspec colname="c3" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Property</entry>
+                <entry>Value</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Adapter</entry>
+                <entry>OCS PrePopulate Required String</entry>
+                <entry>The logical adapter applied to prepopulate the value for the attribute.</entry>
+              </row>
+              <row>
+                <entry>profileValue</entry>
+                <entry>Password</entry>
+                <entry>The source for the value of the attribute in the user account, which is derived from the identity's profile.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+      <section xml:id="model-usr-p-03">
+        <title>Name</title>
+        <table colsep="0">
+           <tgroup cols="3">
+             <colspec colname="c1" colwidth="8em"/>
+             <colspec colname="c2" colwidth="*"/>
+             <colspec colname="c3" colwidth="*"/>
+             <thead>
+               <row>
+                 <entry>Property</entry>
+                 <entry>Value</entry>
+                 <entry>Description</entry>
+               </row>
+             </thead>
+             <tbody>
+               <row>
+                 <entry>Adapter</entry>
+                 <entry>OCS PrePopulate Conditional</entry>
+                 <entry>The logical adapter applied to prepopulate the value for the attribute.</entry>
+               </row>
+               <row>
+                 <entry>profileValue1</entry>
+                 <entry>Initials</entry>
+                 <entry>The primary source for the value of the attribute in the user account, which is derived from the identity's profile.</entry>
+               </row>
+               <row>
+                 <entry>profileValue2</entry>
+                 <entry>Display Name</entry>
+                 <entry>The secondary source for the value of the attribute in the user account, which is derived from the identity's profile.</entry>
+               </row>
+             </tbody>
+           </tgroup>
+         </table>
+      </section>
+      <section xml:id="model-usr-p-04">
+        <title>E-Mail</title>
+        <table colsep="0">
+          <tgroup cols="3">
+            <colspec colname="c1" colwidth="8em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <colspec colname="c3" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Property</entry>
+                <entry>Value</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Adapter</entry>
+                <entry>OCS PrePopulate Required String</entry>
+                <entry>The logical adapter applied to prepopulate the value for the attribute.</entry>
+              </row>
+              <row>
+                <entry>profileValue</entry>
+                <entry>Email Address</entry>
+                <entry>The source for the value of the attribute in the user account, which is derived from the identity's profile.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+    </section>
+  </section>
+  <section xml:id="model-grp">
+    <title>Group</title>
+    <para>
+      The groups assigned to a user account are stored in the UD_OFS_UGP form.
+     </para>
+    <section xml:id="model-grp-a">
+      <title>Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <colspec colname="c3" colwidth="4em"/>
+          <colspec colname="c4" colwidth="4em"/>
+          <thead>
+            <row>
+              <entry>Label</entry>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Length</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Name</entry>
+              <entry>UD_OFS_UGP_GID</entry>
+              <entry>String</entry>
+              <entry>128</entry>
+            </row>
+            <row>
+              <entry>Administrator</entry>
+              <entry>UD_OFS_UGP_ADM</entry>
+              <entry>Integer</entry>
+              <entry>19</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="model-grp-p">
+      <title>Prepopulation</title>
+      <para>
+        The form is not subject to any rules for prepopulating values.
+       </para>
+    </section>
+  </section>
+  <section xml:id="model-pty">
+    <title>Property</title>
+    <para>
+      The properties assigned to a user account are stored in the UD_OFS_UPR form.
+     </para>
+    <section xml:id="model-pty-a">
+      <title>Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <colspec colname="c3" colwidth="4em"/>
+          <colspec colname="c4" colwidth="4em"/>
+          <thead>
+            <row>
+              <entry>Label</entry>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Length</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Name</entry>
+              <entry>UD_OFS_UPR_SID</entry>
+              <entry>String</entry>
+              <entry>128</entry>
+            </row>
+            <row>
+              <entry>Administrator</entry>
+              <entry>UD_OFS_UPR_VAL</entry>
+              <entry>String</entry>
+              <entry>128</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="model-pty-p">
+      <title>Prepopulation</title>
+      <para>
+        The form is not subject to any rules for prepopulating values.
+       </para>
+    </section>
+  </section>
+</chapter>

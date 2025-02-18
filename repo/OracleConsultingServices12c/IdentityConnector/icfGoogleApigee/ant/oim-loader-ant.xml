@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name            ="Oracle Consulting Services Identity Manager Deployment Importer"
+         basedir         ="../../../deployment"
+         default         ="all"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="prompt.version"         value="${application.release}"/>
+  <property name="icf.recorder.name"      value="../log/icf-loader-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="group" description="Bootstrap APIGEE Entitlements">
+    <record name="${icf.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="group Bootstrap APIGEE Entitlements ${prompt.version}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Group Entitlements from APIGEE for ${system.fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="APIGEE Production Group Reconciliation">
+        <start blocking="true" interval="500"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="group completed"/>
+    <echo message="=================================================================="/>
+    <record name="${icf.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="tenant" description="Bootstrap APIGEE Entitlements">
+    <record name="${icf.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="tenant Bootstrap APIGEE Entitlements ${prompt.version}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Space Entitlements from APIGEE for ${system.fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="APIGEE Production Tenant Reconciliation">
+        <start blocking="true" interval="500"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="tenant completed"/>
+    <echo message="=================================================================="/>
+    <record name="${icf.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="space" description="Bootstrap APIGEE Entitlements">
+    <record name="${icf.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="space Bootstrap APIGEE Entitlements ${prompt.version}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Space Entitlements from APIGEE for ${system.fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="APIGEE Production Space Reconciliation">
+        <start blocking="true" interval="500"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="space completed"/>
+    <echo message="=================================================================="/>
+    <record name="${icf.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="account" description="Bootstrap APIGEE Accounts">
+    <record name="${icf.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="account Bootstrap APIGEE Accounts ${prompt.version}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Space Accounts from APIGEE for ${system.fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="APIGEE Production Account Reconciliation">
+        <start blocking="true" interval="500"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="account completed"/>
+    <echo message="=================================================================="/>
+    <record name="${icf.recorder.name}" action="stop"/>
+  </target>
+</project>

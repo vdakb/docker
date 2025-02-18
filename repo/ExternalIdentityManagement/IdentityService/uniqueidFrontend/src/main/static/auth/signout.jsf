@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns  ="http://www.w3.org/1999/xhtml"
+        locale ="#{sessionState.language}"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+  <h:head>
+    <meta http-equiv="expires"         content="0"/>
+    <meta http-equiv="pragma"          content="no-cache"/>
+    <meta http-equiv="cache-control"   content="no-cache"/>
+    <meta http-equiv="description"     content="#{uid$bundle['meta.title']}"/>
+    <meta http-equiv="content-type"    content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="robots"                content="noindex, nofollow"/>
+    <meta name="viewport"              content="width=device-width, initial-scale=1.0"/>
+    <!-- ===============================================-->
+    <!-- Document Title                                 -->
+    <!-- ===============================================-->
+    <title>#{uid$bundle['meta.title']}</title>
+    <!-- ===============================================-->
+    <!-- Favicons                                       -->
+    <!-- ===============================================-->
+    <link media="screen" rel="icon"             type="image/png" sizes="32x32"   href="#{resource['ico/p20-32x32.png']}"/>
+    <link media="screen" rel="icon"             type="image/png" sizes="16x16"   href="#{resource['ico/p20-16x16.png']}"/>
+    <link media="screen" rel="apple-touch-icon" type="image/png" sizes="180x180" href="#{resource['ico/p20-touch.png']}"/>
+    <link media="screen" rel="shortcut icon"    type="image/x-icon" href="#{resource['ico/p20-icon.ico']}"/>
+    <!-- ===============================================-->
+    <!-- Core Stylesheets                               -->
+    <!-- ===============================================-->
+    <h:outputStylesheet id="oss01" library="css" name="fontawesome.min.css"/>
+    <!-- ===============================================-->
+    <!-- Theme Stylesheets                              -->
+    <!-- ===============================================-->
+    <h:outputStylesheet id="oss02" library="css" name="p2020.min.css"/>
+  </h:head>
+  <h:body styleClass="container-fluid vh-100 fixed-navbar">
+    <div class="page-wrapper">
+      <div id="header" class="header">
+        <div class="page-brand">
+          <p:graphicImage id="gi01" library="img" name="p20-logo-sm.png" height="48" width="48" alt="P20/20"/>
+          <a class="link" href="/">
+            <span class="brand">UID<span class="brand-tip">Generator</span></span>
+          </a>
+        </div>
+      </div>
+      <div class="content-wrapper">
+        <!-- START:: pagecontent -->
+        <h:panelGroup id="content" layout="block">
+          <div class="container mt-4">
+            <div class="fade-in-op">
+               <div class="card jumbo">
+                <div class="card-body jumbo-body">
+                  <div class="row h-100 no-gutters">
+                    <div class="col-md-6">
+                      <p:graphicImage id="gi02" styleClass="ml-4 mt-4" library="img" name="p20-signin-md.png" alt="signout"/>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card-body h-100">
+                        <div class="brand-wrapper">
+                          <p:graphicImage id="gi03" styleClass="logo" library="img" name="p20-logo-lg.png" width="177" height="100" alt="logo"/>
+                        </div>
+                        <p class="jumbo-body-title">#{app$bundle['signout.instruction']}</p>
+                        <h:form id="f01" prependId="false">
+                          <h:commandLink styleClass="forgot-password-link" value="#{app$bundle['signout.action.label']}" action="signin"/>
+                        </h:form>
+                        <a href="#!" class="forgot-password-link">#{app$bundle['page.forgot.password']}</a>
+                        <p class="jumbo-body-footer-text">#{app$bundle['page.account.notexists']} <a href="#!" class="text-reset">#{app$bundle['page.account.register']}</a></p>
+                        <div class="jumbo-body-footer-nav">
+                          <a href="#!">#{app$bundle['page.agreement.usage']}</a> | <a href="#!">#{app$bundle['page.agreement.privacy']}</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </h:panelGroup>
+        <!-- END::  pagecontent -->
+        <!-- START:: pagebackdrops -->
+        <div class="content-backdrop-overlay"></div>
+        <!-- END:: pagebackdrops -->
+      </div>
+    </div>
+    <!--
+     | PrimeFaces already ships with jQuery bundled which leads to massive
+     | conflicts if another jQuery library is included.
+     | instruction below does not end up in a duplicate script include on pages
+     | which actually use PrimeFaces components.
+     -->
+    <h:outputScript id="os1" library="primefaces" name="jquery/jquery.js"/>
+    <h:outputScript id="os2" library="lib" name="p2020.js"/>
+  </h:body>
+</f:view>

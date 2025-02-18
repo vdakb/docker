@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="job_searchPageDef"
+                Package="oracle.iam.identity.sysadmin.job.view">
+  <parameters/>
+  <executables>
+    <iterator     id="JobIterator" Binds="JobSearchVO" DataControl="JobAMDataControl" RangeSize="20"/>
+    <searchRegion id="JobCriteria" Binds="JobIterator" Criteria="JobVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="name"/>
+  </executables>
+  <bindings>
+    <tree  id="Job" IterBinding="JobIterator">
+      <nodeDefinition Name="JobNode" DefName="oracle.iam.identity.sysadmin.model.view.JobVO">
+        <AttrNames>
+          <Item Value="name"/>
+          <Item Value="status"/>
+          <Item Value="statusDecode"/>
+          <Item Value="triggerStart"/>
+          <Item Value="triggerStop"/>
+          <Item Value="triggerNext"/>
+          <Item Value="concurrent"/>
+          <Item Value="retryCount"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="JobAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="JobAMDataControl"/>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

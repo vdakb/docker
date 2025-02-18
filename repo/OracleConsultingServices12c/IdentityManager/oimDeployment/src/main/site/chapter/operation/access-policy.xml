@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+  ! This software is the confidential and proprietary information of
+  ! Oracle Corporation. ("Confidential Information").  You shall not
+  ! disclose such Confidential Information and shall use it only in
+  ! accordance with the terms of the license agreement you entered
+  ! into with Oracle.
+  !
+  ! ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+  ! SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  ! IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ! PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+  ! SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+  ! THIS SOFTWARE OR ITS DERIVATIVES.
+  !
+  ! Copyright (c) 2015. All Rights reserved
+  !
+-->
+<chapter xml:id  ="oim-pol"
+         xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         version ="5.0">
+  <title>Managing Access Policies</title>
+  <para>Access policies are a list of roles and the resources with which roles are to be provisioned or deprovisioned.
+        Access policies are used to automate the provisioning of target systems to users.</para>
+  <section>
+    <title>Features of Access Policies</title>
+    <para>This section describes the various features offered by an access policy in the following sections:</para>
+    <itemizedlist>
+      <listitem>Provisioning</listitem>
+      <listitem>Denying a Resource</listitem>
+    </itemizedlist>
+    <section>
+      <title>Provisioning</title>
+      <para>Whenever an access policy is applied, the resources are directly provisioned to the user without the any
+            request being generated.</para>
+    </section>
+    <section>
+      <title>Denying a Resource</title>
+      <para>While creating or modifying an access policy, you can select resources to be denied along with resources to
+            be provisioned for roles.</para>
+      <para>If you first select a resource for provisioning and then select the same resource to be denied, then
+            Identity Manager removes the resource from the list of resources to be provisioned.</para>
+      <para>If two policies are defined for a role in which one is defined to provision a resource and the other is
+            defined to deny the resource, then Identity Manager does not provision the resource irrespective of the
+            priority of the policies.</para>
+    </section>
+  </section>
+  <section>
+    <title>Creating Access Policies</title>
+    <para>To create an access policy you must specify the metadata of the access policy and at least one resource to
+          provision or deny.</para>
+    <section>
+      <title>Parameters</title>
+      <table id="oim-pol-param-create" rowsep="0" colsep="0">
+        <tgroup cols="3">
+          <colspec colnum="1" colname="c1" colwidth="1*"/>
+          <colspec colnum="2" colname="c2" colwidth="4*"/>
+          <colspec colnum="2" colname="c3" colwidth="1*"/>
+          <thead>
+            <row rowsep="1">
+              <entry>Parameter</entry>
+              <entry>Description</entry>
+              <entry>Required</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="bold">name</emphasis></entry>
+              <entry>The unique identifier of an access policy in Identity Manager.</entry>
+              <entry>yes</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">description</emphasis></entry>
+              <entry>A formal description of the usage of the access policy.</entry>
+              <entry>yes</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">priority</emphasis></entry>
+              <entry>
+                <para>A numeric attribute containing a number that is unique for each access policy you create. The
+                      lower the number, the higher is the priority of the access policy.</para>
+                <para>Identity Manager uses the highest priority policy data for an account form.</para>
+              </entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">request</emphasis></entry>
+              <entry>
+                <para>A numeric attribute containing a number that is unique for each access policy you create. The
+                      lower the number, the higher is the priority of the access policy.</para>
+                <para>Identity Manager uses the highest priority policy data for an account form.</para>
+              </entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">retrofit</emphasis></entry>
+              <entry>
+                <para>If you select true, then the access policy is applied to all existing roles that you select during
+                      access policy creation. It means if existing user have the selected Roles then access policy will
+                      apply for those users also.</para>
+              </entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">ownerType</emphasis></entry>
+              <entry>
+                <para></para>
+              </entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">ownerName</emphasis></entry>
+              <entry>
+                <para></para>
+              </entry>
+              <entry>no</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section>
+    <title>Modifying Access Policies</title>
+    <para>To modify an access policy you must specify the name of the access policy to modify.</para>
+    <section>
+      <title>Parameters</title>
+      <table id="oim-pol-param-modify" rowsep="0" colsep="0">
+        <tgroup cols="3">
+          <colspec colnum="1" colname="c1" colwidth="1*"/>
+          <colspec colnum="2" colname="c2" colwidth="4*"/>
+          <colspec colnum="2" colname="c3" colwidth="1*"/>
+          <thead>
+            <row rowsep="1">
+              <entry>Parameter</entry>
+              <entry>Description</entry>
+              <entry>Required</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="bold">name</emphasis></entry>
+              <entry>The unique identifier of an access policy in Identity Manager.</entry>
+              <entry>yes</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">description</emphasis></entry>
+              <entry>A formal description of the usage of the access policy.</entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">priority</emphasis></entry>
+              <entry>
+                <para>A numeric attribute containing a number that is unique for each access policy you create. The
+                      lower the number, the higher is the priority of the access policy.</para>
+                <para>Identity Manager uses the highest priority policy data for an account form.</para>
+              </entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">request</emphasis></entry>
+              <entry>
+                <para>A numeric attribute containing a number that is unique for each access policy you create. The
+                      lower the number, the higher is the priority of the access policy.</para>
+                <para>Identity Manager uses the highest priority policy data for an account form.</para>
+              </entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">retrofit</emphasis></entry>
+              <entry>
+                <para>If you select true, then the access policy is applied to all existing roles that you select during
+                      access policy creation. It means if existing user have the selected Roles then access policy will
+                      apply for those users also.</para>
+              </entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">ownerType</emphasis></entry>
+              <entry>
+                <para></para>
+              </entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">ownerName</emphasis></entry>
+              <entry>
+                <para></para>
+              </entry>
+              <entry>no</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section>
+      <title>Parameters specified as nested elements</title>
+      <para>An access policy type accepts following nested elements:</para>
+      <table id="oim-pol-nested-modify" rowsep="0" colsep="0">
+        <tgroup cols="3">
+          <colspec colnum="1" colname="c1" colwidth="1*"/>
+          <colspec colnum="2" colname="c2" colwidth="4*"/>
+          <colspec colnum="2" colname="c3" colwidth="1*"/>
+          <thead>
+            <row rowsep="1">
+              <entry>Element</entry>
+              <entry>Description</entry>
+              <entry>Required</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="bold">provision</emphasis></entry>
+              <entry></entry>
+              <entry>no</entry>
+            </row>
+            <row>
+              <entry><emphasis role="bold">deny</emphasis></entry>
+              <entry></entry>
+              <entry>no</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section>
+    <title>Deleting Access Policies</title>
+    <para>To delete an access policy you must specify the name of the access policy to delete.</para>
+    <important>
+      <para>This operation does not support any other parameter or nested elements.</para>
+    </important>
+    <table id="oim-pol-param-delete" rowsep="0" colsep="0">
+      <tgroup cols="3">
+        <colspec colnum="1" colname="c1" colwidth="1*"/>
+        <colspec colnum="2" colname="c2" colwidth="4*"/>
+        <colspec colnum="2" colname="c3" colwidth="1*"/>
+        <thead>
+          <row rowsep="1">
+            <entry>Parameter</entry>
+            <entry>Description</entry>
+            <entry>Required</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><emphasis role="bold">name</emphasis></entry>
+            <entry>The unique identifier of an access policy in Identity Manager.</entry>
+            <entry>yes</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section>
+    <title>Exporting Access Policies</title>
+    <para>Access Policies can be exported to an XML file.</para>
+    <tip>
+      <para>Oracle Consulting does not recommend exporting Access Policies due to the prefix behavior of connectors
+            regarding lookup values end entitlements.</para>
+      <para>Prefixing is based on the system identifier of an IT Resource. The system identifier is a database sequence.</para>
+      <para>It cannot be ensured that such sequence is coordinated on the same stage across environments like
+            development, test or production.</para>
+      <para>A lot of effort is required to keep the IT Resource prefix in sync with the actual deployment of an Identity
+            Manager instance.</para>
+    </tip>
+    <para>
+      To export a access policy it is required to embed the category AccessPolicy in an <emphasis>Export Set</emphasis>.
+    </para>
+      <programlisting>&lt;object:exportSet exportFile ="0701 systemConnector ODS/xml/ods-policy-dm.xml"
+                  description="ODS Access Policy Configuration>
+  &lt;object:category value="AccessPolicy" name="ODS Basic Account"/>
+  &lt;object:category value="AccessPolicy" name="ODS Administrator"/>
+&lt;/object:exportSet></programlisting>
+  </section>
+  <section>
+    <title>Importing Access Policies</title>
+    <para>Access Policies can be imported to an XML file. The file needs to be a nested parameter of an Import Set.</para>
+    <tip>
+      <para>Oracle Consulting does not recommend importing Access Policies due to the prefix behavior of connectors
+            regarding lookup values end entitlements.</para>
+      <para>Prefixing is based on the system identifier of an IT Resource. The system identifier is a database sequence.</para>
+      <para>It cannot be ensured that such sequence is coordinated on the same stage across environments like
+            development, test or production.</para>
+      <para>A lot of effort is required to keep the IT Resource prefix in sync with the actual deployment of an Identity
+            Manager instance.</para>
+    </tip>
+    <para>
+      To import a access policy it is required to embed the category AccessPolicy in an<emphasis>Import Set</emphasis>.
+    </para>
+      <screen>&lt;object:importSet dir="0701 systemConnector ODS/xml">
+  &lt;object:importFile name="ods-policy-dm.xml"/&gt;
+&lt;/object:import&gt;</screen>
+  </section>
+</chapter>

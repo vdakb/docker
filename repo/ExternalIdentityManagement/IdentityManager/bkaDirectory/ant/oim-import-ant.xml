@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Importer"
+         basedir         ="../../../deployment/oim/"
+         default         ="all"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-import-ant.log"/>
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager System Integration
+  **           Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Oracle Identity
+  **           Sytsem integration connectors. This includes:
+  **           o Java Binary Archives
+  **           o IT Resource Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  **           o Workflows
+  ******************************************************************************
+  -->
+  <target name="base" description="Deploys the Base System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="base System Integration Foundation ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <library-deploy dir="0102 systemIntegration/lib" file="gson-2.8.5.jar"                         location="${oim.remote.thirdparty}"/>
+    <library-deploy dir="0102 systemIntegration/lib" file="bka-lds-adapter.jar"                    location="${oim.remote.adapter}"/>
+    <library-deploy dir="0102 systemIntegration/lib" file="org.identityconnectors.ldap-12.3.0.jar" location="${oim.remote.bundle}"/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="base">
+        <object:importFile name="ldap-resource-dm.xml"/>
+        <object:importFile name="ldap-adapter-dm.xml"/>
+        <object:importFile name="ldap-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="base completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Clear Identity Manager Caches.
+  **
+  ** Synopsis: The tasks prepares the Identity Manager Application Deployment.
+  **           This includes:
+  **           o Clearing several caches
+  ******************************************************************************
+  -->
+  <target name="9999" description="Clear Identity Manager Caches">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="clear Clear Caches"/>
+    <echo message="============================================================="/>
+    <echo message="Clear metadata cache on ${oim.server.name}:${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}"/>
+    <echo message="Clear object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <echo message="============================================================="/>
+    <echo message="clear completed"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance"/>
+</project>

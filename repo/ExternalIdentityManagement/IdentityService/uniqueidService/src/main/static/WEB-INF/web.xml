@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<web-app xmlns             ="http://java.sun.com/xml/ns/javaee" version="3.0"
+         xmlns:xsi         ="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  <resource-ref>
+    <description>Identity Governance Service DataSource</description>
+    <res-ref-name>jdbc/idsDS</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+  <!--
+   | Obvious a crazy hack to enforce a JEE server like GlassFish or Payara to
+   | response as JSON instaed of HTML if errors like below occurs
+   |
+   | I do believe JAX-RS allows you to catch a NotAuthorizedException using an
+   | (see bka.iam.identity.igs.ApplicationExceptionMapper) provided that thrown
+   | by myself or the container within a JAX-RS resource. But in this case
+   ] something is responding before the request gets that far. In other words
+   | this strikes me as an integration issue between Jersey and
+   | GlassFish/Payara.
+   |
+   | I think the applied solution is good because it solves the most important
+   | problem of returning a structured response that is parseable for API
+   | consumers. On the other hand it feels like a workaround because it's a
+   | departure from the JAX-RS programming model and one additional hump that
+   | developers have to get over.
+   |
+   | I think an enhancement here would make things easier for future developers.
+   -->
+  <error-page>
+    <error-code>400</error-code>
+    <location>/WEB-INF/error/0400.json</location>
+  </error-page>
+  <error-page>
+    <error-code>401</error-code>
+    <location>/WEB-INF/error/0401.json</location>
+  </error-page>
+  <error-page>
+    <error-code>403</error-code>
+    <location>/WEB-INF/error/0403.json</location>
+  </error-page>
+  <error-page>
+    <error-code>406</error-code>
+    <location>/WEB-INF/error/0406.json</location>
+  </error-page>
+  <error-page>
+    <error-code>415</error-code>
+    <location>/WEB-INF/error/0415.json</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/WEB-INF/error/0500.json</location>
+  </error-page>
+  <error-page>
+    <error-code>502</error-code>
+    <location>/WEB-INF/error/0502.json</location>
+  </error-page>
+  <security-role>
+    <role-name>viewer</role-name>
+  </security-role>
+  <security-role>
+    <role-name>register</role-name>
+  </security-role>
+  <security-role>
+    <role-name>generate</role-name>
+  </security-role>
+  <security-role>
+    <role-name>administrator</role-name>
+  </security-role>
+</web-app>

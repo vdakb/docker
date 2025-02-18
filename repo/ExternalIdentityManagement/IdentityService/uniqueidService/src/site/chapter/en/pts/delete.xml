@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="pts-delete"
+         xml:lang="en"
+         version ="5.0">
+  <title>Delete a Participant</title>
+  <para>
+    <restapi role="delete">/igs/uid/v1/participant/{id}</restapi>
+  </para>
+  <section xml:id="pts-delete-p">
+    <title>Request</title>
+    <warning>
+      <title>Permission</title>
+      <para>To access this resource method elevated permission <emphasis role="strong">administrator</emphasis> is required.</para>
+    </warning>
+    <bridgehead renderas="sect6">Example</bridgehead>
+    <!--
+    Don't indent what's in the element below
+    -->
+    <programlisting language="bash">
+curl --request DELETE \
+     --location 'https://&lt;service-host&gt;:&lt;service-port&gt;/igs/uid/v1/participant/41' \
+     --header 'Accept: application/json' \
+     --header 'Content-Type: application/json' \
+     --header 'Authorization: Bearer &lt;your-token&gt;'
+    </programlisting>
+    <section xml:id="pts-delete-h">
+      <title>Request Header</title>
+      <para>
+        Invoking this endpoint requires following request header:
+      </para>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">authorization</emphasis></entry>
+              <entry>string</entry>
+              <entry><emphasis>Bearer</emphasis> appended with the token obtained by <link linkend='uid-arch-token'>Obtaining a Token</link></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="pts-delete-q">
+      <title>Query Parameter</title>
+      <para>
+        This method does not accept additional query parameters.
+      </para>
+    </section>
+  </section>
+  <section xml:id="pts-delete-r">
+    <title>Response</title>
+    <para>
+      The representation of the participant deleted containing the attributes whose returnability is <emphasis>default</emphasis>.
+    </para>
+    <para>
+      Status code 200 is returned upon successful operation.
+    </para>
+    <bridgehead renderas="sect6">Example</bridgehead>
+    <!--
+    Don't indent what's in the element below
+    -->
+    <programlisting language="json">
+{ "id": "41"
+. "active": false
+, "name": "Not Landratsamt Rosenheim"
+}    </programlisting>
+    <para>
+      The output data is in the following form:
+    </para>
+    <section xml:id="pts-delete-r1">
+      <title>Resource</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>id</entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The identifier of the participant.</entry>
+            </row>
+            <row>
+              <entry>active</entry>
+              <entry>boolean</entry>
+              <entry>yes</entry>
+              <entry>The activation status of the participant.</entry>
+            </row>
+            <row>
+              <entry>name</entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The human readable name of the participant.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="pts-delete-e">
+      <title>Possible Errors</title>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Status Code</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>400</entry>
+              <entry>The <literal>id</literal> of the participant to delete is malformed.</entry>
+            </row>
+            <row>
+              <entry>401</entry>
+              <entry>The access token is invalid or has been revoked.</entry>
+            </row>
+            <row>
+              <entry>403</entry>
+              <entry>The user isn't authorized to modify participants.</entry>
+            </row>
+            <row>
+              <entry>404</entry>
+              <entry>The <literal>id</literal> in request path doesn't point to a participant that exists.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+</section>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter"
+         basedir         ="../src/main/resources/xml"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-export-ant.log"/>
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Oracle Identity Manager System Integration
+  **           Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports Identity Governance Service System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="base Base System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+       <object:exportSet exportFile ="base/pid-scheduler-dm.xml"
+                         description="Identity Governance Service Configuration ${application.release}">
+         <object:category value="scheduledTask" name="PIDMigrator"/>
+         <object:category value="Job"           name="PID Migrator"/>
+       </object:exportSet>
+       <object:exportSet exportFile ="base/pwd-scheduler-dm.xml"
+                         description="Identity Governance Service Configuration ${application.release}">
+         <object:category value="scheduledTask" name="PWDReset"/>
+         <object:category value="Job"           name="PWD Reset"/>
+       </object:exportSet>
+       <object:exportSet exportFile ="base/pol-scheduler-tt.xml"
+                         description="Access Policy Evaluator Configuration ${application.release}">
+         <object:category value="scheduledTask" name="POLEvaluate"/>
+         <object:category value="Job"           name="Access Policy Evaluate"/>
+       </object:exportSet>
+     </object:export>
+     <echo message="=================================================================="/>
+     <echo message="base completed"/>
+     <echo message="=================================================================="/>
+     <record name="${oim.recorder.name}" action="stop"/>
+   </target>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Oracle Identity Manager System Integration
+  **           Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Exports Identity Governance Service System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="target Identity Governance Service  Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+       <object:exportSet exportFile ="target/pid-resource-dm.xml"
+                         description="Identity Governance Service Configuration ${application.release}">
+         <object:category value="Job" name="PID.Endpoint"/>
+       </object:exportSet>
+     </object:export>
+     <echo message="=================================================================="/>
+     <echo message="target completed"/>
+     <echo message="=================================================================="/>
+     <record name="${oim.recorder.name}" action="stop"/>
+   </target>
+</project>

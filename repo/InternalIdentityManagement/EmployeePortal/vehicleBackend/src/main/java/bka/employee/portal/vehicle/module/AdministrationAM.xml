@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE AppModule SYSTEM "jbo_03_01.dtd">
+<!---->
+<AppModule xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.22.48"
+           Name                  ="AdministrationAM"
+           ComponentClass        ="bka.employee.portal.vehicle.module.AdministrationAMImpl"
+           ComponentInterface    ="bka.employee.portal.vehicle.module.common.AdministrationAM"
+           ClearCacheOnRollback  ="true"
+           InheritPersonalization="merge">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL        ResId="admin.single"/>
+      <LABEL_PLURAL ResId="admin.multiple"/>
+      <TOOLTIP      ResId="admin.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewUsage Name="TypeSearchVO"  ViewObjectName="bka.employee.portal.vehicle.model.view.TypeVO"  RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="TypeDetailVO"  ViewObjectName="bka.employee.portal.vehicle.model.view.TypeVO"  RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="BrandSearchVO" ViewObjectName="bka.employee.portal.vehicle.model.view.BrandVO" RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="BrandPickerVO" ViewObjectName="bka.employee.portal.vehicle.model.view.BrandVO" RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="BrandDetailVO" ViewObjectName="bka.employee.portal.vehicle.model.view.BrandVO" RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="ColorSearchVO" ViewObjectName="bka.employee.portal.vehicle.model.view.ColorVO" RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="ColorDetailVO" ViewObjectName="bka.employee.portal.vehicle.model.view.ColorVO" RangeSize="20" AccessMode="RANGE_PAGING"/>
+  <ViewUsage Name="VehicleVO" ViewObjectName="bka.employee.portal.vehicle.model.view.VehicleVO"/>
+  <ViewLinkUsage Name="BrandVOVehicleVO"
+                 ViewLinkObjectName="bka.employee.portal.vehicle.model.view.link.BrandVOVehicleVO"
+                 SrcViewUsageName="bka.employee.portal.vehicle.module.AdministrationAM.BrandDetailVO"
+                 DstViewUsageName="bka.employee.portal.vehicle.module.AdministrationAM.VehicleVO"
+                 Reversed="false"/>
+  <ClientInterface Name="__clientInterface">
+    <Method Name="fetchBrandByIdentifier" MethodName="fetchBrandByIdentifier">
+      <Return    Name="_return_type_" Type="void" />
+      <Parameter Name="identifier"    Type="java.lang.String"/>
+    </Method>
+    <Method Name="refreshBrandAttribute" MethodName="refreshBrandAttribute">
+      <Return    Name="_return_type_" Type="void"/>
+      <Parameter Name="identifier"    Type="java.lang.Long"/>
+    </Method>
+    <Method Name="fetchColorByIdentifier" MethodName="fetchColorByIdentifier">
+      <Return    Name="_return_type_" Type="void"/>
+      <Parameter Name="identifier"    Type="java.lang.String"/>
+    </Method>
+    <Method Name="refreshColorAttribute" MethodName="refreshColorAttribute">
+      <Return    Name="_return_type_" Type="void"/>
+      <Parameter Name="identifier"    Type="java.lang.Long"/>
+    </Method>
+    <Method Name="fetchTypeByIdentifier" MethodName="fetchTypeByIdentifier">
+      <Return    Name="_return_type_" Type="void"/>
+      <Parameter Name="identifier"    Type="java.lang.String"/>
+    </Method>
+    <Method Name="refreshTypeAttribute" MethodName="refreshTypeAttribute">
+      <Return    Name="_return_type_" Type="void"/>
+      <Parameter Name="identifier"    Type="java.lang.Long"/>
+    </Method>
+  </ClientInterface>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="bka.employee.portal.vehicle.Backend"/>
+  </ResourceBundle>
+</AppModule>

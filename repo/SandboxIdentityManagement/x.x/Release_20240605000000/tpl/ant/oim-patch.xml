@@ -1,0 +1,1775 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-patch-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Customization Library
+  **           o System Properties
+  **           o Self Service Console Branding
+  ******************************************************************************
+  -->
+  <target name="0007" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0007 Frontend Customization Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Copying Required Files for environment ${fmw.env} on ${oim.server.host}:${oim.server.home}"/>
+    <ssh-file dir="0000 systemCustomization/lib" file="bka.iam.identity.library.war"     location="${oim.server.home}/apps"/>
+    <echo message="Deploying OAuth sandboxes for environment ${fmw.env} on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="0000 systemCustomization/mds/bka-oauth-identity.zip"/>
+    </sandbox:import>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0000 systemCustomization/xml">
+        <object:importFile name="oim-lookup-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0007 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####  #     #
+  **           #     #    #    ##   ##
+  **           #     #    #    # # # #
+  **           #     #    #    #  #  #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager System Adapter Configuration
+  **           To be able to compile adapter correctly and register scheduled
+  **           jobs this target deploys the necessary libraries to the remote
+  **           host
+  **
+  ** Synopsis: The tasks deploys the object definitions for System Adapter
+  **           Configuration. This includes:
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="0100" description="Deploys the System Framework Configuration ${application.release}">
+    <echo message="${oim.recorder.name}"/>
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 System Framework Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.thirdparty}" file="ocs-scheduler.jar"/>
+    <plugin-deploy  dir="0100 systemFramework/lib" location="${oim.remote.plugin}"     file="bka-handler.zip"/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0100 systemFramework/fix">
+        <object:importFile name="ocs-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/bka-features-organization/event-definition/EventHandlers.xml"/>
+      <metadata:path path="/metadata/bka-features-passwordmgmt/event-definition/EventHandlers.xml"/>
+      <metadata:path path="/metadata/bka-features-identity/event-definition/EventHandlers.xml"/>
+    </metadata:delete>
+    <!--
+     | EventHandler for UID validation postponed due to its unclear how to
+     | enforce per participant
+     -->
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0100 systemFramework/xml">
+        <object:importFile name="bka-handler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####  #     #
+  **           #     #    #    ##   ##
+  **           #     #    #    # # # #
+  **           #     #    #    #  #  #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager System Integration
+  **           Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Oracle Identity
+  **           System integration connectors. This includes:
+  **           o Java Binary Archives
+  **           o IT Resource Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  **           o Workflows
+  ******************************************************************************
+  -->
+  <target name="0102" description="Deploys the Base System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0102 System Integration Foundation ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.thirdparty}" file="bka-common.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.scheduler}"  file="bka-scheduler.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.adapter}"    file="bka-adapter.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.thirdparty}" file="rkc.identity.connector.common-12.2.1.3.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.scheduler}"  file="rkc.identity.connector.scheduler-12.2.1.3.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.adapter}"    file="rkc.identity.connector.adapter-12.2.1.3.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.thirdparty}" file="bds.identity.connector.common-12.2.1.3.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.scheduler}"  file="bds.identity.connector.scheduler-12.2.1.3.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.adapter}"    file="bds.identity.connector.adapter-12.2.1.3.jar"/>
+    <echo message="Deploying connector bundles for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <plugin:upload contextRef="oim-context" verbose="true">
+      <plugin:library location="ICFBundle" file="0102 systemIntegration/lib/rkc.identity.connector.bundle-12.2.1.3.jar"/>
+    </plugin:upload>
+    <!--
+     | Postponed until the composite is transfered
+    <echo message="Deploy composite archive 0102 systemIntegration/soa/sca_CatalogApproverEntitlement_rev1.0.0.0.jar on ${soa.server.host}:${soa.server.port} with configplan"/>
+    <workflow:deploy contextRef="soa-context">
+      <composite partition="bka" name="CatalogApproverEntitlement" revision="1.0.0.0" location="0102 systemIntegration/soa/sca_CatalogApproverEntitlement_rev1.0.0.0.jar" plan="0102 systemIntegration/soa/${environment}-config-wls.xml"/>
+    </workflow:deploy>
+    <workflow:configure contextRef="soa-context">
+      <composite partition="bka" name="CatalogApproverEntitlement" revision="1.0.0.0">
+        <task name="ApprovalTask">
+          <flow host="${oim.external.host}" port="${oim.external.port}" uri="/identity/faces/adf.task-flow?_id=ApprovalTask_TaskFlow&amp;_document=WEB-INF/ApprovalTask_TaskFlow.xml"/>
+        </task>
+      </composite>
+    </workflow:configure>
+    -->
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0102 systemIntegration/xml">
+        <object:importFile name="bka-scheduler-dm.xml"/>
+        <!--
+         | Postponed until the composite is transfered
+        <object:importFile name="bka-job-definition-dm.xml"/>
+        -->
+        <object:importFile name="oam-resource-dm.xml"/>
+        <object:importFile name="bka-entitlement-provision-dm.xml"/>
+        <object:importFile name="rkc-resource-dm.xml"/>
+        <object:importFile name="rkc-adapter-dm.xml"/>
+        <object:importFile name="rkc-scheduler-dm.xml"/>
+        <object:importFile name="bds-resource-dm.xml"/>
+        <object:importFile name="bds-adapter-dm.xml"/>
+        <object:importFile name="bds-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0102 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **              #    #     #
+  **             # #   ##    #
+  **            #   #  # #   #
+  **           #     # #  #  #
+  **           ####### #   # #
+  **           #     # #    ##
+  **           #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-AN" description="Deploys Trusted Reconciliation Configuration for Police Saxonia-Anhalt">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-AN Trusted Reconciliation Configuration for Police Saxonia-Anhalt ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="an-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-AN completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #######
+  **           #     # #
+  **           #     # #
+  **           ######  ######
+  **           #     # #
+  **           #     # #
+  **           ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-BE" description="Deploys Trusted Reconciliation Configuration for Police Berlin">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BE Trusted Reconciliation Configuration for Police Berlin ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="be-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-BE completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-BB" description="Deploys Trusted Reconciliation Configuration for Police Brandenburg">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BB Trusted Reconciliation Configuration for Police Brandenburg ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="bb-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-BB completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #
+  **           #     # #   #
+  **           #     # #  #
+  **           ######  ###
+  **           #     # #  #
+  **           #     # #   #
+  **           ######  #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-BK" description="Deploys Trusted Reconciliation Configuration for Federal Criminal Police Office">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BK Trusted Reconciliation Configuration for Federal Criminal Police Office ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="bk-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-BK completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **           #     # #
+  **           #     # #
+  **           ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-BP" description="Deploys Trusted Reconciliation Configuration for Federal Police">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BP Trusted Reconciliation Configuration for Federal Police ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="bp-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-BP completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     #
+  **           #     # #  #  #
+  **           #     # #  #  #
+  **           ######  #  #  #
+  **           #     # #  #  #
+  **           #     # #  #  #
+  **           ######   ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-BW" description="Deploys Trusted Reconciliation Configuration for Police Baden-Wuerttemberg">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BW Trusted Reconciliation Configuration for Police Baden-Wuerttemberg ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="bw-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-BW completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ####### ######
+  **           #     # #     #
+  **           #     # #     #
+  **           #     # ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-HB" description="Deploys Trusted Reconciliation Configuration for Police Bremen">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-HB Trusted Reconciliation Configuration for Police Bremen ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="hb-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-HB completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # #######
+  **           #     # #
+  **           #     # #
+  **           ####### #####
+  **           #     # #
+  **           #     # #
+  **           #     # #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-HE" description="Deploys Trusted Reconciliation Configuration for Police Hesse">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-HE Trusted Reconciliation Configuration for Police Hesse ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="he-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-HE completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # #     #
+  **           #     # #     #
+  **           #     # #     #
+  **           ####### #######
+  **           #     # #     #
+  **           #     # #     #
+  **           #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-HH" description="Deploys Trusted Reconciliation Configuration for Police Hamburg">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-HH Trusted Reconciliation Configuration for Police Hamburg ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="hh-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-HH completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # #     #
+  **           ##   ## #     #
+  **           # # # # #     #
+  **           #  #  # #     #
+  **           #     #  #   #
+  **           #     #   # #
+  **           #     #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-MV" description="Deploys Trusted Reconciliation Configuration for Police Mecklenburg-Western Pomerania">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-MV Trusted Reconciliation Configuration for Police Mecklenburg-Western Pomerania ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="mv-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-MV completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #  #####
+  **           ##    #    #
+  **           # #   #    #
+  **           #  #  #    #
+  **           #   # #    #
+  **           #    ##    #
+  **           #     #  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-NI" description="Deploys Trusted Reconciliation Configuration for Police Lower-Saxonia">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-NI Trusted Reconciliation Configuration for Police Lower-Saxonia ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="ni-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-NI completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **           #  #    #
+  **           #   #   #
+  **           #    #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-RP" description="Deploys Trusted Reconciliation Configuration for Police Rhineland-Palatinate">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-RP Trusted Reconciliation Configuration for Police Rhineland-Palatinate ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="rp-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-RP completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #
+  **           #     # #
+  **           #       #
+  **            #####  #
+  **                 # #
+  **           #     # #
+  **            #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-SL" description="Deploys Trusted Reconciliation Configuration for Police Saarland">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-SL Trusted Reconciliation Configuration for Police Saarland ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="sl-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-SL completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ####### #     #
+  **              #    #     #
+  **              #    #     #
+  **              #    #######
+  **              #    #     #
+  **              #    #     #
+  **              #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Trusted
+  **           Reconciliation Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration elements
+  **           like:
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200-TH" description="Deploys Trusted Reconciliation Configuration for Police Thuringia">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-TH Trusted Reconciliation Configuration for Police Thuringia ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0200 trustedSource LDS/fix">
+        <object:importFile name="th-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-TH completed"/>
+    <echo message="=================================================================="/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######   #####
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ######  # #####
+  **           #     # #             #     #       #     #
+  **           #     # #       #     #     #       #     #
+  **            #####  #        #####      #        #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Project Group
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-PG" description="Deploys the openfire System Integration Configuration for Project Group">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-PG openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-pg-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-PG completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####         #    #     #
+  **           #     # #       #     #       # #   ##    #
+  **           #     # #       #            #   #  # #   #
+  **           #     # ######   #####      #     # #  #  #
+  **           #     # #             #     ####### #   # #
+  **           #     # #       #     #     #     # #    ##
+  **            #####  #        #####      #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Saxonia-Anhalt
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-AN" description="Deploys the openfire System Integration Configuration for Police Saxonia-Anhalt">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-AN openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-an-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-AN completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      ######  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Brandenburg
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-BB" description="Deploys the openfire System Integration Configuration for Police Brandenburg">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BB openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-bb-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #######
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Berlin
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-BE" description="Deploys the openfire System Integration Configuration for Police Berlin">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BE openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-be-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #    #
+  **           #     # #       #     #     #     # #   #
+  **           #     # #       #           #     # #  #
+  **           #     # ######   #####      ######  ###
+  **           #     # #             #     #     # #  #
+  **           #     # #       #     #     #     # #   #
+  **            #####  #        #####      ######  #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Federal Criminal Police Office
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-BK" description="Deploys the openfire System Integration Configuration for Federal Criminal Police Office">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BK openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-bk-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BK completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Federal Police
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-BP" description="Deploys the openfire System Integration Configuration for Federal Police">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BP openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-bp-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #     #
+  **           #     # #       #     #     #     # #  #  #
+  **           #     # #       #           #     # #  #  #
+  **           #     # ######   #####      ######  #  #  #
+  **           #     # #             #     #     # #  #  #
+  **           #     # #       #     #     #     # #  #  #
+  **            #####  #        #####      ######   ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Baden-Wuerttemberg
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-BW" description="Deploys the openfire System Integration Configuration for Police Baden-Wuerttemberg">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BW openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-bw-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     #  #   #
+  **           #     # ######   #####      ######    ###
+  **           #     # #             #     #     #    #
+  **           #     # #       #     #     #     #    #
+  **            #####  #        #####      ######     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Bavaria
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-BY" description="Deploys the openfire System Integration Configuration for Police Bavaria">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BY openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-by-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-BY completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ####### ######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      #     # ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Bremen
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-HB" description="Deploys the openfire System Integration Configuration for Police Bremen">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HB openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-hb-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-HB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #######
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ####### ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      #     # #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Hesse
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-HE" description="Deploys the openfire System Integration Configuration for Police Hesse">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HE openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-he-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-HE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ####### #######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Hamburg
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-HH" description="Deploys the openfire System Integration Configuration for Police Hamburg">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HH openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-hh-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-HH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     ##   ## #     #
+  **           #     # #       #           # # # # #     #
+  **           #     # ######   #####      #  #  # #     #
+  **           #     # #             #     #     #  #   #
+  **           #     # #       #     #     #     #   # #
+  **            #####  #        #####      #     #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Mecklenburg-Western Pomerania
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-MV" description="Deploys the openfire System Integration Configuration for Police Mecklenburg-Western Pomerania">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-MV openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-mv-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-MV completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     #  #####
+  **           #     # #       #     #     ##    #    #
+  **           #     # #       #           # #   #    #
+  **           #     # ######   #####      #  #  #    #
+  **           #     # #             #     #   # #    #
+  **           #     # #       #     #     #    ##    #
+  **            #####  #        #####      #     #  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Lower Saxony
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-NI" description="Deploys the openfire System Integration Configuration for Police Lower Saxony">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-NI openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-ni-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-NI completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     ##    # #  #  #
+  **           #     # #       #           # #   # #  #  #
+  **           #     # ######   #####      #  #  # #  #  #
+  **           #     # #             #     #   # # #  #  #
+  **           #     # #       #     #     #    ## #  #  #
+  **            #####  #        #####      #     #  ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police North Rhine-Westphalia
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-NW" description="Deploys the openfire System Integration Configuration for Police North Rhine-Westphalia">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-NW openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-nw-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-NW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #  #    #
+  **           #     # #       #     #     #   #   #
+  **            #####  #        #####      #    #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Rhineland-Palatinate
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-RP" description="Deploys the openfire System Integration Configuration for Police Rhineland-Palatinate">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-RP openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-rp-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-RP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #       #     #
+  **           #     # ######   #####       #####  #######
+  **           #     # #             #           # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####       #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Schleswig-Holstein
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-SH" description="Deploys the openfire System Integration Configuration for Police Schleswig-Holstein">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SH openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-sh-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-SH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #       #
+  **           #     # ######   #####       #####  #
+  **           #     # #             #           # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####       #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Saarland
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-SL" description="Deploys the openfire System Integration Configuration for Police Saarland">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SL openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-sl-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-SL completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #     #
+  **           #     # #       #     #     #     # ##    #
+  **           #     # #       #           #       # #   #
+  **           #     # ######   #####       #####  #  #  #
+  **           #     # #             #           # #   # #
+  **           #     # #       #     #     #     # #    ##
+  **            #####  #        #####       #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Saxonia
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-SN" description="Deploys the openfire System Integration Configuration for Police Saxonia">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SN openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-sn-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1401-SN completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ####### #     #
+  **           #     # #       #     #        #    #     #
+  **           #     # #       #              #    #     #
+  **           #     # ######   #####         #    #######
+  **           #     # #             #        #    #     #
+  **           #     # #       #     #        #    #     #
+  **            #####  #        #####         #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Police Thuringia
+  **
+  ** Synopsis: The tasks deploys the object definitions for openfire XMPP Server
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-TH" description="Deploys the openfire System Integration Configuration for Police Thuringia">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-TH openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-th-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ####### #######
+  **           #     # #       #     #          #  #
+  **           #     # #       #               #   #
+  **           #     # ######   #####         #    ######
+  **           #     # #             #       #     #
+  **           #     # #       #     #      #      #
+  **            #####  #        #####      ####### #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager openfire XMPP Server
+  **           Configuration for Customs Investigation Bureau
+  **
+  ** Synopsis: The tasks exports the openfire XMPP Server object definitions for
+  **           trusted reconciliation.
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1401-ZF" description="Deploys the openfire System Integration Configuration for Customs Investigation Bureau">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-ZF openfire System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1401 systemConnector OFS/fix">
+        <object:importFile name="ofs-zf-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     ######
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        #     #
+  **           #       #     #   # #       #     #
+  **           #       #     #  #   #      #     #
+  **           #       #     # #     #     ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Phoenix Directory Service
+  **           Configuration for Development Environment
+  **
+  ** Synopsis: The tasks deploys the object definitions for Directory Service
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1501-01" description="Deploys the Phoenix Directory System Integration Configuration for Development Environment">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-01 Phoenix Directory System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1501 systemConnector PHX/fix">
+        <object:importFile name="phx-d-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1501-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     #######
+  **           #     # #     #  #   #         #
+  **           #     # #     #   # #          #
+  **           ######  #######    #           #
+  **           #       #     #   # #          #
+  **           #       #     #  #   #         #
+  **           #       #     # #     #        #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Phoenix Directory Service
+  **           Configuration for Test Environment
+  **
+  ** Synopsis: The tasks deploys the object definitions for Directory Service
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1501-02" description="Deploys the Phoenix Directory System Integration Configuration for Test Environment">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-02 Phoenix Directory System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1501 systemConnector PHX/fix">
+        <object:importFile name="phx-t-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1501-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #      #####
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        #     #
+  **           #       #     #   # #       #  #  #
+  **           #       #     #  #   #      #   # #
+  **           #       #     # #     #      #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Phoenix Directory Service
+  **           Configuration for Pre-Production Environment
+  **
+  ** Synopsis: The tasks deploys the object definitions for Directory Service
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1501-03" description="Deploys the Phoenix Directory System Integration Configuration for Pre-Production Environment">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-03 Phoenix Directory System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1501 systemConnector PHX/fix">
+        <object:importFile name="phx-q-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1501-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     ######
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        ######
+  **           #       #     #   # #       #
+  **           #       #     #  #   #      #
+  **           #       #     # #     #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Phoenix Directory Service
+  **           Configuration for Production Environment
+  **
+  ** Synopsis: The tasks deploys the object definitions for Directory Service
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="1501-04" description="Deploys the Phoenix Directory System Integration Configuration for Production Environment">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-04 Phoenix Directory System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="1501 systemConnector PHX/fix">
+        <object:importFile name="phx-p-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="1501-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####
+  **           #     # #   #  #     #
+  **           #     # #  #   #
+  **           ######  ###    #
+  **           #   #   #  #   #
+  **           #    #  #   #  #     #
+  **           #     # #    #  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Redhat Keycloak Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for
+  **           Redhat Keycloak Configuration. This includes:
+  **           o IT Resource Instance
+  **           o Lookup Definition
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="2001" description="Deploys the Redhat Keycloak System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001 Deploys the Redhat Keycloak System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2001 systemConnector RKC/xml">
+        <object:importFile name="rkc-resource-dm.xml"/>
+        <object:importFile name="rkc-lookup-dm.xml"/>
+        <object:importFile name="rkc-model-dm.xml"/>
+        <object:importFile name="rkc-process-dm.xml"/>
+        <object:importFile name="rkc-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/bka-features-configuration/rkc/rkc-feature.xml"/>
+      <metadata:path path="/metadata/bka-features-provisioning/rkc/rkc-account-provisioning.xml"/>
+      <metadata:path path="/metadata/bka-features-reconciliation/rkc/rkc-account-reconciliation.xml"/>
+    </metadata:delete>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2001 systemConnector RKC/mds">
+        <object:importFile name="rkc-account-feature-dm.xml"/>
+        <object:importFile name="rkc-account-provisioning-dm.xml"/>
+        <object:importFile name="rkc-account-reconciliation-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="2001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####  #     #  ######
+  **                #     #    ##   ##  #     #
+  **               #      #    # # # #  #     #
+  **              #       #    #  #  #  ######
+  **             #        #    #     #  #
+  **            #         #    #     #  #
+  **           #######  #####  #     #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager ZIMP Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for
+  **           Redhat Keycloak Configuration. This includes:
+  **           o IT Resource Instance
+  **           o Lookup Definition
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+  <target name="2101" description="Deploys the Redhat Keycloak System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101 Deploys the Redhat Keycloak System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2101 systemConnector ZIMP/xml">
+        <object:importFile name="zimp-lookup-dm.xml"/>
+        <object:importFile name="zimp-resource-dm.xml"/>
+        <object:importFile name="zimp-model-dm.xml"/>
+        <object:importFile name="zimp-process-dm.xml"/>
+        <object:importFile name="zimp-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/bka-features-configuration/zimp/zimp-feature.xml"/>
+      <metadata:path path="/metadata/bka-features-provisioning/zimp/zimp-account-provisioning.xml"/>
+      <metadata:path path="/metadata/bka-features-reconciliation/zimp/zimp-account-reconciliation.xml"/>
+    </metadata:delete>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="2101 systemConnector ZIMP/mds">
+        <object:importFile name="zimp-feature-dm.xml"/>
+        <object:importFile name="zimp-account-provisioning-dm.xml"/>
+        <object:importFile name="zimp-account-reconciliation-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="2101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

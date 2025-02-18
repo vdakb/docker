@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Backend Preferences" default="all" basedir="../">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description" value="Identity Resource Bundle Library"/>
+  <property name="library"     value="bka.iam.identity.resource"/>
+  <property name="package"     value="bka.iam.identity.resource"/>
+
+  <property name="packagepath" value="bka/iam/identity/resource/**/*.class"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../adf-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.iam.oim.client"/>
+    <path refid="oracle.fmw.iam.oim.backend"/>
+    <path refid="oracle.ocs.iam.hst.foundation"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT target to assemble the service application to be deployed on
+  == the JEE application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="init,compile,manifest">
+    <adf-jar-library module="${library}" package="${package}"/>
+  </target>
+</project>

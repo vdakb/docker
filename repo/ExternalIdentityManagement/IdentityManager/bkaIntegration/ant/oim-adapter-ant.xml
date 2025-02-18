@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Adapter Preferences" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"           value="Identity Manager Adapter Library"/>
+  <property name="application"           value="igs-adapter"/>
+  <property name="adapter"               value="igs-adapter"/>
+  <property name="scheduler"             value="igs-scheduler"/>
+  <property name="plugin"                value="igs-handler"/>
+  <!--
+  <property name="scheduler"             value="bka-scheduler"/>
+  -->
+  <property name="thirdparty"            value="igs-common"/>
+
+  <property name="package.names"         value="bka.*"/>
+
+  <property name="destination.base"      value="../../deployment/oim/0102 systemIntegration"/>
+  <property name="destination.plugin"    value="../../deployment/oim/0102 systemIntegration"/>
+
+  <property name="configuration.base"    value="true"/>
+  <property name="configuration.plugin"  value="true"/>
+
+  <property name="packagepath.scheduler" value="bka/iam/identity/service/**/*.class"/>
+  <property name="packagepath.plugin"    value="bka/iam/identity/event/**/*.class bka/iam/identity/pid/**/*.class bka/iam/identity/rest/**/*.class"/>
+  <!--
+  =====================================================================
+  == the deployment descriptors of this adapter project
+  =====================================================================
+  -->
+  <patternset id="descriptor.pattern.base">
+    <include name="*.xml"/>
+  </patternset>
+  <patternset id="descriptor.pattern.plugin">
+    <include name="*.xml"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oim-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish a possible plugin runtime path
+  =====================================================================
+  -->
+  <path id="oracle.ocs.iam.runtime">
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="oracle.ocs.oim.foundation"/>
+    <path refid="oracle.ocs.hst.core"/>
+    <path refid="oracle.ocs.hst.rest"/>
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.mds"/>
+    <path refid="oracle.fmw.json"/>
+    <path refid="oracle.fmw.jax.jersey.core"/>
+    <path refid="oracle.fmw.jax.jersey.client"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.icf.integration"/>
+    <path refid="oracle.fmw.oim.adapter"/>
+    <path refid="oracle.fmw.oim.scheduler"/>
+    <path refid="oracle.ocs.icf.integration"/>
+    <path refid="oracle.ocs.iam.runtime"/>
+  </path>
+</project>

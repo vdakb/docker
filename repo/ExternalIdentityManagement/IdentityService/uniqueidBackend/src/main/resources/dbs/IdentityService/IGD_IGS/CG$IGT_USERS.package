@@ -1,0 +1,137 @@
+-- <?xml version = '1.0' encoding = 'UTF-8'?>
+-- <package xmlns="http://xmlns.oracle.com/jdeveloper/1211/offlinedb">
+--   <name>CG$IGT_USERS</name>
+--   <properties>
+--     <entry>
+--       <key>OfflineDBConstants.IMPORT_SOURCE_CONNECTION</key>
+--       <value class="java.lang.String">igs@hardy</value>
+--     </entry>
+--     <entry>
+--       <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+--       <value class="oracle.javatools.db.ReferenceID">
+--         <name>CG$IGT_USERS</name>
+--         <identifier class="java.math.BigDecimal">46714</identifier>
+--         <schemaName>IGD_IGS</schemaName>
+--         <type>PACKAGE</type>
+--       </value>
+--     </entry>
+--   </properties>
+-- </package>
+
+CREATE OR REPLACE
+PACKAGE cg$igt_users
+IS
+
+  called_from_package BOOLEAN := FALSE;
+
+  -- Repository User-Defined Error Messages
+  IGT_USR_PK     CONSTANT VARCHAR2(10) := 'IGT-00102';
+  IGT_USR_UK1    CONSTANT VARCHAR2(10) := 'IGT-00202';
+  IGT_USR_UK2    CONSTANT VARCHAR2(10) := 'IGT-00203';
+  IGT_USR_CK1    CONSTANT VARCHAR2(10) := 'IGT-00302';
+  IGT_USR_CK2    CONSTANT VARCHAR2(10) := 'IGT-00303';
+
+  -- Column default prompts. Format PSEQNO_COL
+  P10ID         CONSTANT VARCHAR2(30) := 'Id';
+  P15ROWVERSION CONSTANT VARCHAR2(30) := 'Rowversion';
+  P20CREATED_BY CONSTANT VARCHAR2(30) := 'Created By';
+  P25CREATED_ON CONSTANT VARCHAR2(30) := 'Created On';
+  P30UPDATED_BY CONSTANT VARCHAR2(30) := 'Modified By';
+  P35UPDATED_ON CONSTANT VARCHAR2(30) := 'Modified On';
+  P40ACTIVE     CONSTANT VARCHAR2(30) := 'Active';
+  P45USERNAME   CONSTANT VARCHAR2(30) := 'User Name';
+  P50LASTNAME   CONSTANT VARCHAR2(30) := 'Last Name';
+  P55FIRSTNAME  CONSTANT VARCHAR2(30) := 'First Name';
+  P60LANGUAGE   CONSTANT VARCHAR2(30) := 'Preferred Language';
+  P65EMAIL      CONSTANT VARCHAR2(30) := 'e-Mail Address';
+  P70PHONE      CONSTANT VARCHAR2(30) := 'Phone Number';
+  P75MOBILE     CONSTANT VARCHAR2(30) := 'Mobile Phone Number';
+
+  cg$row igt_users%ROWTYPE;
+
+  -- igt_users row type variable
+  TYPE cg$row_type IS RECORD (
+    id          cg$row.id%TYPE
+  , rowversion  cg$row.rowversion%TYPE
+  , created_by  cg$row.created_by%TYPE
+  , created_on  cg$row.created_on%TYPE
+  , updated_by  cg$row.updated_by%TYPE
+  , updated_on  cg$row.updated_on%TYPE
+  , active      cg$row.active%TYPE
+  , username    cg$row.username%TYPE
+  , lastname    cg$row.lastname%TYPE
+  , firstname   cg$row.firstname%TYPE
+  , language    cg$row.language%TYPE
+  , email       cg$row.email%TYPE
+  , phone       cg$row.phone%TYPE
+  , mobile      cg$row.mobile%TYPE
+  , the_rowid   ROWID
+  );
+
+  -- igt_users indicator type variable
+  TYPE cg$ind_type IS RECORD (
+    id          BOOLEAN DEFAULT FALSE
+  , rowversion  BOOLEAN DEFAULT FALSE
+  , created_by  BOOLEAN DEFAULT FALSE
+  , created_on  BOOLEAN DEFAULT FALSE
+  , updated_by  BOOLEAN DEFAULT FALSE
+  , updated_on  BOOLEAN DEFAULT FALSE
+  , active      BOOLEAN DEFAULT FALSE
+  , username    BOOLEAN DEFAULT FALSE
+  , lastname    BOOLEAN DEFAULT FALSE
+  , firstname   BOOLEAN DEFAULT FALSE
+  , language    BOOLEAN DEFAULT FALSE
+  , email       BOOLEAN DEFAULT FALSE
+  , phone       BOOLEAN DEFAULT FALSE
+  , mobile      BOOLEAN DEFAULT FALSE
+  );
+
+  cg$ind_true cg$ind_type;
+
+  -- igt_users primary key type variable
+  TYPE cg$pk_type IS RECORD (
+    id          cg$row.id%TYPE
+  , the_rowid   ROWID
+  );
+
+  -- PL/SQL Table Type variable for triggers
+  TYPE cg$table_type IS TABLE OF igt_users%ROWTYPE
+    INDEX BY BINARY_INTEGER;
+  cg$table cg$table_type;
+
+  TYPE cg$tableind_type IS TABLE OF cg$ind_type
+    INDEX BY BINARY_INTEGER;
+  cg$tableind cg$tableind_type;
+
+  idx BINARY_INTEGER := 1;
+
+  PROCEDURE ins                           ( cg$rec      IN OUT  cg$row_type
+                                          , cg$ind      IN OUT  cg$ind_type
+                                          , do_ins      IN      BOOLEAN DEFAULT TRUE
+                                          );
+  PROCEDURE upd                           ( cg$rec      IN OUT  cg$row_type
+                                          , cg$ind      IN OUT  cg$ind_type
+                                          , do_upd      IN      BOOLEAN DEFAULT TRUE
+                                          , cg$pk       IN      cg$row_type DEFAULT NULL
+                                          );
+  PROCEDURE del                           ( cg$pk       IN      cg$pk_type
+                                          , do_del      IN      BOOLEAN DEFAULT TRUE
+                                          );
+  PROCEDURE sel                           ( cg$sel_rec  IN OUT cg$row_type);
+  PROCEDURE lck                           ( cg$old_rec  IN     cg$row_type
+                                          , cg$old_ind  IN     cg$ind_type
+                                          , nowait_flag IN     BOOLEAN DEFAULT TRUE
+                                          );
+  PROCEDURE validate_foreign_keys_ins     ( cg$rec      IN     cg$row_type );
+  PROCEDURE validate_foreign_keys_upd     ( cg$rec      IN     cg$row_type
+                                          , cg$old_rec  IN     cg$row_type
+                                          , cg$ind      IN     cg$ind_type
+                                          );
+  PROCEDURE validate_foreign_keys_del     ( cg$rec      IN     cg$row_type );
+
+  PROCEDURE cascade_update                ( cg$new_rec  IN OUT cg$row_type
+                                          , cg$old_rec  IN     cg$row_type
+                                          );
+  PROCEDURE cascade_delete                ( cg$old_rec  IN OUT cg$row_type );
+END cg$igt_users;
+/

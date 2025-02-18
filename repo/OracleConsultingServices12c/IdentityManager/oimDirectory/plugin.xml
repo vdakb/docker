@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<oimplugins xmlns:xsi          = "http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation = "http://www.oracle.com/schema/oim/plugin plugin.xsd">
+  <!--
+  =====================================================================
+  == Pre-Populate Adapter
+  =====================================================================
+  -->
+  <plugins  pluginpoint="oracle.iam.request.plugins.PrePopulationAdapter">
+    <plugin version="1.0.0.0" name="UserLogin" pluginclass="oracle.iam.identity.foundation.event.UserLoginAdapter">
+     <metadata name="PrePopulationAdapter">
+        <value>GDS Account::Login Name</value>
+      </metadata>
+    </plugin>
+    <plugin version="1.0.0.0" name="Password" pluginclass="oracle.iam.identity.foundation.event.PasswordAdapter">
+     <metadata name="PrePopulationAdapter">
+        <value>GDS Account::Password</value>
+      </metadata>
+    </plugin>
+    <plugin version="1.0.0.0" name="FirstName" pluginclass="oracle.iam.identity.foundation.event.FirstNameAdapter">
+     <metadata name="PrePopulationAdapter">
+        <value>GDS Account::First Name</value>
+      </metadata>
+    </plugin>
+    <plugin version="1.0.0.0" name="LastName" pluginclass="oracle.iam.identity.foundation.event.LastNameAdapter">
+     <metadata name="PrePopulationAdapter">
+        <value>GDS Account::Last Name</value>
+      </metadata>
+    </plugin>
+  </plugins>
+  <!--
+  =====================================================================
+  == Scheduled Task
+  =====================================================================
+  -->
+  <plugins pluginpoint="oracle.iam.scheduler.vo.TaskSupport">
+    <plugin version="1.0.0.0" name="GDS Lookup Reconciliation"                      pluginclass="oracle.iam.identity.gds.service.reconciliation.LookupReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Country Target Reconciliation"              pluginclass="oracle.iam.identity.gds.service.reconciliation.CountryTargetReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Country Trusted Reconciliation"             pluginclass="oracle.iam.identity.gds.service.reconciliation.CountryTrustedReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Locality Target Reconciliation"             pluginclass="oracle.iam.identity.gds.service.reconciliation.LocalityTargetReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Locality Trusted Reconciliation"            pluginclass="oracle.iam.identity.gds.service.reconciliation.LocalityTrustedReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Organization Target Reconciliation"         pluginclass="oracle.iam.identity.gds.service.reconciliation.OrganizationTargetReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Organization Trusted Reconciliation"        pluginclass="oracle.iam.identity.gds.service.reconciliation.OrganizationTrustedReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Organizational Unit Target Reconciliation"  pluginclass="oracle.iam.identity.gds.service.reconciliation.OrganizationalUnitTargetReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Organizational Unit Trusted Reconciliation" pluginclass="oracle.iam.identity.gds.service.reconciliation.OrganizationalUnitTrustedReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Account Target Reconciliation"              pluginclass="oracle.iam.identity.gds.service.reconciliation.AccountTargetReconciliation"/>
+    <plugin version="1.0.0.0" name="GDS Account Trusted Reconciliation"             pluginclass="oracle.iam.identity.gds.service.reconciliation.AccountTrustedReconciliation"/>
+  </plugins>
+</oimplugins>

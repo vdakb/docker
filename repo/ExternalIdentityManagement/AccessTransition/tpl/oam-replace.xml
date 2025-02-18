@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Substituter" basedir="." default="all">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="application.release" value="12.2.1.3.0"/>
+  <property name="oam.recorder.name"   value="${log.env}/oam-replace.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Deployment Configuration.
+  **
+  ** Synopsis: The tasks configures the deployment environment
+  **           This includes:
+  **           o Substition of place holder values with real values of the
+  **             deployment target system
+  ******************************************************************************
+  -->
+  <target name="env">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring Deployment Environment ${application.release} ..."/>
+    <echo message="=================================================================="/>
+    <property file="../src/cfg/${iad.env}.properties" prefix="env"/>
+    <copy todir="../.env/${iad.env}" verbose="no" force="true" overwrite="true" filtering="true" flatten="true">
+      <fileset dir="./env">
+        <include name="bip-server.xml"/>
+        <include name="jee-server.xml"/>
+        <include name="mds-server.xml"/>
+        <include name="oam-server.xml"/>
+        <include name="scp-server.xml"/>
+      </fileset>
+      <filterchain>
+        <filterreader classname="oracle.hst.deployment.jps.task.ReplacePasswords">
+          <param type="config"    name="path"       value="./jps/config.xml"/>
+          <param type="config"    name="context"    value="access"/>
+          <param type="config"    name="map"        value="${iad.env}"/>
+          <param type="tokenchar" name="begintoken" value="__"/>
+          <param type="tokenchar" name="endtoken"   value="__"/>
+          <!--
+          tokens releated to bip-server.xml
+          -->
+          <param type="token"     name="BIP_PASS"   value="bip@oam"/>
+          <!--
+          tokens releated to jee-server.xml
+          -->
+          <param type="token"     name="JEE_PASS"   value="jee@oam"/>
+          <!--
+          tokens releated to mds-server.xml
+          -->
+          <param type="token"     name="OAM_PASS"   value="oam@oam"/>
+          <!--
+          tokens releated to scp-server.xml
+          -->
+          <param type="token"     name="SCP_PASS"   value="scp@oam"/>
+        </filterreader>
+        <replacetokens begintoken="__" endtoken="__">
+          <!--
+          tokens releated to bip-server.xml
+          -->
+          <token key="BIP_PROT"  value="${env.BIP_PROT}"/>
+          <token key="BIP_HOST"  value="${env.BIP_HOST}"/>
+          <token key="BIP_PORT"  value="${env.BIP_PORT}"/>
+          <token key="BIP_USER"  value="${env.BIP_USER}"/>
+          <token key="BIP_HOME"  value="${env.BIP_HOME}"/>
+          <token key="BIP_CONF"  value="${env.BIP_CONF}"/>
+          <!--
+          tokens releated to jee-server.xml
+          -->
+          <token key="JEE_PROT"  value="${env.JEE_PROT}"/>
+          <token key="JEE_HOST"  value="${env.JEE_HOST}"/>
+          <token key="JEE_PORT"  value="${env.JEE_PORT}"/>
+          <token key="JEE_NAME"  value="${env.JEE_NAME}"/>
+          <token key="JEE_USER"  value="${env.JEE_USER}"/>
+          <token key="JEE_HOME"  value="${env.JEE_HOME}"/>
+          <!--
+          tokens releated to mds-server.xml
+          -->
+          <token key="MDS_HOST"  value="${env.MDS_HOST}"/>
+          <token key="MDS_PORT"  value="${env.MDS_PORT}"/>
+          <token key="MDS_NAME"  value="${env.MDS_NAME}"/>
+          <token key="MDS_USER"  value="${env.MDS_USER}"/>
+          <!--
+          tokens releated to oam-server.xml
+          -->
+          <token key="OAM_PROT"  value="${env.OAM_PROT}"/>
+          <token key="OAM_HOST"  value="${env.OAM_HOST}"/>
+          <token key="OAM_PORT"  value="${env.OAM_PORT}"/>
+          <token key="OAM_NAME"  value="${env.OAM_NAME}"/>
+          <token key="OAM_USER"  value="${env.OAM_USER}"/>
+          <token key="OAM_HOME"  value="${env.OAM_HOME}"/>
+          <!--
+          tokens releated to scp-server.xml
+          -->
+          <token key="SCP_HOST"  value="${env.SCP_HOST}"/>
+          <token key="SCP_PORT"  value="${env.SCP_PORT}"/>
+          <token key="SCP_USER"  value="${env.SCP_USER}"/>
+          <token key="SCP_CERT"  value="${env.SCP_CERT}"/>
+        </replacetokens>
+      </filterchain>
+    </copy>
+    <echo message="=================================================================="/>
+    <echo message="Deployment Environment ${application.release} configured"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name       ="all"
+          description="Replace all paceholder values"
+          depends    ="env">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="Take care your environment is now unsecure"/>
+    <echo message="Use ./install clean to remove plain text passwords after you finished"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

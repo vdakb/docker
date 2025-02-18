@@ -1,0 +1,34 @@
+CREATE TABLE agt_companies (
+  id           VARCHAR   (128) DEFAULT sys_guid() NOT NULL
+, rowversion   VARCHAR   ( 30)                    NOT NULL
+, created_on   TIMESTAMP       DEFAULT SYSDATE    NOT NULL
+, created_by   VARCHAR   (128)                    NOT NULL
+, updated_on   TIMESTAMP       DEFAULT SYSDATE    NOT NULL
+, updated_by   VARCHAR   (128)                    NOT NULL
+, org          VARCHAR   (128)                    NOT NULL
+, name         VARCHAR   ( 32)                    NOT NULL
+, status       VARCHAR   (  8) DEFAULT 'active'   NOT NULL
+, displayName  VARCHAR   (128)
+, CONSTRAINT agt_cmp_pk PRIMARY KEY (id)
+, CONSTRAINT agt_cmp_uk UNIQUE (org, name)
+, CONSTRAINT agt_cmp_org_fk FOREIGN KEY (org) REFERENCES agt_organizations (name) ON DELETE CASCADE
+)
+/
+COMMENT ON TABLE agt_companies IS 'Apigee Company Repository'
+/
+COMMENT ON COLUMN agt_companies.id IS 'Row Identifier of data record'
+/
+COMMENT ON COLUMN agt_companies.rowversion IS 'Row Version of data record'
+/
+COMMENT ON COLUMN agt_companies.created_by IS 'Creator of the data record'
+/
+COMMENT ON COLUMN agt_companies.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN agt_companies.updated_by IS 'Modifier of the data record'
+/
+COMMENT ON COLUMN agt_companies.updated_on IS 'Last Modified Timestamp of data record'
+/
+COMMENT ON COLUMN agt_companies.org IS 'The Organization'
+/
+COMMENT ON COLUMN agt_companies.name IS 'The Company'
+/

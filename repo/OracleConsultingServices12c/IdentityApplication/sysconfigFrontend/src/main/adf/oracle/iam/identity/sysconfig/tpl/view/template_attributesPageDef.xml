@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="template_attributesPageDef"
+                Package="oracle.iam.identity.sysconfig.tpl.view">
+  <parameters/>
+  <executables>
+    <iterator id="NotificationTemplateIterator" Binds="NotificationTemplateDetailVO" DataControl="NotificationTemplateAMDataControl" RangeSize="20"/>
+  </executables>
+  <bindings>
+    <attributeValues id="id" IterBinding="NotificationTemplateIterator">
+      <AttrNames>
+        <Item Value="id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="name" IterBinding="NotificationTemplateIterator">
+      <AttrNames>
+        <Item Value="name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="description" IterBinding="NotificationTemplateIterator">
+      <AttrNames>
+        <Item Value="description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="event" IterBinding="NotificationTemplateIterator">
+      <AttrNames>
+        <Item Value="event"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="status" IterBinding="NotificationTemplateIterator">
+      <AttrNames>
+        <Item Value="status"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="snmp" IterBinding="NotificationTemplateIterator">
+      <AttrNames>
+        <Item Value="snmp"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="dataLevel" IterBinding="NotificationTemplateIterator">
+      <AttrNames>
+        <Item Value="dataLevel"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="NotificationTemplateAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="NotificationTemplateAMDataControl"/>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

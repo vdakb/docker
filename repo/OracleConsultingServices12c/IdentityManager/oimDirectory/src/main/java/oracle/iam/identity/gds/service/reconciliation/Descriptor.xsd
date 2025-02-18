@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns              = "http://xmlns.oracle.com/iam/identity"
+            xmlns:xsd          = "http://www.w3.org/2001/XMLSchema"
+            xmlns:oim          = "http://www.oracle.com/schema/oim/mapping"
+            targetNamespace    = "http://www.oracle.com/schema/oim/mapping"
+            elementFormDefault = "qualified">
+  <xsd:element name="descriptor">
+    <xsd:annotation>
+      <xsd:documentation>The mapping descriptor of a directory system used in entity reconciliation task</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:all minOccurs="1">
+        <xsd:element name="attribute"      type="oim:attribute"   minOccurs="1"/>
+        <xsd:element name="constant"       type="oim:constant"    minOccurs="0"/>
+        <xsd:element name="transformer"    type="oim:transformer" minOccurs="0"/>
+        <xsd:element name="multivalued"    type="oim:multivalued" minOccurs="0"/>
+        <xsd:element name="lookup"                                minOccurs="0">
+          <xsd:complexType>
+            <xsd:annotation>
+              <xsd:documentation>The lookup transformation to be applied on an entry</xsd:documentation>
+            </xsd:annotation>
+            <xsd:attribute name="name"     type="xsd:string"    use="required"/>
+            <xsd:attribute name="code"     type="xsd:string"    use="required"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="reference"      type="oim:reference"   minOccurs="0"/>
+      </xsd:all>
+      <xsd:attribute name="identifier"     type="xsd:string"    use="required"/>
+      <xsd:attribute name="hierarchy"      type="xsd:string"    use="required"/>
+      <xsd:attribute name="transformation" type="xsd:boolean"   default="false"/>
+      <xsd:attribute name="natively"       type="xsd:boolean"   default="false"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- the definition of a reference -->
+  <xsd:complexType name="reference">
+    <xsd:annotation>
+      <xsd:documentation>The reference an entry can have</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all minOccurs="1">
+      <xsd:element name="attribute"       type="oim:attribute"   minOccurs="1"/>
+      <xsd:element name="constant"        type="oim:attribute"   minOccurs="0"/>
+      <xsd:element name="transformer"     type="oim:transformer" minOccurs="0"/>
+    </xsd:all>
+    <xsd:attribute name="name"            type="xsd:string"      use="required"/>
+    <xsd:attribute name="object-class"    type="xsd:string"      use="required"/>
+    <xsd:attribute name="entity-link"     type="xsd:string"      use="required"/>
+    <xsd:attribute name="search-base"     type="xsd:string"      use="optional"/>
+    <xsd:attribute name="entity-prefixed" type="xsd:boolean"     default="true"/>
+    <xsd:attribute name="entity-name"     type="xsd:boolean"     default="false"/>
+    <xsd:attribute name="transformation"  type="xsd:boolean"     default="false"/>
+  </xsd:complexType>
+
+  <!-- the definition of a target attribute -->
+  <xsd:complexType name="attribute">
+    <xsd:attribute name="name"           type="xsd:string"  use="required"/>
+    <xsd:attribute name="source"         type="xsd:string"  use="required"/>
+  </xsd:complexType>
+
+  <!-- the definition of a target constant -->
+  <xsd:complexType name="constant">
+    <xsd:attribute name="name"           type="xsd:string"  use="required"/>
+    <xsd:attribute name="vaue"           type="xsd:string"  use="required"/>
+  </xsd:complexType>
+
+  <!-- the definition of a target multi-valued attribute -->
+  <xsd:complexType name="multivalued">
+    <xsd:annotation>
+      <xsd:documentation>The multi-valued attributes an entry can have</xsd:documentation>
+    </xsd:annotation>
+    <xsd:all minOccurs="1">
+      <xsd:element name="attribute"      type="oim:attribute"   minOccurs="1"/>
+    </xsd:all>
+    <xsd:attribute name="name"           type="xsd:string"  use="required"/>
+  </xsd:complexType>
+
+  <!-- the definition of a target transformation -->
+  <xsd:complexType name="transformer">
+    <xsd:attribute name="name"           type="xsd:string"  use="required"/>
+    <xsd:attribute name="class"          type="xsd:string"  use="required"/>
+  </xsd:complexType>
+</xsd:schema>

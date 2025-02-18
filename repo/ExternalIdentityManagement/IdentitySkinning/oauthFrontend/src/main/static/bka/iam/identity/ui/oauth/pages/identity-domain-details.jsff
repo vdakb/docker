@@ -1,0 +1,297 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="oauthBundle" value="#{adfBundle['bka.iam.identity.ui.oauth.OAuthBundle']}"/>
+  <c:set var="oimBundle" value="#{adfBundle['oracle.iam.ui.OIMUIBundle']}"/>  
+  <af:panelStretchLayout id="psl1" topHeight="80px">
+    <f:facet name="top">
+      <af:panelGroupLayout id="pgl6" layout="vertical" styleClass="AFStretchWidth">
+        <af:panelGroupLayout id="pgl2" layout="horizontal">
+          <af:spacer width="10" id="s1"/>
+          <af:panelGroupLayout id="pgl3" layout="vertical">
+            <af:panelHeader text="#{oauthBundle['identity-domain-header']}: #{pageFlowScope.identity_domain_name}"
+                            type="default" id="panelHeader1"
+                            icon="/images/User_ena.png"
+                            styleClass="hideHeaderLine">
+            </af:panelHeader>
+          </af:panelGroupLayout>
+        </af:panelGroupLayout>
+      </af:panelGroupLayout>
+    </f:facet>
+    <f:facet name="center">
+      <af:panelTabbed id="pt1" childCreation="lazy" styleClass="AFStretchWidth">
+        <af:showDetailItem text="#{oauthBundle['identity-domain-details-attributes.label']}"
+                           id="sdi1" stretchChildren="first">
+          <af:panelGroupLayout id="pgl1" layout="vertical" styleClass="AFStretchWidth">
+            <af:panelGroupLayout layout="horizontal" halign="right" id="pgl5">
+              <af:toolbar id="toolb3" stretchId="stretcher" flex="1">
+               <af:spacer id="stretcher" clientComponent="true"/>
+                <af:commandToolbarButton text="#{oimBundle['GENERIC_APPLY']}"
+                                         id="ctb11" 
+                                         action="#{pageFlowScope.IdentityDomainManagedBean.saveIdentityDomain}"
+                                         styleClass = "whiteTextButton"  
+                                         inlineStyle = "background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;"
+                                         rendered="#{pageFlowScope.mode eq 'EDIT'}"/>
+                <af:commandToolbarButton text="#{oimBundle['GENERIC_CANCEL']}"
+                                         id="ctb12"
+                                         action="cancel"
+                                         rendered="#{pageFlowScope.mode eq 'EDIT'}"/>
+                <af:commandToolbarButton text="#{oimBundle['GENERIC_SAVE']}"
+                                         id="ctb13" 
+                                         action="#{pageFlowScope.IdentityDomainManagedBean.createIdentityDomain}"
+                                         styleClass = "whiteTextButton"  
+                                         inlineStyle = "background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;"
+                                         rendered="#{pageFlowScope.mode eq 'CREATE'}"/>
+                <af:commandToolbarButton text="#{oimBundle['GENERIC_CANCEL']}"
+                                         id="ctb14"
+                                         action="cancel"
+                                         rendered="#{pageFlowScope.mode eq 'CREATE'}"/>
+              </af:toolbar>
+            </af:panelGroupLayout>
+            
+            <af:showDetailHeader text="#{oauthBundle['identity-domain-header']} #{oauthBundle['identity-domain-details-attributes.label']}"
+                                 disclosed="true" id="sdh1" size="2">
+              <af:panelFormLayout id="pfl1" maxColumns="2" rows="2"
+                                  labelWidth="200" fieldWidth="300">
+
+                  <af:inputText value="#{bindings.name.inputValue}" 
+                                label="#{oauthBundle['identity-domain-details-domain-name']}"
+                                required="#{bindings.name.hints.mandatory}"
+                                columns="#{bindings.name.hints.displayWidth}"
+                                maximumLength="#{bindings.name.hints.precision}"
+                                shortDesc="#{bindings.name.hints.tooltip}" id="it1">
+                    <f:validator binding="#{bindings.name.validator}"/>
+                  </af:inputText>
+                  <af:inputText value="#{bindings.description.inputValue}" 
+                                label="#{oauthBundle['identity-domain-details-description']}"
+                                required="#{bindings.description.hints.mandatory}" 
+                                columns="#{bindings.description.hints.displayWidth}"
+                                maximumLength="#{bindings.description.hints.precision}"
+                                shortDesc="#{bindings.description.hints.tooltip}" id="it2">
+                    <f:validator binding="#{bindings.description.validator}"/>
+                  </af:inputText>
+                  <af:inputText value="#{bindings.consentPageURL.inputValue}"
+                                label="#{oauthBundle['identity-domain-details-consent-page-url']}"
+                                required="#{bindings.consentPageURL.hints.mandatory}" 
+                                columns="#{bindings.consentPageURL.hints.displayWidth}"
+                                maximumLength="#{bindings.consentPageURL.hints.precision}"
+                                shortDesc="#{bindings.consentPageURL.hints.tooltip}" id="it3">
+                    <f:validator binding="#{bindings.consentPageURL.validator}"/>
+                  </af:inputText>
+                  <af:inputText value="#{bindings.errorPageURL.inputValue}" 
+                                label="#{oauthBundle['identity-domain-details-error-page-url']}"
+                                required="#{bindings.errorPageURL.hints.mandatory}" 
+                                columns="#{bindings.errorPageURL.hints.displayWidth}"
+                                maximumLength="#{bindings.errorPageURL.hints.precision}"
+                                shortDesc="#{bindings.errorPageURL.hints.tooltip}" id="it4">
+                    <f:validator binding="#{bindings.errorPageURL.validator}"/>
+                  </af:inputText>
+                  <af:inputText value="#{bindings.identityProvider.inputValue}"
+                                label="#{oauthBundle['identity-domain-details-identity-provider']}"
+                                required="#{bindings.identityProvider.hints.mandatory}" 
+                                columns="#{bindings.identityProvider.hints.displayWidth}"
+                                maximumLength="#{bindings.identityProvider.hints.precision}"
+                                shortDesc="#{bindings.identityProvider.hints.tooltip}" id="it5">
+                    <f:validator binding="#{bindings.identityProvider.validator}"/>
+                  </af:inputText>
+              </af:panelFormLayout>
+            </af:showDetailHeader>
+            <af:spacer width="10" height="10" id="s15"/>
+                  <af:column sortProperty="#{bindings.tokenSettings.hints.refreshTokenEnabled.name}" filterable="true"
+                              id="c4">
+                    <af:outputText value="#{row.refreshTokenEnabled}"
+                                   shortDesc="#{bindings.tokenSettings.hints.refreshTokenEnabled.tooltip}" id="ot4"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.tokenSettings.hints.refreshTokenExpiry.name}" filterable="true"
+                              id="c5">
+                    <af:outputText value="#{row.refreshTokenExpiry}"
+                                   shortDesc="#{bindings.tokenSettings.hints.refreshTokenExpiry.tooltip}" id="ot5"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.tokenSettings.hints.refreshTokenLifeCycleEnabled.name}"
+                             filterable="true"
+                              id="c6">
+                    <af:outputText value="#{row.refreshTokenLifeCycleEnabled}"
+                                   shortDesc="#{bindings.tokenSettings.hints.refreshTokenLifeCycleEnabled.tooltip}"
+                                   id="ot6"/>
+                  </af:column>
+            <af:showDetailHeader text="#{oauthBundle['identity-domain-details-token-setting']}"
+                                 disclosed="true" id="sdh2" size="2">
+              <af:panelCollection id="pc2" styleClass="AFStretchWidth" featuresOff="statusBar">
+                <f:facet name="toolbar">
+                  <af:toolbar id="tb2">
+                    <af:commandToolbarButton id="ctb_2a" text="#{oauthBundle['button-add']}" 
+                                             icon="/images/func_add_16_ena.png" 
+                                             hoverIcon="/images/func_add_16_hov.png"
+                                             disabledIcon="/images/func_add_16_dis.png"
+                                             depressedIcon="/images/func_add_16_act.png" immediate="true"
+                                             actionListener="#{bindings.addTokenSettings.execute}"/>
+                    <af:commandToolbarButton id="ctb_2b" text="#{oauthBundle['button-delete']}" 
+                                             icon="/images/func_delete_16_ena.png" 
+                                             hoverIcon="/images/func_delete_16_hov.png"
+                                             disabledIcon="/images/func_delete_16_dis.png" immediate="true"
+                                             depressedIcon="/images/func_delete_16_act.png"
+                                             actionListener="#{bindings.removeTokenSettings.execute}"/>
+                  </af:toolbar>
+                </f:facet>
+                <f:facet name="menus">
+                  <af:menu id="m2" text="#{oauthBundle['oam-servers-actions']}" >
+                    <af:commandMenuItem id="cmi_2a" text="#{oauthBundle['button-add']}" icon="/images/func_add_16_ena.png"
+                                        immediate="true" actionListener="#{bindings.addTokenSettings.execute}"/>
+                    <af:commandMenuItem id="cmi_2b" text="#{oauthBundle['button-delete']}"
+                                        icon="/images/func_delete_16_ena.png" immediate="true"
+                                        actionListener="#{bindings.removeTokenSettings.execute}"/>
+                  </af:menu>
+                </f:facet>  
+                <af:table value="#{bindings.tokenSettings.collectionModel}" var="row"
+                          rows="#{bindings.tokenSettings.rangeSize}"
+                          emptyText="#{bindings.tokenSettings.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.tokenSettings.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.tokenSettings.collectionModel.makeCurrent}" rowSelection="single"
+                          fetchSize="#{bindings.tokenSettings.rangeSize}"
+                          filterModel="#{bindings.tokenSettingsQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.tokenSettingsQuery.processQuery}" varStatus="vs" id="t2"
+                          columnStretching="column:c9">
+                  <af:column rowHeader="true" width="30"
+                     headerText=""
+                     align="right" id="c0">
+                  </af:column>
+                  <af:column sortProperty="#{bindings.tokenSettings.hints.tokenType.name}" filterable="true"
+                             sortable="true" headerText="#{oauthBundle['identity-domain-details-token-type']}" id="c9">
+                    <af:inputText value="#{row.bindings.tokenType.inputValue}"
+                                  label="#{bindings.tokenSettings.hints.tokenType.label}"
+                                  required="#{bindings.tokenSettings.hints.tokenType.mandatory}"
+                                  columns="#{bindings.tokenSettings.hints.tokenType.displayWidth}"
+                                  maximumLength="#{bindings.tokenSettings.hints.tokenType.precision}"
+                                  shortDesc="#{bindings.tokenSettings.hints.tokenType.tooltip}" id="it8">
+                      <f:validator binding="#{row.bindings.tokenType.validator}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.tokenSettings.hints.tokenExpiry.name}" filterable="true"
+                             sortable="true" headerText="#{oauthBundle['identity-domain-details-token-expriry']}" id="c10">
+                    <af:inputText value="#{row.bindings.tokenExpiry.inputValue}"
+                                  label="#{bindings.tokenSettings.hints.tokenExpiry.label}"
+                                  required="#{bindings.tokenSettings.hints.tokenExpiry.mandatory}"
+                                  columns="#{bindings.tokenSettings.hints.tokenExpiry.displayWidth}"
+                                  maximumLength="#{bindings.tokenSettings.hints.tokenExpiry.precision}"
+                                  shortDesc="#{bindings.tokenSettings.hints.tokenExpiry.tooltip}" id="it9">
+                      <f:validator binding="#{row.bindings.tokenExpiry.validator}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.tokenSettings.hints.lifeCycleEnabled.name}" filterable="true"
+                             sortable="true" headerText="#{oauthBundle['identity-domain-details-life-cycle-enabled']}" id="c11">
+                    <af:selectBooleanCheckbox id="sbc1" value="#{row.bindings.lifeCycleEnabled.inputValue}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.tokenSettings.hints.refreshTokenEnabled.name}" filterable="true"
+                             sortable="true" headerText="#{oauthBundle['identity-domain-details-refresh-token-enabled']}"
+                             id="c12">
+                     <af:selectBooleanCheckbox id="sbc2" value="#{row.bindings.refreshTokenEnabled.inputValue}"/>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.tokenSettings.hints.refreshTokenExpiry.name}" 
+                             filterable="true" sortable="true" 
+                             headerText="#{oauthBundle['identity-domain-details-refresh-token-expiry']}"
+                             id="c13">
+                    <af:inputText value="#{row.bindings.refreshTokenExpiry.inputValue}"
+                                  label="#{bindings.tokenSettings.hints.refreshTokenExpiry.label}"
+                                  required="#{bindings.tokenSettings.hints.refreshTokenExpiry.mandatory}"
+                                  columns="#{bindings.tokenSettings.hints.refreshTokenExpiry.displayWidth}"
+                                  maximumLength="#{bindings.tokenSettings.hints.refreshTokenExpiry.precision}"
+                                  shortDesc="#{bindings.tokenSettings.hints.refreshTokenExpiry.tooltip}" id="it12">
+                      <f:validator binding="#{row.bindings.refreshTokenExpiry.validator}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.tokenSettings.hints.refreshTokenLifeCycleEnabled.name}"
+                             filterable="true" sortable="true"
+                             headerText="#{oauthBundle['identity-domain-details-refresh-token-life-cycle-enabled']}" id="c14">
+                      <af:selectBooleanCheckbox id="sbc3" value="#{row.bindings.refreshTokenLifeCycleEnabled.inputValue}"/>
+                  </af:column>
+                </af:table>
+              </af:panelCollection>
+            </af:showDetailHeader>
+            
+            <af:spacer width="10" height="10" id="s16"/>
+            <af:showDetailHeader text="#{oauthBundle['identity-domain-details-custom-attributes']}"
+                                 disclosed="true" id="sdh3" size="2">
+              <af:panelCollection id="pc3" styleClass="AFStretchWidth" featuresOff="statusBar">
+                <f:facet name="toolbar">
+                  <af:toolbar id="tb3">
+                    <af:commandToolbarButton id="ctb_3a" text="#{oauthBundle['button-add']}" 
+                                             icon="/images/func_add_16_ena.png" 
+                                             hoverIcon="/images/func_add_16_hov.png"
+                                             disabledIcon="/images/func_add_16_dis.png"
+                                             depressedIcon="/images/func_add_16_act.png" immediate="true"
+                                             actionListener="#{bindings.addCustomAttrs.execute}"/>
+                    <af:commandToolbarButton id="ctb_3b" text="#{oauthBundle['button-delete']}" 
+                                             icon="/images/func_delete_16_ena.png" 
+                                             hoverIcon="/images/func_delete_16_hov.png"
+                                             disabledIcon="/images/func_delete_16_dis.png" immediate="true"
+                                             depressedIcon="/images/func_delete_16_act.png"
+                                             actionListener="#{bindings.removeCustomAttrs.execute}"/>
+                  </af:toolbar>
+                </f:facet>
+                <f:facet name="menus">
+                  <af:menu id="m3" text="#{oauthBundle['oam-servers-actions']}" >
+                    <af:commandMenuItem id="cmi_3a" text="#{oauthBundle['button-add']}" icon="/images/func_add_16_ena.png"
+                                        immediate="true" actionListener="#{bindings.addCustomAttrs.execute}"/>
+                    <af:commandMenuItem id="cmi_3b" text="#{oauthBundle['button-delete']}"
+                                        icon="/images/func_delete_16_ena.png" immediate="true"
+                                        actionListener="#{bindings.removeCustomAttrs.execute}"/>
+                  </af:menu>
+                </f:facet>                                 
+                <af:table value="#{bindings.customAttrs.collectionModel}" var="row"
+                          rows="#{bindings.customAttrs.rangeSize}"
+                          emptyText="#{bindings.customAttrs.viewable ? 'No data to display.' : 'Access Denied.'}"
+                          rowBandingInterval="0" selectedRowKeys="#{bindings.customAttrs.collectionModel.selectedRow}"
+                          selectionListener="#{bindings.customAttrs.collectionModel.makeCurrent}" rowSelection="single"
+                          fetchSize="#{bindings.customAttrs.rangeSize}"
+                          filterModel="#{bindings.customAttrsQuery.queryDescriptor}" filterVisible="true"
+                          queryListener="#{bindings.customAttrsQuery.processQuery}" varStatus="vs" id="t3"
+                          columnStretching="last">
+                  <af:column rowHeader="true" width="30"
+                     headerText=""
+                     align="right" id="c1">
+                  </af:column>
+                  <af:column sortProperty="#{bindings.customAttrs.hints.key.name}" filterable="true" sortable="true"
+                            headerText="#{oauthBundle['identity-domain-details-custom-attrs-key']}" id="c7">
+                    <af:inputText value="#{row.bindings.key.inputValue}" label="#{bindings.customAttrs.hints.key.label}"
+                                  required="#{bindings.customAttrs.hints.key.mandatory}"
+                                  columns="#{bindings.customAttrs.hints.key.displayWidth}"
+                                  maximumLength="#{bindings.customAttrs.hints.key.precision}"
+                                  shortDesc="#{bindings.customAttrs.hints.key.tooltip}" id="it6">
+                      <f:validator binding="#{row.bindings.key.validator}"/>
+                    </af:inputText>
+                  </af:column>
+                  <af:column sortProperty="#{bindings.customAttrs.hints.value.name}" filterable="true" sortable="true"
+                             headerText="#{oauthBundle['identity-domain-details-custom-attrs-value']}" id="c8">
+                    <af:inputText value="#{row.bindings.value.inputValue}"
+                                  label="#{bindings.customAttrs.hints.value.label}"
+                                  required="#{bindings.customAttrs.hints.value.mandatory}"
+                                  columns="#{bindings.customAttrs.hints.value.displayWidth}"
+                                  maximumLength="#{bindings.customAttrs.hints.value.precision}"
+                                  shortDesc="#{bindings.customAttrs.hints.value.tooltip}" id="it7">
+                      <f:validator binding="#{row.bindings.value.validator}"/>
+                    </af:inputText>
+                  </af:column>
+                </af:table>
+              </af:panelCollection>
+            </af:showDetailHeader>
+            
+          </af:panelGroupLayout>
+        </af:showDetailItem>
+        <af:showDetailItem text="#{oauthBundle['identity-domain-details-applications.label']}"
+                           id="sdi2" stretchChildren="first"
+                           rendered="#{!(pageFlowScope.mode eq 'CREATE')}">
+          <af:region value="#{bindings.applicationtf1.regionModel}" id="r1"/>
+        </af:showDetailItem>
+        <af:showDetailItem text="#{oauthBundle['identity-domain-details-clients.label']}"
+                           id="sdi3" stretchChildren="first"
+                           rendered="#{!(pageFlowScope.mode eq 'CREATE')}">
+          <af:region value="#{bindings.clienttf1.regionModel}" id="r2"/>
+        </af:showDetailItem>
+      </af:panelTabbed>
+    </f:facet>
+  </af:panelStretchLayout>       
+  
+
+</jsp:root>

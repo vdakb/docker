@@ -1,0 +1,23 @@
+Requirement Definition
+An approval workflow is required that allows a participant's employees to perform approvals for catalog items.
+The special feature is that the catalog elements are generally accessible to all participants, but the affected beneficiaries are participant-specific.
+The approvers must therefore also be integrated into the approval process on a participant-specific basis depending on the beneficiary.
+
+Ultimately, this means that a role or a comparable construct that includes the approvers across all participants only considers the approvers who, based on their authorizations, are shown both the catalog element and the affected beneficiary.
+In other words, it must be prevented that approvers are asked to make approvals in relation to beneficiaries for whom they are not responsible.
+
+Constraints
+Investigations into this topic have found that the approach of resolving a role or another adequate construct for configuring potential approvers via the Identity Governance plug-in points cannot achieve this, since the approvers cannot be passed on to the implementation of the approval process through a filter.
+
+Design
+To implement the requested feature, two components are required.
+The actual SOA composite that implements the approval workflow.
+An additional service, on the identity governance side, that provides the filtering algorithm.
+
+Approval Process
+The SOA composite is regularly instantiated using the workflow policies.
+In the first step, the standard processes to be implemented are run through and than initiates the approval task.
+
+Approval Task
+The approval task should not allow to invite other participants in the approval workflow.
+Task assignees needs to be populated dynamically invoking a dedicated service in Identity Governance that take over the responsiblitiry to filter out the applicable approvres.

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="pid-deploy"
+         version ="5.0">
+  <title>Deployment of the Service</title>
+  <section xml:id="pid-deploy-oss">
+    <title>Prepare Operating System</title>
+    <para>
+      We assume you plan to run the service installation on Linux and we recommend RHEL or a derivative such as RockyLinux or AlmaLinux, which is the distribution family tested by the project team.
+      Please be aware that while EL8 (RHEL/derivatives) is the recommended platform, the steps below were orginally written for EL7 and may need to be updated (please feel free to make a pull request!).
+    </para>
+  </section>
+  <section xml:id="pid-deploy-jee">
+    <title>Setting up Application Server</title>
+    <para>
+      Payara Community Edition 5.2022.3 is recommended.
+      Newer versions might work fine, regular updates are recommended.
+    </para>
+    <para>
+      In order to install Payara application server a couple of dependencies will be needed, specially a Java Developer Kit.
+      For instance OpenJDK is included at RedHat Linux repositories.
+    </para>
+    <para>
+      The installation will be located at <literal>/opt</literal> following standard Linux conventions for external packages:
+    </para>
+    <important>
+      To execute the commands below you need elevated privileges.
+    </important>
+    <programlisting><![CDATA[
+mkdir -p /opt/payara
+cd /opt/payara
+wget ...
+unzip payara-5.2022.3.zip
+rm payara-5.2022.3.zip
+mv payara5 5.2022.3
+
+]]></programlisting>
+    <para>
+      It is also useful to create a payara user for administrative purposes, to administrate the domain(s) or to run Payara as Linux service with systemd:
+    </para>
+    <important>
+      To execute the commands below you need elevated privileges.
+    </important>
+    <programlisting><![CDATA[
+adduser payara
+chown -R payara:payara /opt/payara
+echo 'export PATH=$PATH:/opt/payara/glassfish/bin' >> /home/payara/.bashrc
+chown payara:payara /home/payara/.bashrc
+
+]]></programlisting>
+  </section>
+  <section xml:id="pid-deploy-jar">
+    <title>Additional Packages</title>
+    <para>
+      The service that deployed later on rely on the Java optional package mechanism.
+    </para>
+    <para>
+      Optional packages are packages of Java classes and associated native code that application developers can use to extend the functionality of the core platform.
+    </para>
+    <para>
+      To ensure the Java optional package mechanism, copy the JAR files into the <literal>/opt/payara/5.2022.3/glassfish/lib</literal>.
+      The JAR files to copy are provided in <literal>deployment/igs/0000\ systemCustomization/lib</literal>.
+    </para>
+    <programlisting><![CDATA[
+cp deployment/igs/0000\ systemCustomization/lib/* /opt/payara/5.2022.3/glassfish/lib
+
+]]></programlisting>
+  </section>
+  <section xml:id="pid-deploy-igs">
+    <title>Create Identity Governance Domain</title>
+    <para>
+      All services that belongs to the Identity Governance Services deployed in a domain.
+      Every service is deployed in the same domain.
+    </para>
+    <para>
+      To create the domain execute the command:
+    </para>
+    <programlisting><![CDATA[
+create-domain --domaindir /opt/Anwendungen/services --domainproperties \
+ java.debugger.port=9001 \
+:domain.adminPort=8001 \
+:domain.instancePort=8081 \
+:http.ssl.port=8082 \
+:domain.jmxPort=8083 \
+:jms.port=8084:orb.listener.port=8085 \
+:orb.ssl.port=8086 \
+:orb.mutualauth.port=8087 \
+:osgi.shell.telnet.port=8003 \
+igs
+
+]]></programlisting>
+   <section xml:id="pid-deploy-igs-start">
+     <title>Start Domain</title>
+     <para>
+       For any further action to complete the configuration of the domain it has to be up and running.
+     </para>
+     <para>
+       To start the domain execute the command:
+     </para>
+     <programlisting><![CDATA[
+start-domain --domaindir /opt/Anwendungen/services igs
+
+]]></programlisting>
+   </section>
+   <section xml:id="pid-deploy-igs-adm">
+     <title>Enable Remote Administration</title>
+     <para>
+       The <emphasis role="strong">enable-secure-admin</emphasis> subcommand causes the DAS and the instances in the domain to use SSL certificates for encrypting the messages they send to each other.
+       This subcommand also allows the DAS to accept administration messages from remote admin clients such as the asadmin utility and IDEs.
+     </para>
+     <para>
+       To enable remote administration execute the command:
+     </para>
+     <programlisting><![CDATA[
+asadmin --host <service-host> --port 8001 enable-secure-admin
+
+]]></programlisting>
+     <note>
+       You must restart any running servers in the domain after you enable or disable secure admin.
+       It is simpler to enable or disable secure admin with only the DAS running, then restart the DAS, and then start any other instances.
+     </note>
+     <programlisting><![CDATA[
+asadmin stop-domain  --domaindir /opt/Anwendungen/services igs
+asadmin start-domain  --domaindir /opt/Anwendungen/services igs
+
+]]></programlisting>
+    </section>
+  </section>
+  <section xml:id="pid-deploy-dbs">
+    <title>Configure JDBC DataSource</title>
+    <section xml:id="pid-deploy-dbs-pool">
+      <title>Creating a connection pool</title>
+      <para>
+        To create a JDBC connection pool using the asadmin command line tool with the following options:
+      </para>
+      <programlisting><![CDATA[
+asadmin --host <service-host> --port 8001 create-jdbc-connection-pool \
+--restype javax.sql.DataSource \
+--datasourceclassname oracle.jdbc.pool.OracleDataSource \
+--property " \
+user=igd_igs\
+:password=Welcome1\
+:url=jdbc\\:oracle\\:thin\\:@(DESCRIPTION\\=(ADDRESS_LIST\\=(ADDRESS\\=(PROTOCOL\\=TCP)(PORT\\=1521)(HOST\\=wi11s1e01-scan.exa.bka.bund.de))(ADDRESS\\=(PROTOCOL\\=TCP)(PORT\\=1521)(HOST\\=wi21s1e01-scan.exa.bka.bund.de)))(CONNECT_DATA\\=(SERVICE_NAME\\=acces1e_appl.s1e01.bka.bund.de)))" identityServicePool
+]]></programlisting>
+    </section>
+    <section xml:id="pid-deploy-dbs-resource">
+      <title>Creating a connection pool</title>
+    </section>
+  </section>
+</chapter>

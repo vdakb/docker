@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name               ="Identity Access Setup Include"
+         basedir            ="../../deployment/oam"
+         xmlns:fmw          ="http://oracle.hst.deployment/fusion"
+         xmlns:jps          ="http://oracle.hst.deployment/security"
+         xmlns:wsm          ="http://oracle.hst.deployment/webservice"
+         xmlns:server       ="http://oracle.hst.deployment/topology"
+         xmlns:accessservice="http://oracle.iam.access/accessservice">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name" value="${log.env}/fim-setup-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Access Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Federation Service Provider
+  **           o Federation Identity Provider
+  ******************************************************************************
+  -->
+  <target name="0001" description="Configures the Federated Access Management Environment Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0001 Setup Federation Services Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Enable Federation Services for environment ${fmw.env} on ${oam.server.host}:${oam.server.port}"/>
+    <accessservice:enable contextRef="jmx-context">
+      <service name="federation-identity-provider"/>
+      <service name="federation-service-provider"/>
+    </accessservice:enable>
+    <accessservice:status contextRef="jmx-context">
+      <service name="federation-identity-provider"/>
+      <service name="federation-service-provider"/>
+    </accessservice:status>
+    <echo message="=================================================================="/>
+    <echo message="0001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Access Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o OAuth Service Provider
+  **           o OpenIDConnect Service Provider
+  ******************************************************************************
+  -->
+  <target name="0002" description="Configures the Federated Access Management Environment Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0002 Setup OAuth and OpenIDConnect Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Enable OAuth and OpenIDConnect Services for environment ${fmw.env} on ${oam.server.host}:${oam.server.home}"/>
+    <accessservice:enable contextRef="jmx-context">
+      <service name="oauth"/>
+      <service name="oauth-access-manager"/>
+      <service name="openid-connect-service"/>
+      <service name="openid-token-service"/>
+      <service name="openid-connect-relying-party"/>
+    </accessservice:enable>
+    <accessservice:status contextRef="jmx-context">
+      <service name="oauth"/>
+      <service name="oauth-access-manager"/>
+      <service name="openid-connect-service"/>
+      <service name="openid-token-service"/>
+      <service name="openid-connect-relying-party"/>
+    </accessservice:status>
+    <echo message="=================================================================="/>
+    <echo message="0002 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o System Properties
+  ******************************************************************************
+  -->
+  <target name="0003" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0003 Frontend Customization Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Copying Required Files for environment ${fmw.env} on ${jee.server.host}:${jee.server.port}"/>
+    <ssh-file dir="0000 systemCustomization/lib" file="fim.iam.access.module.war" location="${oam.server.application}"/>
+    <echo message="=================================================================="/>
+    <echo message="0003 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

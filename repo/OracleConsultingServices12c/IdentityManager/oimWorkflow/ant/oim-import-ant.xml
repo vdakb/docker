@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name          ="Oracle Consulting Identity ANT Task Definitions"
+         default       ="iam-instance-status"
+         basedir       =".."
+         xmlns:fmw     ="http://oracle.hst.deployment/fusion"
+         xmlns:jps     ="http://oracle.hst.deployment/security"
+         xmlns:wsm     ="http://oracle.hst.deployment/webservice"
+         xmlns:server  ="http://oracle.iam.identity/server"
+         xmlns:plugin  ="http://oracle.iam.identity/plugin"
+         xmlns:metadata="http://oracle.iam.identity/metadata"
+         xmlns:object  ="http://oracle.iam.identity/object">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-server.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Phone Number Target
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Phone Number Target
+  **           Configuration. This includes:
+  **           o Process Form Definitions
+  **           o Resource Object
+  **           o Provisioning Process Definition
+  ******************************************************************************
+  -->
+  <target name="target" description="Deploys the Phone Number Target">
+    <echo message="Deploys the Phone Number Target Configuration Revision 1.0.0.0"/>
+    <echo message="Deploying importable objects on ${oim.remote.host}:${oim.remote.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="./xml/target">
+        <object:importFile name="ocs-phone-dm.xml"/>
+      </object:importSet>
+    </object:import>
+  </target>
+  <target name="request" description="Deploys the Phone Number Request">
+    <echo message="Deploys the Phone Number Request Configuration Revision 1.0.0.0"/>
+    <echo message="Deploying metadata on ${oim.remote.host}:${oim.remote.port}"/>
+    <metadata:import contextRef  ="jee-context" fromLocation="/mnt/hgfs/host-project/Oracle Consulting Services 11g/Identity Manager/oimApproval/xml">
+      <metadata:path>
+        <metadata:pathelement location="/custom/phone/ProvisionResourcePhone Number.xml"/>
+      </metadata:path>
+    </metadata:import>
+    <metadata:clearcache contextRef="jee-context"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance" depends="target"/>
+</project>

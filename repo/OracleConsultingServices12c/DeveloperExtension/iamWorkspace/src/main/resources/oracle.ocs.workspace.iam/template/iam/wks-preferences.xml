@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="#{ant.project}" basedir=".">
+  <!--
+  =====================================================================
+  == properties specific to control the compiler progress
+  =====================================================================
+  -->
+  <import file="#{iam.preferences}"/>
+  <!--
+  =====================================================================
+  == properties specific to the project and workspace folder structure
+  =====================================================================
+  -->
+  <property name="ocs.home" value="${ocs.base}/#{ocs.home}"/>
+  <property name="wks.home" value="${wks.base}/#{wks.home}"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="ocs.home: ${ocs.home} doesn't exist.">
+    <condition>
+      <not><available file="${ocs.home}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="wks.home: ${wks.home} doesn't exist.">
+    <condition>
+      <not><available file="${wks.home}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == properties specific to the Consulting Foundation Framework
+  =====================================================================
+  -->
+  <property name="ops.home" value="${ocs.home}/PlatformServices"/>
+  <property name="hst.home" value="${ocs.home}/FoundationFramework"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="ops.home: ${ops.home} doesn't exist.">
+    <condition>
+      <not><available file="${ops.home}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="hst.home: ${hst.home} doesn't exist.">
+    <condition>
+      <not><available file="${hst.home}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == properties specifies to library declarations
+  =====================================================================
+  -->
+  <path id="oracle.fmw.jps.platform">
+    <pathelement location="${ops.home}/CodeBaseSecurity/12.2.1.3/lib/jps-api.jar"/>
+    <pathelement location="${ops.home}/CodeBaseSecurity/12.2.1.3/lib/jps-common.jar"/>
+    <pathelement location="${ops.home}/CodeBaseSecurity/12.2.1.3/lib/jps-internal.jar"/>
+    <pathelement location="${ops.home}/CodeBaseSecurity/12.2.1.3/lib/jps-mbeans.jar"/>
+  </path>
+  <path id="oracle.fmw.wss.platform">
+    <pathelement location="${fmw.base.jrf}/modules/oracle.logging-utils.jar"/>
+    <pathelement location="${fmw.base.jrf}/modules/oracle.jrf/jrf-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/modules/oracle.jmx/jmxframework.jar"/>
+    <!--
+!    <pathelement location="${fmw.base.jrf}/modules/oracle.webservices_11.1.1/wsserver.jar"/>
+    -->
+  </path>
+  <path id="oracle.ocs.iam.hst.security">
+    <pathelement location="${hst.home}/hstSecurity/lib/hst-security.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.hst.foundation">
+    <pathelement location="${hst.home}/hstFoundation/lib/hst-foundation.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.hst.deployment">
+    <pathelement location="${hst.home}/hstDeployment/lib/hst-deployment.jar"/>
+  </path>
+  <path id="oracle.ocs.iam.hst.faces">
+    <pathelement location="${hst.home}/hstFaces/lib/hst-faces.jar"/>
+  </path>
+</project>

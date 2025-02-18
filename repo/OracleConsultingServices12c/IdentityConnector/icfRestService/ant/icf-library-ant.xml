@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Library Preferences" default="all"  basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"           value="Identity Connector Generic REST Service"/>
+  <property name="application"           value="ocs.identity.connector.rest"/>
+  <property name="library"               value="ocs.identity.connector.rest"/>
+
+  <property name="packagepath.library"   value="oracle/iam/identity/icf/**/*.class weblogic/net/http/*.class"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../icf-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.mds"/>
+    <path refid="oracle.fmw.wls.wsssl"/>
+    <path refid="oracle.fmw.jax.jackson"/>
+    <path refid="oracle.fmw.jax.jersey.core"/>
+    <path refid="oracle.fmw.jax.jersey.client"/>
+    <path refid="oracle.fmw.icf.integration"/>
+    <path refid="oracle.ocs.icf.foundation"/>
+  </path>
+
+  <!--
+ =====================================================================
+ == !! IMPORTANT !!
+ == To build this library you must include the
+ == weblogic.jaxrs.integration.jar file into the oracle.fmw.wls.wsssl
+ == path reference in iam-12c-preferences.xml.
+ ==
+ == eg:
+ == <path id="oracle.fmw.wls.wsssl">
+ ==   <pathelement location="${fmw.base.wls}/modules/weblogic.jaxrs.integration.jar"/>
+ ==   <pathelement location="${fmw.base.wls}/modules/clients/com.oracle.webservices.wls.jaxws-wlswss-client.jar"/>
+ == </path>
+ =====================================================================
+ -->
+
+</project>

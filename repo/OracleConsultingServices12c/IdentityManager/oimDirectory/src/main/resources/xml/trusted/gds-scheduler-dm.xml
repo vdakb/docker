@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@keaton.vm.oracle.com:1521/metadata.vm.oracle.com" description="Generic Directory Service Scheduler Configuration Revision 1.0.0.0" exported-date="1342300701573" user="XELSYSADM" version="2.0.2.1">
+  <Job name="GDS Organization Trusted Delete Reconciliation" repo-type="API">
+    <taskClassName>oracle.iam.identity.gds.service.reconciliation.OrganizationDeleteReconciliation</taskClassName>
+    <taskKey>31</taskKey>
+    <retrycount>0</retrycount>
+    <taskStatus>true</taskStatus>
+    <jobScheduleType>None</jobScheduleType>
+    <concurrent>false</concurrent>
+    <method>executeJob</method>
+    <lastModifyDate>1342300583270</lastModifyDate>
+    <attributes>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">16</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the data should only be gathered from the reconciliation source; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">18</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">17</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">19</paramKey>
+          <paramValue type="string">Xellerate Organization</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Organization Root Validate</key>
+        <value type="jobparameter">
+          <name type="string">Organization Root Validate</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if Organization Root has also be validated; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">20</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Offline Event</key>
+        <value type="jobparameter">
+          <name type="string">Offline Event</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if reconciliation events should be handled offline; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">22</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">21</paramKey>
+          <paramValue type="string">/metadata/ocs-features-configuration/gds-organization-trusted-reconciliation.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Organization Root</key>
+        <value type="jobparameter">
+          <name type="string">Organization Root</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the organization serving as to root context of a organizational hierarchy that has to be validated</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">23</paramKey>
+          <paramValue type="string">OCS Organization</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Directory Server</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">25</paramKey>
+          <paramValue type="string">GDS Server</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Scope</key>
+        <value type="jobparameter">
+          <name type="string">Search Scope</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the scope of the search to retrieve objects from target system. Has to be either Object, OneLevel or SubTree</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">24</paramKey>
+          <paramValue type="string">SubTree</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Base</key>
+        <value type="jobparameter">
+          <name type="string">Search Base</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the search base to retrieve entries from the target system</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">26</paramKey>
+          <paramValue type="string">cn=Users</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Filter</key>
+        <value type="jobparameter">
+          <name type="string">Search Filter</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies which filter criteria has to be applied to retrieve directory entries. Must be a valid LDAP search filter</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">27</paramKey>
+          <paramValue type="string">(objectClass=organization)</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <source-scope name="GDS Organization Trusted Delete Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="GDS Organization Trusted Delete Reconciliation"/>
+  </Job>
+  <Job name="GDS Identity Trusted Reconciliation" repo-type="API">
+    <taskClassName>oracle.iam.identity.gds.service.reconciliation.AccountTrustedReconciliation</taskClassName>
+    <taskKey>30</taskKey>
+    <retrycount>0</retrycount>
+    <taskStatus>true</taskStatus>
+    <jobScheduleType>None</jobScheduleType>
+    <concurrent>false</concurrent>
+    <method>executeJob</method>
+    <lastModifyDate>1335281069269</lastModifyDate>
+    <attributes>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">16</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Identity Role</key>
+        <value type="jobparameter">
+          <name type="string">Identity Role</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the default identity role which should be assigned to a new created identity</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">17</paramKey>
+          <paramValue type="string">Full-Time</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Sort Attribute(s)</key>
+        <value type="jobparameter">
+          <name type="string">Sort Attribute(s)</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name(s) of the attribute(s) to ensure that the results of the search performed is sorted by the LDAP server before being returned</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">18</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Incremental</key>
+        <value type="jobparameter">
+          <name type="string">Incremental</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the LDAP search has to be extended by the timestamp this job was last time executed successfully as a filter criteria; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">19</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">20</paramKey>
+          <paramValue type="string">GDS Trusted Identity</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Offline Event</key>
+        <value type="jobparameter">
+          <name type="string">Offline Event</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if reconciliation events should be handled offline; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">21</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">22</paramKey>
+          <paramValue type="string">/metadata/ocs-features-configuration/gds-identity-reconciliation.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Directory Server</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">23</paramKey>
+          <paramValue type="string">GDS Server</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Scope</key>
+        <value type="jobparameter">
+          <name type="string">Search Scope</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the scope of the search to retrieve objects from target system. Has to be either Object, OneLevel or SubTree</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">24</paramKey>
+          <paramValue type="string">SubTree</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Base</key>
+        <value type="jobparameter">
+          <name type="string">Search Base</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the search base to retrieve entries from the target system</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">25</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Identity Organization</key>
+        <value type="jobparameter">
+          <name type="string">Identity Organization</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the default hierarchy parent name that should be assigned to a new created identity if the loaded hierarchy parent name cannot be resolved</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">26</paramKey>
+          <paramValue type="string">Xellerate Users</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Filter</key>
+        <value type="jobparameter">
+          <name type="string">Search Filter</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies which filter criteria has to be applied to retrieve directory entries. Must be a valid LDAP search filter</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">27</paramKey>
+          <paramValue type="string">(objectClass=inetOrgPerson)</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Identity Status</key>
+        <value type="jobparameter">
+          <name type="string">Identity Status</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The value of the default identity status which should be assigned to a new created identity</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">30</paramKey>
+          <paramValue type="string">Active</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">29</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the data should only be gathered from the reconciliation source; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">28</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Identity Type</key>
+        <value type="jobparameter">
+          <name type="string">Identity Type</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the default identity type should be assigned to a new created identity</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">31</paramKey>
+          <paramValue type="string">End-User</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Maintain Hierarchy</key>
+        <value type="jobparameter">
+          <name type="string">Maintain Hierarchy</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the hierarchy parent name should be derived from the distinguished name of the entry</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">32</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <source-scope name="GDS Identity Trusted Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="GDS Identity Trusted Reconciliation"/>
+  </Job>
+</xl-ddm-data>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Identity Directory Deployment Controller"
+         basedir     ="../../../deployment/fed"
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../ods-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="ods.recorder.name"      value="../log/bip-import-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o BIPublisher Administration Groups (Technical Groups)
+  **           o BIPublisher End User Groups (Tenant Groups)
+  ******************************************************************************
+  -->
+  <target name="0100" description="Imports the Administration Group Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 Administration Group Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0100 systemFramework">
+        <importFile name="bip-system-group.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o BIPublisher End User Groups (Tenant Groups)
+  ******************************************************************************
+  -->
+  <target name="0101" description="Imports the Administration Group Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0101 Administration Group Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0100 systemFramework">
+        <importFile name="bip-tenant-group.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+</project>

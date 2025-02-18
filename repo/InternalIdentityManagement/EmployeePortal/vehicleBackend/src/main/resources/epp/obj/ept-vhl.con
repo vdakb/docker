@@ -1,0 +1,35 @@
+-- D:\Project\Bundeskriminalamt12c\InternalIdentityManagement\EmployeePortal\portalBackend\..\vehicleBackend\src\main\resources\dbs\epp\obj\ept-vhl.con
+--
+-- Generated for Oracle Database 12c on Sun May 24 17:30:57 2020 by Server Generator 10.1.2.93.10
+
+PROMPT Creating Primary Key 'ept_vhl_pk' on 'ept_vehicles'
+ALTER TABLE ept_vehicles
+  ADD (
+    CONSTRAINT ept_vhl_pk PRIMARY KEY (
+      prefix
+    )
+    USING INDEX TABLESPACE &&eppdata
+  )
+/
+PROMPT Creating Foreign Key 'ept_vhl_vmt_fk' on 'ept_vehicles'
+ALTER TABLE ept_vehicles
+  ADD (
+    CONSTRAINT ept_vhl_vmt_fk FOREIGN KEY (
+      vmb_id, vht_id
+    )
+    REFERENCES ept_vehicle_brand_types (
+      vmb_id, vht_id
+    )
+  )
+/
+PROMPT Creating Foreign Key 'ept_vhl_vhc_fk' on 'ept_vehicles'
+ALTER TABLE ept_vehicles
+  ADD (
+    CONSTRAINT ept_vhl_vhc_fk FOREIGN KEY (
+      vhc_id
+    )
+    REFERENCES ept_vehicle_colors (
+      id
+    )
+  )
+/

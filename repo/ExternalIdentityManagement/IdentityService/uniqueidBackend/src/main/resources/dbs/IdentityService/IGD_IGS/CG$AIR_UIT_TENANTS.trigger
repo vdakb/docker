@@ -1,0 +1,89 @@
+-- <?xml version = '1.0' encoding = 'UTF-8'?>
+-- <trigger xmlns="http://xmlns.oracle.com/jdeveloper/1211/offlinedb">
+--   <name>CG$AIR_UIT_TENANTS</name>
+--   <enabled>true</enabled>
+--   <properties>
+--     <entry>
+--       <key>OfflineDBConstants.IMPORT_SOURCE_CONNECTION</key>
+--       <value class="java.lang.String">igs@hardy</value>
+--     </entry>
+--     <entry>
+--       <key>OfflineDBConstants.IMPORT_SOURCE_ID</key>
+--       <value class="oracle.javatools.db.ReferenceID">
+--         <name>CG$AIR_UIT_TENANTS</name>
+--         <identifier class="java.math.BigDecimal">47373</identifier>
+--         <schemaName>IGD_IGS</schemaName>
+--         <type>TRIGGER</type>
+--       </value>
+--     </entry>
+--   </properties>
+--   <statementLevel>true</statementLevel>
+-- </trigger>
+
+CREATE OR REPLACE
+TRIGGER cg$air_uit_tenants
+AFTER INSERT ON uit_tenants FOR EACH ROW
+DECLARE
+  cg$rec  cg$uit_tenants.cg$row_type;
+  cg$ind  cg$uit_tenants.cg$ind_type;
+  --
+  clm$rec cg$uit_claims.cg$row_type;
+  clm$ind cg$uit_claims.cg$ind_type;
+BEGIN
+  --  Application_logic Pre-After-Insert-row <<Start>>
+  --  Application_logic Pre-After-Insert-row << End >>
+
+  cg$rec.id           := :new.id;
+  cg$ind.id           := TRUE;
+  cg$rec.rowversion   := :new.created_by;
+  cg$ind.rowversion   := TRUE;
+  cg$rec.created_by   := :new.created_by;
+  cg$ind.created_by   := TRUE;
+  cg$rec.created_on   := :new.created_on;
+  cg$ind.created_on   := TRUE;
+  cg$rec.updated_by   := :new.updated_by;
+  cg$ind.updated_by   := TRUE;
+  cg$rec.updated_on   := :new.updated_on;
+  cg$ind.updated_on   := TRUE;
+  cg$rec.active       := :new.active;
+  cg$ind.active       := TRUE;
+  cg$rec.name         := :new.name;
+  cg$ind.name         := TRUE;
+
+  --  Application_logic Post-After-Insert-row <<Start>>
+  --
+  clm$rec.tnt_id      := :new.id;
+  clm$ind.tnt_id      := TRUE;
+  clm$rec.rol_id      := 'uid.generate';
+  clm$ind.rol_id      := TRUE;
+  clm$rec.usr_id      := -1;
+  clm$ind.usr_id      := TRUE;
+  cg$uit_claims.ins(clm$rec, clm$ind);
+  --
+  clm$rec.tnt_id      := :new.id;
+  clm$ind.tnt_id      := TRUE;
+  clm$rec.rol_id      := 'uid.generate';
+  clm$ind.rol_id      := TRUE;
+  clm$rec.usr_id      := -2;
+  clm$ind.usr_id      := TRUE;
+  cg$uit_claims.ins(clm$rec, clm$ind);
+  --
+  clm$rec.tnt_id      := :new.id;
+  clm$ind.tnt_id      := TRUE;
+  clm$rec.rol_id      := 'uid.register';
+  clm$ind.rol_id      := TRUE;
+  clm$rec.usr_id      := -1;
+  clm$ind.usr_id      := TRUE;
+  cg$uit_claims.ins(clm$rec, clm$ind);
+  --
+  clm$rec.tnt_id      := :new.id;
+  clm$ind.tnt_id      := TRUE;
+  clm$rec.rol_id      := 'uid.register';
+  clm$ind.rol_id      := TRUE;
+  clm$rec.usr_id      := -2;
+  clm$ind.usr_id      := TRUE;
+  cg$uit_claims.ins(clm$rec, clm$ind);
+  --
+  --  Application_logic Post-After-Insert-row << End >>
+END;
+/

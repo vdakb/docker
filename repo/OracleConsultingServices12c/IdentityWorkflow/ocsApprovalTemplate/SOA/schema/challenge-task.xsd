@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<schema xmlns             ="http://www.w3.org/2001/XMLSchema"
+        xmlns:evidence    ="http://xmlns.oracle.com/bpel/workflow/TaskEvidenceService"
+        xmlns:jaxb        ="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0"
+        xmlns:tns         ="http://xmlns.oracle.com/bpel/workflow/task"
+        targetNamespace   ="http://xmlns.oracle.com/bpel/workflow/task"
+        blockDefault      ="#all"
+        elementFormDefault="qualified">
+
+  <include xmlns="" schemaLocation="challenge-task-payload.xsd"/>
+
+  <annotation>
+    <appinfo>
+      <jaxb:globalBindings generateElementProperty="false"/>
+      <jaxb:schemaBindings>
+        <jaxb:package name="oracle.bpel.services.workflow.task.model"/>
+      </jaxb:schemaBindings>
+    </appinfo>
+  </annotation>
+
+  <import namespace="http://xmlns.oracle.com/bpel/workflow/TaskEvidenceService" schemaLocation="oramds:///soa/shared/workflow/TaskEvidenceService.xsd"/>
+
+  <element name="task">
+    <complexType>
+      <sequence>
+        <element name="title"                   type="string"                          minOccurs="0"/>
+        <element name="payload"                 type="tns:challengePayloadType"        minOccurs="0" maxOccurs="1"/>
+        <element name="taskDefinitionURI"       type="string"                          minOccurs="0"/>
+        <!-- Deprecated: Use taskDefinitionId instead -->
+        <element name="creator"                 type="string"                          minOccurs="0"/>
+        <element name="ownerUser"               type="string"                          minOccurs="0"/>
+        <element name="ownerGroup"              type="string"                          minOccurs="0"/>
+        <element name="ownerRole"               type="string"                          minOccurs="0"/>
+        <element name="priority"                type="tns:priorityType"                minOccurs="0"/>
+        <element name="packageName"             type="string"                          minOccurs="0" maxOccurs="1"/>
+        <element name="identityContext"         type="string"                          minOccurs="0"/>
+        <element name="userComment"             type="tns:commentType"                 minOccurs="0" maxOccurs="unbounded"/>
+        <element name="attachment"              type="tns:attachmentType"              minOccurs="0" maxOccurs="unbounded"/>
+        <element name="document"                type="tns:documentType"                minOccurs="0" maxOccurs="unbounded"/>
+        <element name="processInfo"             type="tns:processType"                 minOccurs="0"/>
+        <element name="systemAttributes"        type="tns:systemAttributesType"        minOccurs="0"/>
+        <element name="systemMessageAttributes" type="tns:systemMessageAttributesType" minOccurs="0"/>
+        <element name="titleResourceKey"        type="string"                          minOccurs="0"/>
+        <element name="callback"                type="tns:callbackType"                minOccurs="0"/>
+        <element name="identificationKey"       type="string"                          minOccurs="0"/>
+        <element name="category"                type="string"                          minOccurs="0"/>
+        <element name="startDate"               type="dateTime"                        minOccurs="0"/>
+        <element name="dueDate"                 type="dateTime"                        minOccurs="0"/>
+        <element name="isPublic"                type="boolean"                         minOccurs="0"/>
+        <element name="percentageComplete"      type="double"                          minOccurs="0"/>
+        <element name="sca"                     type="tns:scaType"                     minOccurs="0"/>
+        <element name="applicationContext"      type="string"                          minOccurs="0"/>
+        <element name="evidence"                type="evidence:EvidenceType"           minOccurs="0" maxOccurs="1"/>
+        <element name="taskDefinitionId"        type="string"                          minOccurs="0"/>
+        <element name="subcategory"             type="string"                          minOccurs="0"/>
+        <element name="taskDisplayUrl"          type="string"                          minOccurs="0"/>
+        <element name="documentPackageId"       type="string"                          minOccurs="0"/>
+        <element name="correlationId"           type="string"                          minOccurs="0"/>
+        <element name="mdsLabel"                type="string"                          minOccurs="0"/>
+        <element name="creatorDisplayName"      type="string"                          minOccurs="0"/>
+        <element name="ownerUserDisplayName"    type="string"                          minOccurs="0"/>
+        <element name="ownerGroupDisplayName"   type="string"                          minOccurs="0"/>
+        <element name="ownerRoleDisplayName"    type="string"                          minOccurs="0"/>
+        <element name="customAttributes"        type="tns:customAttributesType"        minOccurs="0"/>
+        <element name="shortSummary"            type="string"                          minOccurs="0"/>
+        <element name="longSummary"             type="string"                          minOccurs="0"/>
+        <element name="notificationMode"        type="tns:taskNotificationMode"        minOccurs="0"/>
+      </sequence>
+    </complexType>
+  </element>
+  <element name="comment" type="tns:commentType"/>
+  <complexType name="commentType">
+    <sequence>
+      <element name="comment"             type="string"                minOccurs="0"/>
+      <element name="updatedBy"           type="tns:identityType"      minOccurs="0"/>
+      <element name="updatedDate"         type="dateTime"              minOccurs="0"/>
+      <element name="displayNameLanguage" type="string"                minOccurs="0"/>
+      <element name="action"              type="string"                minOccurs="0"/>
+      <element name="systemVersionFlag"   type="string"                minOccurs="0"/>
+      <element name="acl"                 type="string"                minOccurs="0"/>
+      <element name="doesBelongToParent"  type="boolean"               minOccurs="0"/>
+      <element name="isSystemComment"     type="boolean"               minOccurs="0"/>
+      <element name="taskId"              type="string"                minOccurs="0"/>
+      <element name="commentScope"        type="tns:scopeTypeEnum"     minOccurs="0"/>
+      <element name="id"                  type="string"                minOccurs="0" maxOccurs="1"/>
+      <element name="operation"           type="tns:operationTypeEnum" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <complexType name="processType">
+    <sequence>
+      <element name="domainId"       type="string"              minOccurs="0" maxOccurs="1"/>
+      <element name="instanceId"     type="string"              minOccurs="0" maxOccurs="1"/>
+      <element name="processId"      type="string"              minOccurs="0" maxOccurs="1"/>
+      <element name="processName"    type="string"              minOccurs="0" maxOccurs="1"/>
+      <element name="processType"    type="tns:processTypeEnum" minOccurs="0" maxOccurs="1"/>
+      <element name="processVersion" type="string"              minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <complexType name="scaType">
+    <sequence>
+      <element name="applicationName"              type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="componentName"                type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="compositeDN"                  type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="compositeInstanceId"          type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="compositeName"                type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="compositeVersion"             type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="ecId"                         type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="parentComponentInstanceId"    type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="parentComponentInstanceRefId" type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="headerProperties"             type="string" minOccurs="0" maxOccurs="1"/>
+      <element name="invokedComponent"             type="string" minOccurs="0" maxOccurs="1">
+        <annotation>
+          <documentation>
+              Records the component invoked to create this Task version instance.
+              E.g. the decision component invoked for advanced routing rules.
+            </documentation>
+        </annotation>
+      </element>
+      <element name="compositeCreatedTime" type="dateTime" minOccurs="0" maxOccurs="1"/>
+      <element name="componentInstanceId"  type="long"     minOccurs="0" maxOccurs="1"/>
+      <element name="flowId"               type="long"     minOccurs="0" maxOccurs="1"/>
+      <element name="scaPartitionId"       type="long"     minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <simpleType name="processTypeEnum">
+    <restriction base="string">
+      <enumeration value="BPEL"/>
+      <enumeration value="OWF"/>
+      <enumeration value="OTHER"/>
+    </restriction>
+  </simpleType>
+  <complexType name="callbackType">
+    <sequence>
+      <element name="context"         type="string" minOccurs="0"/>
+      <element name="id"              type="string" minOccurs="0"/>
+      <element name="type"            type="string" minOccurs="0"/>
+      <element name="converstationId" type="string" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <element name="attachment" type="tns:attachmentType"/>
+  <complexType name="attachmentType">
+    <sequence>
+      <element name="content"              type="string"                  minOccurs="0"/>
+      <element name="mimeType"             type="string"                  minOccurs="0"/>
+      <element name="name"                 type="string"                  minOccurs="0"/>
+      <element name="updatedBy"            type="string"                  minOccurs="0"/>
+      <element name="URI"                  type="string"                  minOccurs="0"/>
+      <element name="systemVersionFlag"    type="string"                  minOccurs="0"/>
+      <element name="taskId"               type="string"                  minOccurs="0"/>
+      <element name="version"              type="integer"                 minOccurs="0"/>
+      <element name="acl"                  type="string"                  minOccurs="0"/>
+      <element name="doesBelongToParent"   type="boolean"                 minOccurs="0"/>
+      <element name="updatedDate"          type="dateTime"                minOccurs="0"/>
+      <element name="correlationId"        type="string"                  minOccurs="0" maxOccurs="1"/>
+      <element name="size"                 type="long"                    minOccurs="0" maxOccurs="1"/>
+      <element name="description"          type="string"                  minOccurs="0" maxOccurs="1"/>
+      <element name="storageType"          type="tns:storageTypeEnum"     minOccurs="0" maxOccurs="1"/>
+      <element name="ucmDocType"           type="string"                  minOccurs="0" maxOccurs="1"/>
+      <element name="securityGroup"        type="string"                  minOccurs="0" maxOccurs="1"/>
+      <element name="account"              type="string"                  minOccurs="0" maxOccurs="1"/>
+      <element name="revision"             type="string"                  minOccurs="0" maxOccurs="1"/>
+      <element name="releaseDate"          type="date"                    minOccurs="0" maxOccurs="1"/>
+      <element name="expirationDate"       type="date"                    minOccurs="0" maxOccurs="1"/>
+      <element name="title"                type="string"                  minOccurs="0" maxOccurs="1"/>
+      <element name="ucmMetadataItem"      type="tns:ucmMetadataItemType" minOccurs="0" maxOccurs="unbounded"/>
+      <element name="attachmentScope"      type="tns:scopeTypeEnum"       minOccurs="0"/>
+      <element name="isContentEncoded"     type="boolean"                 minOccurs="0" maxOccurs="1"/>
+      <element name="updatedByDisplayName" type="string"                  minOccurs="0"/>
+      <element name="id"                   type="string"                  minOccurs="0" maxOccurs="1"/>
+      <element name="operation"            type="tns:operationTypeEnum"   minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <complexType name="ucmMetadataItemType">
+    <sequence>
+      <element name="name"  type="string"               minOccurs="0" maxOccurs="1"/>
+      <element name="value" type="string"               minOccurs="0" maxOccurs="1"/>
+      <element name="type"  type="tns:metadataTypeEnum" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <simpleType name="scopeTypeEnum">
+    <restriction base="string">
+      <enumeration value="TASK"/>
+      <enumeration value="PARENT_TASK"/>
+      <enumeration value="BPM"/>
+      <enumeration value="CASE"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="operationTypeEnum">
+    <restriction base="string">
+      <enumeration value="ADD"/>
+      <enumeration value="UPDATE"/>
+      <enumeration value="DELETE"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="storageTypeEnum">
+    <restriction base="string">
+      <enumeration value="TASK"/>
+      <enumeration value="UCM"/>
+      <enumeration value="URL"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="metadataTypeEnum">
+    <restriction base="string">
+      <enumeration value="DATE"/>
+      <enumeration value="STRING"/>
+      <enumeration value="NUMBER"/>
+    </restriction>
+  </simpleType>
+  <element name="document" type="tns:documentType"/>
+  <complexType name="documentType">
+    <sequence>
+      <element name="name"            type="string"/>
+      <element name="content"         type="string"   minOccurs="0"/>
+      <element name="mimeType"        type="string"   minOccurs="0"/>
+      <element name="URI"             type="string"/>
+      <element name="updatedBy"       type="string"   minOccurs="0"/>
+      <element name="updatedDate"     type="dateTime" minOccurs="0"/>
+      <element name="ucmDocumentType" type="string"   minOccurs="0"/>
+      <element name="UUID"            type="string"/>
+    </sequence>
+  </complexType>
+  <complexType name="identityType">
+    <sequence>
+      <element name="id"                type="string"               minOccurs="0"/>
+      <element name="displayName"       type="string"               minOccurs="0"/>
+      <element name="type"              type="tns:identityTypeEnum" minOccurs="0"/>
+      <element name="systemVersionFlag" type="string"               minOccurs="0"/>
+    </sequence>
+  </complexType>
+  <simpleType name="identityTypeEnum">
+    <restriction base="string">
+      <enumeration value="user"/>
+      <enumeration value="group"/>
+      <enumeration value="application_role"/>
+      <enumeration value="position"/>
+    </restriction>
+  </simpleType>
+  <complexType name="hiddenAttributesType">
+    <sequence>
+      <element name="isCreatorHidden"   type="boolean" minOccurs="0" maxOccurs="1"/>
+      <element name="creatorCustomText" type="string"  minOccurs="0" maxOccurs="1"/>
+      <element name="isAutoApproval"    type="boolean" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <complexType name="systemAttributesType">
+    <sequence>
+      <element name="accessKey"                       type="string"                     minOccurs="0"/>
+      <element name="acquiredBy"                      type="string"                     minOccurs="0"/>
+      <element name="approvalDuration"                type="long"                       minOccurs="0"/>
+      <element name="approvers"                       type="string"                     minOccurs="0"/>
+      <element name="assignedDate"                    type="dateTime"                   minOccurs="0"/>
+      <element name="assigneeGroups"                  type="tns:identityType"           minOccurs="0" maxOccurs="unbounded"/>
+      <element name="assigneeUsers"                   type="tns:identityType"           minOccurs="0" maxOccurs="unbounded"/>
+      <element name="createdDate"                     type="dateTime"                   minOccurs="0"/>
+      <element name="customActions"                   type="tns:actionType"             minOccurs="0" maxOccurs="unbounded"/>
+      <element name="digitalSignatureRequired"        type="boolean"                    minOccurs="0"/>
+      <element name="displayInfo"                     type="tns:displayInfoType"        minOccurs="0" maxOccurs="unbounded"/>
+      <element name="elapsedTime"                     type="long"                       minOccurs="0"/>
+      <element name="endDate"                         type="dateTime"                   minOccurs="0"/>
+      <element name="expirationDate"                  type="dateTime"                   minOccurs="0"/>
+      <element name="expirationDuration"              type="duration"                   minOccurs="0"/>
+      <element name="fromUser"                        type="tns:identityType"           minOccurs="0"/>
+      <element name="hasSubTasks"                     type="boolean"                    minOccurs="0"/>
+      <element name="inShortHistory"                  type="boolean"                    minOccurs="0"/>
+      <element name="isGroup"                         type="boolean"                    minOccurs="0"/>
+      <element name="language"                        type="string"                     minOccurs="0"/>
+      <element name="mailStatus"                      type="tns:mailStatusEnum"         minOccurs="0"/>
+      <element name="numberOfTimesModified"           type="integer"                    minOccurs="0"/>
+      <element name="originalAssigneeUser"            type="string"                     minOccurs="0"/>
+      <element name="outcome"                         type="string"                     minOccurs="0"/>
+      <element name="parallelOutcomeCount"            type="string"                     minOccurs="0"/>
+      <element name="passwordRequiredOnUpdate"        type="boolean"                    minOccurs="0"/>
+      <element name="pushbackSequence"                type="string"                     minOccurs="0"/>
+      <element name="secureNotifications"             type="boolean"                    minOccurs="0"/>
+      <element name="shortHistory"                    type="tns:shortHistoryType"       minOccurs="0"/>
+      <element name="state"                           type="tns:stateEnum"              minOccurs="0"/>
+      <element name="substate"                        type="tns:substateEnum"           minOccurs="0"/>
+      <element name="systemActions"                   type="tns:actionType"             minOccurs="0" maxOccurs="unbounded"/>
+      <element name="systemString1"                   type="string"                     minOccurs="0"/>
+      <element name="systemString2"                   type="string"                     minOccurs="0"/>
+      <element name="systemString3"                   type="string"                     minOccurs="0"/>
+      <element name="taskGroupId"                     type="string"                     minOccurs="0"/>
+      <element name="taskId"                          type="string"                     minOccurs="0"/>
+      <element name="taskNumber"                      type="integer"                    minOccurs="0"/>
+      <element name="updatedBy"                       type="tns:identityType"           minOccurs="0"/>
+      <element name="updatedDate"                     type="dateTime"                   minOccurs="0"/>
+      <element name="version"                         type="integer"                    minOccurs="0"/>
+      <element name="versionReason"                   type="string"                     minOccurs="0"/>
+      <element name="taskDefinitionId"                type="string"                     minOccurs="0"/>
+      <!-- This is deprecated and moved as an attribute that can be set by clients -->
+      <element name="taskDefinitionName"              type="string"                     minOccurs="0"/>
+      <element name="workflowPattern"                 type="string"                     minOccurs="0"/>
+      <element name="isTestTask"                      type="boolean"                    minOccurs="0"/>
+      <element name="participantName"                 type="string"                     minOccurs="0"/>
+      <element name="readByUsers"                     type="string"                     minOccurs="0"/>
+      <element name="reviewers"                       type="tns:identityType"           minOccurs="0" maxOccurs="unbounded"/>
+      <element name="assignees"                       type="tns:identityType"           minOccurs="0" maxOccurs="unbounded"/>
+      <element name="taskGroupInstanceId"             type="string"                     minOccurs="0"/>
+      <element name="subTaskGroupInstanceId"          type="string"                     minOccurs="0"/>
+      <element name="parentTaskVersion"               type="integer"                    minOccurs="0"/>
+      <!-- Activity Guide elements -->
+      <element name="agRootId"                        type="long"                       minOccurs="0"/>
+      <element name="agMileStonePath"                 type="string"                     minOccurs="0"/>
+      <element name="rootTaskId"                      type="string"                     minOccurs="0"/>
+      <element name="parentTaskId"                    type="string"                     minOccurs="0"/>
+      <element name="systemStringActions"             type="string"                     minOccurs="0"/>
+      <element name="restrictedActions"               type="tns:actionType"             minOccurs="0" maxOccurs="unbounded"/>
+      <element name="updatedNotificationId"           type="string"                     minOccurs="0"/>
+      <element name="stage"                           type="string"                     minOccurs="0"/>
+      <element name="assignmentContext"               type="tns:assignmentContextType"  minOccurs="0" maxOccurs="unbounded"/>
+      <element ref="tns:collectionTarget"                                               minOccurs="0" maxOccurs="unbounded"/>
+      <element name="preActionUserSteps"              type="tns:preActionUserStepsType" minOccurs="0" maxOccurs="1"/>
+      <element name="aggregationTaskId"               type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="isTemplateTask"                  type="boolean"                    minOccurs="0" maxOccurs="1"/>
+      <element name="taskViewContext"                 type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="taskNamespace"                   type="string"                     minOccurs="0"/>
+      <element name="actionDisplayName"               type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="timers"                          type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="componentType"                   type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="activityName"                    type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="activityId"                      type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="processDueDate"                  type="dateTime"                   minOccurs="0" maxOccurs="1"/>
+      <element name="thread"                          type="integer"                    minOccurs="0" maxOccurs="1"/>
+      <element name="parentThread"                    type="integer"                    minOccurs="0" maxOccurs="1"/>
+      <element name="step"                            type="integer"                    minOccurs="0" maxOccurs="1"/>
+      <element name="visibilityRuleConditionValues"   type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="isPartialTask"                   type="boolean"                    minOccurs="0" maxOccurs="1"/>
+      <element name="organizationalUnitId"            type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="tenantId"                        type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="listBuilderId"                   type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="caseId"                          type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="organizationalUnitName"          type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="swimlaneRole"                    type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="excludedParticipants"            type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="timersSuspended"                 type="boolean"                    minOccurs="0" maxOccurs="1" default="false"/>
+      <element name="tenantIdNumber"                  type="long"                       minOccurs="0" maxOccurs="1" default="-1"/>
+      <element name="taskAgeFromCreatedDate"          type="duration"                   minOccurs="0" maxOccurs="1"/>
+      <element name="taskAgeFromAssignedDate"         type="duration"                   minOccurs="0" maxOccurs="1"/>
+      <element name="taskTimeRemaining"               type="duration"                   minOccurs="0" maxOccurs="1"/>
+      <element name="isDecomposedTask"                type="boolean"                    minOccurs="0" maxOccurs="1" default="false"/>
+      <element name="formName"                        type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="decomposedTaskGroupInstanceId"   type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="startTime"                       type="dateTime"                   minOccurs="0" maxOccurs="1"/>
+      <element name="stopTime"                        type="dateTime"                   minOccurs="0" maxOccurs="1"/>
+      <element name="workingDuration"                 type="integer"                    minOccurs="0" maxOccurs="1"/>
+      <element name="acquiredByDisplayName"           type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="originalAssigneeUserDisplayName" type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="approversDisplayNames"           type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="imageUrl"                        type="string"                     minOccurs="0" maxOccurs="1"/>
+      <element name="hiddenAttributes"                type="tns:hiddenAttributesType"   minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <element name="collectionTarget" type="tns:collectionTargetType"/>
+  <complexType name="collectionTargetType">
+    <sequence>
+      <element name="id"             type="string"                       minOccurs="1" maxOccurs="1"/>
+      <element name="xpath"          type="string"                       minOccurs="1" maxOccurs="1"/>
+      <element name="collectionName" type="string"                       minOccurs="1" maxOccurs="1"/>
+      <element name="type"           type="tns:collectionTargetTypeEnum" minOccurs="1" maxOccurs="1"/>
+      <choice minOccurs="1" maxOccurs="1">
+        <element name="targetIndex" type="integer"/>
+        <element ref="tns:keyList"/>
+      </choice>
+      <element name="referencedTaskId"  type="string"                         minOccurs="0" maxOccurs="1"/>
+      <element name="taskAggregationId" type="string"                         minOccurs="0" maxOccurs="1"/>
+      <element name="action"            type="tns:collectionTargetActionType" minOccurs="0" maxOccurs="1"/>
+      <element name="status"            type="string"                         minOccurs="0" maxOccurs="1"/>
+      <element name="displayName"       type="string"                         minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <simpleType name="collectionTargetTypeEnum">
+    <restriction base="string">
+      <enumeration value="PRIMARY"/>
+      <enumeration value="AGGREGATED"/>
+    </restriction>
+  </simpleType>
+  <element name="keyList" type="tns:keyListType"/>
+  <complexType name="keyListType">
+    <sequence>
+      <element name="key" type="tns:keyType" minOccurs="1" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+  <complexType name="keyType">
+    <sequence>
+      <element name="name"  type="string" minOccurs="1" maxOccurs="1"/>
+      <element name="value" type="string" minOccurs="1" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <complexType name="collectionTargetActionType">
+    <simpleContent>
+      <extension base="string">
+        <attribute name="name"      type="string"  use="required"/>
+        <attribute name="params"    type="string"  use="optional"/>
+        <attribute name="completed" type="boolean" use="optional"/>
+      </extension>
+    </simpleContent>
+  </complexType>
+  <complexType name="actionType">
+    <sequence>
+      <element name="action"      type="string" minOccurs="0"/>
+      <element name="displayName" type="string" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  <complexType name="shortHistoryType">
+    <sequence>
+      <element name="task" type="tns:shortHistoryTaskType" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+  <complexType name="shortHistoryTaskType">
+    <sequence>
+      <element name="state"         type="string"           minOccurs="0"/>
+      <element name="outcome"       type="string"           minOccurs="0"/>
+      <element name="comments"      type="string"           minOccurs="0"/>
+      <element name="updatedBy"     type="tns:identityType" minOccurs="0"/>
+      <element name="updatedDate"   type="dateTime"         minOccurs="0"/>
+      <element name="version"       type="integer"          minOccurs="0"/>
+      <element name="versionReason" type="string"           minOccurs="0"/>
+    </sequence>
+  </complexType>
+  <complexType name="displayInfoType">
+    <sequence>
+      <element name="applicationName" type="string"/>
+      <element name="hostname"        type="string"/>
+      <element name="httpPort"        type="string"/>
+      <element name="httpsPort"       type="string" minOccurs="0"/>
+      <element name="uri"             type="string"/>
+    </sequence>
+  </complexType>
+  <simpleType name="stateEnum">
+    <restriction base="string">
+      <enumeration value="ASSIGNED"/>
+      <enumeration value="ALERTED"/>
+      <enumeration value="COMPLETED"/>
+      <enumeration value="ERRORED"/>
+      <enumeration value="EXPIRED"/>
+      <enumeration value="INFO_REQUESTED"/>
+      <enumeration value="OUTCOME_UPDATED"/>
+      <enumeration value="STALE"/>
+      <enumeration value="SUSPENDED"/>
+      <enumeration value="WITHDRAWN"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="substateEnum">
+    <restriction base="string">
+      <enumeration value="ACQUIRED"/>
+      <enumeration value="ADHOC_ROUTED"/>
+      <enumeration value="ASSIGNED"/>
+      <enumeration value="DELEGATED"/>
+      <enumeration value="ESCALATED"/>
+      <enumeration value="INFO_SUBMITTED"/>
+      <enumeration value="PUSHED_BACK"/>
+      <enumeration value="REASSIGNED"/>
+      <enumeration value="RELEASED"/>
+      <enumeration value="RENEWED"/>
+      <enumeration value="RESUMED"/>
+      <enumeration value="ROUTED"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="taskActionEnum">
+    <restriction base="string">
+      <enumeration value="ACQUIRE"/>
+      <enumeration value="ADHOC_ROUTE"/>
+      <enumeration value="AUTO_RELEASE"/>
+      <enumeration value="COMPLETE"/>
+      <enumeration value="DELEGATE"/>
+      <enumeration value="ERROR"/>
+      <enumeration value="ESCALATE"/>
+      <enumeration value="EXPIRE"/>
+      <enumeration value="INFO_REQUEST"/>
+      <enumeration value="INFO_SUBMIT"/>
+      <enumeration value="INITIATE"/>
+      <enumeration value="OUTCOME_UPDATE"/>
+      <enumeration value="OUTCOME_UPDATE_ROUTE"/>
+      <enumeration value="OVERRIDE_ROUTING_SLIP"/>
+      <enumeration value="PUSH_BACK"/>
+      <enumeration value="REASSIGN"/>
+      <enumeration value="REINITIATE"/>
+      <enumeration value="RELEASE"/>
+      <enumeration value="RENEW"/>
+      <enumeration value="RESUME"/>
+      <enumeration value="SKIP_CURRENT_ASSIGNMENT"/>
+      <enumeration value="SUBTASK_OUTCOME_UPDATE"/>
+      <enumeration value="SUSPEND"/>
+      <enumeration value="UPDATE"/>
+      <enumeration value="WITHDRAW"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="mailStatusEnum">
+    <restriction base="string">
+      <enumeration value="ERRORED"/>
+      <enumeration value="RETRY"/>
+      <enumeration value="SENT"/>
+    </restriction>
+  </simpleType>
+  <complexType name="customAttributesType">
+    <sequence>
+      <element name="customAttributeString1" type="string"   minOccurs="0"/>
+      <element name="customAttributeString2" type="string"   minOccurs="0"/>
+      <element name="customAttributeNumber1" type="double"   minOccurs="0"/>
+      <element name="customAttributeNumber2" type="double"   minOccurs="0"/>
+      <element name="customAttributeDate1"   type="dateTime" minOccurs="0"/>
+      <element name="customAttributeDate2"   type="dateTime" minOccurs="0"/>
+    </sequence>
+  </complexType>
+  <complexType name="systemMessageAttributesType">
+    <sequence>
+      <element name="textAttribute1"             type="string"                   minOccurs="0"/>
+      <element name="textAttribute2"             type="string"                   minOccurs="0"/>
+      <element name="textAttribute3"             type="string"                   minOccurs="0"/>
+      <element name="textAttribute4"             type="string"                   minOccurs="0"/>
+      <element name="textAttribute5"             type="string"                   minOccurs="0"/>
+      <element name="textAttribute6"             type="string"                   minOccurs="0"/>
+      <element name="textAttribute7"             type="string"                   minOccurs="0"/>
+      <element name="textAttribute8"             type="string"                   minOccurs="0"/>
+      <element name="textAttribute9"             type="string"                   minOccurs="0"/>
+      <element name="textAttribute10"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute11"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute12"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute13"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute14"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute15"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute16"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute17"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute18"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute19"            type="string"                   minOccurs="0"/>
+      <element name="textAttribute20"            type="string"                   minOccurs="0"/>
+      <element name="formAttribute1"             type="string"                   minOccurs="0"/>
+      <element name="formAttribute2"             type="string"                   minOccurs="0"/>
+      <element name="formAttribute3"             type="string"                   minOccurs="0"/>
+      <element name="formAttribute4"             type="string"                   minOccurs="0"/>
+      <element name="formAttribute5"             type="string"                   minOccurs="0"/>
+      <element name="formAttribute6"             type="string"                   minOccurs="0"/>
+      <element name="formAttribute7"             type="string"                   minOccurs="0"/>
+      <element name="formAttribute8"             type="string"                   minOccurs="0"/>
+      <element name="formAttribute9"             type="string"                   minOccurs="0"/>
+      <element name="formAttribute10"            type="string"                   minOccurs="0"/>
+      <element name="urlAttribute1"              type="string"                   minOccurs="0"/>
+      <element name="urlAttribute2"              type="string"                   minOccurs="0"/>
+      <element name="urlAttribute3"              type="string"                   minOccurs="0"/>
+      <element name="urlAttribute4"              type="string"                   minOccurs="0"/>
+      <element name="urlAttribute5"              type="string"                   minOccurs="0"/>
+      <element name="urlAttribute6"              type="string"                   minOccurs="0"/>
+      <element name="urlAttribute7"              type="string"                   minOccurs="0"/>
+      <element name="urlAttribute8"              type="string"                   minOccurs="0"/>
+      <element name="urlAttribute9"              type="string"                   minOccurs="0"/>
+      <element name="urlAttribute10"             type="string"                   minOccurs="0"/>
+      <element name="dateAttribute1"             type="dateTime"                 minOccurs="0"/>
+      <element name="dateAttribute2"             type="dateTime"                 minOccurs="0"/>
+      <element name="dateAttribute3"             type="dateTime"                 minOccurs="0"/>
+      <element name="dateAttribute4"             type="dateTime"                 minOccurs="0"/>
+      <element name="dateAttribute5"             type="dateTime"                 minOccurs="0"/>
+      <element name="dateAttribute6"             type="dateTime"                 minOccurs="0"/>
+      <element name="dateAttribute7"             type="dateTime"                 minOccurs="0"/>
+      <element name="dateAttribute8"             type="dateTime"                 minOccurs="0"/>
+      <element name="dateAttribute9"             type="dateTime"                 minOccurs="0"/>
+      <element name="dateAttribute10"            type="dateTime"                 minOccurs="0"/>
+      <element name="numberAttribute1"           type="double"                   minOccurs="0"/>
+      <element name="numberAttribute2"           type="double"                   minOccurs="0"/>
+      <element name="numberAttribute3"           type="double"                   minOccurs="0"/>
+      <element name="numberAttribute4"           type="double"                   minOccurs="0"/>
+      <element name="numberAttribute5"           type="double"                   minOccurs="0"/>
+      <element name="numberAttribute6"           type="double"                   minOccurs="0"/>
+      <element name="numberAttribute7"           type="double"                   minOccurs="0"/>
+      <element name="numberAttribute8"           type="double"                   minOccurs="0"/>
+      <element name="numberAttribute9"           type="double"                   minOccurs="0"/>
+      <element name="numberAttribute10"          type="double"                   minOccurs="0"/>
+      <element name="protectedTextAttribute1"    type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute2"    type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute3"    type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute4"    type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute5"    type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute6"    type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute7"    type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute8"    type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute9"    type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute10"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute11"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute12"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute13"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute14"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute15"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute16"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute17"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute18"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute19"   type="string"                   minOccurs="0"/>
+      <element name="protectedTextAttribute20"   type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute1"    type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute2"    type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute3"    type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute4"    type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute5"    type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute6"    type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute7"    type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute8"    type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute9"    type="string"                   minOccurs="0"/>
+      <element name="protectedFormAttribute10"   type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute1"     type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute2"     type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute3"     type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute4"     type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute5"     type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute6"     type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute7"     type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute8"     type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute9"     type="string"                   minOccurs="0"/>
+      <element name="protectedURLAttribute10"    type="string"                   minOccurs="0"/>
+      <element name="protectedDateAttribute1"    type="dateTime"                 minOccurs="0"/>
+      <element name="protectedDateAttribute2"    type="dateTime"                 minOccurs="0"/>
+      <element name="protectedDateAttribute3"    type="dateTime"                 minOccurs="0"/>
+      <element name="protectedDateAttribute4"    type="dateTime"                 minOccurs="0"/>
+      <element name="protectedDateAttribute5"    type="dateTime"                 minOccurs="0"/>
+      <element name="protectedDateAttribute6"    type="dateTime"                 minOccurs="0"/>
+      <element name="protectedDateAttribute7"    type="dateTime"                 minOccurs="0"/>
+      <element name="protectedDateAttribute8"    type="dateTime"                 minOccurs="0"/>
+      <element name="protectedDateAttribute9"    type="dateTime"                 minOccurs="0"/>
+      <element name="protectedDateAttribute10"   type="dateTime"                 minOccurs="0"/>
+      <element name="protectedNumberAttribute1"  type="double"                   minOccurs="0"/>
+      <element name="protectedNumberAttribute2"  type="double"                   minOccurs="0"/>
+      <element name="protectedNumberAttribute3"  type="double"                   minOccurs="0"/>
+      <element name="protectedNumberAttribute4"  type="double"                   minOccurs="0"/>
+      <element name="protectedNumberAttribute5"  type="double"                   minOccurs="0"/>
+      <element name="protectedNumberAttribute6"  type="double"                   minOccurs="0"/>
+      <element name="protectedNumberAttribute7"  type="double"                   minOccurs="0"/>
+      <element name="protectedNumberAttribute8"  type="double"                   minOccurs="0"/>
+      <element name="protectedNumberAttribute9"  type="double"                   minOccurs="0"/>
+      <element name="protectedNumberAttribute10" type="double"                   minOccurs="0"/>
+      <element name="flexfieldMappings"          type="tns:flexfieldMappingType" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+  <complexType name="flexfieldMappingType">
+    <sequence>
+      <element name="attributeLabel" type="string"/>
+      <element name="flexfield"      type="string"/>
+      <element name="description"    type="string" minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <simpleType name="priorityType">
+    <restriction base="integer">
+      <minInclusive value="1"/>
+    </restriction>
+  </simpleType>
+  <complexType name="preActionUserStepsType">
+    <sequence>
+      <element name="preActionUserStep" type="tns:preActionUserStepType" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+  <complexType name="preActionUserStepType">
+    <sequence>
+      <element name="userStep" type="tns:preActionUserStepEnum"/>
+      <element name="outcome" type="string"/>
+    </sequence>
+  </complexType>
+  <simpleType name="preActionUserStepEnum">
+    <restriction base="string">
+      <enumeration value="VIEW_DETAILS"/>
+      <enumeration value="PROVIDE_COMMENTS"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="assignmentContextCreatorEnum">
+    <restriction base="string">
+      <enumeration value="SYSTEM"/>
+      <enumeration value="USER"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="assignmentContextValueEnum">
+    <restriction base="string">
+      <enumeration value="RESOURCE"/>
+      <enumeration value="STATIC"/>
+      <enumeration value="XPATH"/>
+    </restriction>
+  </simpleType>
+  <complexType name="assignmentContextTypeValueType">
+    <simpleContent>
+      <extension base="string">
+        <attribute name="type" type="tns:assignmentContextValueEnum" use="required"/>
+      </extension>
+    </simpleContent>
+  </complexType>
+  <complexType name="assignmentContextType">
+    <sequence>
+      <element name="name"  type="string"                             minOccurs="1" maxOccurs="1"/>
+      <element name="value" type="tns:assignmentContextTypeValueType" minOccurs="1" maxOccurs="1"/>
+      <element name="type"  type="tns:assignmentContextCreatorEnum"   minOccurs="1" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <element name="decomposeTaskInfo" type="tns:decomposeTaskInfoType"/>
+  <complexType name="decomposeTaskInfoType">
+    <sequence>
+      <element name="formName"            type="string"           minOccurs="0" maxOccurs="1"/>
+      <element name="title"               type="string"           minOccurs="0" maxOccurs="1"/>
+      <element name="priority"            type="tns:priorityType" minOccurs="0" maxOccurs="1"/>
+      <element ref="tns:collectionTarget"                         minOccurs="0" maxOccurs="1"/>
+      <element name="comment"             type="tns:commentType"  minOccurs="0" maxOccurs="1"/>
+    </sequence>
+  </complexType>
+  <simpleType name="taskNotificationMode">
+    <restriction base="string">
+      <enumeration value="DEFAULT"/>
+      <enumeration value="NONE"/>
+    </restriction>
+  </simpleType>
+</schema>

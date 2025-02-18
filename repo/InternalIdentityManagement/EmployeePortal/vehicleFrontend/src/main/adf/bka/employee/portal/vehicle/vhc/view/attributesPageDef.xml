@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id="attributesPageDef"
+                Package="bka.employee.portal.vehicle.vhc.view">
+  <parameters/>
+  <executables>
+    <iterator id="ColorIterator" Binds="ColorDetailVO" DataControl="AdministrationAMDataControl" RangeSize="25"/>
+  </executables>
+  <bindings>
+    <attributeValues id="id" IterBinding="ColorIterator">
+      <AttrNames>
+        <Item Value="id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="meaning" IterBinding="ColorIterator">
+      <AttrNames>
+        <Item Value="meaning"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="commit" DataControl="AdministrationAMDataControl" Action="commitTransaction" RequiresUpdateModel="true"/>
+    <action id="rollback"
+            DataControl="AdministrationAMDataControl"
+            InstanceName="AdministrationAMDataControl.dataProvider"
+            MethodName="refreshColorAttribute"
+            Action="invokeMethod"
+            IsViewObjectMethod="false"
+            RequiresUpdateModel="false">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+    </action>
+    <methodAction id="refreshColorAttribute"
+                  DataControl="AdministrationAMDataControl"
+                  InstanceName="AdministrationAMDataControl.dataProvider"
+                  MethodName="refreshColorAttribute"
+                  Action="invokeMethod" 
+                  IsViewObjectMethod="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+    </methodAction>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseRefreshLaunchAreaEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.RefreshLaunchAreaEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+    <tree id="ColorDetailVO" IterBinding="ColorIterator">
+      <nodeDefinition Name="ColorDetailVO0" DefName="bka.employee.portal.vehicle.model.view.ColorVO">
+        <AttrNames>
+          <Item Value="id"/>
+          <Item Value="meaning"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns:xsd          = "http://www.w3.org/2001/XMLSchema"
+            xmlns:dbs          = "http://www.oracle.com/schema/oim/mapping"
+            targetNamespace    = "http://www.oracle.com/schema/oim/mapping"
+            elementFormDefault = "qualified">
+  <xsd:element name="feature">
+    <xsd:complexType>
+      <xsd:all>
+        <xsd:element name="property" type="dbs:property" minOccurs="1"/>
+        <xsd:element name="catalog"  type="dbs:catalog"  minOccurs="1"/>
+        <xsd:element name="entity"   type="dbs:entity"   minOccurs="1"/>
+      </xsd:all>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="catalog">
+    <xsd:complexContent>
+      <xsd:extension base="dbs:entity">
+        <xsd:attribute name="type"     type="xsd:string" use="required"/>
+        <xsd:attribute name="schema"   type="xsd:string" use="required"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="entity">
+    <xsd:attribute name="name"        type="xsd:string" use="required"/>
+    <xsd:attribute name="entity"      type="xsd:string" use="required"/>
+    <xsd:attribute name="primary"     type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="property">
+    <xsd:attribute name="name"        type="xsd:string" use="required">
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="multi-value-separator"/>
+          <xsd:enumeration value="database-driver-class"/>
+          <xsd:enumeration value="database-system-timestamp"/>
+          <xsd:enumeration value="database-catalog-schema"/>
+          <xsd:enumeration value="enforce-auto-commit"/>
+          <xsd:enumeration value="pseudo-rownum-attribute"/>
+          <xsd:enumeration value="entry-created-attribute"/>
+          <xsd:enumeration value="entry-modified-attribute"/>
+          <xsd:enumeration value="entitlement-prefix-required"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+    <xsd:attribute name="value"       type="xsd:string" use="required"/>
+  </xsd:complexType>
+</xsd:schema>

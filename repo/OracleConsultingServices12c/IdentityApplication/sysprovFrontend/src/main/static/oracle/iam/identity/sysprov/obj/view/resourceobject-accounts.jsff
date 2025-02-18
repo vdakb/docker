@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysprov$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Provisioning']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{pageFlowScope.mode == 'view'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysprov$bundle.OBJ_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysprov$bundle.OBJ_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysprov$bundle.OBJ_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysprov$bundle.OBJ_ACCOUNT}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysprov$bundle.OBJ_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysprov$bundle.OBJ_CREATE_TITLE : af:formatString(sysprov$bundle.OBJ_DETAIL, pageFlowScope.objectsName)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysprov$bundle.OBJ_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id            ="btn15"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysprov$bundle.OBJ_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.resourceTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.resourceAccount.submit}"
+                   action        ="#{pageFlowScope.resourceTrain.submit}"
+                   styleClass    ="whiteTextButton"
+                   inlineStyle   ="#{pageFlowScope.resourceTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+        <af:button id            ="btn16"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysprov$bundle.OBJ_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.resourceTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.resourceAccount.revert}"
+                   actionListener="#{pageFlowScope.resourceTrain.revert}"
+                   immediate     ="true">
+          <af:clientAttribute name="account" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelGroupLayout id="pg02" layout="scroll">
+        <af:spacer id="sp05" width="0" height="10"/>
+        <af:panelCollection id="pc01" styleClass="AFStretchWidth" featuresOff="statusBar">
+          <f:facet name="toolbar">
+            <af:toolbar id="tb03" binding="#{backingBeanScope.resourceAccount.toolbar}" >
+              <af:group id="g01">
+                <af:button id            ="btn04"
+                           text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                           icon          ="/images/func_refresh_16_ena.png"
+                           hoverIcon     ="/images/func_refresh_16_hov.png"
+                           disabledIcon  ="/images/func_refresh_16_dis.png"
+                           depressedIcon ="/images/func_refresh_16_act.png"
+                           shortDesc     ="#{sysprov$bundle.OBJ_ACCOUNT_REFRESH}"
+                           actionListener="#{backingBeanScope.resourceAccount.refreshListener}"/>
+              </af:group>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="menus">
+            <af:menu id ="m01" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{backingBeanScope.resourceAccount.actionMenu}">
+              <af:commandMenuItem id            ="cmi04"
+                                  text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                  icon          ="/images/func_refresh_16_ena.png"
+                                  shortDesc     ="#{sysprov$bundle.OBJ_ACCOUNT_REFRESH}"
+                                  actionListener="#{backingBeanScope.resourceAccount.refreshListener}"
+                                  useWindow     ="false"/>
+            </af:menu>
+          </f:facet>
+          <!--
+          we use columnStretching="multiple" to give us the opportunity
+          to size the columns by witdh="nn%"
+          The default width for a column is 100px. There is no auto
+          sizing for columns. Set the width attribute to ensure the
+          column is wide enough to accommodate the width of the
+          contents. When the "multiple" option is used in the table that
+          contains the column, the width can be set to a percentage.
+          -->
+          <af:table id                   ="act1" var="row" varStatus="vs"
+                    value                ="#{bindings.Account.collectionModel}"
+                    rows                 ="#{bindings.Account.rangeSize}"
+                    fetchSize            ="#{bindings.Account.rangeSize}"
+                    binding              ="#{backingBeanScope.resourceAccount.searchTable}"
+                    selectionListener    ="#{backingBeanScope.resourceAccount.selectionListener}"
+                    summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                    filterVisible        ="false"
+                    filterModel          ="#{bindings.AccountListCriteria.queryDescriptor}"
+                    queryListener        ="#{bindings.AccountListCriteria.processQuery}"
+                    columnStretching     ="multiple"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    autoHeightRows       ="0"
+                    rowSelection         ="single"
+                    columnSelection      ="none"
+                    scrollPolicy         ="page"
+                    immediate            ="true"
+                    emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+            <af:column id="c00" rowHeader="true" width="20" headerText="" align="right"/>
+            <af:column id="c01" width="10%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="processInstanceStatus" headerText="#{bindings.Account.hints.processInstanceStatus.label}">
+              <af:link id="cl11" text="#{row.processInstanceStatus}" actionListener="#{backingBeanScope.resourceAccount.detail}" icon="/images/qual_application_24.png"/>
+            </af:column>
+            <af:column id="c02" width="15%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="accountMechanism" headerText="#{bindings.Account.hints.accountMechanism.label}">
+              <af:outputText id="ot12" value="#{row.accountMechanism}"/>
+            </af:column>
+            <af:column id="c03" width="5%" sortable="false" headerText="#{bindings.Account.hints.accountRiskMechanism.label}">
+              <af:image id="im131" source="images/oia-RiskLow.png"    shortDesc="#{sysbase$bundle.RISK_LEVEL_LOW}"    rendered="#{row.accountRiskMechanism eq 3 or row.accountRiskMechanism eq 0}"/>
+              <af:image id="im132" source="images/oia-RiskHigh.png"   shortDesc="#{sysbase$bundle.RISK_LEVEL_HIGH}"   rendered="#{row.accountRiskMechanism eq 7}"/>
+              <af:image id="im133" source="images/oia-RiskMedium.png" shortDesc="#{sysbase$bundle.RISK_LEVEL_MEDIUM}" rendered="#{row.accountRiskMechanism eq 5}"/>
+            </af:column>
+            <af:column id="c04" width="5%" sortable="false" headerText="#{bindings.Account.hints.accountRiskItem.label}">
+              <af:image id="im141" source="images/oia-RiskLow.png"    shortDesc="#{sysbase$bundle.RISK_LEVEL_LOW}"    rendered="#{row.accountRiskItem eq 3 or row.accountRiskItem eq 0}"/>
+              <af:image id="im142" source="images/oia-RiskHigh.png"   shortDesc="#{sysbase$bundle.RISK_LEVEL_HIGH}"   rendered="#{row.accountRiskItem eq 7}"/>
+              <af:image id="im143" source="images/oia-RiskMedium.png" shortDesc="#{sysbase$bundle.RISK_LEVEL_MEDIUM}" rendered="#{row.accountRiskItem eq 5}"/>
+            </af:column>
+            <af:column id="c05" width="15%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="organizationName" headerText="#{bindings.Account.hints.organizationName.label}">
+              <af:outputText id="ot15" value="#{row.organizationName}"/>
+            </af:column>
+            <af:column id="c06" width="10%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="beneficiaryLogin" headerText="#{bindings.Account.hints.beneficiaryLogin.label}">
+              <af:link id="cl16" text="#{row.beneficiaryLogin}" actionListener="#{backingBeanScope.resourceAccount.userDetail}" icon="/images/qual_user_16.png"/>
+            </af:column>
+            <af:column id="c07" width="20%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="beneficiaryFirstName" headerText="#{bindings.Account.hints.beneficiaryFirstName.label}">
+              <af:outputText id="ot17" value="#{row.beneficiaryFirstName}"/>
+            </af:column>
+            <af:column id="c08" width="20%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="beneficiaryLastName" headerText="#{bindings.Account.hints.beneficiaryLastName.label}">
+              <af:outputText id="ot18" value="#{row.beneficiaryLastName}"/>
+            </af:column>
+            <f:facet name="contextMenu">
+              <af:popup id="p01" contentDelivery="lazyUncached">
+                <af:menu id="m02">
+                  <af:commandMenuItem id            ="cmi08"
+                                      text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                      icon          ="/images/func_refresh_16_ena.png"
+                                      shortDesc     ="#{sysprov$bundle.OBJ_ACCOUNT_REFRESH}"
+                                      actionListener="#{backingBeanScope.resourceAccount.refreshListener}"
+                                      useWindow     ="false"/>
+                </af:menu>
+              </af:popup>
+            </f:facet>
+          </af:table>
+        </af:panelCollection>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

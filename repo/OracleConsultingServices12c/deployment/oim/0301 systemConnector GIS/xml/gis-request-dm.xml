@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@bsul0233:5425/UM2E" description="Identity Service FS01 Request Configuration Revision 1.0.4.1" exported-date="1415266481269" user="XELSYSADM" version="2.0.2.1">
+  <ApplicationInstance name="IdentityServiceAccount" repo-type="API">
+    <softDelete>false</softDelete>
+    <applicableToEntitlement>false</applicableToEntitlement>
+    <objectName>GIS Account</objectName>
+    <itResourceName>GIS Server</itResourceName>
+    <description>The account assignable to identities that have to certify accounts, roles and/or entitlements of other identities in Identity Manager.</description>
+    <displayName>Identity Service Account</displayName>
+    <source-scope name="GIS Server" type="ITResource"/>
+    <source-scope name="GIS Account" type="Resource">
+      <source-scope name="IdentityServiceRequest" type="RequestDataset"/>
+    </source-scope>
+    <objectKey Resource="GIS Account"/>
+    <itResourceKey ITResource="GIS Server"/>
+  </ApplicationInstance>
+  <RequestDataset mds-file="IdentityServiceRequest.xml" mds-path="/custom/metadata/GIS Account" name="IdentityServiceRequest" repo-type="MDS">
+    <completeXml>
+      <request-data-set xmlns="http://www.oracle.com/schema/oim/request" entity="GIS Account" name="IdentityServiceRequest">
+        <AttributeReference attr-ref="Server" available-in-bulk="false" entity-type="GIS Account" hidden="false" length="256" name="Server" required="false" type="Integer" widget="textarea"/>
+        <AttributeReference attr-ref="User Name" available-in-bulk="false" entity-type="GIS Account" hidden="false" length="256" name="User Name" required="false" type="String" widget="textarea"/>
+        <AttributeReference attr-ref="Password" available-in-bulk="false" entity-type="GIS Account" hidden="false" length="100" name="Password" required="false" type="String" widget="textarea"/>
+        <AttributeReference attr-ref="First Name" available-in-bulk="false" entity-type="GIS Account" hidden="false" length="150" name="First Name" required="false" type="String" widget="textarea"/>
+        <AttributeReference attr-ref="Last Name" available-in-bulk="false" entity-type="GIS Account" hidden="false" length="150" name="Last Name" required="false" type="String" widget="textarea"/>
+        <AttributeReference attr-ref="UD_GIS_UPR" available-in-bulk="true" entity-type="GIS Account" length="256" name="UD_GIS_UPR" type="TEXT" widget="textarea">
+          <AttributeReference attr-ref="System Permission Name" available-in-bulk="false" length="100" mls="false" name="System Permission Name" required="false" type="String" widget="LookupField"/>
+        </AttributeReference>
+        <AttributeReference attr-ref="UD_GIS_UPG" available-in-bulk="true" entity-type="GIS Account" length="256" name="UD_GIS_UPG" type="TEXT" widget="textarea">
+          <AttributeReference attr-ref="Global Permission Name" available-in-bulk="false" length="100" mls="false" name="Global Permission Name" required="false" type="String" widget="LookupField"/>
+        </AttributeReference>
+        <AttributeReference attr-ref="UD_GIS_UPS" available-in-bulk="true" entity-type="GIS Account" length="256" name="UD_GIS_UPS" type="TEXT" widget="textarea">
+          <AttributeReference attr-ref="Scoped Permission Name" available-in-bulk="false" entity-type="GIS Account" hidden="false" length="100" name="Scoped Permission Name" required="false" type="String" widget="textarea"/>
+          <AttributeReference attr-ref="Scope" available-in-bulk="false" entity-type="GIS Account" hidden="false" length="256" name="Scope" required="false" type="String" widget="textarea"/>
+          <AttributeReference attr-ref="Hierarchy" available-in-bulk="false" entity-type="GIS Account" hidden="false" length="1" name="Hierarchy" required="false" type="Boolean" widget="textarea"/>
+        </AttributeReference>
+      </request-data-set>
+    </completeXml>
+  </RequestDataset>
+</xl-ddm-data>

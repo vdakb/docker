@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:cpl="/componentLib1">
+  <c:set var="launchpad$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Launchpad']}"/>
+  <af:panelGridLayout id="pgl1">
+    <af:gridRow id="gr10" height="266px" marginBottom="20px">
+      <af:gridCell id="gc11" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db11"
+                          titleText       ="#{launchpad$bundle.SCHEDULER_TITLE}"
+                          instructionText ="#{launchpad$bundle.SCHEDULER_HINT}"
+                          image           ="#{launchpad$bundle.SCHEDULER_ICON}"
+                          hoverImage      ="#{launchpad$bundle.SCHEDULER_HOVER}"
+                          colorStyle      ="blueTile"
+                          iconClickable   ="false"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}">
+          <f:facet name="popupMenu">
+            <af:menu  id="m11" text="menu 1">
+              <af:commandMenuItem id            ="cmi11"
+                                  text          ="#{launchpad$bundle.JOB_TEXT}"
+                                  actionListener="#{backingBeanScope.dashboard.navigateSchedulerJob}"/>
+              <af:commandMenuItem id            ="cmi12"
+                                  text          ="#{launchpad$bundle.TASK_TEXT}"
+                                  actionListener="#{backingBeanScope.dashboard.navigateSchedulerTask}"/>
+            </af:menu>
+          </f:facet>
+        </cpl:DashboardBox>
+      </af:gridCell>
+      <af:gridCell id="gc12" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db12"
+                          titleText       ="#{launchpad$bundle.ORCHESTRATION_TITLE}"
+                          instructionText ="#{launchpad$bundle.ORCHESTRATION_HINT}"
+                          image           ="#{launchpad$bundle.ORCHESTRATION_ICON}"
+                          hoverImage      ="#{launchpad$bundle.ORCHESTRATION_HOVER}"
+                          colorStyle      ="orangeTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateOrchestration}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+      <af:gridCell id="gc13" halign="center" width="25%" marginEnd="5px" marginStart="5px"/>
+      <af:gridCell id="gc14" halign="center" width="25%" marginEnd="5px" marginStart="5px"/>
+    </af:gridRow>
+  </af:panelGridLayout>
+</jsp:root>

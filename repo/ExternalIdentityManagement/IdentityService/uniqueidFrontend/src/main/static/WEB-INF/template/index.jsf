@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns  ="http://www.w3.org/1999/xhtml"
+        locale ="#{sessionState.language}"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:u="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui">
+  <h:head>
+    <meta http-equiv="expires"         content="0"/>
+    <meta http-equiv="pragma"          content="no-cache"/>
+    <meta http-equiv="cache-control"   content="no-cache"/>
+    <meta http-equiv="description"     content="#{uid$bundle['meta.title']}"/>
+    <meta http-equiv="content-type"    content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="robots"                content="noindex, nofollow"/>
+    <meta name="viewport"              content="width=device-width, initial-scale=1.0"/>
+    <!-- ===============================================-->
+    <!-- Document Title                                 -->
+    <!-- ===============================================-->
+    <title>#{uid$bundle['meta.title']}</title>
+    <!-- ===============================================-->
+    <!-- Favicons                                       -->
+    <!-- ===============================================-->
+    <link media="screen" rel="icon"             type="image/png" sizes="32x32"   href="#{resource['ico/p20-32x32.png']}"/>
+    <link media="screen" rel="icon"             type="image/png" sizes="16x16"   href="#{resource['ico/p20-16x16.png']}"/>
+    <link media="screen" rel="apple-touch-icon" type="image/png" sizes="180x180" href="#{resource['ico/p20-touch.png']}"/>
+    <link media="screen" rel="shortcut icon"    type="image/x-icon" href="#{resource['ico/p20-icon.ico']}"/>
+    <!-- ===============================================-->
+    <!-- Core Stylesheets                               -->
+    <!-- ===============================================-->
+    <h:outputStylesheet id="oss02" library="css" name="fontawesome.min.css"/>
+    <!-- ===============================================-->
+    <!-- Theme Stylesheets                              -->
+    <!-- ===============================================-->
+    <h:outputStylesheet id="oss04" library="css" name="p2020.min.css"/>
+  </h:head>
+  <h:body styleClass="#{preference.styleClass}">
+    <div class="page-wrapper">
+      <!-- START:: pageheader -->
+      <div id="header" class="header">
+        <div class="page-brand">
+          <h:graphicImage library="img" name="p20-logo-sm.png" alt="P20/20" height="48" width="48" style="margin-left: 10px"/>
+          <a href="#{request.contextPath}/">
+            <span class="brand">UID&#160;<span class="brand-tip">Generator</span></span>
+          </a>
+        </div>
+        <div class="flexbox">
+          <!-- START:: top left layout -->
+          <ul class="nav navbar-toolbar">
+            <li>
+              <a class="nav-link sidebar-toggler js-sidebar-toggler"><i class="fa fa-navicon"></i></a>
+            </li>
+          </ul>
+          <h:form id="f00">
+            <f:ajax render="spm content">
+              <u:insert name="breadcrumb"/>
+            </f:ajax>
+          </h:form>
+          <!-- END:: top left layout -->
+        </div>
+      </div>
+      <!-- START:: sidebar -->
+      <div id="psb" class="page-sidebar">
+        <!-- sidebar user panel -->
+        <div class="sidebar-collapse">
+          <div class="d-flex user-panel">
+            <div>
+              <h:graphicImage library="img" name="#{sessionState.displayAvatar}" styleClass="user-avatar img-circle"/>
+            </div>
+            <div class="user-info">
+              <div class="font-strong">#{sessionState.principal.name}<i class="caret m-l-5"></i></div>
+              <p><small>#{sessionState.displayRole}</small></p>
+            </div>
+          </div>
+        </div>
+        <!-- sidebar user menu -->
+        <div class="user-menu">
+          <h:form id="sum">
+            <ul class="sidebar-menu metismenu">
+              <li>
+                <h:commandLink action="#{sessionState.signout}"><i class="sidebar-item-icon fa fa-power-off"></i><span class="nav-label">#{app$bundle['action.signout.label']}</span></h:commandLink>
+              </li>
+            </ul>
+          </h:form>
+        </div>
+        <!-- sidebar page menu -->
+        <ul id="ul01" class="sidebar-menu metismenu">
+          <li>
+            <h:outputLink styleClass="#{navigator.active('uid')}" value="#{request.contextPath}/faces/page/uid/index.jsf"><i class="sidebar-item-icon fa fa-street-view"></i><span class="nav-label">#{uid$bundle['uid.menu']}</span></h:outputLink>
+          </li>
+        </ul>
+        <u:fragment rendered="#{facesContext.externalContext.isUserInRole('Administrator')}">
+          <p:divider/>
+          <ul id="ul02" class="sidebar-menu metismenu" style="margin-top: 1rem;">
+            <li>
+              <h:outputLink styleClass="#{navigator.active('ptt')}" value="#{request.contextPath}/faces/page/ptt/index.jsf"><i class="sidebar-item-icon fa fa-anchor"></i><span class="nav-label">#{uid$bundle['ptt.menu']}</span></h:outputLink>
+            </li>
+            <li>
+             <h:outputLink styleClass="#{navigator.active('cnt')}" value="#{request.contextPath}/faces/page/cnt/index.jsf"><i class="sidebar-item-icon fa fa-flag"></i><span class="nav-label">#{uid$bundle['cnt.menu']}</span></h:outputLink>
+            </li>
+            <li>
+              <h:outputLink styleClass="#{navigator.active('sta')}" value="#{request.contextPath}/faces/page/sta/index.jsf"><i class="sidebar-item-icon fa fa-flag-o"></i><span class="nav-label">#{uid$bundle['sta.menu']}</span></h:outputLink>
+            </li>
+            <li>
+              <h:outputLink styleClass="#{navigator.active('pts')}" value="#{request.contextPath}/faces/page/pts/index.jsf"><i class="sidebar-item-icon fa fa-crosshairs"></i><span class="nav-label">#{uid$bundle['pts.menu']}</span></h:outputLink>
+            </li>
+            <li>
+              <h:outputLink styleClass="#{navigator.active('typ')}" value="#{request.contextPath}/faces/page/typ/index.jsf"><i class="sidebar-item-icon fa fa-compass"></i><span class="nav-label">#{uid$bundle['typ.menu']}</span></h:outputLink>
+            </li>
+          </ul>
+          <p:divider/>
+          <ul id="ul02" class="sidebar-menu metismenu" style="margin-top: 1rem;">
+            <li>
+              <h:outputLink styleClass="#{navigator.active('tnt')}" value="#{request.contextPath}/faces/page/tnt/index.jsf"><i class="sidebar-item-icon fa fa-institution"></i><span class="nav-label">#{uid$bundle['tnt.menu']}</span></h:outputLink>
+            </li>
+            <u:fragment rendered="#{facesContext.externalContext.isUserInRole('SystemAdministrator')}">
+              <li>
+                <h:outputLink styleClass="#{navigator.active('usr')}" value="#{request.contextPath}/faces/page/usr/index.jsf"><i class="sidebar-item-icon fa fa-user"></i><span class="nav-label">#{uid$bundle['usr.menu']}</span></h:outputLink>
+              </li>
+              <li>
+                <h:outputLink styleClass="#{navigator.active('rol')}" value="#{request.contextPath}/faces/page/rol/index.jsf"><i class="sidebar-item-icon fa fa-users"></i><span class="nav-label">#{uid$bundle['rol.menu']}</span></h:outputLink>
+              </li>
+            </u:fragment>
+          </ul>
+        </u:fragment>
+      </div>
+      <!-- END:: sidebar -->
+      <div class="content-wrapper">
+        <p:growl id="msg" globalOnly="true" showDetail="true" autoupdate="true"/>
+        <!-- START:: pagecontent -->
+        <h:panelGroup id="content" layout="block">
+          <div class="page-header">
+            <h1 class="page-title"><u:insert name="title"/></h1>
+            <p><u:insert name="instruction"/></p>
+          </div>
+          <u:insert name="implementation"/>
+        </h:panelGroup>
+        <p:confirmDialog global="true" responsive="true" showEffect="fold" hideEffect="clip" width="350">
+          <p:commandButton value="#{app$bundle['action.no.label']}"  type="button" icon="fa fa-times" styleClass="ui-confirmdialog-no  ui-button-flat"/>
+          <p:commandButton value="#{app$bundle['action.yes.label']}" type="button" icon="fa fa-check" styleClass="ui-confirmdialog-yes ui-button-primary"/>
+        </p:confirmDialog>
+        <!-- END:: pagecontent -->
+      </div>
+    </div>
+    <!--
+     | PrimeFaces already ships with jQuery bundled which leads to massive
+     | conflicts if another jQuery library is included.
+     | instruction below does not end up in a duplicate script include on pages
+     | which actually use PrimeFaces components.
+     -->
+    <h:outputScript id="os1" library="primefaces" name="jquery/jquery.js"/>
+    <h:outputScript id="os2" library="lib"        name="p2020.js"/>
+  </h:body>
+</f:view>

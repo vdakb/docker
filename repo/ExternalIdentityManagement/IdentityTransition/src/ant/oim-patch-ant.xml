@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Controller" basedir="../../deployment/oim">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../tpl/oim-context.xml"/>
+  <import file="../../tpl/ant/oim-patch.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <target name="000" description="Configures the Federated Identity Management System Setup Configuration">
+    <call-targets package="0007"/>
+  </target>
+  <target name="001" description="System Customization and System Integration">
+    <call-targets package="0101"/>
+  </target>
+  <target name="003" description="OAM Identity Store Provisioning">
+    <call-targets package="0301"/>
+  </target>
+  <target name="020" description="LDAP APPs Service Provisioning">
+    <call-targets package="2001-01,2001-02,2001-03,2001-04,2001-05,2001-06,2001-07,2001-08,2001-09,2001-10"/>
+  </target>
+  <target name="022" description="LDAP APPs Service Provisioning">
+    <call-targets package="2201-01,2201-02,2201-03,2201-04,2201-05,2201-06,2201-07,2201-08,2201-09,2201-10,2201-11,2201-12"/>
+  </target>
+  <target name       ="all"
+          description="Deploys and configures the project artifacts on the target host and the Oracle WebLogic Domain Servers"
+          depends    ="000,001,020,022">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="All patches done"/>
+    <echo message="Restart WebLogic Managed Servers belonging to Identity Manager"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

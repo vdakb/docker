@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Oracle Consulting Identity Password Backend"
+         basedir     =".."
+         default     ="make"
+         xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description" value="Identity Password Backend Library"/>
+  <property name="library"     value="bka.iam.password.backend"/>
+  <property name="package"     value="bka/**/*.*"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import   file="../../adf-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.xml"/>
+    <path refid="oracle.fmw.adf.view"/>
+    <path refid="oracle.fmw.adf.model"/>
+    <path refid="oracle.fmw.adf.platform"/>
+    <path refid="oracle.fmw.adf.controller"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.oim.adapter"/>
+    <path refid="oracle.fmw.oim.backend"/>
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="oracle.ocs.oim.foundation"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT target to assemble the application module deployed on the JEE
+  == application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="compile,manifest">
+    <adf-jar-backend module="${library}" package="${package}"/>
+  </target>
+</project>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Workspace 12c Sandbox" default="all" basedir="..">
+  <property name = "extension"  value = "oracle.ocs.workspace.iam"/>
+  <property name = "bundle.dir" value = "../iamWorkspace/ide"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file = "../../ide-preferences.xml"/>
+
+  <macrodef name="call-revert">
+    <attribute name="subproject"/>
+    <sequential>
+      <echo message="Reverting build version properties"/>
+      <exec executable="svn">
+        <arg value="revert"/>
+        <arg value="@{subproject}/iam-extension-ant.version"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <macrodef name="subant-cleanup">
+    <attribute name="subproject"/>
+    <sequential>
+      <exec executable="svn">
+        <arg value="cleanup"/>
+        <arg value="--remove-unversioned"/>
+        <arg value="../@{subproject}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="call-subproject">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="@{subproject}/ant" antfile="iam-extension-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to cleanup a project
+  =====================================================================
+  -->
+  <macrodef name="cleanup-project">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Project @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to bundle a project
+  =====================================================================
+  -->
+  <macrodef name="bundle-project">
+    <attribute name="target.dir"/>
+    <attribute name="subproject"/>
+    <attribute name="module"/>
+    <sequential>
+      <echo message="Bundle extension @{module}"/>
+      <copy todir="@{target.dir}/oracle.ocs.workspace.iam">
+        <fileset dir="@{subproject}/${resource.dir}/oracle.ocs.workspace.iam" includes="**/*"/>
+      </copy>
+      <copy todir="@{target.dir}" flatten="true">
+        <path location="@{subproject}/lib/@{module}.jar"/>
+      </copy>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="cleanup" description="Cleanup all projects">
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Oracle JDeveloper Extension"/>
+    <echo message="============================================================="/>
+    <cleanup-project path="iamWorkspace" component="JDeveloper Foundation Extension"/>
+    <cleanup-project path="oamWorkspace" component="Access Manager Extension"/>
+    <cleanup-project path="oimWorkspace" component="Identity Manager Extension"/>
+    <cleanup-project path="oidWorkspace" component="Internet Directory Extension"/>
+    <cleanup-project path="oudWorkspace" component="Unified Directory Extension"/>
+    <cleanup-project path="ovdWorkspace" component="Virtual Directory Extension"/>
+    <cleanup-project path="dipWorkspace" component="Directory Integration Extension"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Cleanup all extension">
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Oracle JDeveloper Extension"/>
+    <echo message="============================================================="/>
+    <call-subproject subtarget="clean" subproject="../iamWorkspace"/>
+    <call-subproject subtarget="clean" subproject="../oamWorkspace"/>
+    <call-subproject subtarget="clean" subproject="../oimWorkspace"/>
+    <call-subproject subtarget="clean" subproject="../oidWorkspace"/>
+    <call-subproject subtarget="clean" subproject="../oudWorkspace"/>
+    <call-subproject subtarget="clean" subproject="../ovdWorkspace"/>
+    <call-subproject subtarget="clean" subproject="../dipWorkspace"/>
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+      <fileset dir="${deploy.dir}" includes="**/*"/>
+      <fileset dir="${deploy.doc}">
+        <include name="**/*"/>
+        <exclude name="**/*.txt"/>
+        <exclude name="**/*.pdf"/>
+        <exclude name="**/*.rtf"/>
+        <exclude name="**/*.doc"/>
+        <exclude name="**/*.docx"/>
+        <exclude name="**/*.docm"/>
+        <exclude name="**/*.xls"/>
+        <exclude name="**/*.xlsx"/>
+        <exclude name="**/*.xlsm"/>
+        <exclude name="**/*.ppt"/>
+        <exclude name="**/*.pptx"/>
+        <exclude name="**/*.pptm"/>
+        <exclude name="**/*.vsd"/>
+        <exclude name="**/*.vsdx"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to revert build version properties
+  =====================================================================
+  -->
+  <target name="revert" description="Revert all build version properties">
+    <call-revert subproject="../iamWorkspace"/>
+    <call-revert subproject="../oamWorkspace"/>
+    <call-revert subproject="../oimWorkspace"/>
+    <call-revert subproject="../oidWorkspace"/>
+    <call-revert subproject="../oudWorkspace"/>
+    <call-revert subproject="../ovdWorkspace"/>
+    <call-revert subproject="../dipWorkspace"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to package the extension
+  =====================================================================
+  -->
+  <target name="make" description="Package all extension to the appropriate java archive">
+    <call-subproject subtarget="make" subproject="../iamWorkspace"/>
+    <call-subproject subtarget="make" subproject="../oamWorkspace"/>
+    <call-subproject subtarget="make" subproject="../oimWorkspace"/>
+    <call-subproject subtarget="make" subproject="../oidWorkspace"/>
+    <call-subproject subtarget="make" subproject="../oudWorkspace"/>
+    <call-subproject subtarget="make" subproject="../ovdWorkspace"/>
+    <call-subproject subtarget="make" subproject="../dipWorkspace"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to bundle the extension
+  =====================================================================
+  -->
+  <target name="bundle" description="Bundle the extension">
+    <mkdir dir="${plugin.dir}/META-INF"/>
+    <copy file="bundle.xml" todir="${plugin.dir}/META-INF"/>
+    <copy file="license.html" todir="${plugin.dir}/META-INF"/>
+    <!--
+    <copy todir="${plugin.dir}/oracle.ocs.workspace.iam" flatten="true">
+      <path refid="oracle.ocs.iam.ide.workspace"/>
+    </copy>
+    -->
+    <bundle-project target.dir="${plugin.dir}" subproject="../iamWorkspace" module="oracle.ocs.workspace.iam"/>
+    <bundle-project target.dir="${plugin.dir}" subproject="../oamWorkspace" module="oracle.ocs.workspace.oam"/>
+    <bundle-project target.dir="${plugin.dir}" subproject="../oimWorkspace" module="oracle.ocs.workspace.oim"/>
+    <bundle-project target.dir="${plugin.dir}" subproject="../oidWorkspace" module="oracle.ocs.workspace.oid"/>
+    <bundle-project target.dir="${plugin.dir}" subproject="../oudWorkspace" module="oracle.ocs.workspace.oud"/>
+    <bundle-project target.dir="${plugin.dir}" subproject="../ovdWorkspace" module="oracle.ocs.workspace.ovd"/>
+    <bundle-project target.dir="${plugin.dir}" subproject="../dipWorkspace" module="oracle.ocs.workspace.dip"/>
+    <zip destfile="${bundle.dir}/${extension}.zip" basedir="${plugin.dir}"/>
+    <delete dir="${plugin.dir}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to build and the project artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Build all extension" depends="clean, revert, make, bundle"/>
+</project>

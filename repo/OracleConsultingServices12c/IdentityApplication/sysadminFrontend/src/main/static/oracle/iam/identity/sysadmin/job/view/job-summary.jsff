@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"  value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysadmin$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Administration']}"/>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysadmin$bundle.JOB_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysadmin$bundle.JOB_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysadmin$bundle.JOB_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysadmin$bundle.JOB_SUMMARY}"/>
+    <f:attribute name="bodyHeaderInstruction"           value="#{sysadmin$bundle.JOB_SUMMARY_INSTRUCTION}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysadmin$bundle.JOB_TRAIN_FINISH}"/>
+    <f:attribute name="finishMethodInterface"           value="#{pageFlowScope.jobTrain}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysadmin$bundle.JOB_CREATE_TITLE : pageFlowScope.name}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysadmin$bundle.JOB_ICON}"/>
+    <f:attribute name="tabHeaderInstruction"            value=""/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:attribute name="hideSubTabTopPane"               value="#{pageFlowScope.mode == 'request' ? 'true' : 'false'}"/>
+    <f:attribute name="hideSubTabBorder"                value="#{pageFlowScope.mode == 'request' ? 'true' : 'false'}"/>
+    <f:facet name="subtabsButtonBar"/>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical">
+            <af:showDetailHeader id="sdh10" text="#{sysadmin$bundle.JOB_ATTRIBUTE}" disclosed="true" styleClass="AFStretchWidth" inlineStyle="font-size:medium;">
+              <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="33%" fieldWidth="67%" inlineStyle="text-decoration:none;">
+                <af:inputText             id       ="it11"
+                                          value    ="#{bindings.name.inputValue}"
+                                          label    ="#{bindings.name.hints.label}"
+                                          columns  ="#{bindings.name.hints.displayWidth}"
+                                          shortDesc="#{bindings.name.hints.tooltip}"
+                                          disabled ="true"/>
+                <af:inputText             id       ="it12"
+                                          value    ="#{bindings.task.inputValue}"
+                                          label    ="#{bindings.task.hints.label}"
+                                          columns  ="#{bindings.task.hints.displayWidth}"
+                                          shortDesc="#{bindings.task.hints.tooltip}"
+                                          disabled ="true"/>
+                <af:inputText             id       ="it14"
+                                          value    ="#{bindings.retryCount.inputValue}"
+                                          label    ="#{bindings.retryCount.hints.label}"
+                                          columns  ="#{bindings.retryCount.hints.displayWidth}"
+                                          shortDesc="#{bindings.retryCount.hints.tooltip}"
+                                          disabled ="true"/>
+                <af:selectOneRadio        id       ="sor15"
+                                          value    ="#{bindings.triggerType.inputValue}"
+                                          label    ="#{bindings.triggerType.hints.label}"
+                                          layout   ="horizontal"
+                                          disabled ="true">
+                  <f:selectItems          id="si15" value="#{bindings.triggerType.items}"/>
+                </af:selectOneRadio>
+                <af:selectOneChoice       id       ="soc16"
+                                          value    ="#{bindings.cronType.inputValue}"
+                                          label    ="#{bindings.cronType.hints.label}"
+                                          rendered ="#{bindings.triggerType.inputValue eq 'Cron'}"
+                                          disabled ="true">
+                  <f:selectItems          id="si16" value="#{bindings.cronType.items}"/>
+                </af:selectOneChoice>
+                <af:selectBooleanCheckbox id       ="cb17"
+                                          value    ="#{bindings.triggerStatus.inputValue}"
+                                          label    ="#{bindings.triggerStatus.label}"
+                                          shortDesc="#{bindings.triggerStatus.hints.tooltip}"
+                                          disabled ="true"/>
+                </af:panelFormLayout>
+            </af:showDetailHeader>
+            <af:showDetailHeader id="sdh20" text="#{sysadmin$bundle.JOB_PARAMETER}" disclosed="false" styleClass="AFStretchWidth" inlineStyle="font-size:medium;">
+              <af:table id                   ="prm1" var="row" varStatus="vs"
+                        value                ="#{bindings.Parameter.collectionModel}"
+                        rows                 ="#{bindings.Parameter.rangeSize}"
+                        fetchSize            ="#{bindings.Parameter.rangeSize}"
+                        columnStretching     ="multiple"
+                        columnBandingInterval="0"
+                        rowBandingInterval   ="1"
+                        autoHeightRows       ="0"
+                        rowSelection         ="none"
+                        columnSelection      ="none"
+                        scrollPolicy         ="page"
+                        emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+                <af:column id="c00" rowHeader="true" width="20" headerText="" align="center">
+                  <af:switcher id="sw06" facetName="#{row.pendingAction}">
+                    <f:facet name="add">
+                      <af:image id       ="im001"
+                                source   ="#{sysbase$bundle.ROWMARK_ADD_ICON}"
+                                shortDesc="#{sysbase$bundle.ROWMARK_ADD_HINT}"/>
+                    </f:facet>
+                    <f:facet name="mod">
+                      <af:image id       ="im002"
+                                source   ="#{sysbase$bundle.ROWMARK_MOD_ICON}"
+                                shortDesc="#{sysbase$bundle.ROWMARK_MOD_HINT}"/>
+                    </f:facet>
+                    <f:facet name="del">
+                      <af:image id       ="im003"
+                                source   ="#{sysbase$bundle.ROWMARK_DEL_ICON}"
+                                shortDesc="#{sysbase$bundle.ROWMARK_DEL_HINT}"/>
+                    </f:facet>
+                  </af:switcher>
+                </af:column>
+                <af:column id="c01" width="30%" headerText="#{bindings.Parameter.hints.name.label}">
+                  <af:outputFormatted id="of012" value="#{row.name}" shortDesc="#{row.helpText}" inlineStyle="font-weight:bold;"/>
+                </af:column>
+                <af:column id="c02" width="70%" headerText="#{bindings.Parameter.hints.value.label}">
+                  <af:switcher id="sw20" facetName="#{row.dataType}">
+                    <f:facet name="Boolean">
+                      <af:selectBooleanCheckbox id="cb21b" value="#{row.bindings.value.inputValue}" label="" simple="true"/>
+                    </f:facet>
+                    <f:facet name="String">
+                      <af:outputText id="ot21s" value="#{row.value}"/>
+                    </f:facet>
+                    <f:facet name="Number">
+                      <af:outputText id="ot21n" value="#{row.value}"/>
+                    </f:facet>
+                    <f:facet name="ITResource">
+                      <af:outputText id="ot21i" value="#{row.value}"/>
+                    </f:facet>
+                  </af:switcher>
+                </af:column>
+              </af:table>
+            </af:showDetailHeader>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="oam-identitystore"
+         xml:lang="en"
+         version ="5.0">
+  <title>Identity Store Configuration</title>
+  <section xml:id="oam-identitystore-01">
+    <title>General</title>
+    <table frame="topbot" colsep="0" rowsep="1">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="16em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Parameter</entry>
+            <entry>Value</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><emphasis role="strong">Store Name</emphasis></entry>
+            <entry><emphasis>FederationIdentityStore</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Store Type</emphasis></entry>
+            <entry><emphasis>OUD: Oracle Unified Directory</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Description</emphasis></entry>
+            <entry><emphasis>Identity Store used to translate external User Principal Names to internal User Principal Names.</emphasis></entry>
+          </row>
+        <row>
+          <entry><emphasis role="strong">Enable SSL</emphasis></entry>
+          <entry><emphasis>&lt;unchecked&gt;</emphasis></entry>
+        </row>
+        <row>
+          <entry><emphasis role="strong">Use Native ID Store Settings</emphasis></entry>
+          <entry><emphasis>&lt;unchecked&gt;</emphasis></entry>
+        </row>
+          <row>
+            <entry><emphasis role="strong">Prefetched Attributes</emphasis></entry>
+            <entry><emphasis>uid,mail,cn,sn,givenName,krbPrincipalName</emphasis></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="oam-identitystore-02">
+    <title>Location and Credentials</title>
+    <table frame="topbot" colsep="0" rowsep="1">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="16em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Parameter</entry>
+            <entry>Value</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><emphasis role="strong">Location</emphasis></entry>
+            <entry><emphasis>fedvip.zds.bka.bund.de:7389</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Bind DN</emphasis></entry>
+            <entry><emphasis>uid=oamadmin,cn=System,dc=bka,dc=bund,dc=de</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Password</emphasis></entry>
+            <entry><emphasis>&lt;see wallet &gt;</emphasis></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="oam-identitystore-03">
+    <title>Users and Groups</title>
+    <table>
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="16em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Parameter</entry>
+            <entry>Value</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><emphasis role="strong">Login ID Attribute</emphasis></entry>
+            <entry><emphasis>cn</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">User Password Attribute</emphasis></entry>
+            <entry><emphasis>userPassword</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">User Search Base</emphasis></entry>
+            <entry><emphasis>ou=App,dc=bka,dc=bund,dc=de</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">User Filter Object Classes</emphasis></entry>
+            <entry><emphasis>inetOrgPerson</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Group Name Attribute</emphasis></entry>
+            <entry><emphasis>cn</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Group Search Base</emphasis></entry>
+            <entry><emphasis>ou=Gropus,dc=bka,dc=bund,dc=de</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Group Filter Classes</emphasis></entry>
+            <entry><emphasis>groupOfUniqueNames</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Enable Group Membership Cache</emphasis></entry>
+            <entry><emphasis>&lt;unchecked&gt;</emphasis></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="oam-identitystore-04">
+    <title>Connection Details</title>
+    <table>
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="16em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Parameter</entry>
+            <entry>Value</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><emphasis role="strong">Minimum Pool Size</emphasis></entry>
+            <entry><emphasis>50</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Maximum Pool Size</emphasis></entry>
+            <entry><emphasis>100</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Wait Timeout (in milliseconds)</emphasis></entry>
+            <entry><emphasis>1000</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Inactivity Timeout (in seconds)</emphasis></entry>
+            <entry><emphasis>0</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Results time limit (in seconds)</emphasis></entry>
+            <entry><emphasis>0</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Retry Count</emphasis></entry>
+            <entry><emphasis>3</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Referral Policy</emphasis></entry>
+            <entry><emphasis>&lt;leer&gt;</emphasis></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="oam-identitystore-05">
+    <title>Password Management</title>
+    <para>
+      Password management remains disabled.
+    </para>
+  </section>
+</chapter>

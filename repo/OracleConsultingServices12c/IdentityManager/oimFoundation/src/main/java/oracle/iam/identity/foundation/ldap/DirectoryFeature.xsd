@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns:xsd          = "http://www.w3.org/2001/XMLSchema"
+            xmlns:ods          = "http://www.oracle.com/schema/oim/directory"
+            targetNamespace    = "http://www.oracle.com/schema/oim/directory"
+            elementFormDefault = "qualified">
+  <xsd:element name="feature">
+    <xsd:annotation>
+      <xsd:documentation>The features of the Directory Service</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:all>
+        <xsd:element name="failover"                         type="ods:failover"            minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="binary"                           type="ods:list-of-attributes"  minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="distinguishedNames"               type="ods:list-of-attributes"  minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="domain"                           type="ods:domain"              minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="country"                          type="ods:country"             minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="locality"                         type="ods:locality"            minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="role"                             type="ods:role"                minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="group"                            type="ods:group"               minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="organization"                     type="ods:organization"        minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="organizationalUnit"               type="ods:organizational-unit" minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="account"                          type="ods:account"             minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="enterprise-database"              type="ods:enterprise-database" minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="enterprise-domain"                type="ods:enterprise-domain"   minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="enterprise-role"                  type="ods:enterprise-role"     minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="enterprise-schema"                type="ods:enterprise-schema"   minOccurs="1" maxOccurs="1"/>
+      </xsd:all>
+      <xsd:attribute name="url-encoding"                     type="xsd:string"              default="UTF-8"/>
+      <xsd:attribute name="multi-value-separator"            type="xsd:string"              default="|"/>
+      <xsd:attribute name="context-factory"                  type="xsd:string"              default="com.sun.jndi.ldap.LdapCtxFactory"/>
+      <xsd:attribute name="security-provider"                type="xsd:string"              default="com.sun.net.ssl.internal.ssl.Provider"/>
+      <xsd:attribute name="connection-timeout"               type="xsd:int"                 default="3000"/>
+      <xsd:attribute name="response-timeout"                 type="xsd:int"                 default="1ß000"/>
+      <xsd:attribute name="referential-integrity"            type="xsd:boolean"             default="false"/>
+      <xsd:attribute name="timestamp-pattern"                type="xsd:string"              default="yyyyMMddHHmmss.SSS'Z'"/>
+      <xsd:attribute name="schema-container"                 type="xsd:string"              default="cn=schema"/>
+      <xsd:attribute name="catalog-container"                type="xsd:string"              default="cn=catalog"/>
+      <xsd:attribute name="changelog-container"              type="xsd:string"              default="cn=changelog"/>
+      <xsd:attribute name="changelog-changeType"             type="xsd:string"              default="changeType"/>
+      <xsd:attribute name="changelog-changeNumber"           type="xsd:string"              default="changeNumber"/>
+      <xsd:attribute name="changelog-targetGUID"             type="xsd:string"              default="targetGUID"/>
+      <xsd:attribute name="changelog-targetDN"               type="xsd:string"              default="targetDN"/>
+      <xsd:attribute name="changestatus-container"           type="xsd:string"              default="cn=changestatus"/>
+      <xsd:attribute name="object-class-name"                type="xsd:string"              default="objectClass"/>
+      <xsd:attribute name="distinguished-name-attribute"     type="xsd:string"              default="dn"/>
+      <xsd:attribute name="distinguished-name-casesensitive" type="xsd:boolean"             default="true"/>
+      <xsd:attribute name="entry-created-attribute"          type="xsd:string"              default="createTimestamp"/>
+      <xsd:attribute name="entry-modified-attribute"         type="xsd:string"              default="modifyTimestamp"/>
+      <xsd:attribute name="pagination-control"               type="ods:pagination"          default="SimplePage"/>
+      <xsd:attribute name="pagination-control-critical"      type="xsd:boolean"             default="true"/>
+      <xsd:attribute name="password-operation-secured"       type="xsd:boolean"             default="false"/>
+      <xsd:attribute name="entitlement-prefix-required"      type="xsd:boolean"             default="false"/>
+      <xsd:attribute name="role-container"                   type="xsd:string"              use="optional"/>
+      <xsd:attribute name="group-container"                  type="xsd:string"              use="optional"/>
+      <xsd:attribute name="domain-container"                 type="xsd:string"              use="optional"/>
+      <xsd:attribute name="country-container"                type="xsd:string"              use="optional"/>
+      <xsd:attribute name="account-container"                type="xsd:string"              use="optional"/>
+      <xsd:attribute name="generic-container"                type="xsd:string"              use="optional"/>
+      <xsd:attribute name="locality-container"               type="xsd:string"              use="optional"/>
+      <xsd:attribute name="organization-container"           type="xsd:string"              use="optional"/>
+      <xsd:attribute name="organizationalunit-container"     type="xsd:string"              use="optional"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- the failover description -->
+  <xsd:complexType name="failover">
+    <xsd:sequence>
+      <xsd:element name="server"       type="ods:server" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- the server description -->
+  <xsd:complexType name="server">
+    <xsd:attribute name="host"        type="xsd:string"  use="required"/>
+    <xsd:attribute name="port"        type="xsd:int"     default="389"/>
+    <xsd:attribute name="protocol"    type="xsd:string"  default="ldap"/>
+  </xsd:complexType>
+
+  <!-- the binary description -->
+  <xsd:complexType name="list-of-attributes">
+    <xsd:sequence>
+      <xsd:element name="attribute"   type="xsd:string"  minOccurs="1" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- the role description -->
+  <xsd:complexType name="role">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry">
+        <xsd:attribute name="object-member" type="xsd:string"  default="uniqueMember"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the group description -->
+  <xsd:complexType name="group">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry">
+        <xsd:attribute name="object-member"   type="xsd:string"  default="uniqueMember"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the country description -->
+  <xsd:complexType name="domain">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the country description -->
+  <xsd:complexType name="country">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the locality description -->
+  <xsd:complexType name="locality">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the organization description -->
+  <xsd:complexType name="organization">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry">
+        <xsd:sequence>
+          <xsd:element name="multi-valued"  type="ods:multivalued" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="group-link"    type="ods:objectlink"  minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="role-link"     type="ods:objectlink"  minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the organizational-unit description -->
+  <xsd:complexType name="organizational-unit">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry">
+        <xsd:sequence>
+          <xsd:element name="multi-valued"  type="ods:multivalued" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="group-link"    type="ods:objectlink"  minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="role-link"     type="ods:objectlink"  minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the account description -->
+  <xsd:complexType name="account">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry">
+        <xsd:sequence>
+          <xsd:element name="multi-valued"  type="ods:multivalued" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="group-link"    type="ods:objectlink"  minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="role-link"     type="ods:objectlink"  minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="password"      type="xsd:string"     default="userPassword"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the enterprise database description -->
+  <xsd:complexType name="enterprise-database">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the enterprise domain description -->
+  <xsd:complexType name="enterprise-domain">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the enterprise role description -->
+  <xsd:complexType name="enterprise-role">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry">
+        <xsd:attribute name="object-member"   type="xsd:string"  default="orclDBRoleOccupant"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the enterprise schema mapping description -->
+  <xsd:complexType name="enterprise-schema">
+    <xsd:complexContent>
+      <xsd:extension base="ods:entry"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the list of names an attribute must have -->
+  <xsd:complexType name="entry">
+    <xsd:attribute name="object-class"     type="xsd:string" use="required"/>
+    <xsd:attribute name="object-prefix"    type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <!-- the list of names an attribute must have -->
+  <xsd:complexType name="multivalued">
+    <xsd:sequence>
+      <xsd:element name="attribute" type="xsd:string"     minOccurs="1" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- the list of names a back link attribute must have -->
+  <xsd:complexType name="objectlink">
+    <xsd:attribute name="attribute" type="xsd:string"     use="required"/>
+    <xsd:attribute name="dn"        type="xsd:boolean"    default="true"/>
+  </xsd:complexType>
+
+  <!-- the pagination an attribute must have -->
+  <xsd:simpleType name="pagination">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="SimplePage"/>
+      <xsd:enumeration value="VirtualList"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns         ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id            ="efbs_account_tf_efbs_account_tf_beneficiaryPageDef"
+                Package       ="oracle.iam.ui.custom.request.flow"
+                SkipValidation="true">
+  <parameters/>
+  <executables>
+  </executables>
+  <bindings>
+    <methodAction id                 ="beneficiary"
+                  Action             ="invokeMethod"
+                  MethodName         ="getUserDetails"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true"
+                  DataControl        ="ManageUsersAMDataControl"
+                  InstanceName       ="ManageUsersAMDataControl.dataProvider">
+      <NamedData NDType="java.lang.String" NDName="userKey" NDValue="#{pageFlowScope.beneficiaryKey}"/>
+      <NamedData NDType="java.lang.String" NDName="certId"/>
+      <NamedData NDType="java.lang.String" NDName="taskUid"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

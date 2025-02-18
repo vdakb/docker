@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Access Manager Authentication Plug-In" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"            value="Access Manager Database Authentication"/>
+
+  <property name="application"            value="oracle.iam.access.plugin"/>
+  <property name="plugin"                 value="oracle.iam.access.rdbms.authn"/>
+  <property name="package"                value="oracle/**/*.*"/>
+
+  <property name="plugin.name"            value="DatabaseAuthentication"/>
+  <property name="plugin.entry"           value="oracle.iam.access.plugin.rdbms.Authentication"/>
+
+  <property name="destination.plugin"     value="../../deployment/oam/0101 authenticationPlugin,../../../Bundeskriminalamt12c/ExternalIdentityManagement/deployment/oam/0101 authenticationPlugin"/>
+  <property name="packagepath.plugin"     value="oracle/iam/access/**/*.class"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oam-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish a possible plugin runtime path
+  =====================================================================
+  -->
+  <path id="oracle.ocs.oam.runtime">
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.idm"/>
+    <path refid="oracle.fmw.oam.plugin"/>
+    <path refid="oracle.ocs.oam.runtime"/>
+  </path>
+</project>

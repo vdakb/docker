@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Directory Service Deployment Include"
+         default     ="all"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:config="http://oracle.ods.deployment/config"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="ods.recorder.name" value="${log.env}/fed-config-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #   #####
+  **           #     #   #   #   #     #
+  **           #          # #    #      
+  **            #####      #      #####
+  **                 #     #           #
+  **           #     #     #     #     #
+  **            #####      #      #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  ******************************************************************************
+  -->
+  <target name="0100-00" description="Configures the Directory Information Tree">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100-00 Configures Directory Information Tree ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create Directory Information Tree on ${fed.server.context} at ${fed.server.host}:${fed.server.port}"/>
+    <entry:create contextRef="fed-context" contextRoot="${fed.server.context}">
+      <entry name="cn" value="System">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="orclContainer"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="Groups">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="description" value="Identifies the default base where groups are reside"/>
+      </entry>
+      <entry name="ou" value="People">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="description" value="Identifies the default base where users are reside"/>
+      </entry>
+    </entry:create>
+    <echo message="=================================================================="/>
+    <echo message="0100-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #   #####
+  **           #     #   #   #   #     #
+  **           #          # #    #      
+  **            #####      #      #####
+  **                 #     #           #
+  **           #     #     #     #     #
+  **            #####      #      #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Infrastructure Administration Users (Technical Users)
+  ******************************************************************************
+  -->
+  <target name="0101-01" description="Creates Administrative Accounts">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0101-01 Create Administrative Accounts ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create Administrative Accounts on ${fed.server.context} at ${fed.server.host}:${fed.server.port}"/>
+    <entry:create contextRef="fed-context" contextRoot="cn=System,${fed.server.context}">
+      <entry name="uid" value="iamadmin">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="person"/>
+          <value value="organizationalPerson"/>
+          <value value="inetOrgPerson"/>
+          <value value="posixAccount"/>
+          <value value="orclUser"/>
+          <value value="orclUserV2"/>
+          <value value="ds-cfg-root-dn-user"/>
+        </attribute>
+        <attribute name="c"                        value="DE"/>
+        <attribute name="st"                       value="Hesse"/>
+        <attribute name="l"                        value="Wiesbaden"/>
+        <attribute name="postalCode"               value="65173"/>
+        <attribute name="street"                   value="Thaerstra&#223;e 11"/>
+        <attribute name="cn"                       value="iamadmin"/>
+        <attribute name="uidNumber"                value="1026"/>
+        <attribute name="gidNumber"                value="511"/>
+        <attribute name="sn"                       value="Management Administrator"/>
+        <attribute name="givenName"                value="Identity and Access"/>
+        <attribute name="displayName"              value="Identity and Access Management Adminstrator"/>
+        <attribute name="homeDirectory"            value="/home/iamadmin"/>
+        <attribute name="preferredLanguage"        value="en"/>
+        <attribute name="userPassword"             value="${iam.server.password}"/>
+        <attribute name="orclSAMAccountName"       value="iamadmin"/>
+        <attribute name="description"              value="Technical account used by the IAM domain components to connect to a certain instance"/>
+      </entry>
+      <entry name="uid" value="oimadmin">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="person"/>
+          <value value="organizationalPerson"/>
+          <value value="inetOrgPerson"/>
+          <value value="posixAccount"/>
+          <value value="orclUser"/>
+          <value value="orclUserV2"/>
+          <value value="ds-cfg-root-dn-user"/>
+        </attribute>
+        <attribute name="c"                        value="DE"/>
+        <attribute name="st"                       value="Hesse"/>
+        <attribute name="l"                        value="Wiesbaden"/>
+        <attribute name="postalCode"               value="65173"/>
+        <attribute name="street"                   value="Thaerstra&#223;e 11"/>
+        <attribute name="cn"                       value="oimadmin"/>
+        <attribute name="uidNumber"                value="1027"/>
+        <attribute name="gidNumber"                value="511"/>
+        <attribute name="sn"                       value="Administrator"/>
+        <attribute name="givenName"                value="Identity"/>
+        <attribute name="displayName"              value="Identity Adminstrator"/>
+        <attribute name="homeDirectory"            value="/home/oimadmin"/>
+        <attribute name="preferredLanguage"        value="en"/>
+        <attribute name="userPassword"             value="${oim.server.password}"/>
+        <attribute name="orclSAMAccountName"       value="oimadmin"/>
+        <attribute name="description"              value="Technical account used by Identity Manager to connect to a certain instance"/>
+        <!--
+        Looks like privileges must be explicitly granted and not inherited
+        by group membership
+        -->
+        <attribute name="ds-privilege-name"        value="password-reset"/>
+      </entry>
+      <entry name="uid" value="oamadmin">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="person"/>
+          <value value="organizationalPerson"/>
+          <value value="inetOrgPerson"/>
+          <value value="posixAccount"/>
+          <value value="orclUser"/>
+          <value value="orclUserV2"/>
+          <value value="ds-cfg-root-dn-user"/>
+        </attribute>
+        <attribute name="c"                        value="DE"/>
+        <attribute name="st"                       value="Hesse"/>
+        <attribute name="l"                        value="Wiesbaden"/>
+        <attribute name="postalCode"               value="65173"/>
+        <attribute name="street"                   value="Thaerstra&#223;e 11"/>
+        <attribute name="cn"                       value="oamadmin"/>
+        <attribute name="uidNumber"                value="1027"/>
+        <attribute name="gidNumber"                value="511"/>
+        <attribute name="sn"                       value="Administrator"/>
+        <attribute name="givenName"                value="Access"/>
+        <attribute name="displayName"              value="Access Adminstrator"/>
+        <attribute name="homeDirectory"            value="/home/oamadmin"/>
+        <attribute name="preferredLanguage"        value="en"/>
+        <attribute name="userPassword"             value="${oam.server.password}"/>
+        <attribute name="orclSAMAccountName"       value="oamadmin"/>
+        <attribute name="description"              value=">Technical account used by Access Manager to connect to a certain instance"/>
+      </entry>
+    </entry:create>
+    <echo message="=================================================================="/>
+    <echo message="0101-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #   #####
+  **           #     #   #   #   #     #
+  **           #          # #    #      
+  **            #####      #      #####
+  **                 #     #           #
+  **           #     #     #     #     #
+  **            #####      #      #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Infrastructure Administration Groups (Technical Groups)
+  ******************************************************************************
+  -->
+  <target name="0101-02" description="Creates Access Privilege Groups">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0101-02 Create Access Privilege Groups ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create Access Privilege Groups at ${fed.server.context} on ${fed.server.host}:${fed.server.port}"/>
+    <entry:create contextRef="fed-context" contextRoot="ou=Groups,${fed.server.context}">
+      <entry name="cn" value="orclUserReadPrivilegeGroup">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="groupOfUniqueNames"/>
+          <value value="orclPrivilegeGroup"/>
+        </attribute>
+        <attribute name="uniqueMember">
+          <value value="uid=iamadmin,cn=System,${fed.server.context}"/>
+          <value value="uid=oamadmin,cn=System,${fed.server.context}"/>
+          <value value="uid=oimadmin,cn=System,${fed.server.context}"/>
+        </attribute>
+      </entry>
+      <entry name="cn" value="orclUserWritePrivilegeGroup">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="groupOfUniqueNames"/>
+          <value value="orclPrivilegeGroup"/>
+        </attribute>
+        <attribute name="uniqueMember">
+          <value value="uid=oimadmin,cn=System,${fed.server.context}"/>
+        </attribute>
+      </entry>
+      <entry name="cn" value="orclGroupReadPrivilegeGroup">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="groupOfUniqueNames"/>
+          <value value="orclPrivilegeGroup"/>
+        </attribute>
+        <attribute name="uniqueMember">
+          <value value="uid=iamadmin,cn=System,${fed.server.context}"/>
+          <value value="uid=oamadmin,cn=System,${fed.server.context}"/>
+          <value value="uid=oimadmin,cn=System,${fed.server.context}"/>
+        </attribute>
+      </entry>
+      <entry name="cn" value="orclGroupWritePrivilegeGroup">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="groupOfUniqueNames"/>
+          <value value="orclPrivilegeGroup"/>
+        </attribute>
+        <attribute name="uniqueMember">
+          <value value="uid=oimadmin,cn=System,${fed.server.context}"/>
+        </attribute>
+      </entry>
+    </entry:create>
+    <echo message="=================================================================="/>
+    <echo message="0101-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #   #####
+  **           #     #   #   #   #     #
+  **           #          # #    #      
+  **            #####      #      #####
+  **                 #     #           #
+  **           #     #     #     #     #
+  **            #####      #      #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Access Control Information (ACI)
+  ******************************************************************************
+  -->
+  <target name="0101-03" description="Creates Access Control Information (ACI)">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0101-03 Create Access Control Informations ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create Access Control Information (ACI) at ${fed.server.context} on ${fed.server.host}:${fed.server.port}"/>
+    <entry:modify contextRef="fed-context" contextRoot="${fed.server.context}">
+      <entry name="ou" value="Groups">
+        <attribute name="aci">
+          <value value="(targetattr=&quot;* || +&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Read access to Groups&quot;; allow (search,read)(groupdn=&quot;ldap:///cn=orclGroupReadPrivilegeGroup,ou=Groups,${fed.server.context}&quot;);)"/>
+          <value value="(targetattr=&quot;*&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Allow orclGroupWritePrivilegeGroup add, read and write access to all attributes&quot;; allow (read,search,compare,write,add,delete,import,export)(groupdn=&quot;ldap:///cn=orclGroupWritePrivilegeGroup,ou=Groups,${fed.server.context}&quot;);)"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="People">
+        <attribute name="aci">
+          <value value="(targetattr=&quot;*&quot;)(targetscope=&quot;base&quot;)(version 3.0; acl &quot;Anonymous read access to People&quot;; allow (search,read)(userdn=&quot;ldap:///anyone&quot;);)"/>
+          <value value="(targetattr=&quot;*&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Read acces to People entries&quot;; allow (search,read,compare)(userdn=&quot;ldap:///self&quot; or groupdn=&quot;ldap:///cn=orclUserReadPrivilegeGroup,ou=Groups,${fed.server.context}&quot;);)"/>
+          <value value="(targetattr=&quot;+&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Group read acces to People entries&quot;; allow (search,read,compare)(groupdn=&quot;ldap:///cn=orclUserReadPrivilegeGroup,ou=Groups,${fed.server.context}&quot;);)"/>
+          <value value="(targetattr=&quot;userPassword&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Self write access to People&quot;; allow (write)(userdn=&quot;ldap:///self&quot;);)"/>
+          <value value="(targetattr=&quot;*&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Allow orclUserWritePrivilegeGroup add, read and write access to all attributes&quot;; allow (read,search,compare,write,add,delete,import,export)(groupdn=&quot;ldap:///cn=orclUserWritePrivilegeGroup,ou=Groups,${fed.server.context}&quot;);)"/>
+        </attribute>
+      </entry>
+    </entry:modify>
+    <echo message="=================================================================="/>
+    <echo message="0101-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **              #     ######   ######
+  **             # #    #     #  #     #
+  **            #   #   #     #  #     #
+  **           #     #  ######   ######
+  **           #######  #        #
+  **           #     #  #        #
+  **           #     #  #        #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  ******************************************************************************
+  -->
+  <target name="0200-00" description="Configures the Directory Information Tree">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-00 Configures Directory Information Tree ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create Directory Information Tree on ${fed.server.context} at ${fed.server.host}:${fed.server.port}"/>
+    <entry:create contextRef="fed-context" contextRoot="${fed.server.context}">
+      <entry name="ou" value="App">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="description" value="Identifies the default base where federated users are reside"/>
+      </entry>
+    </entry:create>
+    <echo message="=================================================================="/>
+    <echo message="0200-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **              #     ######   ######
+  **             # #    #     #  #     #
+  **            #   #   #     #  #     #
+  **           #     #  ######   ######
+  **           #######  #        #
+  **           #     #  #        #
+  **           #     #  #        #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Access Control Information (ACI)
+  ******************************************************************************
+  -->
+  <target name="0200-01" description="Create Access Control Informations">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-01 Create Access Control Informations ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create Access Control Information (ACI) at ${fed.server.context} on ${fed.server.host}:${fed.server.port}"/>
+    <entry:modify contextRef="fed-context" contextRoot="${fed.server.context}">
+      <entry name="ou" value="App">
+        <attribute name="aci">
+          <value value="(targetattr=&quot;*&quot;)(targetscope=&quot;base&quot;)(version 3.0; acl &quot;Anonymous read access to People&quot;; allow (search,read)(userdn=&quot;ldap:///anyone&quot;);)"/>
+          <value value="(targetattr=&quot;*&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Read acces to People entries&quot;; allow (search,read,compare)(userdn=&quot;ldap:///self&quot; or groupdn=&quot;ldap:///cn=orclUserReadPrivilegeGroup,ou=Groups,${fed.server.context}&quot;);)"/>
+          <value value="(targetattr=&quot;+&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Group read acces to People entries&quot;; allow (search,read,compare)(groupdn=&quot;ldap:///cn=orclUserReadPrivilegeGroup,ou=Groups,${fed.server.context}&quot;);)"/>
+          <value value="(targetattr=&quot;userPassword&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Self write access to People&quot;; allow (write)(userdn=&quot;ldap:///self&quot;);)"/>
+          <value value="(targetattr=&quot;*&quot;)(targetscope=&quot;subtree&quot;)(version 3.0; acl &quot;Allow orclUserWritePrivilegeGroup add, read and write access to all attributes&quot;; allow (read,search,compare,write,add,delete,import,export)(groupdn=&quot;ldap:///cn=orclUserWritePrivilegeGroup,ou=Groups,${fed.server.context}&quot;);)"/>
+        </attribute>
+      </entry>
+    </entry:modify>
+    <echo message="=================================================================="/>
+    <echo message="0200-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **              #     ######   ######
+  **             # #    #     #  #     #
+  **            #   #   #     #  #     #
+  **           #     #  ######   ######
+  **           #######  #        #
+  **           #     #  #        #
+  **           #     #  #        #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Federated Identity Management Service Directory
+  **           Information Tree Configuration
+  **
+  ** Synopsis: The tasks deploys the changes made on configuration steps
+  **           like:
+  **           o Directory Information Tree
+  ******************************************************************************
+  -->
+  <target name="0200-02" description="Configures Directory Information Tree">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-02 Directory Information Tree"/>
+    <echo message="=================================================================="/>
+    <echo message="Creating Participant Context ou=App,${fed.server.context} at ${fed.server.host}:${adm.server.port}"/>
+    <entry:create contextRef="fed-context" contextRoot="ou=App,${fed.server.context}">
+      <entry name="ou" value="AN">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Saxony-Anhalt"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Saxony-Anhalt are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="BE">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Berlin"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Berlin are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="BB">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Brandenburg"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Brandenburg are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="BK">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Federal Criminal Police Office"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Federal Criminal Police Office are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="BP">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Federal Police"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Federal Police are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="BY">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Bavaria"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Bavaria are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="HB">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Bremen"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Bremen are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="HE">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Hesse"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Hesse are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="HH">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Hamburg"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Hamburg are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="MV">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Mecklenburg-Western Pomerania"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Mecklenburg-Western Pomerania are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="NI">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Lower Saxony"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Lower Saxony are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="NW">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police North Rhine-Westphalia"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police North Rhine-Westphalia are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="RP">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Rhineland-Palatinate"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Rhineland-Palatinate are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="SH">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Schleswig-Holstein"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Schleswig-Holstein are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="SL">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Saarland"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Saarland are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="SN">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Saxony"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Saxony are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="TH">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Thuringia"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Thuringia are reside"/>
+        </attribute>
+      </entry>
+      <entry name="ou" value="ZF">
+        <attribute name="objectClass">
+          <value value="top"/>
+          <value value="organizationalUnit"/>
+        </attribute>
+        <attribute name="businessCategory">
+          <value value="Police Customs Investigation Bureau"/>
+        </attribute>
+        <attribute name="description">
+          <value value="Identifies the default context entry where accounts belonging to Police Customs Investigation Bureau are reside"/>
+        </attribute>
+      </entry>
+    </entry:create>
+    <echo message="=================================================================="/>
+    <echo message="0200-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+</project>

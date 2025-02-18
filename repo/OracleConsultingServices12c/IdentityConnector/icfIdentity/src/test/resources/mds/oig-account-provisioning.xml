@@ -1,0 +1,56 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="UD_OIG_USR_SID"
+            uniqueName    ="UD_OIG_USR_UID"
+            transformation="false">
+  <attribute type="string" name="__UID__"      source="UD_OIG_USR_SID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="__NAME__"     source="UD_OIG_USR_UID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="firstName"    source="UD_OIG_USR_GN">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="lastName"     source="UD_OIG_USR_SN">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="displayName"  source="UD_OIG_USR_DN">
+    <flag>required</flag>
+  </attribute>
+  <!--
+   | child form providing access only on column names not labels hence so any
+   | clone of the connector we need a new decriptor; aaargggh
+   -->
+  <multivalue name="Group" source="UD_OIG_UPR">
+    <attribute type="string" name="__UID__"    source="UD_OIG_UPR_UID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <!--
+   | child form providing access only on column names not labels hence so any
+   | clone of the connector we need a new decriptor; aaargggh
+   -->
+  <multivalue name="Global" source="UD_OIG_UPG">
+    <attribute type="string"  name="__UID__"   source="UD_OIG_UPG_UID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <!--
+   | child form providing access only on column names not labels hence so any
+   | clone of the connector we need a new decriptor; aaargggh
+   -->
+  <multivalue name="Scoped" source="UD_OIG_UPS">
+    <attribute type="string"  name="__UID__"   source="UD_OIG_UPS_UID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="string"  name="scope"     source="UD_OIG_UPS_SID">
+      <flag>required</flag>
+    </attribute>
+    <attribute type="boolean" name="hierarchy" source="UD_OIG_UPS_HRC">
+      <flag>required</flag>
+    </attribute>
+  </multivalue>
+</descriptor>

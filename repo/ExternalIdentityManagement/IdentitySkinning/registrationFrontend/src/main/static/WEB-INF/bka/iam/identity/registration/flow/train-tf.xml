@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<adfc-config id="__01" xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="train-tf">
+    <default-activity id="__02">step-register</default-activity>
+    <data-control-scope id="__03">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__10">
+      <name id="__11">uiShell</name>
+      <value id="__12">#{pageFlowScope.uiShell}</value>
+      <class id="__13">oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__15">taskFlowId</name>
+      <value id="__16">#{pageFlowScope.taskFlowId}</value>
+      <class id="__17">java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__61">
+      <managed-bean-name id="__62">registerTrain</managed-bean-name>
+      <managed-bean-class id="__63">bka.iam.identity.registration.state.Train</managed-bean-class>
+      <managed-bean-scope id="__64">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__65">
+      <managed-bean-name id="__66">registerAttribute</managed-bean-name>
+      <managed-bean-class id="__67">bka.iam.identity.registration.backing.Register</managed-bean-class>
+      <managed-bean-scope id="__68">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="step-register">
+      <page id="__101">/bka/iam/identity/registration/view/register.jsff</page>
+      <train-stop id="__102">
+        <display-name id="__103">#{adfBundle['bka.iam.identity.bundle.Registration']['REQ_REGISTER']}</display-name>
+        <sequential id="__104">false</sequential>
+      </train-stop>
+    </view>
+    <view id="step-submit">
+      <page id="__105">/bka/iam/identity/registration/view/confirmation.jsff</page>
+      <train-stop id="__106">
+        <display-name id="__107">#{adfBundle['bka.iam.identity.bundle.Registration']['REQ_CONFIRMATION']}</display-name>
+        <sequential id="__108">false</sequential>
+      </train-stop>
+    </view>
+    <task-flow-return id="train-commit">
+      <outcome id="__131">
+        <name id="__132">train-commit</name>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="train-cancel">
+      <outcome id="__133">
+        <name id="__134">train-cancel</name>
+      </outcome>
+    </task-flow-return>
+    <train/>
+    <control-flow-rule id="__180">
+      <from-activity-id id="__181">*</from-activity-id>
+      <control-flow-case id="__182">
+        <from-outcome id="__183">cancel</from-outcome>
+        <to-activity-id id="__184">train-cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__203">
+      <from-activity-id id="__204">step-submit</from-activity-id>
+      <control-flow-case id="__205">
+        <from-outcome id="__206">cancel</from-outcome>
+        <to-activity-id id="__207">train-cancel</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__208">
+        <from-outcome id="__209">commit</from-outcome>
+        <to-activity-id id="__210">train-commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

@@ -1,0 +1,231 @@
+{
+  "schemas" : [
+    "urn:ietf:params:scim:schemas:core:2.0:Schema"
+  ],
+  "id" : "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Policy",
+  "name" : "Policy",
+  "description" : "Schema extension for OIG Policy",
+  "meta" : {
+    "location" : "OIG_BASE_URI/Schemas/urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:Policy",
+    "resourceType" : "Schema"
+  },
+  "attributes" : [
+    {
+      "name" : "id",
+      "type" : "string",
+      "multiValued" : false,
+      "description" : "Policy Name",
+      "mutability" : "readWrite",
+      "returned" : "always",
+      "uniqueness" : "server",
+      "required" : true,
+      "caseExact" : false
+    },
+    {
+      "name" : "description",
+      "type" : "string",
+      "multiValued" : false,
+      "description" : "Policy Description",
+      "mutability" : "readWrite",
+      "returned" : "always",
+      "uniqueness" : "none",
+      "required" : true,
+      "caseExact" : false
+    },
+    {
+      "name" : "owner",
+      "type" : "string",
+      "multiValued" : false,
+      "description" : "Policy Owner",
+      "mutability" : "readWrite",
+      "returned" : "default",
+      "uniqueness" : "none",
+      "required" : true,
+      "caseExact" : false
+    },
+    {
+      "name" : "ownerType",
+      "type" : "string",
+      "multiValued" : false,
+      "description" : "Policy Owner Type, it can be USER or ROLE",
+      "mutability" : "readWrite",
+      "returned" : "default",
+      "uniqueness" : "none",
+      "required" : true,
+      "caseExact" : false
+    },
+    {
+      "name" : "priority",
+      "type" : "integer",
+      "multiValued" : false,
+      "description" : "Policy priority",
+      "mutability" : "readWrite",
+      "returned" : "default",
+      "uniqueness" : "none",
+      "required" : false,
+      "caseExact" : false
+    },
+    {
+      "name" : "applications",
+      "type" : "complex",
+      "multiValued" : true,
+      "description" : "Application instances associated with policy",
+      "mutability" : "readOnly",
+      "returned" : "default",
+      "uniqueness" : "none",
+      "required" : true,
+      "caseExact" : false,
+      "subAttributes" : [
+        {
+          "name" : "applicationName",
+          "type" : "string",
+          "multiValued" : false,
+          "description" : "Name of the application instance",
+          "mutability" : "readOnly",
+          "returned" : "default",
+          "uniqueness" : "none",
+          "required" : true,
+          "caseExact" : false
+        },
+        {
+          "name" : "applicationAttributes",
+          "type" : "complex",
+          "multiValued" : true,
+          "description" : "Attributes for the application instance account",
+          "mutability" : "readOnly",
+          "returned" : "default",
+          "uniqueness" : "none",
+          "required" : false,
+          "caseExact" : false,
+          "subAttributes" : [
+            {
+              "name" : "name",
+              "type" : "string",
+              "multiValued" : false,
+              "description" : "Attribute name (label from OIG)",
+              "mutability" : "readOnly",
+              "returned" : "default",
+              "uniqueness" : "none",
+              "required" : false,
+              "caseExact" : false
+            },
+            {
+              "name" : "value",
+              "type" : "string",
+              "multiValued" : false,
+              "description" : "Attribute value",
+              "mutability" : "readOnly",
+              "returned" : "default",
+              "uniqueness" : "none",
+              "required" : false,
+              "caseExact" : false
+            }
+          ]
+        },
+        {
+          "name" : "namespaces",
+          "type" : "complex",
+          "multiValued" : true,
+          "description" : "Namespaces associated with the application instance",
+          "mutability" : "readOnly",
+          "returned" : "default",
+          "uniqueness" : "none",
+          "required" : false,
+          "caseExact" : false,
+          "subAttributes" : [
+            {
+              "name" : "namespace",
+              "type" : "String",
+              "multiValued" : false,
+              "description" : "Namespace of the entitlement (e.g. UD_OUD_G)",
+              "mutability" : "readOnly",
+              "returned" : "default",
+              "uniqueness" : "none",
+              "required" : false,
+              "caseExact" : false
+            },
+            {
+              "name" : "entitlements",
+              "type" : "complex",
+              "multiValued" : true,
+              "description" : "Entitlements associated with the application instance",
+              "mutability" : "readOnly",
+              "returned" : "default",
+              "uniqueness" : "none",
+              "required" : false,
+              "caseExact" : false,
+              "subAttributes" : [
+                {
+                  "name" : "name",
+                  "type" : "string",
+                  "description" : "Name of the entitlement",
+                  "mutability" : "readOnly",
+                  "returned" : "default",
+                  "uniqueness" : "none",
+                  "required" : false,
+                  "caseExact" : false
+                },
+                {
+                  "name" : "value",
+                  "type" : "string",
+                  "description" : "Value of the entitlement",
+                  "mutability" : "readOnly",
+                  "returned" : "default",
+                  "uniqueness" : "none",
+                  "required" : false,
+                  "caseExact" : false
+                },
+                {
+                  "name" : "additionalAttributes",
+                  "type" : "complex",
+                  "multiValued" : true,
+                  "description" : "Attribute values for the entitlement instance",
+                  "mutability" : "readOnly",
+                  "returned" : "default",
+                  "uniqueness" : "none",
+                  "required" : false,
+                  "caseExact" : false,
+                  "subAttributes" : [
+                    {
+                      "name" : "attributes",
+                      "type" : "complex",
+                      "multiValued" : true,
+                      "description" : "Attributes for the entitlement instance",
+                      "mutability" : "readOnly",
+                      "returned" : "default",
+                      "uniqueness" : "none",
+                      "required" : false,
+                      "caseExact" : false,
+                      "subAttributes" : [
+                        {
+                          "name" : "name",
+                          "type" : "string",
+                          "description" : "Name of the entitlement",
+                          "mutability" : "readOnly",
+                          "returned" : "default",
+                          "uniqueness" : "none",
+                          "required" : false,
+                          "caseExact" : false
+                        },
+                        {
+                          "name" : "value",
+                          "type" : "string",
+                          "description" : "Value of the entitlement",
+                          "mutability" : "readOnly",
+                          "returned" : "default",
+                          "uniqueness" : "none",
+                          "required" : false,
+                          "caseExact" : false
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

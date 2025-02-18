@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="client-details-tf">
+    <template-reference>
+      <document>/WEB-INF/oracle/iam/ui/common/tfs/error-handler-flow-tf-template.xml</document>
+      <id>error-handler-flow-tf-template</id>
+    </template-reference>
+    <default-activity>loadClient</default-activity>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__1">
+      <name>oam_connection_name</name>
+      <value>#{pageFlowScope.oam_connection_name}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__2">
+      <name>identity_domain_name</name>
+      <value>#{pageFlowScope.identity_domain_name}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__3">
+      <name>client_id</name>
+      <value>#{pageFlowScope.client_id}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__5">
+      <name>mode</name>
+      <value>#{pageFlowScope.mode}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <managed-bean id="__4">
+      <managed-bean-name>clientMB</managed-bean-name>
+      <managed-bean-class>bka.iam.identity.ui.oauth.bean.ClientManagedBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="ClientDetail">
+      <page>/bka/iam/identity/ui/oauth/pages/client-details.jsff</page>
+    </view>
+    <method-call id="loadClient">
+      <method>#{bindings.loadClient.execute}</method>
+      <outcome>
+        <fixed-outcome>loadClient</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-return id="goToCallerTF">
+      <outcome>
+        <name>goToCallerTF</name>
+      </outcome>
+    </task-flow-return>
+    <control-flow-rule id="__7">
+      <from-activity-id>loadClient</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome>loadClient</from-outcome>
+        <to-activity-id>ClientDetail</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>ClientDetail</from-activity-id>
+      <control-flow-case id="__9">
+        <from-outcome>Refresh</from-outcome>
+        <to-activity-id>loadClient</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__10">
+        <from-outcome>success</from-outcome>
+        <to-activity-id>goToCallerTF</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__11">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>goToCallerTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

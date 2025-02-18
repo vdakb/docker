@@ -1,0 +1,42 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityManager\bkaSimulation\src\main\resources\dbs\agt\obj\agt-app.tab
+--
+-- Generated for Oracle Database 12c on Sun January 21 16:53:56 2020 by Server Generator 10.1.2.93.10
+
+CREATE TABLE agt_products (
+  org          VARCHAR   (128)                    NOT NULL
+, name         VARCHAR   (128)                    NOT NULL
+, rowversion   VARCHAR   ( 30)                    NOT NULL
+, created_on   TIMESTAMP       DEFAULT SYSDATE    NOT NULL
+, created_by   VARCHAR   (128)                    NOT NULL
+, updated_on   TIMESTAMP       DEFAULT SYSDATE    NOT NULL
+, updated_by   VARCHAR   (128)                    NOT NULL
+, approval     VARCHAR   (  8) DEFAULT 'auto'     NOT NULL
+, displayname  VARCHAR   (128)
+, description  VARCHAR   (512)
+, scope        VARCHAR   (128)
+, proxy        VARCHAR   (128)
+, uris         VARCHAR   (128)
+, environment  VARCHAR   (128)
+, timequota    VARCHAR   (  8)
+, timeinterval VARCHAR   (  8)
+, timeunit     VARCHAR   (  8)
+, CONSTRAINT agt_prd_pk     PRIMARY KEY (org, name)
+, CONSTRAINT agt_prd_org_fk FOREIGN KEY (org) REFERENCES agt_organizations (name) ON DELETE CASCADE
+)
+/
+COMMENT ON TABLE agt_products IS 'Apigee Organization Application Repository'
+/
+COMMENT ON COLUMN agt_products.rowversion IS 'Row Version of data record'
+/
+COMMENT ON COLUMN agt_products.created_by IS 'Creator of the data record'
+/
+COMMENT ON COLUMN agt_products.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN agt_products.updated_by IS 'Modifier of the data record'
+/
+COMMENT ON COLUMN agt_products.updated_on IS 'Last Modified Timestamp of data record'
+/
+COMMENT ON COLUMN agt_products.org IS 'The Organization'
+/
+COMMENT ON COLUMN agt_products.name IS 'The API Product'
+/

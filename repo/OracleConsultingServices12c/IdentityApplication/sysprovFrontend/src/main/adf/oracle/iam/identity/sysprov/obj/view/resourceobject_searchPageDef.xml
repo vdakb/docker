@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="resourceobject_searchPageDef"
+                Package="oracle.iam.identity.sysprov.obj.view">
+  <parameters/>
+  <executables>
+    <iterator     id="ResourceObjectIterator" Binds="ResourceObjectSearchVO" DataControl="ResourceObjectAMDataControl" RangeSize="20"/>
+    <searchRegion id="ResourceObjectCriteria" Binds="ResourceObjectIterator" Criteria="ResourceObjectVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="objectsName"/>
+  </executables>
+  <bindings>
+    <tree  id="ResourceObject" IterBinding="ResourceObjectIterator">
+      <nodeDefinition Name="ResourceObjectNode" DefName="oracle.iam.identity.sysprov.model.view.ResourceObjectVO">
+        <AttrNames>
+          <Item Value="objectsKey"/>
+          <Item Value="objectsName"/>
+          <Item Value="objectsType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Rollback" DataControl="ResourceObjectAMDataControl" RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

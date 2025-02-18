@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Directory Service Deployment Include"
+         default     ="all"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:config="http://oracle.ods.deployment/config"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="ods.recorder.name" value="${log.env}/fed-setup-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #######  ######
+  **           #        #        #     #
+  **           #        #        #     #
+  **           ######   ######   #     #
+  **           #        #        #     #
+  **           #        #        #     #
+  **           #        #######  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Directory Server Schema Configuration.
+  **
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Schema Extansion
+  ******************************************************************************
+  -->
+  <target name="0000" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0000 Directory Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Copying Required Files for environment ${fmw.env} to ${fed.server.instance} at ${fed.server.host}"/>
+    <ssh-file dir="0000 systemCustomization/ldf" file="20-fed-objectclass-extension.ldif"   location="${fed.server.instance}/OUD/config/schema"/>
+    <ssh-file dir="0000 systemCustomization/ldf" file="20-fed-attributetype-extension.ldif" location="${fed.server.instance}/OUD/config/schema"/>
+    <echo message="=================================================================="/>
+    <echo message="0000 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+</project>

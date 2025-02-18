@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+	<title>Loading the Driver</title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+	<meta name="description" content="The official site for the PostgreSQL JDBC Driver" />
+	<meta name="copyright" content="The PostgreSQL Global Development Group" />
+
+	<style type="text/css" media="screen" title="Normal Text">@import url("media/css/docs.css");</style>
+
+	<link rel="shortcut icon" href="media/favicon.ico" />
+</head>
+
+<body>
+	<div id="docHeader">
+		<div id="docHeaderLogo">
+			<a href="http://www.postgresql.org/" title="PostgreSQL"><img src="media/img/layout/hdr_left3a.png" alt="PostgreSQL" height="80" width="390" /></a>
+		</div>
+	</div>
+
+	<div id="docContainerWrap">
+		<div id="docContainer">
+			<div id="docContent">
+
+				<div class="NAVHEADER">
+					<table summary="Header navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+						<tr>
+							<th colspan="3" valign="bottom" align="center">
+								<h2 class="TITLE">Chapter 3. Initializing the Driver</h2>
+							</th>
+						</tr>
+						<tr>
+							<td valign="top" width="20%" align="left">
+								<a title="Chapter 3. Initializing the Driver" href="use.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="bottom" width="60%" align="center">&nbsp;</td>
+							<td valign="top" width="20%" align="right">
+								<a title="Connecting to the Database" href="connect.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+  					</tbody>
+					</table>
+					<hr class="c1" width="100%" />
+				</div> <!-- NAVHEADER -->
+
+				<div class="CHAPTER">
+  					<h1>Loading the Driver</h1>
+					
+					<p>Before you can connect to a database, you need to load the driver. There are two
+methods available, and it depends on your code which is the best one to use.</p>
+
+<p>In the first method, your code implicitly loads the driver using the <code>Class.forName()</code>
+method. For PostgreSQL™, you would use:</p>
+
+<p>Class.forName(&quot;org.postgresql.Driver&quot;);</p>
+
+<p>This will load the driver, and while loading, the driver will automatically
+register itself with JDBC.</p>
+
+<h3>Note</h3>
+
+<p>The <code>forName()</code> method can throw a <code>ClassNotFoundException</code> if the driver is not
+available.</p>
+
+<p>This is the most common method to use, but restricts your code to use just PostgreSQL™.
+If your code may access another database system in the future, and you do not
+use any PostgreSQL™-specific extensions, then the second method is advisable.</p>
+
+<p>The second method passes the driver as a parameter to the JVM as it starts, using
+the <code>-D</code> argument. Example:</p>
+
+<p><code>java -Djdbc.drivers=org.postgresql.Driver example.ImageViewer</code></p>
+
+<p>In this example, the JVM will attempt to load the driver as part of its initialization.
+Once done, the ImageViewer is started.</p>
+
+<p>Now, this method is the better one to use because it allows your code to be used
+with other database packages without recompiling the code. The only thing that
+would also change is the connection URL, which is covered next.</p>
+
+<p>One last thing: When your code then tries to open a <code>Connection</code>, and you get a
+No driver available <code>SQLException</code> being thrown, this is probably caused by the
+driver not being in the class path, or the value in the parameter not being
+correct.</p>
+
+				</div>
+
+				<div class="NAVFOOTER">
+					<hr class="c1" width="100%" />
+					<table summary="Footer navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td valign="top" width="33%" align="left">
+								<a href="use.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="top" width="34%" align="center">
+								<a href="index.html" accesskey="H">Home</a>
+							</td>
+							<td valign="top" width="33%" align="right">
+								<a href="connect.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+						<tr>
+							<td valign="top" width="33%" align="left">Chapter 3. Initializing the Driver</td>
+							<td valign="top" width="34%" align="center">&nbsp;</td>
+							<td valign="top" width="33%" align="right">Connecting to the Database</td>
+						</tr>
+					</tbody>
+					</table>
+				</div> <!-- NAVFOOTER -->
+
+
+			</div> <!-- docContent -->
+			
+			<div id="docComments"></div>
+
+			<div id="docFooter">
+				<a class="navFooter" href="http://www.postgresql.org/about/privacypolicy">Privacy Policy</a> |
+				<a class="navFooter" href="http://www.postgresql.org/about/">About PostgreSQL</a><br/>
+				Copyright &copy; 1996-2013 The PostgreSQL Global Development Group
+			</div> <!-- pgFooter -->
+		</div> <!-- docContainer -->
+	</div> <!-- docContainer -->
+</body>
+</html>

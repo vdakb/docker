@@ -1,0 +1,121 @@
+// Regular Button Base styles
+body .ui-button, body .ui-button span {
+  font-weight:                   $font-weight-normal;
+}
+body .ui-button {
+  background-color:              $btn-color-bg;
+  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
+  border:                        $btn-border-width solid transparent;
+  display:                       inline-block;
+  transition:                    $transition-base;
+  user-select:                   none;
+  touch-action:                  manipulation;
+  // default button hover
+  @include hover() {
+    background-color:            $btn-hover-bg;
+    text-decoration:             none;
+  }
+  // default button focused
+  &:focus {
+    outline:                     0;
+  }
+  // default button disabled
+  &:disabled {
+    opacity:                     $btn-disabled-opacity;
+  }
+  // default button outlined
+  &.ui-button-outlined {
+    background-color:            transparent;
+  }
+  // default button flat
+  &.ui-button-flat {
+    background:                  none;
+    border:                      none;
+    padding:                     0;
+  }
+  &.ui-button-text-only .ui-button-text {
+    padding:                     .5rem 1rem;
+  }
+  &.ui-button-text-icon-left, &.ui-button-text-icon-right, &.ui-button-icon-only {
+    padding:                     0;
+  }
+  &.ui-button-text-icon-left .ui-button-text {
+    padding:                     .5rem 1rem .5rem 2rem;
+  }
+  &.ui-button-text-icon-left .ui-icon {
+    top:                         50%;
+    left:                        .5rem;
+    margin-top:                  -.5rem;
+    position:                    absolute;
+  }
+  &.ui-button-text-icon-right .ui-button-text {
+    padding:                     .5rem 2rem .5rem 1rem;
+  }
+  &.ui-button-text-icon-right .ui-icon {
+    top:                         50%;
+    right:                       .5rem;
+    margin-top:                  -.5rem;
+    position:                    absolute;
+  }
+  &.ui-button-icon-only {
+    width:                       2.15rem;
+    height:                      2.15rem;
+  }
+  &.ui-button-icon-only .ui-icon {
+    margin-left:                 -6px;
+  }
+  &.ui-button-raised {
+    box-shadow:                  0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+  }
+  &.rounded-button {
+    padding:                     0;
+    border-radius:               50%;
+  }
+  //
+  // Alternate buttons
+  //
+  @each $color, $value in $theme-colors {
+    &-#{$color} {
+      @include button-variant($value, $value);
+    }
+    &.ui-button-flat.ui-button-#{$color} {
+      @include button-flat-variant($value);
+    }
+    &.ui-button-outlined.ui-button-#{$color} {
+      @include button-outline-variant($value);
+    }
+  }
+  &.lg {
+    padding:                     .5rem 1rem;
+    font-size:                   $font-size-lg;
+    line-height:                 $line-height-base;
+    border-radius:               .3rem;
+    span.ui-icon {
+      width:                     22px;
+      height:                    20px;
+      margin-top:                -8px;
+      &:before {
+        font-size:               $font-awesome-icon-size-lg;
+      }
+    }
+    &.ui-button-text-icon-right, &.ui-button-text-icon-left  {
+      padding: 6px 16px;
+    }
+  }
+}
+/* button group */
+.ui-button-group .ui-button {
+  margin:                        0;
+  border-radius:                 0;
+}
+.ui-button-group .ui-button:first-child {
+  border-top-left-radius:        $btn-border-radius;
+  border-bottom-left-radius:     $btn-border-radius;
+}
+.ui-button-group .ui-button:last-child {
+  border-top-right-radius:       $btn-border-radius;
+  border-bottom-right-radius:    $btn-border-radius;
+}
+.ui-button-group .ui-button.ui-state-focus {
+  z-index:                       1;
+}

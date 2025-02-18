@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns           ="http://xmlns.oracle.com/request/RequestDetails"
+        targetNamespace     ="http://xmlns.oracle.com/request/RequestDetails"
+        elementFormDefault  ="qualified"
+        attributeFormDefault="unqualified">
+
+  <element name="RequestID"            type="string"/>
+  <element name="RequestModel"         type="string"/>
+  <element name="RequestTarget"        type="string"/>
+  <element name="RequesterDetails"     type="tns:UserDetails"/>
+  <element name="BeneficiaryDetails"   type="tns:UserDetails"/>
+  <element name="ObjectDetails"        type="tns:ObjectDetails"/>
+  <element name="url"                  type="string"/>
+
+  <element name="OtherDetails">
+    <complexType>
+      <sequence>
+        <element name="dataElement"    type="tns:detailtype" maxOccurs="unbounded"/>
+      </sequence>
+    </complexType>
+  </element>
+
+  <complexType name="UserDetails">
+    <sequence>
+      <element name="FirstName"        type="string"/>
+      <element name="MiddleName"       type="string"/>
+      <element name="LastName"         type="string"/>
+      <element name="Login"            type="string"/>
+      <element name="DisplayName"      type="string"/>
+      <element name="ManagerLogin"     type="string"/>
+      <element name="OrganizationName" type="string"/>
+      <element name="Email"            type="string"/>
+      <element name="StartDate"        type="string"/>
+      <element name="EndDate"          type="string"/>
+      <element name="Status"           type="string"/>
+      <element name="XellerateType"    type="string"/>
+      <element name="UserType"         type="string"/>
+      <element name="Role"             type="string"         maxOccurs="unbounded"/>
+      <element name="attributes"       type="tns:detailtype" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="ObjectDetails">
+    <sequence>
+      <element name="name"            type="string"/>
+      <element name="type"            type="string"/>
+      <element name="authorizer"      type="string"/>
+      <element name="administrator"   type="string"/>
+      <element name="attributes"      type="tns:detailtype" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="detailtype">
+    <sequence>
+      <element name="Name"            type="string"/>
+      <element name="Value"           type="string"/>
+    </sequence>
+  </complexType>
+</schema>

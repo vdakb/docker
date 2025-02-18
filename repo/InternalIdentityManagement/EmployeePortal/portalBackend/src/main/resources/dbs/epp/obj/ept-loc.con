@@ -1,0 +1,21 @@
+-- D:\Project\Bundeskriminalamt12c\InternalIdentityManagement\EmployeePortal\portalBackend\src\main\resources\dbs\epp\obj\ept-loc.con
+--
+-- Generated for Oracle Database 12c on Sun May 24 16:53:56 2020 by Server Generator 10.1.2.93.10
+
+PROMPT Creating Primary Key 'ept_loc_pk' on 'ept_locales'
+ALTER TABLE ept_locales
+  ADD (
+    CONSTRAINT ept_loc_pk PRIMARY KEY (
+      id
+    )
+    USING INDEX TABLESPACE &&eppdata
+  )
+/
+PROMPT Creating Check Constraint 'ept_loc_ck' on 'ept_locales'
+ALTER TABLE ept_locales
+  ADD (
+    CONSTRAINT ept_loc_ck CHECK (
+      id IN ('en', 'de', 'fr')
+    )
+  )
+/

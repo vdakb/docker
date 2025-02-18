@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"  value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysadmin$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Administration']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{pageFlowScope.mode == 'create'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysadmin$bundle.ORC_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysadmin$bundle.ORC_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysadmin$bundle.ORC_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysadmin$bundle.ORC_ATTRIBUTE}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysadmin$bundle.ORC_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{af:formatString(sysadmin$bundle.ORC_DETAIL, pageFlowScope.processId)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysadmin$bundle.ORC_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id             ="btn16"
+                   text           ="#{sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc      ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysadmin$bundle.ORC_SINGLE)}"
+                   binding        ="#{backingBeanScope.orchestrationAttribute.revert}"
+                   actionListener ="#{pageFlowScope.orchestrationTrain.revert}"
+                   immediate      ="true">
+          <af:clientAttribute name="attribute" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical" inlineStyle="width:550px;">
+            <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="33%" fieldWidth="67%" binding="#{pageFlowScope.orchestrationTrain.formLayout}">
+              <af:spacer  id="sp111" width="0" height="15"/>
+              <af:inputText id                 ="it111"
+                            value              ="#{bindings.processId.inputValue}"
+                            label              ="#{bindings.processId.hints.label}"
+                            columns            ="#{bindings.processId.hints.displayWidth}"
+                            shortDesc          ="#{bindings.processId.hints.tooltip}"
+                            disabled           ="true"/>
+              <af:inputText id                 ="it112"
+                            value              ="#{bindings.processName.inputValue}"
+                            label              ="#{bindings.processName.hints.label}"
+                            columns            ="#{bindings.processName.hints.displayWidth}"
+                            shortDesc          ="#{bindings.processName.hints.tooltip}"
+                            disabled           ="true"/>
+              <af:inputText id                 ="it113"
+                            value              ="#{bindings.entityId.inputValue}"
+                            label              ="#{bindings.entityId.hints.label}"
+                            columns            ="#{bindings.entityId.hints.displayWidth}"
+                            shortDesc          ="#{bindings.entityId.hints.tooltip}"
+                            disabled           ="true"/>
+              <af:inputText id                 ="it114"
+                            value              ="#{bindings.entityType.inputValue}"
+                            label              ="#{bindings.entityType.hints.label}"
+                            columns            ="#{bindings.entityType.hints.displayWidth}"
+                            shortDesc          ="#{bindings.entityType.hints.tooltip}"
+                            disabled           ="true"/>
+              <af:inputText id                 ="it115"
+                            value              ="#{bindings.operation.inputValue}"
+                            label              ="#{bindings.operation.hints.label}"
+                            columns            ="#{bindings.operation.hints.displayWidth}"
+                            shortDesc          ="#{bindings.operation.hints.tooltip}"
+                            disabled           ="true"/>
+              <af:inputText id                 ="it116"
+                            value              ="#{bindings.stage.inputValue}"
+                            label              ="#{bindings.stage.hints.label}"
+                            columns            ="#{bindings.stage.hints.displayWidth}"
+                            shortDesc          ="#{bindings.stage.hints.tooltip}"
+                            disabled           ="true"/>
+              <af:inputText id                 ="it117"
+                            value              ="#{bindings.changeType.inputValue}"
+                            label              ="#{bindings.changeType.hints.label}"
+                            columns            ="#{bindings.changeType.hints.displayWidth}"
+                            shortDesc          ="#{bindings.changeType.hints.tooltip}"
+                            disabled           ="true"/>
+              <af:inputText id                 ="it118"
+                            value              ="#{bindings.retry.inputValue}"
+                            label              ="#{bindings.retry.hints.label}"
+                            columns            ="#{bindings.retry.hints.displayWidth}"
+                            shortDesc          ="#{bindings.retry.hints.tooltip}"
+                            disabled           ="true"/>
+            </af:panelFormLayout>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

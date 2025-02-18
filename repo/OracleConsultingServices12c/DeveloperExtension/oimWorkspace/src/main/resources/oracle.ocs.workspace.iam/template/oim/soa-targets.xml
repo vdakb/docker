@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="#{ant.project}"
+         basedir        ="#{ant.basedir}"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:composite="http://oracle.iam.identity/composite"
+         xmlns:request  ="http://oracle.iam.identity/request"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="./soa-context.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}"/>
+      <fileset dir="${logger.dir}"/>
+      <fileset dir="${deploy.dir}"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the build process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init" depends="clean">
+    <tstamp/>
+    <mkdir dir="${output.dir}/META-INF"/>
+    <mkdir dir="${deploy.dir}"/>
+    <mkdir dir="${logger.dir}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to compile the composite
+  =====================================================================
+  -->
+  <target name="compile" if="compile.source" depends="copy">
+    <touch>
+      <fileset dir="${source.dir}" includes="**/package-info.java"/>
+    </touch>
+    <javac srcdir="${source.dir}" classpathref="compiler.classpath" destdir="${sca.inf.bin}" debug="true"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create a manifest used in the jar files
+  =====================================================================
+  -->
+  <target name="manifest" description="Create a manifest used in the archive files">
+    <delete file="${manifest}"/>
+    <!-- update to version properties -->
+    <propertyfile file="${application.version}" comment="Build version info">
+      <entry key="build.timest" type="date" value="now" pattern="dd/MM/yyyy hh:mm:ss aa"/>
+      <entry key="build.major"  type="int"  value="00"  pattern="00" default="00"/>
+      <entry key="build.minor"  type="int"  value="01"  pattern="00" default="00" operation="+" />
+    </propertyfile>
+    <!-- load the file -->
+    <property file="${application.version}"/>
+    <!-- create the manifest file -->
+    <manifest file="${manifest}">
+      <attribute name="Built-By"               value="${user.name}"/>
+      <attribute name="Built-At"               value="${touch.timest}"/>
+      <attribute name="Specification-Title"    value="${description}"/>
+      <attribute name="Specification-Version"  value="${workflow.revision}"/>
+      <attribute name="Specification-Vendor"   value="Oracle Consulting Services"/>
+      <attribute name="Implementation-Title"   value="${description}"/>
+      <attribute name="Implementation-Version" value="${workflow.revision}-${build.major}.${build.minor}"/>
+      <attribute name="Implementation-Vendor"  value="Oracle Consulting Services"/>
+    </manifest>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to validate the composite
+  =====================================================================
+  -->
+  <target name="validate" description="Compile and validate a composite" depends="compile">
+    <composite:validate input="${compiler.source}" outXml="${compiler.output}" error="${compiler.error}" appHome="${compilepath.composite}" failonerror="true" displayLevel="${compiler.verbosity}" reportErrors="${compiler.schemaError}">
+      <jvmarg value="-Xms128m"/>
+      <jvmarg value="-Xmx1024m"/>
+      <jvmarg value="-XX:PermSize=32m"/>
+      <jvmarg value="-XX:MaxPermSize=256m"/>
+    </composite:validate>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the composite
+  =====================================================================
+  -->
+  <target name="make" depends="validate, manifest">
+    <!-- assemble the archive -->
+    <echo message="Packaging composite archive ${deploy.dir}/${application}.jar"/>
+    <jar destfile="${deploy.dir}/${application}.jar" compress="false" manifest="${manifest}">
+      <fileset dir="${basedir}">
+        <include name="**/*.xsd"/>
+        <include name="**/*.xsl"/>
+        <include name="**/*.exm"/>
+        <include name="**/*.xml"/>
+        <include name="**/*.wsdl"/>
+        <include name="**/*.bpel"/>
+        <include name="**/*.task"/>
+        <include name="**/*.componentType"/>
+        <include name="**/SCA-INF/lib/**/*"/>
+        <exclude name="**/log/**/*"/>
+        <exclude name="**/ant/**/*"/>
+        <exclude name="**/*.jpr"/>
+        <exclude name="**/*-ant.xml"/>
+        <exclude name="**/*.version"/>
+      </fileset>
+    </jar>
+    <echo message="Copying composite archive from path ${deploy.dir} to ${destination.base}/lib"/>
+    <copy todir="${destination.base}" overwrite="true" preservelastmodified="false" verbose="no">
+      <fileset dir="${deploy.dir}">
+        <include  name="${application}.jar"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the project artifacts
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploy a composite" depends="make">
+    <!-- verify if a configuration plan needs to be applied -->
+    <if>
+      <available file="./cfg/${system.SOA_PREFIX}.xml"/>
+      <then>
+        <echo message="Deploy composite archive ${deploy.dir}/${application}.jar on ${soa.server.host}:${soa.server.port} with configplan ${system.SOA_PREFIX}"/>
+        <workflow:deploy contextRef="soa-context">
+          <composite partition="${workflow.partition}" name="${workflow.name}" revision="${workflow.revision}" location="${deploy.dir}/${application}.jar" plan="./cfg/${system.SOA_PREFIX}.xml"/>
+        </workflow:deploy>
+      </then>
+      <else>
+        <echo message="Deploy composite archive ${deploy.dir}/${application}.jar on ${soa.server.host}:${soa.server.port} without a configplan"/>
+        <workflow:deploy contextRef="soa-context">
+          <composite partition="${workflow.partition}" name="${workflow.name}" revision="${workflow.revision}" location="${deploy.dir}/${application}.jar"/>
+        </workflow:deploy>
+      </else>
+    </if>
+  </target>
+ </project>

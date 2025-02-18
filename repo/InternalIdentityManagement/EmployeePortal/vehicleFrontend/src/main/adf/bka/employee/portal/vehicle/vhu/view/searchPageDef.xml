@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="12.2.1.22.48" id="searchPageDef"
+                Package="bka.employee.portal.vehicle.vhu.view">
+  <parameters/>
+  <executables>
+    <iterator     id="VehicleIterator" Binds="VehicleSearchVO" DataControl="VehicleAMDataControl" RangeSize="20"/>
+    <searchRegion id="VehicleCriteria" Binds="VehicleIterator" Criteria="VehicleVOCriteria" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="id"/>
+  </executables>
+  <bindings>
+    <tree id="Vehicle" IterBinding="VehicleIterator">
+      <nodeDefinition Name="VehiculeNode" DefName="bka.employee.portal.vehicle.model.view.VehicleVO">
+        <AttrNames>
+		  <Item Value="id"/>
+		  <Item Value="carPlateNumber"/>
+          <Item Value="brandKey"/>
+          <Item Value="colorKey"/>
+          <Item Value="typeKey"/>
+          <Item Value="brandIcon"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Rollback" DataControl="VehicleAMDataControl" RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <action id="Commit"   DataControl="VehicleAMDataControl" RequiresUpdateModel="true"  Action="commitTransaction"/>
+	<eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <tree IterBinding="VehicleIterator" id="VehicleSearchVO">
+      <nodeDefinition DefName="bka.employee.portal.vehicle.model.view.VehicleVO" Name="VehicleSearchVO0">
+        <AttrNames>
+          <Item Value="brandKey"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <listOfValues Uses="LOV_brandKey" StaticList="false" IterBinding="VehicleIterator" id="brandKey"/>
+  </bindings>
+</pageDefinition>

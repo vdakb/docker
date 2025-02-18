@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+						xmlns:req           ="http://xmlns.oracle.com/request/RequestDetails"
+						targetNamespace     ="http://xmlns.oracle.com/auto-rejection/reject"
+						elementFormDefault  ="qualified"
+						attributeFormDefault="unqualified">
+
+<xsd:import namespace="http://xmlns.oracle.com/request/RequestDetails" schemaLocation="rejection-request.xsd"/>
+
+<xsd:element name="process">
+	<xsd:complexType>
+		<xsd:sequence>
+			<xsd:element ref="req:RequestID"/>
+			<xsd:element ref="req:RequestModel"/>
+			<xsd:element ref="req:RequestTarget"/>
+			<xsd:element ref="req:RequesterDetails"/>
+			<xsd:element ref="req:BeneficiaryDetails"/>
+			<xsd:element ref="req:ObjectDetails"/>
+			<xsd:element ref="req:url"/>
+			<xsd:element ref="req:OtherDetails"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:element>
+<xsd:element name="processResponse">
+	<xsd:complexType>
+		<xsd:sequence>
+			<xsd:element name="result" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:element>
+</xsd:schema>

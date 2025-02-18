@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns:xsd          = "http://www.w3.org/2001/XMLSchema"
+            xmlns:tns          = "http://www.oracle.com/schema/oim/sap"
+            targetNamespace    = "http://www.oracle.com/schema/oim/sap"
+            elementFormDefault = "qualified">
+  <xsd:element name="feature">
+    <xsd:annotation>
+      <xsd:documentation>The features of the SAP/R3 Connection</xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:all>
+        <xsd:element name="icf" type="tns:icf"     minOccurs="1" maxOccurs="1"/>
+        <xsd:element name="jco" type="tns:jco"     minOccurs="0" maxOccurs="1"/>
+      </xsd:all>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- the framework description -->
+  <xsd:complexType name="icf">
+    <xsd:sequence>
+      <xsd:element name="bundle" minOccurs="1" maxOccurs="1">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="main"    type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          </xsd:sequence>
+          <xsd:attribute name="name"    type="xsd:string" use="required"/>
+          <xsd:attribute name="version" type="xsd:string" use="required"/>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- the entitlement description -->
+  <xsd:complexType name="entitlement">
+    <xsd:sequence>
+      <xsd:element name="role" minOccurs="1" maxOccurs="1">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="both"/>
+            <xsd:enumeration value="single"/>
+            <xsd:enumeration value="composite"/>
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- the java client description -->
+  <xsd:complexType name="jco">
+    <xsd:sequence>
+      <xsd:element name="client" minOccurs="0" maxOccurs="1">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="trace" minOccurs="0" maxOccurs="1" type="xsd:int"/>
+            <xsd:element name="cpic"  minOccurs="0" maxOccurs="1" type="xsd:int"/>
+            <xsd:element name="level" minOccurs="0" maxOccurs="1" type="xsd:int"/>
+            <xsd:element name="snc"   minOccurs="0" maxOccurs="1">
+              <xsd:complexType>
+                <xsd:sequence>
+                  <xsd:element name="quality" minOccurs="0" maxOccurs="1" type="xsd:int"/>
+                  <xsd:element name="local"   minOccurs="0" maxOccurs="1" type="xsd:string"/>
+                  <xsd:element name="remote"  minOccurs="0" maxOccurs="1" type="xsd:string"/>
+                  <xsd:element name="library" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

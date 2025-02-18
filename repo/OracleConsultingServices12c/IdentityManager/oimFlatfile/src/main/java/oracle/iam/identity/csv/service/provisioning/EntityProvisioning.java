@@ -1,0 +1,127 @@
+/*
+    Oracle Deutschland GmbH
+
+    This software is the confidential and proprietary information of
+    Oracle Corporation. ("Confidential Information").  You shall not
+    disclose such Confidential Information and shall use it only in
+    accordance with the terms of the license agreement you entered
+    into with Oracle.
+
+    ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+    SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+    SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+    THIS SOFTWARE OR ITS DERIVATIVES.
+
+    Copyright © 2010. All Rights reserved
+
+    -----------------------------------------------------------------------
+
+    System      :   Oracle Identity Manager Connector Library
+    Subsystem   :   CSV Flatfile Connector
+
+    File        :   EntityProvisioning.java
+
+    Compiler    :   Oracle JDeveloper 12c
+
+    Author      :   Dieter.Steding@oracle.com
+
+    Purpose     :   This file implements the class
+                    EntityProvisioning.
+
+
+    Revisions    Date        Editor      Comment
+    ------------+-----------+-----------+-----------------------------------
+    1.0.0.0      2012-05-01  DSteding    First release version
+*/
+
+package oracle.iam.identity.csv.service.provisioning;
+
+import oracle.mds.core.MDSSession;
+
+import oracle.mds.naming.DocumentName;
+import oracle.mds.naming.ReferenceException;
+
+import oracle.mds.persistence.PDocument;
+import oracle.mds.persistence.PManager;
+
+import oracle.iam.identity.foundation.TaskError;
+import oracle.iam.identity.foundation.TaskMessage;
+import oracle.iam.identity.foundation.TaskException;
+
+import oracle.iam.identity.foundation.resource.TaskBundle;
+
+import oracle.iam.identity.foundation.reconciliation.Descriptor;
+
+////////////////////////////////////////////////////////////////////////////////
+// abstract class EntityProvisioning
+// ~~~~~~~~ ~~~~~ ~~~~~~~~~~~~~~~~~~
+/**
+ ** The <code>EntityProvisioning</code> acts as the service end point for the
+ ** Oracle Identity Manager to provision entity information to a CSV flatfile.
+ **
+ ** @author  dieter.steding@oracle.com
+ ** @version 3.1.0.0
+ ** @since   1.0.0.0
+ */
+abstract class EntityProvisioning extends Provisioning {
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Constructors
+  //////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method:   Ctor
+  /**
+   ** Constructs an empty <code>EntityProvisioning</code> scheduled task that
+   ** allows use as a JavaBean.
+   */
+  protected EntityProvisioning() {
+    // ensure inheritance
+    super();
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method groupd by functionality
+  //////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method:   initialize (overridden)
+  /**
+   ** The initialization task.
+   **
+   ** @throws TaskException      in case an error does occur.
+   */
+  @Override
+  protected void initialize()
+    throws TaskException {
+
+    final String method = "initialize";
+
+    // ensure inheritance
+    // this will produce the trace of the configured task parameter
+    super.initialize();
+
+    final String path = stringValue(RECONCILE_DESCRIPTOR);
+    try {
+      debug(method, TaskBundle.format(TaskMessage.METADATA_OBJECT_FETCH, path));
+      final MDSSession session = createSession();
+      final PManager   manager  = session.getPersistenceManager();
+      final PDocument  document = manager.getDocument(session.getPContext(), DocumentName.create(reconcileDescriptor()));
+
+      debug(method, TaskBundle.format(TaskMessage.METADATA_OBJECT_UNMARSHAL, path));
+      this.descriptor = new Descriptor(this);
+      DescriptorFactory.configure(this.descriptor, document);
+      // produce the logging output only if the logging level is enabled for
+      if (this.logger != null && this.logger.debugLevel())
+        debug(method, this.descriptor.toString());
+    }
+    catch (ReferenceException e) {
+      throw new TaskException(e);
+    }
+
+    if (this.descriptor.attributeMapping().isEmpty())
+      throw new TaskException(TaskError.ATTRIBUTE_MAPPING_EMPTY);
+  }
+}

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="train-tf">
+   <template-reference>
+      <document id="__02">/WEB-INF/oracle/iam/ui/common/tfs/error-handler-flow-tf-template.xml</document>
+      <id id="__03">error-handler-flow-tf-template</id>
+    </template-reference>
+    <default-activity id="__04">router</default-activity>
+    <data-control-scope id="__05">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__10">
+      <name id="__11">uiShell</name>
+      <value id="__12">#{pageFlowScope.uiShell}</value>
+      <class id="__13">oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__15">taskFlowId</name>
+      <value id="__16">#{pageFlowScope.taskFlowId}</value>
+      <class id="__17">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__18">
+      <name id="__19">mode</name>
+      <value id="__20">#{pageFlowScope.mode}</value>
+      <class id="__21">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__22">
+      <name id="__23">carId</name>
+      <value id="__24">#{pageFlowScope.carID}</value>
+      <class id="__25">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__26">
+      <name id="__27">carPlate</name>
+      <value id="__28">#{pageFlowScope.carPlate}</value>
+      <class id="__29">java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__50">
+      <managed-bean-name id="__51">vehicleAttribute</managed-bean-name>
+      <managed-bean-class id="__52">bka.employee.portal.vehicle.vhu.backing.AttributeState</managed-bean-class>
+      <managed-bean-scope id="__53">backingBean</managed-bean-scope>
+      <managed-property id="__54">
+        <property-name id="__55">train</property-name>
+        <property-class id="__56">bka.employee.portal.vehicle.vhu.state.Train</property-class>
+        <value id="__57">#{pageFlowScope.vehicleTrain}</value>
+      </managed-property>
+    </managed-bean>
+    <managed-bean id="__58">
+      <managed-bean-name id="__59">vehicleTrain</managed-bean-name>
+      <managed-bean-class id="__60">bka.employee.portal.vehicle.vhu.state.Train</managed-bean-class>
+      <managed-bean-scope id="__61">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <router id="router">
+      <case id="__71">
+        <expression id="__72">#{pageFlowScope.mode == "edit" or pageFlowScope.mode == "view"}</expression>
+        <outcome id="__73">edit</outcome>
+      </case>
+      <case id="__74">
+        <expression id="__75">#{pageFlowScope.mode == "create"}</expression>
+        <outcome id="__76">create</outcome>
+      </case>
+      <default-outcome id="__77">edit</default-outcome>
+    </router>
+    <method-call id="vehicle-fetch">
+    <method id="__78">#{pageFlowScope.vehicleTrain.fetch}</method>
+      <outcome id="__79">
+        <fixed-outcome id="__80">fetched</fixed-outcome>
+      </outcome>
+    </method-call>
+    <view id="step-attributes">
+      <page id="__81">/bka/employee/portal/vehicle/vhu/view/attributes.jsff</page>
+      <train-stop id="__82">
+        <display-name id="__83">#{adfBundle['bka.employee.portal.vehicle.Frontend']['VHU_ATTRIBUTE']}</display-name>
+        <sequential id="__84">false</sequential>
+        <ignore id="__85">#{pageFlowScope.mode == 'request'}</ignore>
+      </train-stop>
+    </view>
+    <view id="step-summary">
+      <page>/bka/employee/portal/vehicle/vhu/view/summary.jsff</page>
+      <train-stop>
+        <display-name id="__86">#{adfBundle['bka.employee.portal.vehicle.Frontend']['VHU_SUMMARY']}</display-name>
+        <sequential id="__87">false</sequential>
+        <ignore id="__88">#{pageFlowScope.mode == 'request' or pageFlowScope.mode == 'edit' or pageFlowScope.mode == 'view'}</ignore>
+      </train-stop>
+    </view>
+    <task-flow-return id="train-commit">
+      <outcome>
+        <name>train-commit</name>
+      </outcome>
+    </task-flow-return>
+    <method-call id="vehicle-create">
+      <method id="__151">#{pageFlowScope.vehicleTrain.create}</method>
+      <outcome id="__152">
+        <fixed-outcome id="__153">created</fixed-outcome>
+      </outcome>
+    </method-call>
+    <train/>
+    <control-flow-rule id="__100">
+      <from-activity-id id="__101">router</from-activity-id>
+      <control-flow-case id="__102">
+        <from-outcome id="__103">edit</from-outcome>
+        <to-activity-id id="__104">vehicle-fetch</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__105">
+        <from-outcome id="__106">create</from-outcome>
+        <to-activity-id id="__107">vehicle-create</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__108">
+      <from-activity-id id="__109">vehicle-fetch</from-activity-id>
+      <control-flow-case id="__110">
+        <from-outcome id="__111">fetched</from-outcome>
+        <to-activity-id id="__112">step-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__113">
+      <from-activity-id id="__114">step-attributes</from-activity-id>
+      <control-flow-case id="__115">
+        <from-outcome id="__116">success</from-outcome>
+        <to-activity-id id="__117">train-commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__119">
+      <from-activity-id id="__120">vehicle-create</from-activity-id>
+      <control-flow-case id="__121">
+        <from-outcome id="__123">created</from-outcome>
+        <to-activity-id id="__124">step-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

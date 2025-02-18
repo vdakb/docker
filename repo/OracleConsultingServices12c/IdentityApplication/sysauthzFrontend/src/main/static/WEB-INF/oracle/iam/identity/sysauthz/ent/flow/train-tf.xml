@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<adfc-config id="__01" xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="train-tf">
+    <default-activity id="__02">router</default-activity>
+    <data-control-scope id="__03">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__10">
+      <name id="__11">uiShell</name>
+      <value id="__12">#{pageFlowScope.uiShell}</value>
+      <class id="__13">oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__15">taskFlowId</name>
+      <value id="__16">#{pageFlowScope.taskFlowId}</value>
+      <class id="__17">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__18">
+      <name id="__19">mode</name>
+      <value id="__20">#{pageFlowScope.mode}</value>
+      <class id="__21">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__49">
+      <name id="__50">entitlementKey</name>
+      <value id="__51">#{pageFlowScope.entitlementKey}</value>
+      <class id="__52">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__53">
+      <name id="__54">entitlementCode</name>
+      <value id="__55">#{pageFlowScope.entitlementCode}</value>
+      <class id="__56">java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__61">
+      <managed-bean-name id="__62">entitlementTrain</managed-bean-name>
+      <managed-bean-class id="__63">oracle.iam.identity.sysauthz.ent.state.Train</managed-bean-class>
+      <managed-bean-scope id="__64">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__65">
+      <managed-bean-name id="__66">entitlementAttribute</managed-bean-name>
+      <managed-bean-class id="__67">oracle.iam.identity.sysauthz.ent.backing.AttributeState</managed-bean-class>
+      <managed-bean-scope id="__68">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__69">
+      <managed-bean-name id="__70">entitlementPublication</managed-bean-name>
+      <managed-bean-class id="__71">oracle.iam.identity.sysauthz.ent.backing.PublicationState</managed-bean-class>
+      <managed-bean-scope id="__72">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__73">
+      <managed-bean-name id="__74">entitlementAccount</managed-bean-name>
+      <managed-bean-class id="__75">oracle.iam.identity.sysauthz.ent.backing.AccountState</managed-bean-class>
+      <managed-bean-scope id="__76">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="step-attributes">
+      <page id="__91">/oracle/iam/identity/sysauthz/ent/view/entitlement-attributes.jsff</page>
+      <train-stop id="__92">
+        <display-name id="__93">#{adfBundle['oracle.iam.identity.bundle.Authorization']['ENT_ATTRIBUTE']}</display-name>
+        <sequential id="__94">false</sequential>
+        <ignore id="__95">#{pageFlowScope.mode == 'request'}</ignore>
+      </train-stop>
+    </view>
+    <view id="step-publications">
+      <page id="__96">/oracle/iam/identity/sysauthz/ent/view/entitlement-publications.jsff</page>
+      <train-stop id="__97">
+        <display-name id="__98">#{adfBundle['oracle.iam.identity.bundle.Authorization']['ENT_PUBLICATION']}</display-name>
+        <sequential id="__99">false</sequential>
+        <ignore id="__100">#{pageFlowScope.mode == 'request' or pageFlowScope.mode == 'view'}</ignore>
+      </train-stop>
+    </view>
+    <view id="step-accounts">
+      <page id="__101">/oracle/iam/identity/sysauthz/ent/view/entitlement-accounts.jsff</page>
+      <train-stop id="__102">
+        <display-name id="__103">#{adfBundle['oracle.iam.identity.bundle.Authorization']['ENT_ACCOUNT']}</display-name>
+        <sequential id="__104">false</sequential>
+        <ignore id="__105">#{pageFlowScope.mode == 'request' or pageFlowScope.mode == 'view'}</ignore>
+      </train-stop>
+    </view>
+    <router id="router">
+      <case id="__121">
+        <expression id="__122">#{pageFlowScope.mode == "create"}</expression>
+        <outcome id="__123">create</outcome>
+      </case>
+      <case id="__124">
+        <expression id="__125">#{pageFlowScope.mode == "edit" or pageFlowScope.mode == "view"}</expression>
+        <outcome id="__126">edit</outcome>
+      </case>
+      <case id="__127">
+        <expression id="__128">#{pageFlowScope.mode == "request"}</expression>
+        <outcome id="__129">request</outcome>
+      </case>
+      <default-outcome id="__130">create</default-outcome>
+    </router>
+    <method-call id="entitlement-create">
+      <method id="__141">#{pageFlowScope.entitlementTrain.create}</method>
+      <outcome id="__142">
+        <fixed-outcome id="__143">created</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="entitlement-fetch">
+      <method id="__144">#{pageFlowScope.entitlementTrain.fetch}</method>
+      <outcome id="__145">
+        <fixed-outcome id="__146">fetched</fixed-outcome>
+      </outcome>
+    </method-call>
+    <train/>
+    <control-flow-rule id="__185">
+      <from-activity-id id="__186">router</from-activity-id>
+      <control-flow-case id="__187">
+        <from-outcome id="__188">create</from-outcome>
+        <to-activity-id id="__189">entitlement-create</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__190">
+        <from-outcome id="__191">edit</from-outcome>
+        <to-activity-id id="__192">entitlement-fetch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__193">
+      <from-activity-id id="__194">entitlement-create</from-activity-id>
+      <control-flow-case id="__195">
+        <from-outcome id="__196">created</from-outcome>
+        <to-activity-id id="__197">step-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__198">
+      <from-activity-id id="__199">entitlement-fetch</from-activity-id>
+      <control-flow-case id="__200">
+        <from-outcome id="__201">fetched</from-outcome>
+        <to-activity-id id="__202">step-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

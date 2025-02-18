@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="orchestrationprocess_attributesPageDef"
+                Package="oracle.iam.identity.sysadmin.view">
+  <parameters/>
+  <executables>
+    <iterator id="ProcessIterator" Binds="OrchestrationProcessDetailVO" DataControl="OrchestrationAMDataControl" RangeSize="20"/>
+  </executables>
+  <bindings>
+    <attributeValues id="processId" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="processId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="processName" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="processName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="bulkParentId" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="bulkParentId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="status" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="status"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="entityId" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="entityId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="entityType" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="entityType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="outOfBandEvents" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="outOfBandEvents"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="operation" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="operation"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="stage" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="stage"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="changeType" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="changeType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="retry" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="retry"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="createdOn" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="createdOn"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="modifiedOn" IterBinding="ProcessIterator">
+      <AttrNames>
+        <Item Value="modifiedOn"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="OrchestrationAMDataControl"/>
+    <methodAction id="refreshAttribute"
+                  DataControl        ="OrchestrationAMDataControl"
+                  InstanceName       ="OrchestrationAMDataControl.dataProvider"
+                  MethodName         ="refreshAttribute"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id                 ="refreshEvent"
+                  InstanceName       ="OrchestrationAMDataControl.dataProvider"
+                  DataControl        ="OrchestrationAMDataControl"
+                  Action             ="invokeMethod"
+                  MethodName         ="refreshEvent"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+    </methodAction>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

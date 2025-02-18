@@ -1,0 +1,187 @@
+{
+  "structural" : [ {
+    "type"       : "account",
+    "entity" : {
+      "name"         : "dba_users",
+      "__UID__"      : "userId",
+      "__NAME__"     : "userName",
+      "__PASSWORD__" : "password"
+      "__ENABLE__"   : "status"
+    }
+  }, {
+    "type" : "group",
+    "entity" : {
+      "name"       : "system_privilege_map",
+      "__UID__"    : "groupId",
+      "__NAME__"   : "groupName"
+    }
+  }, {
+    "type" : "role",
+    "entity" : {
+      "name"       : "dba_roles",
+      "__UID__"    : "roleId",
+      "__NAME__"   : "roleName"
+    }
+  }, {
+    "type" : "profile",
+    "entity" : {
+      "name"       : "dba_profiles",
+      "__UID__"    : "profileId",
+      "__NAME__"   : "profileName"
+    }
+  }, {
+    "type" : "catalog",
+    "entity" : {
+      "name"       : "dba_tab_columns",
+      "__UID__"    : "objectId",
+      "__NAME__"   : "objectName"
+    }
+  },
+  "entity" : [ {
+    "name"    : "dba_users",
+    "primary" : [ {
+      "name"  : "user_id",
+      "alias" : "userId",
+      "class" : "java.lang.String",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "username",
+      "alias" : "userName",
+      "class" : "java.lang.String"
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "password",
+      "alias" : "Password",
+      "class" : "org.identityconnectors.common.security.GuardedString",
+    }, {
+      "name"  : "account_status",
+      "alias" : "status",
+      "class" : "java.lang.String"
+    }, {
+      "name"  : "default_tablepsace",
+      "alias" : "defaultTableSpace",
+      "class" : "java.lang.String",
+    }, {
+      "name"  : "temporary_tablespace",
+      "alias" : "temporaryTableSpace",
+      "class" : "java.lang.String",
+    }, {
+      "name"  : "created",
+      "alias" : "createdOn",
+      "class" : "java.util.Date",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    }, {
+      "name"  : "profile",
+      "alias" : "profile",
+      "class" : "java.lang.String",
+    }, {
+      "name"  : "lock_date",
+      "alias" : "locked",
+      "class" : "java.util.Date",
+    }, {
+      "name"  : "expiry_date",
+      "alias" : "expire",
+      "class" : "java.util.Date",
+    }, {
+      "name"  : "external_name",
+      "alias" : "externalName",
+      "class" : "java.lang.String",
+    } ]
+  }, {
+    "name"     : "system_privilege_map",
+    "primary" : [ {
+      "name"  : "privileg",
+      "alias" : "groupId",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "name",
+      "alias" : "groupName",
+      "class" : "java.lang.String"
+      "flag"  : [ "required" ]
+    } ]
+  }, {
+    "name"     : "dba_roles",
+    "primary" : [ {
+      "name"  : "role_id",
+      "alias" : "roleId",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "role",
+      "alias" : "roleName",
+      "class" : "java.lang.String"
+      "flag"  : [ "required" ]
+    } ]
+  }, {
+    "name" : "dba_profiles",
+    "primary" : [ {
+      "name"  : "profile",
+      "alias" : "profile",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "profile_name",
+      "alias" : "profileName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ]
+  }, {
+    "name" : "dba_objects",
+    "primary" : [ {
+      "name"  : "owner",
+      "alias" : "owner",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "object_name",
+      "alias" : "objectName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "object_type",
+      "alias" : "objectType",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "profile_name",
+      "alias" : "profileName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ]
+  }, {
+    "name" : "dba_tab_columns",
+    "primary" : [ {
+      "name"  : "owner",
+      "alias" : "owner",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "table_name",
+      "alias" : "tableName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "column_name",
+      "alias" : "columnName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "data_type",
+      "alias" : "dataType",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "nullable",
+      "alias" : "nilable",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ]
+  } ]
+}

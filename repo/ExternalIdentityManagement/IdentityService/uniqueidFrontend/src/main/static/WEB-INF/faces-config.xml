@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<faces-config xmlns             ="http://xmlns.jcp.org/ns/javaee" version="2.2"
+              xmlns:xsi         ="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/ns/javaee http://xmlns.jcp.org/ns/javaee/web-facesconfig_2_2.xsd">
+  <application>
+    <action-listener>org.primefaces.application.DialogActionListener</action-listener>
+    <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+    <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+    <locale-config>
+      <default-locale>en</default-locale>
+      <supported-locale>de</supported-locale>
+      <supported-locale>en</supported-locale>
+      <supported-locale>fr</supported-locale>
+    </locale-config>
+    <resource-bundle>
+      <description>The application main resource bundle.</description>
+      <display-name>Application Resource Bundle</display-name>
+      <base-name>bka.iam.identity.resources.Bundle</base-name>
+      <var>app$bundle</var>
+    </resource-bundle>
+    <resource-bundle>
+      <description>The resource bundle dedicated for the UID Generator feature.</description>
+      <display-name>UID Generator Resource Bundle</display-name>
+      <base-name>bka.iam.identity.uid.resources.Bundle</base-name>
+      <var>uid$bundle</var>
+    </resource-bundle>
+    <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
+  </application>
+  <lifecycle>
+    <phase-listener>org.primefaces.component.lifecycle.LifecyclePhaseListener</phase-listener>
+  </lifecycle>
+  <factory>
+    <!--
+     | JSF generates all script tags with 'type="text/javascript"' which throws
+     | HTML5 validation warnings.
+    <faces-context-factory>org.primefaces.application.factory.Html5FacesContextFactory</faces-context-factory>
+    -->
+    <exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>
+    <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
+  </factory>
+  <managed-bean>
+    <managed-bean-name>sessionState</managed-bean-name>
+    <managed-bean-class>bka.iam.identity.uid.state.Session</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+   | The navigation to control the authentication flow
+   -->
+  <navigation-rule>
+    <from-view-id>/auth/signout.jsf</from-view-id>
+    <navigation-case>
+      <from-outcome>signin</from-outcome>
+      <to-view-id>/page/home.jsf</to-view-id>
+      <redirect/>
+    </navigation-case>
+  </navigation-rule>
+  <navigation-rule>
+    <from-view-id>/page/*</from-view-id>
+    <navigation-case>
+      <from-outcome>signout</from-outcome>
+      <to-view-id>/auth/signout.jsf</to-view-id>
+      <redirect/>
+    </navigation-case>
+  </navigation-rule>
+</faces-config>

@@ -1,0 +1,759 @@
+/*
+    Oracle Deutschland GmbH
+
+    This software is the confidential and proprietary information of
+    Oracle Corporation. ("Confidential Information").  You shall not
+    disclose such Confidential Information and shall use it only in
+    accordance with the terms of the license agreement you entered
+    into with Oracle.
+
+    ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+    SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+    SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+    THIS SOFTWARE OR ITS DERIVATIVES.
+
+    Copyright © 2010. All Rights reserved
+
+    -----------------------------------------------------------------------
+
+    System      :   Identity Manager Library
+    Subsystem   :   Deployment Utilities 12c
+
+    File        :   AttributeReference.java
+
+    Compiler    :   Oracle JDeveloper 12c
+
+    Author      :   Dieter.Steding@oracle.com
+
+    Purpose     :   This file implements the class
+                    AttributeReference.
+
+
+    Revisions   Date        Editor      Comment
+    -----------+-----------+-----------+-----------------------------------
+    1.0.0.0     2010-10-07  DSteding    First release version
+*/
+
+package oracle.iam.identity.request.type;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import java.math.BigInteger;
+
+import org.apache.tools.ant.BuildException;
+
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
+import oracle.hst.foundation.utility.StringUtility;
+
+import oracle.hst.deployment.ServiceError;
+import oracle.hst.deployment.ServiceResourceBundle;
+
+import oracle.iam.identity.common.FeatureError;
+import oracle.iam.identity.common.FeatureResourceBundle;
+
+////////////////////////////////////////////////////////////////////////////////
+// class AttributeReference
+// ~~~~~ ~~~~~~~~~~~~~~~~~~
+/**
+ ** <code>AttributeReference</code> defines the entity attributes at request end
+ ** that take part in data-flow between request dataset and underlying entity
+ ** attribute or process-form fields. All the data corresponding to
+ ** <code>AttributeReference</code>  are collected as request data at various
+ ** stages of the request life cycle based on the configuration.
+ ** <p>
+ ** The following schema fragment specifies the expected content contained
+ ** within this class.
+ ** <pre>
+ ** &lt;complexType name="attribute-reference"&gt;
+ **  &lt;complexContent&gt;
+ **    &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ **      &lt;sequence&gt;
+ **        &lt;element name="AttributeReference" type="{http://www.oracle.com/schema/oim/request}attribute-reference" maxOccurs="unbounded" minOccurs="0"/&gt;
+ **        &lt;element name="PrePopulationAdapter" type="{http://www.oracle.com/schema/oim/request}pre-pop-adapter" minOccurs="0"/&gt;
+ **        &lt;element name="lookupValues" type="{http://www.oracle.com/schema/oim/request}lookup-values" maxOccurs="unbounded" minOccurs="0"/&gt;
+ **        &lt;element name="lookupQuery" type="{http://www.oracle.com/schema/oim/request}lookup-query" minOccurs="0"/&gt;
+ **      &lt;/sequence&gt;
+ **      &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ **      &lt;attribute name="attr-ref" use="required" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ **      &lt;attribute name="type" use="required" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ **      &lt;attribute name="widget" use="required" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ **      &lt;attribute name="length" use="required" type="{http://www.w3.org/2001/XMLSchema}integer"/&gt;
+ **      &lt;attribute name="hidden" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ **      &lt;attribute name="masked" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ **      &lt;attribute name="read-only" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ **      &lt;attribute name="approver-only" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ **      &lt;attribute name="required" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ **      &lt;attribute name="available-in-bulk" use="required" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ **      &lt;attribute name="entity-type" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ **      &lt;attribute name="lookup-code" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ **      &lt;attribute name="itresource-type" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ **      &lt;attribute name="mls" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ **      &lt;attribute name="entitlement" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ **      &lt;attribute name="system-type" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
+ **      &lt;attribute name="primary" type="{http://www.w3.org/2001/XMLSchema}boolean" default="false"/&gt;
+ **    &lt;/restriction&gt;
+ **  &lt;/complexContent&gt;
+ ** &lt;/complexType&gt;
+ ** </pre>
+ **
+ ** @author  dieter.steding@oracle.com
+ ** @version 1.0.0.0
+ ** @since   1.0.0.0
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name="attribute-reference", propOrder={ "attributeReference", "prePopulationAdapter", "lookupValues", "lookupQuery"})
+public class AttributeReference {
+
+  //////////////////////////////////////////////////////////////////////////////
+  // instance attributes
+  //////////////////////////////////////////////////////////////////////////////
+
+  @XmlElement(name="AttributeReference")
+  protected List<AttributeReference> attributeReference;
+
+  @XmlElement(name="PrePopulationAdapter")
+  protected PrePopAdapter            prePopulationAdapter;
+
+  protected List<LookupValues>       lookupValues;
+
+  protected LookupQuery              lookupQuery;
+
+  @XmlAttribute(required=true)
+  protected String                   name;
+
+  @XmlAttribute(name="attr-ref", required=true)
+  protected String                   attrRef;
+
+  @XmlAttribute(required=true)
+  protected String                   type;
+
+  @XmlAttribute(required=true)
+  protected String                   widget;
+
+  @XmlAttribute(required=true)
+  protected BigInteger               length;
+
+  @XmlAttribute
+  protected Boolean                  hidden;
+
+  @XmlAttribute
+  protected Boolean                  masked;
+
+  @XmlAttribute(name="read-only")
+  protected Boolean                  readOnly;
+
+  @XmlAttribute(name="approver-only")
+  protected Boolean                  approverOnly;
+
+  @XmlAttribute
+  protected Boolean                  required;
+
+  @XmlAttribute(name="available-in-bulk", required=true)
+  protected boolean                  availableInBulk;
+
+  @XmlAttribute(name="entity-type")
+  protected String                   entityType;
+
+  @XmlAttribute(name="lookup-code")
+  protected String                  lookupCode;
+
+  @XmlAttribute(name="itresource-type")
+  protected String                  itresourceType;
+
+  @XmlAttribute
+  protected Boolean                 mls;
+
+  @XmlAttribute
+  protected Boolean                 entitlement;
+
+  @XmlAttribute(name="system-type")
+  protected Boolean                 systemType;
+
+  @XmlAttribute
+  protected Boolean                 primary;
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Constructors
+  //////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method:   Ctor
+  /**
+   ** Constructs a <code>AttributeReference</code> type that allows use as a
+   ** JavaBean.
+   ** <br>
+   ** Zero argument constructor required by the framework.
+   ** <br>
+   ** Default Constructor
+   */
+  public AttributeReference() {
+    // ensure inheritance
+    super();
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Accessor and Mutator methods
+  //////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setName
+  /**
+   ** Sets the name of the attribute.
+   **
+   ** @param  name               the name of the attribute.
+   */
+  public void setName(final String name) {
+    this.name = name;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getName
+  /**
+   ** Returns the name of the attribute.
+   **
+   ** @return                    the name of the attribute.
+   */
+  public final String getName() {
+    return this.name;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setType
+  /**
+   ** Sets the type of the attribute.
+   **
+   ** @param  type               the type of the attribute.
+   */
+  public void setType(final String type) {
+    this.type = type;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getType
+  /**
+   ** Returns the type of the attribute.
+   **
+   ** @return                    the type of the attribute.
+   */
+  public final String getType() {
+    return this.type;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setEntityType
+  /**
+   ** Sets the entity type of the attribute.
+   ** <p>
+   ** The entity type represents the backend type of Identity Manager.
+   **
+   ** @param  entityType               the entity type of the attribute.
+   */
+  public void setEntityType(final String entityType) {
+    this.entityType = entityType;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getEntityType
+  /**
+   ** Returns the entity type of the attribute.
+   ** <p>
+   ** The entity type represents the backend type of Identity Manager.
+   **
+   ** @return                    the entity type of the attribute.
+   */
+  public final String getEntityType() {
+    return this.entityType;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setLength
+  /**
+   ** Sets the physical length of the attribute.
+   **
+   ** @param  length             the physical length of the attribute.
+   */
+  public void setLength(final BigInteger length) {
+    this.length = length;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getLength
+  /**
+   ** Returns the physical length of the attribute.
+   **
+   ** @return                    the physical length of the attribute.
+   */
+  public final BigInteger getLength() {
+    return this.length;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setRequired
+  /**
+   ** Whether the attribute is mandatory in the request or not.
+   **
+   ** @param  required           <code>true</code> the attribute is mandatory in
+   **                            the request; otherwise <code>false</code>.
+   */
+  public void setRequired(final Boolean required) {
+    this.required = required;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   isRequired
+  /**
+   ** Returns <code>true</code> the attribute is mandatory in the request.
+   **
+   ** @return                    <code>true</code> the attribute is mandatory in
+   **                            the request; otherwise <code>false</code>.
+   */
+  public final Boolean isRequired() {
+    return this.required;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setMasked
+  /**
+   ** Whether the attribute has to be masked in the UI of the request or not.
+   **
+   ** @param  masked             the attribute has to be masked in the UI of
+   **                            the request or not.
+   */
+  public void setMasked(final Boolean masked) {
+    this.masked = masked;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   isMasked
+  /**
+   ** Returns <code>true</code> the attribute is mandatory in the request.
+   **
+   ** @return                    <code>true</code> the attribute has to be
+   **                            masked in the request; otherwise
+   **                            <code>false</code>.
+   */
+  public final Boolean isMasked() {
+    return this.masked;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setHidden
+  /**
+   ** Whether the attribute is hidden in the UI of the request or not.
+   **
+   ** @param  hidden             the attribute is hidden in the UI of the
+   **                            request or not.
+   */
+  public void setHidden(final Boolean hidden) {
+    this.hidden = hidden;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   isHidden
+  /**
+   ** Returns <code>true</code> the attribute is mandatory in the request.
+   **
+   ** @return                    <code>true</code> the attribute is hidden in
+   **                            in the request; otherwise <code>false</code>.
+   */
+  public final Boolean isHidden() {
+    return this.hidden;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setReadOnly
+  /**
+   ** Whether the attribute is read only in the request or not.
+   **
+   ** @param  readOnly           <code>true</code> the attribute is read only in
+   **                            the request; otherwise <code>false</code>.
+   */
+  public void setReadOnly(final Boolean readOnly) {
+    this.readOnly = readOnly;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   isReadOnly
+  /**
+   ** Returns <code>true</code> the attribute is read only in the request.
+   **
+   ** @return                    <code>true</code> the attribute is read only in
+   **                            the request; otherwise <code>false</code>.
+   */
+  public final Boolean isReadOnly() {
+    return this.readOnly;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setApproverOnly
+  /**
+   ** Whether the attribute is accessible in the request by the approver only
+   ** or not.
+   **
+   ** @param  approverOnly       the attribute is accessible in the request by
+   **                            the approver only or not.
+   */
+  public void setApproverOnly(final Boolean approverOnly) {
+    this.approverOnly = approverOnly;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   isApproverOnly
+  /**
+   ** Returns <code>true</code> the attribute is accessible in the request by
+   ** the approver only.
+   **
+   ** @return                    <code>true</code> the attribute is approver
+   **                            only in the request; otherwise
+   **                            <code>false</code>.
+   */
+  public final Boolean isApproverOnly() {
+    return this.approverOnly;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setAvailableInBulk
+  /**
+   ** Whether the attribute can be modified in bulk operations on the request or
+   ** not.
+   **
+   ** @param  availableInBulk    <code>true</code> if the attribute can be
+   **                            modified in bulk operations on the request;
+   **                            otherwise <code>false</code>.
+   ** not.
+   */
+  public void setAvailableInBulk(final boolean availableInBulk) {
+    this.availableInBulk = availableInBulk;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   isAvailableInBulk
+  /**
+   ** Returns <code>true</code> if the attribute can be modified in bulk
+   ** operations on the request.
+   **
+   ** @return                    <code>true</code> if the attribute can be
+   **                            modified in bulk operations on the request;
+   **                            otherwise <code>false</code>.
+   */
+  public final boolean isAvailableInBulk() {
+    return this.availableInBulk;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setWidget
+  /**
+   ** Sets the widget (UI representation) of the attribute.
+   **
+   ** @param  widget             the widget (UI representation) of the attribute.
+   */
+  public void setWidget(final String widget) {
+    this.widget = widget;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getWidget
+  /**
+   ** Returns the widget (UI representation) of the attribute.
+   **
+   ** @return                    the widget (UI representation) of the attribute.
+   */
+  public final String getWidget() {
+    return this.widget;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setMLS
+  /**
+   ** Whether the attribute supports multiple languages in the UI of the request
+   ** or not.
+   **
+   ** @param  mls                <code>true</code> the attribute supports
+   **                            multiple languages in the UI of the request.
+   */
+  public void setMLS(final Boolean mls) {
+    this.mls = mls;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   isMLS
+  /**
+   ** Returns <code>true</code> the attribute is mandatory in the request.
+   **
+   ** @return                    <code>true</code> the attribute supports
+   **                            multiple languages in the UI of the request;
+   **                            otherwise <code>false</code>.
+   */
+  public final Boolean isMLS() {
+    return this.mls;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setPrimary
+  /**
+   ** Whether the attribute has to be handled as a primary in the request or not.
+   **
+   ** @param  primary            the attribute is a primary of the request
+   ** or not.
+   */
+  public void setPrimary(final Boolean primary) {
+    this.primary = primary;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   isPrimary
+  /**
+   ** Returns <code>true</code> the attribute is primary in the request.
+   **
+   ** @return                    <code>true</code> the attribute is primary in
+   **                            in the request; otherwise <code>false</code>.
+   */
+  public final Boolean isPrimary() {
+    return this.primary;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setEntitlement
+  /**
+   ** Whether the attribute has to be handled as an entitlement in the request
+   ** or not.
+   **
+   ** @param  entitlement        <code>true</code> the attribute is a
+   **                            entitlement in the request.
+   */
+  public void setEntitlement(final Boolean entitlement) {
+    this.entitlement = entitlement;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   isEntitlement
+  /**
+   ** Returns <code>true</code> if the attribute has to be handled as an
+   ** entitlement in the request or not.
+   **
+   ** @return                    <code>true</code> the attribute is a
+   **                            entitlement in the request; otherwise
+   **                            <code>false</code>.
+   */
+  public final Boolean isEntitlement() {
+    return this.entitlement;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setAttrRef
+  /**
+   ** Sets the referenced attribute of the attribute.
+   **
+   ** @param  attrRef            the referenced attribute of the attribute.
+   */
+  public void setAttrRef(final String attrRef) {
+    this.attrRef = attrRef;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getAttrRef
+  /**
+   ** Returns the referenced attribute of the attribute.
+   **
+   ** @return                    the referenced attribute of the attribute.
+   */
+  public final String getAttrRef() {
+    return this.attrRef;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setLookupCode
+  /**
+   ** Sets the lookup code (<code>Lookup Definition</code>) to restrict values
+   ** on the attribute.
+   **
+   ** @param  lookupCode         the <code>Lookup Definition</code> used to
+   **                            restrict values on the attribute.
+   */
+  public void setLookupCode(final String lookupCode) {
+    this.lookupCode = lookupCode;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getLookupCode
+  /**
+   ** Returns the lookup code (<code>Lookup Definition</code>) to restrict
+   ** values on the attribute.
+   **
+   ** @return                    the <code>Lookup Definition</code> used to
+   **                            restrict values on the attribute.
+   */
+  public final String getLookupCode() {
+    return this.lookupCode;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setLookupQuery
+  /**
+   ** Sets the {@link LookupQuery} to restrict values on the attribute.
+   **
+   ** @param  lookupQuery       the {@link LookupQuery} to restrict values on
+   **                           the attribute.
+   */
+  public void setLookupQuery(final LookupQuery lookupQuery) {
+    this.lookupQuery = lookupQuery;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getLookupQuery
+  /**
+   ** Returns the lookup query to restrict values on the attribute.
+   **
+   ** @return                    the {@link LookupQuery} to restrict values on
+   **                           the attribute.
+   */
+  public final LookupQuery getLookupQuery() {
+    return this.lookupQuery;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getLookupValues
+  /**
+   ** Returns ...
+   **
+   ** @return                    ...
+   */
+  public List<LookupValues> getLookupValues() {
+    if (this.lookupValues == null)
+      this.lookupValues = new ArrayList<LookupValues>();
+
+    return this.lookupValues;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setItresourceType
+  /**
+   ** Sets the type of the IT Resource values on the attribute.
+   **
+   ** @param  itresourceType     the type of the IT Resource values on the
+   **                            attribute.
+   */
+  public void setItresourceType(final String itresourceType) {
+    this.itresourceType = itresourceType;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getItresourceType
+  /**
+   ** Returns the type of the IT Resource values on the attribute.
+   **
+   ** @return                    the type of the IT Resource values on the
+   **                            attribute.
+   */
+  public final String getItresourceType() {
+    return this.itresourceType;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getAttributeReference
+  /**
+   ** Returns ...
+   **
+   ** @return                    ...
+   */
+  public List<AttributeReference> getAttributeReference() {
+    if (this.attributeReference == null)
+      this.attributeReference = new ArrayList<AttributeReference>();
+
+    return this.attributeReference;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   setPrePopulationAdapter
+  /**
+   ** Sets the pre-population adapter assigned to this attribute.
+   **
+   ** @param  adapter            the pre-population adapter assigned to this
+   **                            attribute.
+   */
+  public void setPrePopulationAdapter(final PrePopAdapter adapter) {
+    this.prePopulationAdapter = adapter;
+  }
+
+  ////////////////////////////////////////////////////////////////////////////
+  // Method:   getPrePopulationAdapter
+  /**
+   ** Returns the pre-population adapter assigned to this attribute.
+   **
+   ** @return                    the pre-population adapter assigned to this
+   **                            attribute.
+   */
+  public PrePopAdapter getPrePopulationAdapter() {
+    return this.prePopulationAdapter;
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Methods group by functionality
+  //////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method:   addConfiguredLookupValue
+  /**
+   ** Call by the ANT deployment to inject the argument for adding a
+   ** {@link LookupValues}.
+   **
+   ** @param  value              the subject of substitution.
+   **
+   ** @throws BuildException     if this instance is referencing a declared
+   **                            {@link LookupValues}.
+   */
+  public void addConfiguredLookupValue(final LookupValues value)
+    throws BuildException {
+
+    if (this.lookupValues == null)
+      this.lookupValues = new ArrayList<LookupValues>();
+    else
+      for (LookupValues v : this.lookupValues) {
+        if (value.getEncodedValue().equals(v.getEncodedValue()))
+          throw new BuildException(FeatureResourceBundle.format(FeatureError.WORKFLOW_LOOKUPVALUE_ONLYONCE, value.getEncodedValue()));
+      }
+    this.lookupValues.add(value);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method:   validate
+  /**
+   ** The entry point to validate the type to use.
+   ** <p>
+   ** <b>Note:</b>
+   ** We are not calling the validation method on the super class to prevent
+   ** the validation of the <code>parameter</code> mapping.
+   **
+   ** @throws BuildException     in case the instance does not meet the
+   **                            requirements.
+   */
+  public void validate()
+    throws BuildException {
+
+    if (StringUtility.isEmpty(this.name))
+      throw new BuildException(ServiceResourceBundle.format(ServiceError.TYPE_ATTRIBUTE_MISSING, "name"));
+
+    if (StringUtility.isEmpty(this.attrRef))
+      throw new BuildException(ServiceResourceBundle.format(ServiceError.TYPE_ATTRIBUTE_MISSING, "attrRef"));
+
+    if (StringUtility.isEmpty(this.type))
+      throw new BuildException(ServiceResourceBundle.format(ServiceError.TYPE_ATTRIBUTE_MISSING, "type"));
+
+    if (StringUtility.isEmpty(this.widget))
+      throw new BuildException(ServiceResourceBundle.format(ServiceError.TYPE_ATTRIBUTE_MISSING, "widget"));
+
+    if (this.length == null)
+      throw new BuildException(ServiceResourceBundle.format(ServiceError.TYPE_ATTRIBUTE_MISSING, "length"));
+
+    for (LookupValues value : this.lookupValues)
+      value.validate();
+  }
+}

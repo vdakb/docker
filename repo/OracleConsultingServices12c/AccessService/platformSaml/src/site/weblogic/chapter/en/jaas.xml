@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="jass"
+         xml:lang="en"
+         version ="5.0">
+  <title>Java Authentication and Authorization Service</title>
+  <para>
+    Java Authentication and Authorization Service (JAAS) is a standard user authentication and authorization model provided by Java integrated in the JDK (under the javax.security.auth path).
+    Simply put, JAAS provides a series of interfaces, and different authentication methods are passed.
+    Implement the interface so that it can be integrated into the java application in the form of a plug-in, under the JAAS architecture diagram.
+  </para>
+  <para>
+    There are several important concepts to understand in JAAS:
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <emphasis role="strong">Subject</emphasis>
+        <para>
+          <emphasis>Subject</emphasis> represents the requester, which may be a person or a device.
+        </para>
+        <para><?linebreak?></para>
+      </listitem>
+      <listitem>
+        <emphasis role="strong">Principal</emphasis>
+        <para>
+          The <emphasis>Principal</emphasis> is associated with the Subject.
+          As mentioned earlier, the <emphasis>Subject</emphasis> means the requester.
+          We can understand the point better with the logged-in user.
+          Then the Principal is the user's account, which may be logged in with a mobile phone number or logged in with an email address.
+          <emphasis>Subject</emphasis> can have multiple Principal.
+        </para>
+        <para><?linebreak?></para>
+      </listitem>
+      <listitem>
+        <emphasis role="strong">LoginModule</emphasis>
+        <para>
+          The specific implementation of authentication, in which the login method implements the login logic, stores the result, and the commit method finally submits the <emphasis>Subject</emphasis> to the context.
+        </para>
+        <para><?linebreak?></para>
+      </listitem>
+      <listitem>
+        <emphasis role="strong">LoginContext</emphasis>
+        <para>
+          <emphasis>LoginContext</emphasis> authentication context, provides a series of authentication methods, is responsible for calling specific authentication implementation (<emphasis>LoginModule</emphasis>), and returns <emphasis>Subject</emphasis> after successful authentication.
+        </para>
+        <para><?linebreak?></para>
+      </listitem>
+      <listitem>
+        <emphasis role="strong">CallbackHandler</emphasis>
+        <para>
+          When <emphasis>LoginModule</emphasis> needs to get authentication information such as username and password, it needs to call <emphasis>CallbackHandler</emphasis> to return this information.
+          In the gui application, <emphasis>CallbackHandler</emphasis> may pop up a window for the user to enter the username and password.
+        </para>
+        <para><?linebreak?></para>
+      </listitem>
+      <listitem>
+        <emphasis role="strong">Callback</emphasis>
+        <para>
+          The user information that <emphasis>LoginModule</emphasis> needs to obtain becomes the <emphasis>Callback</emphasis>.
+          For example, if you need to obtain the user name from the <emphasis>CallbackHandler</emphasis>, a <emphasis>NameHandler</emphasis> will be created.
+          If you need to obtain the password, a <emphasis>PasswordHandler</emphasis> will be created.
+          The <emphasis>CallbackHandler</emphasis> returns the user information according to the type of <emphasis>Callback</emphasis>.
+        </para>
+        <para><?linebreak?></para>
+      </listitem>
+    </itemizedlist>
+  </para>
+</chapter>

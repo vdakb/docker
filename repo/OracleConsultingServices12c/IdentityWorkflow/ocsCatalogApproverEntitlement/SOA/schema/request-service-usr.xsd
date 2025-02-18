@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/UserData"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:jaxb          ="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc"
+            xmlns:xjc           ="http://java.sun.com/xml/ns/jaxb/xjc"
+            xmlns:general       ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData"
+            targetNamespace     ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/UserData"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified">
+  <xsd:annotation>
+    <xsd:appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="oracle.iam.requestdataws.webservicestubs.types"/>
+      </jaxb:schemaBindings>
+    </xsd:appinfo>
+  </xsd:annotation>
+
+  <xsd:import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData" schemaLocation="request-service-type.xsd"/>
+
+  <xsd:element name="UserId"   type="xsd:string"/>
+  <xsd:element name="UserData" type="UserDataType"/>
+
+  <xsd:complexType name="UserDataType">
+    <xsd:sequence>
+      <xsd:element name="usr_key"         type="general:MultiValueType"      nillable="true"/>
+      <xsd:element name="act_key"         type="general:MultiValueType"      nillable="true"/>
+      <xsd:element name="LastName"        type="general:MultiValueType"      nillable="true"/>
+      <xsd:element name="FirstName"       type="general:MultiValueType"      nillable="true"/>
+      <xsd:element name="MiddleName"      type="general:MultiValueType"      nillable="true"/>
+      <xsd:element name="DisplayName"     type="general:MapValueType"        nillable="true"/>
+      <xsd:element name="XellerateType"   type="general:MultiValueType"      nillable="true"/>
+      <xsd:element name="Status"          type="general:MultiValueType"      nillable="true"/>
+      <xsd:element name="Role"            type="general:MultiValueType"      nillable="true"/>
+      <xsd:element name="UserLogin"       type="general:MultiValueType"      nillable="true"/>
+      <xsd:element name="FullName"        type="general:MapValueType"        nillable="true"/>
+      <xsd:element name="UserManagerKey"  type="general:MultiValueType"/>
+      <!-- Arbitrary Attribute Name and values -->
+      <xsd:element name="CustomAttribute" type="general:CustomAttributeType" nillable="true" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id     ="efbs_accountPageDef"
+                Package="bka.iam.identity.ui.request.view">
+  <parameters/>
+  <executables>
+    <!--
+    the iterator is initialized by the task flow method call "beneficiary"
+    -->
+    <iterator id="beneficiary" Binds="UserVO1" RangeSize="25" DataControl="ManageUsersAMDataControl"/>
+  </executables>
+  <bindings>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <attributeValues IterBinding="beneficiary" id="beneficiaryKey">
+      <AttrNames>
+        <Item Value="usr_key"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="beneficiary" id="beneficiaryLogin">
+      <AttrNames>
+        <Item Value="userLogin"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="beneficiary" id="beneficiaryName">
+      <AttrNames>
+        <Item Value="displayName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="beneficiary" id="beneficiaryOrganization">
+      <AttrNames>
+        <Item Value="organizationName"/>
+      </AttrNames>
+    </attributeValues>
+  </bindings>
+</pageDefinition>

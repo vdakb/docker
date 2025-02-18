@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<adfc-config id="__01" xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="train-tf">
+    <default-activity id="__02">router</default-activity>
+    <data-control-scope id="__03">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__10">
+      <name id="__11">uiShell</name>
+      <class id="__12">oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__13">
+      <name id="__14">taskFlowId</name>
+      <value id="__15">#{pageFlowScope.taskFlowId}</value>
+      <class id="__16">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__17">
+      <name id="__18">mode</name>
+      <value id="__19">#{pageFlowScope.mode}</value>
+      <class id="__20">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__21">
+      <name id="__22">name</name>
+      <value id="__23">#{pageFlowScope.name}</value>
+      <class id="__24">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__25">
+      <name id="__26">task</name>
+      <value id="__27">#{pageFlowScope.task}</value>
+      <class id="__28">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <managed-bean id="__61">
+      <managed-bean-name id="__62">jobTrain</managed-bean-name>
+      <managed-bean-class id="__63">oracle.iam.identity.sysadmin.job.state.Train</managed-bean-class>
+      <managed-bean-scope id="__64">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__65">
+      <managed-bean-name id="__66">jobAttribute</managed-bean-name>
+      <managed-bean-class id="__67">oracle.iam.identity.sysadmin.job.backing.AttributeState</managed-bean-class>
+      <managed-bean-scope id="__68">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__69">
+      <managed-bean-name id="__70">jobParameter</managed-bean-name>
+      <managed-bean-class id="__71">oracle.iam.identity.sysadmin.job.backing.ParameterState</managed-bean-class>
+      <managed-bean-scope id="__72">backingBean</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__73">
+      <managed-bean-name id="__74">jobHistory</managed-bean-name>
+      <managed-bean-class id="__75">oracle.iam.identity.sysadmin.job.backing.HistoryState</managed-bean-class>
+      <managed-bean-scope id="__76">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="step-attributes">
+      <page id="__101">/oracle/iam/identity/sysadmin/job/view/job-attributes.jsff</page>
+      <train-stop id="__102">
+        <display-name id="__103">#{adfBundle['oracle.iam.identity.bundle.Administration']['JOB_ATTRIBUTE']}</display-name>
+        <sequential id="__104">false</sequential>
+      </train-stop>
+    </view>
+    <view id="step-parameters">
+      <page id="__105">/oracle/iam/identity/sysadmin/job/view/job-parameters.jsff</page>
+      <train-stop id="__106">
+        <display-name id="__107">#{adfBundle['oracle.iam.identity.bundle.Administration']['JOB_PARAMETER']}</display-name>
+        <sequential id="__108">false</sequential>
+      </train-stop>
+    </view>
+    <view id="step-history">
+      <page id="__109">/oracle/iam/identity/sysadmin/job/view/job-history.jsff</page>
+      <train-stop id="__110">
+        <display-name id="__111">#{adfBundle['oracle.iam.identity.bundle.Administration']['JOB_HISTORY']}</display-name>
+        <sequential id="__112">false</sequential>
+        <ignore id="__113">#{pageFlowScope.mode == 'request' or pageFlowScope.mode == 'create'}</ignore>
+      </train-stop>
+    </view>
+    <view id="step-summary">
+      <page id="__121">/oracle/iam/identity/sysadmin/job/view/job-summary.jsff</page>
+      <train-stop id="__122">
+        <display-name id="__123">#{adfBundle['oracle.iam.identity.bundle.Administration']['JOB_SUMMARY']}</display-name>
+        <sequential id="__124">false</sequential>
+        <ignore id="__125">#{pageFlowScope.mode == 'request' or pageFlowScope.mode == 'edit' or pageFlowScope.mode == 'view'}</ignore>
+      </train-stop>
+    </view>
+    <task-flow-return id="train-commit">
+      <outcome id="__131">
+        <name id="__132">train-commit</name>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="train-cancel">
+      <outcome id="__133">
+        <name id="__134">train-cancel</name>
+      </outcome>
+    </task-flow-return>
+    <router id="router">
+      <case id="__141">
+        <expression id="__142">#{pageFlowScope.mode == "create"}</expression>
+        <outcome id="__143">create</outcome>
+      </case>
+      <case id="__144">
+        <expression id="__145">#{pageFlowScope.mode == "edit" or pageFlowScope.mode == "view"}</expression>
+        <outcome id="__146">edit</outcome>
+      </case>
+      <default-outcome id="__150">create</default-outcome>
+    </router>
+    <method-call id="job-create">
+      <method id="__151">#{pageFlowScope.jobTrain.create}</method>
+      <outcome id="__152">
+        <fixed-outcome id="__153">created</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="job-fetch">
+      <method id="__154">#{pageFlowScope.jobTrain.fetch}</method>
+      <outcome id="__155">
+        <fixed-outcome id="__156">fetched</fixed-outcome>
+      </outcome>
+    </method-call>
+    <train/>
+    <control-flow-rule id="__180">
+      <from-activity-id id="__181">*</from-activity-id>
+      <control-flow-case id="__182">
+        <from-outcome id="__183">cancel</from-outcome>
+        <to-activity-id id="__184">train-cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__185">
+      <from-activity-id id="__186">router</from-activity-id>
+      <control-flow-case id="__187">
+        <from-outcome id="__188">create</from-outcome>
+        <to-activity-id id="__189">job-create</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__190">
+        <from-outcome id="__191">edit</from-outcome>
+        <to-activity-id id="__192">job-fetch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__193">
+      <from-activity-id id="__194">job-create</from-activity-id>
+      <control-flow-case id="__195">
+        <from-outcome id="__196">created</from-outcome>
+        <to-activity-id id="__197">step-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__198">
+      <from-activity-id id="__199">job-fetch</from-activity-id>
+      <control-flow-case id="__200">
+        <from-outcome id="__201">fetched</from-outcome>
+        <to-activity-id id="__202">step-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__203">
+      <from-activity-id id="__204">step-summary</from-activity-id>
+      <control-flow-case id="__205">
+        <from-outcome id="__206">cancel</from-outcome>
+        <to-activity-id id="__207">train-cancel</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__208">
+        <from-outcome id="__209">commit</from-outcome>
+        <to-activity-id id="__210">train-commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

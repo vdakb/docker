@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="Google Apigee Edge Connector Configuration 12.2.1.3" exported-date="1630083735056" user="XELSYSADM" version="12.2.1.3.0">
+  <RequestDataset mds-file="GAEPRequest.xml" mds-path="/custom/metadata/GAEP Account" name="GAEPRequest" repo-type="MDS">
+    <completeXml>
+      <request-data-set xmlns="http://www.oracle.com/schema/oim/request" entity="GAEP Account" name="GAEPRequest">
+        <AttributeReference attr-ref="Service" available-in-bulk="false" entity-type="GAEP Account" hidden="false" length="256" masked="false" name="Service" required="false" type="Integer" widget="textarea"/>
+        <AttributeReference attr-ref="User Name" available-in-bulk="false" entity-type="GAEP Account" hidden="false" length="256" masked="false" name="User Name" required="false" type="String" widget="textarea"/>
+        <AttributeReference attr-ref="Password" available-in-bulk="false" entity-type="GAEP Account" hidden="true" length="200" masked="true" name="Password" required="false" type="String" widget="textarea"/>
+        <AttributeReference attr-ref="Last Name" available-in-bulk="false" entity-type="GAEP Account" hidden="false" length="150" masked="false" name="Last Name" required="false" type="String" widget="textarea"/>
+        <AttributeReference attr-ref="First Name" available-in-bulk="false" entity-type="GAEP Account" hidden="false" length="150" masked="false" name="First Name" required="false" type="String" widget="textarea"/>
+        <AttributeReference attr-ref="UD_GAEP_URL" available-in-bulk="true" entity-type="GAEP Account" length="256" name="UD_GAEP_URL" type="TEXT" widget="textarea">
+          <AttributeReference attr-ref="Scope" available-in-bulk="false" length="128" masked="false" mls="false" name="Scope" required="false" type="String" widget="LookupField"/>
+          <AttributeReference attr-ref="Role" available-in-bulk="false" length="256" masked="false" mls="false" name="Role" required="false" type="String" widget="LookupField"/>
+        </AttributeReference>
+      </request-data-set>
+    </completeXml>
+  </RequestDataset>
+  <ApplicationInstance name="GAEPAccount" repo-type="API">
+    <itResourceName>GAEP Endpoint</itResourceName>
+    <applicableToEntitlement>false</applicableToEntitlement>
+    <softDelete>false</softDelete>
+    <displayName>Apigee Edge User Production</displayName>
+    <objectName>GAEP Account</objectName>
+    <description>An Account assignable to identities that need permissions in Google Apigee Edge Production.</description>
+    <source-scope name="GAEP Account" type="Resource">
+      <source-scope name="GAEPRequest" type="RequestDataset"/>
+    </source-scope>
+    <source-scope name="GAEP Endpoint" type="ITResource"/>
+    <objectKey Resource="GAEP Account"/>
+    <itResourceKey ITResource="GAEP Endpoint"/>
+  </ApplicationInstance>
+</xl-ddm-data>

@@ -1,0 +1,376 @@
+{
+    "schemas": [
+        "urn:ietf:params:scim:schemas:core:2.0:Schema"
+    ],
+    "id": "urn:ietf:params:scim:schemas:core:2.0:Schema",
+    "attributes": [{
+            "name": "schemas",
+            "type": "string",
+            "multiValued": true,
+            "description": "The schemas attribute is an array of Strings which allows introspection of the supported schema version for a SCIM representation as well any schema extensions supported by that representation.  Each String value must be a unique URI.  This specification defines URIs for User, Group, and a standard \"enterprise\" extension.  All representations of SCIM schema MUST include a non-zero value array with value(s) of the URIs supported by that representation.  Duplicate values MUST NOT be included.  Value order is not specified and MUST not impact behavior.  REQUIRED.",
+            "mutability": "readWrite",
+            "returned": "always",
+            "uniqueness": "none",
+            "required": true,
+            "caseExact": false,
+            "subAttributes": [{
+                    "name": "display",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "type",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "$ref",
+                    "type": "reference",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "value",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "primary",
+                    "type": "boolean",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }
+            ]
+        }, {
+            "name": "name",
+            "type": "string",
+            "multiValued": false,
+            "description": "The schema's human readable name.",
+            "mutability": "readOnly",
+            "returned": "default",
+            "uniqueness": "none",
+            "required": false,
+            "caseExact": false
+        }, {
+            "name": "description",
+            "type": "string",
+            "multiValued": false,
+            "description": "The schema's human readable description",
+            "mutability": "readOnly",
+            "returned": "default",
+            "uniqueness": "none",
+            "required": false,
+            "caseExact": false
+        }, {
+            "name": "attributes",
+            "type": "complex",
+            "multiValued": true,
+            "description": "A complex type that specifies the set of Resources attributes",
+            "returned": "default",
+            "uniqueness": "none",
+            "required": false,
+            "caseExact": false,
+            "subAttributes": [{
+                    "name": "display",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "description",
+                    "type": "string",
+                    "description": "The attribute's human readable description.",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "referenceTypes",
+                    "type": "string",
+                    "description": "The names of the Resource Types that may be referenced; e.g., User. This is only applicable for attributes that are of the \"reference\" data type.",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "readOnly",
+                    "type": "boolean",
+                    "description": "A Boolean value that specifies if the attribute is mutable.",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "type",
+                    "type": "string",
+                    "description": "The attribute's data type; e.g., String.",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "required",
+                    "type": "boolean",
+                    "description": "A Boolean value that specifies if the attribute is required.",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+                {"name": "subAttributes",
+                "type": "complex",
+                "multiValued": true,
+                "description": "Used to define the sub-attributes of a complex attribute.",
+                "required": false,
+                "mutability": "readOnly",
+                "returned": "default",
+                "subAttributes": [{
+                        "name": "name",
+                        "type": "string",
+                        "multiValued": false,
+                        "description": "The attribute's name.",
+                        "required": true,
+                        "caseExact": true,
+                        "mutability": "readOnly",
+                        "returned": "default",
+                        "uniqueness": "none"
+                    }, {
+                        "name": "type",
+                        "type": "string",
+                        "multiValued": false,
+                        "description": "The attribute's data type. Valid values include 'string', 'complex', 'boolean', 'decimal', 'integer', 'dateTime', 'reference'.",
+                        "required": true,
+                        "caseExact": false,
+                        "mutability": "readOnly",
+                        "returned": "default",
+                        "uniqueness": "none",
+                        "canonicalValues": [
+                            "string",
+                            "complex",
+                            "boolean",
+                            "decimal",
+                            "integer",
+                            "dateTime",
+                            "reference"
+                        ]
+                    }, {
+                        "name": "multiValued",
+                        "type": "boolean",
+                        "multiValued": false,
+                        "description": "A Boolean value indicating an attribute's plurality.",
+                        "required": true,
+                        "mutability": "readOnly",
+                        "returned": "default"
+                    }, {
+                        "name": "description",
+                        "type": "string",
+                        "multiValued": false,
+                        "description": "A human-readable description of the attribute.",
+                        "required": false,
+                        "caseExact": true,
+                        "mutability": "readOnly",
+                        "returned": "default",
+                        "uniqueness": "none"
+                    }, {
+                        "name": "required",
+                        "type": "boolean",
+                        "multiValued": false,
+                        "description": "A boolean value indicating whether or not the attribute is required.",
+                        "required": false,
+                        "mutability": "readOnly",
+                        "returned": "default"
+                    }, {
+                        "name": "canonicalValues",
+                        "type": "string",
+                        "multiValued": true,
+                        "description": "A collection of canonical values.  When canonical types, e.g., 'work', 'home'.",
+                        "required": false,
+                        "caseExact": true,
+                        "mutability": "readOnly",
+                        "returned": "default",
+                        "uniqueness": "none"
+                    }, {
+                        "name": "caseExact",
+                        "type": "boolean",
+                        "multiValued": false,
+                        "description": "A Boolean value indicating whether or not a string attribute is case sensitive.",
+                        "required": false,
+                        "mutability": "readOnly",
+                        "returned": "default"
+                    }, {
+                        "name": "mutability",
+                        "type": "string",
+                        "multiValued": false,
+                        "description": "Indicates whether or not an attribute is modifiable.",
+                        "required": false,
+                        "caseExact": true,
+                        "mutability": "readOnly",
+                        "returned": "default",
+                        "uniqueness": "none",
+                        "canonicalValues": [
+                            "readOnly",
+                            "readWrite",
+                            "immutable",
+                            "writeOnly"
+                        ]
+                    }, {
+                        "name": "returned",
+                        "type": "string",
+                        "multiValued": false,
+                        "description": "Indicates when an attribute is returned in a response (e.g., to a query).",
+                        "required": false,
+                        "caseExact": true,
+                        "mutability": "readOnly",
+                        "returned": "default",
+                        "uniqueness": "none",
+                        "canonicalValues": [
+                            "always",
+                            "never",
+                            "default",
+                            "request"
+                        ]
+                    }, {
+                        "name": "uniqueness",
+                        "type": "string",
+                        "multiValued": false,
+                        "description": "Indicates how unique a value must be.",
+                        "required": false,
+                        "caseExact": true,
+                        "mutability": "readOnly",
+                        "returned": "default",
+                        "uniqueness": "none",
+                        "canonicalValues": [
+                            "none",
+                            "server",
+                            "global"
+                        ]
+                    }, {
+                        "name": "referenceTypes",
+                        "type": "string",
+                        "multiValued": false,
+                        "description": "Used only with an attribute of type 'reference'.  Specifies a SCIM resourceType that a reference attribute MAY refer to, e.g., 'User'.",
+                        "required": false,
+                        "caseExact": true,
+                        "mutability": "readOnly",
+                        "returned": "default",
+                        "uniqueness": "none"
+                    }
+                ]}, {
+                    "name": "uniqueness",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "name",
+                    "type": "string",
+                    "description": "The attribute's name",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "mutability",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "multiValued",
+                    "type": "boolean",
+                    "description": "Boolean value indicating the attribute's plurality.",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "returned",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "caseExact",
+                    "type": "boolean",
+                    "description": "A Boolean value that specifies if the String attribute is case sensitive.",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "$ref",
+                    "type": "reference",
+                    "description": "",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "value",
+                    "type": "complex",
+                    "description": "",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }, {
+                    "name": "primary",
+                    "type": "boolean",
+                    "description": "",
+                    "mutability": "readOnly",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }
+            ]
+        }
+    ],
+    "name": "Schema",
+    "meta": {
+        "location": "OIG_BASE_URI/igs/scim/v2/Schemas/urn:ietf:params:scim:schemas:core:2.0:Schema",
+        "resourceType": "Schema"
+    },
+    "description": "Scim schema"
+}

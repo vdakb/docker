@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Workspace Targets"
+         basedir        ="."
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="oim-context.xml"/>
+  <!--
+  =====================================================================
+  == ANT macro to assemble a library
+  =====================================================================
+  -->
+  <macrodef name="make-library">
+    <attribute name="library"/>
+    <attribute name="include" default="**/*.class **/*.xml **/*.xsd"/>
+    <attribute name="exclude" default="**/*-ant.xml **/*-dm.xml"/>
+    <attribute name="destination"/>
+    <sequential>
+      <jar destfile="${deploy.dir}/@{library}.jar" manifest="${manifest}">
+        <fileset dir="${output.dir}" includes="@{include}" excludes="@{exclude}"/>
+      </jar>
+      <echo message="Copying java archive from path ${deploy.dir} to @{destination}"/>
+      <copy todir="@{destination}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+        <fileset dir="${deploy.dir}">
+          <include  name="@{library}.jar"/>
+        </fileset>
+      </copy>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to copy deployment descriptors
+  =====================================================================
+  -->
+  <macrodef name="descriptor-copy">
+    <attribute name="source"/>
+    <attribute name="target"/>
+    <attribute name="pattern"/>
+    <sequential>
+      <copy todir="@{target}" overwrite="true" flatten="true" preservelastmodified="false" verbose="no">
+        <fileset dir="@{source}">
+          <patternset refid="@{pattern}"/>
+        </fileset>
+      </copy>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+      <fileset dir="${deploy.dir}" includes="**/*"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the build process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+    <mkdir dir="${output.dir}/META-INF"/>
+    <mkdir dir="${deploy.dir}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to copy secific files to the output directory
+  =====================================================================
+  -->
+  <target name="copy" description="Copy files to output directory" depends="init">
+    <copy todir="${output.dir}" verbose="no">
+      <fileset dir="${source.dir}">
+        <patternset refid="filetype.patterns"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to compile all Java Source files
+  =====================================================================
+  -->
+  <target name="compile" description="Compile Java source files" depends="copy">
+    <!--
+    due to a regression of Bug 43114 - package-info.java repeatedly compiled
+    we had to enforce to compile any existing package-info.java in the source
+    tree
+    -->
+    <touch>
+      <fileset dir="${source.dir}" includes="**/package-info.java"/>
+    </touch>
+    <javac executable       ="${jdk.compiler}"
+           source           ="${jdk.version}"
+           target           ="${jdk.version}"
+           debug            ="${javac.debug}"
+           nowarn           ="${javac.nowarn}"
+           destdir          ="${output.dir}"
+           encoding         ="${javac.encoding}"
+           deprecation      ="${javac.deprecation}"
+           classpathref     ="classpath"
+           includeantruntime="no">
+      <src path        ="${source.dir}"/>
+    </javac>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create a manifest used in the jar files
+  =====================================================================
+  -->
+  <target name="manifest" description="Create a manifest used in the jar files">
+    <delete file="${manifest}"/>
+    <echo message="Reverting build version properties"/>
+    <exec executable="svn">
+      <arg value="revert"/>
+      <arg value="${application.version}"/>
+    </exec>
+    <!-- update to version properties -->
+    <propertyfile file="${application.version}" comment="Build version info">
+      <entry key="build.timest" type="date" value="now" pattern="dd/MM/yyyy hh:mm:ss aa"/>
+      <entry key="build.major"  type="int"  value="00"  pattern="00" default="00"/>
+      <entry key="build.minor"  type="int"  value="01"  pattern="00" default="00" operation="+" />
+    </propertyfile>
+
+    <!-- load the file -->
+    <property file="${application.version}"/>
+
+    <!-- create the manifest file -->
+    <manifest file="${manifest}">
+      <attribute name="Built-By"               value="${user.name}"/>
+      <attribute name="Built-At"               value="${build.timest}"/>
+      <attribute name="Specification-Title"    value="${description}"/>
+      <attribute name="Specification-Version"  value="${appication.release}"/>
+      <attribute name="Specification-Vendor"   value="Oracle Consulting Services"/>
+      <attribute name="Implementation-Title"   value="${description}"/>
+      <attribute name="Implementation-Version" value="${appication.release}-${build.major}.${build.minor}"/>
+      <attribute name="Implementation-Vendor"  value="Oracle Consulting Services"/>
+    </manifest>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the library archive
+  =====================================================================
+  -->
+  <target name="make-library" description="Build the ADF library" if="library" depends="compile,manifest">
+    <echo message="Assemble ADF archive from path ${output.dir}/${packagepath.library}"/>
+    <jar destfile="${deploy.dir}/${library}.jar" manifest="${manifest}">
+      <fileset dir="${output.dir}" includes="${packagepath.adapter} **/*.xsd **/*.wsdl **/*.txt" excludes="**/*-ant.xml **/*-dm.xml"/>
+    </jar>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the adapter library
+  =====================================================================
+  -->
+  <target name="make-adapter" description="Build the adapter library" if="adapter" depends="compile,manifest">
+    <echo message="Assemble java archive from path ${output.dir}/${packagepath.adapter}"/>
+    <make-library library="${adapter}" include="${packagepath.adapter} **/*.txt" destination="${destination.base}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the scheduler library
+  =====================================================================
+  -->
+  <target name="make-scheduler" description="Build the scheduler library" if="scheduler" depends="compile,manifest">
+    <echo message="Assemble java archive from path ${output.dir}/${packagepath.scheduler}"/>
+    <make-library library="${scheduler}" include="${packagepath.scheduler} **/*.txt" destination="${destination.base}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the thirdparty library
+  =====================================================================
+  -->
+  <target name="make-thirdparty" description="Build the thirdparty library" if="thirdparty" depends="compile,manifest">
+    <echo message="Assemble java archive excluding path ${output.dir}/${packagepath.adapter} and ${output.dir}/${packagepath.scheduler}"/>
+    <make-library library="${thirdparty}" include="**/*.class **/*.properties **/*.index **/*.xsd **/*.xml **/*.txt" exclude="${packagepath.adapter} ${packagepath.scheduler} ${packagepath.diagnostic} **/*-ant.xml **/*-dm.xml" destination="${destination.base}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the connector library
+  =====================================================================
+  -->
+  <target name="make-connector" description="Build the connector library" if="connector" depends="compile,manifest">
+    <echo message="Assemble java archive from path ${output.dir}/**/*class **/*.xsd"/>
+    <make-library library="${connector}" include="**/*.class **/*.xsd **/*.xml **/*.txt" destination="${destination.base}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the diagnostic library
+  =====================================================================
+  -->
+  <target name="make-diagnostic" description="Build the diagnostic library" if="diagnostic" depends="compile,manifest">
+    <echo message="Assemble java archive from path ${output.dir}/${packagepath.diagnostic}"/>
+    <make-library library="${diagnostic}" include="${packagepath.diagnostic} **/*.txt" destination="${destination.base}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the plugin archive
+  =====================================================================
+  -->
+  <target name="make-plugin" description="Build the plugin archive" if="plugin" depends="compile,manifest">
+    <echo message="Assemble plugin archive from path ${output.dir}/${packagepath.plugin}"/>
+    <jar destfile="${deploy.dir}/${plugin}.jar" manifest="${manifest}">
+      <fileset dir="${output.dir}" includes="${packagepath.plugin} **/*.txt" excludes="**/*.xsd **/*-ant.xml **/*-dm.xml"/>
+    </jar>
+    <echo message="Creating plugin deployment archive"/>
+    <mkdir dir="${plugin.dir}/lib"/>
+    <copy todir="${plugin.dir}/lib" flatten="true">
+      <path refid="oracle.ocs.iam.runtime"/>
+    </copy>
+    <copy file="${resource.dir}/xml/plugin.xml" todir="${plugin.dir}"/>
+    <copy file="${deploy.dir}/${plugin}.jar"    todir="${plugin.dir}/lib"/>
+    <zip destfile="${deploy.dir}/${plugin}.zip" basedir="${plugin.dir}"/>
+    <delete dir="${plugin.dir}"/>
+    <delete file="${deploy.dir}/${plugin}.jar"/>
+    <echo message="Copying plugin archive from path ${deploy.dir} to ${destination.plugin}"/>
+    <copy todir="${destination.plugin}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+      <fileset dir="${deploy.dir}">
+        <include  name="${plugin}.zip"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the non-binary deliverables like source and
+  == javadoc files
+  =====================================================================
+  -->
+  <target name="make" description="Assemble the project source and documentation" depends="make-thirdparty,make-adapter,make-plugin,make-scheduler,make-connector,make-diagnostic">
+    <!-- generate javadoc -->
+    <javadoc author      ="false"
+             classpathref="classpath"
+             sourcepath  ="${source.dir}"
+             packagenames="bka.iam.identity.*"
+             destdir     ="${deploy.doc}"
+             encoding    ="${javac.encoding}"
+             docencoding ="${javac.encoding}"
+             charset     ="${javac.encoding}"/>
+    <!-- assemble javadoc -->
+    <jar destfile="${deploy.dir}/${application}-doc.jar">
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </jar>
+    <!-- assemble source -->
+    <jar destfile="${deploy.dir}/${application}-src.jar">
+      <fileset dir="${source.dir}" includes="**/*.*"/>
+    </jar>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to synchronize the base system configuration files
+  =====================================================================
+  -->
+  <target name="destination-base" description="Deploy the base configuration" if="destination.base">
+    <descriptor-copy source="${resource.dir}/xml/base" target="${destination.base}/xml" pattern="descriptor.pattern.base"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to synchronize the target system configuration files
+  =====================================================================
+  -->
+  <target name="destination-target" description="Deploy the process deployment configuration" if="destination.target">
+    <descriptor-copy source="${resource.dir}/xml/target" target="${destination.target}/xml" pattern="descriptor.pattern.target"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to synchronize the trusted system configuration files
+  =====================================================================
+  -->
+  <target name="destination-trusted" description="Deploy the trusted source configuration" if="destination.trusted">
+    <descriptor-copy source="${resource.dir}/xml/trusted" target="${destination.trusted}/xml" pattern="descriptor.pattern.trusted"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to synchronize the plugin system configuration files
+  =====================================================================
+  -->
+  <target name="destination-plugin" description="Deploy the plugin configuration" if="destination.plugin">
+    <descriptor-copy source="${resource.dir}/xml/plugin" target="${destination.plugin}/xml" pattern="descriptor.pattern.plugin"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to synchronize the metadata system configuration files
+  =====================================================================
+  -->
+  <target name="destination-metadata" description="Deploy the metadata configuration" if="destination.metadata">
+    <descriptor-copy source="${resource.dir}/mds" target="${destination.metadata}/mds" pattern="descriptor.pattern.metadata"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the deployment configuration files
+  =====================================================================
+  -->
+  <target name="configuration" description="Deploy the deployment configuration" depends="destination-base,destination-trusted,destination-target,destination-plugin,destination-metadata"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the adapter archive
+  =====================================================================
+  -->
+  <target name="deploy-adapter" description="Deploy the adapter library" if="adapter" depends="make">
+    <library-deploy dir="${deploy.dir}" file="${adapter}.jar" location="${oim.remote.adapter}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the scheduler archive
+  =====================================================================
+  -->
+  <target name="deploy-scheduler" description="Deploy the scheduler library" if="scheduler" depends="make">
+    <library-deploy dir="${deploy.dir}" file="${scheduler}.jar" location="${oim.remote.scheduler}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the thirdparty archive
+  =====================================================================
+  -->
+  <target name="deploy-thirdparty" description="Deploy the thirdparty library" if="thirdparty" depends="make">
+    <library-deploy dir="${deploy.dir}" file="${thirdparty}.jar" location="${oim.remote.thirdparty}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the connector archive
+  =====================================================================
+  -->
+  <target name="deploy-connector" description="Deploy the connector library" if="connector" depends="make">
+    <library-deploy dir="${deploy.dir}" file="${connector}.jar" location="${oim.remote.adapter}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the diagnostic archive
+  =====================================================================
+  -->
+  <target name="deploy-diagnostic" description="Deploy the diagnostic library" if="diagnostic" depends="make">
+    <library-deploy dir="${deploy.dir}" file="${diagnostic}.jar" location="${oim.remote.diagnostic}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the plugin archive
+  =====================================================================
+  -->
+  <target name="deploy-plugin" description="Deploy the plugin archive" if="plugin" depends="make">
+    <plugin-deploy dir="${deploy.dir}" file="${plugin}.zip" location="${oim.remote.plugin}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the connector bundle archive
+  =====================================================================
+  -->
+  <target name="deploy-bundle" description="Deploy the connector bundle" if="bundle" depends="make">
+    <plugin:upload contextRef="oim-context" verbose="true">
+      <plugin:library location="ICFBundle" file="${deploy.dir}/${bundle}.jar"/>
+    </plugin:upload>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the project artifacts
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploy the project artifacts" depends="make,deploy-thirdparty,deploy-connector,deploy-adapter,deploy-plugin,deploy-scheduler,deploy-diagnostic,deploy-bundle"/>
+  <!--
+  =====================================================================
+  == ANT target to build and the project artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Build,Deploy and Install the project on the target host" depends="clean,deploy"/>
+</project>

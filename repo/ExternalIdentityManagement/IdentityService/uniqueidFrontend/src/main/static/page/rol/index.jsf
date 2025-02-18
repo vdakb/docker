@@ -1,0 +1,35 @@
+<u:composition xmlns   ="http://www.w3.org/1999/xhtml"
+               xmlns:f ="http://xmlns.jcp.org/jsf/core"
+               xmlns:h ="http://xmlns.jcp.org/jsf/html"
+               xmlns:p ="http://primefaces.org/ui"
+               xmlns:e ="http://primefaces.org/ui/extensions"
+               xmlns:u ="http://java.sun.com/jsf/facelets"
+               template="/WEB-INF/template/index.jsf">
+  <f:metadata>
+    <f:viewAction action="#{navigator.role}" immediate="true"/>
+  </f:metadata>
+  <u:define name="title">#{uid$bundle['rol.title']}</u:define>
+  <u:define name="instruction">#{uid$bundle['rol.instruction']}</u:define>
+  <u:define name="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <h:outputLink value="#{request.contextPath}/"><i class="fa fa-home"></i> #{uid$bundle['home.menu']}</h:outputLink>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="#"><i class="fa fa-users"></i> #{uid$bundle['rol.menu']}</a>
+      </li>
+    </ol>
+  </u:define>
+  <u:define name="implementation">
+    <div class="card">
+      <e:masterDetail id="md" level="#{role.level}" selectLevelListener="#{role.navigate}" showBreadcrumb="false">
+        <e:masterDetailLevel level="1">
+          <u:include src="/WEB-INF/fragment/rol/search.jsf"/>
+        </e:masterDetailLevel>
+        <e:masterDetailLevel level="2">
+          <u:include src="/WEB-INF/fragment/rol/detail.jsf"/>
+        </e:masterDetailLevel>
+      </e:masterDetail>
+    </div>
+  </u:define>
+</u:composition>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<schema xmlns           ="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:jaxb          ="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc"
+        xmlns:xjc           ="http://java.sun.com/xml/ns/jaxb/xjc"
+        xmlns:general       ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData"
+        xmlns:tns           ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/CatalogData"
+        targetNamespace     ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/CatalogData"
+        elementFormDefault  ="qualified"
+        attributeFormDefault="unqualified">
+
+  <annotation>
+    <appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="oracle.iam.requestdataws.webservicestubs.types"/>
+      </jaxb:schemaBindings>
+    </appinfo>
+  </annotation>
+
+  <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData" schemaLocation="request-service-type.xsd"/>
+
+  <element name="EntityKey"   type="string"/>
+  <element name="EntityType"  type="string"/>
+  <element name="CatalogData" type="tns:CatalogDataType"/>
+
+  <complexType name="CatalogDataType">
+    <sequence>
+      <element name="EntityKey"         type="string"                      nillable="true"/>
+      <element name="EntityType"        type="string"                      nillable="true"/>
+      <element name="ParentEntityType"  type="string"                      nillable="true"/>
+      <element name="ParentEntityKey"   type="string"                      nillable="true"/>
+      <element name="EntityDisplayName" type="string"                      nillable="true"/>
+      <element name="EntityName"        type="string"                      nillable="true"/>
+      <element name="EntityDescription" type="string"                      nillable="true"/>
+      <element name="IsRequestable"     type="long"                        nillable="true"/>
+      <element name="IsDeleted"         type="long"                        nillable="true"/>
+      <element name="Category"          type="string"                      nillable="true"/>
+      <element name="AuditObjective"    type="string"                      nillable="true"/>
+      <element name="ApproverUser"      type="string"                      nillable="true"/>
+      <element name="ApproverRole"      type="string"                      nillable="true"/>
+      <element name="FulfillmentUser"   type="string"                      nillable="true"/>
+      <element name="FulfillmentRole"   type="string"                      nillable="true"/>
+      <element name="CertifierUser"     type="string"                      nillable="true"/>
+      <element name="CertifierRole"     type="string"                      nillable="true"/>
+      <element name="ItemRisk"          type="int"                         nillable="true"/>
+      <element name="Certifiable"       type="long"                        nillable="true"/>
+      <!--  Arbitrary Attribute Name and values -->
+      <element name="CustomAttribute"   type="general:CustomAttributeType" nillable="true" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+</schema>

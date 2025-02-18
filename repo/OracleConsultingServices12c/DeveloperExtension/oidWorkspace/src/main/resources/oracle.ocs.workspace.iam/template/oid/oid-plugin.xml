@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="#{ant.project}" default="#{ant.default}" basedir="../">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name = "description"        value = "#{oid.description}"/>
+  <property name = "destination.base"   value = "#{oid.destination}"/>
+
+  <property name = "application"        value = "#{oid.application}"/>
+  <property name = "library"            value = "${application}"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file = "#{oid.targets}"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.jee"/>
+    <path refid="oracle.fmw.iam.oid.server"/>
+    <path refid="oracle.ocs.iam.hst.foundation"/>
+  </path>
+</project>

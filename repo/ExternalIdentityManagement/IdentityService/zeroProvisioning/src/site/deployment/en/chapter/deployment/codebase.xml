@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="war-codebase"
+         xml:lang="en"
+         version ="5.0">
+  <title>Assigning Codebase Grant's</title>
+  <para>
+    For authentication and authorization purposes, the applications use either technical or personalized user accounts to authenticate and authorize those accounts to the service interfaces that Oracle Identity Governance Suite offers.
+  </para>
+  <para>
+    In order to be able to carry out this authentication and authorization, the applications must be authorized for it.
+    This is accomplished by granting appropriate permissions (<emphasis>Codebase Grant</emphasis>'s) to the binary archive files.
+    <emphasis>Codebase Grant</emphasis>'s are are policies governing the execution rights of code running in a Java Virtual Machine (JVM).
+  </para>
+  <para>
+    The following <emphasis>Codebase Grant</emphasis>'s are required to make the service operational:
+  </para>
+  <table colsep="0">
+    <tgroup cols="2">
+      <colspec colname="c1" colwidth="10em"/>
+      <colspec colname="c2" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>Element</entry>
+          <entry>Value</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry><emphasis>Resource Name</emphasis></entry>
+          <entry>IdentityAssertion</entry>
+        </row>
+        <row>
+          <entry><emphasis>Permission Actions</emphasis></entry>
+          <entry>execute</entry>
+        </row>
+        <row>
+          <entry><emphasis>Permission Class</emphasis></entry>
+          <entry>oracle.security.jps.JpsPermission</entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <important>
+    <para>
+      That permission have to be granted to <filename>file:${XL.HomeDir}/client/oimclient.jar</filename>.
+    </para>
+  </important>
+  <para>
+    To grant the required permissions you can:
+  </para>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      <link linkend="war-codebase-em">Granting using Enterprise Manager</link>
+    </listitem>
+    <listitem>
+      <link linkend="war-codebase-wlst">Granting using WLST</link>
+    </listitem>
+  </itemizedlist>
+  <section xml:id="war-codebase-em">
+    <title>Granting using Enterprise Manager</title>
+    <procedure>
+      <para>The follwing steps needs to be performed to grant the permissions:</para>
+      <step>
+        <para>
+          Log in to the Enterprise Manager console using the user name and password you specified when creating the domain.
+        </para>
+      </step>
+    </procedure>
+  </section>
+  <section xml:id="war-codebase-wlst">
+    <title>Granting using WLST</title>
+    <procedure>
+      <para>Below are the steps to grant the permissions to codebase using WLST:</para>
+      <step xml:id="wlst-opss-start">
+        <para>Starting WLST shell by exceuting:</para>
+        <!--
+        Don't indent what's in the element below
+        -->
+        <programlisting language="bash">
+. igd.env
+${WLS_DOMAIN}/bin/setDomainEnv.sh
+${FMW_HOME}/oracle_common/common/bin/wlst.sh
+        </programlisting>
+        <para>You should see folowing output:</para>
+        <!--
+        Don't indent what's in the element below
+        -->
+        <programlisting language="bash">
+Initializing WebLogic Scripting Tool (WLST) ...
+
+Jython scans all the jar files it can find at first startup. Depending on the system, this
+process may take a few minutes to complete, and WLST may not return a prompt right away.
+
+Welcome to WebLogic Server Administration Scripting Shell
+
+Type help() for help on available commands
+
+wls:/offline>
+        </programlisting>
+      </step>
+      <step xml:id="wlst-opss-connect">
+        <para>Connecting to the domain through:</para>
+        <!--
+        Don't indent what's in the element below
+        -->
+        <programlisting language="bash">
+import os
+adminurl = os.getenv('ADMIN_URL')
+username = 'weblogic'
+password = '&lt;password&gt;'
+connect(username, password, adminurl)
+        </programlisting>
+        <note>
+          <para>
+            Importing the Jython module <literal>os</literal> offers the capabilities to expand environment variables by calling <literal>os.getenv</literal>.
+          </para>
+        </note>
+        <para>The shell will respond with:</para>
+        <!--
+        Don't indent what's in the element below
+        -->
+        <programlisting language="bash">
+Connecting to t3s://&lt;server-host-name&gt;:7002 with userid weblogic ...
+Successfully connected to Admin Server "igd" that belongs to domain "identity".
+        </programlisting>
+      </step>
+      <step xml:id="wlst-opss-grant">
+        <para>Grant required permission with:</para>
+        <!--
+        Don't indent what's in the element below
+        -->
+        <programlisting language="bash">
+codeBase = 'file:${XL.HomeDir}/client/oimclient.jar'
+grantPermission(codeBaseURL=codeBase, permTarget='IdentityAssertion', permActions='execute', permClass='oracle.security.jps.JpsPermission')
+        </programlisting>
+        <para>The output is similar to:</para>
+        <!--
+        Don't indent what's in the element below
+        -->
+        <programlisting language="bash">
+Location changed to domainRuntime tree. This is a read-only tree
+with DomainMBean as the root MBean.
+For more help, use help('domainRuntime')
+        </programlisting>
+      </step>
+      <step xml:id="wlst-opss-exit">
+        <para>Disconnect and exit the shell:</para>
+        <!--
+        Don't indent what's in the element below
+        -->
+        <programlisting language="bash">
+disconnect()
+exit()
+        </programlisting>
+      </step>
+    </procedure>
+    <important>
+      <para>The Admin Server and all Managed Servers needs to be restarted.</para>
+    </important>
+  </section>
+</section>

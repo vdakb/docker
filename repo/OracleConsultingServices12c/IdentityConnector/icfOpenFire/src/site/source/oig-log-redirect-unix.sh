@@ -1,0 +1,1 @@
+export WLS_REDIRECT_LOG=[FILENAME]

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="#{ant.project}" default="#{ant.default}" basedir="#{ant.basedir}">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"         value="#{oam.description}"/>
+  <property name="application"         value="#{oam.application}"/>
+  <property name="library"             value="#{oam.library}"/>
+
+  <property name="destination"         value="#{oam.destination}"/>
+
+  <property name="packagepath.library" value="#{oam.packagepath.library}"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="#{oam.target}"/>
+  <!--
+  =====================================================================
+  == complete a possible library runtime path
+  =====================================================================
+  -->
+  <path id="oracle.ocs.iam.runtime">
+    <path refid="oracle.ocs.iam.hst.foundation"/>
+    <path refid="oracle.ocs.iam.oam.foundation"/>
+  </path>
+  <!--
+  =====================================================================
+  == declare the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.ocs.iam.runtime"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT target to assemble the java library to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="clean,init,copy,compile,manifest">
+    <oam-jar-make directory="${basedir}" description="${description}" module="${library}" package="${packagepath.library}"/>
+    <echo message="Copying java archive from path ${deploy.dir} to ${destination}"/>
+    <copy todir="${destination}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+      <fileset dir="${deploy.dir}">
+        <include  name="${library}.jar"/>
+      </fileset>
+    </copy>
+  </target>
+</project>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:igs           ="http://www.oracle.com/schema/igs"
+            targetNamespace     ="http://www.oracle.com/schema/igs"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="identity"
+            version             ="1.0.0.0">
+  <xsd:include schemaLocation="role.xsd"/>
+  <xsd:include schemaLocation="application.xsd"/>
+  <!--
+   | Identity
+   -->
+  <xsd:complexType name="identity">
+    <xsd:complexContent>
+      <xsd:extension base="igs:entity">
+        <xsd:sequence>
+          <xsd:element name="roles"        type="igs:memberOf"    minOccurs="0" maxOccurs="unbounded"/>
+          <xsd:element name="applications" type="igs:application" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  <!--
+   | Member Of
+   -->
+  <xsd:complexType name="memberOf">
+    <annotation>
+      <documentation>
+        MemberOf is a reference to a role existing in Identity Manager.
+        The attribute id refers to the name of the role.
+
+        Granting or revoking a identity to or from a role is controlled by the
+        attribute action, where assign grant the membership, while revoke
+        revokes the membership.
+      </documentation>
+    </annotation>
+    <xsd:attribute name="id"     type="igs:token"/>
+    <xsd:attribute name="action" default="assign">
+      <xsd:simpleType>
+        <xsd:restriction base="igs:token">
+        <xsd:enumeration value="assign"/>
+        <xsd:enumeration value="revoke"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+</xsd:schema>

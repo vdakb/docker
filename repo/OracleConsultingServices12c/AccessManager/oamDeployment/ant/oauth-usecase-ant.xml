@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Access Manager Deployment Use Case"
+         basedir     ="../"
+         xmlns:fmw           ="http://oracle.hst.deployment/fusion"
+         xmlns:jps           ="http://oracle.hst.deployment/security"
+         xmlns:wsm           ="http://oracle.hst.deployment/webservice"
+         xmlns:server        ="http://oracle.hst.deployment/topology"
+         xmlns:identitydomain="http://oracle.iam.oauth/domain"
+         xmlns:resourceclient="http://oracle.iam.oauth/client"
+         xmlns:resourceserver="http://oracle.iam.oauth/resource">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oam-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name"      value="../log/oam-import-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Identity Domain Configuration
+  **
+  ** Synopsis: The tasks deploys the Identity Domain
+  **           This includes:
+  **           o Identity Domain
+  ******************************************************************************
+  -->
+  <target name="0501" description="Creating Identity Domains in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501 Create Identity Domain Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <identitydomain:create contextRef="api-context">
+      <identitydomain:instance name="AccessManagerMeetsOpenID">
+        <identitydomain:parameter value="identityProvider"        name="IDSPROFILE-OID_Identity_Store"/>
+        <identitydomain:parameter value="description"             name="Identity Domain to test Access Manager 12c as OpenIDConnect provider"/>
+        <identitydomain:parameter value="errorPageURL"            name="/oam/pages/error.jsp"/>
+        <identitydomain:parameter value="consentPageURL"          name="/oam/pages/consent.jsp"/>
+        <!--
+         | If no value is specified for the parameter at the time of creating an
+         | Identity Domain then the default value for the domain cert becomes
+         | approximately 5 years.
+         | Suppose, we set it to 3650 days (10 years) then the domain cert
+         | becomes valid to 10 years.
+         -->
+        <identitydomain:attribute id="domainCertValidityInDays"   value="1825"/>
+        <!--
+         | Suppose, we provide a value of ?1440 (i.e. 24 hours)? for this
+         | parameter, then the consent screen will be presented to the user
+         | during the time of first login.  After that the consent provided will
+         | be saved for the next 24 hours and the consent screen would be only
+         | presented to the user after 24 hours.
+         -->
+        <identitydomain:attribute id="consentExpiryTimeInMinutes" value="180"/>
+        <identitydomain:token type="access" expiry="7200" lifeCycle="true">
+          <identitydomain:tokenRefresh expiry="86400" lifeCycle="true"/>
+        </identitydomain:token>
+        <identitydomain:token type="authz" expiry="900" lifeCycle="true">
+          <identitydomain:tokenRefresh expiry="86400" lifeCycle="true"/>
+        </identitydomain:token>
+        <identitydomain:token type="link" expiry="3600" lifeCycle="false">
+          <identitydomain:tokenRefresh expiry="86400" lifeCycle="true"/>
+        </identitydomain:token>
+      </identitydomain:instance>
+    </identitydomain:create>
+    <echo message="=================================================================="/>
+    <echo message="0501 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Modifies the Access Manager Identity Domain Configuration
+  **
+  ** Synopsis: The tasks deploys the Identity Domain
+  **           This includes:
+  **           o Identity Domain
+  ******************************************************************************
+  -->
+  <target name="0502" description="Modifying Identity Domains in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0502 Modify Identity Domain Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <identitydomain:modify contextRef="api-context">
+      <identitydomain:instance name="AccessManagerMeetsOpenID">
+        <identitydomain:parameter value="description" name="Identity Domain to test Access Manager 12c as OpenIDConnect provider"/>
+        <!--
+        <identitydomain:attribute id="CustomA" value="A"/>
+        <identitydomain:attribute id="CustomB" value="B"/>
+        <identitydomain:attribute id="CustomC" value="C"/>
+        <identitydomain:attribute id="CustomD" value="D"/>
+        <identitydomain:attribute id="CustomE" value="E"/>
+        <identitydomain:attribute id="CustomF" value="F"/>
+        <identitydomain:attribute id="CustomG" value="G"/>
+        <identitydomain:attribute id="CustomH" value="H"/>
+        <identitydomain:token type="access" expiry="2" lifeCycle="false">
+          <identitydomain:tokenRefresh expiry="-1" lifeCycle="false"/>
+        </identitydomain:token>
+        <identitydomain:token type="authz" expiry="2" lifeCycle="false">
+          <identitydomain:tokenRefresh expiry="-1" lifeCycle="false"/>
+        </identitydomain:token>
+        <identitydomain:token type="link" expiry="2" lifeCycle="false">
+          <identitydomain:tokenRefresh expiry="-1" lifeCycle="false"/>
+        </identitydomain:token>
+        -->
+        <identitydomain:resource>
+        </identitydomain:resource>
+        <identitydomain:client>
+        </identitydomain:client>
+      </identitydomain:instance>
+    </identitydomain:modify>
+    <echo message="=================================================================="/>
+    <echo message="0502 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deletes the Access Manager Identity Domain Configuration
+  **
+  ** Synopsis: The tasks deploys the Identity Domain
+  **           This includes:
+  **           o Identity Domain
+  ******************************************************************************
+  -->
+  <target name="0503" description="Deleting Identity Domains in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0503 Delete Identity Domain Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <identitydomain:delete contextRef="api-context">
+      <identitydomain:instance name="AccessManagerMeetsOpenID"/>
+    </identitydomain:delete>
+    <echo message="=================================================================="/>
+    <echo message="0503 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Identity Domain Configuration
+  **
+  ** Synopsis: The tasks reports the Identity Domain configuration
+  **           This includes:
+  **           o Identity Domain
+  ******************************************************************************
+  -->
+  <target name="0504" description="Report Identity Domains in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0504 Report Identity Domain Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <identitydomain:report contextRef="api-context" failonerror="false">
+      <identitydomain:instance name="AccessManagerMeetsOpenID"/>
+    </identitydomain:report>
+    <echo message="=================================================================="/>
+    <echo message="0504 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Resource Server Configuration
+  **
+  ** Synopsis: The tasks deploys the Resource Server
+  **           This includes:
+  **           o Resource Server
+  ******************************************************************************
+  -->
+  <target name="0511" description="Creating Resource Servers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0511 Create Resource Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <resourceserver:create contextRef="api-context">
+      <resourceserver:domain name="AccessManagerMeetsOpenID">
+        <resourceserver:instance name="HumanCapitalServer">
+          <resourceserver:parameter value="description" name="Waiting for Target 0512 to run."/>
+          <resourceserver:scope name="scope1" description="View a Page"/>
+          <resourceserver:scope name="scope2" description="Update a Page"/>
+          <resourceserver:scope name="scope3" description="Modify a Page"/>
+          <resourceserver:tokenAttribute id="sessionId"  type="dynamic" value="$session.id"/>
+          <resourceserver:tokenAttribute id="resSrvAttr" type="static"  value="RESOURCECONST"/>
+        </resourceserver:instance>
+      </resourceserver:domain>
+    </resourceserver:create>
+    <echo message="=================================================================="/>
+    <echo message="0511 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Modifies the Access Manager Resource Server Configuration
+  **
+  ** Synopsis: The tasks deploys the Resource Server
+  **           This includes:
+  **           o Resource Server
+  ******************************************************************************
+  -->
+  <target name="0512" description="Modifying Resource Servers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0512 Modify Resource Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <resourceserver:modify contextRef="api-context">
+      <resourceserver:domain name="AccessManagerMeetsOpenID">
+        <resourceserver:instance name="HumanCapitalServer">
+          <resourceserver:parameter value="description" name="The resource server is capable of accepting and responding to protected resource requests using access tokens for the Human Capital Application."/>
+        </resourceserver:instance>
+      </resourceserver:domain>
+    </resourceserver:modify>
+    <echo message="=================================================================="/>
+    <echo message="0512 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deletes the Access Manager Resource Server Configuration
+  **
+  ** Synopsis: The tasks deploys the Resource Server
+  **           This includes:
+  **           o Resource Server
+  ******************************************************************************
+  -->
+  <target name="0513" description="Deleting Resource Servers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0513 Delete Resource Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <resourceserver:delete contextRef="api-context" failonerror="false">
+      <resourceserver:domain name="AccessManagerMeetsOpenID">
+        <resourceserver:instance name="HumanCapitalServer"/>
+      </resourceserver:domain>
+    </resourceserver:delete>
+    <echo message="=================================================================="/>
+    <echo message="0513 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Resource Server Configuration
+  **
+  ** Synopsis: The tasks reports the Resource Server configuration
+  **           This includes:
+  **           o Resource Server
+  ******************************************************************************
+  -->
+  <target name="0514" description="Report Resource Servers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0514 Report Resource Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <resourceserver:print contextRef="api-context" failonerror="false">
+      <resourceserver:domain name="AccessManagerMeetsOpenID">
+        <resourceserver:instance name="HumanCapitalServer"/>
+      </resourceserver:domain>
+    </resourceserver:print>
+    <echo message="=================================================================="/>
+    <echo message="0514 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Resource Client Configuration
+  **
+  ** Synopsis: The tasks deploys the Resource Client
+  **           This includes:
+  **           o Resource Client
+  ******************************************************************************
+  -->
+  <target name="0521" description="Creating Resource Clients in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0521 Create Resource Client Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <resourceclient:create contextRef="api-context">
+      <resourceclient:domain name="AccessManagerMeetsOpenID">
+        <resourceclient:instance name="HumanCapitalClient" type="confidential">
+          <resourceclient:parameter value="secret"          name="Welcome1"/>
+          <resourceclient:parameter value="defaultScope"    name="HumanCapitalServer.scope1"/>
+          <resourceclient:parameter value="description"     name="Waiting for Target 0522 to run"/>
+          <resourceclient:scope prefix="HumanCapitalServer" name="scope1"/>
+          <resourceclient:scope prefix="HumanCapitalServer" name="scope2"/>
+          <resourceclient:scope prefix="HumanCapitalServer" name="scope3"/>
+          <resourceclient:grant type="password"/>
+          <resourceclient:grant type="credential"/>
+          <resourceclient:grant type="bearer"/>
+          <resourceclient:grant type="refresh"/>
+          <resourceclient:grant type="authorization"/>
+          <!--
+          <resourceclient:attribute type="dynamic" id="customeAttr1" value="$session.id"/>
+          <resourceclient:attribute type="static"  id="resSrvAttr"   value="CustomValue"/>
+          -->
+          <resourceclient:redirect url="http://localhost:8888/hcm/oauth/callback"/>
+          <resourceclient:redirect url="http://laurel.vm.oracle.com:8888/hcm/oauth/callback"/>
+        </resourceclient:instance>
+      </resourceclient:domain>
+    </resourceclient:create>
+    <echo message="=================================================================="/>
+    <echo message="0521 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Modifies the Access Manager Resource Client Configuration
+  **
+  ** Synopsis: The tasks deploys the Resource Client
+  **           This includes:
+  **           o Resource Client
+  ******************************************************************************
+  -->
+  <target name="0522" description="Modifying Resource Clients in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0522 Modify Resource Client Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <resourceclient:modify contextRef="api-context">
+      <resourceclient:domain name="AccessManagerMeetsOpenID">
+        <resourceclient:instance name="HumanCapitalClient">
+          <resourceclient:parameter value="defaultScope" name="HumanCapitalServer.scope1"/>
+          <resourceclient:parameter value="description"  name="Identifies the scopes that the Human Capital Client is requesting permission to access."/>
+        </resourceclient:instance>
+      </resourceclient:domain>
+    </resourceclient:modify>
+    <echo message="=================================================================="/>
+    <echo message="0522 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deletes the Access Manager Resource Client Configuration
+  **
+  ** Synopsis: The tasks deploys the Resource Client
+  **           This includes:
+  **           o Resource Client
+  ******************************************************************************
+  -->
+  <target name="0523" description="Deleting Resource Clients in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0523 Delete Resource Client Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <resourceclient:delete contextRef="api-context" failonerror="false">
+      <resourceclient:domain name="AccessManagerMeetsOpenID">
+        <resourceclient:instance name="HumanCapitalClient"/>
+        <resourceclient:instance name="yyyyyyy"/>
+      </resourceclient:domain>
+    </resourceclient:delete>
+    <echo message="=================================================================="/>
+    <echo message="0523 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Resource Server Configuration
+  **
+  ** Synopsis: The tasks reports the Resource Server configuration
+  **           This includes:
+  **           o Resource Client
+  ******************************************************************************
+  -->
+  <target name="0524" description="Report Resource Clients in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0524 Report Resource Client Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <resourceclient:print contextRef="api-context" failonerror="false">
+      <resourceclient:domain name="AccessManagerMeetsOpenID">
+        <resourceclient:instance name="HumanCapitalClient"/>
+        <resourceclient:instance name="yyyyyyy"/>
+      </resourceclient:domain>
+    </resourceclient:print>
+    <echo message="=================================================================="/>
+    <echo message="0524 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

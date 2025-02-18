@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter"
+         basedir         ="../xml"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-export-ant.log"/>
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Oracle Identity Manager System Integration
+  **           Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports Federated Identity Management Connector System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="base Base System Integration Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+       <object:exportSet exportFile ="base/ldap-resource-dm.xml"
+                        description="ODSEE IT Resource Type Configuration ${application.release}">
+        <object:category value="ITResourceDef"  name="LDAP"/>
+       </object:exportSet>
+       <object:exportSet exportFile ="base/ldap-adapter-dm.xml"
+                         description="ODSEE Adapter Configuration ${application.release}">
+         <object:category value="PrepopAdapter" name="adpLDAPSTRING"/>
+         <object:category value="PrepopAdapter" name="adpLDAPCONCAT"/>
+         <object:category value="TaskAdapter"   name="adpLDAPRETURNTEXT"/>
+         <object:category value="TaskAdapter"   name="adpLDAPCREATEOBJECT"/>
+         <object:category value="TaskAdapter"   name="adpLDAPDELETE"/>
+         <object:category value="TaskAdapter"   name="adpLDAPENABLE"/>
+         <object:category value="TaskAdapter"   name="adpLDAPDISABLE"/>
+         <object:category value="TaskAdapter"   name="adpLDAPUPDATE"/>
+         <object:category value="TaskAdapter"   name="adpLDAPUPDATEMULTI"/>
+         <object:category value="TaskAdapter"   name="adpLDAPUPDATESINGLE"/>
+         <object:category value="TaskAdapter"   name="adpLDAPCHILDUPDATE"/>
+         <object:category value="TaskAdapter"   name="adpLDAPADDCHILDTABLEVALUE"/>
+         <object:category value="TaskAdapter"   name="adpLDAPUPDATECHILDTABLEVALUE"/>
+         <object:category value="TaskAdapter"   name="adpUPDATECHILDTABLEVALUESBULK"/>
+         <object:category value="TaskAdapter"   name="adpLDAPREMOVECHILDTABLEVALUE"/>
+         <object:category value="TaskAdapter"   name="adpADDCHILDTABLEVALUES"/>
+       </object:exportSet>
+       <object:exportSet exportFile ="base/ldap-scheduler-dm.xml"
+                         description="ODSEE Scheduler Configuration ${application.release}">
+         <object:category value="scheduledTask" name="LDAP Connector Lookup Reconciliation"/>
+         <object:category value="scheduledTask" name="LDAP Connector Search Incremental Reconciliation"/>
+         <object:category value="scheduledTask" name="LDAP Connector Search Delete Reconciliation"/>
+       </object:exportSet>
+       <object:exportSet exportFile ="base/ids-adapter-dm.xml"
+                         description="IDSEE Adapter Configuration ${application.release}">
+         <object:category value="PrepopAdapter" name="adpBKAGETIDSTORECONTAINER"/>
+       </object:exportSet>
+     </object:export>
+     <echo message="=================================================================="/>
+     <echo message="base completed"/>
+     <echo message="=================================================================="/>
+     <record name="${oim.recorder.name}" action="stop"/>
+   </target>
+</project>

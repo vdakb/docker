@@ -1,0 +1,429 @@
+/*
+    Oracle Deutschland GmbH
+
+    This software is the confidential and proprietary information of
+    Oracle Corporation. ("Confidential Information").  You shall not
+    disclose such Confidential Information and shall use it only in
+    accordance with the terms of the license agreement you entered
+    into with Oracle.
+
+    ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+    SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+    SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+    THIS SOFTWARE OR ITS DERIVATIVES.
+
+    Copyright © 2012. All Rights reserved
+
+    -----------------------------------------------------------------------
+
+    System      :   Oracle Directory Service Utility Library
+    Subsystem   :   Deployment Utilities 11g
+
+    File        :   DSMLGrammar.java
+
+    Compiler    :   Oracle JDeveloper 11g
+
+    Author      :   Dieter.Steding@oracle.com
+
+    Purpose     :   This file implements the interface
+                    DSMLGrammar.
+
+
+    Revisions    Date        Editor      Comment
+    ------------+-----------+-----------+-----------------------------------
+    1.0.0.0     2012-12-09  DSteding    First release version
+*/
+
+package oracle.iam.directory.common.spi.support;
+
+////////////////////////////////////////////////////////////////////////////////
+// interface DSMLGrammar
+// ~~~~~~~~ ~~~~~~~~~~~~
+/**
+ ** Grammar DSML, Directory Service Markup Language, from files, streams and
+ ** readers, and returns LDAPMessages.
+ ** <br>
+ ** <b>Note</b> that some XML applications will have DSML pre-parsed into DOM
+ ** objects, in which case DOMReader should be used.
+ **
+ ** @see DSMLReader
+ ** @see DSMLV1Reader
+ ** @see DSMLV2Reader
+ **
+ ** @author  dieter.steding@oracle.com
+ ** @version 1.0.0.0
+ ** @since   1.0.0.0
+ */
+public interface DSMLGrammar {
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Member classes
+  //////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////
+  // interface V1
+  // ~~~~~~~~~ ~~
+  static interface V1 {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // interface Namespace
+    // ~~~~~~~~~ ~~~~~~~~~
+    static interface Namespace {
+
+      //////////////////////////////////////////////////////////////////////////
+      // static final attributes
+      //////////////////////////////////////////////////////////////////////////
+
+      static final String URI    = "http://www.dsml.org/DSML";
+      static final String PREFIX = "dsml";
+      static final String ROOT   = "dsml";
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // interface Schema
+    // ~~~~~~~~~ ~~~~~~
+    static class Schema {
+
+      //////////////////////////////////////////////////////////////////////////
+      // static final attributes
+      //////////////////////////////////////////////////////////////////////////
+
+      static final String ELEMENT = "directory-schema";
+
+      //////////////////////////////////////////////////////////////////////////
+      // Member classes
+      //////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Elements
+      // ~~~~~~~~~ ~~~~~~~~
+      static interface Elements {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        //////////////////////////////////////////////////////////////////////////
+
+        static final String NAME           = "name";
+        static final String DESCRIPTION    = "description";
+        static final String OID            = "object-identifier";
+        static final String CLASS          = "class";
+        static final String ATTRIBUTE      = "attribute";
+        static final String ATTRIBUTE_TYPE = "attribute-type";
+        static final String SYNTAX         = "syntax";
+        static final String EQUALITY       = "equality";
+        static final String ORDERING       = "ordering";
+        static final String SUBSTRING      = "substring";
+      }
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Attributes
+      // ~~~~~~~~~ ~~~~~~~~~~
+      static interface Attributes {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        ////////////////////////////////////////////////////////////////////////
+
+        static final String ID                = "id";
+        static final String SUPERIOR          = "superior";
+        static final String OBSOLETE          = "obsolete";
+        static final String TYPE              = "type";
+        static final String SINGLE_VALUE      = "single-value";
+        static final String USER_MODIFICATION = "user-modification";
+        static final String REF               = "ref";
+        static final String REQUIRED          = "required";
+
+        ////////////////////////////////////////////////////////////////////////
+        // Member classes
+        ////////////////////////////////////////////////////////////////////////
+
+        ////////////////////////////////////////////////////////////////////////
+        // interface Types
+        // ~~~~~~~~~ ~~~~~
+        static class Types {
+
+          //////////////////////////////////////////////////////////////////////
+          // static final attributes
+          //////////////////////////////////////////////////////////////////////
+
+          static final String ABSTRACT   = "abstract";
+          static final String STRUCTURAL = "structural";
+          static final String AUXILIARY  = "auxiliary";
+        }
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // interface Entries
+    // ~~~~~~~~~ ~~~~~~~
+    static interface Entries {
+
+      //////////////////////////////////////////////////////////////////////////
+      // static final attributes
+      //////////////////////////////////////////////////////////////////////////
+
+      static final String ELEMENT = "directory-entries";
+
+      //////////////////////////////////////////////////////////////////////////
+      // Member classes
+      //////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Elements
+      // ~~~~~~~~~ ~~~~~~~~
+      static interface Elements {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        ////////////////////////////////////////////////////////////////////////
+
+        static final String ENTRY              = "entry";
+        static final String OBJECT_CLASS       = "objectclass";
+        static final String OBJECT_CLASS_VALUE = "oc-value";
+        static final String ATTRIBUTE          = "attr";
+        static final String VALUE              = "value";
+      }
+
+      //////////////////////////////////////////////////////////////////////////
+      // Member classes
+      //////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Attributes
+      // ~~~~~~~~~ ~~~~~~~~~~
+      static interface Attributes {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        ////////////////////////////////////////////////////////////////////////
+
+        static final String DN        = "dn";
+        static final String NAME      = "name";
+        static final String REF       = "ref";
+        static final String ENCODING  = "encoding";
+
+        ////////////////////////////////////////////////////////////////////////
+        // Member classes
+        ////////////////////////////////////////////////////////////////////////
+
+        ////////////////////////////////////////////////////////////////////////
+        // interface Encodings
+        // ~~~~~~~~~ ~~~~~~~~~
+        static interface Encodings {
+
+          //////////////////////////////////////////////////////////////////////
+          // static final attributes
+          //////////////////////////////////////////////////////////////////////
+
+          static final String BASE64 = "base64";
+        }
+      }
+    }
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // interface V2
+  // ~~~~~~~~~ ~~
+  static interface V2 {
+
+    ////////////////////////////////////////////////////////////////////////////
+    // interface Request
+    // ~~~~~~~~~ ~~~~~~~
+    /**
+     ** A dsmlEnvelopeRequest contains zero, one, or many individual request
+     ** elements, while a DSMLv2 response document consists of zero, one or
+     ** many individual response elements. In a valid request-response pair,
+     ** there is a straightforward positional correspondence between individual
+     ** requests within a request document and individual responses within a
+     ** response document: The nth response element corresponds to the nth
+     ** request element. For instance, if the third response element is a delete
+     ** response, then it corresponds to the third request element, a delete
+     ** request.
+     */
+    static interface Request {
+
+      //////////////////////////////////////////////////////////////////////////
+      // static final attributes
+      //////////////////////////////////////////////////////////////////////////
+
+      static final String URI    = "urn:oasis:names:tc:DSML:2:0:core";
+      static final String PREFIX = "dsml";
+      static final String ROOT   = "batchRequest";
+
+      //////////////////////////////////////////////////////////////////////////
+      // Member classes
+      //////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Elements
+      // ~~~~~~~~~ ~~~~~~~~
+      static interface Elements {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        ////////////////////////////////////////////////////////////////////////
+
+        static final String AUTHENTICATION = "authRequest";
+      }
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Attributes
+      // ~~~~~~~~~ ~~~~~~~~~~
+      static interface Attributes {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        ////////////////////////////////////////////////////////////////////////
+
+        static final String ID         = "requestID";
+        static final String ERROR      = "onError";
+        static final String PROCESSING = "processing";
+        static final String ORDER      = "responseOrder";
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // interface RequestEntries
+    // ~~~~~~~~~ ~~~~~~~~~~~~~~
+    static interface RequestEntries {
+
+      //////////////////////////////////////////////////////////////////////////
+      // Member classes
+      //////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Elements
+      // ~~~~~~~~~ ~~~~~~~~
+      static interface Elements {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        ////////////////////////////////////////////////////////////////////////
+
+        static final String OBJECT_CLASS       = "objectclass";
+        static final String OBJECT_CLASS_VALUE = "oc-value";
+        static final String ATTRIBUTE          = "attr";
+        static final String VALUE              = "value";
+      }
+
+      //////////////////////////////////////////////////////////////////////////
+      // Member classes
+      //////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Attributes
+      // ~~~~~~~~~ ~~~~~~~~~~
+      static interface Attributes {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        ////////////////////////////////////////////////////////////////////////
+
+        static final String DN        = "dn";
+        static final String NAME      = "name";
+        static final String REF       = "ref";
+        static final String ENCODING  = "encoding";
+
+        ////////////////////////////////////////////////////////////////////////
+        // Member classes
+        ////////////////////////////////////////////////////////////////////////
+
+        ////////////////////////////////////////////////////////////////////////
+        // interface Encodings
+        // ~~~~~~~~~ ~~~~~~~~~
+        static interface Encodings {
+
+          //////////////////////////////////////////////////////////////////////
+          // static final attributes
+          //////////////////////////////////////////////////////////////////////
+
+          static final String BASE64 = "base64";
+        }
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // interface AddRequest
+    // ~~~~~~~~~ ~~~~~~~~~~
+    static interface AddRequest extends RequestEntries {
+
+      //////////////////////////////////////////////////////////////////////////
+      // static final attributes
+      //////////////////////////////////////////////////////////////////////////
+
+      static final String ELEMENT = "addRequest";
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // interface ModifyRequest
+    // ~~~~~~~~~ ~~~~~~~~~~~~~
+    static interface ModifyRequest extends RequestEntries {
+
+      //////////////////////////////////////////////////////////////////////////
+      // static final attributes
+      //////////////////////////////////////////////////////////////////////////
+
+      static final String ELEMENT = "modifyRequest";
+
+      //////////////////////////////////////////////////////////////////////////
+      // Member classes
+      //////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Attributes
+      // ~~~~~~~~~ ~~~~~~~~~~
+      static interface Attributes extends RequestEntries.Attributes {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        ////////////////////////////////////////////////////////////////////////
+
+        static final String OPERATION = "operation";
+      }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // interface DeleteRequest
+    // ~~~~~~~~~ ~~~~~~~~~~~~~
+    static interface DeleteRequest extends RequestEntries {
+
+      //////////////////////////////////////////////////////////////////////////
+      // static final attributes
+      //////////////////////////////////////////////////////////////////////////
+
+      static final String ELEMENT = "delRequest";
+    }
+
+    ////////////////////////////////////////////////////////////////////////////
+    // interface RenameRequest
+    // ~~~~~~~~~ ~~~~~~~~~~~~~
+    static interface RenameRequest extends RequestEntries {
+
+      //////////////////////////////////////////////////////////////////////////
+      // static final attributes
+      //////////////////////////////////////////////////////////////////////////
+
+      static final String ELEMENT = "modDNRequest";
+
+      //////////////////////////////////////////////////////////////////////////
+      // Member classes
+      //////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////
+      // interface Attributes
+      // ~~~~~~~~~ ~~~~~~~~~~
+      static interface Attributes {
+
+        ////////////////////////////////////////////////////////////////////////
+        // static final attributes
+        ////////////////////////////////////////////////////////////////////////
+
+        static final String RDN        = "newrdn";
+        static final String SUPERIOR   = "newSuperior";
+        static final String DELETE_OLD = "deleteoldrdn";
+      }
+    }
+  }
+}

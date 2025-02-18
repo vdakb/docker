@@ -1,0 +1,664 @@
+/* datatable and treetable */
+body .ui-datatable, body .ui-treetable {
+  background-color:              $white;
+  .ui-treetable-header,
+  .ui-treetable-footer {
+    border-color:                $datatable-border-color;
+    padding:                     10px 5px;
+  }
+  th {
+    font-weight:                 $datatable-header-font-weight;
+  }
+  th.ui-state-default {
+    border-color:                $datatable-border-color;
+  }
+  th.ui-state-hover {
+    background:                  $gray-400;
+    border-color:                $datatable-border-color;
+  }
+  th.ui-state-active {
+    color:                       $primary;
+  }
+  tbody {
+    > tr.ui-widget-content {
+      border-color:              $datatable-border-color;
+    }
+    > tr.ui-state-highlight {
+      color:                     $datatable-row-hover-fg;
+      background-color:          $datatable-row-hover-bg;
+    }    
+    > tr > td > a {
+      cursor:                    pointer;
+      color:                     $primary;
+      &:hover {
+        cursor:                  pointer;
+        color:                   $white;
+        text-decoration:         none;
+      }
+    }
+    > tr {
+      &.ui-widget-content {
+        border-top-color:        $datatable-row-border-color;
+        border-bottom-color:     $datatable-row-border-color;
+        border-left:             $datatable-border-color;
+        border-right:            $datatable-border-color;
+      }
+      &.ui-widget-content.ui-state-hover {
+        border-color:            $datatable-row-border-color;
+      }
+      &.ui-widget-header > td {
+        border-color:            $datatable-border-color;
+        font-weight:             $datatable-header-font-weight;
+      }
+    }
+  }
+  tr.ui-state-hover:not(.ui-state-highlight) td {
+    color:                       lighten($datatable-row-hover-fg, 15%);
+    background-color:            lighten($datatable-row-hover-bg, 15%);
+  }
+  tr.ui-state-hover:not(.ui-state-highlight) a {
+    color:                       $white;
+    &:hover {
+      text-decoration:           underline;
+    }
+  }
+ tr.ui-state-hover:not(.ui-state-highlight), tr.ui-state-hover:not(.ui-state-highlight) td {
+    color:                       lighten($datatable-row-hover-fg, 15%);
+    background-color:            lighten($datatable-row-hover-bg, 15%);
+  }
+  th[role="columnheader"].ui-state-default {
+    border:                      $border-width solid $red;
+    border-radius:               0;
+    box-shadow:                  none;
+    font-weight:                 $datatable-header-font-weight;
+    text-align:                  left;
+    outline:                     0;
+    position:                    relative;
+  }
+  td[role="gridcell"] {
+    position:                    relative;
+    a {
+      position:                  relative;
+    }
+  }
+  .ui-widget-content .ui-state-highlight a {
+    color:                       $white;
+    text-decoration:             none;
+    &:hover {
+      text-decoration:           underline;
+    }
+  }
+  @include border-bottom-radius(0);
+  @include border-top-radius(3px);
+  &.box-default {
+    @include datatableBoxColors($gray-300, $body-foreground)
+  }
+  &.box-primary {
+    @include datatableBoxColors($primary, $white)
+  }
+  &.box-danger {
+    @include datatableBoxColors($danger, $white)
+  }
+  &.box-fatal {
+    @include datatableBoxColors($red-dark, $white)
+  }
+  &.box-warning {
+    @include datatableBoxColors($warning, $white)
+  }
+  &.box-success {
+    @include datatableBoxColors($success, $white)
+  }
+  &.box-info {
+    @include datatableBoxColors($info, $white)
+  }
+  &.box-teal {
+    @include datatableBoxColors($teal, $white)
+  }
+  table thead th {
+    padding:                     0.75rem 0.5rem;
+  }
+  table tbody td {
+    padding:                     0.5rem 0.5rem;
+  }
+  table thead th.ui-filter-column {
+    padding:                     5px 2px;
+  }
+  th .ui-column-filter {
+    margin:                      auto;
+  }
+  th .ui-column-customfilter {
+    margin:                      0.25rem auto auto auto;
+    .ui-selectonemenu,
+    .ui-selectcheckboxmenu {
+      background-color:          $white;
+    }
+    input {
+      width:                     100%;
+    }
+    .ui-selectcheckboxmenu {
+      min-width:                 auto;
+    }
+    .ui-spinner-button span.ui-icon.icon-ripple:before {
+      margin-left:               -14px;
+    }
+    .ui-selectonemenu .ui-selectonemenu-trigger .icon-ripple.ui-icon-triangle-1-s {
+      margin-left:               2px;
+    }
+    .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger .ui-icon.icon-ripple {
+      left:                      3px;
+    }
+  }
+  span.ui-sortable-column-icon {
+    &.ui-icon-carat-2-n-s {
+      background-image:          none;
+      display:                   inline;
+      &:before {
+        content:                 "\f0dc";
+        top:                     1px;
+        padding:                 0 7px;
+        font-family:             FontAwesome;
+        font-weight:             200;
+        font-size:               $font-awesome-icon-size-lg;
+        position:                relative;
+        overflow:                hidden;
+      }
+    }
+    &.ui-icon-carat-2-n-s.ui-icon-triangle-1-s {
+      background-image:          none;
+      display:                   inline;
+      &:before {
+        content:                 "\f0dd";
+        top:                     -2px;
+        padding:                 0 7px;
+        font-family:             FontAwesome;
+        font-weight:             200;
+        font-size:               $font-awesome-icon-size-lg;
+        position:                relative;
+        overflow:                hidden;
+      }
+    }
+    &.ui-icon-carat-2-n-s.ui-icon-triangle-1-n {
+      background-image:          none;
+      display:                   inline;
+      &:before {
+        content:                 "\f0de";
+        top:                     2px;
+        padding:                 0 7px;
+        font-family:             FontAwesome;
+        font-weight:             200;
+        font-size:               $font-awesome-icon-size-lg;
+        position:                relative;
+        overflow:                hidden;
+      }
+    }
+  }
+}
+body .ui-datatable {
+  &.ui-datatable-sm {
+    thead > tr > th {
+      padding:                   0.5rem 0.5rem;
+    }
+    tfoot > tr > td {
+      padding:                   0.5rem 0.5rem;
+    }
+    .ui-datatable-scrollable-theadclone > tr > th {
+      padding-top:               0;
+      padding-bottom:            0;
+    }
+    .ui-datatable-data > tr > td {
+      padding:                   0.5rem 0.5rem;
+    }
+  }
+  &.ui-datatable-lg {
+    thead > tr > th {
+      padding:                   0.75rem 0.75rem;
+    }
+    tfoot > tr > td {
+      padding:                   0.75rem 0.75rem;
+    }
+    .ui-datatable-scrollable-theadclone > tr > th {
+      padding-top:               0;
+      padding-bottom:            0;
+    }
+    .ui-datatable-data > tr > td {
+      padding:                   0.75rem 0.75rem;
+    }
+  }
+}
+body .ui-datatable-odd,
+body .ui-treetable-odd {
+  background-color:              $gray-100;
+}
+body .ui-datatable-rowordering.ui-state-active {
+  background:                    #14a4ff none repeat scroll 0 0;
+}
+body .ui-datatable,
+body .ui-treetable {
+  th.ui-state-default[role="columnheader"] {
+    color:                       $datatable-header-fg;
+    background:                  $datatable-header-bg;
+    border:                      $datatable-header-fg;
+    overflow:                    visible;
+  }
+}
+body .ui-datatable,
+body .ui-treetable {
+  td.ui-selection-column, th.ui-selection-column {
+    @media (max-width: $screen-sm-max) {
+      width:                     8%;
+    }
+    @media (max-width: $screen-xs-max) {
+      width:                     10%;
+    }
+  }
+  tr {
+    &.ui-widget-content.ui-state-hover {
+      border-top:                #f4f4f4;
+      border-bottom:             #f4f4f4;
+    }
+    &.ui-datatable-selectable.ui-state-highlight {
+      .ui-chkbox-box.ui-state-active {
+        border-color:            $white;
+      }
+      .ui-icon:before {
+        color:                   $primary;
+      }
+    }
+  }
+}
+body .ui-treetable .ui-treetable-data {
+  span.ui-treetable-toggler {
+    background-image:            none;
+    display:                     inline;
+    &.ui-icon-triangle-1-e:before {
+      content:                   "\e258";
+      color:                     $body-foreground;
+      top:                       -5px;
+      padding:                   0 4px;
+      font-family:               'Glyphicons Halflings';
+      font-size:                 $glyphicon-icon-size;
+      font-weight:               $datatable-header-font-weight;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+    &.ui-icon-triangle-1-s:before {
+      content:                   "\e259";
+      top:                       -5px;
+      padding:                   0 4px;
+      font-family:               'Glyphicons Halflings';
+      font-size:                 $glyphicon-icon-size;
+      font-weight:               $datatable-header-font-weight;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+  }
+  tr[aria-selected="true"]:not(.ui-treetable-partialselected) {
+    .ui-icon-triangle-1-s, .ui-icon-triangle-1-e {
+      &:before {
+        color:                   $white;
+      }
+    }
+  }
+}
+body .ui-treetable .ui-treetable-selectable-node .ui-chkbox.ui-selection .ui-chkbox-icon.ui-icon-check:before {
+  color:                         $body-foreground;
+  top:                           1px;
+}
+@-moz-document url-prefix() {
+  @media (max-width: $screen-xm-min) {
+    body .ui-treetable .ui-treetable-selectable-node .ui-chkbox.ui-selection .ui-chkbox-icon.ui-icon-check:before {
+      // checkbox is not centered on firefox on small screens
+      top:                       0px;
+    }
+  }
+}
+body .ui-treetable  {
+  span.ui-treetable-toggler {
+    margin-right:                5px;
+  }
+  .ui-chkbox-box {
+    margin-top:                  3px;
+    margin-right:                2px;
+  }
+}
+
+// datatable paginator */
+body .ui-datatable,
+body .ui-treetable {
+  .ui-paginator {
+    border:                      $border-width solid $white-smoke;
+    span.ui-paginator-pages {
+      padding:                   6px 12px;
+      line-height:               $paginator-line-hight;
+      vertical-align:            middle;
+      display:                   inline;
+      overflow:                  hidden;
+    }
+  }
+  .ui-paginator-bottom {
+    border-top-color:            transparent;
+  }
+  .ui-paginator-top {
+    border-bottom-color:         transparent;
+  }
+  td.ui-datatable-subtable-header {
+    border-color:                $datatable-border-color;
+    border-bottom-color:         $datatable-row-border-color;
+  }
+}
+body .ui-paginator {
+  padding:                       0;
+  text-align:                    left;
+  .ui-paginator-page,
+  .ui-paginator-pages,
+  .ui-paginator-current,
+  .ui-paginator-first,
+  .ui-paginator-prev,
+  .ui-paginator-last,
+  .ui-paginator-next,
+  select {
+    cursor:                      pointer;
+    background:                  $white;
+    margin:                      0;
+    border-radius:               0;
+    font-weight:                 $paginator-font-weight;
+    line-height:                 $paginator-line-hight;
+    text-decoration:             none;
+    outline:                     0;
+    box-shadow:                  none;
+    display:                     inline-block;
+    position:                    relative;
+    a.ui-state-hover {
+      color:                     lighten($datatable-row-hover-fg, 15%);
+      background-color:          lighten($datatable-row-hover-bg, 15%);    }
+  }
+  .ui-paginator-page, .ui-paginator-pages, .ui-paginator-current {
+    padding:                     5px 7px;
+  }
+  .ui-paginator-first, .ui-paginator-prev, .ui-paginator-last, .ui-paginator-next, select {
+    padding:                     6px 8px;
+  }
+  .ui-paginator-prev {
+    margin-right:                1px;
+  }
+  select.ui-paginator-rpp-options {
+    border:                      none;
+    padding:                     4px 0px 4px 4px;
+  }
+  a.ui-paginator-first span.ui-icon-seek-first {
+    background-image:            none;
+    font-size:                   0;
+    display:                     inline;
+    &:before {
+      content:                   "\f048";
+      color:                     $body-foreground;
+      top:                       0;
+      padding:                   0 4px;
+      font-family:               FontAwesome;
+      font-size:                 $font-awesome-icon-size;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+  }
+  a.ui-paginator-last span.ui-icon-seek-end {
+    background-image:            none;
+    font-size:                   0;
+    display:                     inline;
+    &:before {
+      content:                   "\f051";
+      color:                     $body-foreground;
+      top:                       0;
+      padding:                   0 4px;
+      font-family:               FontAwesome;
+      font-size:                 $font-awesome-icon-size;
+      position:                  relative;
+    }
+  }
+  a.ui-paginator-next span.ui-icon-seek-next {
+    background-image:            none;
+    font-size:                   0;
+    display:                     inline;
+    &:before {
+      content:                   "\f054";
+      color:                     $body-foreground;
+      top:                       0;
+      padding:                   0 4px;
+      font-family:               FontAwesome;
+      font-size:                 $font-awesome-icon-size;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+  }
+  a.ui-paginator-prev span.ui-icon-seek-prev {
+    background-image:            none;
+    font-size:                   0;
+    display:                     inline;
+    &:before {
+      content:                   "\f053";
+      color:                     $body-foreground;
+      top:                       0;
+      padding:                   0 4px;
+      font-family:               FontAwesome;
+      font-size:                 $font-awesome-icon-size;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+  }
+}
+@media (max-width: $screen-xm-min) {
+  body .ui-treetable, body .ui-datatable {
+    .ui-paginator span.ui-paginator-pages {
+      display:                   none;
+    }
+  }
+}
+@media (max-width: $screen-xm-min) {
+  body .ui-paginator {
+    .ui-paginator-prev {
+      margin-right:              0px;
+    }
+    span.ui-icon:hover {
+      opacity:                   1;
+    }
+  }
+}
+body .ui-paginator .ui-paginator-pages a {
+  color:                         #666666;
+  transition:                    background-color .3s;
+}
+body .ui-paginator .ui-paginator-page.ui-state-active {
+  color:                         $white;
+  background:                    $primary;
+  border-color:                  $primary;
+}
+body span.ui-paginator-current {
+  font-weight:                   $datatable-header-font-weight;
+}
+body .ui-datatable .ui-datatable-sticky {
+  z-index:                       999;
+}
+body .ui-treetable .ui-selection .ui-chkbox-box {
+  background-color:              $white;
+}
+/* editable */
+body td.ui-editable-column .ui-cell-editor-input {
+  background-color:              $white;
+  .ui-inputfield {
+    width:                       100%;
+  }
+  &:hover, .ui-inputfield:hover {
+    background-color:            $datatable-row-hover-bg;
+  }
+}
+body .ui-row-editor  {
+  a {
+    text-decoration:             none;
+  }
+  span.ui-icon {
+    background-image:            none;
+    display:                     inline;
+  }
+  span.ui-icon-pencil:before {
+    content:                     "\f040";
+    font-family:                 FontAwesome;
+    font-size:                   $font-awesome-icon-size;
+    position:                    relative;
+    overflow:                    hidden;
+  }
+  span.ui-icon-check:before {
+    content:                     "\f00c";
+    font-family:                 FontAwesome;
+    font-size:                   $font-awesome-icon-size;
+    position:                    relative;
+    overflow:                    hidden;
+  }
+  span.ui-icon-close:before {
+    content:                     "\f00d";
+    font-family:                 FontAwesome;
+    font-size:                   $font-awesome-icon-size;
+    position:                    relative;
+    overflow:                    hidden;
+  }
+}
+// adjust hover on row selection plus editable row
+body tr.ui-datatable-selectable.ui-row-editing {
+  &.ui-state-highlight {
+    .ui-cell-editor-input {
+      &:hover, .ui-inputfield:hover {
+        background-color:        $datatable-row-hover-bg;
+      }
+    }
+  }
+  .ui-cell-editor-input {
+    &:hover, .ui-inputfield:hover {
+      background-color:          $white;
+    }
+  }
+}
+@media (max-width: $screen-xs-max) {
+  .ui-row-editor  {
+    span.ui-icon-pencil:before {
+      font-size:                 $font-awesome-icon-size;
+    }
+    span.ui-icon-check:before {
+      font-size:                 $font-awesome-icon-size;
+    }
+    span.ui-icon-close:before {
+      font-size:                 $font-awesome-icon-size;
+    }
+  }
+}
+// no-border
+body .ui-datatable.no-border, body .ui-treetable.no-border {
+  th[role="columnheader"], tbody, .ui-datatable-header, .ui-datatable-subtable-header, .ui-datatable-footer, .ui-treetable-header, .ui-paginator, td {
+    border:                      transparent;
+    border-top:                  none;
+    border-bottom:               none;
+    &.ui-editable-column {
+      .ui-selectonemenu, .ui-inputfield, .ui-autocomplete {
+        border-left:             transparent;
+        border-right:            transparent;
+        border-radius:           0;
+        &.ui-state-hover {
+          border-top-color:      transparent;
+          border-bottom-color:   transparent;
+          border-radius:         0;
+        }
+      }
+    }
+  }
+  tfoot td {
+    border-left:                 transparent;
+    border-right:                transparent;
+  }
+  tr, tr.ui-widget-content {
+    border-left:                 transparent;
+    border-right:                transparent;
+    &.ui-state-hover {
+      border-top:                $border-width solid $datatable-row-border-color;
+      border-bottom:             $border-width solid $datatable-row-border-color;
+    }
+  }
+  td[role="gridcell"] {
+    text-align:                  center;
+  }
+}
+// row grouping
+a.ui-rowgroup-toggler {
+  text-decoration:               none;
+  .ui-rowgroup-toggler-icon {
+    &.ui-icon-circle-triangle-s {
+      background-image:          none;
+      display:                   contents;
+      &:before {
+        content:                 "\e259";
+        color:                   $body-foreground;
+        top:                     2px;
+        font-family:             'Glyphicons Halflings';
+        font-size:               $glyphicon-icon-size;
+        position:                relative;
+        overflow:                hidden;
+      }
+      &.icon-ripple:before {
+        left:                    -4px;
+        margin-right:            -8px;
+      }
+    }
+    &.ui-icon-circle-triangle-e {
+      display:                   contents;
+      background-image:          none;
+      &:before {
+        content:                 "\e258";
+        color:                   $body-foreground;
+        top:                     -2px;
+        font-family:             'Glyphicons Halflings';
+        font-size:               $glyphicon-icon-size;
+        position:                relative;
+        overflow:                hidden;
+      }
+      &.icon-ripple:before {
+        left:                    -4px;
+        margin-right:            -8px;
+      }
+    }
+  }
+}
+// row expansion
+body .ui-row-toggler {
+  background-image:              none;
+  outline:                       none;
+  display:                       inline;
+  &.ui-icon-circle-triangle-e {
+    &:before {
+      content:                   "\e258";
+      color:                     $body-foreground;
+      top:                       -2px;
+      font-family:               'Glyphicons Halflings';
+      font-size:                 $glyphicon-icon-size;
+      font-weight:               $datatable-header-font-weight;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+    &.icon-ripple:before {
+      left:                      -4px;
+    }
+  }
+  &.ui-icon-circle-triangle-s {
+    &:before {
+      content:                   "\e259";
+      color:                     $body-foreground;
+      top:                      -2px;
+      font-family:               'Glyphicons Halflings';
+      font-size:                 $glyphicon-icon-size;
+      font-weight:               $datatable-header-font-weight;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+    &.icon-ripple:before {
+      left:                      -4px;
+    }
+  }
+}
+sidebar-collapse .ui-datatable.ui-datatable-sticky > .ui-datatable.ui-datatable-sticky {
+  margin-left:                   -($sidebar-width - 50px);
+}

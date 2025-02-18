@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="api-apps-list-members"
+         xml:lang="en"
+         version ="5.0">
+  <title>List Per-Entitlement Members</title>
+  <para>
+    This endpoint provides the ability to list members for a particular entitlement. Since a single entitlement can contain multiple attribute (at least the entitlement attributs itself) all available attribute name-value pairs are returned alongside with members for each attribute name-value pair assigned.
+  </para>
+  <section xml:id="api-apps-list-members-req">
+    <title>Request</title>
+    <warning>
+      <title>Permission</title>
+      <para>Calling user must have administration capability for the organization where the user is modified and capability to view identities.</para>
+    </warning>
+    <para>
+      <restapi role="search">/Applications/{application}/{namespace}/{entitlement}</restapi>
+    </para>
+    <section xml:id="api-apps-list-members-req-h">
+      <title>Request Header</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-apps-list-members-req-q">
+      <title>Query Parameters</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>none</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="api-apps-list-members-res">
+    <title>Response</title>
+    <para>
+      The list of attribute name-value pairs and member account names for each combination.
+    </para>
+    <section xml:id="api-apps-list-members-res-r0">
+      <title>Entitlement</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">entitlementName</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Name of the entitlement.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">entitlementId</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>Name name of the entitlement attribute. Can be omitted for single-attribute entitlements</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">attributeValues</emphasis></entry>
+              <entry>array of <link linkend='api-apps-list-members-res-r1'>attribute value</link> objects</entry>
+              <entry>yes</entry>
+              <entry>For a single entitlement, list of possible attribute values (including the entitlement attribute itself).</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-apps-list-members-res-r1">
+      <title>Attribute Value</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">attributes</emphasis></entry>
+              <entry>array of <link linkend='api-apps-list-members-res-r2'>attributes</link> objects</entry>
+              <entry>yes</entry>
+              <entry>List of name-value pairs for account attribute values.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">members</emphasis></entry>
+              <entry>array of strings</entry>
+              <entry>yes</entry>
+              <entry>List of member account names.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-apps-list-members-res-r2">
+      <title>Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">id</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Name of the attribute.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">value</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Value of the attribut.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="api-apps-list-members-ex1">
+    <title>Example for listing single-attribute entitlement members</title>
+    <para>
+      <restapi role="search">/Applications/IDSAccount/UD_IDS_GRP/AM.IDS Endpoint~orclUserWritePrivilegeGroup</restapi>
+    </para>
+    <programlisting>
+{
+    "entitlementName": "AM.IDS Endpoint~orclUserWritePrivilegeGroup",
+    "attributeValues": [
+        {
+            "attributes": [
+                {
+                    "name": "Group Name",
+                    "value": "AM.IDS Endpoint~orclUserWritePrivilegeGroup"
+                }
+            ],
+            "members": [
+                "AFARKAS"
+            ]
+        }
+    ]
+}
+    </programlisting>
+  </section>
+  <section xml:id="api-apps-list-members-ex2">
+    <title>Example for listing multi-attribute entitlement members</title>
+    <para>
+      <restapi role="search">/Applications/AJSAccount/UD_AJS_PRJ/AJS.Endpoint~AJS Test Project 22</restapi>
+    </para>
+    <programlisting>
+{
+    "entitlementName": "AJS.Endpoint~AJS Test Project 22",
+    "entitlementId": "Project",
+    "attributeValues": [
+        {
+            "attributes": [
+                {
+                    "name": "Project",
+                    "value": "AJS.Endpoint~AJS Test Project 22"
+                },
+                {
+                    "name": "Role",
+                    "value": "IDM Test Role 02"
+                }
+            ],
+            "members": [
+                "AFARKAS"
+            ]
+        },
+        {
+            "attributes": [
+                {
+                    "name": "Project",
+                    "value": "AJS.Endpoint~AJS Test Project 22"
+                },
+                {
+                    "name": "Role",
+                    "value": "IDM Test Role 05"
+                }
+            ],
+            "members": [
+                "JLAKIC"
+            ]
+        }
+    ]
+}
+    </programlisting>
+  </section>
+  <section xml:id="api-apps-list-members-err">
+    <title>Possible Errors</title>
+    <table>
+      <thead>
+        <tr>
+          <td>Error</td>
+          <td>Condition</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><emphasis role="strong">401 Unauthorized</emphasis></td>
+          <td>No or invalid authentication was provided.</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">403 Forbidden</emphasis></td>
+          <td>Request was authenticated but authorization was not passed (authenticated user lacks role required to acces the resource).</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">503 Service Unavailable</emphasis></td>
+          <td>Other processing error occured including invalid filter syntax. Response <literal>description</literal> attribute contains more details.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</section>

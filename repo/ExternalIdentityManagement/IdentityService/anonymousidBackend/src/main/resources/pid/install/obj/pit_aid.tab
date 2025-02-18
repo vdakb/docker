@@ -1,0 +1,37 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityService/identifierBackend/src/main/resources/install/pid/api/pit_aid.tab
+--
+--   Anonymous Identifier (AID)
+--
+-- Generated for Oracle Database 12c on Sun Feb 11 08:55:42 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Table 'pit_identifiers'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CREATE TABLE pit_identifiers (
+  id           VARCHAR2  (20)           NOT NULL
+, rowversion   VARCHAR2  (30)           NOT NULL
+, created_by   VARCHAR2  (32)           NOT NULL
+, created_on   DATE                     NOT NULL
+, updated_by   VARCHAR2  (32)           NOT NULL
+, updated_on   DATE                     NOT NULL
+, active       NUMBER     (1) DEFAULT 1 NOT NULL
+, usedby       VARCHAR2  (32)           NOT NULL
+)
+TABLESPACE igs_data
+/
+COMMENT ON COLUMN pit_identifiers.id IS 'Anonymous Identifier'
+/
+COMMENT ON COLUMN pit_identifiers.rowversion IS 'Rowversion of data record'
+/
+COMMENT ON COLUMN pit_identifiers.created_by IS 'Creator of the data record'
+/
+COMMENT ON COLUMN pit_identifiers.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN pit_identifiers.updated_by IS 'Modifier of the data record'
+/
+COMMENT ON COLUMN pit_identifiers.updated_on IS 'Modified Timestamp of data record'
+/
+COMMENT ON COLUMN pit_identifiers.active IS 'Status of the identifier'
+/
+COMMENT ON COLUMN pit_identifiers.usedby IS 'Consumer of the identifier'
+/

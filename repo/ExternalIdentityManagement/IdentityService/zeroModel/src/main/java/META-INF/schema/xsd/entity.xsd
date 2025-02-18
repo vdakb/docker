@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:igs           ="http://www.oracle.com/schema/igs"
+            targetNamespace     ="http://www.oracle.com/schema/igs"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="entity"
+            version             ="1.0.0.0">
+  <xsd:include schemaLocation="core.xsd"/>
+  <!--
+   | Entity
+   -->
+  <xsd:complexType name="entity">
+    <annotation>
+      <documentation>
+        Entity is a generic wrapper for any object instance in Identity Manager.
+        Such an object instance referes to a public name of such an instance and
+        the internal system identifier served by Identiy Manager.
+        Beside those identifiers Entity specifies the attribute collection to
+        describe additional properties of an Entity like first name of an
+        account.
+      </documentation>
+    </annotation>
+    <xsd:sequence>
+      <xsd:element name="attributes" type="igs:attribute" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="id"         type="igs:token"     use="required"/>
+  </xsd:complexType>
+  <!--
+   | Attribute
+   -->
+  <xsd:complexType name="attribute">
+    <annotation>
+      <documentation>
+        Attribute is a simple collection of tagged-value pairs.
+      </documentation>
+    </annotation>
+    <xsd:attribute name="id"  type="igs:token"  use="required"/>
+    <xsd:attribute name="enc" type="igs:encode" default="none"/>
+  </xsd:complexType>
+</xsd:schema>

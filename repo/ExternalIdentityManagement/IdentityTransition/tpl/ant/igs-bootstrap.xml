@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/igs-bootstrap-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Technical Identities
+  **           belonging to Federal Criminal Police Office Infrastructure
+  **           System Components
+  **
+  ** Synopsis: The tasks deploys the definitions for Oracle Identity Manager
+  **           entities like user, organizations, roles and catalog. This includes:
+  **           o Users
+  ******************************************************************************
+  -->
+  <target name="0000-01" description="Deploys the Identity Manager Technical Identities">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0000-01 Technical Identities belonging to Federated Service Management ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Creating technical identities for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <operation:user contextRef="oim-context" operation="create">
+      <user name="anserviceuser">
+        <parameter name="First Name"           value="AN"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="AN Identity Governance"/>
+        <parameter name="Email"                value="anserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="anserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=anserviceuser,ou=AN,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="AN"/>
+      </user>
+      <user name="bbserviceuser">
+        <parameter name="First Name"           value="BB"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="BB Identity Governance"/>
+        <parameter name="Email"                value="bbserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="bbserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=bbserviceuser,,ou=BB,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="BB"/>
+      </user>
+      <user name="beserviceuser">
+        <parameter name="First Name"           value="BE"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="BE Identity Governance"/>
+        <parameter name="Email"                value="beserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="beserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=beserviceuser,ou=BE,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="BE"/>
+      </user>
+      <user name="bkserviceuser">
+        <parameter name="First Name"           value="BK"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="BK Identity Governance"/>
+        <parameter name="Email"                value="bkserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="bkserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=bkserviceuser,ou=BK,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="BK"/>
+      </user>
+      <user name="bpserviceuser">
+        <parameter name="First Name"           value="BP"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="BP Identity Governance"/>
+        <parameter name="Email"                value="bpserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="bpserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=bpserviceuser,ou=BP,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="BP"/>
+      </user>
+      <user name="bkserviceuser">
+        <parameter name="First Name"           value="BW"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="BW Identity Governance"/>
+        <parameter name="Email"                value="bkserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="bkserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=bkserviceuser,ou=BW,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="BW"/>
+      </user>
+      <user name="byserviceuser">
+        <parameter name="First Name"           value="BY"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="BY Identity Governance"/>
+        <parameter name="Email"                value="byserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="byserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=byserviceuser,ou=BY,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="BY"/>
+      </user>
+      <user name="hbserviceuser">
+        <parameter name="First Name"           value="HB"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="HB Identity Governance"/>
+        <parameter name="Email"                value="hbserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="hbserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=hbserviceuser,ou=HB,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="HB"/>
+      </user>
+      <user name="heserviceuser">
+        <parameter name="First Name"           value="HE"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="HE Identity Governance"/>
+        <parameter name="Email"                value="heserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="heserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=heserviceuser,ou=HE,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="HE"/>
+      </user>
+      <user name="hhserviceuser">
+        <parameter name="First Name"           value="HH"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="HH Identity Governance"/>
+        <parameter name="Email"                value="hhserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="hhserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=hhserviceuser,ou=HH,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="HH"/>
+      </user>
+      <user name="mvserviceuser">
+        <parameter name="First Name"           value="MV"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="MV Identity Governance"/>
+        <parameter name="Email"                value="mvserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="mvserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=mvserviceuser,ou=MV,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="MV"/>
+      </user>
+      <user name="niserviceuser">
+        <parameter name="First Name"           value="NI"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="NI Identity Governance"/>
+        <parameter name="Email"                value="niserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="niserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=niserviceuser,ou=NI,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="NI"/>
+      </user>
+      <user name="nwserviceuser">
+        <parameter name="First Name"           value="NW"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="NW Identity Governance"/>
+        <parameter name="Email"                value="nwserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="nwserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=nwserviceuser,ou=NW,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="NW"/>
+      </user>
+      <user name="rpserviceuser">
+        <parameter name="First Name"           value="RP"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="RP Identity Governance"/>
+        <parameter name="Email"                value="rpserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="rpserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=rpserviceuser,ou=RP,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="RP"/>
+      </user>
+      <user name="shserviceuser">
+        <parameter name="First Name"           value="SH"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="SH Identity Governance"/>
+        <parameter name="Email"                value="shserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="shserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=shserviceuser,ou=SH,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="SH"/>
+      </user>
+      <user name="slserviceuser">
+        <parameter name="First Name"           value="SL"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="SL Identity Governance"/>
+        <parameter name="Email"                value="slserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="slserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=slserviceuser,ou=SL,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="SL"/>
+      </user>
+      <user name="snserviceuser">
+        <parameter name="First Name"           value="SN"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="SN Identity Governance"/>
+        <parameter name="Email"                value="snserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="snserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=snserviceuser,ou=SN,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="SN"/>
+      </user>
+      <user name="thserviceuser">
+        <parameter name="First Name"           value="TH"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="TH Identity Governance"/>
+        <parameter name="Email"                value="thserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="thserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=thserviceuser,ou=TH,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="TH"/>
+      </user>
+      <user name="zfserviceuser">
+        <parameter name="First Name"           value="ZF"/>
+        <parameter name="Middle Name"          value="Service"/>
+        <parameter name="Last Name"            value="User"/>
+        <parameter name="Xellerate Type"       value="End-User"/>
+        <parameter name="Role"                 value="OTHER"/>
+        <parameter name="Organization Name"    value="ZF Identity Governance"/>
+        <parameter name="Email"                value="zfserviceuser@bka.bund.de"/>
+        <parameter name="Country"              value="Deutschland"/>
+        <parameter name="State"                value="Hessen"/>
+        <parameter name="Postal Code"          value="65193"/>
+        <parameter name="Locality Name"        value="Wiesbaden"/>
+        <parameter name="Street"               value="Thaerstrasse 11"/>
+        <parameter name="usr_locale"           value="de-DE"/>
+        <parameter name="Generation Qualifier" value="zfserviceuser@bka.bund.de"/>
+        <parameter name="ldapDN"               value="cn=zfserviceuser,ou=ZF,ou=People,dc=bka,dc=bund,dc=de"/>
+        <parameter name="participant"          value="ZF"/>
+      </user>
+    </operation:user>
+    <echo message="=================================================================="/>
+    <echo message="0000-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager Administrative Identities
+  **
+  ** Synopsis: The tasks deploys the definitions for Oracle Identity Manager
+  **           entities like user, organizations, roles and catalog. This includes:
+  **           o Admin Roles
+  ******************************************************************************
+  -->
+  <target name="0300-01" description="Deploys the Identity Manager Administrative Roles">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0300-01 Identity Manager Administrative Roles ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:adminrole contextRef="oim-context" operation="create">
+??      <adminrole name="IdentityGovernancePasswordServiceUser" displayName="IGS Password Administrators Service User" description="Allows a User to change Account password for accounts of identity PROPERTY_USER" scoped="true">
+        <capability value="assign">
+          <resource value="User">
+            <action name="viewUserAccounts"/>
+            <action name="changeUserAccountPassword"/>
+          </resource>
+        </capability>
+        <scope value="enable">
+          <recipient value="Organization" name=" Identity Governance" hierarchy="false"/>
+        </scope>
+      </adminrole>
+??    </operation:adminrole>
+    <echo message="=================================================================="/>
+    <echo message="0300-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

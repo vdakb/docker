@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns:xsd         ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xjc         ="http://java.sun.com/xml/ns/jaxb/xjc"
+            xmlns:jaxb        ="http://java.sun.com/xml/ns/jaxb" jaxb:extensionBindingPrefixes="xjc" jaxb:version="2.0"
+            xmlns:shell       ="http://xmlns.oracle.com/hst/adf/shell"
+            targetNamespace   ="http://xmlns.oracle.com/hst/adf/shell"
+            elementFormDefault="qualified">
+  <xsd:annotation>
+    <xsd:appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="oracle.hst.foundation.faces.shell.model.schema"/>
+      </jaxb:schemaBindings>
+    </xsd:appinfo>
+  </xsd:annotation>
+
+  <xsd:element name="shell-config">
+    <xsd:annotation>
+      <xsd:appinfo>
+        <jaxb:class name="ShellConfig"/>
+      </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="taskflows" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:sequence maxOccurs="unbounded">
+              <xsd:element name="taskflow" type="shell:taskflow"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="modules" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="module" type="shell:module" maxOccurs="unbounded" minOccurs="1"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="consoles" maxOccurs="1">
+          <xsd:complexType>
+            <xsd:sequence maxOccurs="unbounded">
+              <xsd:element name="console" type="shell:console"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="resourceBundle"     type="xsd:string" use="optional"/>
+      <xsd:attribute name="locale"             type="xsd:string" use="optional"/>
+      <xsd:attribute name="detailAreaTabWidth" type="xsd:int"    use="optional"/>
+    </xsd:complexType>
+    <xsd:key name="taskflowId">
+      <xsd:selector xpath="shell:taskflows/shell:taskflow"/>
+      <xsd:field xpath="@id"/>
+    </xsd:key>
+    <xsd:key name="moduleId">
+      <xsd:selector xpath="shell:modules/shell:module"/>
+      <xsd:field xpath="@id"/>
+    </xsd:key>
+    <xsd:keyref name="tasflowIdARef" refer="shell:taskflowId">
+      <xsd:selector xpath="./shell:modules/shell:module/shell:lhs-area/shell:taskflow"/>
+      <xsd:field xpath="@refId"/>
+    </xsd:keyref>
+    <xsd:keyref name="tasflowIdBRef" refer="shell:taskflowId">
+      <xsd:selector xpath="./shell:modules/shell:module/shell:default-taskflow-list/shell:taskflow"/>
+      <xsd:field xpath="@refId"/>
+    </xsd:keyref>
+    <xsd:keyref name="moduleIdRef" refer="shell:moduleId">
+      <xsd:selector xpath="./shell:consoles/shell:console/shell:modules/shell:module"/>
+      <xsd:field xpath="@refId"/>
+    </xsd:keyref>
+  </xsd:element>
+
+  <xsd:complexType name="module">
+    <xsd:annotation>
+      <xsd:appinfo>
+        <jaxb:class name="ModuleType"/>
+      </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="shell:config-data">
+        <xsd:choice>
+          <xsd:element name="url" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+          <xsd:sequence>
+            <xsd:element name="toolbar-area" maxOccurs="1" minOccurs="0">
+              <xsd:complexType>
+                <xsd:sequence minOccurs="1" maxOccurs="1">
+                  <xsd:element name="taskflow" maxOccurs="1">
+                    <xsd:complexType>
+                      <xsd:attribute name="refId"  type="xsd:string" use="required"/>
+                      <xsd:attribute name="height" type="xsd:string" use="required"/>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+                 <xsd:attribute name="rendered" type="xsd:string"/>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="rhs-area" maxOccurs="1" minOccurs="0">
+              <xsd:complexType>
+                <xsd:sequence minOccurs="1" maxOccurs="1">
+                  <xsd:element name="taskflow" maxOccurs="1">
+                    <xsd:complexType>
+                      <xsd:attribute name="refId" type="xsd:string" use="required"/>
+                      <xsd:attribute name="width" type="xsd:string"/>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+              </xsd:complexType>
+            </xsd:element>
+            <xsd:choice>
+              <xsd:element name="lhs-area" maxOccurs="1" minOccurs="0">
+                <xsd:complexType>
+                  <xsd:sequence minOccurs="1" maxOccurs="1">
+                    <xsd:element name="taskflow" maxOccurs="1">
+                      <xsd:complexType>
+                        <xsd:attribute name="refId" type="xsd:string" use="required"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                  <xsd:attribute name="rendered" type="xsd:string"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="no-lhs-area" maxOccurs="1" minOccurs="0"/>
+            </xsd:choice>
+            <xsd:choice>
+              <xsd:element name="default-taskflow" maxOccurs="1" minOccurs="0">
+                <xsd:complexType>
+                  <xsd:attribute name="refId" type="xsd:string" use="required"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="default-taskflow-list" maxOccurs="1" minOccurs="0">
+                <xsd:complexType>
+                  <xsd:sequence maxOccurs="unbounded">
+                    <xsd:element name="taskflow">
+                      <xsd:complexType>
+                        <xsd:attribute name="refId" type="xsd:string" use="required"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:choice>
+          </xsd:sequence>
+        </xsd:choice>
+        <xsd:attribute name="model" default="default">
+          <xsd:simpleType>
+            <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="default"/>
+              <xsd:enumeration value="single"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="rendered" type="xsd:string"/>
+        <xsd:attribute name="topic"    type="xsd:string"/>
+        <xsd:attribute name="product"  type="xsd:string"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="taskflow">
+    <xsd:annotation>
+      <xsd:appinfo>
+        <jaxb:class name="TaskFlowType"/>
+      </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="shell:config-data">
+        <xsd:attribute name="taskFlow"         type="xsd:string"  use="required"/>
+        <xsd:attribute name="closeable"        type="xsd:boolean" use="required"/>
+        <xsd:attribute name="dialog"           type="xsd:boolean" use="required"/>
+        <xsd:attribute name="dirty"            type="xsd:string"  use="required"/>
+        <xsd:attribute name="topic"            type="xsd:string"  use="optional"/>
+        <xsd:attribute name="product"          type="xsd:string"  use="optional"/>
+        <xsd:attribute name="enableLinking"    type="xsd:boolean" use="optional" default="false"/>
+        <xsd:attribute name="allowedURLParams" type="xsd:string"  use="optional"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="console">
+    <xsd:annotation>
+      <xsd:appinfo>
+        <jaxb:class name="ConsoleType"/>
+      </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="shell:config-data">
+        <xsd:sequence>
+          <xsd:element name="modules" maxOccurs="1">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="module" minOccurs="1" maxOccurs="unbounded">
+                  <xsd:complexType>
+                    <xsd:attribute name="refId" type="xsd:string" use="required"/>
+                  </xsd:complexType>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="config-data" abstract="true">
+    <xsd:annotation>
+      <xsd:appinfo>
+        <jaxb:class name="ConfigData"/>
+      </xsd:appinfo>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="name"        type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="id"                  type="xsd:string" use="required"/>
+    <xsd:attribute name="icon"                type="xsd:string"/>
+    <xsd:attribute name="hoverIcon"           type="xsd:string"/>
+    <xsd:attribute name="disabledIcon"        type="xsd:string"/>
+    <xsd:attribute name="depressedIcon"       type="xsd:string"/>
+    <xsd:attribute name="selectedModuleRefId" type="xsd:string"/>
+  </xsd:complexType>
+</xsd:schema>

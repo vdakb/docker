@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="12.2.1.22.48" id="membersPageDef"
+                Package="bka.employee.portal.vehicle.vmb.view">
+  <parameters/>
+  <executables>
+    <iterator     id="VehicleBrandMemberVO"   Binds="VehicleVO" DataControl="AdministrationAMDataControl" RangeSize="25" />
+    <searchRegion id="VehiculeMemberCriteria" Binds="BrandVO1Iterator" Criteria="VehicleVOCriteria" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true"/>
+  </executables>
+  <bindings>
+    <tree id="Member" IterBinding="VehicleBrandMemberVO">
+      <nodeDefinition DefName="bka.employee.portal.vehicle.model.view.VehicleVO"
+                      Name="Member0">
+        <AttrNames>
+          <Item Value="carPlateNumber"/>
+          <Item Value="usrKey"/>
+          <Item Value="brandKey"/>
+          <Item Value="typeKey"/>
+          <Item Value="colorKey"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseRefreshLaunchAreaEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.RefreshLaunchAreaEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="fnd$bundle" value="#{adfBundle['bka.employee.portal.bundle.Foundation']}"/>
+  <c:set var="mod$bundle" value="#{adfBundle['bka.employee.portal.vehicle.Frontend']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{pageFlowScope.mode == 'view'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{fnd$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{fnd$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{fnd$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{mod$bundle.VMB_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{mod$bundle.VMB_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{mod$bundle.VMB_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{mod$bundle.VMB_MEMBERS}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{mod$bundle.VMB_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{af:formatString(mod$bundle.VMB_DETAIL, pageFlowScope.brandName)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{mod$bundle.VMB_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="body">
+      <af:panelGroupLayout id="pg02" layout="scroll">
+        <af:spacer id="sp05" width="0" height="10"/>
+        <af:panelCollection id="pc01" styleClass="AFStretchWidth" featuresOff="statusBar">
+          <f:facet name="toolbar">
+            <af:toolbar id="tb03" binding="#{backingBeanScope.brandMember.toolbar}" >
+              <af:group id="g01">
+                <af:button id            ="btn04"
+                           text          ="#{fnd$bundle.GENERIC_REFRESH}"
+                           icon          ="/images/func_refresh_16_ena.png"
+                           hoverIcon     ="/images/func_refresh_16_hov.png"
+                           disabledIcon  ="/images/func_refresh_16_dis.png"
+                           depressedIcon ="/images/func_refresh_16_act.png"
+                           shortDesc     ="#{mod$bundle.VMB_MEMBERS_REFRESH}"
+                           actionListener="#{backingBeanScope.brandMember.refreshListener}"/>
+              </af:group>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="menus">
+            <af:menu id ="m01" text="#{fnd$bundle.SEARCH_ACTIONS}" binding="#{backingBeanScope.brandMember.actionMenu}">
+              <af:commandMenuItem id            ="cmi04"
+                                  text          ="#{fnd$bundle.GENERIC_REFRESH}"
+                                  icon          ="/images/func_refresh_16_ena.png"
+                                  shortDesc     ="#{mod$bundle.VMB_MEMBERS_REFRESH}"
+                                  actionListener="#{backingBeanScope.brandMember.refreshListener}"
+                                  useWindow     ="false"/>
+            </af:menu>
+          </f:facet>
+          <!--
+          we use columnStretching="multiple" to give us the opportunity
+          to size the columns by witdh="nn%"
+          The default width for a column is 100px. There is no auto
+          sizing for columns. Set the width attribute to ensure the
+          column is wide enough to accommodate the width of the
+          contents. When the "multiple" option is used in the table that
+          contains the column, the width can be set to a percentage.
+          -->
+          <af:table id="act1" var="row" varStatus="vs"
+                    value                ="#{bindings.Member.collectionModel}"
+                    rows                 ="#{bindings.Member.rangeSize}"
+                    fetchSize            ="#{bindings.Member.rangeSize}"
+                    binding              ="#{backingBeanScope.brandMember.searchTable}"
+                    selectionListener    ="#{backingBeanScope.brandMember.selectionListener}"
+                    summary              ="#{fnd$bundle.SEARCH_RESULT}"
+                    filterVisible        ="false"
+                    filterModel          ="#{bindings.VehiculeMemberCriteria.queryDescriptor}"
+                    queryListener        ="#{bindings.VehiculeMemberCriteria.processQuery}"
+                    columnStretching     ="multiple"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    autoHeightRows       ="0"
+                    rowSelection         ="single"
+                    columnSelection      ="none"
+                    scrollPolicy         ="page"
+                    immediate            ="true"
+                    emptyText            ="#{fnd$bundle.SEARCH_EMPTY}">
+            <af:column id="c10" rowHeader="true" width="20" headerText="" align="right"/>
+            <af:column headerText="#{bindings.Member.hints.usrKey.label}"
+                       id="c1">
+                <af:link id="ci11" text="#{row.usrKey}" action="#{backingBeanScope.brandMember.userDetail}" icon="/images/qual_user_16.png"/>
+            </af:column>
+            <af:column id="c2" headerText="#{bindings.Member.hints.carPlateNumber.label}" width="20%">
+              <af:outputText value="#{row.carPlateNumber}"
+                             shortDesc="#{bindings.Member.hints.carPlateNumber.tooltip}"
+                             id="ot2"/>
+            </af:column>
+            <af:column id="c3" headerText="#{bindings.Member.hints.typeKey.label}" width="20%">
+              <af:outputText value="#{row.typeKey}"
+                             shortDesc="#{bindings.Member.hints.typeKey.tooltip}"
+                             converter="#{row.bindings.typeKey.converter}"
+                             id="ot3"/>
+            </af:column>
+            <af:column id="c4" headerText="#{bindings.Member.hints.colorKey.label}" width="20%">
+              <af:outputText value="#{row.colorKey}"
+                             shortDesc="#{bindings.Member.hints.colorKey.tooltip}"
+                             converter="#{row.bindings.colorKey.converter}"
+                             id="ot4"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+       </af:panelGroupLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

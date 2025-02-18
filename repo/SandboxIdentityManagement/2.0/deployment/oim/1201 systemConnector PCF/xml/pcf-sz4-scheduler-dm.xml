@@ -1,0 +1,812 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="Pivotal Cloud Foundry Connector Configuration 12.2.1.3" exported-date="1597988543990" user="XELSYSADM" version="12.2.1.3.0">
+  <Job name="PCF Ares Group Reconciliation" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>266</taskKey>
+    <taskClassName>oracle.iam.identity.gws.service.reconciliation.pcf.LookupReconciliation</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">21</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">22</paramKey>
+          <paramValue type="string">PCF.UGP.ARES</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Service Provider</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">23</paramKey>
+          <paramValue type="string">PCF.Endpoint.ARES</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Operation</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Operation</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The operation to perform on the object to reconcile. Has to be either Refresh or Update</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">24</paramKey>
+          <paramValue type="string">Update</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Encoded Value</key>
+        <value type="jobparameter">
+          <name type="string">Encoded Value</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the entity attribute that has to be stored as the encoded value</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">25</paramKey>
+          <paramValue type="string">__UID__</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Lookup Group</key>
+        <value type="jobparameter">
+          <name type="string">Lookup Group</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The value written to Lookup Group in case the operation on a particular Lookup Definition has to create it</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">26</paramKey>
+          <paramValue type="string">PCF</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Source</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Source</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The identifier of the source (aka ObjectClass) that has to be used to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">27</paramKey>
+          <paramValue type="string">Group</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Decoded Value</key>
+        <value type="jobparameter">
+          <name type="string">Decoded Value</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the entity attribute that has to be stored as the decoded value</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">28</paramKey>
+          <paramValue type="string">__NAME__</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select this option if the data should only be gathered from the reconciliation source</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">29</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Batch Size</key>
+        <value type="jobparameter">
+          <name type="string">Batch Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the size of a batch read from the reconciliation source</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">30</paramKey>
+          <paramValue type="long">500</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">31</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Entitlement Prefix Required</key>
+        <value type="jobparameter">
+          <name type="string">Entitlement Prefix Required</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entitlements loaded needs to be prefixed with the internal system identifier and/or the name of the IT Resource</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">32</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1597987319881</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="PCF Lookup Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="PCF Lookup Reconciliation"/>
+  </Job>
+  <Job name="PCF Ares Tenant Reconciliation" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>282</taskKey>
+    <taskClassName>oracle.iam.identity.gws.service.reconciliation.pcf.LookupReconciliation</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">41</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">42</paramKey>
+          <paramValue type="string">PCF.ORL.ARES</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Service Provider</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">43</paramKey>
+          <paramValue type="string">PCF.Endpoint.ARES</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Operation</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Operation</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The operation to perform on the object to reconcile. Has to be either Refresh or Update</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">44</paramKey>
+          <paramValue type="string">Update</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Encoded Value</key>
+        <value type="jobparameter">
+          <name type="string">Encoded Value</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the entity attribute that has to be stored as the encoded value</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">45</paramKey>
+          <paramValue type="string">__UID__</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Lookup Group</key>
+        <value type="jobparameter">
+          <name type="string">Lookup Group</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The value written to Lookup Group in case the operation on a particular Lookup Definition has to create it</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">46</paramKey>
+          <paramValue type="string">PCF</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Source</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Source</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The identifier of the source (aka ObjectClass) that has to be used to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">47</paramKey>
+          <paramValue type="string">Tenant</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Decoded Value</key>
+        <value type="jobparameter">
+          <name type="string">Decoded Value</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the entity attribute that has to be stored as the decoded value</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">48</paramKey>
+          <paramValue type="string">__NAME__</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select this option if the data should only be gathered from the reconciliation source</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">49</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Batch Size</key>
+        <value type="jobparameter">
+          <name type="string">Batch Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the size of a batch read from the reconciliation source</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">50</paramKey>
+          <paramValue type="long">100</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">51</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Entitlement Prefix Required</key>
+        <value type="jobparameter">
+          <name type="string">Entitlement Prefix Required</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entitlements loaded needs to be prefixed with the internal system identifier and/or the name of the IT Resource</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">52</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1597987319881</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="PCF Lookup Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="PCF Lookup Reconciliation"/>
+  </Job>
+  <Job name="PCF Ares Space Reconciliation" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>283</taskKey>
+    <taskClassName>oracle.iam.identity.gws.service.reconciliation.pcf.LookupReconciliation</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">61</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">62</paramKey>
+          <paramValue type="string">PCF.SRL.ARES</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Service Provider</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">63</paramKey>
+          <paramValue type="string">PCF.Endpoint.ARES</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Operation</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Operation</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The operation to perform on the object to reconcile. Has to be either Refresh or Update</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">64</paramKey>
+          <paramValue type="string">Update</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Encoded Value</key>
+        <value type="jobparameter">
+          <name type="string">Encoded Value</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the entity attribute that has to be stored as the encoded value</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">65</paramKey>
+          <paramValue type="string">__UID__</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Lookup Group</key>
+        <value type="jobparameter">
+          <name type="string">Lookup Group</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The value written to Lookup Group in case the operation on a particular Lookup Definition has to create it</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">66</paramKey>
+          <paramValue type="string">PCF</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Source</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Source</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The identifier of the source (aka ObjectClass) that has to be used to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">67</paramKey>
+          <paramValue type="string">Space</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Decoded Value</key>
+        <value type="jobparameter">
+          <name type="string">Decoded Value</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the entity attribute that has to be stored as the decoded value</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">68</paramKey>
+          <paramValue type="string">__NAME__ + '@' + entity.tenant</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select this option if the data should only be gathered from the reconciliation source</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">69</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Batch Size</key>
+        <value type="jobparameter">
+          <name type="string">Batch Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the size of a batch read from the reconciliation source</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">70</paramKey>
+          <paramValue type="long">100</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">71</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Entitlement Prefix Required</key>
+        <value type="jobparameter">
+          <name type="string">Entitlement Prefix Required</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entitlements loaded needs to be prefixed with the internal system identifier and/or the name of the IT Resource</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">72</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1597987319881</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="PCF Lookup Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="PCF Lookup Reconciliation"/>
+  </Job>
+  <Job name="PCF Ares Delete Reconciliation" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>261</taskKey>
+    <taskClassName>oracle.iam.identity.gws.service.reconciliation.pcf.DeleteReconciliation</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Search Filter</key>
+        <value type="jobparameter">
+          <name type="string">Search Filter</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies which filter criteria has to be applied to retrieve entries. Must be a valid Service Provider search filter</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">81</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">82</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">83</paramKey>
+          <paramValue type="string">PCF Account Ares</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Service Provider</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">84</paramKey>
+          <paramValue type="string">PCF.Endpoint.ARES</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Batch Size</key>
+        <value type="jobparameter">
+          <name type="string">Batch Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the size of a batch read from the Service Provider</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">85</paramKey>
+          <paramValue type="long">500</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">86</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">87</paramKey>
+          <paramValue type="string">/metadata/bka-features-reconciliation/gws/pcf-d-account-reconciliation.xml</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1600406354236</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="PCF Delete Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="PCF Delete Reconciliation"/>
+  </Job>
+  <Job name="PCF Ares Account Reconciliation" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>281</taskKey>
+    <taskClassName>oracle.iam.identity.gws.service.reconciliation.pcf.AccountReconciliation</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Incremental</key>
+        <value type="jobparameter">
+          <name type="string">Incremental</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the Service Provider search has to be extended by the timestamp this job was last time executed successfully as a filter criteria; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">91</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Search Filter</key>
+        <value type="jobparameter">
+          <name type="string">Search Filter</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies which filter criteria has to be applied to retrieve entries. Must be a valid Service Provider search filter</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">92</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">93</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select this option if the data should only be gathered from the reconciliation source</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">94</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">95</paramKey>
+          <paramValue type="string">PCF Account Ares</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Ignore Dublicates</key>
+        <value type="jobparameter">
+          <name type="string">Ignore Dublicates</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes to prevent event creation and processing of Service Provider data that already exists in Identity Manager; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">96</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Service Provider</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">97</paramKey>
+          <paramValue type="string">PCF.Endpoint.ARES</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Batch Size</key>
+        <value type="jobparameter">
+          <name type="string">Batch Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the size of a batch read from the Service Provider</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">98</paramKey>
+          <paramValue type="long">500</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Thread Pool Size</key>
+        <value type="jobparameter">
+          <name type="string">Thread Pool Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies that how many threads this task should create to distribute the workload</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">99</paramKey>
+          <paramValue type="long">10</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">100</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">101</paramKey>
+          <paramValue type="string">/metadata/bka-features-reconciliation/gws/pcf-d-account-reconciliation.xml</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1597987319881</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="PCF Account Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="PCF Account Reconciliation"/>
+  </Job>
+  <Job name="PCF ARES Access Policy Housekeeping" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>22</taskKey>
+    <taskClassName>bka.iam.identity.service.health.AccessPolicyHouseKeeping</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Notification Template</key>
+        <value type="jobparameter">
+          <name type="string">Notification Template</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the template used to send notification about the chenges to the policy owner(s)</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">1</paramKey>
+          <paramValue type="string">bka-policy-modified</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">2</paramKey>
+          <paramValue type="string">PCF Account Ares</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Target System</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">3</paramKey>
+          <paramValue type="string">PCF.Endpoint.ARES</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this job was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">4</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Cleanup Policy</key>
+        <value type="jobparameter">
+          <name type="string">Cleanup Policy</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if all affected Access Policies should be cleaned up; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion">Dependent Job</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">5</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1588609734629</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="AccessPolicyHouseKeeping" type="scheduledTask"/>
+    <taskName scheduledTask="AccessPolicyHouseKeeping"/>
+  </Job>
+</xl-ddm-data>

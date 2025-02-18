@@ -1,0 +1,102 @@
+<u:composition xmlns   ="http://www.w3.org/1999/xhtml"
+               xmlns:f ="http://xmlns.jcp.org/jsf/core"
+               xmlns:h ="http://xmlns.jcp.org/jsf/html"
+               xmlns:p ="http://primefaces.org/ui"
+               xmlns:e ="http://primefaces.org/ui/extensions"
+               xmlns:u ="http://java.sun.com/jsf/facelets">
+  <h:form id="f01">
+    <p:dataTable id                       ="t01"
+                 var                      ="item"
+                 liveResize               ="true"
+                 stripedRows              ="true"
+                 resizableColumns         ="true"
+                 value                    ="#{role}"
+                 rows                     ="#{role.pageSize}"
+                 selection                ="#{role.selected}"
+                 selectionMode            ="single"
+                 sortMode                 ="multiple"
+                 allowUnsorting           ="true"
+                 paginator                ="true"
+                 paginatorPosition        ="top"
+                 paginatorTemplate        ="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                 paginatorAlwaysVisible   ="true"
+                 rowsPerPageTemplate      ="5,10,15,20,25,50,100"
+                 widgetVar                ="role">
+      <p:ajax event="rowSelect"   update=":f01:t01:cb02 :f01:t01:cb03"/>
+      <p:ajax event="rowUnselect" update=":f01:t01:cb02 :f01:t01:cb03"/>
+      <p:column id="c00" width="1px" sortable="false" draggable="false" resizable="false" selectRow="true" filterable="false" toggleable="true"/>
+      <p:column id="c01" headerText="#{uid$bundle['item.id.label']}" sortBy="#{item.id}" filterable="#{role.filter}" filterBy="#{item.id}" width="8rem">
+        <p:commandLink id ="cl01" process="t01" action="#{role.modify}" value="#{item.id}">
+          <f:setPropertyActionListener target="#{role.selected}" value="#{item}"/>
+          <e:selectDetailLevel step="2"/>
+        </p:commandLink>
+      </p:column>
+      <p:column id="c02" headerText="#{uid$bundle['item.active.label']}" sortBy="#{item.active}" filterable="#{role.filter}" filterBy="#{item.active}" filterMatchMode="exact" width="8rem">
+        <p:selectBooleanCheckbox id="ck02" value="#{item.active}" disabled="true"/>
+        <f:facet name="filter">
+          <p:triStateCheckbox id="tk02" value="#{role.status}" styleClass="ml-2" converter="#{tristateConverter}"/>
+        </f:facet>
+      </p:column>
+      <p:column id="c03" headerText="#{uid$bundle['rol.displayname.label']}" sortBy="#{item.displayName}" filterable="#{role.filter}" filterBy="#{item.displayName}" width="12rem">
+        <h:outputText id ="ot03" value="#{item.displayName}"/>
+      </p:column>
+      <p:column id="c04" headerText="#{uid$bundle['item.description.label']}" sortBy="#{item.description}" filterable="#{role.filter}" filterBy="#{item.description}">
+        <h:outputText id ="ot04" value="#{item.description}"/>
+      </p:column>
+      <f:facet name="header">
+        <p:toolbar id="tb01" styleClass="ml-3">
+          <p:toolbarGroup id="tg01" align="left" styleClass="mr-4">
+            <p:commandButton id        ="cb01"
+                             icon      ="fa fa-plus"
+                             title     ="#{app$bundle['action.create.hint']}"
+                             action    ="#{role.create}"
+                             rendered  ="#{request.isUserInRole('Administrator')}"
+                             styleClass="mr-2 ui-button-success">
+              <e:selectDetailLevel step="2"/>
+            </p:commandButton>
+            <p:commandButton id        ="cb02"
+                             icon      ="fa fa-pencil"
+                             title     ="#{app$bundle['action.modify.hint']}"
+                             action    ="#{role.modify}"
+                             disabled  ="#{role.selected == null}">
+              <e:selectDetailLevel step="2"/>
+            </p:commandButton>
+            <p:divider layout="vertical"/>
+            <p:commandButton id        ="cb03"
+                             icon      ="fa fa-trash"
+                             title     ="#{app$bundle['action.delete.hint']}"
+                             action    ="#{role.delete}"
+                             update    =":msg :f01:t01"
+                             rendered  ="#{request.isUserInRole('Administrator')}"
+                             disabled  ="#{role.selected == null}"
+                             styleClass="ui-button-danger">
+              <p:confirm header="#{app$bundle['dialog.title.confirm']}" message="#{uid$bundle['rol.delete.confirm']}" icon="pi pi-exclamation-triangle"/>
+            </p:commandButton>
+            <p:divider layout="vertical"/>
+            <p:commandButton id="cb04" icon="fa fa-refresh" title="#{app$bundle['action.refresh.hint']}" action="#{role.refresh}" update=":msg :f01:t01"/>
+            <p:divider layout="vertical"/>
+            <p:commandButton id        ="cb05"
+                             icon      ="fa fa-filter"
+                             title     ="#{app$bundle['action.filter.hint']}"
+                             action    ="#{role.filter}"
+                             update    ="@form">
+              <e:selectDetailLevel step="-1"/>
+            </p:commandButton>
+            <p:inputText id="it06" styleClass="ml-2 mr-2" onkeyup="PF('role').filter()" placeholder="#{app$bundle['action.search.value']}" showEvent="mouseover" hideEvent="mouseout click"/>
+            <p:commandButton id        ="cb06"
+                             icon      ="fa fa-search"
+                             title     ="#{app$bundle['action.search.hint']}"
+                             action    ="#{role.filter}"
+                             update    ="@form"/>
+            <p:commandButton id        ="cb07"
+                             icon      ="fa fa-recycle"
+                             title     ="#{app$bundle['action.search.erase']}"
+                             process   ="@this"
+                             onclick   ="$('#f01\\:t01\\:it06').val('').keyup(); return false;"/>
+          </p:toolbarGroup>
+        </p:toolbar>
+      </f:facet>
+    </p:dataTable>
+  </h:form>
+</u:composition>

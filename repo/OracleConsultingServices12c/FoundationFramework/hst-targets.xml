@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Oracle Headstart Foundation Workspace Targets"
+         basedir        ="."
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import   file = "./hst-context.xml"/>
+  <!--
+  =====================================================================
+  == ANT macro to assemble a library
+  =====================================================================
+  -->
+  <macrodef name="assemble-library">
+    <attribute name="library"/>
+    <attribute name="include" default="**/*.class **/*.xml **/*.xsd"/>
+    <attribute name="exclude" default="**/*-ant.xml **/*-dm.xml"/>
+    <attribute name="destination"/>
+    <sequential>
+      <jar destfile="${deploy.dir}/@{library}.jar" manifest="${manifest}">
+        <fileset dir="${output.dir}" includes="@{include}" excludes="@{exclude}"/>
+      </jar>
+      <echo message="Copying java archive from path ${deploy.dir} to @{destination}"/>
+      <for param="task" list="@{destination}">
+        <sequential>
+          <copy todir="@{task}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+            <fileset dir="${deploy.dir}">
+              <include  name="@{library}.jar"/>
+            </fileset>
+          </copy>
+        </sequential>
+      </for>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to deploy the library artifacts
+  =====================================================================
+  -->
+  <macrodef name="library-deploy">
+    <attribute name="file"/>
+    <attribute name="dir"/>
+    <attribute name="location"/>
+    <sequential>
+      <if>
+        <istrue value="${oim.server.production}"/>
+        <then>
+          <echo message="Uploading @{file} from @{dir} to @{location} on ${oim.server.host}:${oim.server.port}"/>
+          <plugin:upload contextRef="oim-context" verbose="true">
+            <plugin:library file="@{dir}/@{file}" location="@{location}"/>
+          </plugin:upload>
+        </then>
+        <else>
+          <if>
+            <istrue value="${oim.server.simple}"/>
+            <then>
+              <echo message="Copying @{file} from @{dir} to @{location}"/>
+              <copy todir="@{location}">
+                <fileset dir="@{dir}" includes="@{file}"/>
+              </copy>
+            </then>
+            <else>
+              <echo message="Transfering @{file} from @{dir} to @{location} on ${scp.server.host}"/>
+              <scp todir="${scp.server.destination}:@{location}" port="${scp.server.port}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+                <fileset dir="@{dir}">
+                  <include name="@{file}"/>
+                </fileset>
+              </scp>
+            </else>
+          </if>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="cleanup" description="Clean the project build deliverables">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}"/>
+      <fileset dir="${webinf.dir}/temp"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables" depends="cleanup">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${deploy.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the build process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${deploy.dir}"/>
+    <mkdir dir="${output.dir}/META-INF"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to copy secific files to the output directory
+  =====================================================================
+  -->
+  <target name="copy" description="Copy files to output directory" depends="init">
+    <patternset id="copy.patterns">
+      <include name="META-INF/**/*"/>
+    </patternset>
+    <copy todir="${output.dir}" overwrite="true" preservelastmodified="false" verbose="no">
+      <fileset dir="${source.dir}">
+        <patternset refid="filetype.patterns"/>
+      </fileset>
+      <fileset dir="${source.dir}">
+        <patternset refid="copy.patterns"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to compile all Java Source files
+  =====================================================================
+  -->
+  <target name="compile" description="Compile Java source files" depends="copy">
+    <!--
+    due to a regression of Bug 43114 - package-info.java repeatedly compiled
+    we had to enforce to compile any existing package-info.java in the source
+    tree
+    -->
+    <touch>
+      <fileset dir="${source.dir}" includes="**/package-info.java"/>
+    </touch>
+    <!-- Compile Groovy source files if the source path exists -->
+    <condition property="groovy-exists">
+      <available file="${groovy.dir}" type="dir"/>
+    </condition>
+    <if>
+      <equals arg1="${groovy-exists}" arg2="true"/>
+      <then>
+        <echo message="Compiling groovy"/>
+        <groovyc failonerror="false" srcdir="${groovy.dir}" destdir="${output.dir}" includes="**/*.groovy" classpathref="classpath"/>
+      </then>
+    </if>
+    <javac executable       ="${jdk.compiler}"
+           source           ="${jdk.version}"
+           target           ="${jdk.version}"
+           debug            ="${javac.debug}"
+           nowarn           ="${javac.nowarn}"
+           destdir          ="${output.dir}"
+           encoding         ="${javac.encoding}"
+           deprecation      ="${javac.deprecation}"
+           classpathref     ="classpath"
+           includeantruntime="no">
+      <src path        ="${source.dir}"/>
+    </javac>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create a manifest used in the jar files
+  =====================================================================
+  -->
+  <target name="manifest" description="Create a manifest used in the jar files">
+    <delete file="${manifest}"/>
+    <echo message="Reverting build version properties"/>
+    <exec executable="${svn.executable}">
+      <arg value="revert"/>
+      <arg value="${application.version}"/>
+    </exec>
+    <!-- update to version properties -->
+    <propertyfile file="${application.version}" comment="Build version info">
+      <entry key="build.timest" type="date" value="now" pattern="dd/MM/yyyy hh:mm:ss aa"/>
+      <entry key="build.major"  type="int"  value="00"  pattern="00" default="00"/>
+      <entry key="build.minor"  type="int"  value="01"  pattern="00" default="00" operation="+" />
+    </propertyfile>
+
+    <!-- load the file -->
+    <property file="${application.version}"/>
+
+    <!-- create the manifest file -->
+    <manifest file="${manifest}">
+      <attribute name="Built-By"               value="${user.name}"/>
+      <attribute name="Built-At"               value="${build.timest}"/>
+      <attribute name="Specification-Title"    value="${description}"/>
+      <attribute name="Specification-Version"  value="${application.release}"/>
+      <attribute name="Specification-Vendor"   value="Oracle Consulting Services"/>
+      <attribute name="Implementation-Title"   value="${description}"/>
+      <attribute name="Implementation-Version" value="${application.release}-${build.major}.${build.minor}"/>
+      <attribute name="Implementation-Vendor"  value="Oracle Consulting Services"/>
+    </manifest>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the library
+  =====================================================================
+  -->
+  <target name="make-library" description="Build the library" if="library" depends="compile,manifest">
+    <echo message="Assemble java archive from path ${output.dir}/${packagepath.library}"/>
+    <assemble-library library="${library}" include="${packagepath.library}" destination="${destination.base}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the non-binary deliverables like source and
+  == javadoc files
+  =====================================================================
+  -->
+  <target name="make" description="Assemble the project source and documentation" depends="make-library">
+    <!-- generate javadoc -->
+    <javadoc author      ="false"
+             classpathref="classpath"
+             sourcepath  ="${source.dir}"
+             packagenames="oracle.*"
+             destdir     ="${deploy.doc}"
+             encoding    ="${javac.encoding}"
+             docencoding ="${javac.encoding}"
+             charset     ="${javac.encoding}"/>
+    <!-- assemble javadoc -->
+    <jar destfile="${deploy.dir}/${application}-doc.jar">
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </jar>
+    <!-- assemble source -->
+    <jar destfile="${deploy.dir}/${application}-src.jar">
+      <fileset dir="${source.dir}" includes="**/*.*"/>
+    </jar>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the library archive
+  =====================================================================
+  -->
+  <target name="deploy-library" description="Deploy the library" if="library" depends="make">
+    <library-deploy dir="${deploy.dir}" file="${library}.jar" location="${oim.remote.thirdparty}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the project artifacts
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploy the project artifacts" depends="deploy-library"/>
+  <!--
+  =====================================================================
+  == ANT target to build and the project artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Build,Deploy and Install the project on the target host" depends="clean,deploy"/>
+</project>

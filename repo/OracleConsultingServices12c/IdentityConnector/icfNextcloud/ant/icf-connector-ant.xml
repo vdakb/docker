@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Grafana Connector" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"            value="Identity Manager Identity Governance Connector"/>
+
+  <property name="application"            value="nxc.identity.connector"/>
+  <property name="bundle"                 value="nxc.identity.connector.bundle"/>
+  <property name="adapter"                value="nxc.identity.connector.adapter"/>
+  <property name="scheduler"              value="nxc.identity.connector.scheduler"/>
+  <property name="thirdparty"             value="nxc.identity.connector.common"/>
+  <!--
+  <property name="destination.base"       value="../../deployment/oim/0102 systemIntegration"/>
+  <property name="destination.target"     value="../../deployment/oim/0305 systemConnector APIGEE"/>
+  -->
+  <property name="destination.base"       value="../../deployment/oim/0102 systemIntegration,../../../Bundeskriminalamt12c/ExternalIdentityManagement/deployment/oim/0102 systemIntegration"/>
+  <property name="destination.bundle"     value="../../deployment/oim/0102 systemIntegration/ics,../../../Bundeskriminalamt12c/ExternalIdentityManagement/deployment/oim/0102 systemIntegration/lib"/>
+  <property name="destination.target"     value="../../deployment/oim/0308 systemConnector API"/>
+
+  <property name="packagepath.bundle"     value="oracle/iam/identity/icf/**/*.class oracle/iam/identity/icf/**/*.properties"/>
+  <property name="packagepath.adapter"    value="oracle/iam/identity/gws/service/provisioning/**/*.class"/>
+  <property name="packagepath.scheduler"  value="oracle/iam/identity/gws/service/reconciliation/**/*.class"/>
+  <property name="packagepath.diagnostic" value="oracle/iam/identity/gws/service/diagnostic/**/*.class"/>
+  <!--
+  <property name="configuration.base"     value="true"/>
+  <property name="configuration.target"   value="true"/>
+  <property name="configuration.trusted"  value="true"/>
+  -->
+
+  <patternset id="descriptor.pattern.base">
+    <include name="base/nxc-resource-dm.xml"/>
+    <include name="base/nxc-adapter-dm.xml"/>
+    <include name="base/nxc-scheduler-dm.xml"/>
+  </patternset>
+
+  <patternset id="descriptor.pattern.target">
+  </patternset>
+
+  <patternset id="descriptor.pattern.trusted">
+  </patternset>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../icf-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish a possible plugin runtime path
+  =====================================================================
+  -->
+  <path id="oracle.ocs.icf.runtime">
+    <path refid="oracle.ocs.icf.foundation"/>
+    <path refid="oracle.ocs.icf.rest"/>
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.mds"/>
+    <path refid="oracle.fmw.json"/>
+    <path refid="oracle.fmw.jax.jersey.core"/>
+    <path refid="oracle.fmw.jax.jackson"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.icf.integration"/>
+    <path refid="oracle.fmw.oim.adapter"/>
+    <path refid="oracle.fmw.oim.scheduler"/>
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="oracle.ocs.oim.foundation"/>
+    <path refid="oracle.ocs.icf.integration"/>
+    <path refid="oracle.ocs.icf.runtime"/>
+  </path>
+</project>

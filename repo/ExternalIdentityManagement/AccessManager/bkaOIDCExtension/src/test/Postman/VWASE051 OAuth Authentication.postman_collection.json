@@ -1,0 +1,3123 @@
+{
+	"info": {
+		"_postman_id": "31940581-798f-4043-be81-0187e5e89a3d",
+		"name": "VWASE051 OAuth Authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Discovery",
+			"item": [
+				{
+					"name": "openid-configuration",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{sso-serviceurl}}/.well-known/openid-configuration",
+							"host": [
+								"{{sso-serviceurl}}"
+							],
+							"path": [
+								".well-known",
+								"openid-configuration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "oidc-configuration",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{sso-serviceurl}}/.well-known/oidc-configuration",
+							"host": [
+								"{{sso-serviceurl}}"
+							],
+							"path": [
+								".well-known",
+								"oidc-configuration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "openid-configuration",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{sso-serviceurl}}/.well-known/openid-configuration",
+							"host": [
+								"{{sso-serviceurl}}"
+							],
+							"path": [
+								".well-known",
+								"openid-configuration"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "signing-signature",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "0c1f286c5a724a869a7fab8245a5716d",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-oauth-identity-domain-name",
+								"value": "SecureDomain2",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{sso-serviceurl}}/oauth2/rest/security?identityDomainName=SecureDomain2",
+							"host": [
+								"{{sso-serviceurl}}"
+							],
+							"path": [
+								"oauth2",
+								"rest",
+								"security"
+							],
+							"query": [
+								{
+									"key": "identityDomainName",
+									"value": "SecureDomain2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Administration",
+			"item": [
+				{
+					"name": "Identity Domain",
+					"item": [
+						{
+							"name": "SecureDomain2",
+							"item": [
+								{
+									"name": "lookup",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?identityDomainName=SecureDomain2",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"name\"                             : \"SecureDomain2\"\r\n, \"identityProvider\"                 : \"FederationIdentityStore\"\r\n, \"description\"                      : \"OAuth Domain\"\r\n, \"tokenSettings\"                    : [\r\n    { \"tokenType\"                    : \"ACCESS_TOKEN\"\r\n    , \"tokenExpiry\"                  : 3600\r\n    , \"lifeCycleEnabled\"             : false\r\n    , \"refreshTokenEnabled\"          : true\r\n    , \"refreshTokenExpiry\"           : 86400\r\n    , \"refreshTokenLifeCycleEnabled\" : false\r\n    }\r\n  , { \"tokenType\"                    : \"AUTHZ_CODE\"\r\n    , \"tokenExpiry\"                  : 3600\r\n    , \"lifeCycleEnabled\"             : false\r\n    , \"refreshTokenEnabled\"          : true\r\n    , \"refreshTokenExpiry\"           : 86400\r\n    , \"refreshTokenLifeCycleEnabled\" : false\r\n    }\r\n  , { \"tokenType\"                    : \"SSO_LINK_TOKEN\"\r\n    , \"tokenExpiry\"                  : 86400\r\n    , \"lifeCycleEnabled\"             : false\r\n    , \"refreshTokenEnabled\"          : true\r\n    , \"refreshTokenExpiry\"           : 86400\r\n    , \"refreshTokenLifeCycleEnabled\" : false\r\n    }\r\n  ]\r\n, \"customAttrs\"                      : \"{\\\"usePKCE\\\":\\\"ALL_CLIENTS_TYPES\\\"}\"\r\n, \"errorPageURL\"                     : \"http://vwase051.bka.extrapol.de:7807/oam/pages/error.jsp\"\r\n, \"consentPageURL\"                   : \"http://vwase051.bka.extrapol.de:7807/oam/pages/consent.jsp\"\r\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?identityDomainName=SecureDomain2",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "modify",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"name\"                             : \"SecureDomain2\"\r\n, \"errorPageURL\"                     : \"http://vwase051.bka.extrapol.de:7807/oam/pages/errorxxxxx.jsp\"\r\n, \"consentPageURL\"                   : \"http://vwase051.bka.extrapol.de:7807/oam/pages/consent.jsp\"\r\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "SecureDomain3",
+							"item": [
+								{
+									"name": "lookup",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?identityDomainName=SecureDomain3",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain3"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"name\"                             : \"SecureDomain3\"\r\n, \"identityProvider\"                 : \"FederationIdentityStore\"\r\n, \"description\"                      : \"OAuth Domain\"\r\n, \"tokenSettings\"                    : [\r\n    { \"tokenType\"                    : \"ACCESS_TOKEN\"\r\n    , \"tokenExpiry\"                  : 3600\r\n    , \"lifeCycleEnabled\"             : false\r\n    , \"refreshTokenEnabled\"          : true\r\n    , \"refreshTokenExpiry\"           : 86400\r\n    , \"refreshTokenLifeCycleEnabled\" : false\r\n    }\r\n  , { \"tokenType\"                    : \"AUTHZ_CODE\"\r\n    , \"tokenExpiry\"                  : 3600\r\n    , \"lifeCycleEnabled\"             : false\r\n    , \"refreshTokenEnabled\"          : true\r\n    , \"refreshTokenExpiry\"           : 86400\r\n    , \"refreshTokenLifeCycleEnabled\" : false\r\n    }\r\n  , { \"tokenType\"                    : \"SSO_LINK_TOKEN\"\r\n    , \"tokenExpiry\"                  : 86400\r\n    , \"lifeCycleEnabled\"             : false\r\n    , \"refreshTokenEnabled\"          : true\r\n    , \"refreshTokenExpiry\"           : 86400\r\n    , \"refreshTokenLifeCycleEnabled\" : false\r\n    }\r\n  ]\r\n, \"customAttrs\"                      : \"{\\\"usePKCE\\\":\\\"ALL_CLIENTS_TYPES\\\"}\"\r\n, \"errorPageURL\"                     : \"http://vwase051.bka.extrapol.de:7807/oam/pages/error.jsp\"\r\n, \"consentPageURL\"                   : \"http://vwase051.bka.extrapol.de:7807/oam/pages/consent.jsp\"\r\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?identityDomainName=SecureDomain3",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain3"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "SecureDomain4",
+							"item": [
+								{
+									"name": "lookup",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?identityDomainName=SecureDomain4",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain4"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"name\"                             : \"SecureDomain4\"\r\n, \"identityProvider\"                 : \"FederationIdentityStore\"\r\n, \"description\"                      : \"OAuth Domain\"\r\n, \"tokenSettings\"                    : [\r\n    { \"tokenType\"                    : \"ACCESS_TOKEN\"\r\n    , \"tokenExpiry\"                  : 3600\r\n    , \"lifeCycleEnabled\"             : false\r\n    , \"refreshTokenEnabled\"          : true\r\n    , \"refreshTokenExpiry\"           : 86400\r\n    , \"refreshTokenLifeCycleEnabled\" : false\r\n    }\r\n  , { \"tokenType\"                    : \"AUTHZ_CODE\"\r\n    , \"tokenExpiry\"                  : 3600\r\n    , \"lifeCycleEnabled\"             : false\r\n    , \"refreshTokenEnabled\"          : true\r\n    , \"refreshTokenExpiry\"           : 86400\r\n    , \"refreshTokenLifeCycleEnabled\" : false\r\n    }\r\n  , { \"tokenType\"                    : \"SSO_LINK_TOKEN\"\r\n    , \"tokenExpiry\"                  : 86400\r\n    , \"lifeCycleEnabled\"             : false\r\n    , \"refreshTokenEnabled\"          : true\r\n    , \"refreshTokenExpiry\"           : 86400\r\n    , \"refreshTokenLifeCycleEnabled\" : false\r\n    }\r\n  ]\r\n, \"customAttrs\"                      : \"{\\\"usePKCE\\\":\\\"ALL_CLIENTS_TYPES\\\"}\"\r\n, \"errorPageURL\"                     : \"http://vwase051.bka.extrapol.de:7807/oam/pages/error.jsp\"\r\n, \"consentPageURL\"                   : \"http://vwase051.bka.extrapol.de:7807/oam/pages/consent.jsp\"\r\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?identityDomainName=SecureDomain4",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"oauthidentitydomain"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain4"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "list",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "wmkah1mdkh",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "weblogic",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain",
+									"host": [
+										"{{iad-serviceurl}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"oauthidentitydomain"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Resource Server",
+					"item": [
+						{
+							"name": "igsresource",
+							"item": [
+								{
+									"name": "lokup",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=SecureDomain2&name=igsresource",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"application"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "igsresource"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"idDomain\": \"SecureDomain2\",\n\t\"name\": \"igsresource\",\n    \"description\": \"igsresource\",\n\t\"resServerType\": \"CUSTOM_RESOURCE_SERVER\",\n    \"resourceServerNameSpacePrefix\": \"igsresource.\",\n    \"audienceClaim\": null,\n    \"tokenAttributes\": [\n        {\n            \"attrName\": \"email\",\n            \"attrValue\": \"$user.attr.mail\",\n            \"attrType\": \"STATIC\"\n        }\n    ],\n    \"scopes\": [\n        {\n            \"scopeName\": \"all\",\n            \"description\": \"Main Scope\"\n        }\n    ]\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"application"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=SecureDomain2&name=igsresource",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"application"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "igsresource"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "ZIMP",
+							"item": [
+								{
+									"name": "template",
+									"item": [
+										{
+											"name": "lookup",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														},
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/template/ZIMP",
+													"host": [
+														"{{iad-serviceurl}}"
+													],
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"template",
+														"ZIMP"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														},
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{ \"name\"           : \"ZIMP\"\r\n, \"valueMapping\"   : \"idp:family_name:given_name:email:phone_number:groups\"\r\n, \"transformFirst\" : false\r\n}"
+												},
+												"url": {
+													"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/template/ZIMP",
+													"host": [
+														"{{iad-serviceurl}}"
+													],
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"template",
+														"ZIMP"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														},
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														}
+													]
+												},
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{ \"name\"           : \"ZIMP\"\r\n, \"valueMapping\"   : \"idp:family_name:given_name:email:phone_number:fax_number:organizational_unit:division:department_number:p20_uid\"\r\n, \"transformFirst\" : false\r\n}"
+												},
+												"url": {
+													"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/template/ZIMP",
+													"host": [
+														"{{iad-serviceurl}}"
+													],
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"template",
+														"ZIMP"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														},
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														}
+													]
+												},
+												"method": "DELETE",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/template/ZIMP",
+													"host": [
+														"{{iad-serviceurl}}"
+													],
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"template",
+														"ZIMP"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "lookup",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=SecureDomain2&name=ZIMP",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"application"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "ZIMP"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"idDomain\"                      : \"SecureDomain2\"\n, \"name\"                          : \"ZIMP\"\n, \"description\"                   : \"ZIMP\"\n, \"resServerType\"                 : \"CUSTOM_RESOURCE_SERVER\"\n, \"resourceServerNameSpacePrefix\" : \"ZIMP.\"\n, \"audienceClaim\"                 : null\n, \"tokenAttributes\"               : [\n     { \"attrName\" : \"idp\"\n     , \"attrValue\": \"$user.attr.o\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"p20_uid\"\n     , \"attrValue\": \"$user.attr.policeidentifiername\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"given_name\"\n     , \"attrValue\": \"$user.attr.givenname\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"family_name\"\n     , \"attrValue\": \"$user.attr.sn\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"email\"\n     , \"attrValue\": \"$user.attr.mail\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"phone_number\"\n     , \"attrValue\": \"$user.attr.telephonenumber\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"department_number\"\n     , \"attrValue\": \"$user.attr.departmentnumber\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"groups\"\n     , \"attrValue\": \"$user.groups\"\n     , \"attrType\" : \"DYNAMIC\"\n     }\n  ,  { \"attrName\" : \"TokenExchange_AllowedClientsForDelegation\"\n     , \"attrValue\": \"Artus,SUSI,ITK-AUS\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"TokenExchange_AllowedClientsForImpersonation\"\n     , \"attrValue\": \"Artus,SUSI,ITK-AUS\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ]\n, \"scopes\": [\n     { \"scopeName\"  : \"Main\"\n     , \"description\": \"Main Scope\"\n     }\n  ,  { \"scopeName\"  : \"Access\"\n     , \"description\": \"Main Scope\"\n     }\n  ]\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"application"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=SecureDomain2&name=ZIMP",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"application"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "ZIMP"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "modify",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"idDomain\"                      : \"SecureDomain2\"\n, \"tokenAttributes\"               : [\n     { \"attrName\" : \"idp\"\n     , \"attrValue\": \"$user.attr.o\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"p20_uid\"\n     , \"attrValue\": \"$user.attr.policeidentifiername\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"family_name\"\n     , \"attrValue\": \"$user.attr.sn\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"given_name\"\n     , \"attrValue\": \"$user.attr.givenname\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"email\"\n     , \"attrValue\": \"$user.attr.mail\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"phone_number\"\n     , \"attrValue\": \"$user.attr.telephoneNumber\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"fax_number\"\n     , \"attrValue\": \"$user.attr.facsimileTelephoneNumber\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"organizational_unit\"\n     , \"attrValue\": \"$user.attr.ou\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"division\"\n     , \"attrValue\": \"$user.attr.physicalDeliveryOfficeName\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"department_number\"\n     , \"attrValue\": \"$user.attr.departmentnumber\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"groups\"\n     , \"attrValue\": \"$user.groups\"\n     , \"attrType\" : \"DYNAMIC\"\n     }\n  ,  { \"attrName\" : \"TokenExchange_AllowedClientsForDelegation\"\n     , \"attrValue\": \"Artus,SUSI,ITK-AUS\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ,  { \"attrName\" : \"TokenExchange_AllowedClientsForImpersonation\"\n     , \"attrValue\": \"Artus,SUSI,ITK-AUS\"\n     , \"attrType\" : \"STATIC\"\n     }\n  ]\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=SecureDomain2&name=ZIMP",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"application"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "ZIMP"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "c9392a06-5fd2-4d9e-ae39-b2d9ef2b70c0",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "8d7bd6f3-8d4f-4c34-b84c-ea4939763759",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "list",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "wmkah1mdkh",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "weblogic",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=SecureDomain2",
+									"host": [
+										"{{iad-serviceurl}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"application"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "SecureDomain2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Resource Client",
+					"item": [
+						{
+							"name": "igsservice",
+							"item": [
+								{
+									"name": "lookup",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=SecureDomain2&name=igsservice",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"client"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "igsservice"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"idDomain\"                : \"SecureDomain2\"\n, \"id\"                      : \"igsservice\"\n, \"name\"                    : \"igsservice\"\n, \"secret\"                  : \"Welcome1\"\n, \"clientType\"              : \"CONFIDENTIAL_CLIENT\"\n, \"description\"             : \"The client application making resource requests on behalf of the resource owner with the resource owners authorization.\"\n, \"attributes\"              : [\n    { \"attrName\"            : \"sessionId\"\n    , \"attrValue\"           : \"$session.id\"\n    , \"attrType\"            :  \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"preferred_username\"\n    , \"attrValue\"           : \"$user.attr.uid\"\n    , \"attrType\"            :  \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"groups\"\n    , \"attrValue\"           : \"$user.groups\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"upn\"\n    , \"attrValue\"           : \"$user.attr.policeIdentifierName\"\n    , \"attrType\"           : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"preferred_username\"\n    , \"attrValue\"           : \"$user.attr.uid\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"full_name\"\n    , \"attrValue\"           : \"$user.attr.cn\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"family_name\"\n    , \"attrValue\"           : \"$user.attr.sn\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"given_name\"\n    , \"attrValue\"           : \"$user.attr.givenName\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"email\"\n    , \"attrValue\"           : \"$user.attr.mail\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  ]\n, \"idTokenCustomClaims\"     : []\n, \"accessTokenCustomClaims\" : []\n, \"userInfoCustomClaims\"    : []\n, \"redirectURIs\"            : []\n, \"grantTypes\"              : [\n    \"PASSWORD\"\n  , \"CLIENT_CREDENTIALS\"\n  , \"JWT_BEARER\"\n  , \"REFRESH_TOKEN\"\n  , \"AUTHORIZATION_CODE\"\n  , \"TOKEN_EXCHANGE\"\n  ]\n, \"scopes\"                  : [\n    \"igsresource.all\"\n  ]\n, \"defaultScope\"            : \"igsresource.all\"\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"client"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=SecureDomain2&name=igsservice",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"client"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "igsservice"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "pidservice",
+							"item": [
+								{
+									"name": "lookup",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=SecureDomain2&name=pidservice",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"client"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "pidservice"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"idDomain\"                : \"SecureDomain2\"\n, \"id\"                      : \"pidservice\"\n, \"name\"                    : \"pidservice\"\n, \"secret\"                  : \"Welcome1\"\n, \"clientType\"              : \"CONFIDENTIAL_CLIENT\"\n, \"description\"             : \"The client application making resource requests on behalf of the resource owner with the resource owners authorization.\"\n, \"attributes\"              : [\n    { \"attrName\"            : \"sessionId\"\n    , \"attrValue\"           : \"$session.id\"\n    , \"attrType\"            :  \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"preferred_username\"\n    , \"attrValue\"           : \"$user.attr.uid\"\n    , \"attrType\"            :  \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"groups\"\n    , \"attrValue\"           : \"$user.groups\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"upn\"\n    , \"attrValue\"           : \"$user.attr.policeIdentifierName\"\n    , \"attrType\"           : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"preferred_username\"\n    , \"attrValue\"           : \"$user.attr.uid\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"full_name\"\n    , \"attrValue\"           : \"$user.attr.cn\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"family_name\"\n    , \"attrValue\"           : \"$user.attr.sn\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"given_name\"\n    , \"attrValue\"           : \"$user.attr.givenName\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"email\"\n    , \"attrValue\"           : \"$user.attr.mail\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  ]\n, \"idTokenCustomClaims\"     : []\n, \"accessTokenCustomClaims\" : []\n, \"userInfoCustomClaims\"    : []\n, \"redirectURIs\"            : []\n, \"grantTypes\"              : [\n    \"PASSWORD\"\n  , \"CLIENT_CREDENTIALS\"\n  , \"JWT_BEARER\"\n  , \"REFRESH_TOKEN\"\n  , \"AUTHORIZATION_CODE\"\n  , \"TOKEN_EXCHANGE\"\n  ]\n, \"scopes\"                  : [\n    \"pidresource.all\"\n  ]\n, \"defaultScope\"            : \"pidresource.all\"\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"client"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=SecureDomain2&name=pidservice",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"client"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "pidservice"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "uidservice",
+							"item": [
+								{
+									"name": "lookup",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=SecureDomain2&name=uidservice",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"client"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "uidservice"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{ \"idDomain\"                : \"SecureDomain2\"\n, \"id\"                      : \"uidservice\"\n, \"name\"                    : \"uidservice\"\n, \"secret\"                  : \"Welcome1\"\n, \"clientType\"              : \"CONFIDENTIAL_CLIENT\"\n, \"description\"             : \"The client application making resource requests on behalf of the resource owner with the resource owners authorization.\"\n, \"attributes\"              : [\n    { \"attrName\"            : \"sessionId\"\n    , \"attrValue\"           : \"$session.id\"\n    , \"attrType\"            :  \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"preferred_username\"\n    , \"attrValue\"           : \"$user.attr.uid\"\n    , \"attrType\"            :  \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"groups\"\n    , \"attrValue\"           : \"$user.groups\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"upn\"\n    , \"attrValue\"           : \"$user.attr.policeIdentifierName\"\n    , \"attrType\"           : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"preferred_username\"\n    , \"attrValue\"           : \"$user.attr.uid\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"full_name\"\n    , \"attrValue\"           : \"$user.attr.cn\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"family_name\"\n    , \"attrValue\"           : \"$user.attr.sn\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"given_name\"\n    , \"attrValue\"           : \"$user.attr.givenName\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  , { \"attrName\"            : \"email\"\n    , \"attrValue\"           : \"$user.attr.mail\"\n    , \"attrType\"            : \"DYNAMIC\"\n    }\n  ]\n, \"idTokenCustomClaims\"     : []\n, \"accessTokenCustomClaims\" : []\n, \"userInfoCustomClaims\"    : []\n, \"redirectURIs\"            : []\n, \"grantTypes\"              : [\n    \"PASSWORD\"\n  , \"CLIENT_CREDENTIALS\"\n  , \"JWT_BEARER\"\n  , \"REFRESH_TOKEN\"\n  , \"AUTHORIZATION_CODE\"\n  , \"TOKEN_EXCHANGE\"\n  ]\n, \"scopes\"                  : [\n    \"uidresource.all\"\n  ]\n, \"defaultScope\"            : \"uidresource.all\"\n}"
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"client"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "weblogic",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=SecureDomain2&name=uidservice",
+											"host": [
+												"{{iad-serviceurl}}"
+											],
+											"path": [
+												"oam",
+												"services",
+												"rest",
+												"ssa",
+												"api",
+												"v1",
+												"oauthpolicyadmin",
+												"client"
+											],
+											"query": [
+												{
+													"key": "identityDomainName",
+													"value": "SecureDomain2"
+												},
+												{
+													"key": "name",
+													"value": "uidservice"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "zimpclient",
+							"item": [
+								{
+									"name": "admin",
+									"item": [
+										{
+											"name": "lookup",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														},
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=SecureDomain2&name=zimp",
+													"host": [
+														"{{iad-serviceurl}}"
+													],
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"oauthpolicyadmin",
+														"client"
+													],
+													"query": [
+														{
+															"key": "identityDomainName",
+															"value": "SecureDomain2"
+														},
+														{
+															"key": "name",
+															"value": "zimp"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														},
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{ \"idDomain\"    : \"SecureDomain2\"\n, \"id\"          : \"zimp\"\n, \"name\"        : \"zimp\"\n, \"secret\"      : \"wmkah1mdkh\"\n, \"clientType\"  : \"CONFIDENTIAL_CLIENT\"\n, \"description\" : \"OAM client\"\n, \"scopes\"      : [\n\t\"ZIMP.Main\"\n  ]\n, \"defaultScope\": \"ZIMP.Main\"\n, \"grantTypes\"  : [\n    \"AUTHORIZATION_CODE\"\n   , \"CLIENT_CREDENTIALS\"\n   , \"JWT_BEARER\"\n   , \"PASSWORD\"\n   , \"REFRESH_TOKEN\"\n   ]\n , \"redirectURIs\": [\n     { \"url\": \"https://localhost:8710/login\"\n     , \"isHttps\": true\n     }\n   ]\n , \"attributes\": [\n     { \"attrName\"  : \"sessionId\"\n     , \"attrValue\" : \"$session.id\"\n     , \"attrType\"  : \"STATIC\"\n     }\n   ]\n}"
+												},
+												"url": {
+													"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+													"host": [
+														"{{iad-serviceurl}}"
+													],
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"oauthpolicyadmin",
+														"client"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=SecureDomain2&name=zimp",
+													"host": [
+														"{{iad-serviceurl}}"
+													],
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"oauthpolicyadmin",
+														"client"
+													],
+													"query": [
+														{
+															"key": "identityDomainName",
+															"value": "SecureDomain2"
+														},
+														{
+															"key": "name",
+															"value": "zimp"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "template",
+									"item": [
+										{
+											"name": "lookup",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														},
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														}
+													]
+												},
+												"method": "GET",
+												"header": [],
+												"body": {
+													"mode": "urlencoded",
+													"urlencoded": [
+														{
+															"key": "redirect_uri",
+															"value": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+															"sessionValue": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+															"type": "text"
+														},
+														{
+															"key": "grant_type",
+															"value": "AUTHORIZATION_CODE",
+															"sessionValue": "AUTHORIZATION_CODE",
+															"type": "text"
+														},
+														{
+															"key": "code",
+															"value": "TW1EN1QzUzdIUnQwTEMyczExcVMrUT09fk43TnNNWU5hSGxnR0FUMEQvaDNIZld2Sk9IaGo4MXY4dkRxd0QxZ2NlUUNNRDkxRTMxVXQvZ1lkTURYZ0I0RnJDaDVRV0YwK29DNHNCaUp6UDZkREhMMEw1Sk1LVEFlSHlkVlRrZmhpemlXRHA2cnNDSHpmN0tzYmYzcDBiNzU5YWIwNURXZnZIdlIwOExTNGNnYlY0dmlFbW1Xc0hyVWhadWZMMU9GYVQzTGpKRFBNZ0ljcE5jTkhJNHVqaVFJclR0VG5xRzdxdnZkcmhVU0Q2OVJaaUY3bDJlL1U2dHBnTzRua1RaUDZkS2plcW1sVGhLQkduQTZrTmg3aFQybmZYVTljOHAxRld5dVg4WHhsazdBY3JDUW5aMnpRS3d0V2s2ak4ybDFoTUtQdUxrdjFlb3dmTktYaVAvTlNtUVEvVWMwSXJVL1o3V1hmQ3N5eDgvWG1kQmhPZ281Tm4xR3lnSjlJNzNWVmQybW15WGx2bk9wcmxjWGRxUGozeGI4S2MwdnVKL1I5Y3lGdklJZjhXd2V1ZktBSDVkc2ZYU1N2NVBiN2oxaThPcUdVTnRNVWpPa2pUUUI2eU9nV2NBYkJ5WVZkdUM0ZXg4RjZTckkyUFRUVFBTUzN0ZG8zOUNkcUVoWVVYdjJJQVhMTkR0TGQ4NVlZeEtBRThOOWV2TTFYUzBKdTl2TXl3N1VqcVMvTk1HTTVGYjJNUC9RbVhnc081a3dXVHVJQVRTSzZkaGZGR1BzWlFIY0NVQWpUMWZLK21OaUcyeU5hWFBEZTdJMmVnRXN2aWhzWXArdXlvbFdsUVY4T3l3Vkw4QTVzaGNCMzJXWFB1NVQyaWNuLzNYaHUvUGZGTWFmR20vNld3VXVCSEQxVXBVVlVWaW4vay96c2JLUTF4OThZeWczN20yaUFBWGkzSFpIV2lQVTNyOVFiL0V3QWdpeSt1WFNkeFV1VUlQZ0JsOGs4RHhmaENjV2ZCb09HczhJZ0VBbkkvTTBDNjI1UTFqemRvV1JhbDdwUUdGcWREOTFUMXIzYm9IWlRlVTQvdjRTM2R6a3pPUzFkc0lJUGhUWUxDYkk9",
+															"sessionValue": "UmRnYTErZzRnM0lkK0pSanlwMnlDdz09fm41QURCM2NScjdrU1Bsb1F2WWt3anFmNUdrKzB1RkhYRDl0MkFZQkQxMGQ2ckFMNFViSmZMMVZZQ1o3R3NJNUlZaUZrT1UxOUo2TklQY0VHMnZ5Zm5iWjUwYWRzVGwzdE5vdWc5RWQxMUh5WTdhY095RmJCZ2tPWWpEUU1nUUhkMjQvbGcxZk4yaGltL3p3Z1VUMStHeUlGU1VCUnRZR0RNTW43UmZRai9aNGgyWXRGazFhMmdMd001NkhRYm5CQmwydk9WY1R0SzlnK1g1Mjh5dlNXKzNHZHM3TERrdDlUUko1bS9wNUlnMUdzQjhhWWRZWFM3aktPdkc3UDdUSG56YkhKdVpMRE9kWXp3bXpuWlE3VEl4SnlNak9jZGJMZ3FPYnlVUm5XK0NDcDVFUWVIVVlzeGRJTFV3NDFneTVNdVVISW9hT2MxQ3RwcWZBazJheitlYzI3YTl0RVlXUXVvTlJTVWs0ZjIwdkZUS2swYlI2cGhveW43dGFEeGFXUHdJUWxxQmk1U2xzcUV4RmFWRnFPa3k1K3c4c3JWTnRnUmJFN280NXJQM2c1YVMwNVE3UzROK0Z6UEYyU0J6ZU8zcGhtbC93dUlOVUlXK1BLSnJjN2ZGc2ZNaGZyMzlWTWkyYmo4cjNSTkJhVURRWVVKVlY1TzZwQXUvVFRpYUM0eUVYS2pYTU5qaXFrUWprRUJGdWtadDhpWlgwMi8zTnd5d3I4QjhNTzJQeWNoRElRTzMrL01xQktRZm5zL0tZQ2gwL0dKODRNN1MrNUdmeURJbkEybGt4c05HVmZSUjRlK3VJWTJzUndnRmZYeUJ3ak5WQWUrbi9VMDRITkZHQ29WRXY5WlNiUHhjZkVWbFUrYVNYWnZhbEc5M25FcmE2Vi90YzFyVElUV09jdmJyc2QvRmFQZzgvTDlZbm9QcndHM284cVNEUDhkVkQxNVlZRXRjQ2dOb1FjZ3UzbVJ3anhDTFNkRE1OQTBaWnZyOUdIY1gzaGQ5STdZNVh5cDhVSA",
+															"type": "text"
+														},
+														{
+															"key": "code_verifier",
+															"value": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+															"sessionValue": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+															"type": "text"
+														}
+													]
+												},
+												"url": {
+													"raw": "http://vwase051.bka.extrapol.de:7803/oam/services/rest/ssa/api/v1/template/ZIMP",
+													"protocol": "http",
+													"host": [
+														"vwase051",
+														"bka",
+														"extrapol",
+														"de"
+													],
+													"port": "7803",
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"template",
+														"ZIMP"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														},
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"valueMapping\": \"name:given_name\",\n\t\"transformFirst\": true\n}"
+												},
+												"url": {
+													"raw": "http://vwase051.bka.extrapol.de:7803/oam/services/rest/ssa/api/v1/template/ZIMP",
+													"protocol": "http",
+													"host": [
+														"vwase051",
+														"bka",
+														"extrapol",
+														"de"
+													],
+													"port": "7803",
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"template",
+														"ZIMP"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "modify",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														},
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														}
+													]
+												},
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"valueMapping\": \"name:given_name\",\n\t\"transformFirst\": true\n}\n"
+												},
+												"url": {
+													"raw": "http://vwase051.bka.extrapol.de:7803/oam/services/rest/ssa/api/v1/template/ZIMP",
+													"protocol": "http",
+													"host": [
+														"vwase051",
+														"bka",
+														"extrapol",
+														"de"
+													],
+													"port": "7803",
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"template",
+														"ZIMP"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete",
+											"request": {
+												"auth": {
+													"type": "basic",
+													"basic": [
+														{
+															"key": "username",
+															"value": "weblogic",
+															"type": "string"
+														},
+														{
+															"key": "password",
+															"value": "wmkah1mdkh",
+															"type": "string"
+														}
+													]
+												},
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"disabled": true
+													},
+													{
+														"key": "x-oauth-identity-domain-name",
+														"value": "OIDCFederationDomain",
+														"disabled": true
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": ""
+												},
+												"url": {
+													"raw": "http://vwase051.bka.extrapol.de:7803/oam/services/rest/ssa/api/v1/template/ZIMP",
+													"protocol": "http",
+													"host": [
+														"vwase051",
+														"bka",
+														"extrapol",
+														"de"
+													],
+													"port": "7803",
+													"path": [
+														"oam",
+														"services",
+														"rest",
+														"ssa",
+														"api",
+														"v1",
+														"template",
+														"ZIMP"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "systemProvider",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {},
+										"url": {
+											"raw": "http://vwase051.bka.extrapol.de:7807/oauth2/rest/system",
+											"protocol": "http",
+											"host": [
+												"vwase051",
+												"bka",
+												"extrapol",
+												"de"
+											],
+											"port": "7807",
+											"path": [
+												"oauth2",
+												"rest",
+												"system"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "12e2c647-c292-400e-9244-04db37396f61",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "0a9be94b-d841-4239-b69d-b385fc06b508",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "list",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "wmkah1mdkh",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "weblogic",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{iad-serviceurl}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=SecureDomain2",
+									"host": [
+										"{{iad-serviceurl}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "SecureDomain2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "signing-signature",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "uidservice",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-oauth-identity-domain-name",
+								"value": "SecureDomain2"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{sso-baseurl}}/oauth2/rest/security",
+							"host": [
+								"{{sso-baseurl}}"
+							],
+							"path": [
+								"oauth2",
+								"rest",
+								"security"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Resource Owner",
+					"item": [
+						{
+							"name": "uid-token-request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "uidservice",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "password",
+											"description": "Grant Type for the Access Token Request",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "igssysadm",
+											"description": "Username of resource owner",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"description": "Password of resource owner",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sso-serviceurl}}/oauth2/rest/token",
+									"host": [
+										"{{sso-serviceurl}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token"
+									]
+								},
+								"description": "The Password grant is used when the application exchanges the user’s username and password for an access token.\n\nThis is exactly the thing OAuth was created to prevent in the first place, so you should never allow third-party apps to use this grant."
+							},
+							"response": []
+						},
+						{
+							"name": "pid-token-request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "pidservice",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "password",
+											"description": "Grant Type for the Access Token Request",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "igssysadm",
+											"description": "Username of resource owner",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"description": "Password of resource owner",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sso-serviceurl}}/oauth2/rest/token",
+									"host": [
+										"{{sso-serviceurl}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "token-validate",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "29d2bfd9a4914737b5507180f93c152f",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "access_token",
+											"value": "eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0Ijoid0djem5fRlZpSWlNZUNVNkxidjAxcV91Tk9FIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL3Z3aWFtMDAxLnByZXAuYmthLmJ1bmQuZGU6ODAxMC9vYXV0aDIiLCJhdWQiOiJ1aWRyZXNvdXJjZSIsImV4cCI6MTY3MTAzMjI3NiwianRpIjoiV0xuMVd4aEhENHBDcUtFSl9wdEZ1QSIsImlhdCI6MTY3MTAyNTA3Niwic3ViIjoiaWdzc3lzYWRtIiwidXBuIjoiTk9UX0ZPVU5EIiwiZnVsbF9uYW1lIjoiaWdzc3lzYWRtIiwicGlkIjoiTk9UX0ZPVU5EIiwic2Vzc2lvbklkIjoiM2E3NmE5ODc1NWI1MTliOWFhNmNhYTMwOWIyYjNiOGMwNzAwMjI3YWFiMGM5ZjcwOWNhOTYwODFiNTY0YTc2OSIsInByZWZlcnJlZF91c2VybmFtZSI6Imlnc3N5c2FkbSIsImdpdmVuX25hbWUiOiJHb3Zlcm5hbmNlIiwiZmFtaWx5X25hbWUiOiJBZG1pbmlzdHJhdG9yIiwiZW1haWwiOiJhbGZvbnMueml0dGVyYmFja2VAdm0ub3JhY2xlLmNvbSIsImNsaWVudCI6IjI5ZDJiZmQ5YTQ5MTQ3MzdiNTUwNzE4MGY5M2MxNTJmIiwic2NvcGUiOlsidWlkcmVzb3VyY2UuYWxsIl0sImRvbWFpbiI6IlNlY3VyZURvbWFpbjIifQ.q1gyxTTVKQSWB45rZcgVcojaRgvvtd7lWlXcd_DG3TU9mnS2jOSOQD0d-vSjPPkI_tFeaIQkN-x-l7P1AOlTdfZlItq5rOCIPf7JUB1-UurNJrM6_qe8htOsk3jKD0Z2Zxu7qtrChrhZF-QeONmpTJHuYdIgQF7bzxrHRWEgojgeBGAp2ZCrtfLZZP4HRjaHfMuUg-_W63qMy-XxJg5JS5wKY49NW0nWd8-6qOrN6On6G6RIY2adueB6OQ_1dEaBGMZWzpGOf5mi2oViqs_1mmPnVosttsfYXrt4aukWBcJB_2mzyUUuWER7s61u8ocJhdpU0WwvHZTHOBQU661FSg",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{sso-serviceurl}}/oauth2/rest/token/info",
+									"host": [
+										"{{sso-serviceurl}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token",
+										"info"
+									]
+								},
+								"description": "This is typically used by clients to access resources about themselves rather than to access a user's resources.\n\nThis is typically used by clients to access resources about themselves rather than to access a user's resources."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Client Credential",
+					"item": [
+						{
+							"name": "igs-token-request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "igsservice",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "SecureDomain2",
+										"description": "Identity Domain under which the token is being requested."
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{{sso-serviceur}}/oauth2/rest/token",
+									"host": [
+										"{{{sso-serviceur}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token"
+									]
+								},
+								"description": "This is typically used by clients to access resources about themselves rather than to access a user's resources.\n\nThis is typically used by clients to access resources about themselves rather than to access a user's resources."
+							},
+							"response": []
+						},
+						{
+							"name": "token-validate",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "SecureDomain2",
+										"description": "Identity Domain under which the token is being requested."
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "access_token",
+											"value": "eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0IjoiLXFOcnR2dnJTeUk1bERrWFRhS3BWelJuWkZzIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL3Nzby5jaW5uYW1vbnN0YXIub2FtOjQ0My9vYXV0aDIiLCJhdWQiOiJ1aWRyZXNvdXJjZSIsImV4cCI6MTY2NjM4MDY3NCwianRpIjoiaEpXbnJRejdXQ3VJTXFFcmY2RV9kdyIsImlhdCI6MTY2NjM3MzQ3NCwic3ViIjoiNmM1MTZlY2VjMWQ1NGFiOGI5MzU1NmE2Y2U5OGMxMmMiLCJjbGllbnQiOiI2YzUxNmVjZWMxZDU0YWI4YjkzNTU2YTZjZTk4YzEyYyIsInNjb3BlIjpbInVpZHJlc291cmNlLmFsbCJdLCJkb21haW4iOiJTZWN1cmVEb21haW4yIn0.3IfZ1lodQuEsj7paBaw8bYkycAOv3DxvVBziasPyddfvnDagnCQV4xwJwwJLvPorwECab-tNBgPpW0m5X4aJhO1rgTwjecH8VcCMyRWssAhsd-n8D1NZX218w0VSubnEa2AVLS72YSqEgf9evYGUoePTFe4eE8tCX1SxxnSskqjWKj9Dd5Yrjb_hBaP90g3l2zYQSBYHaj-AafjNz95iBmRSsYUhB2zBAYTEAM-zitb3pwNkCfruElIwN-DNmIJ0b8CdjArwsb-LFEmX3zSNBap-7oMmLdauUl1hb7L_hjPjbCmpG-p2yq79kg2qJTBRfRZvGNw5dW9r2oRc0QOsWg",
+											"description": "Access Token to be validated",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{{sso-serviceurl}}/oauth2/rest/token/info",
+									"host": [
+										"{{{sso-serviceurl}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token",
+										"info"
+									]
+								},
+								"description": "This is typically used by clients to access resources about themselves rather than to access a user's resources.\n\nThis is typically used by clients to access resources about themselves rather than to access a user's resources."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Authorization Code",
+					"item": [
+						{
+							"name": "zimp",
+							"item": [
+								{
+									"name": "code-request",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "grant_type",
+													"value": "AUTHORIZATION_CODE",
+													"sessionValue": "AUTHORIZATION_CODE",
+													"type": "text"
+												},
+												{
+													"key": "redirect_uri",
+													"value": "http://localhost:8710/login",
+													"sessionValue": "http://localhost:8710/login",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://vwase051.bka.extrapol.de:7807/oauth2/rest/authorize?scope=openid+ZIMP.Main&response_type=code&client_id=zimp&redirect_uri=https://localhost:8710/login&state=&domain=SecureDomain2",
+											"protocol": "http",
+											"host": [
+												"vwase051",
+												"bka",
+												"extrapol",
+												"de"
+											],
+											"port": "7807",
+											"path": [
+												"oauth2",
+												"rest",
+												"authorize"
+											],
+											"query": [
+												{
+													"key": "scope",
+													"value": "openid+ZIMP.Main"
+												},
+												{
+													"key": "response_type",
+													"value": "code"
+												},
+												{
+													"key": "client_id",
+													"value": "zimp"
+												},
+												{
+													"key": "redirect_uri",
+													"value": "https://localhost:8710/login"
+												},
+												{
+													"key": "state",
+													"value": ""
+												},
+												{
+													"key": "domain",
+													"value": "SecureDomain2"
+												}
+											]
+										},
+										"description": "Autenticates a use by the Autorization Code Grant flow."
+									},
+									"response": []
+								},
+								{
+									"name": "token-request",
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wmkah1mdkh",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "zimp",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "x-oauth-identity-domain-name",
+												"value": "SecureDomain2",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "redirect_uri",
+													"value": "https://localhost:8710/login",
+													"sessionValue": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+													"type": "text"
+												},
+												{
+													"key": "grant_type",
+													"value": "AUTHORIZATION_CODE",
+													"sessionValue": "AUTHORIZATION_CODE",
+													"type": "text"
+												},
+												{
+													"key": "code",
+													"value": "ckFaYm9jeFlSYWpxUGVFaTZoVW1KQT09fktVUzVlRnNhMTlkdVFPa3YvSDZqaXFDRnBzajdpUlpNd2pnL29UNFNhK0k4dVlCQVZUUGhnYVFZc2I1M1hROUdSZzd6bWE0SE4wa3lsT3R5R3cxenJXQWhIeUptSXhLS3RYUDNNL2RrbExIWXZwclVqdG1GSksvQWVPdXA4ZDJ2c0FKSEFTbURZVUcyemxwV3pNUE9CODEzUmEvMFVHc2JmYzNxM1pEK3JEaGFiT2dSWTBldTFiQjFVNDVRSG03NGtsM0d1YUdMOWtJQkN5WjhXQ1ppS0xiTjcxNHViOUpHMUl6MkpIREhYUkRQbmpOM2hJcWlETTZiUi8zcVh0enFHVE9YcldRY1J6T3ppNHVuNHF1bk5CM2I0Q1o3dnVhRE5RaXBqMFErbXplQ3VlMWtBeTlSYW9GWkdJQnpsYnJBTVRVSjY3OXEyd3BDbkE2VkZLRUQ5MlFmZHY1U0pUZ2lTSHVXazJ6SGdiNVVwZ3BCTkNwYXg0TmlLbmFTVmtoR2huck1HZ3JQMmwwaHROZHdQNE95ZmJDUXhHcDREZTJQRzljMElha3VucVFuMnk4dzhSNFMrajFQcHQ1UDhrNkl5TTBxeXN5WlNBYmhFOXpGVlNQVVdrcUVtdWMzRlQwVHkxRHVzaGRUVGRCb3YrVmV4a0I4b2xsQXV6UlFJNzdYaU5mYjJGcTJjSGVHQUdTZFhIWmxjK0hpTkNWZzJ1dlZnWitSaGFKMGZpZ0ZhVzBaNUxHeC9BdVF3RU9mVElJcQ==",
+													"sessionValue": "UmRnYTErZzRnM0lkK0pSanlwMnlDdz09fm41QURCM2NScjdrU1Bsb1F2WWt3anFmNUdrKzB1RkhYRDl0MkFZQkQxMGQ2ckFMNFViSmZMMVZZQ1o3R3NJNUlZaUZrT1UxOUo2TklQY0VHMnZ5Zm5iWjUwYWRzVGwzdE5vdWc5RWQxMUh5WTdhY095RmJCZ2tPWWpEUU1nUUhkMjQvbGcxZk4yaGltL3p3Z1VUMStHeUlGU1VCUnRZR0RNTW43UmZRai9aNGgyWXRGazFhMmdMd001NkhRYm5CQmwydk9WY1R0SzlnK1g1Mjh5dlNXKzNHZHM3TERrdDlUUko1bS9wNUlnMUdzQjhhWWRZWFM3aktPdkc3UDdUSG56YkhKdVpMRE9kWXp3bXpuWlE3VEl4SnlNak9jZGJMZ3FPYnlVUm5XK0NDcDVFUWVIVVlzeGRJTFV3NDFneTVNdVVISW9hT2MxQ3RwcWZBazJheitlYzI3YTl0RVlXUXVvTlJTVWs0ZjIwdkZUS2swYlI2cGhveW43dGFEeGFXUHdJUWxxQmk1U2xzcUV4RmFWRnFPa3k1K3c4c3JWTnRnUmJFN280NXJQM2c1YVMwNVE3UzROK0Z6UEYyU0J6ZU8zcGhtbC93dUlOVUlXK1BLSnJjN2ZGc2ZNaGZyMzlWTWkyYmo4cjNSTkJhVURRWVVKVlY1TzZwQXUvVFRpYUM0eUVYS2pYTU5qaXFrUWprRUJGdWtadDhpWlgwMi8zTnd5d3I4QjhNTzJQeWNoRElRTzMrL01xQktRZm5zL0tZQ2gwL0dKODRNN1MrNUdmeURJbkEybGt4c05HVmZSUjRlK3VJWTJzUndnRmZYeUJ3ak5WQWUrbi9VMDRITkZHQ29WRXY5WlNiUHhjZkVWbFUrYVNYWnZhbEc5M25FcmE2Vi90YzFyVElUV09jdmJyc2QvRmFQZzgvTDlZbm9QcndHM284cVNEUDhkVkQxNVlZRXRjQ2dOb1FjZ3UzbVJ3anhDTFNkRE1OQTBaWnZyOUdIY1gzaGQ5STdZNVh5cDhVSA",
+													"type": "text"
+												},
+												{
+													"key": "code_verifier",
+													"value": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+													"sessionValue": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "http://vwase051.bka.extrapol.de:7807/oauth2/rest/token",
+											"protocol": "http",
+											"host": [
+												"vwase051",
+												"bka",
+												"extrapol",
+												"de"
+											],
+											"port": "7807",
+											"path": [
+												"oauth2",
+												"rest",
+												"token"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "userprofile",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0IjoiVG5WdjBGVmZaa0daajQ3TXN0QXdOcTBSSXk0IiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwOi8vdndhc2UwNTEuYmthLmV4dHJhcG9sLmRlOjc4MDcvb2F1dGgyIiwiYXVkIjpbIlpJTVAiLCJ6aW1wIl0sImV4cCI6MTcyODU1MzAxNywianRpIjoidmhFN2dISDZ6TmItcTBjM1VDZFk1dyIsImlhdCI6MTcyODU0NTgxNywic3ViIjoiYmt6aW1wdGVzdG51dHplcjEiLCJwMjBfdWlkIjoiTk9UX0ZPVU5EIiwiaWRwIjoiTk9UX0ZPVU5EIiwiVG9rZW5FeGNoYW5nZV9BbGxvd2VkQ2xpZW50c0ZvckltcGVyc29uYXRpb24iOiJBcnR1cyxTVVNJLElUSy1BVVMiLCJncm91cHMiOiJOVUxMIiwicGhvbmVfbnVtYmVyIjoiMDEyMzQ1Njc4OSIsInNlc3Npb25JZCI6IjkzN2IyMWRlLWRkNzItNDIzYS05N2ZjLTUyN2UwOGVkYWI3MXwxUEFxMjZSeFlFYW12NGVCeDFENllyK3NwbXJmc3pvdG1ybVc3amxOUXdnPSIsImdpdmVuX25hbWUiOiJaSU1QIiwiZmFtaWx5X25hbWUiOiJUZXN0bnV0emVyMSIsImVtYWlsIjoiemltcC50ZXN0bnV0emVyMUBkdW1teS5kZSIsImRlcGFydG1lbnRfbnVtYmVyIjoiTk9UX0ZPVU5EIiwiVG9rZW5FeGNoYW5nZV9BbGxvd2VkQ2xpZW50c0ZvckRlbGVnYXRpb24iOiJBcnR1cyxTVVNJLElUSy1BVVMiLCJjbGllbnQiOiJ6aW1wIiwic2NvcGUiOlsib3BlbmlkIiwiWklNUC5NYWluIl0sImRvbWFpbiI6IlNlY3VyZURvbWFpbjIifQ.Y_6ri2L6b3BaNRxmghuTKd5rHfirYlG8wxcqsmjW9O_urNAt5lDrdUXhO0sHrDxMFLcAzjetIuLbKRiuoipcqlnB6rPcfOqwTy4ZqHZcFv0xfu6rCRc3gGJrpMEXwv-yXV-6xDrjoX6Yun8i5q8u_eccFIEtfKJjKNHw7UkDPnwAjXEIVSZssyYy4FxMcmdehW815OqNs1jZvx7uAoNd6tvrLC7MPFyAGUdXQUu5o22wQllWMo9lQPZOdce1uFeguBHzcdG56u19pb7p7iwodAjDQQ72X_eCV_tqzDngk8z2hHEqZp43i5DqCq5oL2vjfQi3OailxjrXOqC804Yjnw",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "x-oauth-identity-domain-name",
+												"value": "SecureDomain2"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "http://vwase051.bka.extrapol.de:7807/oauth2/rest/userprofile",
+											"protocol": "http",
+											"host": [
+												"vwase051",
+												"bka",
+												"extrapol",
+												"de"
+											],
+											"port": "7807",
+											"path": [
+												"oauth2",
+												"rest",
+												"userprofile"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "token-validate",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "x-oauth-identity-domain-name",
+												"value": "SecurityDomain2",
+												"description": "Identity Domain under which the token is being requested."
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "access_token",
+													"value": "eyJraWQiOiJDbG91ZEJ1bXMiLCJ4NXQiOiJNcFJIWHY4cnF2b3FWMmVOWVhzUG9lMXlER1EiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL3Nzby5jaW5uYW1vbnN0YXIub2FtOjQ0My9vYXV0aDIiLCJhdWQiOiJJZGVudGlmaWVyU2VydmljZSIsImV4cCI6MTY2MTY5NjM3MSwianRpIjoiOXNFdzJ6WG1pYU1yNXl5QzEtRWpoUSIsImlhdCI6MTY2MTY4OTE3MSwic3ViIjoiNmNhNTY4NDFmMjcwNGJmYTliYzU5MWUxODFhZmJkOWYiLCJjbGllbnQiOiI2Y2E1Njg0MWYyNzA0YmZhOWJjNTkxZTE4MWFmYmQ5ZiIsInNjb3BlIjpbIklkZW50aWZpZXJTZXJ2aWNlLmFsbCJdLCJkb21haW4iOiJDbG91ZEJ1bXMifQ.bzHAq9zh2v4iRH2zm38rSrcpOuflLWzz9wlKbl0tZhaqoVq0fi_uMmYrAelOGlRN5RpaS6LBSCSkC3o9siHml6iA1b7yxp3sAfhKjVJ2-DE061Xif2uyPkUhT47bSPehv_sQbwXE-4ObiGsuMYIoSWvQuAtJq7xWGPfh3RO7Z41BajiZLZHcM6WBfqtiTuUjfCCYi6WXpcDL6ocSVqkynIWomgu2DSFzAGdu9ZaDRkHhphlwUDoea9f33RqjSnHH5NXUyxYD5HssXuHK1ldPHAM1DRU-8a2qKyuixKwXD89dHwvEnzwBx7g80n89RN9Eys0s4gArfVbVN65YFGfJJA",
+													"description": "Access Token to be validated",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://vwase051.bka.extrapol.de:7807/oauth2/rest/token/info",
+											"protocol": "http",
+											"host": [
+												"vwase051",
+												"bka",
+												"extrapol",
+												"de"
+											],
+											"port": "7807",
+											"path": [
+												"oauth2",
+												"rest",
+												"token",
+												"info"
+											]
+										},
+										"description": "This is typically used by clients to access resources about themselves rather than to access a user's resources.\n\nThis is typically used by clients to access resources about themselves rather than to access a user's resources."
+									},
+									"response": []
+								}
+							],
+							"_postman_isSubFolder": true
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "182404c0-8650-4f3e-995d-03f81d964744",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "41964d11-8ba4-42df-9c82-ae0f782fe43d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "75f8a99b-d75f-4574-a8a7-81e9c0d0ca14",
+			"key": "iad-serviceurl",
+			"value": "http://vwase051.bka.extrapol.de:7803",
+			"type": "string"
+		},
+		{
+			"id": "d3058cf0-6b44-4dc3-875f-e65385371f65",
+			"key": "sso-serviceurl",
+			"value": "http://vwase051.bka.extrapol.de:7807",
+			"type": "string"
+		}
+	]
+}

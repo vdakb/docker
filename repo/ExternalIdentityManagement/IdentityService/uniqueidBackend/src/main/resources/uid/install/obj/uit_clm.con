@@ -1,0 +1,53 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityService/uniqueidBackend/src/main/resources/install/uid/obj/uit_clm.con
+--
+--   Einfuehrung einer personenbezogenen ID im Progamm Polizei 2020
+--   Unique Identifier (UID)
+--   Version 1.2 | Stand 15.03.2022
+--
+-- Generated for Oracle Database 12c on Fri Mar 11 12.47.21 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Constraints on 'uit_claims'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key 'uit_clm_pk' on 'uit_claims'
+ALTER TABLE uit_claims
+  ADD (
+    CONSTRAINT uit_clm_pk PRIMARY KEY (
+      tnt_id, rol_id, usr_id
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Foreign Key 'uit_clm_tnt_fk' on 'uit_claims'
+ALTER TABLE uit_claims
+  ADD (
+    CONSTRAINT uit_clm_tnt_fk FOREIGN KEY (
+      tnt_id
+    )
+    REFERENCES uit_tenants (
+      id
+    )
+  )
+/
+PROMPT Creating Foreign Key 'uit_clm_rol_fk' on 'uit_claims'
+ALTER TABLE uit_claims
+  ADD (
+    CONSTRAINT uit_clm_rol_fk FOREIGN KEY (
+      rol_id
+    )
+    REFERENCES igt_roles (
+      id
+    )
+  )
+/
+PROMPT Creating Foreign Key 'uit_clm_usr_fk' on 'uit_claims'
+ALTER TABLE uit_claims
+  ADD (
+    CONSTRAINT uit_clm_usr_fk FOREIGN KEY (
+      usr_id
+    )
+    REFERENCES igt_users (
+      id
+    )
+  )
+/

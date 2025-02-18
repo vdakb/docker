@@ -1,0 +1,206 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+	<title>Server Prepared Statements</title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+	<meta name="description" content="The official site for the PostgreSQL JDBC Driver" />
+	<meta name="copyright" content="The PostgreSQL Global Development Group" />
+
+	<style type="text/css" media="screen" title="Normal Text">@import url("media/css/docs.css");</style>
+
+	<link rel="shortcut icon" href="media/favicon.ico" />
+</head>
+
+<body>
+	<div id="docHeader">
+		<div id="docHeaderLogo">
+			<a href="http://www.postgresql.org/" title="PostgreSQL"><img src="media/img/layout/hdr_left3a.png" alt="PostgreSQL" height="80" width="390" /></a>
+		</div>
+	</div>
+
+	<div id="docContainerWrap">
+		<div id="docContainer">
+			<div id="docContent">
+
+				<div class="NAVHEADER">
+					<table summary="Header navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+						<tr>
+							<th colspan="3" valign="bottom" align="center">
+								<h2 class="TITLE">Chapter 9. PostgreSQL™ Extensions to the JDBC API</h2>
+							</th>
+						</tr>
+						<tr>
+							<td valign="top" width="20%" align="left">
+								<a title="Listen / Notify" href="listennotify.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="bottom" width="60%" align="center">&nbsp;</td>
+							<td valign="top" width="20%" align="right">
+								<a title="Chapter 10. Using the Driver in a Multithreaded or a Servlet Environment" href="thread.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+  					</tbody>
+					</table>
+					<hr class="c1" width="100%" />
+				</div> <!-- NAVHEADER -->
+
+				<div class="CHAPTER">
+  					<h1>Server Prepared Statements</h1>
+					
+					<p>The PostgreSQL™ server allows clients to compile sql statements that are expected
+to be reused to avoid the overhead of parsing and planning the statement for every
+execution. This functionality is available at the SQL level via PREPARE and EXECUTE
+beginning with server version 7.3, and at the protocol level beginning with server
+version 7.4, but as Java developers we really just want to use the standard
+<code>PreparedStatement</code> interface.</p>
+
+<h3>Note</h3>
+
+<blockquote>
+<p>Previous versions of the driver used PREPARE and EXECUTE to implement
+server-prepared statements.  This is supported on all server versions beginning
+with 7.3, but produced application-visible changes in query results, such as
+missing ResultSet metadata and row update counts. The current driver uses the V3
+protocol-level equivalents which avoid these changes in query results, but the
+V3 protocol is only available beginning with server version 7.4. Enabling server-prepared
+statements will have no affect when connected to a 7.3 server or when explicitly
+using the V2 protocol to connect to a 7.4 server.</p>
+</blockquote>
+
+<p>There are a number of ways to enable server side prepared statements depending on
+your application&#39;s needs. The general method is to set a threshold for a
+<code>PreparedStatement</code>. An internal counter keeps track of how many times the
+statement has been executed and when it reaches the threshold it will start to
+use server side prepared statements.</p>
+
+<h3>Note</h3>
+
+<blockquote>
+<p>Server side prepared statements are planned only once by the server. This avoids
+the cost of replanning the query every time, but also means that the planner
+cannot take advantage of the particular parameter values used in a particular
+execution of the query. You should be cautious about enabling the use of server
+side prepared statements globally.</p>
+</blockquote>
+
+<p><a name="server-prepared-statement-example"></a>
+<strong>Example 9.3. Using server side prepared statements</strong></p>
+
+<p>import java.sql.*;</p>
+
+<p>public class ServerSidePreparedStatement
+{</p>
+
+<pre><code>public static void main(String args[]) throws Exception
+{
+    Class.forName(&quot;org.postgresql.Driver&quot;);
+    String url = &quot;jdbc:postgresql://localhost:5432/test&quot;;
+    Connection conn = DriverManager.getConnection(url,&quot;test&quot;,&quot;&quot;);
+
+    PreparedStatement pstmt = conn.prepareStatement(&quot;SELECT ?&quot;);
+
+    // cast to the pg extension interface
+    org.postgresql.PGStatement pgstmt = (org.postgresql.PGStatement)pstmt;
+
+    // on the third execution start using server side statements
+    pgstmt.setPrepareThreshold(3);
+
+    for (int i=1; i&amp;lt;=5; i++)
+    {
+        pstmt.setInt(1,i);
+        boolean usingServerPrepare = pgstmt.isUseServerPrepare();
+        ResultSet rs = pstmt.executeQuery();
+        rs.next();
+        System.out.println(&quot;Execution: &quot;+i+&quot;, Used server side: &quot; + usingServerPrepare + &quot;, Result: &quot;+rs.getInt(1));
+        rs.close();
+    }
+
+    pstmt.close();
+    conn.close();
+}
+</code></pre>
+
+<p>}</p>
+
+<p>Which produces the expected result of using server side prepared statements upon
+the third execution.</p>
+
+<p><code>Execution: 1, Used server side: false, Result: 1</code><br>
+<code>Execution: 2, Used server side: false, Result: 2</code><br>
+<code>Execution: 3, Used server side: true, Result: 3</code><br>
+<code>Execution: 4, Used server side: true, Result: 4</code><br>
+<code>Execution: 5, Used server side: true, Result: 5</code></p>
+
+<p>The example shown above requires the programmer to use PostgreSQL™ specific code
+in a supposedly portable API which is not ideal. Also it sets the threshold only
+for that particular statement which is some extra typing if we wanted to use that
+threshold for every statement. Let&#39;s take a look at the other ways to set the
+threshold to enable server side prepared statements.  There is already a hierarchy
+in place above a <code>PreparedStatement</code>, the <code>Connection</code> it was created from, and
+above that the source of the connection be it a <code>Datasource</code> or a URL. The server
+side prepared statement threshold can be set at any of these levels such that
+the value will be the default for all of it&#39;s children.</p>
+
+<p><code>// pg extension interfaces</code><br>
+<code>org.postgresql.PGConnection pgconn;</code><br>
+<code>org.postgresql.PGStatement pgstmt;</code></p>
+
+<p><code>// set a prepared statement threshold for connections created from this url</code><br>
+<code>String url = &quot;jdbc:postgresql://localhost:5432/test?prepareThreshold=3&quot;;</code></p>
+
+<p><code>// see that the connection has picked up the correct threshold from the url</code><br>
+<code>Connection conn = DriverManager.getConnection(url,&quot;test&quot;,&quot;&quot;);</code><br>
+<code>pgconn = (org.postgresql.PGConnection)conn;</code><br>
+<code>System.out.println(pgconn.getPrepareThreshold()); // Should be 3</code></p>
+
+<p><code>// see that the statement has picked up the correct threshold from the connection</code><br>
+<code>PreparedStatement pstmt = conn.prepareStatement(&quot;SELECT ?&quot;);</code><br>
+<code>pgstmt = (org.postgresql.PGStatement)pstmt;</code><br>
+<code>System.out.println(pgstmt.getPrepareThreshold()); // Should be 3</code></p>
+
+<p><code>// change the connection&#39;s threshold and ensure that new statements pick it up</code><br>
+<code>pgconn.setPrepareThreshold(5);</code><br>
+<code>PreparedStatement pstmt = conn.prepareStatement(&quot;SELECT ?&quot;);</code><br>
+<code>pgstmt = (org.postgresql.PGStatement)pstmt;</code><br>
+<code>System.out.println(pgstmt.getPrepareThreshold()); // Should be 5</code></p>
+
+				</div>
+
+				<div class="NAVFOOTER">
+					<hr class="c1" width="100%" />
+					<table summary="Footer navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td valign="top" width="33%" align="left">
+								<a href="listennotify.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="top" width="34%" align="center">
+								<a href="index.html" accesskey="H">Home</a>
+							</td>
+							<td valign="top" width="33%" align="right">
+								<a href="thread.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+						<tr>
+							<td valign="top" width="33%" align="left">Listen / Notify</td>
+							<td valign="top" width="34%" align="center">&nbsp;</td>
+							<td valign="top" width="33%" align="right">Chapter 10. Using the Driver in a Multithreaded or a Servlet Environment</td>
+						</tr>
+					</tbody>
+					</table>
+				</div> <!-- NAVFOOTER -->
+
+
+			</div> <!-- docContent -->
+			
+			<div id="docComments"></div>
+
+			<div id="docFooter">
+				<a class="navFooter" href="http://www.postgresql.org/about/privacypolicy">Privacy Policy</a> |
+				<a class="navFooter" href="http://www.postgresql.org/about/">About PostgreSQL</a><br/>
+				Copyright &copy; 1996-2013 The PostgreSQL Global Development Group
+			</div> <!-- pgFooter -->
+		</div> <!-- docContainer -->
+	</div> <!-- docContainer -->
+</body>
+</html>

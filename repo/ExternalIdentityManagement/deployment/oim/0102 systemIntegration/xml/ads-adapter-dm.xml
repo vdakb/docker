@@ -1,0 +1,2209 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="ADS Adapter Configuration 12.2.1.3" exported-date="1549479340328" user="XELSYSADM" version="12.2.1.3.0">
+  <EventHandler name="adpADIDCPREPOPULATEDIT" repo-type="RDBMS" subtype="PrepopAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>0</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>0</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.dataobj.rulegenerators</EVT_PACKAGE>
+    <Adapter name="ADIDC PrePopulate DIT" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>P</ADP_TYPE>
+      <ADP_DESCRIPTION>Pre-Populate Organization (Base DN)</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Concat Container" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>UTILITY</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM420" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC PrePopulate DIT" AdapterVariable="targetSystem" EventHandler="adpADIDCPREPOPULATEDIT"/>
+            <SPD_KEY ITResourceDef="Active Directory" ITResourceFieldDef="UserContainer"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM421" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC PrePopulate DIT" AdapterVariable="targetSystem" EventHandler="adpADIDCPREPOPULATEDIT"/>
+            <SPD_KEY ITResourceDef="Active Directory" ITResourceFieldDef="Container"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ108" repo-type="RDBMS">
+          <ADJ_API_NAME>com.thortech.xl.util.adapters.tcUtilStringOperations</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>6  public static synchronized java.lang.String com.thortech.xl.util.adapters.tcUtilStringOperations.performConcat(java.lang.String,java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_METHOD>performConcat</ADJ_METHOD>
+          <ADJ_STATIC>1</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterTask name="Set_-886203878" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>SETVAR_TASK</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <ADT_PARENT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="ELSE IF_-1109166605" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        <AdapterLogicTask id="ADL72" repo-type="RDBMS">
+          <ADL_UPDATE>1549479340328</ADL_UPDATE>
+          <ADL_RIGHT_TYPE>Adapter Task</ADL_RIGHT_TYPE>
+          <ADL_RIGHT_QUALIFIER>Concat Container</ADL_RIGHT_QUALIFIER>
+          <ADL_LEFT_TYPE>Variable</ADL_LEFT_TYPE>
+          <ADL_LEFT_ADV_KEY Adapter="ADIDC PrePopulate DIT" AdapterVariable="Adapter return value" EventHandler="adpADIDCPREPOPULATEDIT"/>
+          <ADL_RIGHT_ADT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="Concat Container" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        </AdapterLogicTask>
+      </AdapterTask>
+      <AdapterTask name="Append BaseRDN" repo-type="RDBMS">
+        <ADT_SEQUENCE>2</ADT_SEQUENCE>
+        <ADT_TYPE>UTILITY</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <ADT_PARENT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="ELSE_2109669088" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM422" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Task)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Task</ADM_MAP_TO>
+            <ADM_ADT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="Append Comma" EventHandler="adpADIDCPREPOPULATEDIT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM423" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Task)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Task</ADM_MAP_TO>
+            <ADM_ADT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="Concat Container" EventHandler="adpADIDCPREPOPULATEDIT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ109" repo-type="RDBMS">
+          <ADJ_API_NAME>com.thortech.xl.util.adapters.tcUtilStringOperations</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>6  public static synchronized java.lang.String com.thortech.xl.util.adapters.tcUtilStringOperations.performConcat(java.lang.String,java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_METHOD>performConcat</ADJ_METHOD>
+          <ADJ_STATIC>1</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterTask name="IF_1772397954" repo-type="RDBMS">
+        <ADT_SEQUENCE>1</ADT_SEQUENCE>
+        <ADT_TYPE>LOGIC_IF_TASK</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterLogicTask id="ADL73" repo-type="RDBMS">
+          <ADL_UPDATE>1549479340328</ADL_UPDATE>
+          <ADL_INCREMENT>0</ADL_INCREMENT>
+          <ADL_RIGHT_TYPE>Literal</ADL_RIGHT_TYPE>
+          <ADL_RIGHT_QUALIFIER>Null</ADL_RIGHT_QUALIFIER>
+          <ADL_COMPARATOR>==</ADL_COMPARATOR>
+          <ADL_LEFT_TYPE>Variable</ADL_LEFT_TYPE>
+          <ADL_RIGHT_VALUE>Null</ADL_RIGHT_VALUE>
+          <ADL_LEFT_ADV_KEY Adapter="ADIDC PrePopulate DIT" AdapterVariable="Participant" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        </AdapterLogicTask>
+      </AdapterTask>
+      <AdapterTask name="ELSE IF_-1109166605" repo-type="RDBMS">
+        <ADT_SEQUENCE>2</ADT_SEQUENCE>
+        <ADT_TYPE>LOGIC_ELSE_IF_TASK</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterLogicTask id="ADL74" repo-type="RDBMS">
+          <ADL_UPDATE>1549479340328</ADL_UPDATE>
+          <ADL_INCREMENT>0</ADL_INCREMENT>
+          <ADL_RIGHT_TYPE>Literal</ADL_RIGHT_TYPE>
+          <ADL_RIGHT_QUALIFIER>Empty String</ADL_RIGHT_QUALIFIER>
+          <ADL_COMPARATOR>==</ADL_COMPARATOR>
+          <ADL_LEFT_TYPE>Variable</ADL_LEFT_TYPE>
+          <ADL_RIGHT_VALUE>Empty String</ADL_RIGHT_VALUE>
+          <ADL_LEFT_ADV_KEY Adapter="ADIDC PrePopulate DIT" AdapterVariable="Participant" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        </AdapterLogicTask>
+      </AdapterTask>
+      <AdapterTask name="ELSE_2109669088" repo-type="RDBMS">
+        <ADT_SEQUENCE>3</ADT_SEQUENCE>
+        <ADT_TYPE>LOGIC_ELSE_TASK</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+      </AdapterTask>
+      <AdapterTask name="Set_-915712323" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>SETVAR_TASK</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <ADT_PARENT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="IF_1772397954" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        <AdapterLogicTask id="ADL75" repo-type="RDBMS">
+          <ADL_UPDATE>1549479340328</ADL_UPDATE>
+          <ADL_RIGHT_TYPE>Adapter Task</ADL_RIGHT_TYPE>
+          <ADL_RIGHT_QUALIFIER>Concat Container</ADL_RIGHT_QUALIFIER>
+          <ADL_LEFT_TYPE>Variable</ADL_LEFT_TYPE>
+          <ADL_LEFT_ADV_KEY Adapter="ADIDC PrePopulate DIT" AdapterVariable="Adapter return value" EventHandler="adpADIDCPREPOPULATEDIT"/>
+          <ADL_RIGHT_ADT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="Concat Container" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        </AdapterLogicTask>
+      </AdapterTask>
+      <AdapterTask name="Prefix ParticipantRDN" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>UTILITY</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <ADT_PARENT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="ELSE_2109669088" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM424" repo-type="RDBMS">
+            <ADM_MAP_VALUE>OU=</ADM_MAP_VALUE>
+            <ADM_DISPLAY_VALUE>OU= (Literal)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>String</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Literal</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM425" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC PrePopulate DIT" AdapterVariable="Participant" EventHandler="adpADIDCPREPOPULATEDIT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ110" repo-type="RDBMS">
+          <ADJ_API_NAME>com.thortech.xl.util.adapters.tcUtilStringOperations</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>6  public static synchronized java.lang.String com.thortech.xl.util.adapters.tcUtilStringOperations.performConcat(java.lang.String,java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_METHOD>performConcat</ADJ_METHOD>
+          <ADJ_STATIC>1</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterTask name="Append Comma" repo-type="RDBMS">
+        <ADT_SEQUENCE>1</ADT_SEQUENCE>
+        <ADT_TYPE>UTILITY</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <ADT_PARENT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="ELSE_2109669088" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM426" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Task)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Task</ADM_MAP_TO>
+            <ADM_ADT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="Prefix ParticipantRDN" EventHandler="adpADIDCPREPOPULATEDIT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM427" repo-type="RDBMS">
+            <ADM_MAP_VALUE>,</ADM_MAP_VALUE>
+            <ADM_DISPLAY_VALUE>, (Literal)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>String</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Literal</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ111" repo-type="RDBMS">
+          <ADJ_API_NAME>com.thortech.xl.util.adapters.tcUtilStringOperations</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>6  public static synchronized java.lang.String com.thortech.xl.util.adapters.tcUtilStringOperations.performConcat(java.lang.String,java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_METHOD>performConcat</ADJ_METHOD>
+          <ADJ_STATIC>1</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterTask name="Set_-695355449" repo-type="RDBMS">
+        <ADT_SEQUENCE>3</ADT_SEQUENCE>
+        <ADT_TYPE>SETVAR_TASK</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <ADT_PARENT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="ELSE_2109669088" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        <AdapterLogicTask id="ADL76" repo-type="RDBMS">
+          <ADL_UPDATE>1549479340328</ADL_UPDATE>
+          <ADL_RIGHT_TYPE>Adapter Task</ADL_RIGHT_TYPE>
+          <ADL_RIGHT_QUALIFIER>Append BaseRDN</ADL_RIGHT_QUALIFIER>
+          <ADL_LEFT_TYPE>Variable</ADL_LEFT_TYPE>
+          <ADL_LEFT_ADV_KEY Adapter="ADIDC PrePopulate DIT" AdapterVariable="Adapter return value" EventHandler="adpADIDCPREPOPULATEDIT"/>
+          <ADL_RIGHT_ADT_KEY Adapter="ADIDC PrePopulate DIT" AdapterTask="Append BaseRDN" EventHandler="adpADIDCPREPOPULATEDIT"/>
+        </AdapterLogicTask>
+      </AdapterTask>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="targetSystem" repo-type="RDBMS">
+        <ADV_DESC>Reference to the IT Resource.</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>IT Resource</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>IT Resource</ADV_DATA_TYPE>
+        <SVD_KEY ITResourceDef="Active Directory"/>
+      </AdapterVariable>
+      <AdapterVariable name="Participant" repo-type="RDBMS">
+        <ADV_DESC>The value of the RDN belonging to the Participant of the Identity the account is provisioned for.</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCPREPOPULATEUPN" repo-type="RDBMS" subtype="PrepopAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>0</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>0</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.dataobj.rulegenerators</EVT_PACKAGE>
+    <Adapter name="ADIDC PrePopulate UPN" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>P</ADP_TYPE>
+      <ADP_DESCRIPTION>Pre-populates UserPrincipalName</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Concat Domain" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>UTILITY</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM285" repo-type="RDBMS">
+            <ADM_MAP_VALUE>@</ADM_MAP_VALUE>
+            <ADM_DISPLAY_VALUE>@ (Literal)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>String</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Literal</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM286" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC PrePopulate UPN" AdapterVariable="targetSystem" EventHandler="adpADIDCPREPOPULATEUPN"/>
+            <SPD_KEY ITResourceDef="Active Directory" ITResourceFieldDef="DomainName"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ75" repo-type="RDBMS">
+          <ADJ_API_NAME>com.thortech.xl.util.adapters.tcUtilStringOperations</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>9  public static synchronized java.lang.String com.thortech.xl.util.adapters.tcUtilStringOperations.performConcat(java.lang.String,java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_METHOD>performConcat</ADJ_METHOD>
+          <ADJ_STATIC>1</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterTask name="Concat UserLogin" repo-type="RDBMS">
+        <ADT_SEQUENCE>1</ADT_SEQUENCE>
+        <ADT_TYPE>UTILITY</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM287" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC PrePopulate UPN" AdapterVariable="userLogin" EventHandler="adpADIDCPREPOPULATEUPN"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM288" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Task)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Task</ADM_MAP_TO>
+            <ADM_ADT_KEY Adapter="ADIDC PrePopulate UPN" AdapterTask="Concat Domain" EventHandler="adpADIDCPREPOPULATEUPN"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ76" repo-type="RDBMS">
+          <ADJ_API_NAME>com.thortech.xl.util.adapters.tcUtilStringOperations</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>9  public static synchronized java.lang.String com.thortech.xl.util.adapters.tcUtilStringOperations.performConcat(java.lang.String,java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_METHOD>performConcat</ADJ_METHOD>
+          <ADJ_STATIC>1</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterTask name="Set_386467758" repo-type="RDBMS">
+        <ADT_SEQUENCE>2</ADT_SEQUENCE>
+        <ADT_TYPE>SETVAR_TASK</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterLogicTask id="ADL34" repo-type="RDBMS">
+          <ADL_UPDATE>1549479340328</ADL_UPDATE>
+          <ADL_RIGHT_TYPE>Adapter Task</ADL_RIGHT_TYPE>
+          <ADL_RIGHT_QUALIFIER>Concat UserLogin with Domain</ADL_RIGHT_QUALIFIER>
+          <ADL_LEFT_TYPE>Variable</ADL_LEFT_TYPE>
+          <ADL_LEFT_ADV_KEY Adapter="ADIDC PrePopulate UPN" AdapterVariable="Adapter return value" EventHandler="adpADIDCPREPOPULATEUPN"/>
+          <ADL_RIGHT_ADT_KEY Adapter="ADIDC PrePopulate UPN" AdapterTask="Concat UserLogin" EventHandler="adpADIDCPREPOPULATEUPN"/>
+        </AdapterLogicTask>
+      </AdapterTask>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="userLogin" repo-type="RDBMS">
+        <ADV_DESC>UserLogin</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="targetSystem" repo-type="RDBMS">
+        <ADV_DESC>Reference to the IT Resource.</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>IT Resource</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>IT Resource</ADV_DATA_TYPE>
+        <SVD_KEY ITResourceDef="Active Directory"/>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCCREATEOBJECT" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Create Object" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Adapter for ADIDC Create Object</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Create Object" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM289" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Create Object" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCCREATEOBJECT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM290" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Create Object" AdapterVariable="objectType" EventHandler="adpADIDCCREATEOBJECT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM291" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Create Object" AdapterVariable="Adapter return value" EventHandler="adpADIDCCREATEOBJECT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM292" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Create Object" AdapterVariable="procInstanceKey" EventHandler="adpADIDCCREATEOBJECT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM293" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ77" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0 public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>0 public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.createObject(java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>createObject</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="objectType" repo-type="RDBMS">
+        <ADV_DESC>objectType adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="procInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>procInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCDELETEOBJECT" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Delete Object" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Adapter for ADIDC Delete Object</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Delete Object" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM294" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Delete Object" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCDELETEOBJECT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM295" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Delete Object" AdapterVariable="objectType" EventHandler="adpADIDCDELETEOBJECT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM296" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Delete Object" AdapterVariable="Adapter return value" EventHandler="adpADIDCDELETEOBJECT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM297" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Delete Object" AdapterVariable="procInstanceKey" EventHandler="adpADIDCDELETEOBJECT"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM298" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ78" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0 public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>3 public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.deleteObject(java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>deleteObject</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="objectType" repo-type="RDBMS">
+        <ADV_DESC>objectType adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="procInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>procInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCENABLEUSER" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Enable User" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Adapter for ADIDC Enable User</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Enable User" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM299" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Enable User" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCENABLEUSER"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM300" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Enable User" AdapterVariable="Adapter return value" EventHandler="adpADIDCENABLEUSER"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM301" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Enable User" AdapterVariable="procInstanceKey" EventHandler="adpADIDCENABLEUSER"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM302" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ79" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0 public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>4 public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.enableUser()</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>enableUser</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="procInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>procInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCDISABLEUSER" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Disable User" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Adapter for ADIDC Disable User</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Disable User" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM303" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Disable User" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCDISABLEUSER"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM304" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Disable User" AdapterVariable="Adapter return value" EventHandler="adpADIDCDISABLEUSER"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM305" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Disable User" AdapterVariable="procInstanceKey" EventHandler="adpADIDCDISABLEUSER"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM306" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ80" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0 public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>5 public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.disableUser()</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>disableUser</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="procInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>procInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCUPDATEMULTI" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Update Multi" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Update Multi.</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="update" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM307" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM308" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Multi" AdapterVariable="objectType" EventHandler="adpADIDCUPDATEMULTI"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>java.util.Map</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM309" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Multi" AdapterVariable="oldAttributes" EventHandler="adpADIDCUPDATEMULTI"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM310" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Multi" AdapterVariable="processInstanceKey" EventHandler="adpADIDCUPDATEMULTI"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM311" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Multi" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCUPDATEMULTI"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM312" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Multi" AdapterVariable="Adapter return value" EventHandler="adpADIDCUPDATEMULTI"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>java.util.Map</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM313" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Multi" AdapterVariable="attributes" EventHandler="adpADIDCUPDATEMULTI"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ81" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0 public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>11 public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.updateAttributeValues(java.lang.String,java.util.Map,java.util.Map)</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>updateAttributeValues</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="oldAttributes" repo-type="RDBMS">
+        <ADV_DESC>oldAttributes</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Map</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Map</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="objectType" repo-type="RDBMS">
+        <ADV_DESC>objectType</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="processInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>processInstanceKey</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="attributes" repo-type="RDBMS">
+        <ADV_DESC>attributes</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Map</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Map</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCUPDATEATTRIBUTEVALUE" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Update Attribute Value" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Adapter for ADIDC Update Attribute Value</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Update Attribute Value" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM314" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Attribute Value" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCUPDATEATTRIBUTEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM315" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Attribute Value" AdapterVariable="objectType" EventHandler="adpADIDCUPDATEATTRIBUTEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM316" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Attribute Value" AdapterVariable="Adapter return value" EventHandler="adpADIDCUPDATEATTRIBUTEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM317" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Attribute Value" AdapterVariable="procInstanceKey" EventHandler="adpADIDCUPDATEATTRIBUTEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM318" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Attribute Value" AdapterVariable="attrFieldName" EventHandler="adpADIDCUPDATEATTRIBUTEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM319" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ82" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0 public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>1 public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.updateAttributeValue(java.lang.String,java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>updateAttributeValue</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="attrFieldName" repo-type="RDBMS">
+        <ADV_DESC>attrFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="objectType" repo-type="RDBMS">
+        <ADV_DESC>objectType adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="procInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>procInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCUPDATEATTRIBUTEVALUES" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Update Attribute Values" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Updates more than 1 attribute on target at once.</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="UpdateAttributeValues" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM320" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Attribute Values" AdapterVariable="Adapter return value" EventHandler="adpADIDCUPDATEATTRIBUTEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM321" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM322" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Attribute Values" AdapterVariable="objectType" EventHandler="adpADIDCUPDATEATTRIBUTEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM323" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Attribute Values" AdapterVariable="processInstanceKey" EventHandler="adpADIDCUPDATEATTRIBUTEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM324" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Attribute Values" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCUPDATEATTRIBUTEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String[]</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+            <ATP_UPDATE>1549479340328</ATP_UPDATE>
+            <ATP_TYPE>String</ATP_TYPE>
+            <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+            <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+            <ATP_SEQUENCE>1</ATP_SEQUENCE>
+            <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+            <AdapterDataMapping id="ADM325" repo-type="RDBMS">
+              <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+              <ADM_UPDATE>1549479340328</ADM_UPDATE>
+              <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+              <ADM_ADV_KEY Adapter="ADIDC Update Attribute Values" AdapterVariable="Attribute1" EventHandler="adpADIDCUPDATEATTRIBUTEVALUES"/>
+            </AdapterDataMapping>
+          </AdapterTaskParam>
+          <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+            <ATP_UPDATE>1549479340328</ATP_UPDATE>
+            <ATP_TYPE>String</ATP_TYPE>
+            <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+            <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+            <ATP_SEQUENCE>2</ATP_SEQUENCE>
+            <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+            <AdapterDataMapping id="ADM326" repo-type="RDBMS">
+              <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+              <ADM_UPDATE>1549479340328</ADM_UPDATE>
+              <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+              <ADM_ADV_KEY Adapter="ADIDC Update Attribute Values" AdapterVariable="Attribute2" EventHandler="adpADIDCUPDATEATTRIBUTEVALUES"/>
+            </AdapterDataMapping>
+          </AdapterTaskParam>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ83" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0 public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>11 public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.updateAttributeValues(java.lang.String,java.lang.String[])</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>updateAttributeValues</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="Attribute1" repo-type="RDBMS">
+        <ADV_DESC>Attribute1</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="Attribute2" repo-type="RDBMS">
+        <ADV_DESC>Attribute2</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="objectType" repo-type="RDBMS">
+        <ADV_DESC>objectType</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="processInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>processInstanceKey</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCADDCHILDTABLEVALUES" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Add Child Table Values" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Adapter for ADIDC Add Child Table Values</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Add Child Table Values" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM327" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Add Child Table Values" AdapterVariable="Adapter return value" EventHandler="adpADIDCADDCHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM328" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Add Child Table Values" AdapterVariable="childPrimaryKey" EventHandler="adpADIDCADDCHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM329" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM330" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Add Child Table Values" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCADDCHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM331" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Add Child Table Values" AdapterVariable="childTableName" EventHandler="adpADIDCADDCHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM332" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Add Child Table Values" AdapterVariable="objectType" EventHandler="adpADIDCADDCHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM333" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Add Child Table Values" AdapterVariable="procInstanceKey" EventHandler="adpADIDCADDCHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ84" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0  public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>4  public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.addChildTableValue(java.lang.String,java.lang.String,long)</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>addChildTableValue</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="procInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>procInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="childTableName" repo-type="RDBMS">
+        <ADV_DESC>childTableName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="childPrimaryKey" repo-type="RDBMS">
+        <ADV_DESC>childPrimaryKey</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="objectType" repo-type="RDBMS">
+        <ADV_DESC>objectType adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCUPDATECHILDTABLEVALUE" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Update Child Table Value" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Adapter for ADIDC Update Child Table Value</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Update Child Table Value" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::4:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>4</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM334" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Value" AdapterVariable="childPrimaryKey" EventHandler="adpADIDCUPDATECHILDTABLEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM335" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Value" AdapterVariable="Adapter return value" EventHandler="adpADIDCUPDATECHILDTABLEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM336" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Value" AdapterVariable="objectType" EventHandler="adpADIDCUPDATECHILDTABLEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM337" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Value" AdapterVariable="procInstanceKey" EventHandler="adpADIDCUPDATECHILDTABLEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM338" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Value" AdapterVariable="childTableName" EventHandler="adpADIDCUPDATECHILDTABLEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM339" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Value" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCUPDATECHILDTABLEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>java.lang.Integer</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM340" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Value" AdapterVariable="taskInstanceKey" EventHandler="adpADIDCUPDATECHILDTABLEVALUE"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM341" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ85" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0  public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>6  public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.updateChildTableValue(java.lang.String,java.lang.String,java.lang.Integer,long)</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>updateChildTableValue</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="procInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>procInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="childTableName" repo-type="RDBMS">
+        <ADV_DESC>childTableName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="objectType" repo-type="RDBMS">
+        <ADV_DESC>objectType adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="taskInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>taskInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Integer</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Integer</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="childPrimaryKey" repo-type="RDBMS">
+        <ADV_DESC>childPrimaryKey</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCUPDATECHILDTABLEVALUES" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Update Child Table Values" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>Adapter for ADIDC Update Child Table Values</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Update Child Table Values" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM342" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Values" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCUPDATECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM343" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Values" AdapterVariable="objectType" EventHandler="adpADIDCUPDATECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM344" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Values" AdapterVariable="Adapter return value" EventHandler="adpADIDCUPDATECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM345" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Values" AdapterVariable="procInstanceKey" EventHandler="adpADIDCUPDATECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM346" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Update Child Table Values" AdapterVariable="childTableName" EventHandler="adpADIDCUPDATECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM347" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ86" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0 public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>2 public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.updateChildTableValues(java.lang.String,java.lang.String)</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>updateChildTableValues</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="childTableName" repo-type="RDBMS">
+        <ADV_DESC>childTableName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="objectType" repo-type="RDBMS">
+        <ADV_DESC>objectType adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="procInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>procInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+  <EventHandler name="adpADIDCREMOVECHILDTABLEVALUES" repo-type="RDBMS" subtype="TaskAdapter">
+    <EVT_POST_DELETE>0</EVT_POST_DELETE>
+    <EVT_POST_INSERT>1</EVT_POST_INSERT>
+    <EVT_PRE_UPDATE>0</EVT_PRE_UPDATE>
+    <EVT_PRE_INSERT>0</EVT_PRE_INSERT>
+    <EVT_UPDATE>1549479340328</EVT_UPDATE>
+    <EVT_POST_UPDATE>1</EVT_POST_UPDATE>
+    <EVT_PRE_DELETE>0</EVT_PRE_DELETE>
+    <EVT_PACKAGE>com.thortech.xl.adapterGlue.ScheduleItemEvents</EVT_PACKAGE>
+    <Adapter name="ADIDC Remove Child Table Values" repo-type="RDBMS">
+      <ADP_DISABLED>0</ADP_DISABLED>
+      <ADP_BUILD>0</ADP_BUILD>
+      <ADP_STATUS>OK</ADP_STATUS>
+      <ADP_TYPE>T</ADP_TYPE>
+      <ADP_DESCRIPTION>ADIDC Remove Child Table Values</ADP_DESCRIPTION>
+      <ADP_UPDATE>1549479340328</ADP_UPDATE>
+      <AdapterTask name="Remove Child Table Values" repo-type="RDBMS">
+        <ADT_SEQUENCE>0</ADT_SEQUENCE>
+        <ADT_TYPE>JAVA</ADT_TYPE>
+        <ADT_UPDATE>1549479340328</ADT_UPDATE>
+        <AdapterTaskParam name="::~~::1:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM348" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Remove Child Table Values" AdapterVariable="objectType" EventHandler="adpADIDCREMOVECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM349" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Remove Child Table Values" AdapterVariable="childTableName" EventHandler="adpADIDCREMOVECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::2:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>long</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>2</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM350" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Remove Child Table Values" AdapterVariable="procInstanceKey" EventHandler="adpADIDCREMOVECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM351" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Remove Child Table Values" AdapterVariable="itResourceFieldName" EventHandler="adpADIDCREMOVECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>java.lang.Integer</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM352" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>(Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Remove Child Table Values" AdapterVariable="taskInstanceKey" EventHandler="adpADIDCREMOVECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::3:Input:constructor" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>com.thortech.xl.dataaccess.tcDataProvider</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>constructor</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>3</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Input</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM353" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Database reference (Adapter Reference)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Database reference</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter References</ADM_MAP_TO>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterTaskParam name="::~~::1:Output:method" repo-type="RDBMS">
+          <ATP_UPDATE>1549479340328</ATP_UPDATE>
+          <ATP_TYPE>String</ATP_TYPE>
+          <ATP_IMAGE>parameter.gif</ATP_IMAGE>
+          <ATP_JAVA_METHOD_TYPE>method</ATP_JAVA_METHOD_TYPE>
+          <ATP_SEQUENCE>1</ATP_SEQUENCE>
+          <ATP_IN_OUT_FLAG>Output</ATP_IN_OUT_FLAG>
+          <AdapterDataMapping id="ADM354" repo-type="RDBMS">
+            <ADM_DISPLAY_VALUE>Return variable (Adapter Variable)</ADM_DISPLAY_VALUE>
+            <ADM_MAP_QUALIFIER>Return variable</ADM_MAP_QUALIFIER>
+            <ADM_UPDATE>1549479340328</ADM_UPDATE>
+            <ADM_MAP_TO>Adapter Variables</ADM_MAP_TO>
+            <ADM_ADV_KEY Adapter="ADIDC Remove Child Table Values" AdapterVariable="Adapter return value" EventHandler="adpADIDCREMOVECHILDTABLEVALUES"/>
+          </AdapterDataMapping>
+        </AdapterTaskParam>
+        <AdapterJavaTask id="ADJ87" repo-type="RDBMS">
+          <ADJ_CONSTRUCTOR>0  public oracle.iam.connectors.icfcommon.prov.ICProvisioningManager(java.lang.String,long,com.thortech.xl.dataaccess.tcDataProvider)</ADJ_CONSTRUCTOR>
+          <ADJ_API_NAME>oracle.iam.connectors.icfcommon.prov.ICProvisioningManager</ADJ_API_NAME>
+          <ADJ_METHOD_DISPLAY>5  public java.lang.String oracle.iam.connectors.icfcommon.prov.ICProvisioningManager.removeChildTableValue(java.lang.String,java.lang.String,java.lang.Integer)</ADJ_METHOD_DISPLAY>
+          <ADJ_JAR_FILE>icf-oim-intg.jar</ADJ_JAR_FILE>
+          <ADJ_METHOD>removeChildTableValue</ADJ_METHOD>
+          <ADJ_STATIC>0</ADJ_STATIC>
+          <ADJ_UPDATE>1549479340328</ADJ_UPDATE>
+          <RLO_KEY ExternalDirectory="JavaTaskJar"/>
+        </AdapterJavaTask>
+      </AdapterTask>
+      <AdapterVariable name="taskInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>taskInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Integer</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Integer</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="Adapter return value" repo-type="RDBMS">
+        <ADV_DESC>Return variable</ADV_DESC>
+        <ADV_DISPLAY_VALUE>Return variable</ADV_DISPLAY_VALUE>
+        <ADV_MAP_TO>USED</ADV_MAP_TO>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Object</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="procInstanceKey" repo-type="RDBMS">
+        <ADV_DESC>procInstanceKey adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>Long</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>Long</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="objectType" repo-type="RDBMS">
+        <ADV_DESC>objectType adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="itResourceFieldName" repo-type="RDBMS">
+        <ADV_DESC>itResourceFieldName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+      <AdapterVariable name="childTableName" repo-type="RDBMS">
+        <ADV_DESC>childTableName adapter variable</ADV_DESC>
+        <ADV_FINAL>0</ADV_FINAL>
+        <ADV_MAP_TO>Resolve at runtime</ADV_MAP_TO>
+        <ADV_MAP_QUALIFIER>String</ADV_MAP_QUALIFIER>
+        <ADV_UPDATE>1549479340328</ADV_UPDATE>
+        <ADV_DATA_TYPE>String</ADV_DATA_TYPE>
+      </AdapterVariable>
+    </Adapter>
+  </EventHandler>
+</xl-ddm-data>

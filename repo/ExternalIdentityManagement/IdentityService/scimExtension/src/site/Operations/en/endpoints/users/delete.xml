@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="api-users-delete"
+         xml:lang="en"
+         version ="5.0">
+  <title>Delete User</title>
+  <para>
+    This endpoint provides the ability to delete users in BKA OIM via SCIM interface.
+  </para>
+  <section xml:id="api-users-delete-req">
+    <title>Request</title>
+    <warning>
+      <title>Permission</title>
+      <para>Calling user must have administration capability for the organization where the user is modified and capability to delete users.</para>
+    </warning>
+    <para>
+      <restapi role="delete">/Users/{userName}</restapi>
+    </para>
+    <section xml:id="api-users-delete-req-h">
+      <title>Request Header</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-users-delete-req-q">
+      <title>Query Parameters</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>none</entry>
+              <entry></entry>
+              <entry></entry>
+              <entry></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="api-users-delete-res">
+    <title>Response</title>
+    <para>
+      Upon successful deletion a 204 response is returned with no body
+    </para>
+  </section>
+  <section xml:id="api-users-delete-err">
+    <title>Possible Errors</title>
+    <table>
+      <thead>
+        <tr>
+          <td>Error</td>
+          <td>Condition</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><emphasis role="strong">401 Unauthorized</emphasis></td>
+          <td>No or invalid authentication was provided.</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">403 Forbidden</emphasis></td>
+          <td>Request was authenticated but authorization was not passed (authenticated user lacks role required to acces the resource).</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">503 Service Unavailable</emphasis></td>
+          <td>Other processing error occured including invalid filter syntax. Response <literal>description</literal> attribute contains more details.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</section>

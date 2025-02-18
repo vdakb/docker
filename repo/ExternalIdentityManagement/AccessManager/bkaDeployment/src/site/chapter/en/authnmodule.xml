@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="oam-authnmodule"
+         xml:lang="en"
+         version ="5.0">
+  <title>Authentication Module</title>
+  <section xml:id="oam-authnmodule-01">
+    <title>Standard</title>
+    <table frame="topbot" colsep="0" rowsep="1">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="16em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Parameter</entry>
+            <entry>Value</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><emphasis role="strong">Name</emphasis></entry>
+            <entry><emphasis>FederationDirectoryProvider</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">User Identity Store</emphasis></entry>
+            <entry><emphasis>FederationIdentityStore</emphasis></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="oam-authnmodule-02">
+    <title>OpenIDIdentityProviderLocal</title>
+    <table frame="topbot" colsep="0" rowsep="1">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="16em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Parameter</entry>
+            <entry>Value</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><emphasis role="strong">Name</emphasis></entry>
+            <entry><emphasis>OpenIDIdentityProviderLocal</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Description</emphasis></entry>
+            <entry><emphasis>Mechanism to authenticate a user through an OpenIDConnect 3-leg flow using the FederationIdentityStore to identify the authenticated user.</emphasis></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <section xml:id="oam-authnmodule-02-01">
+      <title>Steps</title>
+      <section xml:id="oam-authnmodule-02-01-01">
+        <title>Challenge</title>
+        <table frame="topbot" colsep="0" rowsep="1">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="16em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Parameter</entry>
+                <entry>Value</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><emphasis role="strong">Step Name</emphasis></entry>
+                <entry><emphasis>UserChallenge</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">Description</emphasis></entry>
+                <entry><emphasis>Challenging a user to authenticate leveraging an OpenIDConnect 3-leg flow.</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">Plug-in Name</emphasis></entry>
+                <entry><emphasis>OpenIDConnectPlugin</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">id_domain</emphasis></entry>
+                <entry><emphasis>SecureDomain2</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">ouath_client_secret</emphasis></entry>
+                <entry><emphasis>&lt;see wallet&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">token_end_point</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">authz_end_point</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">require_proxy</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">provider</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">scope</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">userinfo_end_point</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">additional_parameters</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">discovery_url</emphasis></entry>
+                <entry><emphasis>http://sso.cinnamonstar.oam</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">username_attr</emphasis></entry>
+                <entry><emphasis>sub</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">oauth_client_id</emphasis></entry>
+                <entry><emphasis>igsservice</emphasis></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+      <section xml:id="oam-authnmodule-02-01-02">
+        <title>Identification</title>
+        <table frame="topbot" colsep="0" rowsep="1">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="16em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Parameter</entry>
+                <entry>Value</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><emphasis role="strong">Step Name</emphasis></entry>
+                <entry><emphasis>UserIdentification</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">Description</emphasis></entry>
+                <entry><emphasis>Identity the user in the FederationIdentityStore.</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">Plug-in Name</emphasis></entry>
+                <entry><emphasis>UserIdentificationPlugIn</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">KEY_IDENTITY_STORE_REF</emphasis></entry>
+                <entry><emphasis>FederationIdentityStore</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">KEY_LDAP_FILTER</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">KEY_SEARCH_BASE_URL</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+    </section>
+    <section xml:id="oam-authnmodule-02-02">
+      <title>Flow</title>
+      <para>
+        Initial Step: <emphasis>UserChallenge</emphasis>
+      </para>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="10em"/>
+          <colspec colname="c2" colwidth="10em"/>
+          <colspec colname="c3" colwidth="10em"/>
+          <colspec colname="c4" colwidth="10em"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>On Success</entry>
+              <entry>On Failure</entry>
+              <entry>On Error</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">UserChallenge</emphasis></entry>
+              <entry><emphasis>UserIdentification</emphasis></entry>
+              <entry><emphasis>failure</emphasis></entry>
+              <entry><emphasis>failure</emphasis></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">UserIdentification</emphasis></entry>
+              <entry><emphasis>success</emphasis></entry>
+              <entry><emphasis>failure</emphasis></entry>
+              <entry><emphasis>failure</emphasis></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="oam-authnmodule-03">
+    <title>OpenIDIdentityProviderExternal</title>
+    <table frame="topbot" colsep="0" rowsep="1">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="16em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Parameter</entry>
+            <entry>Value</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><emphasis role="strong">Name</emphasis></entry>
+            <entry><emphasis>OpenIDIdentityProviderExternal</emphasis></entry>
+          </row>
+          <row>
+            <entry><emphasis role="strong">Description</emphasis></entry>
+            <entry><emphasis>Mechanism to authenticate a user through an OpenIDConnect 3-leg flow using an external Identity Provider to authenticate users and the FederationIdentityStore to identify such users.</emphasis></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <section xml:id="oam-authnmodule-03-01">
+      <title>Steps</title>
+      <section xml:id="oam-authnmodule-03-01-01">
+        <title>Challenge</title>
+        <table frame="topbot" colsep="0" rowsep="1">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="16em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Parameter</entry>
+                <entry>Value</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><emphasis role="strong">Step Name</emphasis></entry>
+                <entry><emphasis>UserChallenge</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">Description</emphasis></entry>
+                <entry><emphasis>Challenging a user to authenticate leveraging an OpenIDConnect 3-leg flow.</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">Plug-in Name</emphasis></entry>
+                <entry><emphasis>OpenIDConnectPlugin</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">id_domain</emphasis></entry>
+                <entry><emphasis>PlayGroundDomain</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">ouath_client_secret</emphasis></entry>
+                <entry><emphasis>&lt;see wallet&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">token_end_point</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">authz_end_point</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">require_proxy</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">provider</emphasis></entry>
+                <entry><emphasis>oam</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">scope</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">userinfo_end_point</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">additional_parameters</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">discovery_url</emphasis></entry>
+                <entry><emphasis>http://sso.cinnamonstar.net:1080</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">username_attr</emphasis></entry>
+                <entry><emphasis>sub</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">oauth_client_id</emphasis></entry>
+                <entry><emphasis>PlayGroundClient</emphasis></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+      <section xml:id="oam-authnmodule-03-01-02">
+        <title>Identification</title>
+        <table frame="topbot" colsep="0" rowsep="1">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="16em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Parameter</entry>
+                <entry>Value</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><emphasis role="strong">Step Name</emphasis></entry>
+                <entry><emphasis>UserIdentification</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">Description</emphasis></entry>
+                <entry><emphasis>Identity the user in the FederationIdentityStore.</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">Plug-in Name</emphasis></entry>
+                <entry><emphasis>UserIdentificationPlugIn</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">KEY_IDENTITY_STORE_REF</emphasis></entry>
+                <entry><emphasis>FederationIdentityStore</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">KEY_LDAP_FILTER</emphasis></entry>
+                <entry><emphasis>(&amp;(objectClass=inetOrgPerson)(|(uid={KEY_USERNAME})(mail={KEY_USERNAME})))</emphasis></entry>
+              </row>
+              <row>
+                <entry><emphasis role="strong">KEY_SEARCH_BASE_URL</emphasis></entry>
+                <entry><emphasis>&lt;empty&gt;</emphasis></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+    </section>
+    <section xml:id="oam-authnmodule-03-02">
+      <title>Flow</title>
+      <para>
+        Initial Step: <emphasis>UserChallenge</emphasis>
+      </para>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="10em"/>
+          <colspec colname="c2" colwidth="10em"/>
+          <colspec colname="c3" colwidth="10em"/>
+          <colspec colname="c4" colwidth="10em"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>On Success</entry>
+              <entry>On Failure</entry>
+              <entry>On Error</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">UserChallenge</emphasis></entry>
+              <entry><emphasis>UserIdentification</emphasis></entry>
+              <entry><emphasis>failure</emphasis></entry>
+              <entry><emphasis>failure</emphasis></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">UserIdentification</emphasis></entry>
+              <entry><emphasis>success</emphasis></entry>
+              <entry><emphasis>failure</emphasis></entry>
+              <entry><emphasis>failure</emphasis></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+</chapter>

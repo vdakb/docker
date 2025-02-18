@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!---->
+<BC4JConfig xmlns="http://xmlns.oracle.com/bc4j/configuration" version="11.1">
+  <AppModuleConfigBag ApplicationName="bka.employee.portal.vehicle.module.AdministrationAM">
+    <AppModuleConfig name           ="AdministrationAMLocal"
+                     jbo.project    ="bka.employee.portal.vehicle.Backend"
+                     ApplicationName="bka.employee.portal.vehicle.module.AdministrationAM"
+                     DeployPlatform ="LOCAL">
+      <AM-Pooling jbo.doconnectionpooling="true"/>
+      <Database JDBCDataSource   ="jdbc/eppDS"/>
+      <Security AppModuleJndiName="bka.employee.portal.vehicle.module.AdministrationAM"/>
+    </AppModuleConfig>
+    <AppModuleConfig name           ="AdministrationShared"
+                     jbo.project    ="bka.employee.portal.vehicle.Backend"
+                     ApplicationName="bka.employee.portal.vehicle.module.AdministrationAM"
+                     DeployPlatform ="LOCAL">
+      <AM-Pooling jbo.ampool.maxpoolsize="1" jbo.ampool.isuseexclusive="false"/>
+      <Database JDBCDataSource   ="jdbc/eppDS"/>
+      <Security AppModuleJndiName="bka.employee.portal.vehicle.module.AdministrationAM"/>
+    </AppModuleConfig>
+  </AppModuleConfigBag>
+  <AppModuleConfigBag ApplicationName="bka.employee.portal.vehicle.module.VehicleAM"
+                      default="VehicleAMLocal">
+    <AppModuleConfig name           ="VehicleAMLocal"
+                     jbo.project    ="bka.employee.portal.vehicle.Backend"
+                     ApplicationName="bka.employee.portal.vehicle.module.VehicleAM"
+                     DeployPlatform ="LOCAL">
+      <AM-Pooling jbo.doconnectionpooling="true"/>
+      <Database JDBCDataSource="jdbc/eppDS"/>
+      <Security AppModuleJndiName="bka.employee.portal.vehicle.module.VehicleAM"/>
+    </AppModuleConfig>
+    <AppModuleConfig name           ="VehicleShared"
+                     jbo.project    ="bka.employee.portal.vehicle.Backend"
+                     ApplicationName="bka.employee.portal.vehicle.module.VehicleAM"
+                     DeployPlatform ="LOCAL" JDBCName="BKA EPP">
+      <AM-Pooling jbo.ampool.maxpoolsize="1" jbo.ampool.isuseexclusive="false"/>
+      <Security AppModuleJndiName="bka.employee.portal.vehicle.module.VehicleAM"/>
+    </AppModuleConfig>
+  </AppModuleConfigBag>
+</BC4JConfig>

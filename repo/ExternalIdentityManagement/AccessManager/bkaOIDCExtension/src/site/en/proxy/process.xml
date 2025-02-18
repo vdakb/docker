@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+ 
+ https://openid.net/specs/openid-connect-basic-1_0.html
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="process"
+         xml:lang="en"
+         version ="5.0">
+  <title>Code Flow</title>
+  <prara>
+    The Code Flow consists of the following steps: 
+  </prara>
+  <orderedlist>
+    <listitem>
+      <link linkend="process-01">Client prepares an Authentication Request containing the desired request parameters.</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="process-02">Client sends the request to the Authorization Server.</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="process-03">Authorization Server authenticates the End-User.</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="process-04">Authorization Server obtains End-User Consent/Authorization.</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="process-05">Authorization Server sends the End-User back to the Client with <literal>code</literal></link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="process-06">Client sends the <literal>code</literal> to the Token Endpoint to receive an Access Token and ID Token in the response.</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="process-07">Client validates the tokens and retrieves the End-User's Subject Identifier.</link>
+    </listitem>
+  </orderedlist>
+  <section xml:id="process-01">
+    <title>Client Prepares Authentication Request</title>
+  </section>
+  <section xml:id="process-02">
+    <title>Client Sends Request to Authorization Server</title>
+  </section>
+  <section xml:id="process-03">
+    <title>Authorization Server Authenticates End-User</title>
+    <para>
+      The Authorization Server logs in the End-User or verifies whether the End-User is logged in, depending upon the request parameter values used.
+      If interaction with the End-User occurs over an HTTP channel, it <emphasis role="strong">must</emphasis> use TLS, as per Section 6.1.
+      The exact authentication methods used are out of scope for this specification. 
+    </para>
+  </section>
+  <section xml:id="process-04">
+    <title>Authorization Server Obtains End-User Consent/Authorization</title>
+    <para>
+      The Authorization Server obtains an authorization decision for the requested Claims.
+      This can be done by presenting the End-User with a dialogue that enables the End-User to recognize what is being consenting to and grant consent or by establishing consent via other means (for example, via previous administrative consent). 
+    </para>
+    <para>
+      The <literal>openid</literal>literal> scope value declares that this OAuth 2.0 request is an OpenID Connect request.
+      Use of all other scope values is <emphasis role="strong">optional</emphasis>. 
+    </para>
+  </section>
+  <section xml:id="process-05">
+    <title>Authorization Server Sends End-User Back to Client</title>
+    <para>
+      Once the authorization is determined, the Authorization Server returns a successful response or an error response.
+    </para>
+  </section>
+  <section xml:id="process-06">
+    <title>Client Obtains ID Token and Access Token</title>
+  </section>
+  <section xml:id="process-07">
+    <title>Client Receives Tokens</title>
+    <para>
+      The Client receives a response with the following parameters as described in Section 4.1.4 of <link xl:show="new" xl:href="https://openid.net/specs/openid-connect-basic-1_0.html#RFC6749" xl:role="http://docbook.org/xlink/role/olink"><citetitle>OAuth 2.0</citetitle></link> [RFC6749].
+      The response <emphasis role="strong">should</emphasis> be encoded using UTF-8 <link xl:show="new" xl:href="https://openid.net/specs/openid-connect-basic-1_0.html#RFC3629" xl:role="http://docbook.org/xlink/role/olink"><citetitle>[RFC3629]</citetitle></link>.
+    </para>
+    <table colsep="0">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="10em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Convention</entry>
+            <entry>Meaning</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>access_token</entry>
+            <entry>
+              <para>
+                <emphasis role="strong">required</emphasis>
+              </para>
+              <para>
+                Access Token for the UserInfo Endpoint.
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>token_type</entry>
+            <entry>
+              <para>
+                <emphasis role="strong">required</emphasis>
+              </para>
+              <para>
+                OAuth 2.0 Token Type value.
+                The value <emphasis role="strong">must</emphasis> be <literal>Bearer</literal>, as specified in <link xl:show="new" xl:href="https://openid.net/specs/openid-connect-basic-1_0.html#RFC6750" xl:role="http://docbook.org/xlink/role/olink"><citetitle>OAuth 2.0 Bearer Token Usage</citetitle></link> [RFC6750], for Clients using this subset.
+                Note that the <literal>token_type value</literal> is case insensitive. 
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>id_token</entry>
+            <entry>
+              <para>
+                <emphasis role="strong">required</emphasis>
+              </para>
+              <para>
+                ID Token
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>expires_in</entry>
+            <entry>
+              <para>
+                <emphasis role="strong">optional</emphasis>
+              </para>
+              <para>
+                Expiration time of the Access Token in seconds since the response was generated. 
+              </para>
+            </entry>
+          </row>
+          <row>
+            <entry>refresh_token</entry>
+            <entry>
+              <para>
+                <emphasis role="strong">optional</emphasis>
+              </para>
+              <para>
+                Refresh Token.  
+              </para>
+            </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>
+      The Client can then use the Access Token to access protected resources at Resource Servers.
+    </para>
+    <para>
+      The following is a non-normative example (with line wraps for the display purposes only):
+    </para>
+  </section>
+</chapter>

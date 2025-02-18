@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="#{ant.project}" basedir="#{ant.basedir}">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description" value="#{oam.description}"/>
+  <property name="destination" value="#{oam.destination}"/>
+
+  <property name="application" value="#{oam.application}"/>
+  <property name="library"     value="${application}"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="#{oam.target}"/>
+  <!--
+  =====================================================================
+  == complete a possible agent runtime path
+  =====================================================================
+  -->
+  <path id="oracle.ocs.iam.runtime">
+    <path refid="oracle.ocs.iam.hst.foundation"/>
+    <path refid="oracle.ocs.iam.oam.foundation"/>
+  </path>
+  <!--
+  =====================================================================
+  == declare the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.jee"/>
+    <path refid="oracle.ocs.iam.runtime"/>
+  </path>
+</project>

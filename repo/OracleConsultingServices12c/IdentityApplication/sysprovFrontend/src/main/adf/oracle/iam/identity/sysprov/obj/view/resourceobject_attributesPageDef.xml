@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="resourceobject_attributesPageDef"
+                Package="oracle.iam.identity.sysprov.obj.view">
+  <parameters/>
+  <executables>
+    <iterator id="ResourceObjectIterator" Binds="ResourceObjectDetailVO" DataControl="ResourceObjectAMDataControl" RangeSize="20"/>
+  </executables>
+  <bindings>
+    <attributeValues id="objectsKey" IterBinding="ResourceObjectIterator">
+      <AttrNames>
+        <Item Value="objectsKey"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="objectsName" IterBinding="ResourceObjectIterator">
+      <AttrNames>
+        <Item Value="objectsName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="objectsType" IterBinding="ResourceObjectIterator">
+      <AttrNames>
+        <Item Value="objectsType"/>
+      </AttrNames>
+    </attributeValues>
+    <list id="objectsOrderFor" StaticList="true" SelectItemValueMode="ListObject" IterBinding="ResourceObjectIterator" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="objectsOrderFor"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="U"/>
+        <Item Value="O"/>
+      </ValueList>
+    </list>
+    <button id="objectsAllowAll" StaticList="true" IterBinding="ResourceObjectIterator" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="objectsAllowAll"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <button id="objectsAllowMultiple" StaticList="true" IterBinding="ResourceObjectIterator" DTSupportsMRU="false">
+      <AttrNames>
+        <Item Value="objectsAllowMultiple"/>
+      </AttrNames>
+      <ValueList>
+        <Item Value="1"/>
+        <Item Value="0"/>
+      </ValueList>
+    </button>
+    <attributeValues id="objectsNote" IterBinding="ResourceObjectIterator">
+      <AttrNames>
+        <Item Value="objectsNote"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="ResourceObjectAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="ResourceObjectAMDataControl"/>
+    <methodAction id                 ="refreshAttribute"
+                  DataControl        ="ResourceObjectAMDataControl"
+                  InstanceName       ="ResourceObjectAMDataControl.dataProvider"
+                  MethodName         ="refreshAttribute"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.String"/>
+    </methodAction>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

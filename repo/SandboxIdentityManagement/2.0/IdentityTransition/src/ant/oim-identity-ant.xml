@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Controller" basedir="../../deployment/oim">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../tpl/oim-context.xml"/>
+  <import file="../../tpl/ant/oim-identity.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <!--
+  Identities
+  -->
+  <target name       ="001-BB"
+          description="Identities Police Brandenburg"
+          depends    ="0200-01-BB"/>
+  <target name       ="001-BK"
+          description="Identities Federal Criminal Police Office"
+          depends    ="0200-01-BK"/>
+  <target name       ="001-BP"
+          description="Identities Federal Police"
+          depends    ="0200-01-BP"/>
+  <target name       ="001-BW"
+          description="Identities Police Baden-Wuerttemberg"
+          depends    ="0200-01-BW"/>
+  <target name       ="001-HE"
+          description="Identities Police Hesse"
+          depends    ="0200-01-HE"/>
+  <target name       ="001-HH"
+          description="Identities Police Hamburg"
+          depends    ="0200-01-HH"/>
+  <target name       ="001"
+          description="Participants at all"
+          depends    ="001-BB,001-BK,001-BP,001-BW,001-HE,001-HH"/>
+  <!--
+  Role Grant
+  -->
+  <target name       ="002-BB"
+          description="Role Grants Police Brandenburg"
+          depends    ="0200-02-BB"/>
+  <target name       ="002-BK"
+          description="Role Grants Federal Criminal Police Office"
+          depends    ="0200-02-BK"/>
+  <target name       ="002-BP"
+          description="Role Grants Federal Police"
+          depends    ="0200-02-BP"/>
+  <target name       ="002-BW"
+          description="Role Grants Police Baden-Wuerttemberg"
+          depends    ="0200-02-BW"/>
+  <target name       ="002-HE"
+          description="Role Grants Police Hesse"
+          depends    ="0200-02-HE"/>
+  <target name       ="002-HH"
+          description="Role Grants Police Hamburg"
+          depends    ="0200-02-HH"/>
+  <target name       ="002"
+          description="Role Grants at all"
+          depends    ="002-BB,002-BK,002-BP,002-BW,002-HE,002-HH"/>
+</project>

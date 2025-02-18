@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Workspace Context"
+         basedir         ="."
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../.env/igd/${fmw.env}/scp-server.xml"/>
+  <import file="../.env/igd/${fmw.env}/jee-server.xml"/>
+  <import file="../.env/igd/${fmw.env}/oim-server.xml"/>
+  <import file="../.env/igd/${fmw.env}/mds-server.xml"/>
+  <!--
+  ==============================================================================
+  == Import custom type and task definitions
+  ==============================================================================
+  -->
+  <import file="./adf-preferences.xml"/>
+  <!--
+  =====================================================================
+  == Import custom type and task definitions
+  =====================================================================
+  -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <taskdef resource="oracle/hst/deployment/ant-fusion-lib.xml"     uri="http://oracle.hst.deployment/fusion"/>
+  <taskdef resource="oracle/hst/deployment/ant-topology-lib.xml"   uri="http://oracle.hst.deployment/topology"/>
+  <taskdef resource="oracle/hst/deployment/ant-webservice-lib.xml" uri="http://oracle.hst.deployment/webservice"/>
+  <taskdef resource="oracle/hst/deployment/ant-security-lib.xml"   uri="http://oracle.hst.deployment/security"/>
+  <taskdef resource="oracle/iam/identity/ant-object-lib.xml"       uri="http://oracle.iam.identity/object"/>
+  <taskdef resource="oracle/iam/identity/ant-plugin-lib.xml"       uri="http://oracle.iam.identity/plugin"/>
+  <taskdef resource="oracle/iam/identity/ant-scheduler-lib.xml"    uri="http://oracle.iam.identity/scheduler"/>
+  <taskdef resource="oracle/iam/identity/ant-operation-lib.xml"    uri="http://oracle.iam.identity/operation"/>
+  <taskdef resource="oracle/iam/identity/ant-metadata-lib.xml"     uri="http://oracle.iam.identity/metadata"/>
+  <taskdef resource="oracle/iam/identity/ant-workflow-lib.xml"     uri="http://oracle.iam.identity/workflow"/>
+  <taskdef resource="oracle/iam/identity/ant-sandbox-lib.xml"      uri="http://oracle.iam.identity/sandbox"/>
+  <!--
+  ==============================================================================
+  == Declaring the container specifiying connectivity to the remote systems
+  ==============================================================================
+  -->
+  <server:principal id="jee-principal" username="${jee.server.username}" password="${jee.server.password}"/>
+  <server:principal id="oim-principal" username="${oim.server.username}" password="${oim.server.password}"/>
+  <server:principal id="mds-principal" username="${mds.server.username}" password="${mds.server.password}"/>
+
+  <server:dbs-context id="mds-context" type="${mds.server.type}" protocol="${mds.server.protocol}" host="${mds.server.host}" port="${mds.server.port}" database="${mds.server.service}" principalRef="mds-principal"/>
+  <server:jmx-context id="jmx-context" type="${jee.server.type}" protocol="${jee.server.protocol}" host="${jee.server.host}" port="${jee.server.port}" principalRef="jee-principal"/>
+  <server:rmi-context id="rmi-context" type="${oim.server.type}" protocol="${oim.server.protocol}" host="${oim.server.host}" port="${oim.server.port}" contextFactory="weblogic.jndi.WLInitialContextFactory" contextURL="${oim.server.protocol}://${oim.server.host}:${oim.server.port}/oim" principalRef="jee-principal"/>
+  <server:oim-context id="oim-context" contextRef="rmi-context"  principalRef="oim-principal" authenticationConfig="${oim.server.authentication}"/>
+
+  <server:mds-context id="oim-mds"     contextRef="mds-context"  name="oim-deployment" partition="${oim.metadata.partition}"/>
+  <server:mds-context id="sdb-mds"     contextRef="mds-context"  name="oim-sandbox"    partition="${oim.sandbox.partition}"/>
+  <!--
+  =====================================================================
+  == These properties specifies where the kernel runtime environment of
+  == Oracle Identity Manager are located
+  =====================================================================
+  -->
+  <property name="oim.remote.application"     value="${oim.server.home}/apps"/>
+  <!--
+  =====================================================================
+  == ANT target to execute a remote command
+  =====================================================================
+  -->
+  <macrodef name="ssh-shell">
+    <attribute name="command"/>
+    <sequential>
+      <sshexec command="@{command}" keyfile="${scp.server.certificate}" host="${scp.server.host}" port="${scp.server.port}" username="${scp.server.username}" password="${scp.server.password}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to copy library artifacts
+  =====================================================================
+  -->
+  <macrodef name="ssh-file">
+    <attribute name="file"/>
+    <attribute name="dir"/>
+    <attribute name="location"/>
+    <sequential>
+      <if>
+        <istrue value="${oim.server.simple}"/>
+          <then>
+            <echo message="Copying @{file} from @{dir} to @{location}"/>
+            <copy todir="@{location}">
+              <fileset dir="@{dir}" includes="@{file}"/>
+            </copy>
+          </then>
+          <else>
+            <echo message="Transfering @{file} from @{dir} to @{location} on ${scp.server.host}:${scp.server.port}"/>
+            <scp todir="${scp.server.destination}:@{location}" port="${scp.server.port}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+              <fileset dir="@{dir}">
+                <include name="@{file}"/>
+              </fileset>
+            </scp>
+          </else>
+        </if>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="call-subproject">
+    <attribute name="path"/>
+    <attribute name="file"/>
+    <attribute name="target"/>
+    <sequential>
+      <subant target="@{target}" buildpath="@{path}/ant" antfile="@{file}"/>
+    </sequential>
+  </macrodef>
+</project>

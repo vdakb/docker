@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"   value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysconfig$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Configuration']}"/>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysconfig$bundle.TPL_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysconfig$bundle.TPL_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysconfig$bundle.TPL_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysconfig$bundle.TPL_SUMMARY}"/>
+    <f:attribute name="bodyHeaderInstruction"           value="#{sysconfig$bundle.TPL_SUMMARY_INSTRUCTION}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysconfig$bundle.TPL_TRAIN_FINISH}"/>
+    <f:attribute name="finishMethodInterface"           value="#{pageFlowScope.templateTrain}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysconfig$bundle.TPL_CREATE_TITLE : pageFlowScope.templateName}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysconfig$bundle.TPL_ICON}"/>
+    <f:attribute name="tabHeaderInstruction"            value=""/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:attribute name="hideSubTabTopPane"               value="#{pageFlowScope.mode == 'request' ? 'true' : 'false'}"/>
+    <f:attribute name="hideSubTabBorder"                value="#{pageFlowScope.mode == 'request' ? 'true' : 'false'}"/>
+    <f:facet name="subtabsButtonBar"/>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical">
+            <af:showDetailHeader id="sdh10" text="#{sysconfig$bundle.TPL_ATTRIBUTE}" disclosed="true" inlineStyle="font-size:small;width:550px;">
+              <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="33%" fieldWidth="67%" inlineStyle="text-decoration:none;">
+                <af:inputText id                     ="it211"
+                              value                  ="#{bindings.name.inputValue}"
+                              label                  ="#{bindings.name.hints.label}"
+                              columns                ="#{bindings.name.hints.displayWidth}"
+                              shortDesc              ="#{bindings.name.hints.tooltip}"
+                              disabled               ="true"/>
+              </af:panelFormLayout>
+            </af:showDetailHeader>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

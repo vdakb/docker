@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="use-sorting"
+         xml:lang="de"
+         version ="5.0">
+  <title>Sortierung</title>
+  <para>
+    Mit der Sortierung k&#246;nnen Sie die Reihenfolge angeben, in der die Ressourcen zur&#252;ckgegeben werden, indem Sie eine Kombination aus den URL-Parametern <literal>sortBy</literal> und <literal>sortOrder</literal> angeben.
+  </para>
+  <para>
+    Die Sortierung wird unter zwei Bedingungen angewendet:
+  </para>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      <para>Beim Abfragen einer Ressource mithilfe einer HTTP-GET-Methode.</para>
+      <para/>
+    </listitem>
+    <listitem>
+      <para>Beim Abfragen einer Ressource mithilfe einer HTTP-POST-Methode f&#252;r eine Ressource oder Suche.</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+    Der Wert des Anfrageparameters zur Sortierung ist eine durch Kommas getrennte Liste von Sortierschl&#252;sseln.
+  </para>
+  <table colsep="0">
+    <tgroup cols="2">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>Parameter</entry>
+          <entry>Beschreibung</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>sortBy</entry>
+          <entry>
+            <para>
+              Gibt das Attribut an, dessen Wert zum Sortieren der zur&#252;ckgegebenen Antworten verwendet wird.
+              Wenn das Attribut <literal>sortBy</literal> einem einzelnen Attribut entspricht, werden die Ressourcen nach dem Wert dieses Attributs sortiert.
+              Wenn es sich um ein mehrwertiges Attribut handelt, werden die Ressourcen nach dem Wert des Prim&#228;rwerts oder anderenfalls nach dem ersten Wert in der Liste sortiert.
+              Wenn das Attribut komplex ist, <emphasis role="strong">MUSS</emphasis> der Attributname ein Pfad zu einem Unterattribut in der Standardattributnotation sein.
+            </para>
+            <para>
+              Zum Beispiel: <literal>sortBy=id</literal>
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>sortOrder</entry>
+          <entry>
+            <para>
+              Gibt die Reihenfolge an, in der die Sortierung durchgef&#252;hrt wird, z.B. in aufsteigender oder absteigender Reihenfolge.
+            </para>
+            <para>
+              Zum Beispiel: Die GET-Anfrage - <emphasis>GET /igs/uid/participant?sortOrder=descending</emphasis> sortiert die Liste in absteigender Reihenfolge der Teilnehmer.
+            </para>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <caution>
+    <title>Achtung</title>
+    <para>
+      Der Parameter <literal>sortOrder</literal> funktioniert nur, wenn der Parameter <literal>sortBy</literal> definiert ist.
+    </para>
+  </caution>
+</section>

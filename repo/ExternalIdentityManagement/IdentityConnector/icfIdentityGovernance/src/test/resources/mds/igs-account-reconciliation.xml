@@ -1,0 +1,34 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="Identifier"
+            uniqueName    ="User Name"
+            status        ="Status"
+            transformation="false"
+            natively      ="false">
+  <attribute type="string" name="Identifier" source="__UID__">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="User Name"  source="__NAME__">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="Status"     source="__ENABLE__"/>
+  <attribute type="string" name="Last Name"  source="name.familyName"/>
+  <attribute type="string" name="First Name" source="name.givenName"/>
+  <attribute type="string" name="e-Mail"     source="emails.work.value"/>
+  <attribute type="string" name="Phone"      source="phoneNumbers.work.value"/>
+  <attribute type="string" name="Mobile"     source="phoneNumbers.mobile.value"/>
+  <multivalue name="Role" source="__GROUP__">
+    <attribute type="string" name="Name"     source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <multivalue name="Tenant" source="__TENANT__">
+    <attribute type="string" name="Name"     source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="string" name="Scope"    source="scope">
+      <flag>required</flag>
+    </attribute>
+  </multivalue>
+</descriptor>

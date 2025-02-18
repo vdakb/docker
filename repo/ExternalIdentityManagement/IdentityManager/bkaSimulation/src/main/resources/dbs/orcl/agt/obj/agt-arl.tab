@@ -1,0 +1,37 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityManager\bkaSimulation\src\main\resources\dbs\agt\obj\agt-arl.tab
+--
+-- Generated for Oracle Database 12c on Sun January 21 16:53:56 2020 by Server Generator 10.1.2.93.10
+
+CREATE TABLE agt_developer_applications (
+  rowversion   VARCHAR   ( 30)                 NOT NULL
+, created_on   TIMESTAMP       DEFAULT SYSDATE NOT NULL
+, created_by   VARCHAR   (128)                 NOT NULL
+, updated_on   TIMESTAMP       DEFAULT SYSDATE NOT NULL
+, updated_by   VARCHAR   (128)                 NOT NULL
+, org          VARCHAR   (128)                 NOT NULL
+, app          VARCHAR   (128)                 NOT NULL
+, dev          VARCHAR   (128)                 NOT NULL
+, CONSTRAINT agt_arl_pk     PRIMARY KEY (org, app, dev)
+, CONSTRAINT agt_arl_org_fk FOREIGN KEY (org) REFERENCES agt_organizations (name) ON DELETE CASCADE
+, CONSTRAINT agt_arl_app_fk FOREIGN KEY (app) REFERENCES agt_applications (id)
+, CONSTRAINT agt_arl_dev_fk FOREIGN KEY (dev) REFERENCES agt_developers   (id) ON DELETE CASCADE
+)
+/
+COMMENT ON TABLE agt_developer_applications IS 'Apigee Organization Developer Repository'
+/
+COMMENT ON COLUMN agt_developer_applications.rowversion IS 'Row Version of data record'
+/
+COMMENT ON COLUMN agt_developer_applications.created_by IS 'Creator of the data record'
+/
+COMMENT ON COLUMN agt_developer_applications.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN agt_developer_applications.updated_by IS 'Modifier of the data record'
+/
+COMMENT ON COLUMN agt_developer_applications.updated_on IS 'Last Modified Timestamp of data record'
+/
+COMMENT ON COLUMN agt_developer_applications.org IS 'The name of the organization the role belongs too'
+/
+COMMENT ON COLUMN agt_developer_applications.app IS 'The reference of the application used in the UI'
+/
+COMMENT ON COLUMN agt_developer_applications.app IS 'The reference of the developer used in the UI'
+/

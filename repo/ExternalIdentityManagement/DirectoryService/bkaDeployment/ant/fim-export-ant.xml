@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Oracle Consulting Services Deployment Task Definitions"
+         default     ="all"
+         basedir     ="../../../deployment/fim"
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  =====================================================================
+  == custom type and task definitions
+  =====================================================================
+  -->
+  <import file="../../ods-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="ods.recorder.name"      value="../log/fim-export-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  ******************************************************************************
+  -->
+  <target name="0100" description="Exports the Base Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 Base Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects from ${fim.server.host}:${fim.server.port}"/>
+    <object:export contextRef="fim-context" contextRoot="${fim.server.context}">
+      <exportSet exportFile   ="0100 systemFramework/ocs-system-context.xml"
+                 format       ="dsml"
+                 version      ="2"
+                 forceOverride= "true">
+        <search base="" filter ="objectClass=organizationalUnit" scope="sub">
+          <includes>
+            <name value="ou"/>
+            <name value="description"/>
+          </includes>
+        </search>
+      </exportSet>
+    </object:export>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+</project>

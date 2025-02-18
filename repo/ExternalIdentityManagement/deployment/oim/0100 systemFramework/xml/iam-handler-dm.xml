@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@buster.cinnamonstar.net:7021/mdr.cinnamonstar.net" description="EventHandler Foundation Configuration 12.2.1.3" exported-date="1348385190526" user="XELSYSADM" version="2.0.2.0">
+  <eventhandlers mds-file="EventHandlers.xml" mds-path="/metadata/iam-features-passwordmgmt/event-definition" name="/metadata/iam-features-passwordmgmt/event-definition" repo-type="MDS">
+    <completeXml>
+      <eventhandlers xmlns="http://www.oracle.com/schema/oim/platform/kernel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.oracle.com/schema/oim/platform/kernel orchestration-handlers.xsd">
+        <validation-handler  class      ="oracle.iam.passwordmgmt.eventhandlers.ResetPasswordValidationHandler"
+                             entity-type="User"
+                             operation  ="RESET_PASSWORD"
+                             name       ="ResetPasswordValidationHandler"
+                             order      ="FIRST"
+                             sync       ="TRUE"/>
+        <validation-handler  class      ="oracle.iam.passwordmgmt.eventhandlers.UserPasswordValidationHandler"
+                             entity-type="User"
+                             operation  ="CREATE"
+                             name       ="CreateUserPasswordValidationHandler"
+                             order      ="1020"/>
+        <validation-handler  class      ="oracle.iam.passwordmgmt.eventhandlers.UserPasswordValidationHandler"
+                             entity-type="User"
+                             operation  ="CHANGE_PASSWORD"
+                             name       ="UserPasswordValidationHandler"
+                             order      ="2"/>
+        <action-handler      class      ="oracle.iam.passwordmgmt.eventhandlers.ResetPasswordPreProcessHandler"
+                             entity-type="User"
+                             operation  ="RESET_PASSWORD" name="ResetPasswordPreProcessHandler"
+                             stage      ="preprocess"
+                             sync       ="TRUE"
+                             order      ="9900"/>
+        <action-handler      class      ="oracle.iam.passwordmgmt.eventhandlers.ResetPasswordPreProcessHandler"
+                             entity-type="User"
+                             operation  ="CREATE"
+                             name       ="CreateUserGeneratePasswordPreProcessHandler"
+                             stage      ="preprocess"
+                             sync       ="TRUE"
+                             order      ="1005"/>
+        <action-handler      class      ="oracle.iam.passwordmgmt.eventhandlers.UserModifyPasswordPolicyPreProcessHandler"
+                             entity-type="User"
+                             operation  ="MODIFY"
+                             name       ="UserModifyPasswordPolicyPreProcessHandler"
+                             stage      ="preprocess"
+                             sync       ="TRUE"
+                             order      ="9901"/>
+        <action-handler      class      ="oracle.iam.passwordmgmt.eventhandlers.ResetPasswordActionHandler"
+                             entity-type="User"
+                             operation  ="RESET_PASSWORD"
+                             name       ="ResetPasswordActionHandler"
+                             order      ="FIRST"
+                             stage      ="action"
+                             sync       ="TRUE"/>
+        <!--
+        Default handlers are subtituted by custom solution
+        <postprocess-handler class      ="oracle.iam.passwordmgmt.eventhandlers.PasswordNotificationHandler"
+                             entity-type="User"
+                             operation  ="RESET_PASSWORD"
+                             name       ="ResetPasswordNotificationHandler"
+                             order      ="FIRST"
+                             stage      ="postprocess"
+                             sync       ="TRUE"/>
+        <postprocess-handler class="oracle.iam.passwordmgmt.eventhandlers.PasswordNotificationHandler"
+                             entity-type="User"
+                             operation  ="CREATE"
+                             name       ="CreateUserPasswordNotificationHandler"
+                             order      ="1180"
+                             stage      ="postprocess"
+                             sync       ="TRUE"/>
+        <postprocess-handler class="oracle.iam.passwordmgmt.eventhandlers.PasswordNotificationHandler"
+                             entity-type="User"
+                             operation  ="CHANGE_PASSWORD"
+                             name       ="PasswordNotificationHandler"
+                             order      ="THIRD"
+                             stage      ="postprocess"
+                             sync       ="TRUE"/>
+        -->
+        <postprocess-handler class      ="oracle.iam.passwordmgmt.eventhandlers.PasswordHistoryPostProcessHandler"
+                             entity-type="User"
+                             operation  ="CREATE"
+                             name       ="CreateUserPasswordHistoryPostProcessHandler"
+                             order      ="1200"
+                             stage      ="postprocess"
+                             sync       ="TRUE"/>
+      </eventhandlers>
+    </completeXml>
+  </eventhandlers>
+  <eventhandlers mds-file="EventHandlers.xml" mds-path="/metadata/iam-features-selfservice/event-definition" name="/metadata/iam-features-selfservice/event-definition" repo-type="MDS">
+    <completeXml>
+      <eventhandlers xmlns="http://www.oracle.com/schema/oim/platform/kernel" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.oracle.com/schema/oim/platform/kernel orchestration-handlers.xsd">
+        <postprocess-handler class      ="oracle.iam.selfservice.uself.uselfmgmt.impl.handlers.create.SelfServicePostHandler"
+                             entity-type="User"
+                             operation  ="CREATE"
+                             name       ="SelfServicePostHandler"
+                             order      ="1000000"
+                             stage      ="postprocess"
+                             sync       ="TRUE"/>
+        <validation-handler  class      ="oracle.iam.selfservice.self.selfmgmt.impl.handlers.setchallenge.SetChallengeValuesValidationHandler"
+                             entity-type="User"
+                             operation  ="SELFSETCHALLENGE"
+                             name       ="SetChallengeValuesValidationHandler"
+                             order      ="FIRST"/>
+        <validation-handler  class      ="oracle.iam.selfservice.self.selfmgmt.impl.handlers.setchallenge.SetChallengeValuesValidationHandler"
+                             entity-type="User"
+                             operation  ="CREATE"
+                             name       ="SetChallengeValuesValidationHandler"
+                             order      ="1040"/>
+        <action-handler      class      ="oracle.iam.selfservice.self.selfmgmt.impl.handlers.setchallenge.SetChallengeValuesActionHandler"
+                             entity-type="User"
+                             operation  ="SELFSETCHALLENGE"
+                             name       ="SetChallengeValuesActionHandler"
+                             order      ="FIRST"
+                             stage      ="action"
+                             sync       ="TRUE"/>
+        <validation-handler  class      ="oracle.iam.selfservice.self.selfmgmt.impl.handlers.changepwd.ChangePasswordValidationHandler"
+                             entity-type="User"
+                             operation  ="CHANGE_PASSWORD"
+                             name       ="SelfChangePasswordValidationHandler"
+                             order      ="FIRST"/>
+        <action-handler      class      ="oracle.iam.selfservice.self.selfmgmt.impl.handlers.changepwd.ChangePasswordActionHandler"
+                             entity-type="User"
+                             operation  ="CHANGE_PASSWORD"
+                             name       ="SelfChangePasswordActionHandler"
+                             order      ="FIRST"
+                             stage      ="action"
+                             sync       ="TRUE"/>
+        <!--
+        Prevent default behavior belonging to password notification
+        if use the hard coded template that we don't wnt to see
+        <postprocess-handler class      ="oracle.iam.selfservice.uself.uselfmgmt.impl.handlers.create.SelfServiceNotificationHandler"
+                             entity-type="User"
+                             operation  ="CREATE"
+                             name       ="SelfServiceNotificationHandler"
+                             order      ="1160"
+                             stage      ="postprocess"
+                             sync       ="TRUE"/>
+        -->
+        <preprocess-handler class      ="oracle.iam.selfservice.uself.uselfmgmt.impl.handlers.create.HomeOrganizationDeterminationHandler"
+                             entity-type="User"
+                             operation  ="CREATE"
+                             name       ="HomeOrganizationDeterminationHandler"
+                             order      ="1050"
+                             stage      ="preprocess"
+                             sync       ="TRUE"/>
+      </eventhandlers>
+    </completeXml>
+  </eventhandlers>
+</xl-ddm-data>

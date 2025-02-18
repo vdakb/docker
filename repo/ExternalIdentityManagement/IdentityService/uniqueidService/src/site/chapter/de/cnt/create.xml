@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="cnt-create"
+         xml:lang="de"
+         version ="5.0">
+  <title>POST</title>
+  <para>
+    Anlegen einer Staatenzuordnung:
+  </para>
+  <para>
+    <restapi role="create">/igs/uid/v1/country</restapi>
+  </para>
+  <section xml:id="cnt-create-p">
+    <title>Request</title>
+    <warning>
+      <title>Berechtigung</title>
+      <para>Der Zugriff auf diese Ressourcenmethode erfordert die erh?hte Berechtigung <emphasis role="strong">uid.admin</emphasis>.</para>
+    </warning>
+    <bridgehead renderas="sect6">Beispiel</bridgehead>
+    <!--
+    Don't indent what's in the element below
+    -->
+    <programlisting language="bash">
+curl --request POST \
+     --location 'https://&lt;service-host&gt;:&lt;service-port&gt;/igs/uid/v1/country' \
+     --header 'Accept: application/json' \
+     --header 'Content-Type: application/json' \
+     --header 'Authorization: Bearer eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0IjoiSjFs....' \
+     --data '{ "id"   : "41"
+             , "name" : "Poland"
+             }'
+    </programlisting>
+    <section xml:id="cnt-create-h">
+      <title>Request Header</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Typ</entry>
+              <entry>Wert</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">authorization</emphasis></entry>
+              <entry>string</entry>
+              <entry><emphasis>Bearer</emphasis> mit dem angeh$#228;ngten Token, das durch <link linkend='uid-arch-token'>Bezug eines Access-Token</link> erhalten wurde.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="cnt-create-b">
+      <title>Request Body</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Typ</entry>
+              <entry>Erforderlich</entry>
+              <entry>Beschreibung</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">id</emphasis></entry>
+              <entry>string list</entry>
+              <entry>yes</entry>
+              <entry>Die Kennung der zu erstellenden Staatenzuordnung.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">name</emphasis></entry>
+              <entry>string list</entry>
+              <entry>yes</entry>
+              <entry>Die lesbare Kennung der zu erstellenden Staatenzuordnung.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="cnt-create-q">
+      <title>Query Parameter</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Typ</entry>
+              <entry>Erforderlich</entry>
+              <entry>Beschreibung</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">attributes</emphasis></entry>
+              <entry>string list</entry>
+              <entry>nein</entry>
+              <entry>Der Wert dieses Parameters ist eine durch Kommas getrennte Liste von Attributnamen der Ressource, in der Standardattributnotation (z.B. id, name).</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">excludedAttributes</emphasis></entry>
+              <entry>string list</entry>
+              <entry>nein</entry>
+              <entry>Der Wert dieses Parameters ist eine durch Kommas getrennte Liste von Attributnamen der Ressource, in der Standardattributnotation (z.B. id, name).</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="cnt-create-r">
+    <title>Response</title>
+    <para>
+      Die Darstellung der erstellten Staatenzuordnung mit den Attributen, deren R?ckgabef?higkeit <emphasis>default</emphasis> ist.
+      Dies kann ?berschrieben werden, indem die Abfrageparameter <literal>attributes</literal> oder <literal>excludedAttributes</literal> angegeben werden.
+    </para>
+    <para>
+      Bei erfolgreichem Vorgang wird der Statuscode 200 zur?ckgegeben.
+    </para>
+    <bridgehead renderas="sect6">Beispiel</bridgehead>
+    <!--
+    Don't indent what's in the element below
+    -->
+    <programlisting language="json">
+{ "id": "41"
+, "active": true
+, "name": "Poland"
+, "meta":
+    { "version": "01"
+    , "createdBy": "igssysadm"
+    , "createdOn": "2022-06-22T12:57:14"
+    , "updatedBy": "igssysadm"
+    , "updatedOn": "2022-06-22T12:57:14"
+  }
+}
+    </programlisting>
+    <para>
+      Die Ausgabedaten liegen in folgendem Format vor:
+    </para>
+    <section xml:id="cnt-create-r1">
+      <title>Ressource</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Typ</entry>
+              <entry>Erforderlich</entry>
+              <entry>Beschreibung</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>id</entry>
+              <entry>string</entry>
+              <entry>ja</entry>
+              <entry>Die Kennung der Staatenzuordnung.</entry>
+            </row>
+            <row>
+              <entry>active</entry>
+              <entry>boolean</entry>
+              <entry>ja</entry>
+              <entry>Der Aktivierungsstatus der Staatenzuordnung.</entry>
+            </row>
+            <row>
+              <entry>name</entry>
+              <entry>string</entry>
+              <entry>jc</entry>
+              <entry>Der Name der Staatenzuordnung.</entry>
+            </row>
+            <row>
+              <entry>meta</entry>
+              <entry><link linkend='cnt-lookup-r2'>Metadata</link>&#xA0;object</entry>
+              <entry>ja</entry>
+              <entry>Die auditierten Metadaten der Staatenzuordnung.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="cnt-create-r2">
+      <title>Metadata</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Typ</entry>
+              <entry>Erforderlich</entry>
+              <entry>Beschreibung</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>version</entry>
+              <entry>string</entry>
+              <entry>ja</entry>
+              <entry>Die aktuelle Version der abgerufenen Ressource.</entry>
+            </row>
+            <row>
+              <entry>createdBy</entry>
+              <entry>string</entry>
+              <entry>ja</entry>
+              <entry>Der Benutzer, der die Ressource erstellt hat.</entry>
+            </row>
+            <row>
+              <entry>createdOn</entry>
+              <entry>dataTime</entry>
+              <entry>ja</entry>
+              <entry>Der Zeitstempel, mit dem die Ressource erstellt wurde.</entry>
+            </row>
+            <row>
+              <entry>updatedBy</entry>
+              <entry>string</entry>
+              <entry>ja</entry>
+              <entry>Der Benutzer, der die Ressource zuletzt ge?ndert hat.</entry>
+            </row>
+            <row>
+              <entry>updatedOn</entry>
+              <entry>dataTime</entry>
+              <entry>ja</entry>
+              <entry>Der Zeitstempel, mit dem die Ressource zuletzt ge?ndert wurde.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="cnt-create-e">
+      <title>M?gliche Fehler</title>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Statuscode</entry>
+              <entry>Beschreibung</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>400</entry>
+              <entry>Die <literal>id</literal> oder der <literal>name</literal> der zu erstellenden Staatenzuordnung wurde nicht angegeben oder ist fehlerhaft.</entry>
+            </row>
+            <row>
+              <entry>401</entry>
+              <entry>Das Zugriffstoken ist ung?ltig oder wurde widerrufen.</entry>
+            </row>
+            <row>
+              <entry>403</entry>
+              <entry>Der Benutzer ist nicht berechtigt, Staatenzuordnungen zu erstellen.</entry>
+            </row>
+            <row>
+              <entry>409</entry>
+              <entry>Die in der Nutzlast enthaltene <literal>id</literal> verweist auf eine bereits existierende Staatenzuordnung.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+</section>

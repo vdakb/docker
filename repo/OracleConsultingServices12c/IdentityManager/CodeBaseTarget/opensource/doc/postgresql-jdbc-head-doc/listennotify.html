@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+	<title>Listen / Notify</title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+	<meta name="description" content="The official site for the PostgreSQL JDBC Driver" />
+	<meta name="copyright" content="The PostgreSQL Global Development Group" />
+
+	<style type="text/css" media="screen" title="Normal Text">@import url("media/css/docs.css");</style>
+
+	<link rel="shortcut icon" href="media/favicon.ico" />
+</head>
+
+<body>
+	<div id="docHeader">
+		<div id="docHeaderLogo">
+			<a href="http://www.postgresql.org/" title="PostgreSQL"><img src="media/img/layout/hdr_left3a.png" alt="PostgreSQL" height="80" width="390" /></a>
+		</div>
+	</div>
+
+	<div id="docContainerWrap">
+		<div id="docContainer">
+			<div id="docContent">
+
+				<div class="NAVHEADER">
+					<table summary="Header navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+						<tr>
+							<th colspan="3" valign="bottom" align="center">
+								<h2 class="TITLE">Chapter 9. PostgreSQL™ Extensions to the JDBC API</h2>
+							</th>
+						</tr>
+						<tr>
+							<td valign="top" width="20%" align="left">
+								<a title="Large Objects" href="largeobjects.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="bottom" width="60%" align="center">&nbsp;</td>
+							<td valign="top" width="20%" align="right">
+								<a title="Server Prepared Statements" href="server-prepare.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+  					</tbody>
+					</table>
+					<hr class="c1" width="100%" />
+				</div> <!-- NAVHEADER -->
+
+				<div class="CHAPTER">
+  					<h1>Listen / Notify</h1>
+					
+					<p>Listen and Notify provide a simple form of signal or interprocess communication
+mechanism for a collection of processes accessing the same PostgreSQL™ database.
+For more information on notifications consult the main server documentation. This
+section only deals with the JDBC specific aspects of notifications.</p>
+
+<p>Standard <code>LISTEN</code>, <code>NOTIFY</code>, and <code>UNLISTEN</code> commands are issued via the standard
+<code>Statement</code> interface. To retrieve and process retrieved notifications the
+<code>Connection</code> must be cast to the PostgreSQL™ specific extension interface
+<code>PGConnection</code>. From there the <code>getNotifications()</code> method can be used to retrieve
+any outstanding notifications.</p>
+
+<h3>Note</h3>
+
+<blockquote>
+<p>A key limitation of the JDBC driver is that it cannot receive asynchronous
+notifications and must poll the backend to check if any notifications were issued.</p>
+</blockquote>
+
+<p><a name="listen-notify-example"></a>
+<strong>Example 9.2. Receiving Notifications</strong></p>
+
+<pre><code>
+import java.sql.*;
+
+public class NotificationTest
+{
+    public static void main(String args[]) throws Exception
+    {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://localhost:5432/test";
+
+        // Create two distinct connections, one for the notifier
+        // and another for the listener to show the communication
+        // works across connections although this example would
+        // work fine with just one connection.
+
+        Connection lConn = DriverManager.getConnection(url,"test","");
+        Connection nConn = DriverManager.getConnection(url,"test","");
+
+        // Create two threads, one to issue notifications and
+        // the other to receive them.
+
+        Listener listener = new Listener(lConn);
+        Notifier notifier = new Notifier(nConn);
+        listener.start();
+        notifier.start();
+    }
+}
+</code></pre>
+
+<pre><code>
+class Listener extends Thread
+{
+    private Connection conn;
+    private org.postgresql.PGConnection pgconn;
+
+    Listener(Connection conn) throws SQLException
+    {
+        this.conn = conn;
+        this.pgconn = (org.postgresql.PGConnection)conn;
+        Statement stmt = conn.createStatement();
+        stmt.execute("LISTEN mymessage");
+        stmt.close();
+    }
+
+    public void run()
+    {
+        while (true)
+        {
+            try
+            {
+                // issue a dummy query to contact the backend
+                // and receive any pending notifications.
+
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT 1");
+                rs.close();
+                stmt.close();
+
+                org.postgresql.PGNotification notifications[] = pgconn.getNotifications();
+                
+                if (notifications != null)
+                {
+                    for (int i=0; i&lt;notifications.length; i++)
+                        System.out.println("Got notification: " + notifications[i].getName());
+                }
+
+                // wait a while before checking again for new
+                // notifications
+                
+                Thread.sleep(500);
+            }
+            catch (SQLException sqle)
+            {
+                sqle.printStackTrace();
+            }
+            catch (InterruptedException ie)
+            {
+                ie.printStackTrace();
+            }
+        }
+    }
+}
+</code></pre>
+
+<pre><code>
+class Notifier extends Thread
+{
+    private Connection conn;
+
+    public Notifier(Connection conn)
+    {
+        this.conn = conn;
+    }
+
+    public void run()
+    {
+        while (true)
+        {
+            try
+            {
+                Statement stmt = conn.createStatement();
+                stmt.execute("NOTIFY mymessage");
+                stmt.close();
+                Thread.sleep(2000);
+            }
+            catch (SQLException sqle)
+            {
+                sqle.printStackTrace();
+            }
+            catch (InterruptedException ie)
+            {
+                ie.printStackTrace();
+            }
+        }
+    }
+
+}
+</code></pre>
+
+				</div>
+
+				<div class="NAVFOOTER">
+					<hr class="c1" width="100%" />
+					<table summary="Footer navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td valign="top" width="33%" align="left">
+								<a href="largeobjects.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="top" width="34%" align="center">
+								<a href="index.html" accesskey="H">Home</a>
+							</td>
+							<td valign="top" width="33%" align="right">
+								<a href="server-prepare.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+						<tr>
+							<td valign="top" width="33%" align="left">Large Objects</td>
+							<td valign="top" width="34%" align="center">&nbsp;</td>
+							<td valign="top" width="33%" align="right">Server Prepared Statements</td>
+						</tr>
+					</tbody>
+					</table>
+				</div> <!-- NAVFOOTER -->
+
+
+			</div> <!-- docContent -->
+			
+			<div id="docComments"></div>
+
+			<div id="docFooter">
+				<a class="navFooter" href="http://www.postgresql.org/about/privacypolicy">Privacy Policy</a> |
+				<a class="navFooter" href="http://www.postgresql.org/about/">About PostgreSQL</a><br/>
+				Copyright &copy; 1996-2013 The PostgreSQL Global Development Group
+			</div> <!-- pgFooter -->
+		</div> <!-- docContainer -->
+	</div> <!-- docContainer -->
+</body>
+</html>

@@ -1,0 +1,59 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityService\identityIdentifier\src\main\resources\dbs\qms\obj\qms_mst.con
+--
+-- Generated for Oracle Database 12c on Fri Mar 11 12.47.21 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Constraints on 'qms_message_text'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key on 'qms_message_text'
+ALTER TABLE qms_message_text
+  ADD (
+    CONSTRAINT qms_mst_pk PRIMARY KEY (
+      code
+    , language
+    ) USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Check Constraint on 'qms_message_text'
+ALTER TABLE qms_message_text
+  ADD (
+    CONSTRAINT qms_mst_ck1 CHECK (
+      language IN (
+        'ar'
+      , 'ca'
+      , 'cs'
+      , 'da'
+      , 'de'
+      , 'el'
+      , 'en'
+      , 'es'
+      , 'fi'
+      , 'fr'
+      , 'hu'
+      , 'it'
+      , 'ja'
+      , 'ko'
+      , 'nl'
+      , 'no'
+      , 'pl'
+      , 'pt'
+      , 'ru'
+      , 'sk'
+      , 'sv'
+      , 'tr'
+      , 'zh'
+      )
+    )
+  )
+/
+PROMPT Creating Foreign Key on 'qms_message_text'
+ALTER TABLE qms_message_text
+  ADD (
+    CONSTRAINT qms_mst_msp_fk1 FOREIGN KEY (
+      code
+    )
+    REFERENCES qms_message_properties (
+      code
+    )
+  )
+/

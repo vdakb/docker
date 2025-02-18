@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Identity Governance Module Preferences"
+         basedir     =".."
+         default     ="make"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"            value="Identity Governance Service Module"/>
+  <property name="application"            value="bka-pwr-frontend"/>
+  <property name="module"                 value="${application}"/>
+  <property name="package"                value="bka/**/*.*"/>
+  <property name="destination.base"       value="../../deployment/igs/0100 systemServices"/>
+  <property name="implementation.version" value="12.2.1.3"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import   file="../../igs-targets.xml"/>
+  <import   file="datasource-server.xml"/>
+
+  <!--
+  =====================================================================
+  == accomplish a possible customization runtime path
+  =====================================================================
+  -->
+  <path id="captcha.core">
+    <pathelement location="libs/simplecaptcha-1.2.1.jar"/>
+  </path>
+
+  <path id="bka.igs.runtime">
+    <path refid="oracle.ocs.hst.jsf"/>
+    <path refid="oracle.ocs.hst.core"/>
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="primefaces.jsf"/>
+    <path refid="captcha.core"/>
+    <path refid="bka.iam.pwr.backend"/>
+  </path>
+
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.jmx"/>
+    <path refid="oracle.fmw.jee"/>
+    <path refid="oracle.fmw.jps"/>
+    <path refid="oracle.fmw.cdi"/>
+    <path refid="oracle.fmw.jpa"/>
+    <path refid="oracle.fmw.jsf"/>
+    <path refid="oracle.fmw.jdbc"/>
+    <path refid="oracle.fmw.json"/>
+    <path refid="oracle.ocs.hst.jps"/>
+    <path refid="oracle.ocs.iad.saml"/>
+    <path refid="bka.igs.runtime"/>
+  </path>
+
+
+  <target name="create-datasource">
+    <echo message=" ${datasource.name} ${datasource.server.url} ${datasource.server.username} ${datasource.server.password} ${datasource.target.name} ${datasource.target.type}"/>
+
+    <server:wlst failonerror="true" debug="false" arguments="${wls.server.protocol} ${wls.server.host} ${wls.server.port} ${wls.server.username} ${wls.server.password} ${datasource.name} ${datasource.server.url} ${datasource.server.username} ${datasource.server.password} ${datasource.target.name} ${datasource.target.type}">
+      <script>
+        def createDatasource(dsName, dsJNDIName, dsURL,dsUserName, dsPassword, dsTestQuery, dsTargetName, dsTargetType):
+            cd('/')
+            cmo.createJDBCSystemResource(dsName)
+            cd('/JDBCSystemResources/' + dsName + '/JDBCResource/' + dsName)
+            cmo.setName(dsName)
+
+            cd('/JDBCSystemResources/' + dsName + '/JDBCResource/' + dsName + '/JDBCDataSourceParams/' + dsName )
+            set('JNDINames',jarray.array([String( dsJNDIName )], String))
+
+            cd('/JDBCSystemResources/' + dsName + '/JDBCResource/' + dsName + '/JDBCDriverParams/' + dsName )
+            cmo.setUrl(dsURL)
+            cmo.setDriverName( "oracle.jdbc.xa.client.OracleXADataSource" )
+            cmo.setPassword(dsPassword)
+
+            cd('/JDBCSystemResources/' + dsName + '/JDBCResource/' + dsName + '/JDBCConnectionPoolParams/' + dsName )
+            cmo.setTestTableName(dsTestQuery)
+            cd('/JDBCSystemResources/' + dsName + '/JDBCResource/' + dsName + '/JDBCDriverParams/' + dsName + '/Properties/' + dsName )
+            cmo.createProperty('user')
+
+            cd('/JDBCSystemResources/' + dsName + '/JDBCResource/' + dsName + '/JDBCDriverParams/' + dsName + '/Properties/' + dsName + '/Properties/user')
+            cmo.setValue(dsUserName)
+
+            cd('/JDBCSystemResources/' + dsName + '/JDBCResource/' + dsName + '/JDBCDataSourceParams/' + dsName )
+            cmo.setGlobalTransactionsProtocol('OnePhaseCommit')
+
+            cd('/SystemResources/' + dsName )
+            set('Targets',jarray.array([ObjectName('com.bea:Name=' + dsTargetName + ',Type=' + dsTargetType)], ObjectName))
+
+
+        adminUrl=sys.argv[0]+"://"+sys.argv[1]+":"+sys.argv[2]
+        adminUser=sys.argv[3]
+        adminPassword=sys.argv[4]
+
+        dsName=sys.argv[5]
+        dsJNDIName='jdbc/'+dsName
+        dsURL=sys.argv[6]
+        dsUserName=sys.argv[7]
+        dsPassword=sys.argv[8]
+        dsTestQuery='SQL SELECT 1 FROM DUAL'
+        dsTargetName=sys.argv[9]
+        dsTargetType=sys.argv[10]
+
+        connect(adminUser,adminPassword,adminUrl)
+        edit()
+        startEdit()
+        createDatasource(dsName, dsJNDIName, dsURL, dsUserName, dsPassword, dsTestQuery, dsTargetName, dsTargetType)
+        save()
+        activate()
+        disconnect()
+        exit()
+      </script>
+    </server:wlst>
+  </target>
+</project>

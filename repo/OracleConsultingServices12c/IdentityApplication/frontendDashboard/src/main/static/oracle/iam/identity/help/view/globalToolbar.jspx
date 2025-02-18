@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Copyright (c) 2008, 2015, Oracle and/or its affiliates.
+All rights reserved.-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelStretchLayout id="psl1_gt" inlineStyle="width:100%;">
+    <f:facet name="center">
+      <af:toolbox id="ohwtoolBox" partialTriggers=":selectActiveBook">
+        <af:group id="g1_gt">
+          <af:toolbar id="ohwGlobalToolBar1" flex="1" stretchId="stretchGlobal1">
+            <af:spacer id="s1_gt" width="5" height="0"/>
+            <af:selectOneChoice id                 ="selectActiveBook"
+                                label              ="#{ohw.richResourceBundle['gt.book_label']}"
+                                value              ="#{ohw.view.selectedNavSetId}"
+                                visible            ="#{ohw.view.canShowSwitchBook}"
+                                disabled           ="#{ohw.view.switchBookDisabled}"
+                                autoSubmit         ="true" immediate="true"
+                                shortDesc          ="#{ohw.richResourceBundle['gt.switch_book_tooltip']}"
+                                valueChangeListener="#{ohw.view.switchBook}"
+                                styleClass         ="AFNoWrapMarker">
+              <f:selectItems id="si1" value="#{ohw.view.navigatorSetSelectItemList}"/>
+            </af:selectOneChoice>
+            <af:spacer id="s2_gt" height="0" width="10" visible="#{ohw.view.canShowSwitchBook}"/>
+            <af:inputText id             ="quickSearchInput"
+                          binding        ="#{ohw.view.quickSearchInput}"
+                          label          ="#{ohw.richResourceBundle['gt.quick_search_label']}"
+                          value          ="#{ohw.view.quickSearchString}"
+                          simple         ="true"
+                          disabled       ="#{ohw.view.quickSearchDisabled}"
+                          autoSubmit     ="true"
+                          partialTriggers="selectActiveBook">
+              <af:serverListener type="enterPressedOnQuickSearchInputEvent" method="#{ohw.view.executeQuickSearchOnInputEnter}"/>
+              <af:clientListener type="keyPress"                            method="RichOHWGlobalToolbarPeer.handleKeyPress"/>
+            </af:inputText>
+            <af:button id            ="execQuickSearch"
+                       text          ="#{ohw.shareResourceBundle['search.header_label']}"
+                       shortDesc     ="#{ohw.view.quickSearchTooltip}"
+                       disabled      ="#{ohw.view.quickSearchDisabled}"
+                       actionListener="#{ohw.view.quickSearch}"
+                       partialSubmit ="true">
+              <af:clientListener type="action" method="RichOHWGlobalToolbarPeer.executeQuickSearch"/>
+            </af:button>
+            <af:spacer id="stretchGlobal1" clientComponent="true"/>
+          </af:toolbar>
+          <af:menuBar id="ohwMenuBar" binding="#{ohw.view.menuBar}">
+            <af:menu id="ohwViewMenu" textAndAccessKey="#{ohw.richResourceBundle['gt.view']}">
+              <af:group id="g2_gt">
+                <af:commandMenuItem id              ="maxReadingPane"
+                                    type            ="check"
+                                    accelerator     ="#{ohw.view.maxReadingPaneAccelerator}"
+                                    textAndAccessKey="#{ohw.richResourceBundle['gt.max_reading_pane']}">
+                  <af:clientListener type="action" method="RichOHWGlobalToolbarPeer.maxReadingPaneToggle"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem id="restoreDefaultWindowLayout" text="#{ohw.richResourceBundle['gt.restore_default_window_layout']}">
+                  <af:clientListener type="action" method="RichOHWGlobalToolbarPeer.restoreDefaultWindowLayout"/>
+                </af:commandMenuItem>
+              </af:group>
+              <af:group id="g3_gt">
+                <c:forEach items="#{ohw.view.navigatorSets}" var="navSet">
+                  <c:forEach items="#{navSet.navigators}" var="nav">
+                    <af:commandMenuItem id            ="navCommandMenuItem"
+                                        binding       ="#{nav.navMenuItem}"
+                                        type          ="radio"
+                                        text          ="#{nav.label}"
+                                        rendered      ="#{navSet.visible}"
+                                        selected      ="#{nav.selected}"
+                                        accessKey     ="#{nav.accessKey}"
+                                        accelerator   ="#{nav.navUIAccelerator}"
+                                        actionListener="#{nav.selectNavigator}"
+                                        clientComponent="true"
+                                        partialTriggers="selectActiveBook">
+                      <af:clientListener type="action" method="RichOHWGlobalToolbarPeer.navigatorMenuItemSelected"/>
+                    </af:commandMenuItem>
+                  </c:forEach>
+                </c:forEach>
+              </af:group>
+              <af:group id="g4_gt">
+                <af:commandMenuItem id              ="showBrowserURL"
+                                    disabled        ="#{ohw.view.permaLinkDisabled}"
+                                    clientComponent ="true"
+                                    accelerator     ="#{ohw.view.showURLAccelerator}"
+                                    textAndAccessKey="#{ohw.richResourceBundle['gt.show_browser_url']}">
+                  <af:clientListener type="action" method="RichOHWGlobalToolbarPeer.showBrowserURL"/>
+                </af:commandMenuItem>
+              </af:group>
+            </af:menu>
+          </af:menuBar>
+          <af:toolbar id="ohwGlobalToolBar2">
+            <af:group id="g5_gt">
+              <af:button id             ="navBack"
+                         icon           ="helppages.resource?name=navigate_bkw_ena.png"
+                         hoverIcon      ="helppages.resource?name=navigate_bkw_ovr.png"
+                         disabledIcon   ="helppages.resource?name=navigate_bkw_dis.png"
+                         depressedIcon  ="helppages.resource?name=navigate_bkw_dwn.png"
+                         shortDesc      ="#{ohw.richResourceBundle['gt.back_to_tooltip']}"
+                         disabled       ="#{ohw.view.navBackDisabled}"
+                         accessKey      ="b"
+                         actionListener ="#{ohw.view.navBackActionListener}"/>
+              <af:button id             ="navForward"
+                         icon           ="helppages.resource?name=navigate_fwd_ena.png"
+                         hoverIcon      ="helppages.resource?name=navigate_fwd_ovr.png"
+                         disabledIcon   ="helppages.resource?name=navigate_fwd_dis.png"
+                         depressedIcon  ="helppages.resource?name=navigate_fwd_dwn.png"
+                         shortDesc      ="#{ohw.richResourceBundle['gt.forward_to_tooltip']}"
+                         disabled       ="#{ohw.view.navForwardDisabled}"
+                         accessKey      ="x"
+                         actionListener ="#{ohw.view.navFwdActionListener}"/>
+            </af:group>
+            <af:group id="g6">
+              <af:button id             ="printTopicContent"
+                         icon           ="helppages.resource?name=print_ena.png"
+                         hoverIcon      ="helppages.resource?name=print_ovr.png"
+                         disabledIcon   ="helppages.resource?name=print_dis.png"
+                         depressedIcon  ="helppages.resource?name=print_dwn.png"
+                         shortDesc      ="#{ohw.richResourceBundle['gt.print_topic_tooltip']}"
+                         disabled       ="#{ohw.view.printTopicDisabled}"
+                         accessKey      ="p"
+                         clientComponent="true">
+                <af:clientListener type="action" method="RichOHWGlobalToolbarPeer.printViewTopicContent"/>
+              </af:button>
+            </af:group>
+            <af:group id="g7">
+              <af:button id             ="emailTopicLink"
+                         icon           ="helppages.resource?name=email_ena.png"
+                         hoverIcon      ="helppages.resource?name=email_ovr.png"
+                         disabledIcon   ="helppages.resource?name=email_dis.png"
+                         depressedIcon  ="helppages.resource?name=email_dwn.png"
+                         shortDesc      ="#{ohw.richResourceBundle['gt.email_topic_tooltip']}"
+                         disabled       ="#{ohw.view.emailDisabled}">
+                <af:clientListener type="action" method="RichOHWGlobalToolbarPeer.sendTopicLinkEmail"/>
+              </af:button>
+            </af:group>
+            <af:group id="g8">
+              <af:popup id="ohwTopicPageURL" clientComponent="true" contentDelivery="immediate">
+                <af:dialog id="showURLDisplay" title="#{ohw.topicNavigator.permanentLinkTopicTitle}" clientComponent="true" type="ok" modal="true">
+                  <af:panelGroupLayout layout="vertical" id="pgl1_gt">
+                    <af:outputFormatted id="bookmarkUrlTitle" value="#{ohw.view.permaLinkUrlTitle}"/>
+                    <af:spacer id="s3_gt" height="10"/>
+                    <af:outputFormatted id="bookmarkInst" value="#{ohw.view.bookmarkPermaLinkInst}"/>
+                    <af:spacer id="s4" height="10"/>
+                    <af:outputFormatted id="copyInst" value="#{ohw.view.copyPermaLinkInst}"/>
+                    <af:spacer id="s5" height="20"/>
+                    <af:panelGroupLayout id="pgl2_gt" layout="horizontal" styleClass="PermanentLinkTopicPage">
+                      <af:spacer id="s6" width="20"/>
+                      <af:goLink id="topicPageLink" clientComponent="true" destination="">
+                        <af:outputFormatted id="bookmarkURLText" clientComponent="true"/>
+                      </af:goLink>
+                    </af:panelGroupLayout>
+                  </af:panelGroupLayout>
+                </af:dialog>
+              </af:popup>
+              <af:button id             ="showTopicURL"
+                         icon           ="helppages.resource?name=permalink_ena.png"
+                         hoverIcon      ="helppages.resource?name=permalink_ovr.png"
+                         disabledIcon   ="helppages.resource?name=permalink_dis.png"
+                         depressedIcon  ="helppages.resource?name=permalink_dwn.png"
+                         shortDesc      ="#{ohw.richResourceBundle['gt.show_url_tooltip']}"
+                         disabled       ="#{ohw.view.permaLinkDisabled}"
+                         clientComponent="true">
+                <af:clientListener type="action" method="RichOHWGlobalToolbarPeer.showBrowserURL"/>
+              </af:button>
+            </af:group>
+            <af:outputText id="currentNavSetId" value="#{ohw.currentNavigatorSet.id}" visible="false" clientComponent="true"/>
+            <af:inputText  id="inputTextForAutoSync"  label="#{ohw.richResourceBundle['gt.auto_sync_label']}" clientComponent="true" visible="false" immediate="true" autoSubmit="true" simple="true">
+              <af:serverListener type="autoSyncEvent" method="#{ohw.view.autoSyncInputChange}"/>
+              <af:serverListener type="updateCurrentTopicEvent" method="#{ohw.topicNavigator.currentTopicUpdate}"/>
+            </af:inputText>
+          </af:toolbar>
+        </af:group>
+      </af:toolbox>
+    </f:facet>
+  </af:panelStretchLayout>
+</jsp:root>

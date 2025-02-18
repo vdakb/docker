@@ -1,0 +1,36 @@
+Rem ! $ORACLE_HOME/bin/sqlplus
+Rem
+Rem $Header$
+Rem
+Rem Program.....: sqlplus
+Rem
+Rem Requirements: sqlplus
+Rem     The database must be up and running.
+Rem
+Rem Purpose.....:
+Rem     This script creates all object required to visualize and manage
+Rem     files in an mapped directory.
+Rem
+Rem     This option is optional if the database is used as an
+Rem     repository for the Oracle Identity Access Management.
+Rem
+Rem      This script creates the java stored functions to expose
+Rem      the mapped directory as a regular file system.
+Rem
+Rem Author......: Dieter Steding, Oracle Consulting Berlin
+Rem
+Rem
+Rem Revision   Date        Editor      Comment
+Rem ----------+-----------+-----------+------------------------------------
+Rem 1.0.0.0    2020-12-ß4  DSteding    First release version
+Rem
+
+PROMPT ********************************************************************
+PROMPT Creating Table 'iam_directory'
+PROMPT ********************************************************************
+CREATE GLOBAL TEMPORARY TABLE iam_directory (
+  pathname VARCHAR2 (512) NOT NULL
+, filename VARCHAR2 (255) NOT NULL
+)
+ON COMMIT DELETE ROWS
+/

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="resourceobject_pickerPageDef"
+                Package="oracle.iam.identity.sysprov.obj.view">
+  <parameters/>
+  <executables>
+    <iterator     id="ResourceObjectIterator" Binds="ResourceObjectPickerVO" DataControl="ResourceObjectAMDataControl" RangeSize="20"/>
+    <searchRegion id="ResourceObjectCriteria" Binds="ResourceObjectIterator" Criteria="ResourceObjectVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="objectsName"/>
+  </executables>
+  <bindings>
+    <tree id="ResourceObject" IterBinding="ResourceObjectIterator">
+      <nodeDefinition Name="ResourceObjectNode" DefName="oracle.iam.identity.sysprov.model.view.ResourceObjectVO">
+        <AttrNames>
+          <Item Value="objectsKey"/>
+          <Item Value="objectsName"/>
+          <Item Value="objectsType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

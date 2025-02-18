@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Directory Service Deployment Include"
+         default     ="all"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:config="http://oracle.ods.deployment/config"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="ods.recorder.name" value="${log.env}/fim-setup-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #  ######
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **            #####    ## ##   ######
+  **
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Directory Server Setup Configuration.
+  **
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Required Libraries
+  ******************************************************************************
+  -->
+  <target name="0001" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0001 Directory Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Copying Required Files for environment ${fmw.env} to ${fim.server.instance} at ${fim.server.host}"/>
+    <ssh-file dir="0000 systemCustomization/lib" file="ojdbc8.jar" location="${fim.server.instance}/OUD/lib"/>
+    <echo message="=================================================================="/>
+    <echo message="0001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #  ######
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **            #####    ## ##   ######
+  **
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Directory Server Schema Configuration.
+  **
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Schema Extansion
+  ******************************************************************************
+  -->
+  <target name="0002" description="Configures the Federated Identity Management System Setup Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0002 Directory Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Copying Required Files for environment ${fmw.env} to ${fim.server.instance} at ${fim.server.host}"/>
+    <ssh-file dir="0000 systemCustomization/ldf" file="10-igd-objectclass-extension.ldif"   location="${fim.server.instance}/OUD/config/schema"/>
+    <ssh-file dir="0000 systemCustomization/ldf" file="10-igd-attributetype-extension.ldif" location="${fim.server.instance}/OUD/config/schema"/>
+    <echo message="=================================================================="/>
+    <echo message="0002 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #  ######
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **            #####    ## ##   ######
+  **
+  ******************************************************************************
+  ** Purpose:  Creates the Replication Context
+  **
+  ** Synopsis: The tasks creates configuration elements like:
+  **           o Replication Server
+  **           o Replication Domain
+  **           o Replication Domain Properties
+  ******************************************************************************
+  -->
+  <target name="0003" description="Creates an Replication Context">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0003 Create an Replication Context ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create Replication Context on ${fim.server.host}:${adm.server.port}"/>
+    <config:server contextRef="adm-context">
+      <bind   value="trustAll"/>
+      <bind   value="bindPasswordFile" name="${adm.server.credential}"/>
+      <command name="create-replication-server">
+        <parameter name="type"                    value="generic"/>
+        <parameter name="provider-name"           value="Multimaster Synchronization"/>
+        <property action="set">
+          <parameter name="replication-server-id" value="1"/>
+          <parameter name="replication-port"      value="${rpl.server.port}"/>
+        </property>
+      </command>
+      <command name="create-replication-domain">
+        <parameter name="type"                    value="generic"/>
+        <parameter name="domain-name"             value="${fim.server.context}"/>
+        <parameter name="provider-name"           value="Multimaster Synchronization"/>
+        <property action="set">
+          <parameter name="base-dn"               value="${fim.server.context}"/>
+          <parameter name="server-id"             value="1"/>
+          <parameter name="replication-server"    value="${fim.server.host}:${rpl.server.port}"/>
+        </property>
+      </command>
+      <command name="set-replication-domain-prop">
+        <parameter name="domain-name"             value="${fim.server.context}"/>
+        <parameter name="provider-name"           value="Multimaster Synchronization"/>
+        <property action="set">
+          <parameter name="heartbeat-interval"    value="120s"/>
+        </property>
+      </command>
+    </config:server>
+    <echo message="=================================================================="/>
+    <echo message="0003 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #  ######
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **            #####    ## ##   ######
+  **
+  ******************************************************************************
+  ** Purpose:  Creates an Access Control Group
+  **           The Access Control Group gains access to every workflow created
+  **           by this script
+  **
+  **           There is no reason known why fine grained permissions required
+  **           but without the setup will fail in general
+  **
+  ** Synopsis: The tasks creates configuration elements like:
+  **           o Access Control Group
+  ******************************************************************************
+  -->
+  <target name="0004" description="Creates an Access Control Group">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0004 Create an Access Control Group ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Create Access Control Group on ${fim.server.host}:${adm.server.port}"/>
+    <config:server contextRef="adm-context">
+      <bind   value="trustAll"/>
+      <bind   value="bindPasswordFile" name="${adm.server.credential}"/>
+      <command name="create-access-control-group">
+        <parameter name="group-name"             value="igd-access-group"/>
+      </command>
+      <!--
+      Report the unit of work done so far
+      -->
+      <command name="list-access-control-groups"/>
+    </config:server>
+    <echo message="=================================================================="/>
+    <echo message="0004 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #  ######
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **            #####    ## ##   ######
+  **
+  ******************************************************************************
+  ** Purpose:  Configures Directory Information Tree.
+  **
+  **           Any participants will be map its proxy configuration in its own
+  **           subentry. All subentries are accoumlated in the node created
+  **           below.
+  **
+  ** Synopsis: The tasks creates configuration elements like:
+  **           o Domain
+  **           o Container
+  ******************************************************************************
+  -->
+  <target name="0005" description="Configures the Directory Information Tree">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0005 Configures Directory Information Tree ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring Directory Information Tree on ${fim.server.context} at ${fim.server.host}:${fim.server.port}"/>
+    <entry:create contextRef="fim-context" contextRoot="${fim.server.context}">
+      <entry name="cn" value="Participants">
+        <attribute name="objectClass" value="orclContainer"/>
+      </entry>
+    </entry:create>
+    <echo message="=================================================================="/>
+    <echo message="0005 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #  ######
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **            #####    ## ##   ######
+  **
+  ******************************************************************************
+  ** Purpose:  Configures Directory Extension
+  **
+  **           A Database Extension is required to proxy the identities provided
+  **           by Identity Governance database.
+  **
+  ** Synopsis: The tasks creates configuration elements like:
+  **           o Proxy Extension
+  ******************************************************************************
+  -->
+  <target name="0006" description="Configures Extension for the Directory Service">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0006 Directory Extension Setup ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring extension on ${fim.server.host}:${adm.server.port}"/>
+    <config:server contextRef="adm-context">
+      <bind   value="trustAll"/>
+      <bind   value="bindPasswordFile" name="${adm.server.credential}"/>
+      <command name="create-extension">
+        <parameter name="type"                   value="rdbms"/>
+        <parameter name="extension-name"         value="Identity Governance Database"/>
+        <property action="set">
+          <parameter name="target-database"      value="${dbs.server.type}"/>
+          <parameter name="jdbc-driver-class"    value="${dbs.server.driver}"/>
+          <parameter name="jdbc-url"             value="${dbs.server.service}"/>
+          <parameter name="rdbms-username"       value="${dbs.server.username}"/>
+          <parameter name="rdbms-password"       value="${dbs.server.password}"/>
+          <parameter name="enabled"              value="true"/>
+        </property>
+      </command>
+      <!-- Report the unit of work done so far -->
+      <command name="list-extensions"/>
+    </config:server>
+    <echo message="=================================================================="/>
+    <echo message="0006 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #     #  ######
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **           #     #  #     #  #     #
+  **            #####    ## ##   ######
+  **
+  ******************************************************************************
+  ** Purpose:  Configures Directory Attributes
+  **
+  **           Virtual attributes are required to emulate the service behavior
+  **           so that it looks like Microsoft Lightweight Directory Service
+  **           (LDS).
+  **
+  ** Synopsis: The tasks creates configuration elements like:
+  **           o Virtual Attributes
+  ******************************************************************************
+  -->
+  <target name="0007" description="Configures Virtual Attributes for the Directory Service">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0007 Virtual Attributes Setup ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring virtual attributes on ${fim.server.host}:${adm.server.port}"/>
+    <config:server contextRef="adm-context">
+      <bind   value="trustAll"/>
+      <bind   value="bindPasswordFile" name="${adm.server.credential}"/>
+      <command name="create-virtual-attribute">
+        <parameter name="name"             value="distinguishedName"/>
+        <parameter name="type"             value="entry-dn"/>
+        <property action="set">
+          <parameter name="attribute-type" value="entry-dn"/>
+          <parameter name="enabled"        value="true"/>
+          <parameter name="filter"         value="(objectClass=*)"/>
+        </property>
+      </command>
+      <command name="create-virtual-attribute">
+        <parameter name="name"             value="objectGUID"/>
+        <parameter name="type"             value="entry-uuid"/>
+        <property action="set">
+          <parameter name="attribute-type" value="entryuuid"/>
+          <parameter name="enabled"        value="true"/>
+          <parameter name="filter"         value="(objectClass=*)"/>
+        </property>
+      </command>
+      <!-- Report the unit of work done so far -->
+      <command name="list-virtual-attributes"/>
+    </config:server>
+    <echo message="=================================================================="/>
+    <echo message="0006 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+</project>

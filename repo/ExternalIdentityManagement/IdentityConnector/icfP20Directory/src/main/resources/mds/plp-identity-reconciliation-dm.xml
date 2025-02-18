@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@buster.vm.oracle.com:7021/mdr.vm.oracle.com" description="P20 LDAP Service Metadata Configuration Revision 1.0.0.0" exported-date="1597846956397" user="XELSYSADM" version="12.2.1.3.0">
+  <eventhandlers mds-file="plp-identity-reconciliation.xml" mds-path="/metadata/ocs-features-reconciliation" name="/metadata/ocs-features-reconciliation" repo-type="MDS">
+    <completeXml>
+      <descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+                  identifier    ="User Login"
+                  uniqueName    ="User Principal Name"
+                  transformation="true">
+        <attribute type="string"  name="Department"            source="department"/>
+        <attribute type="string"  name="Division"              source="division"/>
+        <attribute type="string"  name="E-mail"                source="mail">
+          <flag>required</flag>
+        </attribute>
+        <template type="string"   name="Employee Type"         source="employeeType=binding.variables.containsKey('employeeType') &amp;&amp; employeeType!=null ? employeeType :'Full-Time'"/>
+        <attribute type="string"  name="employeeType"          source="employeeType">
+          <flag>ignore</flag>
+        </attribute>
+        <attribute type="string"  name="Fax"                   source="facsimileTelephoneNumber"/>
+        <attribute type="string"  name="First Name"            source="givenName">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string"  name="Generic OU"            source="genericOU"/>
+        <attribute type="string"  name="ldapDN"                source="distinguishedName">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string"  name="Last Name"             source="sn">
+          <flag>required</flag>
+        </attribute>
+        <template  type="string"  name="Organization"          source="'BB'"/>
+        <attribute type="string"  name="Organizational Unit"   source="ou"/>
+        <template  type="string"  name="Participant"           source="'BB'"/>
+        <attribute type="string"  name="Telephone Number"      source="telephoneNumber"/>
+        <attribute type="string"  name="Title"                 source="title"/>
+        <template  type="string"  name="Status"                source="polizeiAktiv=binding.variables.containsKey('polizeiAktiv') &amp;&amp; polizeiAktiv!=null &amp;&amp; polizeiAktiv=='0'?'Disabled':'Active'"/>
+        <attribute type="string"  name="polizeiAktiv"          source="polizeiAktiv">
+          <flag>ignore</flag>
+        </attribute>
+        <attribute type="string"  name="Unified Login"         source="policeUserIdentifier"/>
+        <template  type="string"  name="User Login"            source="userPrincipalName=binding.variables.containsKey('userPrincipalName') &amp;&amp; userPrincipalName!=null &amp;&amp; userPrincipalName.size()>0 ? 'BB' + userPrincipalName.split('@')[0] : ''"/>
+        <template  type="string"  name="User Type"             source="'End-User'"/>
+        <attribute type="string"  name="userPrincipalName"     source="userPrincipalName">
+          <flag>ignore</flag>
+        </attribute>
+        <attribute type="string"  name="User Principal Name"   source="userPrincipalName">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string"  name="xcatalogOU"            source="xcatalogOU"/>
+      </descriptor>
+    </completeXml>
+  </eventhandlers>
+</xl-ddm-data>

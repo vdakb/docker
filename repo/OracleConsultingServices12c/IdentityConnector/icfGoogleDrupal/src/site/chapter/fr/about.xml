@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="about"
+         xml:lang="fr"
+         version ="5.0">
+  <title>&#192; propos du connecteur</title>
+  <para>
+    L'Oracle&#174; Identity Manager Connector pour Google Drupal int&#232;gre Oracle Identity Manager &#226; Google Drupal.
+  </para>
+  <para>
+    Oracle&#174; Identity Manager est une solution de gestion des identit&#233;s centralis&#233;e qui fournit des services de libre-service, de conformit&#233;, de provisionnement et de gestion des mots de passe pour les applications r&#233;sidant sur site ou sur le Cloud. Oracle Identity Manager connecte les utilisateurs aux ressources, r&#233;voque et restreint les acc&#232;s non autoris&#233;s pour prot&#233;ger les informations sensibles de l'entreprise.
+  </para>
+  <para>
+     Oracle&#174; Les connecteurs Identity Manager sont utilis&#233;s pour int&#233;grer Identity Manager &#226; des applications externes prenant en compte l'identit&#233;.
+     Ce guide d&#233;crit les proc&#233;dures de d&#233;ploiement et d'utilisation du connecteur, qui int&#232;gre Oracle&#174; Gestionnaire d'identit&#233; avec Google Drupal.
+     Le connecteur utilise l'API de gestion REST.
+  </para>
+  <para>
+    Ce guide d&#233;crit les proc&#233;dures de d&#233;ploiement et d'utilisation du connecteur, qui int&#232;gre Identity Manager &#226; Google Drupal.
+  </para>
+  <para>
+    Dans le mode de gestion de compte (ressource cible) du connecteur, les informations sur les utilisateurs cr&#233;&#233;s ou modifi&#233;s directement sur le syst&#232;me cible peuvent &#234;tre r&#233;concili&#233;es dans Identity Manager. En outre, vous pouvez utiliser Identity Manager pour effectuer des op&#233;rations de provisionnement sur le syst&#232;me cible.
+  </para>
+  <section xml:id="about-preface">
+    <title>Pr&#233;sentation du connecteur</title>
+    <para>
+       Le connecteur Google Drupal est une solution permettant d'int&#233;grer Oracle Identity Manager &#226; Google Drupal.
+       Google Drupal expose ses API ou interfaces REST pour la gestion des identit&#233;s.
+    </para>
+    <note>
+      &#192; certains endroits de ce guide, Google Drupal est appel&#233; <emphasis role="strong">syst&#232;me cible</emphasis>.
+    </note>
+    <para>
+      Le connecteur Google Drupal fournit un syst&#232;me centralis&#233; pour rationaliser la fourniture de services et d'actifs aux consommateurs de votre entreprise, et g&#233;rer ces services et actifs d'une mani&#232;re simple, s&#233;curis&#233;e et rentable en utilisant l'automatisation.
+      Le connecteur Google Drupal standardise les processus de service et impl&#233;mente l'automatisation pour remplacer les t&#226;ches manuelles.
+    </para>
+    <para>
+       Afin de se connecter &#226; un syst&#232;me cible Google Drupal, le connecteur Google Drupal prend en charge l'authentification de base HTTP.
+       Ce connecteur ne prend pas en charge l'authentification aupr&#232;s du syst&#232;me cible en utilisant le jeton d'acc&#232;s et le jeton d'actualisation comme entr&#233;e de l'utilisateur.    </para>
+    <para>
+       Si votre syst&#232;me cible ne prend en charge aucun des types d'authentification pris en charge par ce connecteur, vous pouvez impl&#233;menter l'authentification personnalis&#233;e prise en charge par votre syst&#232;me cible.
+       Vous pouvez connecter cette impl&#233;mentation personnalis&#233;e au connecteur &#226; l'aide des plug-ins expos&#233;s par ce connecteur.    </para>
+    <para>
+      The Google Drupal connector synchronizes data between Oracle Identity Manager and target systems by performing reconciliation and provisioning operations that parse data in the JSON format. If your target system does not support request or response payload in JSON format, then you can create your own implementation for parsing data.
+      You can connect this custom implementation to the connector by using the plug-ins exposed by this connector.
+    </para>
+    <para>
+      Le connecteur Google Drupal synchronise les donn&#233;es entre Oracle Identity Manager et les syst&#232;mes cibles en effectuant des op&#233;rations de r&#233;conciliation et de provisionnement qui analysent les donn&#233;es au format JSON. Si votre syst&#232;me cible ne prend pas en charge la charge utile de demande ou de r&#233;ponse au format JSON, vous pouvez cr&#233;er votre propre impl&#233;mentation pour l'analyse des donn&#233;es.
+      Vous pouvez connecter cette impl&#233;mentation personnalis&#233;e au connecteur &#226; l'aide des plug-ins expos&#233;s par ce connecteur.    </para>
+  </section>
+  <section xml:id="about-certified">
+    <title>Exigences du connecteur</title>
+    <para>
+      Il s'agit des composants logiciels et de leurs versions n&#233;cessaires &#226; l'int&#233;gration d'Oracle Identity Manager avec un connecteur Google Drupal.
+    </para>
+    <section xml:id="about-certified-component">
+      <title>Required Versions</title>
+      <table>
+        <thead>
+          <tr>
+            <td>Composante</td>
+            <td>Version</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Oracle Java Development Kit</td>
+            <td>JDK 1.8.0_131 or higher</td>
+          </tr>
+          <tr>
+            <td>Oracle Infrastruktur</td>
+            <td>Oracle&#174; WebLogic 12c (12.2.1.3.0)</td>
+          </tr>
+          <tr>
+            <td>Oracle Database</td>
+            <td>Oracle&#174; RDBMS 12c (12.2.0.1.0) or higher</td>
+          </tr>
+          <tr>
+            <td>Oracle Identity Governance</td>
+            <td>Oracle&#174; Identity Governance 12c Release 12.2.1.3.0</td>
+          </tr>
+          <tr>
+            <td>Connector Server</td>
+            <td>Identity Connectore Server Release 12.2.1.3.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section xml:id="about-certified-patch">
+      <title>Required Patches</title>
+      <table>
+        <thead>
+          <tr>
+            <td>Composante</td>
+            <td>Version</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Oracle Identity Governance</td>
+            <td>Patch 30735905 Oracle&#174; Identity Governance Bundle Patch ID:200108.2108)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+  <section xml:id="about-architecture">
+    <title>Architecture du connecteur</title>
+    <para>
+      Le connecteur Google Drupal est mis en &#339;uvre &#226; l'aide d'Identity Connector Framework (ICF).
+    </para>
+    <para>
+      L'ICF est livr&#233; avec Oracle Identity Manager.
+    </para>
+    <para>
+      L'ICF est un composant qui fournit des op&#233;rations de rapprochement et d'approvisionnement de base communes &#226; tous les connecteurs Oracle Identity Manager.
+      In addition, ICF provides common features that developers would otherwise need to implement on their own, such as connection pooling, buffering, time outs, and filtering.
+    </para>
+    <para>
+      La figure 1-1 illustre l'int&#233;gration d'Oracle Identity Manager sur site avec le service Google Drupal.
+    </para>
+    <mediaobject>
+      <alt>Architecture du connecteur Google Drupal</alt>
+      <imageobject>
+        <imagedata format="PNG" scale="55" fileref="/Project/OracleConsultingServices12c/IdentityConnector/icfGoogleDrupal/src/site/images/architecture.png"/>
+      </imageobject>
+      <caption>
+        <para>Figure 1-1: Architecture du connecteur Google Drupal</para>
+      </caption>
+    </mediaobject>
+    <para>
+    </para>
+  </section>
+  <section xml:id="about-features">
+    <title>Caract&#233;ristiques du connecteur</title>
+    <para>
+      Les fonctionnalit&#233;s du connecteur incluent la prise en charge de la r&#233;conciliation compl&#232;te et incr&#233;mentielle, de la r&#233;conciliation limit&#233;e, de l'authentification personnalis&#233;e, de l'analyse personnalis&#233;e, de la charge utile personnalis&#233;e, de la gestion de plusieurs URL de point de terminaison et de la communication SSL.
+    </para>
+    <para>
+      Voici les caract&#233;ristiques du connecteur:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend="about-function-authn">Authentification</link>
+      </listitem>
+      <listitem>
+        <link linkend="about-function-secure">Communication s&#233;curis&#233;e</link>
+      </listitem>
+      <listitem>
+        <link linkend="about-function-reconciliation">Rapprochement complet et incr&#233;mentiel</link>
+      </listitem>
+      <listitem>
+        <link linkend="about-function-reconciliation-filter">Rapprochement limit&#233; (filtr&#233;)</link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="about-function-authn">
+      <title>Authentication</title>
+      <para>
+        Par d&#233;faut, le connecteur Google Drupal prend en charge l'authentification de base HTTP.
+      </para>
+      <para>
+        Si votre syst&#232;me cible utilise les m&#233;canismes d'authentification qui ne sont pas pris en charge par le connecteur, vous pouvez &#233;crire votre propre impl&#233;mentation pour l'authentification personnalis&#233;e &#226; l'aide des plug-ins expos&#233;s par ce connecteur.
+      </para>
+    </section>
+    <section xml:id="about-function-secure">
+      <title>Communication s&#233;curis&#233;e</title>
+      <para>
+        Vous pouvez configurer la communication SSL entre Oracle Identity Manager et le syst&#232;me cible Google Drupal.
+      </para>
+      <para>
+        Consultez la section <link linkend="secure">Configuration SSL pour le connecteur Google Drupal</link> pour plus d'informations sur la configuration d'une communication s&#233;curis&#233;e.
+      </para>
+    </section>
+    <section xml:id="about-function-reconciliation">
+      <title>Rapprochement complet et incr&#233;mentiel</title>
+      <para>
+        Apr&#232;s avoir cr&#233;&#233; le connecteur, vous pouvez effectuer une r&#233;conciliation compl&#232;te pour transf&#233;rer toutes les donn&#233;es utilisateur existantes du syst&#232;me cible vers Oracle Identity Manager.
+        Apr&#232;s la premi&#232;re ex&#233;cution de r&#233;conciliation compl&#232;te, vous pouvez configurer votre connecteur pour une r&#233;conciliation incr&#233;mentielle.
+        Dans la r&#233;conciliation incr&#233;mentielle, seuls les enregistrements ajout&#233;s ou modifi&#233;s apr&#232;s la derni&#232;re ex&#233;cution de r&#233;conciliation sont r&#233;cup&#233;r&#233;s dans Oracle Identity Manager.
+        Voir <link linkend="secure-authn">Impl&#233;mentation de l'authentification personnalis&#233;e</link>.
+      </para>
+      <para>
+        Vous pouvez effectuer un cycle de rapprochement complet &#226; tout moment.
+      </para>
+    </section>
+    <section xml:id="about-function-reconciliation-filter">
+      <title>Rapprochement limit&#233; (filtr&#233;)</title>
+      <para>
+        Vous pouvez rapprocher les enregistrements du syst&#232;me cible en fonction d'un crit&#232;re de filtre sp&#233;cifi&#233;.
+        Pour limiter ou filtrer les enregistrements extraits dans Oracle Identity Manager lors d'une ex&#233;cution de rapprochement, vous pouvez sp&#233;cifier le sous-ensemble d'enregistrements du syst&#232;me cible ajout&#233;s ou modifi&#233;s qui doivent &#234;tre rapproch&#233;s.
+      </para>
+      <para>
+        Vous pouvez d&#233;finir un filtre de rapprochement comme valeur de l'attribut Filtre des t&#226;ches planifi&#233;es.
+        Ce filtre sp&#233;cifie le sous-ensemble d'enregistrements du syst&#232;me cible nouvellement ajout&#233;s et modifi&#233;s qui doivent &#234;tre rapproch&#233;s.
+        Voir R&#233;conciliation limit&#233;e pour Google Drupal Connector.
+      </para>
+    </section>
+  </section>
+</chapter>

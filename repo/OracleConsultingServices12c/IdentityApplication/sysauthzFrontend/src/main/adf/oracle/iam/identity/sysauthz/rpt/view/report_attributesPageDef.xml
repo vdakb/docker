@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="report_attributesPageDef"
+                Package="oracle.iam.identity.sysauthz.rpt.view">
+  <parameters/>
+  <executables>
+    <iterator id="Report"            Binds="ReportDetailVO"    DataControl="ReportAMDataControl" RangeSize="20"/>
+    <iterator id="ParameterIterator" Binds="ReportParameterVO" DataControl="ReportAMDataControl" RangeSize="25"/>
+  </executables>
+  <bindings>
+    <attributeValues id="path" IterBinding="Report">
+      <AttrNames>
+        <Item Value="path"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="name" IterBinding="Report">
+      <AttrNames>
+        <Item Value="name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="description" IterBinding="Report">
+      <AttrNames>
+        <Item Value="description"/>
+      </AttrNames>
+    </attributeValues>
+    <tree  id="Parameter" IterBinding="ParameterIterator">
+      <nodeDefinition Name="ParameterNode" DefName="oracle.iam.identity.sysauthz.model.view.ReportParameterVO">
+        <AttrNames>
+          <Item Value="path"/>
+          <Item Value="name"/>
+          <Item Value="label"/>
+          <Item Value="dataType"/>
+          <Item Value="defaultValue"/>
+          <Item Value="value"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

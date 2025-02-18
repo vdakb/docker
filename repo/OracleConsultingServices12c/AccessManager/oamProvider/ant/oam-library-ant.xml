@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Access Manager Foundation" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"         value="Access Manager Provider"/>
+  <property name="application"         value="ocs-provider"/>
+  <property name="library"             value="${application}"/>
+
+  <property name="packagepath.library" value="oracle.iam.security.*"/>
+  <property name="destination.base"    value="../../deployment/oam/0100 systemFramework"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oam-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.wls.security"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT target to assemble the java library to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="clean,init,copy,compile,manifest">
+    <oam-jar-make directory="${basedir}" description="${description}" module="${library}" package="${packagepath.library}" destination="${destination.base}"/>
+  </target>
+</project>

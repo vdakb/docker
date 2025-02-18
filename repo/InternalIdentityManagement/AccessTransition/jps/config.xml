@@ -1,0 +1,30 @@
+<?xml version = '1.0' encoding = 'windows-1252'?>
+<jpsConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.oracle.com/oracleas/schema/11/jps-config-11_1.xsd jps-config-11_1.xsd" xmlns="http://xmlns.oracle.com/oracleas/schema/11/jps-config-11_1.xsd">
+   <serviceProviders>
+      <serviceProvider type="CREDENTIAL_STORE" name="credstore.provider" class="oracle.security.jps.internal.credstore.ssp.SspCredentialStoreProvider">
+         <description>Credential Store Service Provider</description>
+      </serviceProvider>
+   </serviceProviders>
+   <serviceInstances>
+      <serviceInstance name="identity" provider="credstore.provider">
+         <property name="location" value="identity"/>
+      </serviceInstance>
+      <serviceInstance name="access" provider="credstore.provider">
+         <property name="location" value="access"/>
+      </serviceInstance>
+      <serviceInstance name="directory" provider="credstore.provider">
+         <property name="location" value="directory"/>
+      </serviceInstance>
+   </serviceInstances>
+   <jpsContexts default="identity">
+      <jpsContext name="identity">
+         <serviceInstanceRef ref="identity"/>
+      </jpsContext>
+      <jpsContext name="access">
+         <serviceInstanceRef ref="access"/>
+      </jpsContext>
+      <jpsContext name="directory">
+         <serviceInstanceRef ref="directory"/>
+      </jpsContext>
+   </jpsContexts>
+</jpsConfig>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Oracle Consulting Identity ANT Task Definitions"
+         default        ="iam-instance-status"
+         basedir        =".."
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.iam.identity/server"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Enterprise User Security
+  **           Foundation Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Enterprise User
+  **           Security Foundation Configuration. This includes:
+  **           o Lookup Definitions
+  **           o IT Resource Definitions
+  **           o Task Adapter
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="base" description="Deploys the Enterprise User Security Foundation Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Enterprise User Security Foundation Configuration ${application.release}"/>
+    <library-deploy dir="${deploy.dir}" file="eus-common.jar"     location="${oim.remote.thirdparty}"/>
+    <library-deploy dir="${deploy.dir}" file="eus-adapter.jar"    location="${oim.remote.adapter}"/>
+    <library-deploy dir="${deploy.dir}" file="eus-diagnostic.jar" location="${oim.remote.adapter}"/>
+    <library-deploy dir="${deploy.dir}" file="eus-scheduler.jar"  location="${oim.remote.scheduler}"/>
+    <echo message="Deploying importable objects on ${oim.remote.host}:${oim.remote.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/base">
+        <object:importFile name="eus-adapter-dm.xml"/>
+        <object:importFile name="eus-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <!--
+    purge the cache to ensure that the latest version will be used from the
+    metadata store
+    -->
+    <echo message="Purging metadata cache on ${oim.remote.host}:${oim.remote.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="SchedulerTaskDefinition"/>
+    </object:purgecache>
+    <record name="../log/oim-export-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Enterprise User Security
+  **           Target Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Service Trusted  Configuration. This includes:
+  **           o Lookup Definitions
+  **           o Process Form Definiton
+  **           o Resource Object
+  **           o Provisioning Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Deploys the Enterprise User Security Target Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Enterprise User Security Target Configuration ${application.release}"/>
+    <echo message="Deploying importable objects on ${oim.remote.host}:${oim.remote.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/target">
+        <object:importFile name="eus-lookup-dm.xml"/>
+        <object:importFile name="eus-model-dm.xml"/>
+        <object:importFile name="eus-process-dm.xml"/>
+        <object:importFile name="eus-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <record name="../log/oim-export-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance" depends="base, target"/>
+</project>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dgm:gDiagram xmlns:dgm="http://xmlns.oracle.com/sca/soadgm">
+    <dgm:gService name="RequestApprovalService">
+        <dgm:body borderWidth="2" arcRad="20" X="21" Y="153" width="137" height="96">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="11" Y="146" width="156" height="110">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:outputPort name="RequestApprovalService" X="127" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/catalog-role/approval#wsdl.interface(ApprovalProcess)" callbackInterface="http://xmlns.oracle.com/catalog-role/approval#wsdl.interface(ApprovalProcessCallback)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/soap_service_20x20.png" X="20" Y="4" width="20" height="20"/>
+        <dgm:policyIcon URI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/locked_12x12.png" X="111" Y="8" width="12" height="12"/>
+        <dgm:operations>
+            <dgm:item>process</dgm:item>
+            <dgm:item>processResponse</dgm:item>
+        </dgm:operations>
+    </dgm:gService>
+    <dgm:gReference name="CallbackService">
+        <dgm:body borderWidth="2" arcRad="20" X="778" Y="26" width="136" height="84">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="768" Y="19" width="156" height="98">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="CallbackService" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://wls.ws.workflowservice.platform.iam.oracle/#wsdl.interface(CallbackService)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/soap_service_20x20.png" X="27" Y="4" width="20" height="20"/>
+        <dgm:policyIcon URI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/locked_12x12.png" X="118" Y="8" width="12" height="12"/>
+        <dgm:operations>
+            <dgm:item>callback</dgm:item>
+        </dgm:operations>
+    </dgm:gReference>
+    <dgm:gReference name="RequestService">
+        <dgm:body borderWidth="2" arcRad="20" X="778" Y="144" width="136" height="168">
+            <dgm:borderColor r="153" g="153" b="153"/>
+            <dgm:bgColor r="255" g="255" b="255"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="768" Y="137" width="156" height="182">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="RequestService" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService#wsdl.interface(RequestDataService)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/soap_service_20x20.png" X="27" Y="4" width="20" height="20"/>
+        <dgm:policyIcon URI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/locked_12x12.png" X="118" Y="8" width="12" height="12"/>
+        <dgm:operations>
+            <dgm:item>getRequestDetails</dgm:item>
+            <dgm:item>getUserDetails</dgm:item>
+            <dgm:item>getRoleDetails</dgm:item>
+            <dgm:item>getOrganizationDetails</dgm:item>
+            <dgm:item>getResourceDetails</dgm:item>
+            <dgm:item>getApplicationInstanceDetails</dgm:item>
+            <dgm:item>getEntitlementDetails</dgm:item>
+            <dgm:item>getAccountDetails</dgm:item>
+            <dgm:item>getCatalogDetails</dgm:item>
+        </dgm:operations>
+    </dgm:gReference>
+    <dgm:gComponent name="ApprovalProcess">
+        <dgm:body borderWidth="2" arcRad="20" X="278" Y="138" width="130" height="111">
+            <dgm:borderColor r="69" g="113" b="140"/>
+            <dgm:lightBgColor r="166" g="208" b="230"/>
+            <dgm:darkBgColor r="99" g="162" b="201"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="268" Y="131" width="150" height="127">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="RequestApprovalService" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/catalog-role/approval#wsdl.interface(ApprovalProcess)" callbackInterface="http://xmlns.oracle.com/catalog-role/approval#wsdl.interface(ApprovalProcessCallback)"/>
+        <dgm:outputPort name="CallbackService" X="120" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://wls.ws.workflowservice.platform.iam.oracle/#wsdl.interface(CallbackService)"/>
+        <dgm:outputPort name="RequestService" X="120" Y="40" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService#wsdl.interface(RequestDataService)"/>
+        <dgm:outputPort name="ApprovalTask.TaskService" X="120" Y="65" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/bpel/workflow/taskService#wsdl.interface(TaskService)" callbackInterface="http://xmlns.oracle.com/bpel/workflow/taskService#wsdl.interface(TaskServiceCallback)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/bpel/shared/plugins/resources/images/soa/process_20x20.png" X="10" Y="4" width="20" height="20"/>
+    </dgm:gComponent>
+    <dgm:gComponent name="ApprovalTask">
+        <dgm:body borderWidth="2" arcRad="20" X="528" Y="188" width="130" height="61">
+            <dgm:borderColor r="109" g="136" b="65"/>
+            <dgm:lightBgColor r="201" g="224" b="155"/>
+            <dgm:darkBgColor r="157" g="195" b="93"/>
+        </dgm:body>
+        <dgm:shadow arcRad="20" X="518" Y="181" width="150" height="77">
+            <dgm:bgColor r="196" g="228" b="240"/>
+        </dgm:shadow>
+        <dgm:inputPort name="TaskService" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/bpel/workflow/taskService#wsdl.interface(TaskService)" callbackInterface="http://xmlns.oracle.com/bpel/workflow/taskService#wsdl.interface(TaskServiceCallback)"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/workflow/resources/images/humantask_20x20.png" X="10" Y="4" width="20" height="20"/>
+    </dgm:gComponent>
+    <dgm:gWireLink source="RequestApprovalService" target="ApprovalProcess/RequestApprovalService" width="2">
+        <dgm:gSegment X1="168" Y1="163" X2="268" Y2="163"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+    <dgm:gWireLink source="ApprovalProcess/CallbackService" target="CallbackService" width="2">
+        <dgm:gSegment X1="418" Y1="163" X2="442" Y2="163"/>
+        <dgm:gSegment X1="442" Y1="163" X2="442" Y2="36"/>
+        <dgm:gSegment X1="442" Y1="36" X2="768" Y2="36"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+    <dgm:gWireLink source="ApprovalProcess/RequestService" target="RequestService" width="2">
+        <dgm:gSegment X1="418" Y1="188" X2="457" Y2="188"/>
+        <dgm:gSegment X1="457" Y1="188" X2="457" Y2="154"/>
+        <dgm:gSegment X1="457" Y1="154" X2="768" Y2="154"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+    <dgm:gWireLink source="ApprovalProcess/ApprovalTask.TaskService" target="ApprovalTask/TaskService" width="2">
+        <dgm:gSegment X1="418" Y1="213" X2="518" Y2="213"/>
+        <dgm:baseColor r="153" g="153" b="153"/>
+        <dgm:selectedColor r="49" g="106" b="196"/>
+    </dgm:gWireLink>
+</dgm:gDiagram>

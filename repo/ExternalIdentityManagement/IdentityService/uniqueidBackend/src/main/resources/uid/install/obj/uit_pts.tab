@@ -1,0 +1,42 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityService/uniqueidBackend/src/main/resources/install/uid/obj/uit_pts.tab
+--
+--   Einfuehrung einer personenbezogenen ID im Progamm Polizei 2020
+--   Unique Identifier (UID)
+--   Version 1.2 | Stand 15.03.2022
+--
+--   Reference to Page 21 Table 2 Row 5 Xpolizei-Katalogliste 287 (Teilnehmerschluessel)
+--
+-- Generated for Oracle Database 12c on Sun Feb 11 08:55:42 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Table 'uit_participants'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CREATE TABLE uit_participants (
+  id           VARCHAR2  (11)           NOT NULL
+, rowversion   VARCHAR2  (30)           NOT NULL
+, created_by   VARCHAR2  (32)           NOT NULL
+, created_on   DATE                     NOT NULL
+, updated_by   VARCHAR2  (32)           NOT NULL
+, updated_on   DATE                     NOT NULL
+, active       NUMBER     (1) DEFAULT 1 NOT NULL
+, name         VARCHAR2  (64)           NOT NULL
+, description  VARCHAR2 (512)
+)
+TABLESPACE igs_data
+/
+COMMENT ON COLUMN uit_participants.id IS 'System Identifier'
+/
+COMMENT ON COLUMN uit_participants.rowversion IS 'Rowversion of data record'
+/
+COMMENT ON COLUMN uit_participants.created_by IS 'Creator of the data record'
+/
+COMMENT ON COLUMN uit_participants.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN uit_participants.updated_by IS 'Modifier of the data record'
+/
+COMMENT ON COLUMN uit_participants.updated_on IS 'Modified Timestamp of data record'
+/
+COMMENT ON COLUMN uit_participants.name IS 'Human readable Participant Name'
+/
+COMMENT ON COLUMN uit_participants.description IS 'Description of a Participant'
+/

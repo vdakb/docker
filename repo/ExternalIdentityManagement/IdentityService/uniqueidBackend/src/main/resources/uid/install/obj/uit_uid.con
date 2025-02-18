@@ -1,0 +1,52 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityService/uniqueidBackend/src/main/resources/install/uid/obj/uit_uid.con
+--
+--   Einfuehrung einer personenbezogenen ID im Progamm Polizei 2020
+--   Unique Identifier (UID)
+--   Version 1.2 | Stand 15.03.2022
+--
+--   Reference to Page 24 Table 2
+--
+-- Generated for Oracle Database 12c on Sun Feb 11 08:55:42 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Constraints on 'uit_identifiers'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key 'uit_uid_pk' on 'uit_identifiers'
+ALTER TABLE uit_identifiers
+  ADD (
+    CONSTRAINT uit_uid_pk PRIMARY KEY (
+      tnt_id, typ_id, ext_id
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Check Constraint 'uit_uid_ck1' on 'uit_identifiers'
+ALTER TABLE uit_identifiers
+  ADD (
+    CONSTRAINT uit_uid_ck1 CHECK (
+      state IN (0, 1, 2, 4)
+    )
+  )
+/
+PROMPT Creating Foreign Key 'uit_uid_tnt_fk' on 'uit_identifiers'
+ALTER TABLE uit_identifiers
+  ADD (
+    CONSTRAINT uit_uid_tnt_fk FOREIGN KEY (
+      tnt_id
+    )
+    REFERENCES uit_tenants (
+      id
+    )
+  )
+/
+PROMPT Creating Foreign Key 'uit_uid_typ_fk' on 'uit_identifiers'
+ALTER TABLE uit_identifiers
+  ADD (
+    CONSTRAINT uit_uid_typ_fk FOREIGN KEY (
+      typ_id
+    )
+    REFERENCES uit_types (
+      id
+    )
+  )
+/

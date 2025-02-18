@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="endpoint_pickerPageDef"
+                Package="oracle.iam.identity.sysprov.svr.view">
+  <parameters/>
+  <executables>
+    <iterator     id="EndpointIterator" Binds="EndpointPickerVO" DataControl="EndpointAMDataControl" RangeSize="20"/>
+    <searchRegion id="EndpointCriteria" Binds="EndpointIterator" Criteria="EndpointVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="endpointName"/>
+  </executables>
+  <bindings>
+    <tree id="EndpointPickerVO" IterBinding="EndpointIterator">
+      <nodeDefinition Name="EndpointPickerVONode" DefName="oracle.iam.identity.sysprov.model.view.EndpointVO">
+        <AttrNames>
+          <Item Value="endpointKey"/>
+          <Item Value="endpointName"/>
+          <Item Value="endpointType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

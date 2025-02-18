@@ -1,0 +1,32 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityManager\bkaSimulation\src\main\resources\dbs\agt\obj\agt-orl.tab
+--
+-- Generated for Oracle Database 12c on Sun January 21 16:53:56 2020 by Server Generator 10.1.2.93.10
+
+CREATE TABLE agt_roles (
+  rowversion   VARCHAR   ( 30)                 NOT NULL
+, created_on   TIMESTAMP       DEFAULT SYSDATE NOT NULL
+, created_by   VARCHAR   (128)                 NOT NULL
+, updated_on   TIMESTAMP       DEFAULT SYSDATE NOT NULL
+, updated_by   VARCHAR   (128)                 NOT NULL
+, org          VARCHAR   (128)                 NOT NULL
+, name         VARCHAR   (128)                 NOT NULL
+, CONSTRAINT agt_orl_pk PRIMARY KEY (org, name)
+, CONSTRAINT agt_org_fk FOREIGN KEY (org) REFERENCES agt_organizations (name) ON DELETE CASCADE
+)
+/
+COMMENT ON TABLE agt_roles IS 'Apigee Userroles Repository'
+/
+COMMENT ON COLUMN agt_roles.rowversion IS 'Row Version of data record'
+/
+COMMENT ON COLUMN agt_roles.created_by IS 'Creator of the data record'
+/
+COMMENT ON COLUMN agt_roles.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN agt_roles.updated_by IS 'Modifier of the data record'
+/
+COMMENT ON COLUMN agt_roles.updated_on IS 'Last Modified Timestamp of data record'
+/
+COMMENT ON COLUMN agt_roles.org IS 'The name of the organization the role belongs too'
+/
+COMMENT ON COLUMN agt_roles.name IS 'The name of the userrole used in the UI'
+/

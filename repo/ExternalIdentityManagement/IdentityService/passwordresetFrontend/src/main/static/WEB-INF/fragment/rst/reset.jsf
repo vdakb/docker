@@ -1,0 +1,63 @@
+<u:composition xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:jsf="http://xmlns.jcp.org/jsf"
+               xmlns:f="http://xmlns.jcp.org/jsf/core"
+               xmlns:h="http://xmlns.jcp.org/jsf/html"
+               xmlns:u="http://java.sun.com/jsf/facelets">
+    <div class="col-md-auto col-sm-auto">
+        <form jsf:id="reset-form" class="form-canvas needs-validation" method="post" jsf:action="#{reset.submit}">
+            <div class="d-flex justify-content-between">
+                <h3 class="mt-auto text-dark">#{app$bundle['reset.title']}</h3>
+                <img src="#{reset.model.symbol}" alt="#{reset.model.requestIp}" title="#{reset.model.requestIp}" data-toggle="tooltip" data-placement="top" class="align-baseline image-avatar"/>
+            </div>
+            <hr class="hr-dark mb-3 mt-4"/>
+            <p>#{app$bundle['reset.instruction']}</p>
+            <div class="md-form">
+                <i class="zir zi-envelope prefix text-dark active"></i>
+                <input id="email" name="email" type="email" class="form-control text-dark mandatory" jsf:value="#{reset.model.email}" jsf:readonly="true" jsf:disabled="#{!reset.model.valid}"/>
+                <label for="email" class="active">#{app$bundle['reset.email.label']}</label>
+            </div>
+            <div class="md-form">
+                <i class="zir zi-user prefix text-dark active"></i>
+                <i class="zir zi-question help-sign" data-hint="login-hint"></i>
+                <input id="login" name="login" type="text" class="form-control text-dark mandatory" jsf:value="#{reset.model.login}" jsf:disabled="#{!reset.model.valid}"/>
+                <label for="login" class="active">#{app$bundle['reset.login.label']}</label>
+                <div id="login-feedback" class="invalid-feedback">#{app$bundle['reset.login.required']}</div>
+            </div>
+            <div class="md-form">
+                <i class="zir zi-lock-closed prefix text-dark active"></i>
+                <i class="zir zi-question help-sign" data-hint="password-hint"></i>
+                <input id="password" name="password" type="password" class="form-control text-dark mandatory" jsf:value="#{reset.model.password}" jsf:disabled="#{!reset.model.valid}"/>
+                <label for="password" class="active">#{app$bundle['reset.password.label']}</label>
+                <div id="password-feedback" class="invalid-feedback">#{app$bundle['reset.password.required']}</div>
+            </div>
+            <div class="md-form">
+                <i class="zir zi-lock-closed prefix text-dark active"></i>
+                <i class="zir zi-question help-sign" data-hint="confirmation-hint"></i>
+                <input id="confirmation" name="confirmation" type="password" class="form-control text-dark mandatory" jsf:value="#{reset.model.confirmation}" jsf:disabled="#{!reset.model.valid}"/>
+                <label for="confirmation" class="active">#{app$bundle['reset.confirmation.label']}</label>
+                <div id="confirmation-feedback" class="invalid-feedback">#{app$bundle['reset.confirmation.required']}</div>
+            </div>
+            <div class="d-flex justify-content-between flex-row-reverse">
+                <button type="submit" jsf:action="#{reset.submit}" class="btn btn-info" jsf:disabled="#{!reset.model.valid}">#{app$bundle['reset.submit.label']}</button>
+            </div>
+        </form>
+    </div>
+    <div id="login-hint" class="tooltip bs-tooltip-top fade show tooltip-wrapper" role="tooltip" x-placement="top">
+        <div class="arrow"></div>
+        <div class="tooltip-content fixed">
+            <h:outputText value="#{app$bundle['reset.login.hint']}"/>
+        </div>
+    </div>
+    <div id="password-hint" class="tooltip bs-tooltip-top fade show tooltip-wrapper" role="tooltip" x-placement="top">
+        <div class="arrow"></div>
+        <div class="tooltip-content">
+            <h:outputText value="#{reset.model.passwordHint}" escape="false"/>
+        </div>
+    </div>
+    <div id="confirmation-hint" class="tooltip bs-tooltip-top fade show tooltip-wrapper" role="tooltip" x-placement="top">
+        <div class="arrow"></div>
+        <div class="tooltip-content fixed">
+            <h:outputText value="#{app$bundle['reset.confirmation.hint']}"/>
+        </div>
+    </div>
+</u:composition>

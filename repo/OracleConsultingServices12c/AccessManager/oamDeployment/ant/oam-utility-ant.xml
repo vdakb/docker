@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Access Manager Utility" default="all" basedir="../">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"         value="Access Manager Utility"/>
+  <property name="application"         value="oam-deployment"/>
+  <property name="library"             value="oam-deployment"/>
+  <property name="packagepath.library" value="oracle.iam.access.*"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oam-targets.xml"/>
+  <!--
+  =====================================================================
+  == declare the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="apache.ant"/>
+    <path refid="oracle.fmw.xml"/>
+    <path refid="oracle.fmw.wls.client"/>
+    <path refid="oracle.fmw.oam.management"/>
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="oracle.ocs.hst.deployment"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT target to assemble the java library to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="clean,init,copy,compile,manifest">
+    <oam-jar-make directory="${basedir}" description="${description}" module="${library}" package="${packagepath.library}" destination="${destination.base}"/>
+  </target>
+</project>

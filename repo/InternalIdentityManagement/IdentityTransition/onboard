@@ -1,0 +1,613 @@
+#!/bin/sh
+#
+# Program.....: sh
+#
+# Requirements:
+#     The database and the listener are up and running.
+#     The administration server is up and running.
+#     The managed servers are up and running
+#
+# Purpose.....:
+#     This script synchronize data of several datasources with Oracle
+#     Identity Manager.
+#
+# -----------------------------------------------------------------------
+# IMPORTANT
+# Please note that script are NOT supported by Oracle Support and are
+# available for reference only. You may need to modify the script
+# according to your system and startup requirements. Oracle will not
+# support the use of these, and you may be required to abandon the use of
+# these scripts, if a problem arises.
+# -----------------------------------------------------------------------
+#
+# Author......: Dieter Steding, Oracle Consulting Berlin
+#
+# Revision   Date        Editor      Comment
+# ----------+-----------+-----------+------------------------------------
+# 1.0.0.0    2012-12-12  DSteding    First release version
+# 1.0.1.0    2013-11-06  DSteding    Classpath extended to be able to
+#                                    deploy SOA composites
+# 1.1.0.0    2015-02-11  UFischer    Fixed exit codes of ant not properly
+#                                    being forwarded as exit code of
+#                                    this script
+# 1.1.0.1    2015-02-25  DSteding    Add the subcommand publish which
+#                                    executes the entity publication
+#                                    after all required data are loaded
+# 1.2.0.0    2015-02-25  DSteding    Add the subcommand publish which
+#                                    executes the entity publication
+#                                    after all required data are loaded
+# 2.0.0.0    2017-06-25  DSteding    Ported to 12c
+# 2.0.0.1    2021-02-12  DSteding    Ported to 12.2.1.4
+#
+
+#
+# set the file permission to avoid any other user can spy on the files
+# created but only if them becomes root
+#
+umask 077
+
+#################### FUNCTIONS start ####################################
+# -----------------------------------------------------------------------
+# message() function
+# -----------------------------------------------------------------------
+# short-hand function to printout a console message.
+# -----------------------------------------------------------------------
+message() {
+  echo
+  echo -e "$*"
+}
+
+# -----------------------------------------------------------------------
+# oig_update() function
+# -----------------------------------------------------------------------
+# short-hand function to export the deployment source tree.
+# -----------------------------------------------------------------------
+oig_update() {
+  message "Exporting the deployment source tree to \033[5;34;47m${SOURCE}\033[0m ..."
+  svn export --force "${OIG_SRC_URL}/oim" ./deployment/oim 2>&1 | tee -a ${LOG_ANT}/oim-update-svn.log
+}
+
+# -----------------------------------------------------------------------
+# bip_update() function
+# -----------------------------------------------------------------------
+# short-hand function to export the deployment source tree.
+# -----------------------------------------------------------------------
+bip_update() {
+  message "Exporting the deployment source tree to \033[5;34;47m${SOURCE}\033[0m ..."
+  svn export --force "${BIP_SRC_URL}/xdo" ./deployment/xdo 2>&1 | tee -a ${LOG_ANT}/oim-update-svn.log
+}
+
+# -----------------------------------------------------------------------
+# available() function
+# -----------------------------------------------------------------------
+# short-hand function to control the existance of a deployment file
+# printout the error messages if the desired file does not exists
+# and terminates.
+#
+# param $1: the directory where to lookup
+# param $2: the file to lookup
+# -----------------------------------------------------------------------
+available() {
+  if [ ! -f "${1}/${2}" ]
+  then
+    message "Could not locate required file \033[5;31;47m${2}\033[0m in \033[5;34;47m${1}\033[0m."
+    echo -e "Verify that you are in the deployment directory when running this script and configured the deployment properly."
+    echo -e "\033[5;31;47mAborting\033[0m"
+    echo -e "\nPlease follow the instructions in \033[5;34;47mdoc/IM.IAM Installation Instructions.html\033[0m."
+    exit 4
+  fi
+}
+
+# -----------------------------------------------------------------------
+# availableAnt() function
+# -----------------------------------------------------------------------
+# short-hand function to control the existance of a ANT deployment file
+# printout the error messages if the desired file does not exists
+# and terminates.
+#
+# param $1: the file to lookup
+# -----------------------------------------------------------------------
+availableAnt() {
+  available ${SRC_ANT} ${1}
+}
+
+# -----------------------------------------------------------------------
+# availableEnv() function
+# -----------------------------------------------------------------------
+# short-hand function to control the existance of a ANT environment file
+# printout the error messages if the desired file does not exists
+# and terminates.
+#
+# param $1: the file to lookup
+# -----------------------------------------------------------------------
+availableEnv() {
+  available ${SRC_ENV} ${1}
+}
+
+# -----------------------------------------------------------------------
+# availableJps() function
+# -----------------------------------------------------------------------
+# short-hand function to control the existance of a OPSS configuration
+# file printout the error messages if the desired file does not exists
+# and terminates.
+#
+# param $1: the file to lookup
+# -----------------------------------------------------------------------
+availableJps() {
+  available jps/identity ${1}
+}
+
+# -----------------------------------------------------------------------
+# availableCfg() function
+# -----------------------------------------------------------------------
+# short-hand function to control the existance of a property configuration
+# file printout the error messages if the desired file does not exists
+# and terminates.
+#
+# param $1: the file to lookup
+# -----------------------------------------------------------------------
+availableCfg() {
+  available ${SRC_CFG} ${1}
+}
+
+# -----------------------------------------------------------------------
+# verifyCtl() function
+# -----------------------------------------------------------------------
+# short-hand function to verify the deployment configuration.
+#
+# this shell script is verifiying the environment variable CONTROL
+# We do it at the shell level to prevent that the Java/Ant stack to be used
+# for and will consume resource to check if the overall process will fail
+# -----------------------------------------------------------------------
+verifyAnt() {
+  availableAnt ${OIG_PREFIX}/oim-config-ant.xml
+  availableAnt oim-import-ant.xml
+  availableAnt oim-request-ant.xml
+  availableAnt oim-setup-ant.xml
+}
+
+# -----------------------------------------------------------------------
+# verifyEnv() function
+# -----------------------------------------------------------------------
+# short-hand function to verify the deployment configuration.
+#
+# this shell script is verifiying the environment variable CONFIG
+# We do it at the shell level to prevent that the Java/Ant stack to be used
+# for and will consume resource to check if the overall process will fail
+# -----------------------------------------------------------------------
+verifyEnv() {
+  availableEnv scp-server.xml
+  availableEnv jee-server.xml
+  availableEnv oim-server.xml
+  availableEnv soa-server.xml
+  availableEnv mds-server.xml
+}
+
+# -----------------------------------------------------------------------
+# verifyJps() function
+# -----------------------------------------------------------------------
+# short-hand function to verify the deployment configuration.
+#
+# We do it at the shell level to prevent that the Java/Ant stack to be used
+# for and will consume resource to check if the overall process will fail
+# -----------------------------------------------------------------------
+verifyJps() {
+  availableJps cwallet.sso
+  availableJps ewallet.p12
+}
+
+# -----------------------------------------------------------------------
+# verifyCfg() function
+# -----------------------------------------------------------------------
+# short-hand function to verify the deployment configuration.
+#
+# We do it at the shell level to prevent that the Java/Ant stack to be used
+# for and will consume resource to check if the overall process will fail
+# -----------------------------------------------------------------------
+verifyCfg() {
+  availableCfg ${OIG_PREFIX}.properties
+}
+
+# -----------------------------------------------------------------------
+# verify() function
+# -----------------------------------------------------------------------
+# short-hand function to verify all xml files' syntax recursively.
+# -----------------------------------------------------------------------
+verify(){
+  message "Verifying XML syntax exported in \033[5;34;47m`pwd`\033[0m ..."
+  find  ./ -name "*.xml" -exec xmllint --noout '{}' \; 2>&1 | tee  ${LOG_ANT}/oim-verify-err.log
+  echo -e "XML syntax exported in \033[5;34;47m`pwd`\033[0m verified."
+}
+
+# -----------------------------------------------------------------------
+# cleanup() function
+# -----------------------------------------------------------------------
+# short-hand function to cleanup the entire directory structure.
+# -----------------------------------------------------------------------
+cleanup() {
+  rm -rf ${LOG_ANT}
+  rm -rf ${SRC_ENV}
+  rm -rf ${SRC_ANT}/${OIG_PREFIX}
+  rm -rf ${SRC_CFG}/${OIG_PREFIX}.properties
+}
+
+# -----------------------------------------------------------------------
+# stdinToExitCode() function
+# -----------------------------------------------------------------------
+# short-hand function to fetch and return an exit code from the standard
+# input.
+# -----------------------------------------------------------------------
+stdinToExitCode() {
+  read exit_code
+  return $exit_code
+}
+
+# -----------------------------------------------------------------------
+# executeAndLog() function
+# -----------------------------------------------------------------------
+# short-hand function to execute any command whilst logging to the stdout
+# and a specified file while preserving the actual exit code of the given
+# command
+#
+# this is strongly required to pass down the exit code because a simple
+# pipe to tee will swallow it
+#
+# param $1: log file to record to
+# param $@: command to execute (with all the parameters)
+#
+# returns the exit code of the command
+# -----------------------------------------------------------------------
+executeAndLog() {
+  : ${1:?"wrong usage of function executeAndLog(): no parameter passed! Revise the code!"}
+  : ${2:?"wrong usage of function executeAndLog(): missing second parameter! Revise the code!"}
+
+  logFile="${1}"
+  shift
+  command=${@}
+
+  # do the magic...
+  (
+    (
+      (
+        (
+          # executing the command, while redirecting stderr, so it gets picked up by the log as well
+          ${command} 2>&1;
+          # writing the error code to 3
+          echo $? >&3
+        # piping to logFile and 4
+        ) | tee -a "${logFile}" >&4
+      # 3 goes into stdin so we can pipe it somewhere
+      ) 3>&1
+    # piping stdin (actually 3) for capture
+    ) | stdinToExitCode
+  # 4 goes into stdin so we see it on the console
+  ) 4>&1
+
+  exit_code=$?
+  wait
+
+  3>&-
+  4>&-
+
+  return $exit_code
+}
+#################### FUNCTIONS end ######################################
+
+#
+# validate the required environment for Java Runtime definition
+#
+if [ -z "${JAVA_HOME}" ]
+then
+  message "You must specify a JAVA_HOME environment configuration to used for this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 1
+fi
+
+#
+# validate the required environment for Java Vendor definition
+#
+if [ -z "${JAVA_VENDOR}" ]
+then
+  message "You must specify a JAVA_VENDOR environment configuration to used for this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 1
+fi
+
+#
+# validate the required environment for Fusion Middleware software installation
+#
+if [ -z "${FMW_HOME}" ]
+then
+  message "You must specify a FMW_HOME environment configuration to used for this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 2
+fi
+
+#
+# validate the required environment for Apache ANT software installation
+#
+if [ -z "${ANT_HOME}" ]
+then
+  message "You must specify a ANT_HOME environment configuration to used for this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 2
+fi
+
+#
+# validate the required environment for Oracle WebLogic Server software installation
+#
+if [ -z "${WLS_HOME}" ]
+then
+  message "You must specify a WLS_HOME environment configuration to used for this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 2
+fi
+
+#
+# validate the required environment for Oracle Identity and Access Management software installation
+#
+if [ -z "${IAM_HOME}" ]
+then
+  message "You must specify a IAM_HOME environment configuration to used for this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 2
+fi
+
+#
+# validate the required environment for Oracle Identity Manager software installation
+#
+if [ -z "${OIG_HOME}" ]
+then
+  message "You must specify a OIG_HOME environment configuration to used for this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 2
+fi
+
+#
+# validate the required environment for Oracle SOA Suite software installation
+#
+if [ -z "${SOA_HOME}" ]
+then
+  message "You must specify a SOA_HOME environment configuration to used for this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 2
+fi
+
+#
+# validate the required environment for deploying the configuration targets
+#
+if [ -z "${OIG_PREFIX}" ]
+then
+  message "You must specify a OIG_PREFIX configuration used by this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 2
+fi
+
+#
+# validate the required environment for deploying the workflow targets
+#
+if [ -z "${SOA_PREFIX}" ]
+then
+  message "You must specify a SOA_PREFIX configuration used by this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 2
+fi
+
+#
+# validate the required environment for exporting the source tree
+#
+if [ "${OIG_SRC_URL}"x == x ]; then
+  message "You must specify a OIG_SRC_URL configuration used by this deployment."
+  echo -e "\033[5;31;47mAborting\033[0m"
+  exit 3
+fi
+
+#
+# Declare the directory the source tree will be exported to
+#
+SOURCE=`pwd`/deployment
+
+#
+# Declare the directory the deplyoment configuration will be located
+#
+SRC_ANT=`pwd`/src/ant
+
+#
+# Declare the directory the environment configuration will be located
+#
+SRC_ENV=`pwd`/.env/${OIG_PREFIX}
+
+#
+# Declare the directory the property configuration will be located
+#
+SRC_CFG=`pwd`/src/cfg
+
+#
+# the recording will be done in a separate directory to keep it over several executions
+# ANT will also relay on this definition which is passed as a system property
+#
+LOG_ANT=`pwd`/log/${OIG_PREFIX}
+
+# ensure that OLDANT is non-null
+if [ ${ANT_HOME:-0} = 0 ]; then
+  OLDANT=$PATH
+else
+  OLDANT=${ANT_HOME}
+fi
+
+# ensure that OLDJAVA is non-null
+if [ ${JAVA_HOME:-0} = 0 ]; then
+  OLDJAVA=$PATH
+else
+  OLDJAVA=${JAVA_HOME}
+fi
+
+case "$PATH" in
+  *${JAVA_HOME}/bin*)
+  ;;
+  *${OLDJAVA}/bin*) PATH=`echo $PATH | sed "s;$OLDJAVA/bin;${JAVA_HOME}/bin;g"`
+  ;;
+  *:)               PATH=${PATH}${JAVA_HOME}/bin:
+  ;;
+  "")               PATH=${JAVA_HOME}/bin
+  ;;
+  *)                PATH=$PATH:${JAVA_HOME}/bin
+  ;;
+esac
+
+#
+# Put new ANT_HOME in path and remove old one
+#
+case "$PATH" in
+  *${ANT_HOME}/bin*)
+  ;;
+  *${OLDANT}/bin*)   PATH=`echo $PATH | sed "s;$OLDANT/bin;${ANT_HOME}/bin;g"`
+  ;;
+  *:)                PATH=${PATH}${ANT_HOME}/bin:
+  ;;
+  "")                PATH=${ANT_HOME}/bin
+  ;;
+  *)                 PATH=$PATH:${ANT_HOME}/bin
+  ;;
+esac
+
+JRF_LIBRARY=${FMW_HOME}/oracle_common/modules
+WLS_LIBRARY=${WLS_HOME}/server/lib
+OIG_LIBRARY=${OIG_HOME}
+SOA_LIBRARY=${SOA_HOME}/soa/modules
+
+JARPATH=${JRF_LIBRARY}/javax.management.j2ee.jar\
+:${JRF_LIBRARY}/thirdparty/ant-contrib-1.0b3.jar\
+:${JRF_LIBRARY}/thirdparty/features/jsch.jar\
+:${JRF_LIBRARY}/org.apache.commons.logging_1.2.jar\
+:${JRF_LIBRARY}/oracle.logging-utils.jar\
+:${JRF_LIBRARY}/oracle.odl/ojdl.jar\
+:${JRF_LIBRARY}/oracle.dms/dms.jar\
+:${JRF_LIBRARY}/oracle.ucp.jar\
+:${JRF_LIBRARY}/javax.servlet.jsp.javax.servlet.jsp-api.jar\
+:${JRF_LIBRARY}/org.glassfish.javax.el.jar\
+:${JRF_LIBRARY}/oracle.javatools/resourcebundle.jar\
+:${JRF_LIBRARY}/oracle.javatools/javatools-nodeps.jar\
+:${JRF_LIBRARY}/oracle.javatools/javatools-annotations.jar\
+:${JRF_LIBRARY}/oracle.adf.share.ca/adf-share-base.jar\
+:${JRF_LIBRARY}/oracle.adf.share.ca/adf-share-ca.jar\
+:${JRF_LIBRARY}/oracle.adf.share/adflogginghandler.jar\
+:${JRF_LIBRARY}/oracle.adf.share/adf-share-support.jar\
+:${JRF_LIBRARY}/oracle.adf.share/adf-share-wls.jar\
+:${JRF_LIBRARY}/oracle.adf.model/adfm.jar\
+:${JRF_LIBRARY}/oracle.adf.businesseditor/adf-businesseditor-model.jar\
+:${JRF_LIBRARY}/oracle.xdk/xml.jar\
+:${JRF_LIBRARY}/oracle.xdk/xmlparserv2.jar\
+:${JRF_LIBRARY}/oracle.xmlef/xmlef.jar\
+:${JRF_LIBRARY}/oracle.bali.share/share.jar\
+:${JRF_LIBRARY}/oracle.mds/mdsrt.jar\
+:${JRF_LIBRARY}/oracle.mds/oramds.jar\
+:${JRF_LIBRARY}/oracle.jdbc/ojdbc8.jar\
+:${JRF_LIBRARY}/oracle.nlsrtl/orai18n-mapping.jar\
+:${JRF_LIBRARY}/com.oracle.http_client.http_client.jar\
+:${JRF_LIBRARY}/oracle.osdt/osdt_wss.jar\
+:${JRF_LIBRARY}/oracle.osdt/osdt_xmlsec.jar\
+:${JRF_LIBRARY}/clients/com.oracle.webservices.fmw.client.jar\
+:${JRF_LIBRARY}/clients/com.oracle.webservices.fmw.ws-config-mbeans-impl.jar\
+:${JRF_LIBRARY}/oracle.webservices/orawsdl.jar\
+:${JRF_LIBRARY}/oracle.webservices/ws_confmbeans.jar\
+:${JRF_LIBRARY}/oracle.wsm.common/wsm-secpol.jar\
+:${JRF_LIBRARY}/oracle.wsm.common/wsm-policy-core.jar\
+:${JRF_LIBRARY}/oracle.wsm.agent.common/wsm-agent-core.jar\
+:${JRF_LIBRARY}/oracle.jps/jps-mbeans.jar\
+:${SOA_LIBRARY}/commons-cli-1.1.jar\
+:${SOA_LIBRARY}/oracle.soa.fabric_11.1.1/fabric-runtime.jar\
+:${SOA_LIBRARY}/oracle.soa.fabric_11.1.1/soa-infra-tools.jar\
+:${SOA_LIBRARY}/oracle.soa.fabric_11.1.1/oracle-soa-client-api.jar\
+:${SOA_LIBRARY}/oracle.soa.mgmt_11.1.1/soa-infra-mgmt.jar\
+:${SOA_LIBRARY}/oracle.soa.workflow_11.1.1/bpm-services.jar\
+:${WLS_LIBRARY}/wlthint3client.jar\
+:${WLS_HOME}/modules/com.oracle.weblogic.package.jar\
+:${WLS_HOME}/modules/com.oracle.weblogic.ant.taskdefs.jar\
+:${OIG_LIBRARY}/idmdf/event-recording-client.jar\
+:${OIG_LIBRARY}/idmdf/idmdf-common.jar\
+:${OIG_LIBRARY}/platform/iam-platform-pluginframework.jar\
+:${OIG_LIBRARY}/platform/iam-platform-workflowservice.jar\
+:${JRF_LIBRARY}/oracle.jrf/jrf-api.jar\
+:${OIG_LIBRARY}/client/oimclient.jar\
+:${OIG_LIBRARY}/apps/oim.ear/APP-INF/lib/xlAPI.jar\
+:${OIG_LIBRARY}/apps/oim.ear/APP-INF/lib/xlDDM.jar
+
+export PATH
+export CLASSPATH=${JARPATH}:`pwd`/lib/hst-foundation.jar:`pwd`/lib/hst-deployment.jar:`pwd`/lib/oim-deployment.jar
+export ANT=${ANT_HOME}/bin/ant
+
+#
+# Setup the working directories required at runtime
+#
+if [ ! -d ${SOURCE} ]
+then
+  mkdir -p ${SOURCE}
+fi
+if [ ! -d ${CONFIG} ]
+then
+  mkdir -p ${CONFIG}
+fi
+if [ ! -d ${SRC_ANT}/${OIG_PREFIX} ]
+then
+  mkdir -p ${SRC_ANT}/${OIG_PREFIX}
+  chmod 700 ${SRC_ANT}/${OIG_PREFIX}
+fi
+if [ ! -d ${SRC_ENV} ]
+then
+  mkdir -p ${SRC_ENV}
+  chmod 700 ${SRC_ENV}
+fi
+if [ ! -d ${LOG_ANT} ]
+then
+  mkdir -p ${LOG_ANT}
+  chmod 700 ${LOG_ANT}
+fi
+
+case "$1" in
+  lookup)      shift
+               verifyEnv
+               availableAnt oim-bootstrap-lookup.xml
+               if [ -z ${1} ]
+               then
+                 message "You must specify at least one loader target."
+                 echo -e "\033[5;31;47mAborting\033[0m"
+                 exit 2
+               fi
+               executeAndLog ${LOG_ANT}/oim-bootstrap-lookup-${1}.log ${ANT} -Dlog.env=${LOG_ANT} -Dfmw.env=${OIG_PREFIX} -f ${SRC_ANT}/oim-bootstrap-lookup.xml $*
+               ANT_EXIT_CODE=$?
+  ;;
+  identity)    shift
+               verifyEnv
+               availableAnt oim-bootstrap-identity.xml
+               if [ -z ${1} ]
+               then
+                 message "You must specify at least one loader target."
+                 echo -e "\033[5;31;47mAborting\033[0m"
+                 exit 2
+               fi
+               executeAndLog ${LOG_ANT}/oim-bootstrap-identity-${1}.log ${ANT} -Dlog.env=${LOG_ANT} -Dfmw.env=${OIG_PREFIX} -f ${SRC_ANT}/oim-bootstrap-identity.xml $*
+               ANT_EXIT_CODE=$?
+  ;;
+  account)     shift
+               verifyEnv
+               availableAnt oim-bootstrap-account.xml
+               if [ -z ${1} ]
+               then
+                 message "You must specify at least one loader target."
+                 echo -e "\033[5;31;47mAborting\033[0m"
+                 exit 2
+               fi
+               executeAndLog ${LOG_ANT}/oim-bootstrap-account-${1}.log ${ANT} -Dlog.env=${LOG_ANT} -Dfmw.env=${OIG_PREFIX} -f ${SRC_ANT}/oim-bootstrap-account.xml $*
+               ANT_EXIT_CODE=$?
+  ;;
+  verify)     shift
+              message "Verifying export consistency in \033[5;34;47m${STAGE}\033[0m ..."
+              verify
+              echo -e "Export consistency in \033[5;34;47m${STAGE}\033[0m verified."
+              verifyXmls
+  ;;
+  *)          message "usage: $0 (lookup | identity | account | verify)"
+esac
+
+exit $ANT_EXIT_CODE

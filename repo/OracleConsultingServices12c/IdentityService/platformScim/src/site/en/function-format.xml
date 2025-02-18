@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+  ! This software is the confidential and proprietary information of
+  ! Oracle Corporation. ("Confidential Information").  You shall not
+  ! disclose such Confidential Information and shall use it only in
+  ! accordance with the terms of the license agreement you entered
+  ! into with Oracle.
+  !
+  ! ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+  ! SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  ! IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ! PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+  ! SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+  ! THIS SOFTWARE OR ITS DERIVATIVES.
+  !
+  ! Copyright &#169; 2021. All Rights reserved
+  !
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="about"
+         xml:lang="en"
+         version ="5.0">
+  <title>Additional SCIM Functions</title>
+  <para>
+    With SCIM REST API, you can additionally sort, filter, select specific attributes, limit the number of items, and represent resources in JSON format.
+  </para>
+  <para>
+    These features are covered in the following sub-topics:
+  </para>
+  <section xml:id="function-format">
+    <title>Data Format and HTTP Codes</title>
+    <section xml:id="function-format-data">
+      <title>Data Response Format</title>
+      <para>
+        The input and output response data for any API call can be viewed in JSON format.
+        JSON (JavaScript Object Notation) is a lightweight data-interchange format.
+        To retrieve the response in JSON format, add the Accept request header with the application/json value.
+      </para>
+      <para>
+        Example of stock items in JSON format:
+      </para>
+      <para>
+        [{"item_id":"1","product_id":"1","stock_id":"1","qty":"99.0000","low_stock_date":null},{"item_id":"2","product_id":"2","stock_id":"1","qty":"100.0000","low_stock_date":null}]
+      </para>
+    </section>
+    <section xml:id="function-format-http">
+      <title>HTTP Response Codes</title>
+      <para>
+        The SCIM standards use HTTP response codes to indicate success or failure of the operations.
+        Appropriate HTTP status codes describing the error and body message are returned for all requests in a JSON format.
+      </para>
+      <para>
+        Error responses are identified using the following "schema" URI: "urn:ietf:params:scim:api:messages:2.0:Error".
+      </para>
+      <para>
+        The table below contains possible common HTTP status codes.
+      </para>
+      <table>
+        <thead>
+          <tr>
+            <td>HTTP Status Codes</td>
+            <td>Description</td>
+          </tr>
+        </thead>
+       <tbody>
+        <tr>
+          <td>200 (Ok)</td>
+          <td>Shows success</td>
+        </tr>
+        <tr>
+          <td>201 (Created)</td>
+          <td>
+            When a resource is successfully created using POST or PUT request.
+            Returns link to the newly created resource using the location header.
+          </td>
+        </tr>
+         <tr>
+          <td>204 (No Content)</td>
+          <td>
+            When response body is empty. For example, a DELETE request.
+          </td>
+        </tr>
+       <tr>
+          <td>307 (Temporary Redirect)</td>
+          <td>
+            When the client is requested to repeat the same http request at the location identified.
+            The client should not use the location provided in the response as the permanent reference to the resource and should continue to use the original request URI.
+          </td>
+        </tr>
+        <tr>
+          <td>308 (Permanent Redirect)</td>
+          <td>
+            When the client is directed to repeat the same http request at the location identified.
+            The client should use the location provided in the response as the permanent reference to the resource.
+          </td>
+        </tr>
+        <tr>
+          <td>400 (Bad Request)</td>
+          <td>
+            States that an invalid input is provided.
+            For example, validation error, missing data.
+            For SCIM specific error types, refer to RFC 7644
+          </td>
+        </tr>
+        <tr>
+          <td>401 (Unauthorized)</td>
+          <td>
+            States that user is using invalid or wrong authentication token.
+          </td>
+        </tr>
+        <tr>
+          <td>403 (Forbidden)</td>
+          <td>
+            States that the user is not having access to the method being used.
+            For example, Delete access without admin rights.
+          </td>
+        </tr>
+        <tr>
+          <td>404 (Not Found)</td>
+          <td>
+            States that the method is not available.
+          </td>
+        </tr>
+        <tr>
+          <td>409 (Conflict)</td>
+          <td>
+            States conflict situation while executing the method.
+            For example, adding duplicate entry.
+          </td>
+        </tr>
+        <tr>
+          <td>412 (precondition Failed)</td>
+          <td>
+            Failed to update.
+            The resource has changed on the server.
+          </td>
+        </tr>
+        <tr>
+          <td>500 (Internal Server Error)</td>
+          <td>
+            States that the server has thrown some exception while executing the method.
+          </td>
+        </tr>
+        <tr>
+          <td>501 (Not Implemented)</td>
+          <td>
+            The requested operation is not supported by the service provider.
+          </td>
+        </tr>
+       </tbody>
+      </table>
+    </section>
+  </section>
+  <section xml:id="function-sorting">
+    <title>Sorting in SCIM</title>
+    <para>
+      Sorting allows you to specify the order in which the resources are returned, by specifying the sortBy and sortOrder URL parameters.
+      Sorting is applied in two conditions:
+    </para>
+    <listitem>
+      ??? When querying a resource endpoint using a HTTP GET operation
+      ??? When querying a resource endpoint using a HTTP POST operation to a resource or search
+    </listitem>
+    <para>
+      The value of the sort query parameter is a comma-separated list of sort keys.
+      <strong>SortBy</strong> parameter specifies the attribute whose value is used to order the returned responses.
+      If sortBy attribute corresponds to a singular attribute, resources are sorted according to that attributes value.
+      If it is a multi valued attribute, resources are sorted by the value of the primary value, or else, first value in the list.
+      If the attribute is complex, the attribute name must be a path to a sub attribute in standard attribute notation.
+      For example,; sortBy=name.givenName.
+    </para>
+    <para>
+      <strong>SortOrder</strong> parameter specifies the order in which the sorting is performed, like in ascending or descending order.
+      For example,; the GET request- GET /users?$sortOrder=descending, sorts the list in descending order of users.
+      The SortOrder parameter works only when SortBy parameter is defined.
+    </para>
+  </section>
+  <section xml:id="function-pagination">
+    <title>Pagination in SCIM</title>
+    <para>
+      Pagination feature is used to handle large responses in an easier manner.
+      With pagination, you can set the count parameter to limit the number of results you want to see in a page.You can also, easily move to the previous and the next page based on the current page in the navigation.
+      The following table describes the Pagination Request Parameter, its description and the default value.
+    </para>
+    <table>
+      <thead>
+        <tr>
+          <td>Parameter</td>
+          <td>Description</td>
+          <td>Default</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>startIndex</td>
+          <td>The 1-based index of the first query result. A value less than 1 SHALL be interpreted as 1.</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>startIndex</td>
+          <td>
+            Non-negative integer.
+            Specifies the desired number of query results per page, example: 10.
+            A negative value shall be interpreted as "0".
+            A value of "0" indicates that no resource results are to be returned except for total results.
+          </td>
+          <td>
+            None.
+            When specified, the service provider must not return more results than specified, although it may return fewer results.
+            If not specified, the maximum of results is set by the service provider.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <para>
+      The following table displays the Pagination Response Elements.
+    </para>
+    <table>
+      <thead>
+        <tr>
+          <td>Element</td>
+          <td>Description</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>itemsPerPage</td>
+          <td>
+            Non-negative integer.
+            Specifies the number of query results that are returned in a query response page.
+            For example, 10.
+          </td>
+        </tr>
+        <tr>
+          <td>totalResults</td>
+          <td>
+            Non-negative integer.
+            Specifies the total number of results matching the query.
+            For example, 1000.
+          </td>
+        </tr>
+        <tr>
+          <td>startIndex</td>
+          <td>
+            The 1-based index of the first result in the current set of query results.
+            For example: 1
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <para>
+      <strong>Example:</strong>
+    </para>
+    <para>
+      The following example retrieves the first ten Users, setting the startIndex to 1 and the count to 10:
+    </para>
+    <note>
+      In the previous example, to continue paging, set the startIndex to 11 and re-fetch, that is; /Users?startIndex=11&amp;count=10.
+    </note>
+  </section>
+  <section xml:id="function-filter">
+    <title>Filter in SCIM</title>
+    <para>
+      Filters provide an additional flexibility to users interacting with large data by narrowing down the result sets.
+      Filter parameter contains at least one valid expression, and an expression consists of an attribute name, followed by an attribute operator and a value.
+      For example-filter=userName eq "ben".
+    </para>
+    <para>
+      The following table shows the filter operators that are supported:
+    </para>
+  </section>
+</chapter>

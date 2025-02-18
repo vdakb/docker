@@ -1,0 +1,34 @@
+<dsml:batchRequest xmlns:dsml="urn:oasis:names:tc:DSML:2:0:core">
+  <dsml:modifyRequest dn="olcDatabase={1}bdb,cn=config">
+    <dsml:attr name="olcAccess" operation="add">
+      <!--
+       | This ACL gives incoming connections the ability to read the rootDSE.
+       | It is very important to allow this, as incoming clients may need to
+       | obtain information from the base level (such as your supported SASL Mechs).
+       | The ".base" portion of the ACL restricts clients to querying only the top
+       | level
+       -->
+      <dsml:value>{0}to dn.base="" by * read</dsml:value>
+      <!--
+       | This ACL says anyone can read from the context root subtree.
+       | The ".base" of the ACL means that all entries starting at
+       | "dc=pxd,dc=bka,dc=bund,dc=de" can be read.
+       -->
+      <dsml:value>{0}to dn.base="dc=pxd,dc=bka,dc=bund,dc=de" by group/groupOfUniqueNames/uniqueMember="cn=orclContextRead,ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" read</dsml:value>
+<!--
+
+      <dsml:value>{1}to dn.base="ou=System,dc=pxd,dc=bka,dc=bund,dc=de" by none</dsml:value>
+      <dsml:value>{2}to dn.base="ou=System,dc=pxd,dc=bka,dc=bund,dc=de" by group.exact="cn=orclAdministrator,ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" read</dsml:value>
+      <dsml:value>{3}to dn.base="ou=System,dc=pxd,dc=bka,dc=bund,dc=de" by group.exact="cn=orclAdministrator,ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" write</dsml:value>
+      <dsml:value>{4}to dn.base="ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" by none</dsml:value>
+      <dsml:value>{5}to dn.base="ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" by group.exact="cn=orclGroupRead,ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" read</dsml:value>
+      <dsml:value>{6}to dn.base="ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" by group.exact="cn=orclGroupWrite,ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" write</dsml:value>
+      <dsml:value>{7}to dn.base="ou=People,dc=pxd,dc=bka,dc=bund,dc=de" by none</dsml:value>
+      <dsml:value>{8}to dn.base="ou=People,dc=pxd,dc=bka,dc=bund,dc=de" by group.exact="cn=orclPeopleRead,ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" read</dsml:value>
+      <dsml:value>{9}to dn.base="ou=People,dc=pxd,dc=bka,dc=bund,dc=de" by group.exact="cn=orclPeopleWrite,ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" write</dsml:value>
+      <dsml:value>{10}to to attrs=userpassword by group.exact="cn=orclPeopleWrite,ou=Groups,dc=pxd,dc=bka,dc=bund,dc=de" write</dsml:value>
+      <dsml:value>{11}to to attrs=userpassword by none</dsml:value>
+-->
+    </dsml:attr>
+  </dsml:modifyRequest>
+</dsml:batchRequest>

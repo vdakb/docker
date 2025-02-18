@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="about"
+         xml:lang="en"
+         version ="5.0">
+  <title>About the Access Manager OIDC Extension</title>
+  <para>
+    Oracle&#174; Access Management is a complete solution designed to securely enable business transformation with mobile and social networking technologies, hybrid on-premise and cloud applications deployment, and hybrid access management deployment while preserving a seamless user experience, centralized administration, and market-leading performance and scalability.
+  </para>
+  <para>
+    The following sections provide a general overview of the extension:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <link linkend="about-cmp">Required Components</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="about-use">Usage Recommendation</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="about-nls">Supported Languages</link>
+      <para/>
+    </listitem>
+  </itemizedlist>
+  <section xml:id="about-cmp">
+    <title>Required Components</title>
+    <para>
+      The platform-specific hardware and software requirements listed in this document are valid as of the date this document was created.
+      Since new platforms and operating systems may be certified after this document is published, it is recommended to consult the certification matrix on Oracle Technology Network.
+      The current statements about certified platforms and operating systems can be found there.
+    </para>
+    <para>
+      The respective certification matrix for Oracle Identity and Access Management Suite products are available at the following URLs:
+    </para>
+    <itemizedlist mark="bullet">
+      <listitem>
+        <link xl:show="new" xl:href="ttps://www.oracle.com/docs/tech/middleware/fmw-122140-certmatrix.xlsx" xl:role="http://docbook.org/xlink/role/olink">
+          <citetitle>Oracle&#174; Fusion Middleware 12c (12.2.1.4.0)</citetitle>
+        </link>
+      <para/>
+      </listitem>
+      <listitem>
+        <link xl:show="new" xl:href="https://www.oracle.com/technetwork/middleware/fmw-122130-certmatrix-3867828.xlsx" xl:role="http://docbook.org/xlink/role/olink">
+          <citetitle>Oracle&#174; Fusion Middleware 12c (12.2.1.3.0)</citetitle>
+        </link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="about-cmp-req">
+      <title>Required Versions</title>
+      <para>
+        These are the software components and versions required to install and use the extension.
+      </para>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="15em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Component</entry>
+              <entry>Version</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Oracle&#174; Java Development Kit</entry>
+              <entry>JDK 1.8.0_131 or higher</entry>
+            </row>
+            <row>
+              <entry>Oracle&#174; Infrastructure</entry>
+              <entry>Oracle&#174; WebLogic 12c (12.2.1.4.0)</entry>
+            </row>
+            <row>
+              <entry>Oracle&#174; Database</entry>
+              <entry>Oracle&#174; RDBMS 12c (12.2.0.1.0) or higher</entry>
+            </row>
+            <row>
+              <entry>Oracle&#174; Access Management</entry>
+              <entry>Oracle&#174; Access Management 12c Release 12.2.1.4.0</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="about-cmp-upg">
+      <title>Required Patches</title>
+      <para>
+         These are the software components and versions required to install and use the extension.
+      </para>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="15em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Component</entry>
+              <entry>Version</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Oracle&#174; Access Management</entry>
+              <entry>Oracle&#174; Fusion Middleware Bundle Patch 12.2.1.4.240415</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="about-use">
+    <title>Anwendungsempfehlung</title>
+    <para>
+      Single sign-on (SSO) systems allow users to authenticate once and then access multiple different systems.
+      There are many SSO systems for web applications, but it seems that these systems all use the same basic operating principle.
+      This general flow of access management is described below:
+    </para>
+    <figure xml:id="about-use-fig">
+      <title>Access Manager in Context of Single Sign On</title>
+      <mediaobject>
+        <alt>SSO Context</alt>
+        <imageobject>
+          <!--
+           | The location of the image path must be relative to xml:base set
+           | at the enclosing book element
+           -->
+         <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/images/en/sso-principles.png" format="PNG"/>
+       </imageobject>
+      </mediaobject>
+    </figure>
+    <orderedlist continuation="restart">
+      <listitem>
+        <para>
+          A user requests access to Application 1, which then checks whether a local session exists for the user.
+          If this does not exist, the application redirects the user to the Access Server of the access control.
+        </para>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          The Access Server of the access control checks whether an SSO session exists.
+          Since no session exists yet, the Access Server of the access control challenge the user to authenticate.
+        </para>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          After the data for authentication has been provided, it is carried out using an external service.
+          In the simplest case, this is a directory service; in more complex environments, external identity providers (IdPs) are also used.
+          If authentication is successful, the access control sets up a session (SSO session) for the user's web browser.
+          This is the crucial part of the SSO mechanism.
+        </para>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          The user is redirected back to Application 1 and the application in turn typically creates a local session for the user.
+        </para>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          The user interacts with application 1.
+        </para>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          When the user tries to access application 2, it first checks, like application 1, whether a local session exists for the user.
+          If this does not exist, the application redirects the user to the Access Server of the access control, like application 1.
+        </para>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Access control checks again whether an SSO session exists.
+          Since the user has previously authenticated on the Access Server of the access control, a valid SSO session exists.
+        </para>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Access control does not need to re-authenticate the user and immediately redirects the user back to Application 2.
+        </para>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Application 2, in turn, establishes a local session with the user and continues normally.
+        </para>
+        <para/>
+      </listitem>
+    </orderedlist>
+  </section>
+  <section xml:id="about-nls">
+    <title>Supported Languages</title>
+    <para>
+      The extension supports the following languages:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>English</para>
+        <para/>
+      </listitem>
+    </itemizedlist>
+  </section>
+</chapter>

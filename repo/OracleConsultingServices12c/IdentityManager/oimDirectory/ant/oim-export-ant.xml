@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Oracle Consulting Services Identity Manager Deployment Exporter"
+         basedir        ="../"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name"      value="../log/oim-export-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Generic Directory Service Base Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Definition
+  **           o Lookup Definition
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports the Connector Base Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gds-resource-dm.xml"
+                        description="Generic Directory Service IT Resource Type Configuration ${application.release}">
+        <object:category value="ITResourceDef" name="Generic Directory Service"/>
+      </object:exportSet>
+      <!-- export the adapter configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gds-adapter-dm.xml"
+                        description="Generic Directory Service Adpater Configuration ${application.release}">
+        <object:category value="PrepopAdapter" name="adpGDSPREPOPULATESTRING"/>
+        <object:category value="PrepopAdapter" name="adpGDSPREPOPULATEDATE"/>
+
+        <object:category value="TaskAdapter"   name="adpGDSCREATECOUNTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETECOUNTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSENABLECOUNTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSDISABLECOUNTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSRENAMECOUNTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSMOVECOUNTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATECOUNTRYATTRIBUTE"/>
+
+        <object:category value="TaskAdapter"   name="adpGDSCREATELOCALITY"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETELOCALITY"/>
+        <object:category value="TaskAdapter"   name="adpGDSENABLELOCALITY"/>
+        <object:category value="TaskAdapter"   name="adpGDSDISABLELOCALITY"/>
+        <object:category value="TaskAdapter"   name="adpGDSRENAMELOCALITY"/>
+        <object:category value="TaskAdapter"   name="adpGDSMOVELOCALITY"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATELOCALITYATTRIBUTE"/>
+
+        <object:category value="TaskAdapter"   name="adpGDSCREATEROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSENABLEROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSDISABLEROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSRENAMEROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSMOVEROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEROLEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDROLEMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEROLEMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEROLEMULTIVALUE"/>
+
+        <object:category value="TaskAdapter"   name="adpGDSCREATEGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSENABLEGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSDISABLEGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSRENAMEGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSMOVEGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEGROUPATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDGROUPMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEGROUPMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEGROUPMULTIVALUE"/>
+
+        <object:category value="TaskAdapter"   name="adpGDSCREATEORGANIZATION"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEORGANIZATION"/>
+        <object:category value="TaskAdapter"   name="adpGDSENABLEORGANIZATION"/>
+        <object:category value="TaskAdapter"   name="adpGDSDISABLEORGANIZATION"/>
+        <object:category value="TaskAdapter"   name="adpGDSRENAMEORGANIZATION"/>
+        <object:category value="TaskAdapter"   name="adpGDSMOVEORGANIZATION"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEORGANIZATIONATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDORGANIZATIONMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEORGANIZATIONMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEORGANIZATIONMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDORGANIZATIONTOROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSREMOVEORGANIZATIONFROMROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDORGANIZATIONTOGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSREMOVEORGANIZATIONFROMGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSCREATEORGANIZATIONALUNIT"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEORGANIZATIONALUNIT"/>
+        <object:category value="TaskAdapter"   name="adpGDSENABLEORGANIZATIONALUNIT"/>
+        <object:category value="TaskAdapter"   name="adpGDSDISABLEORGANIZATIONALUNIT"/>
+        <object:category value="TaskAdapter"   name="adpGDSRENAMEORGANIZATIONALUNIT"/>
+        <object:category value="TaskAdapter"   name="adpGDSMOVEORGANIZATIONALUNIT"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEORGANIZATIONALUNITATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDORGANIZATIONALUNITMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEORGANIZATIONALUNITMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEORGANIZATIONALUNITMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDORGANIZATIONALUNITTOROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSREMOVEORGANIZATIONALUNITFROMROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDORGANIZATIONALUNITTOGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSREMOVEORGANIZATIONALUNITFROMGROUP"/>
+
+        <object:category value="TaskAdapter"   name="adpGDSCREATEENTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEENTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSENABLEENTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSDISABLEENTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSRENAMEENTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSMOVEENTRY"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEENTRYATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDENTRYMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEENTRYMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEENTRYMULTIVALUE"/>
+
+        <object:category value="TaskAdapter"   name="adpGDSCREATEACCOUNT"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEACCOUNT"/>
+        <object:category value="TaskAdapter"   name="adpGDSENABLEACCOUNT"/>
+        <object:category value="TaskAdapter"   name="adpGDSDISABLEACCOUNT"/>
+        <object:category value="TaskAdapter"   name="adpGDSUNLOCKACCOUNT"/>
+        <object:category value="TaskAdapter"   name="adpGDSLOCKACCOUNT"/>
+        <object:category value="TaskAdapter"   name="adpGDSRENAMEACCOUNT"/>
+        <object:category value="TaskAdapter"   name="adpGDSMOVEACCOUNT"/>
+        <object:category value="TaskAdapter"   name="adpGDSSETACCOUNTPASSWORD"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEACCOUNTPASSWORD"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEACCOUNTATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDACCOUNTMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSDELETEACCOUNTMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSUPDATEACCOUNTMULTIVALUE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDACCOUNTTOROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSREMOVEACCOUNTFROMROLE"/>
+        <object:category value="TaskAdapter"   name="adpGDSADDACCOUNTTOGROUP"/>
+        <object:category value="TaskAdapter"   name="adpGDSREMOVEACCOUNTFROMGROUP"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gds-scheduler-dm.xml"
+                        description="Generic Directory Service Scheduler Configuration ${application.release}">
+        <object:category value="scheduledTask" name="GDS Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Country Target Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Generic Target Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Locality Target Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Organization Target Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Organizational Unit Target Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Account Target Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Country Trusted Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Locality Trusted Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Organization Trusted Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Organizational Unit Trusted Reconciliation"/>
+        <object:category value="scheduledTask" name="GDS Identity Trusted Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Generic Directory Service Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Lookup Definition
+  **           o Resource Form
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Exports the Connector Target Configuration ${application.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Reset Scheduled Job to deployment defaults"/>
+    <operation:scheduler contextRef="oim-context" operation="update">
+      <job name="GDS Directory Hierarchy Lookup Reconciliation" status="true" task="GDS Lookup Reconciliation">
+        <trigger>
+          <none/>
+        </trigger>
+        <parameter name="IT Resource"          datatype="String"  encrypted="false" required="true" value="GDS Server"/>
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+        <parameter name="Search Filter"        datatype="String"  encrypted="false" required="true" value="(|(objectClass=orclContainer)(objectClass=country)(objectClass=locality)(objectClass=organization)(objectClass=organizationalUnit))"/>
+      </job>
+      <job name="GDS Group Lookup Reconciliation" status="true" task="GDS Lookup Reconciliation">
+        <trigger>
+          <none/>
+        </trigger>
+        <parameter name="IT Resource"          datatype="String"  encrypted="false" required="true" value="GDS Server"/>
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+        <parameter name="Search Filter"        datatype="String"  encrypted="false" required="true" value="(objectClass=groupOfUniqueNames)"/>
+      </job>
+      <job name="GDS Role Lookup Reconciliation" status="true" task="GDS Lookup Reconciliation">
+        <trigger>
+          <none/>
+        </trigger>
+        <parameter name="IT Resource"          datatype="String"  encrypted="false" required="true" value="GDS Server"/>
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+        <parameter name="Search Filter"        datatype="String"  encrypted="false" required="true" value="(objectClass=groupOfUniqueNames)"/>
+      </job>
+      <job name="GDS Account Target Reconciliation" status="true" task="GDS Account Target Reconciliation">
+        <trigger>
+          <none/>
+        </trigger>
+        <parameter name="IT Resource"          datatype="String"  encrypted="false" required="true" value="GDS Server"/>
+        <parameter name="Last Reconciled"      datatype="String"  encrypted="false" required="true" value="0"/>
+        <parameter name="Search Filter"        datatype="String"  encrypted="false" required="true" value="(objectClass=orclUserV2)"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Exporting objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the IT Resource configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gds-resource-dm.xml"
+                        description="Generic Directory Service IT Resource Configuration ${application.release}">
+        <object:category value="ITResource"    name="GDS Server"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gds-lookup-dm.xml"
+                        description="Generic Directory Service Lookup Definition Configuration ${application.release}">
+        <object:category value="Lookup"        name="GDS.Directory Hierarchy"/>
+        <object:category value="Lookup"        name="GDS.Role"/>
+        <object:category value="Lookup"        name="GDS.Group"/>
+      </object:exportSet>
+      <!-- export the process form configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gds-model-dm.xml"
+                        description="Generic Directory Service Process Form Definition Configuration ${application.release}">
+        <object:category value="Process Form"  name="UD_GDS_ROL"/>
+        <object:category value="Process Form"  name="UD_GDS_GRP"/>
+        <object:category value="Process Form"  name="UD_GDS_CNT"/>
+        <object:category value="Process Form"  name="UD_GDS_LOC"/>
+        <object:category value="Process Form"  name="UD_GDS_ORL"/>
+        <object:category value="Process Form"  name="UD_GDS_OGP"/>
+        <object:category value="Process Form"  name="UD_GDS_ORG"/>
+        <object:category value="Process Form"  name="UD_GDS_OUN"/>
+        <object:category value="Process Form"  name="UD_GDS_URL"/>
+        <object:category value="Process Form"  name="UD_GDS_UGP"/>
+        <object:category value="Process Form"  name="UD_GDS_USR"/>
+      </object:exportSet>
+      <!-- export the provisioning process configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gds-process-dm.xml"
+                        description="Generic Directory Service Process Definition Configuration ${application.release}">
+        <object:category value="Resource"      name="GDS Role"/>
+        <object:category value="Resource"      name="GDS Group"/>
+        <object:category value="Resource"      name="GDS Domain"/>
+        <object:category value="Resource"      name="GDS Country"/>
+        <object:category value="Resource"      name="GDS Locality"/>
+        <object:category value="Resource"      name="GDS Organization"/>
+        <object:category value="Resource"      name="GDS Account"/>
+
+        <object:category value="Process"       name="GDS Role Provisioning"/>
+        <object:category value="Process"       name="GDS Group Provisioning"/>
+        <object:category value="Process"       name="GDS Domain Provisioning"/>
+        <object:category value="Process"       name="GDS Country Provisioning"/>
+        <object:category value="Process"       name="GDS Locality Provisioning"/>
+        <object:category value="Process"       name="GDS Organization Provisioning"/>
+        <object:category value="Process"       name="GDS Account Provisioning"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gds-scheduler-dm.xml"
+                        description="Generic Directory Service Scheduler Configuration ${application.release}">
+        <object:category value="Job"           name="GDS Directory Hierarchy Lookup Reconciliation"/>
+        <object:category value="Job"           name="GDS Role Lookup Reconciliation"/>
+        <object:category value="Job"           name="GDS Group Lookup Reconciliation"/>
+        <object:category value="Job"           name="GDS Domain Target Reconciliation"/>
+        <object:category value="Job"           name="GDS Country Target Reconciliation"/>
+        <object:category value="Job"           name="GDS Locality Target Reconciliation"/>
+        <object:category value="Job"           name="GDS Organization Target Reconciliation"/>
+        <object:category value="Job"           name="GDS Account Target Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Generic Directory Service Trusted Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o Lookup Definition
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="trusted" description="Exports the Connector Trusted Configuration ${application.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/trusted/gds-process-dm.xml"
+                        description="Generic Directory Service Process Definition Configuration ${application.release}">
+        <object:category value="Resource"      name="GDS Trusted Identity"/>
+        <object:category value="Process"       name="GDS Identity Reconciliation"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/trusted/gds-scheduler-dm.xml"
+                        description="Generic Directory Service Scheduler Configuration ${application.release}">
+        <object:category value="Job"           name="GDS Domain Trusted Reconciliation"/>
+        <object:category value="Job"           name="GDS Domain Trusted Delete Reconciliation"/>
+        <object:category value="Job"           name="GDS Country Trusted Reconciliation"/>
+        <object:category value="Job"           name="GDS Country Trusted Delete Reconciliation"/>
+        <object:category value="Job"           name="GDS Locality Trusted Reconciliation"/>
+        <object:category value="Job"           name="GDS Locality Trusted Delete Reconciliation"/>
+        <object:category value="Job"           name="GDS Organization Trusted Reconciliation"/>
+        <object:category value="Job"           name="GDS Organization Trusted Delete Reconciliation"/>
+        <object:category value="Job"           name="GDS Organizational Unit Trusted Reconciliation"/>
+        <object:category value="Job"           name="GDS Organizational Unit Trusted Delete Reconciliation"/>
+        <object:category value="Job"           name="GDS Identity Trusted Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Exports the project artifacts from the target host and Identity Manager Instance"/>
+</project>

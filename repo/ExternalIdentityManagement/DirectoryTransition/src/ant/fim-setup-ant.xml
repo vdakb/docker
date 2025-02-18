@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name ="Directory Service Deployment Controller" basedir="../../deployment/oud">
+  <!--
+  =====================================================================
+  == custom type and task definitions
+  =====================================================================
+  -->
+  <import file="../../tpl/ods-context.xml"/>
+  <import file="../../tpl/ant/fim-setup.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Oracle Directory Servers">
+    <record name="${oud.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <call-targets package="0001,0002,0003,0004,0005,0006"/>
+    <echo message="============================================================="/>
+    <echo message="Please restart Directory Server"/>
+    <echo message="============================================================="/>
+    <record name="${oud.recorder.name}" action="stop"/>
+  </target>
+</project>

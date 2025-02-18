@@ -1,0 +1,90 @@
+{ "schemas"    : [
+    "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+  ]
+, "Operations"   : [
+    { "op"       : "add"
+    , "value"    : {
+        "emails" : [
+          { "value" : "babs@jensen.org"
+          , "type"  : "home"
+          }
+        ]
+      , "nickname"  : "Babs"
+      }
+    }
+  , { "op"       : "remove"
+    , "path"     : "emails[type eq \"work\" and value ew \"example.com\"]"
+    }
+  , { "op"       : "remove"
+    , "path"     : "meta"
+    }
+  , { "op"       : "add"
+    , "path"     : "members"
+    , "value"    : [
+        { "display" : "Babs Jensen"
+        , "$ref"    : "https://example.com/v2/Users/2819c223...413861904646"
+        , "value"   : "2819c223-7f76-453a-919d-413861904646"
+        }
+      , { "display" : "James Smith"
+        , "$ref"    : "https://example.com/v2/Users/08e1d05d...473d93df9210"
+        , "value"   : "08e1d05d-121c-4561-8b96-473d93df9210"
+        }
+      ]
+    }
+  , { "op"       : "replace"
+    , "path"     : "members2"
+    , "value"    : [
+        { "display" : "Babs Jensen"
+        , "$ref"    : "https://example.com/v2/Users/2819c223...413861904646"
+        , "value"   : "2819c223...413861904646"
+        }
+      , { "display" : "James Smith"
+        , "$ref"    : "https://example.com/v2/Users/08e1d05d...473d93df9210"
+        , "value"   : "08e1d05d...473d93df9210"
+        }
+      ]
+    }
+  , { "op"       : "replace"
+    , "path"     : "addresses[type eq \"work\"]"
+    , "value"    : {
+        "type"          : "work"
+      , "streetAddress" : "911 Universal City Plaza"
+      , "locality"      : "Hollywood"
+      , "region"        : "CA"
+      , "postalCode"    : "91608"
+      , "country"       : "US"
+      , "formatted"     : "911 Universal City Plaza\nHollywood, CA 91608 US"
+      , "primary"       : true
+      }
+    }
+  , { "op"       : "replace"
+    , "path"     : "addresses[type eq \"home\"].streetAddress"
+    , "value"    : "1010 Broadway Ave"
+    }
+  , { "op"       : "replace"
+    , "value"    : {
+        "emails2" : [
+          { "value"   : "bjensen@example.com"
+          , "type"    : "work"
+          , "primary" : true
+          }
+        , { "value"   : "babs@jensen.org"
+          , "type"    : "home"
+          }
+        ]
+      , "nickname2"   : "Babs"
+      }
+    }
+  , { "op"       : "remove"
+    , "path"     : "schemas[value eq \"urn:ubid:custom:schema1\"]"
+    }
+  , { "op"       : "replace"
+    , "path"     : "schemas[value eq \"urn:ubid:custom:schema2\"]"
+    , "value"    : "urn:ubid:custom:schema3"
+    }
+  , { "op"       : "add"
+    , "path"     : "urn:ubid:custom:schema4:attr"
+    , "value"    : "somevalue"
+    }
+  ]
+}

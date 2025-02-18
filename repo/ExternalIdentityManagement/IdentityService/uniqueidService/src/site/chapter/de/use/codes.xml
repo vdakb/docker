@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="use-codes"
+         xml:lang="de"
+         version ="5.0">
+  <title>HTTP-Statuscodes</title>
+  <para>
+    Die REST-Standards verwenden HTTP-Statuscodes, um den Erfolg oder Misserfolg der Anfragen anzuzeigen.
+    F&#252;r alle Anfragen werden entsprechende HTTP-Statuscodes im JSON-Format zur&#252;ckgegeben, das den Fehler und die Textnachricht enh&#228;lt.
+  </para>
+  <para>
+    Die folgende Tabelle enth&#228;lt m&#246;gliche g&#228;ngige HTTP-Statuscodes.
+  </para>
+  <table colsep="0">
+    <tgroup cols="2">
+      <colspec colname="c1" colwidth="12em"/>
+      <colspec colname="c2" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>HTTP-Statuscode</entry>
+          <entry>Beschreibung</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>200 OK</entry>
+          <entry>
+            Die Anfrage war erfolgreich.
+            Die Antwort enth&#228;lt je nach Anfragemethode die angeforderten Daten.
+          </entry>
+        </row>
+        <row>
+          <entry>201 Created</entry>
+          <entry>
+            Die Anfrage hat dazu gef&#252;hrt, dass erfolgreich eine neue Resource erzeugt wurde.
+            Deren URI kann im Antwortheader <literal>Location</literal> mitgeteilt werden.
+          </entry>
+        </row>
+        <row>
+          <entry>204 No Content</entry>
+          <entry>
+            Die Anfrage wurde akzeptiert und bearbeitet, allerdings existiert kein Inhalt, der zur&#252;ckgesendet werden kann.
+            Clients sollen in diesem Fall den alten Inhalt weiterhin anzeigen. 
+            Zum Beispiel bei einer DELETE-Anfrage.
+          </entry>
+        </row>
+        <row>
+          <entry>307 Temporary Redirect</entry>
+          <entry>
+            Wenn der Client aufgefordert wird, dieselbe HTTP-Anfrage an die angegebene <literal>Location</literal> zu wiederholen.
+            Der Client sollte die in der Antwort angegebene <literal>Location</literal> nicht als permanenten Verweis auf die Ressource verwenden und weiterhin den urspr&#252;nglichen URI verwenden.
+          </entry>
+        </row>
+        <row>
+          <entry>308 Permanent Redirect</entry>
+          <entry>
+            Die angeforderte Ressource steht ab sofort unter der im <literal>Location</literal>-Header angegebenen Adresse bereit, die alte Adresse ist nicht l&#228;nger g&#252;ltig.
+            Der Client soll mit derselben Methode folgen wie beim urspr&#252;nglichen Request (d.?h. einem POST folgt ein POST). 
+            Der Client sollte den in der Antwort angegebene <literal>Location</literal> als permanenten Verweis auf die Ressource verwenden.
+          </entry>
+        </row>
+        <row>
+          <entry>400 Bad Request</entry>
+          <entry>
+            Der Client hat eine fehlerhafte Anfrage geschickt, die der Server aufgrund fehlerhafter Syntax nicht bearbeiten kann. 
+            Zum Beispiel ein Validierungsfehler, fehlende Daten oder eine falsche Filtersyntax.
+            Der Client sollte die Anfrage ohne Korrektur der fehlerhaften Daten nicht wiederholen
+          </entry>
+        </row>
+        <row>
+          <entry>401 Unauthorized</entry>
+          <entry>
+            Die Anfrage kann ohne Autorisierung nicht verarbeitet werden.
+          </entry>
+        </row>
+        <row>
+          <entry>403 Forbidden</entry>
+          <entry>
+            Der Zugriff ist dauerhaft verboten.
+            Eine Authorisation wird nicht anerkannt, und der Client soll die Anfrage nicht noch einmal stellen. 
+            Beispiel: L&#246;schoperation ohne ausreichende Berechtigung.
+          </entry>
+        </row>
+        <row>
+          <entry>404 Not Found</entry>
+          <entry>
+            Der Server konnte die vom Client angeforderte Ressource nicht finden.
+            Der Status 404 kann ebenfalls zur&#252;ckgeliefert werden, wenn kein anderer Statuscode zutreffend ist oder der Client bewusst ohne Angabe eines n&#228;heren Grundes abgewiesen werden soll. 
+          </entry>
+        </row>
+        <row>
+          <entry>405 Method Not Allowed</entry>
+          <entry>
+            Die Anfrage-Methode (wie GET oder POST) ist nicht erlaubt.
+            Diese Antwort kann z.B. zur&#252;ckkommen, wenn man WebDAV-Methoden verwendet, ohne dass der Server diese beherrscht.
+            In einem <literal>Allow</literal>-Header listet der Server alle erlaubte Methoden auf. 
+          </entry>
+        </row>
+        <row>
+          <entry>406 Not Acceptable</entry>
+          <entry>
+            Die Ressource kann nicht in einer vom Client angefragten Form geliefert werden.
+            Z.B. kann nach Daten mit dem Medientyp <literal>application/xml</literal> angefragt werden, der Server findet aber nur einen Treffer f&#252;r <literal>application/json</literal>.
+          </entry>
+        </row>
+        <row>
+          <entry>408 Request Time-out</entry>
+          <entry>
+            Die Anfrage wurde vom Client nicht in der vom Server vorgegebenen Zeit beendet.
+            Der Fehler kann z.B. beim Verarbeiten gro&#223;er Datenmengen auftreten. 
+          </entry>
+        </row>
+        <row>
+          <entry>409 Conflict</entry>
+          <entry>
+            Die Anfrage kann nicht bearbeitet werden, weil sich dadurch ein Konfliktfall bei der angefragten Ressource ergeben w&#252;rde.
+            Soll z. B. eine Ressource per PUT-Methode ver&#228;ndert werden, die aber auf dem Server bereits eine neuere Version aufweist, w&#252;rde die Bearbeitung einen Konflikt erzeugen. 
+          </entry>
+        </row>
+        <row>
+          <entry>411 Length Required</entry>
+          <entry>
+            Die Bearbeitung der Anfrage ohne <literal>Content-Length</literal>-Header wird vom Server abgelehnt.
+          </entry>
+        </row>
+        <row>
+          <entry>500 Internal Server Error</entry>
+          <entry>
+            Der Server entdeckt einen internen Fehler und kann deshalb die Anfrage nicht bearbeiten.
+            Fehler in Programmen auf dem Server, z.B. in Skripten, k&#246;nnen diese Antwort provozieren. 
+          </entry>
+        </row>
+        <row>
+          <entry>501 Not Implemented</entry>
+          <entry>
+            Der Server verf&#252;gt nicht &#252;ber die n&#246;tige Funktionalit&#228;t, um die Anfrage zu verarbeiten.
+            Diese Antwort ist angemessen, wenn die in der Anfrage verwendete HTTP-Methode nicht erkannt oder unterst&#252;tzt wird. 
+          </entry>
+        </row>
+        <row>
+          <entry>503 Service Unavailable</entry>
+          <entry>
+            Der Dienst ist derzeit nicht verf&#252;gbar.
+            Dies kann aufgrund hohen Datenaufkommens oder wegen Wartungsarbeiten passieren. 
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+</section>

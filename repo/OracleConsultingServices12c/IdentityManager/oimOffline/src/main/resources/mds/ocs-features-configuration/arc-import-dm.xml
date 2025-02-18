@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@leslie.vm.oracle.com:1521/metadata.vm.oracle.com" description="Offline Catalog Foundation Configuration Revision 1.0.0.0" exported-date="1348385190526" user="XELSYSADM" version="2.0.2.0">
+  <eventhandlers mds-file="import.xml" mds-path="/metadata/ocs-features-configuration/arc" name="/metadata/ocs-features-configuration/arc" repo-type="MDS">
+    <completeXml>
+      <descriptor xmlns              ="http://www.oracle.com/schema/oim/mapping"
+                  identifier         ="ENTITY_NAME"
+                  riskLevel          ="ITEM_RISK"
+                  multiValueSeparator=","
+                  dateFormat         ="yyyy-MM-dd"
+                  timestampFormat    ="yyyy-MM-dd hh:mm:ss"
+                  nullValue          ="null"
+                  transformation     ="true"
+                  natively           ="true">
+        <dublicate   uniqueName="keepFirst"/>
+
+        <attribute   name="ENTITY_NAME"         source="id"/>
+        <attribute   name="ENTITY_DISPLAY_NAME" source="displayName"/>
+        <attribute   name="ENTITY_DESCRIPTION"  source="description"/>
+        <attribute   name="CATEGORY"            source="category"/>
+        <attribute   name="ITEM_RISK"           source="risk"/>
+        <attribute   name="AUDIT_OBJECTIVE"     source="auditObjective"/>
+        <attribute   name="CERTIFIABLE"         source="certifiable"/>
+        <attribute   name="APPROVER_USER"       source="approverUser"/>
+        <attribute   name="APPROVER_ROLE"       source="approverRole"/>
+        <attribute   name="FULFILLMENT_USER"    source="fulfillmentUser"/>
+        <attribute   name="FULFILLMENT_ROLE"    source="fulfillmentRole"/>
+        <attribute   name="CERTIFIER_USER"      source="certifierUser"/>
+        <attribute   name="CERTIFIER_ROLE"      source="certifierRole"/>
+        <attribute   name="USER_DEFINED_TAGS"   source="tags"/>
+
+        <transformer name="APPROVER_USER"       class="oracle.iam.identity.utility.NameToUser"/>
+        <transformer name="CERTIFIER_USER"      class="oracle.iam.identity.utility.NameToUser"/>
+        <transformer name="FULFILLMENT_USER"    class="oracle.iam.identity.utility.NameToUser"/>
+        <transformer name="APPROVER_ROLE"       class="oracle.iam.identity.utility.NameToRole"/>
+        <transformer name="CERTIFIER_ROLE"      class="oracle.iam.identity.utility.NameToRole"/>
+        <transformer name="FULFILLMENT_ROLE"    class="oracle.iam.identity.utility.NameToRole"/>
+        <transformer name="CERTIFIABLE"         class="oracle.iam.identity.utility.BooleanToNumeric"/>
+
+        <entitlement type="SAP UM"              source="Master system name"/>
+      </descriptor>
+    </completeXml>
+  </eventhandlers>
+</xl-ddm-data>

@@ -1,0 +1,24 @@
+-- D:\Project\Bundeskriminalamt12c\ExternalIdentityManagement\IdentityService\identityIdentifier\src\main\resources\dbs\qms\obj\qms_txc.con
+--
+-- Generated for Oracle Database 12c on Fri Mar 11 12.47.21 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Constraints on 'qms_transactions'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key on 'qms_transactions'
+ALTER TABLE qms_transactions
+  ADD (
+    CONSTRAINT qms_txc_pk PRIMARY KEY (
+      id
+    )
+  )
+/
+PROMPT Creating Check Constraint on 'qms_transactions'
+ALTER TABLE qms_transactions
+  ADD (
+    CONSTRAINT qms_need_to_close_transaction CHECK (
+      status <> 'OPEN'
+    )
+    DEFERRABLE INITIALLY DEFERRED
+  )
+/

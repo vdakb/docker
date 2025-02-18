@@ -1,0 +1,76 @@
+<u:composition xmlns   ="http://www.w3.org/1999/xhtml"
+               xmlns:f ="http://xmlns.jcp.org/jsf/core"
+               xmlns:h ="http://xmlns.jcp.org/jsf/html"
+               xmlns:p ="http://primefaces.org/ui"
+               xmlns:e ="http://primefaces.org/ui/extensions"
+               xmlns:u ="http://java.sun.com/jsf/facelets">
+  <h:form id="f02">
+    <div class="form-group row">
+      <p:outputLabel id="ol21" styleClass="col-sm-1 form-control" value="#{uid$bundle['uid.tenant.label']} *" for="it21"/>
+      <p:inputText   id="it21" styleClass="col-sm-2"              value="#{identifier.selected.tenant}" required="true" label="#{uid$bundle['uid.tenant.label']}" requiredMessage="#{uid$bundle['uid.tenant.required']}" disabled="#{identifier.modify}">
+        <p:ajax event="change" update="cb31 cb32 cb33" listener="#{identifier.changed}"/>
+      </p:inputText>
+      <p:commandButton id="cb21" styleClass="col-form-label" icon="fa fa-search" action="#{identifier.onTenantPick}" immediate="true">
+        <p:ajax event="dialogReturn" listener="#{identifier.onTenantReturn}" update="it21 cb31 cb32 cb33"/>
+      </p:commandButton>
+      <p:outputLabel   id="ol22" styleClass="col-sm-1 form-control" value="#{uid$bundle['uid.state.label']} *" for="@next"/>
+      <p:selectOneMenu id="om22" styleClass="col-sm-2"              value="#{identifier.selected.state}" converter="#{statusConverter}" panelStyle="width:180px" effect="fade">
+        <f:selectItems value="#{identifier.state}" var="locale" itemLabel="#{state.name}" itemValue="#{state}"/>
+        <p:ajax event="change" update="cb31 cb32 cb33" listener="#{identifier.changed}"/>
+      </p:selectOneMenu>
+    </div>
+    <p:message id="ms21" for="it21" styleClass="col-sm-4"/>
+    <div class="form-group row">
+      <p:outputLabel id="ol23" styleClass="col-sm-1 form-control" value="#{uid$bundle['uid.type.label']} *" for="@next"/>
+      <p:inputText   id="it23" styleClass="col-sm-2"              value="#{identifier.selected.type}" required="true" label="#{uid$bundle['uid.type.label']}" requiredMessage="#{uid$bundle['uid.type.required']}">
+        <p:ajax event="change" update="cb31 cb32 cb33" listener="#{identifier.changed}"/>
+      </p:inputText>
+      <p:commandButton id="cb22" styleClass="col-form-label" icon="fa fa-search" action="#{identifier.onTypePick}" immediate="true">
+        <p:ajax event="dialogReturn" listener="#{identifier.onTypeReturn}" update="it23 cb31 cb32 cb33"/>
+      </p:commandButton>
+    </div>
+    <p:message id="ms23" for="it23" styleClass="col-sm-4"/>
+    <div class="form-group row">
+      <p:outputLabel id="ol24" styleClass="col-sm-1 form-control" value="#{uid$bundle['uid.external.label']} *" for="@next"/>
+      <p:inputText   id="it24" styleClass="col-sm-2"              value="#{identifier.selected.external}" required="true" label="#{uid$bundle['uid.external.label']}" requiredMessage="#{uid$bundle['uid.external.required']}">
+        <p:ajax event="change" update="cb31 cb32 cb33" listener="#{identifier.changed}"/>
+      </p:inputText>
+      <p:commandButton id="cb24" styleClass="col-form-label" icon="fa fa-refresh" immediate="true">
+      </p:commandButton>
+    </div>
+    <p:message id="ms24" for="it24" styleClass="col-sm-4"/>
+    <p:toolbar id="tb21" styleClass="mt-4 mb-4">
+      <p:toolbarGroup id="tg21" align="right" styleClass="mr-4">
+        <p:commandButton id            ="cb31"
+                         icon          ="fa fa-check"
+                         value         ="#{app$bundle['action.save.label']}"
+                         styleClass    ="mr-2 ui-button-primary"
+                         disabled      ="#{!identifier.changed}"
+                         actionListener="#{identifier.save}"
+                         update        =":msg :md :f02:cb31 :f02:cb32 :f02:cb33"/>
+        <p:commandButton id            ="cb32"
+                         icon          ="fa fa-undo"
+                         action        ="#{identifier.discard}"
+                         process       ="@this"
+                         value         ="#{app$bundle['action.discard.label']}"
+                         styleClass    ="mr-4 ui-button-secondary ui-button-outlined"
+                         disabled      ="#{!identifier.changed}"
+                         immediate     ="true"
+                         update        =":f02 :f02:cb31 :f02:cb32 :f02:cb33">
+          <p:resetInput target="f02" clearModel="true"/>
+        </p:commandButton>
+        <p:commandButton id            ="cb33"
+                         icon          ="fa fa-times"
+                         action        ="#{identifier.abort}"
+                         process       ="@this"
+                         value         ="#{app$bundle['action.cancel.label']}"
+                         styleClass    ="ui-button-secondary ui-button-outlined"
+                         immediate     ="true"
+                         update        =":msg md f01:t01">
+          <p:confirm header="#{app$bundle['dialog.title.confirm']}" message="#{app$bundle['dialog.leave.confirm']}" icon="pi pi-exclamation-triangle" disabled="#{!identifier.changed}"/>
+          <e:selectDetailLevel level="1"/>
+        </p:commandButton>
+      </p:toolbarGroup>
+    </p:toolbar>
+  </h:form>
+</u:composition>

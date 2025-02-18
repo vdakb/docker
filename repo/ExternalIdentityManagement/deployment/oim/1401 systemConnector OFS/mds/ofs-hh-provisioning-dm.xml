@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="jdbc:oracle:thin:@buster.cinnamonstar.net:7021/mdr.cinnamonstar.net" description="openfire Database Connector Configuration 12.2.1.3 Police Hamburg" exported-date="1597846956397" user="XELSYSADM" version="12.2.1.3.0">
+  <eventhandlers mds-file="ofs-hh-account-provisioning.xml" mds-path="/metadata/bka-features-provisioning/dbs" name="/metadata/bka-features-provisioning/dbs" repo-type="MDS">
+    <completeXml>
+      <descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+                  identifier    ="UD_OFHH_USR_UID"
+                  uniqueName    ="UD_OFHH_USR_UID"
+                  transformation="false">
+        <attribute type="string"  name="__NAME__"        source="UD_OFHH_USR_UID">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string"  name="__PASSWORD__"    source="UD_OFHH_USR_PWD">
+          <flag>sensitive</flag>
+        </attribute>
+        <attribute type="string"  name="name"            source="UD_OFHH_USR_NAME">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="string"  name="email"           source="UD_OFHH_USR_MAIL">
+          <flag>required</flag>
+        </attribute>
+        <attribute type="boolean" name="administrator"   source="UD_OFHH_USR_ADM">
+          <flag>required</flag>
+        </attribute>
+        <!--
+         | child form providing access only on column names not labels hence for
+         | any clone of the connector we need a new decriptor; aaargggh
+         | -->
+        <multivalue name="group" source="UD_OFHH_UGP" transformation="false">
+          <attribute type="string" name="__UID__"        source="UD_OFHH_UGP_GID">
+            <flag>required</flag>
+            <flag>entitlement</flag>
+          </attribute>
+          <attribute type="boolean" name="administrator" source="UD_OFHH_UGP_ADM"/>
+        </multivalue>
+      </descriptor>
+    </completeXml>
+  </eventhandlers>
+</xl-ddm-data>

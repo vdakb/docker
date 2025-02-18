@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Copyright (c) 2008, 2015, Oracle and/or its affiliates.
+All rights reserved.-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <af:panelStretchLayout id="psl1_vtt" inlineStyle="width:100%;">
+    <f:facet name="center">
+      <af:toolbox id="ohwVTToolBox">
+        <af:toolbar id="viewTopicToolbar" flex="2" stretchId="stretchVTToolbar">
+          <af:spacer id="stretchVTToolbar" clientComponent="true"/>
+          <af:inputText id             ="findTextInput"
+                        label          ="#{ohw.richResourceBundle['vtt.find_in_doc']}"
+                        styleClass     ="AFNoWrapMarker"
+                        clientComponent="true">
+              <af:clientListener type="keyPress" method="VTToolBarPeer.handleKeyPress"/>
+          </af:inputText>
+          <af:button id           ="nextFind"
+                     icon         ="helppages.resource?name=next.png"
+                     hoverIcon    ="helppages.resource?name=next_ovr.png"
+                     depressedIcon="helppages.resource?name=next_dwn.png"
+                     shortDesc    ="#{ohw.richResourceBundle['vtt.next_find_tooltip']}"
+                     accessKey    ="n">
+            <af:clientListener type="action" method="VTToolBarPeer.findNextInPage"/>
+          </af:button>
+          <af:button id           ="prevFind"
+                     icon         ="helppages.resource?name=previous.png"
+                     hoverIcon    ="helppages.resource?name=previous_ovr.png"
+                     depressedIcon="helppages.resource?name=previous_dwn.png"
+                     shortDesc    ="#{ohw.richResourceBundle['vtt.prev_find_tooltip']}"
+                     accessKey    ="u">
+            <af:clientListener type="action" method="VTToolBarPeer.findPrevInPage"/>
+          </af:button>
+          <af:outputText id="noTextMatch"  visible="false" clientComponent="true" value="#{ohw.richResourceBundle['vtt.no_match']}"/>
+          <af:outputText id="onlyOneMatch" visible="false" clientComponent="true" value="#{ohw.richResourceBundle['vtt.only_one_match']}"/>
+        </af:toolbar>
+      </af:toolbox>
+    </f:facet>
+  </af:panelStretchLayout>
+</jsp:root>

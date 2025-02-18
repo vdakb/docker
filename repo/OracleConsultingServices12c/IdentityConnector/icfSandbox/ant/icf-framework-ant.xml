@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Connector Framework 12c Sandbox" default="make" basedir=".">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../../../iam-12c-preferences.xml"/>
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="subant-connector">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="icf-connector-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="subant-library">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="icf-library-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="subant-cleanup">
+    <attribute name="subproject"/>
+    <sequential>
+      <exec executable="${svn.executable}">
+        <arg value="cleanup"/>
+        <arg value="--remove-unversioned"/>
+        <arg value="../../@{subproject}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <macrodef name="clean-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Clean Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-connector subtarget="clean"   subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="clean-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Clean Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-library subtarget="clean"   subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="make-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-connector subtarget="clean"   subproject="@{path}"/>
+      <subant-connector subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="make-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-library subtarget="clean"   subproject="@{path}"/>
+      <subant-library subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="deploy-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-connector subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="deploy-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-library subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="deploy-bundle">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Bundle @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-connector subtarget="deploy-bundle" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-connector">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Connector @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-library">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Library @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="cleanup-utility">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Utility @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to make the entire workspace
+  =====================================================================
+  -->
+  <target name="make" description="Package the entire workspace artifacts to the appropriate java archive">
+    <record name="./icf-framework-ant.log" action="start"/>
+    <echo message="============================================================="/>
+    <echo message="Build of Identity Connector Framework"/>
+    <echo message="============================================================="/>
+    <make-library   path="icfIntegration"   component="Framework ICF Integration"/>
+    <make-library   path="icfFoundation"    component="Framework ICF Foundation"/>
+    <make-library   path="icfRmiService"    component="Framework RMI Service"/>
+    <make-library   path="icfCacheService"  component="Framework Cache Service"/>
+    <make-library   path="icfDbmsService"   component="Framework DBMS Service"/>
+    <make-library   path="icfRestService"   component="Framework REST Service"/>
+    <make-library   path="icfScimService"   component="Framework SCIM Service"/>
+    <make-library   path="icfXmppService"   component="Framework XMPP Service"/>
+    <!--
+    Temporarrly commented out until Generic Database Service is fixed
+    <make-connector path="icfDatabase"       component="Generic Database Service Connector"/>
+    -->
+    <make-connector path="icfDirectory"     component="Generic Directory Service Connector"/>
+    <make-connector path="icfRESTFul"       component="Generic WebService Connector"/>
+    <make-connector path="icfAtlassianJira" component="Atlassian Jira Server Connector"/>
+    <make-connector path="icfGoogleApigee"  component="Google Apigee Edge Connector"/>
+    <make-connector path="icfOpenFire"      component="Openfire Connector"/>
+    <make-connector path="icfIdentity"      component="Identity Governance Connector"/>
+    <make-connector path="icfGrafana"       component="Grafana Server Connector"/>
+    <make-connector path="icfKeyCloak"      component="Red Hat Keycloak Connector"/>
+    <make-connector path="icfGitlab"        component="GitLab Connector"/>
+    <xslt style="icf-framework-log.xsl" out="../doc/changelog/icf-framework-log.html" force="true" in="icf-framework-log.xml"/>
+    <record name="./icf-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the entire workspace
+  ==
+  == There is no need to create a dependency on the make target because
+  == any deployment task on the ANT subproject has such dependency
+  == already
+  =====================================================================
+  -->
+  <target name="deploy" description="Deployment of the entire workspace artifacts to the appropriate destination">
+    <record name="./icf-framework-ant.log" action="start" append="true"/>
+    <echo message="============================================================="/>
+    <echo message="Deployment of Identity Connector Framework"/>
+    <echo message="============================================================="/>
+    <deploy-bundle path="icfDatabase"      component="Generic Database Service Connector"/>
+    <deploy-bundle path="icfDirectory"     component="Generic Directory Service Connector"/>
+    <deploy-bundle path="icfRESTFul"       component="Generic WebService Connector"/>
+    <deploy-bundle path="icfGoogleApigee"  component="Google Apigee Edge Connector"/>
+    <deploy-bundle path="icfAtlassianJira" component="Atlassian Jira Server Connector"/>
+    <deploy-bundle path="icfOpenFire"      component="OpenFire Server Connector"/>
+    <deploy-bundle path="icfIdentity"      component="Identity Governance Connector"/>
+    <deploy-bundle path="icfGrafana"       component="Grafana Server Connector"/>
+    <deploy-bundle path="icfKeyCloak"      component="Red Hat Keycloak Connector"/>
+    <deploy-bundle path="icfGitlab"        component="GitLab Connector"/>
+    <record name="./icf-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the entire workspace by leveraging svn
+  == cleanup
+  =====================================================================
+  -->
+  <target name="cleanup" description="Cleanup of the entire workspace artifacts">
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Identity Connector Framework"/>
+    <echo message="============================================================="/>
+    <cleanup-connector path="icfGitlab"        component="GitLab Connector"/>
+    <cleanup-connector path="icfKeyCloak"      component="Red Hat Keycloak Connector"/>
+    <cleanup-connector path="icfGrafana"       component="Grafana Server Connector"/>
+    <cleanup-connector path="icfIdentity"      component="Identity Governance Connector"/>
+    <cleanup-connector path="icfDatabase"      component="Generic Database Service Connector"/>
+    <cleanup-connector path="icfDirectory"     component="Generic Directory Service Connector"/>
+    <cleanup-connector path="icfRESTFul"       component="Generic WebService Connector"/>
+    <cleanup-connector path="icfGoogleApigee"  component="Google Apigee Edge Connector"/>
+    <cleanup-connector path="icfAtlassianJira" component="Atlassian Jira Server Connector"/>
+    <cleanup-connector path="icfOpenFire"      component="OpenFire Server Connector"/>
+    <cleanup-library   path="icfXmppService"   component="Framework XMPP Service"/>
+    <cleanup-library   path="icfScimService"   component="Framework SCIM Service"/>
+    <cleanup-library   path="icfRestService"   component="Framework REST Service"/>
+    <cleanup-library   path="icfDbmsService"   component="Framework DBMS Service"/>
+    <cleanup-library   path="icfRmiService"    component="Framework RMI Service"/>
+    <cleanup-library   path="icfCacheService"  component="Framework Cache Service"/>
+    <cleanup-library   path="icfFoundation"    component="Framework Foundation"/>
+    <cleanup-library   path="icfIntegration"   component="Framework Integration"/>
+    <cleanup-utility   path="icfSandbox"       component="Framework Extension"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables">
+    <echo message="============================================================="/>
+    <echo message="Clean of Identity Connector Framework"/>
+    <echo message="============================================================="/>
+    <clean-connector path="icfGitlab"        component="GitLab Connector"/>
+    <clean-connector path="icfKeyCloak"      component="Red Hat Keycloak Connector"/>
+    <clean-connector path="icfGrafana"       component="Grafana Server Connector"/>
+    <clean-connector path="icfIdentity"      component="Identity Governance Connector"/>
+    <clean-connector path="icfDatabase"      component="Generic Database Service Connector"/>
+    <clean-connector path="icfDirectory"     component="Generic Directory Service Connector"/>
+    <clean-connector path="icfRESTFul"       component="Generic WebService Connector"/>
+    <clean-connector path="icfGoogleApigee"  component="Google Apigee Edge Connector"/>
+    <clean-connector path="icfAtlassianJira" component="Atlassian Jira Server Connector"/>
+    <clean-connector path="icfOpenFire"      component="OpenFire Server Connector"/>
+    <clean-library   path="icfXmppService"   component="Framework XMPP Service"/>
+    <clean-library   path="icfScimService"   component="Framework SCIM Service"/>
+    <clean-library   path="icfRestService"   component="Framework REST Service"/>
+    <clean-library   path="icfDbmsService"   component="Framework DBMS Service"/>
+    <clean-library   path="icfRmiService"    component="Framework RMI Service"/>
+    <clean-library   path="icfCacheService"  component="Framework Cache Service"/>
+    <clean-library   path="icfFoundation"    component="Framework Foundation"/>
+    <clean-library   path="icfIntegration"   component="Framework Integration"/>
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+      <fileset dir="${deploy.dir}" includes="**/*"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create the change documentation based on the data
+  == collected in the file ant/icf-framework-log.xml.
+  == It does some style sheet transformation to create an HTML file of the
+  == information.
+  =====================================================================
+  -->
+  <target name="changelog" description="Creates a changelog in html format">
+    <xslt style="icf-framework-log.xsl" out="../doc/changelog/icf-framework-log.html" force="true" in="icf-framework-log.xml"/>
+  </target>
+</project>

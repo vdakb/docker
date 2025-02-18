@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysauth$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Authorization']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{pageFlowScope.mode == 'view'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysauth$bundle.ENT_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysauth$bundle.ENT_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysauth$bundle.ENT_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysauth$bundle.ENT_ATTRIBUTE}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysauth$bundle.ENT_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysauth$bundle.ENT_CREATE_TITLE : af:formatString(sysauth$bundle.ENT_DETAIL, pageFlowScope.entitlementCode)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysauth$bundle.ENT_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id            ="btn15"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysauth$bundle.ENT_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.entitlementTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.entitlementAttribute.submit}"
+                   action        ="#{pageFlowScope.entitlementTrain.submit}"
+                   styleClass    ="whiteTextButton"
+                   inlineStyle   ="#{pageFlowScope.entitlementTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+        <af:button id            ="btn16"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysauth$bundle.ENT_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.entitlementTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.entitlementAttribute.revert}"
+                   actionListener="#{pageFlowScope.entitlementTrain.revert}"
+                   immediate     ="true">
+          <af:clientAttribute name="attribute" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical" inlineStyle="width:550px;">
+            <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="17%" fieldWidth="83%" binding="#{pageFlowScope.entitlementTrain.formLayout}">
+              <af:spacer  id="sp111" width="0" height="15"/>
+              <af:inputListOfValues id                 ="it111"
+                                    value              ="#{bindings.objectsName.inputValue}"
+                                    label              ="#{bindings.objectsName.hints.label}"
+                                    model              ="#{bindings.objectsName.listOfValuesModel}"
+                                    required           ="#{bindings.objectsName.hints.mandatory}"
+                                    columns            ="#{bindings.objectsName.hints.displayWidth}"
+                                    maximumLength      ="#{bindings.objectsName.hints.precision}"
+                                    shortDesc          ="#{bindings.objectsName.hints.tooltip}"
+                                    disabled           ="true">
+                <f:validator binding="#{bindings.objectsName.validator}"/>
+              </af:inputListOfValues>
+              <af:spacer  id="sp112" width="0" height="15"/>
+              <af:inputListOfValues id                 ="it112"
+                                    value              ="#{bindings.endpointName.inputValue}"
+                                    label              ="#{bindings.endpointName.hints.label}"
+                                    model              ="#{bindings.endpointName.listOfValuesModel}"
+                                    required           ="#{bindings.endpointName.hints.mandatory}"
+                                    columns            ="#{bindings.endpointName.hints.displayWidth}"
+                                    maximumLength      ="#{bindings.endpointName.hints.precision}"
+                                    shortDesc          ="#{bindings.endpointName.hints.tooltip}"
+                                    disabled           ="true">
+                <f:validator binding="#{bindings.endpointName.validator}"/>
+              </af:inputListOfValues>
+              <af:spacer  id="sp113" width="0" height="15"/>
+              <af:inputText id                 ="it113"
+                            value              ="#{bindings.entitlementCode.inputValue}"
+                            label              ="#{bindings.entitlementCode.hints.label}"
+                            required           ="#{bindings.entitlementCode.hints.mandatory}"
+                            columns            ="#{bindings.entitlementCode.hints.displayWidth}"
+                            maximumLength      ="#{bindings.entitlementCode.hints.precision}"
+                            shortDesc          ="#{bindings.entitlementCode.hints.tooltip}"
+                            disabled           ="true">
+                <f:validator binding="#{bindings.displayName.validator}"/>
+              </af:inputText>
+              <af:spacer id="sp114" width="0" height="5"/>
+              <af:inputText id                 ="it114"
+                            value              ="#{bindings.entitlementValue.inputValue}"
+                            label              ="#{bindings.entitlementValue.hints.label}"
+                            required           ="#{bindings.entitlementValue.hints.mandatory}"
+                            columns            ="#{bindings.entitlementValue.hints.displayWidth}"
+                            maximumLength      ="#{bindings.entitlementValue.hints.precision}"
+                            shortDesc          ="#{bindings.entitlementValue.hints.tooltip}"
+                            disabled           ="true">
+                <f:validator binding="#{bindings.entitlementValue.validator}"/>
+              </af:inputText>
+              <af:spacer id="sp115" width="0" height="5"/>
+              <af:inputText id                 ="it115"
+                            value              ="#{bindings.displayName.inputValue}"
+                            label              ="#{bindings.displayName.hints.label}"
+                            required           ="#{bindings.displayName.hints.mandatory}"
+                            columns            ="#{bindings.displayName.hints.displayWidth}"
+                            maximumLength      ="#{bindings.displayName.hints.precision}"
+                            shortDesc          ="#{bindings.displayName.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.entitlementAttribute.changed}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.displayName.validator}"/>
+              </af:inputText>
+              <af:spacer id="sp116" width="0" height="5"/>
+              <af:inputText id                 ="it116"
+                            value              ="#{bindings.description.inputValue}"
+                            label              ="#{bindings.description.hints.label}"
+                            required           ="#{bindings.description.hints.mandatory}"
+                            columns            ="#{bindings.description.hints.displayWidth}"
+                            rows               ="5"
+                            maximumLength      ="#{bindings.description.hints.precision}"
+                            shortDesc          ="#{bindings.description.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.entitlementAttribute.changed}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.description.validator}"/>
+              </af:inputText>
+            </af:panelFormLayout>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

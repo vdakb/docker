@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="uid-search"
+         xml:lang="en"
+         version ="5.0">
+  <title>Search for Unique Identifiers</title>
+  <para>
+    <restapi role="search">/igs/uid/v1/uid</restapi>
+  </para>
+  <para>
+    Search unique identifiers based on filter criteria.
+  </para>
+  <section xml:id="uid-search-p">
+    <title>Request</title>
+    <warning>
+      <title>Permission</title>
+      <para>Access to this resource method requires <emphasis role="strong">uid.generate</emphasis> or <emphasis role="strong">uid.register</emphasis> elevated permission.</para>
+    </warning>
+    <bridgehead renderas="sect6">Example</bridgehead>
+    <!--
+    Don't indent what's in the element below
+    -->
+    <programlisting language="bash">
+curl --request GET \
+     --location 'https://&lt;service-host&gt;:&lt;service-port&gt;/igs/uid/v1/uid' \
+     --header 'Accept: application/json' \
+     --header 'Content-Type: application/json' \
+     --header 'Authorization: Bearer &lt;your-token&gt;'
+    </programlisting>
+    <section xml:id="uid-search-h">
+      <title>Request Header</title>
+      <para>
+        Invoking this endpoint requires following request header:
+      </para>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">authorization</emphasis></entry>
+              <entry>string</entry>
+              <entry><emphasis>Bearer</emphasis> appended with the token obtained by <link linkend='uid-arch-token'>Obtaining a Token</link></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="uid-search-q">
+      <title>Query Parameter</title>
+      <para>
+        The supported query parameter are the following:
+      </para>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">startIndex</emphasis></entry>
+              <entry>integer</entry>
+              <entry>no</entry>
+              <entry>
+                <para>The 1-based index of the first query result to return.</para>
+                <para>A value less than 1 is interpreted as 1.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">count</emphasis></entry>
+              <entry>integer</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Specifies the desired maximum number of query results per batch.</para>
+                <para>A negative value is interpreted as 0.</para>
+                <para>A value of 0 indicates that no resource results are to be returned.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">filter</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>
+                <para>The filter criteria to apply on the search.</para>
+                <para>See <link linkend='uid-search-f'>Filter Criteria</link>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">sortBy</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>The sort criteria to apply on the search.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">sortOrder</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>The order in which the sorting is performed, like in ascending or descending order.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">attributes</emphasis></entry>
+              <entry>string list</entry>
+              <entry>no</entry>
+              <entry>The value of this parameter is a comma-separated list of resource attribute names, expressed in standard attribute notation (e.g., id, name).</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">excludedAttributes</emphasis></entry>
+              <entry>string list</entry>
+              <entry>no</entry>
+              <entry>The value of this parameter is a comma-separated list of resource attribute names, expressed in standard attribute notation (e.g., id, name).</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="uid-search-f">
+      <title>Filter Criteria</title>
+      <para>
+        The applicable filter criteria on a search are the following:
+      </para>
+      <table colsep="0">
+        <tgroup cols="10">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="3em"/>
+          <colspec colname="c3" colwidth="3em"/>
+          <colspec colname="c4" colwidth="3em"/>
+          <colspec colname="c5" colwidth="3em"/>
+          <colspec colname="c6" colwidth="3em"/>
+          <colspec colname="c7" colwidth="3em"/>
+          <colspec colname="c8" colwidth="3em"/>
+          <colspec colname="c9" colwidth="3em"/>
+          <colspec colname="c0" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Criteria</entry>
+              <entry>eq</entry>
+              <entry>ne</entry>
+              <entry>co</entry>
+              <entry>sw</entry>
+              <entry>ew</entry>
+              <entry>ge</entry>
+              <entry>gt</entry>
+              <entry>le</entry>
+              <entry>lt</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">tenant</emphasis></entry>
+              <entry>x</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">type</emphasis></entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">external</emphasis></entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">meta.createdBy</emphasis></entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">meta.createdOn</emphasis></entry>
+              <entry>x</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">meta.updatedBy</emphasis></entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">meta.updatedOn</emphasis></entry>
+              <entry>x</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>-</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+              <entry>x</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <important>
+        <title>Important</title>
+        <para>
+          Only exact match is supported for attribute filter criteria tenant.
+        </para>
+      </important>
+      <para>
+        As an example to get all UID's that belongs to tenant <emphasis>T-36-0-20</emphasis> with the account type <emphasis>101</emphasis> formulate:
+      </para>
+      <!--
+      Don't indent what's in the element below
+      -->
+      <programlisting language="bash">
+filter=tenant eq "T-36-0-20" and type eq "101"
+      </programlisting>
+    </section>
+  </section>
+  <section xml:id="uid-search-r">
+    <title>Response</title>
+    <para>
+      The representation of the unique identifiers found containing the attributes whose returnability is <emphasis>default</emphasis>.
+      This can be overridden by supplying <literal>attributes</literal> or <literal>excludedAttributes</literal> query parameters.
+    </para>
+    <para>
+      Status code 200 is returned upon successful operation.
+    </para>
+    <bridgehead renderas="sect6">Example</bridgehead>
+    <!--
+    Don't indent what's in the element below
+    -->
+    <programlisting language="json">
+{ "total": 1
+, "start": 1
+, "items": 1
+, "result": [
+    { "uid": "T-36-0-30-101-4123458"
+    , "state": 1
+    , "meta":
+      { "version": "01"
+      , "createdBy": "igssysadm"
+      , "createdOn": "2022-06-21T15:54:45"
+      , "updatedBy": "igssysadm"
+      , "updatedOn": "2022-06-21T15:54:45"
+      }
+    }
+  ]
+}
+    </programlisting>
+    <para>
+      The output data is in the following form:
+    </para>
+    <table colsep="0">
+      <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Required</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>total</entry>
+            <entry>integer</entry>
+            <entry>yes</entry>
+            <entry>Non-negative integer. Specifies the total number of results matching the query.</entry>
+          </row>
+          <row>
+            <entry>start</entry>
+            <entry>integer</entry>
+            <entry>yes</entry>
+            <entry>The 1-based index of the first result in the current set of query results.</entry>
+          </row>
+          <row>
+            <entry>items</entry>
+            <entry>integer</entry>
+            <entry>yes</entry>
+            <entry>Non-negative integer. Specifies the number of query results that are returned in a query response page.</entry>
+          </row>
+          <row>
+            <entry>result</entry>
+            <entry><link linkend='uid-search-r1'>Resource</link>&#xA0;array</entry>
+            <entry>yes</entry>
+            <entry>The resource array of the populated result set.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <section xml:id="uid-search-r1">
+      <title>Resource</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>uid</entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The unique identifier generated or registered.</entry>
+            </row>
+            <row>
+              <entry>state</entry>
+              <entry>integer</entry>
+              <entry>yes</entry>
+              <entry>The current state of the unique identifier.</entry>
+            </row>
+            <row>
+              <entry>meta</entry>
+              <entry><link linkend='uid-search-r2'>Metadata</link>&#xA0;object</entry>
+              <entry>yes</entry>
+              <entry>The audited metadata of the unique identifier.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="uid-search-r2">
+      <title>Metadata</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>version</entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The current version of the retrieved resource.</entry>
+            </row>
+            <row>
+              <entry>createdBy</entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The user whom created the resource.</entry>
+            </row>
+            <row>
+              <entry>createdOn</entry>
+              <entry>dataTime</entry>
+              <entry>yes</entry>
+              <entry>The timestamp the resource was created.</entry>
+            </row>
+            <row>
+              <entry>updatedBy</entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The user whom last updated the resource.</entry>
+            </row>
+            <row>
+              <entry>updatedOn</entry>
+              <entry>dataTime</entry>
+              <entry>yes</entry>
+              <entry>The timestamp the resource was last updated.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="uid-search-e">
+      <title>Possible Errors</title>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Error Code</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>400</entry>
+              <entry>The access token is invalid or has been revoked.</entry>
+            </row>
+            <row>
+              <entry>401</entry>
+              <entry>The access token is invalid or has been revoked.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+</section>

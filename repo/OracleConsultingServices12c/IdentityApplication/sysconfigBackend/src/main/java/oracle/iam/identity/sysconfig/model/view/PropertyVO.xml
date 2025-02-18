@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+            Name                  ="PropertyVO"
+            UseGlueCode           ="false"
+            BindingStyle          ="OracleName"
+            FetchMode             ="FETCH_AS_NEEDED"
+            RangeSize             ="25"
+            CustomQuery           ="false"
+            FromList              ="PTY PropertyEO"
+            PageIterMode          ="Full"
+            ComponentClass        ="oracle.iam.identity.sysconfig.model.view.PropertyVOImpl"
+            RowClass              ="oracle.iam.identity.sysconfig.model.view.PropertyVORowImpl"
+            InheritPersonalization="merge">
+  <DesignTime>
+    <Attr Name="_isCodegen"    Value="true"/>
+    <Attr Name="_diagramName"  Value="Property View"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
+  </DesignTime>
+  <ListBinding  Name="DataLevelLOV" ListVOName="dataLevelLOV" ListRangeSize="4" NullValueFlag="none" MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="dataLevel"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="encoded"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="decoded"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding  Name="RunOnLOV" ListVOName="runOnLOV" ListRangeSize="2" NullValueFlag="none" MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="runOn"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="encoded"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="decoded"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage Name="PropertyEO" Entity="oracle.iam.identity.sysconfig.model.entity.PropertyEO"/>
+  <ViewAttribute Name="propertyKey" PrecisionRule="true" EntityUsage="PropertyEO" EntityAttrName="propertyKey" AliasName="KEY" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="propertyName" PrecisionRule="true" EntityUsage="PropertyEO" EntityAttrName="propertyName" AliasName="PROPERTYNAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="value" PrecisionRule="true" EntityUsage="PropertyEO" EntityAttrName="value" AliasName="VALUE">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="name" PrecisionRule="true" EntityUsage="PropertyEO" EntityAttrName="name" AliasName="NAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="dataLevel" PrecisionRule="true" EntityUsage="PropertyEO" EntityAttrName="dataLevel" AliasName="DATALEVEL" LOVName="DataLevelLOV">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="system" PrecisionRule="true" EntityUsage="PropertyEO" EntityAttrName="system" AliasName="SYSTEM">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="loginRequired" PrecisionRule="true" EntityUsage="PropertyEO" EntityAttrName="loginRequired" AliasName="LOGINREQUIRED">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="runOn" PrecisionRule="true" EntityUsage="PropertyEO" EntityAttrName="runOn" AliasName="RUNON" LOVName="RunOnLOV">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="radio"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="note" PrecisionRule="true" EntityUsage="PropertyEO" EntityAttrName="note" AliasName="NOTE" IsQueriable="false" IsPersistent="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <!--
+        attribute will be implemented by a text area hence we decrease the
+        default width by 4 to vertical adjust the right border of the UI
+        component with the borders of the other components
+        -->
+        <DISPLAYWIDTH Value="36"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAccessor Name            ="runOnLOV"
+                AMUsageName     ="PropertyAM"
+                ViewInstanceName="PropertyRunOnLOV"
+                RowLevelBinds   ="true"
+                ViewObjectName  ="oracle.iam.identity.sysconfig.model.view.PropertyRunVO"/>
+  <ViewAccessor Name            ="dataLevelLOV"
+                AMUsageName     ="PropertyAM"
+                ViewInstanceName="PropertyDataLevelLOV"
+                RowLevelBinds   ="true"
+                ViewObjectName  ="oracle.iam.identity.sysconfig.model.view.PropertyDataLevelVO"/>
+  <ViewCriteria Name="PropertyVC" ViewObjectName="oracle.iam.identity.sysconfig.model.view.PropertyVO" Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property Name="mode"                     Value="Basic"/>
+        <Property Name="showInList"               Value="true"/>
+        <Property Name="autoExecute"              Value="false"/>
+        <Property Name="displayOperators"         Value="InAdvancedMode"/>
+        <Property Name="allowConjunctionOverride" Value="true"/>
+        <Property Name="displayName"              ResId="pty.search"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow Name="vcrPTY" UpperColumns="1">
+      <ViewCriteriaItem Name="propertyName" ViewAttribute="propertyName" Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="value"        ViewAttribute="value"        Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="name"         ViewAttribute="name"         Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="runOn"        ViewAttribute="runOn"        Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="dataLevel"    ViewAttribute="dataLevel"    Operator="="          Conjunction="AND" Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL        ResId="pty.single"/>
+      <LABEL_PLURAL ResId="pty.multiple"/>
+      <TOOLTIP      ResId="pty.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysconfig.bundle.Backend"/>
+  </ResourceBundle>
+</ViewObject>

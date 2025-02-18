@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="about"
+         xml:lang="en"
+         version ="5.0">
+  <title>Introduction</title>
+  <para>
+    Unless explicitly stated, information here applies equally to both Oracle Access Manager 12c deployments.
+  </para>
+  <para>
+    The Oracle Access Manager Authentication Provider is one of several Providers that operate with Oracle WebLogic Server.
+    The Oracle Access Manager Authentication Provider does not require the entire Oracle WebLogic Suite nor Oracle Java Required Files (JRF) to operate with Oracle Access Manager 12c or 11g.
+  </para>
+  <para>
+    In a WebLogic Server domain where JRF is installed, the JRF template is present as part of the domain in an Oracle Fusion Middleware product.
+    In this case, the OAM Identity Asserter and OAM Authentication Provider are automatically available for configuration.
+    If JRF is not installed in your WebLogic domain, you must add the OAMAuthnProvider.jar to a specific location in your domain as described later.
+  </para>
+  <note>
+    <para>
+      The JRF template is present as part of the domain in an Oracle Fusion Middleware product.
+    </para>
+  </note>
+  <section xml:id="about-jaas">
+    <title>Java Authentication and Authorization Service</title>
+    <para>
+      Java Authentication and Authorization Service (JAAS) is a standard user authentication and authorization model provided by Java integrated in the JDK (under the javax.security.auth path).
+      Simply put, JAAS provides a series of interfaces, and different authentication methods are passed.
+      Implement the interface so that it can be integrated into the java application in the form of a plug-in, under the JAAS architecture diagram.
+    </para>
+    <para>
+      There are several important concepts to understand in JAAS:
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <emphasis role="strong">Subject</emphasis>
+          <para>
+            <emphasis>Subject</emphasis> represents the requester, which may be a person or a device.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <emphasis role="strong">Principal</emphasis>
+          <para>
+            The <emphasis>Principal</emphasis> is associated with the Subject.
+            As mentioned earlier, the <emphasis>Subject</emphasis> means the requester.
+            We can understand the point better with the logged-in user.
+            Then the Principal is the user's account, which may be logged in with a mobile phone number or logged in with an email address.
+            <emphasis>Subject</emphasis> can have multiple Principal.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <emphasis role="strong">LoginModule</emphasis>
+          <para>
+            The specific implementation of authentication, in which the login method implements the login logic, stores the result, and the commit method finally submits the <emphasis>Subject</emphasis> to the context.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <emphasis role="strong">LoginContext</emphasis>
+          <para>
+            <emphasis>LoginContext</emphasis> authentication context, provides a series of authentication methods, is responsible for calling specific authentication implementation (<emphasis>LoginModule</emphasis>), and returns <emphasis>Subject</emphasis> after successful authentication.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <emphasis role="strong">CallbackHandler</emphasis>
+          <para>
+            When <emphasis>LoginModule</emphasis> needs to get authentication information such as username and password, it needs to call <emphasis>CallbackHandler</emphasis> to return this information.
+            In the gui application, <emphasis>CallbackHandler</emphasis> may pop up a window for the user to enter the username and password.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <emphasis role="strong">Callback</emphasis>
+          <para>
+            The user information that <emphasis>LoginModule</emphasis> needs to obtain becomes the <emphasis>Callback</emphasis>.
+            For example, if you need to obtain the user name from the <emphasis>CallbackHandler</emphasis>, a <emphasis>NameHandler</emphasis> will be created.
+            If you need to obtain the password, a <emphasis>PasswordHandler</emphasis> will be created.
+            The <emphasis>CallbackHandler</emphasis> returns the user information according to the type of <emphasis>Callback</emphasis>.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+      </itemizedlist>
+    </para>
+  </section>
+  <section xml:id="about-provider">
+    <title>Provider</title>
+    <para>
+      So what is Provider?
+      In the business system, authentication and authorization have always been the most complicated piece, which is reflected in.
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>
+            Diversity of authentication protocols, such as OAuth2, SAML, etc.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            Diversified authentication methods, such as secondary authentication, verification code authentication, etc.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            Diversity of authentication strategies, for example, there are multiple authentication sources, the strategies can be diversified, it can be that one fails to pass, or it can pass as long as one passes.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            There are still a lot of requirements for custom certification in enterprises. There are no corresponding standards when some systems are launched, so they are all self-developed.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            The password authentication strategy is diverse.
+            Most system password storage is irreversible.
+            If the password is not stored in a service such as LDAP at the beginning, if you want to upgrade later, you will not be able to get the original password, then you need to customize password authentication.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      In short, authentication is not as simple as username and password verification, so weblogic provides different providers for different authentication scenarios.
+      As a mature commercial server, weblogic naturally includes most of the authentication scenarios.
+      Taking weblogic 12c as an example, it includes the following providers
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>
+            SAML2IdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            X3gppAssertedIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            X3gppAssertedIdentityStrictAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            DBMSDigestIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            IdentityAssertionAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            IdentityHeaderAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            LdapDigestIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            PAssertedIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            PAssertedIdentityStrictAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            CrossTenantAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            TrustServiceIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            OSSOIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            OAMIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            OAMAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            ActiveDirectoryAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            CustomDBMSAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            DefaultAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            DefaultIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            IPlanetAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            LDAPAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            LDAPX509IdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            NegotiateIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            NovellAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            OpenLDAPAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            OracleInternetDirectoryAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            OracleVirtualDirectoryAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            ReadOnlySQLAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            SQLAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            WindowsNTAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            SAMLAuthenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            SAMLIdentityAsserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            SAMLIdentityAsserterV2
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      By observing the above list, we found that there are two types of Provider:
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>
+            Asserter
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <para>
+            Authenticator
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      So what is the difference between these two?
+      It is very important to understand the difference between the two.
+      If you enter the community, if you have a house card, you can enter directly.
+      If not, you have to prove that you are the head of the community, and you may be needed.
+      Provide information such as ID card and phone number.
+      Similarly, if you access the system with a token or cookie, you need <emphasis>Asserter</emphasis> for authentication and authorization.
+      If you log in to the system with a username and password, you need an <emphasis>Authenticator</emphasis> for authentication.
+      In short, <emphasis>Asserter</emphasis> looks at the token and <emphasis>Authenticator</emphasis> look at the credential, students who have been equipped with OAM single sign-on should know that two things need to be configured to realize OAM single sign-on.
+    </para>
+    <para>
+      The question is, why do I need to combine <emphasis>Authenticator</emphasis> with <emphasis>Asserter</emphasis>?
+      After the user logs in on the login page, all subsequent requests are authenticated and authorized through <emphasis>Asserter</emphasis> to analyze information, so why do we need an <emphasis>Authenticator</emphasis>?
+      The user information that <emphasis>Asserter</emphasis> can obtain is limited, and only limited user information can be parsed from the token, which is generally the user ID.
+      If you need to judge whether the user exists or if you need more user information, you need to use the <emphasis>Authenticator</emphasis>.
+    </para>
+  </section>
+  <para>
+    You can use the OAM Authentication Provider for WebLogic Server when you have:
+    <itemizedlist mark='bullet'>
+      <listitem>
+        Applications that are (or will be) deployed in a WebLogic container outside the Identity Management domain
+      </listitem>
+      <para><?linebreak?></para>
+      <listitem>
+        WebGate is (or will be) deployed in front of the Authentication Provider
+      </listitem>
+    </itemizedlist>
+  </para>
+  <para>
+    The Authentication Provider can be configured to provide either (or both) of the following functions for WebLogic users:
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend='about-asserter'>Identity Asserter</link> for Single Sign-on function
+        <para><?linebreak?></para>
+      </listitem>
+      <listitem>
+        <link linkend='about-authenticator'>Authenticator</link> function
+      </listitem>
+    </itemizedlist>
+  </para>
+  <section xml:id="about-asserter">
+    <title>Identity Asserter</title>
+    <para>
+      When the application is protected using a perimeter Webgate, the identity
+      of the authenticated user that is communicated to the WebLogic Server is made available to container security layers using the Oracle Access Manager identity asserter.
+      The Identity Asserter only asserts the incoming identity and then passes control to the configured Authentication Providers to continue with the rest of the authentication process (populating the subject with the right principals).
+    </para>
+    <note>
+      <para>
+        A Web-only applications implementation handles nearly all SSO use cases.
+        The exception is when you have Oracle Web Services Manager protected Web services.
+        In this case, there is no trusted WebGate.
+        Instead the AccessGate provided with the Identity Asserter is contacted and interacts with your Oracle Access Server; all other processing is essentially the same.
+      </para>
+    </note>
+    <para>
+      Oracle provides the following mechanisms, each with slightly different characteristics and requirements:
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <emphasis role="strong">Trusted Header Assertion</emphasis>
+          <para>
+            This newest mechanism, for use with Oracle Access Manager 11.1.1.5.2 or later (and either a 10g,11g or 12c Webgate), is triggered for the OAM_IDENTITY_ASSERTION token present for applications protected by 12c, 11g or 10g WebGate.
+            This provides maximum security and is easy to configure.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <emphasis role="strong">Clear Text Header</emphasis>
+          <para>
+            This default mechanism is triggered for the OAM_REMOTE_USER token present for applications protected by 10g,11g or 12c WebGate.
+          </para>
+          <para><?linebreak?></para>
+        </listitem>
+        <listitem>
+          <emphasis role="strong">Session Token</emphasis>
+          <para>
+            This mechanism is available for use with only perimeter 10g Webgates and either the 10g Access Server or 11g OAM Server or 12c OAM Server.
+          </para>
+        </listitem>
+      </itemizedlist>
+    </para>
+  </section>
+  <section xml:id="about-authenticator">
+    <title>Authenticator</title>
+    <para>
+      The Authenticator function does not provide single sign-on.
+      The Authenticator requests credentials from the user based on the
+      authentication method specified in the application configuration file, web.xml, not according to the Oracle Access Manager authentication scheme.
+      However, an Oracle Access Manager authentication scheme is required for
+      the application domain.
+    </para>
+    <note>
+      <para>
+        You can skip this topic if you are using the <link linkend='about-asserter'>Identity Asserter</link> for Single Sign-on function.
+      </para>
+    </note>
+  </section>
+</chapter>

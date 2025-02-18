@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Adapter Preferences" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"           value="Identity Manager eFBS Connector"/>
+  <property name="application"           value="bka.identityconnectors.efbsscim-1.2.1115"/>
+  <property name="bundle"                value="bka.identityconnectors.efbsscim-1.2.1115"/>
+  <property name="package.names"         value="bka.*"/>
+
+  <property name="destination.base"      value="../../deployment/oim/0102 systemIntegration"/>
+
+  <property name="packagepath.bundle"    value="bka/iam/identity/scim/**/*.class"/>
+  <!--
+  =====================================================================
+  == the deployment descriptors of this adapter project
+  =====================================================================
+  -->
+  <patternset id="descriptor.pattern.base">
+    <include name="*.xml"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oim-targets.xml"/>
+  <!--
+  =====================================================================
+  == ANT macro to build a connector bundle (overridden)
+  =====================================================================
+  -->
+  <macrodef name="make-bundle">
+    <attribute name="bundle"/>
+    <attribute name="include" default="**/*.class **/*.xml **/*.xsd"/>
+    <attribute name="exclude" default="**/*-ant.xml **/*-dm.xml **/*.mf"/>
+    <attribute name="destination"/>
+    <sequential>
+      <copy todir="${output.dir}/META-INF" overwrite="true" preservelastmodified="false" verbose="no">
+        <fileset dir="${source.dir}/META-INF">
+          <include  name="NOTICE.txt"/>
+          <include  name="LICENSE.txt"/>
+          <include  name="THIRDPARTY.txt"/>
+        </fileset>
+      </copy>
+      <war compress="false" destfile="${deploy.dir}/@{bundle}.jar" manifest="${output.dir}/META-INF/bundle-manifest.mf" needxmlfile="false">
+        <zipfileset dir="${output.dir}" excludes="@{exclude}"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/log4j-1.2.17.jar"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/commons-codec-1.10.jar"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/commons-logging-1.2.jar"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/httpcore-4.4.jar"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/httpclient-4.3.6.jar"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/jackson-core-2.4.4.jar"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/jackson-annotations-2.4.4.jar"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/jackson-databind-2.4.4.jar"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/org.identityconnectors.restcommon-1.0.1115.jar"/>
+        <zipfileset prefix="lib" file="${icf.server.library}/lib/org.identityconnectors.scimcommon-1.0.1115.jar"/>
+      </war>
+      <echo message="Copying bundle archive from path ${deploy.dir} to @{destination}"/>
+      <copy todir="@{destination}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+        <fileset dir="${deploy.dir}">
+          <include  name="@{bundle}.jar"/>
+        </fileset>
+      </copy>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == RR 24/01/2019 Add classpath fpr custom SCIM connector
+  =====================================================================
+  -->
+  <path id="oracle.fmw.iam.oim.scim">
+    <pathelement location="${icf.server.library}/lib/org.identityconnectors.restcommon-1.0.1115.jar" />
+    <pathelement location="${icf.server.library}/lib/org.identityconnectors.scimcommon-1.0.1115.jar" />
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="apache.commons"/>
+    <path refid="apache.webclient"/>
+    <path refid="oracle.fmw.icf.integration"/>
+    <!--  RR added 24/01/2019 -->
+    <path refid="oracle.fmw.iam.oim.scim" />
+    <!--  end RR added -->
+  </path>
+</project>

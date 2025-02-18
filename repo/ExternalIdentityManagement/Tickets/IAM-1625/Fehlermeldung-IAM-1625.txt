@@ -1,0 +1,16 @@
+Fehlerbeschreibung:
+Die Verwendung des /oauth2/rest/userinfo führt zu auf Client Seite zu einem Fehler mit folgender Meldung:
+
+| 2024-08-22T12:00:19.967+02:00 [APP/PROC/WEB/0] [OUT] io.jsonwebtoken.security.SignatureException: JWT signature does not match locally computed signature. JWT validity cannot be asserted and should not be trusted.
+
+Historieninformation:
+| zunächst gab es diesen Fehler:
+|| 2024-08-20T09:53:39.490+02:00 [APP/PROC/WEB/0] [OUT] 2024-08-20T09:53:39.490+02 [exec-9] ERROR | de.bund.bka.it.katalogtool.sb.auth.IamAuthenticationSuccessHandler - OAuth2 Authentication failed: [invalid_user_info_response] An error occurred while attempting to retrieve the UserInfo Resource: Error details: [UserInfo Uri: https://iad.stage.iam.services.psp.extrapol.de/oauth2/rest/userprofile, Error Code: invalid_request, Error Description: Error initializing User/Role API : null.]
+
+Spring ging  also in den AuthenticationSuccessHandler; dann knallte es aber, bevor es in die onAuthenticationSuccess() Methode ging.
+
+Hinzufügen der Scopes openid und profile (die in der Dev nicht nötig waren), führte zum Fehler:
+
+| „Bad Request - Your browser sent a request that this server could not understand. Size of a request header field exceeds server limit."
+
+Nach dessen Behebung gab es wieder den obigen.

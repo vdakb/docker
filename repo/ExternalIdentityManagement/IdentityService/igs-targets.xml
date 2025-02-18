@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Identity Governance Workspace Targets"
+         basedir     ="."
+         xmlns:server="http://oracle.hst.deployment/topology"
+		     xmlns:if    ="ant:if"
+		     xmlns:unless="ant:unless">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="./igs-context.xml"/>
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="call-subproject">
+    <attribute name="path"/>
+    <attribute name="file"/>
+    <attribute name="target"/>
+    <sequential>
+      <subant target="@{target}" buildpath="@{path}/ant" antfile="@{file}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to execute a remote command
+  =====================================================================
+  -->
+  <macrodef name="ssh-shell">
+    <attribute name="command"/>
+    <sequential>
+      <sshexec command="@{command}" keyfile="${scp.server.certificate}" host="${scp.server.host}" port="${scp.server.port}" username="${scp.server.username}" password="${scp.server.password}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to copy runtime artifacts
+  =====================================================================
+  -->
+  <macrodef name="ssh-file">
+    <attribute name="file"/>
+    <attribute name="dir"/>
+    <attribute name="location"/>
+    <sequential>
+      <echo message="Transfering @{file} from @{dir} to @{location} on ${scp.server.host}:${scp.server.port}"/>
+      <scp todir="${scp.server.destination}:@{location}" port="${scp.server.port}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+        <fileset dir="@{dir}">
+          <include name="@{file}"/>
+        </fileset>
+      </scp>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to assemble a jar library
+  =====================================================================
+  -->
+  <macrodef name="doc-module">
+    <attribute name="type"/>
+    <attribute name="module"/>
+    <attribute name="package"/>
+    <sequential>
+      <!-- generate javadoc -->
+      <echo message="Generating Identity Governanace Service documentation for @{type} @{module} from path ${deploy.doc}"/>
+      <javadoc author      ="false"
+               classpathref="classpath"
+               sourcepath  ="${source.dir}"
+               packagenames="@{package}"
+               destdir     ="${deploy.doc}"/>
+      <!-- package javadoc -->
+      <echo message="Packaging Identity Governanace Service documentation for @{type} @{module} from path ${deploy.doc}"/>
+      <jar destfile="${deploy.dir}/@{module}-doc.jar">
+        <fileset dir="${deploy.doc}">
+          <patternset refid="document.patterns"/>
+        </fileset>
+      </jar>
+      <!-- package source -->
+      <echo message="Packaging Identity Governanace Service source for @{type} @{module} from path ${source.dir}"/>
+      <jar destfile="${deploy.dir}/@{module}-src.jar">
+        <fileset dir="${source.dir}" includes="**/*.*"/>
+      </jar>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to package a java library archive
+  =====================================================================
+  -->
+  <macrodef name="pgs-jar-make" description="Build an JEE Java library">
+    <attribute name="library"/>
+    <attribute name="package"/>
+    <attribute name="destination" default="not-set"/>
+    <sequential>
+      <echo message="Packaging JEE Java Library @{library} from path ${output.dir}"/>
+      <jar destfile="${deploy.dir}/@{library}.jar" manifest="${manifest}">
+        <fileset dir="${output.dir}" includes="META-INF/** **/*.class **/*.xlf"/>
+      </jar>
+      <if>
+        <!--
+         | if a expression cannot be expanded by ant due to it isn't defined
+         ] Ant set the value to the expresssion it self hence compare to that
+         | expression means undefined
+         -->
+        <equals arg1="@{destination}" arg2="$${destination.base}" trim="true"/>
+        <then>
+          <echo message="Nothing to copy from path ${deploy.dir} due to $${destination.base} is undefined"/>
+        </then>
+        <else>
+          <for param="path" list="@{destination}">
+            <sequential>
+              <copy todir="@{path}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+                <fileset dir="${deploy.dir}">
+                  <include  name="@{library}.jar"/>
+                </fileset>
+              </copy>
+            </sequential>
+          </for>
+        </else>
+      </if>
+      <doc-module type="library" module="@{library}" package="@{package}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to package a web application archive
+  =====================================================================
+  -->
+  <macrodef name="pgs-war-make">
+    <attribute name="application"/>
+    <attribute name="package"/>
+    <attribute name="destination"/>
+    <sequential>
+      <echo message="Reverting build version properties"/>
+      <exec executable="${svn.executable}">
+        <arg value="revert"/>
+        <arg value="${application.version}"/>
+      </exec>
+      <delete dir="${webinf.dir}/temp"/>
+      <mkdir dir="${webinf.dir}/lib"/>
+      <copy todir="${webinf.dir}/lib" flatten="true">
+        <path refid="bka.igs.runtime"/>
+      </copy>
+      <echo message="Packaging Identity Governance Service application @{application} from path ${output.dir},${source.dir} and ${static.dir}"/>
+      <war compress="false" destfile="${deploy.dir}/@{application}.war" manifest="${manifest}" needxmlfile="false">
+        <fileset dir="${static.dir}"   excludes="WEB-INF/**"/>
+        <classes dir="${output.dir}"   includes="**/*.class **/*.properties"/>
+        <classes dir="${source.dir}"   includes="META-INF/**"/>
+        <webinf  dir="${webinf.dir}"/>
+      </war>
+      <delete dir="${webinf.dir}/lib"/>
+      <if>
+        <!--
+         | if a expression cannot be expanded by ant due to it isn't defined
+         ] Ant set the value to the expresssion it self hence compare to that
+         | expression means undefined
+         -->
+        <equals arg1="@{destination}" arg2="$${destination.base}" trim="true"/>
+        <then>
+          <echo message="Nothing to copy from path ${deploy.dir} due to $${destination.base} is undefined"/>
+        </then>
+        <else>
+          <for param="path" list="@{destination}">
+            <sequential>
+              <echo message="Copying java archive from path ${deploy.dir} to @{path}/lib"/>
+              <copy todir="@{path}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+                <fileset dir="${deploy.dir}">
+                  <include  name="@{application}.war"/>
+                </fileset>
+              </copy>
+            </sequential>
+          </for>
+        </else>
+      </if>
+      <doc-module type="library" module="@{application}" package="@{package}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to deploy a web application archive on WebLogic
+  =====================================================================
+  -->
+  <macrodef name="wls-war-deploy">
+    <attribute name="module"/>
+    <attribute name="target"/>
+    <sequential>
+      <ssh-file file="@{module}.war" dir="${deploy.dir}" location="${oim.remote.application}"/>
+      <echo message="Deploy @{module}.war as a standalone application from location ${oim.remote.application} on ${wls.server.host}:${wls.server.port} managed server @{target}"/>
+      <echo message="oim.remote.application = ${oim.remote.application}"/>
+      <record name="D:/build.log" loglevel="verbose" action="start"/>
+      <server:deploy action="deploy" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${wls.server.protocol}://${wls.server.host}:${wls.server.port}" user="${wls.server.username}" password="${wls.server.password}" source="${oim.remote.application}/@{module}.war" targets="@{target}" stage="nostage" nostage="true"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to redeploy a Web Application Module
+  =====================================================================
+  -->
+  <macrodef name="wls-war-redeploy">
+    <attribute name="module"/>
+    <attribute name="target"/>
+    <sequential>
+      <echo message="Stop application @{module} at ${oim.remote.application} on ${wls.server.host}:${wls.server.port} managed server @{target}"/>
+      <server:deploy action="stop" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${wls.server.protocol}://${wls.server.host}:${wls.server.port}" user="${wls.server.username}" password="${wls.server.password}" failonerror="false"/>
+      <ssh-file file="@{module}.war" dir="${deploy.dir}" location="${oim.remote.application}"/>
+      <echo message="Redeploy application @{module} at ${oim.remote.application} on ${wls.server.host}:${wls.server.port} managed server @{target}"/>
+      <server:deploy action="redeploy" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${wls.server.protocol}://${wls.server.host}:${wls.server.port}" user="${wls.server.username}" password="${wls.server.password}" source="${oim.remote.application}/@{module}.war" targets="@{target}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to undeploy a Web Application Module
+  =====================================================================
+  -->
+  <macrodef name="wls-war-undeploy">
+    <attribute name="module"/>
+    <sequential>
+      <echo message="Stop application @{module} at ${oim.remote.application} on ${wls.server.host}:${wls.server.port} managed server @{target}"/>
+      <server:deploy action="stop" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${wls.server.protocol}://${wls.server.host}:${wls.server.port}" user="${wls.server.username}" password="${wls.server.password}" failonerror="false"/>
+      <echo message="Undeploy application @{module} at ${oim.remote.application} on ${wls.server.host}:${wls.server.port}"/>
+      <server:deploy action="undeploy" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${wls.server.protocol}://${wls.server.host}:${wls.server.port}" user="${wls.server.username}" password="${wls.server.password}"/>
+    </sequential>
+  </macrodef>  <!--
+  =====================================================================
+  == ANT macro to deploy a web application archive on Glassfish
+  =====================================================================
+  -->
+  <macrodef name="pgs-war-deploy">
+    <attribute name="application"/>
+    <attribute name="target"/>
+    <sequential>
+      <echo message="Deploy @{application}.war as a standalone application to ${pgs.server.domain} on ${pgs.server.host}:${pgs.server.port} target @{target}"/>
+      <asadmin failonerror="true">
+        <arg value="deploy"/>
+        <arg value="--target=@{target}"/>
+        <arg value="--force=true"/>
+        <arg value="lib/@{application}.war"/>
+      </asadmin>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to redeploy a web application archive on Glassfish
+  =====================================================================
+  -->
+  <macrodef name="pgs-war-redeploy">
+    <attribute name="application"/>
+    <attribute name="target"/>
+    <sequential>
+      <echo message="Redeploy @{application}.war as a standalone application to ${pgs.server.domain} on ${pgs.server.host}:${pgs.server.port} target @{target}"/>
+      <asadmin failonerror="true">
+        <arg value="redeploy"/>
+        <arg value="--name @{application}"/>
+        <arg value="--target=@{target}"/>
+        <arg value="--force=true"/>
+        <arg value="lib/@{application}.war"/>
+      </asadmin>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to undeploy a web application archive on Glassfish
+  =====================================================================
+  -->
+  <macrodef name="pgs-war-undeploy">
+    <attribute name="application"/>
+    <attribute name="target"/>
+    <sequential>
+      <echo message="Undeploy @{application}.war as a standalone application from ${pgs.server.domain} on ${pgs.server.host}:${pgs.server.port} target @{target}"/>
+      <asadmin failonerror="true">
+        <arg value="undeploy"/>
+        <arg value="--target=@{target}"/>
+        <arg value="@{application}"/>
+      </asadmin>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+      <fileset dir="${deploy.dir}" includes="**/*"/>
+      <fileset dir="${webinf.dir}" includes="temp/**/*"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the build process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+    <mkdir dir="${output.dir}/META-INF"/>
+    <mkdir dir="${deploy.dir}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to copy secific files to the output directory
+  =====================================================================
+  -->
+  <target name="copy" description="Copy files to output directory" depends="init">
+    <copy todir="${output.dir}" verbose="true">
+      <fileset dir="${source.dir}">
+        <patternset refid="filetype.patterns"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to compile all Java Source files
+  =====================================================================
+  -->
+  <target name="compile" description="Compile Java source files" depends="copy">
+    <!--
+    due to a regression of Bug 43114 - package-info.java repeatedly compiled
+    we had to enforce to compile any existing package-info.java in the source
+    tree
+    -->
+    <touch>
+      <fileset dir="${source.dir}" includes="**/package-info.java"/>
+    </touch>
+    <javac executable       ="${jdk.compiler}"
+           source           ="${jdk.version}"
+           target           ="${jdk.version}"
+           debug            ="${javac.debug}"
+           nowarn           ="${javac.nowarn}"
+           destdir          ="${output.dir}"
+           encoding         ="${javac.encoding}"
+           deprecation      ="${javac.deprecation}"
+           classpathref     ="classpath"
+           includeantruntime="no">
+      <src path        ="${source.dir}"/>
+    </javac>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create a manifest used in the jar files
+  =====================================================================
+  -->
+  <target name="manifest" description="Create a manifest used in the jar files" depends="init">
+    <delete file="${manifest}"/>
+    <echo message="Reverting build version properties"/>
+    <exec executable="${svn.executable}">
+      <arg value="revert"/>
+      <arg value="igs-module-ant.version"/>
+    </exec>
+    <!-- update to version properties -->
+    <propertyfile file="igs-module-ant.version" comment="Build version info">
+      <entry key="build.timest" type="date" value="now" pattern="dd/MM/yyyy hh:mm:ss aa"/>
+      <entry key="build.major"  type="int"  value="00"  pattern="00" default="00"/>
+      <entry key="build.minor"  type="int"  value="01"  pattern="00" default="00" operation="+" />
+    </propertyfile>
+
+    <!-- load the file -->
+    <property file="igs-module-ant.version"/>
+
+    <!-- create the manifest file -->
+    <manifest file="${manifest}">
+      <attribute name="Built-By"                     value="${user.name}"/>
+      <attribute name="Built-At"                     value="${build.timest}"/>
+      <attribute name="Specification-Title"          value="${description}"/>
+      <attribute name="Specification-Version"        value="${application.release}"/>
+      <attribute name="Specification-Vendor"         value="Oracle Consulting Services"/>
+      <attribute name="Implementation-Title"         value="${description}"/>
+      <attribute name="Implementation-Version"       value="${application.release}.${build.major}.${build.minor}"/>
+      <attribute name="Implementation-Vendor"        value="Oracle Consulting Services"/>
+      <attribute name="Weblogic-Application-Version" value="${application.release}"/>
+    </manifest>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the web application to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make-library" description="Package the project source and documentation" if="library" depends="compile,manifest">
+    <pgs-jar-make description="${description}" library="${library}" package="${package}" destination="${destination.base}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the web application to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make-module" description="Package the project source and documentation" if="module" depends="compile,manifest">
+    <pgs-war-make description="${description}" application="${module}" package="${package}" destination="${destination.base}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the non-binary deliverables like source and
+  == javadoc files
+  =====================================================================
+  -->
+  <target name="make" description="Assemble the project source and documentation" depends="clean,make-library,make-module"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the service application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="deploy" depends="make">
+    <pgs-war-deploy application="${application}" target="${pgs.server.name}" unless:set="deployWLS"/>
+    <wls-war-deploy module="${application}" target="${oim.server.name}" if:set="deployWLS"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to redeploy the service application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="redeploy" depends="make">
+    <pgs-war-redeploy application="${application}" target="${pgs.server.name}" unless:set="deployWLS"/>
+    <wls-war-redeploy module="${application}" target="${oim.server.name}" if:set="deployWLS"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to undeploy the service application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="undeploy">
+    <pgs-war-undeploy application="${application}" target="${pgs.server.name}" unless:set="deployWLS"/>
+    <wls-war-undeploy module="${application}" target="${oim.server.name}" if:set="deployWLS"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to build and the project artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Build,Deploy and Install the project on the target host" depends="make"/>
+</project>

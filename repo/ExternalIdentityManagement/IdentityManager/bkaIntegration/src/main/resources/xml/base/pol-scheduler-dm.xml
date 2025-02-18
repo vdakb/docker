@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="Access Policy Evaluator Configuration 12.2.1.3" exported-date="165807483747c" user="XELSYSADM" version="12.2.1.3.0">
+  <scheduledTask mds-file="POLEvaluate.xml" mds-path="/db" name="POLEvaluate" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+      <name>POLEvaluate</name>
+      <class>bka.iam.identity.service.pol.Evaluate</class>
+      <description>An Job to initate evaluation of Access Policies.</description>
+      <retry>0</retry>
+      <parameters>
+         <string-param  encrypted="false" required="true"  helpText="Holds the timestamp when this job was last executed successfully">Last Reconciled</string-param>
+         <string-param  encrypted="false" required="false" helpText="Specifies the name of the organization the user identities belonging to to reset the password">Organization Name</string-param>
+         <string-param  encrypted="false" required="false" helpText="Specifies the user name filter to be applied">User Filter</string-param>
+         <string-param  encrypted="false" required="false" helpText="Specifies the name of the Job that will be started by this Job on successfully completion">Dependent Job</string-param>
+         <number-param  encrypted="false" required="false" helpText="Specifies the size of a batch read from the reconciliation source">Batch Size</number-param>
+         <number-param  encrypted="false" required="false" helpText="Specifies how many threads this Job should create to distribute the workload.">Thread Pool Size</number-param>
+         <boolean-param encrypted="false" required="true"  helpText="Select this option if the data should only be gathered but no password change applied">Gather Only</boolean-param>
+      </parameters>
+   </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+  <Job name="Access Policy Evaluate" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>382</taskKey>
+    <taskClassName>bka.iam.identity.service.pol.Evaluate</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Organization Name</key>
+        <value type="jobparameter">
+          <name type="string">Organization Name</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the organization the user identities belonging to to reset the password</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">161</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this job was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">162</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select this option if the data should only be gathered but no password change applied</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">163</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>User Filter</key>
+        <value type="jobparameter">
+          <name type="string">User Filter</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the user name filter to be applied</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">164</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Batch Size</key>
+        <value type="jobparameter">
+          <name type="string">Batch Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the size of a batch read from the reconciliation source</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">165</paramKey>
+          <paramValue type="long">500</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Thread Pool Size</key>
+        <value type="jobparameter">
+          <name type="string">Thread Pool Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies how many threads this Job should create to distribute the workload.</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">166</paramKey>
+          <paramValue type="long">10</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">167</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1701085975702</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="POLEvaluate" type="scheduledTask"/>
+    <taskName scheduledTask="POLEvaluate"/>
+  </Job>
+</xl-ddm-data>

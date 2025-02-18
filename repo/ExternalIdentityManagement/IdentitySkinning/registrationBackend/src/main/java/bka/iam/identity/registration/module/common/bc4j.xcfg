@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!---->
+<BC4JConfig xmlns="http://xmlns.oracle.com/bc4j/configuration" version="11.1">
+  <AppModuleConfigBag ApplicationName="bka.iam.identity.registration.module.RegistrationAM">
+    <AppModuleConfig DeployPlatform ="LOCAL"
+                     name           ="RegistrationAMLocal"
+                     jbo.project    ="bka.iam.identity.registration.Backend"
+                     ApplicationName="bka.iam.identity.registration.module.RegistrationAM">
+      <AM-Pooling jbo.doconnectionpooling="true" jbo.dofailover="true"/>
+      <Database jbo.server.internal_connection="java:comp/env/jdbc/ApplicationDBDS"/>
+      <Custom JDBCDataSource="java:comp/env/jdbc/ApplicationDBDS"/>
+      <Security AppModuleJndiName="bka.iam.identity.registration.module.RegistrationAM"/>
+    </AppModuleConfig>
+    <AppModuleConfig DeployPlatform ="LOCAL"
+                     name           ="RegistrationAMShared"
+                     jbo.project    ="bka.iam.identity.registration.Backend"
+                     ApplicationName="bka.iam.identity.registration.module.RegistrationAM">
+      <AM-Pooling jbo.ampool.maxpoolsize="1" jbo.ampool.isuseexclusive="false"/>
+      <Database jbo.server.internal_connection="java:comp/env/jdbc/ApplicationDBDS"/>
+      <Custom JDBCDataSource="java:comp/env/jdbc/ApplicationDBDS"/>
+      <Security AppModuleJndiName="bka.iam.identity.registration.module.RegistrationAM"/>
+    </AppModuleConfig>
+  </AppModuleConfigBag>
+</BC4JConfig>

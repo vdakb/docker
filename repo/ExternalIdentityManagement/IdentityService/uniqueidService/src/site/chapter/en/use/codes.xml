@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="use-codes"
+         xml:lang="en"
+         version ="5.0">
+  <title>HTTP Codes</title>
+  <para>
+    The REST standards use HTTP response codes to indicate success or failure of the operations.
+    Appropriate HTTP status codes describing the error and body message are returned for all requests in a JSON format.
+  </para>
+  <para>
+    The table below contains possible common HTTP status codes.
+  </para>
+  <table colsep="0">
+    <tgroup cols="2">
+      <colspec colname="c1" colwidth="12em"/>
+      <colspec colname="c2" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>HTTP Status Code</entry>
+          <entry>Description</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>200 Ok</entry>
+          <entry>
+            The request was successful.
+            Depending on the request method, the response contains the requested data.
+          </entry>
+        </row>
+        <row>
+          <entry>201 Created</entry>
+          <entry>
+            The request resulted in a new resource being successfully created.
+            Their URI can be communicated in the Location response header.
+          </entry>
+        </row>
+        <row>
+          <entry>204 No Content</entry>
+          <entry>
+            The request has been accepted and processed, but there is no content to send back to send back to the client.
+            In this case, clients should continue to display the old content.
+            For example, a DELETE request.
+          </entry>
+        </row>
+        <row>
+          <entry>307 Temporary Redirect</entry>
+          <entry>
+            When the client is requested to repeat the same http request at the <literal>location</literal> identified.
+            The client should not use the <literal>location</literal> provided in the response as the permanent reference to the resource and should continue to use the original request URI.
+          </entry>
+        </row>
+        <row>
+          <entry>308 Permanent Redirect</entry>
+          <entry>
+            The requested resource is now available at the address specified in the <literal>location</literal> header field, the old address is no longer valid.
+            The client should follow using the same method as the original request (i.e. a POST is followed by a POST).
+            The client should use the <literal>location</literal> provided in the response as the permanent reference to the resource.
+          </entry>
+        </row>
+        <row>
+          <entry>400 Bad Request</entry>
+          <entry>
+            The client sent an incorrect request that the server cannot understand due to incorrect syntax.
+            For example, validation error, missing data or wrong filter syntax.
+            The client should not retry the request without correcting the erroneous data.
+          </entry>
+        </row>
+        <row>
+          <entry>401 Unauthorized</entry>
+          <entry>
+            The request cannot be processed without authorization.
+          </entry>
+        </row>
+        <row>
+          <entry>403 Forbidden</entry>
+          <entry>
+            Access is permanently prohibited.
+            Authorization is not recognized and the client should not make the request again.
+            For example, Delete access without appropriate permissions.
+          </entry>
+        </row>
+        <row>
+          <entry>404 Not Found</entry>
+          <entry>
+            The server could not find the resource requested by the client.
+            The status code 404 can also be returned if no other status code is applicable or if the client is deliberately to be rejected without giving a more detailed reason.
+          </entry>
+        </row>
+        <row>
+          <entry>405 Method Not Allowed</entry>
+          <entry>
+            The request method (such as GET or POST) is not allowed.
+            This response can returned, for example, if a method is used without the server being able to use them.
+            The server lists all allowed methods in an <literal>Allow</literal> header.
+          </entry>
+        </row>
+        <row>
+          <entry>406 Not Acceptable</entry>
+          <entry>
+            The resource cannot be supplied in a form requested by the client.
+            For example, data with the media type <literal>application/xml</literal> can be requested, but the server only finds one hit for <literal>application/json</literal>.
+          </entry>
+        </row>
+        <row>
+          <entry>408 Request Time-out</entry>
+          <entry>
+            The request was not completed by the client in the time specified by the server.
+            The error can occur, for example, when processing large amounts of data.
+          </entry>
+        </row>
+        <row>
+          <entry>409 Conflict</entry>
+          <entry>
+            The request cannot be processed because this would result in a conflict with the requested resource.
+            If, for example, a resource is to be changed using the PUT method, but which already has a newer version on the server, the editing would create a conflict.
+          </entry>
+        </row>
+        <row>
+          <entry>411 Length Required</entry>
+          <entry>
+            Processing the request without a <literal>Content-Length</literal> header will be rejected by the server.
+          </entry>
+        </row>
+        <row>
+          <entry>500 Internal Server Error</entry>
+          <entry>
+            The server detects an internal error and therefore cannot process the request.
+            Errors in programs on the server, e.g. in scripts, can provoke this response.
+          </entry>
+        </row>
+        <row>
+          <entry>501 Not Implemented</entry>
+          <entry>
+            The server does not have the necessary functionality to process the request.
+            This response is appropriate when the HTTP method used in the request is not recognized or supported.
+          </entry>
+        </row>
+        <row>
+          <entry>503 Service Unavailable</entry>
+          <entry>
+            The service is temporarily unable to service a request.
+            This can happen due to capacity problems or maintenance downtime.
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+</section>

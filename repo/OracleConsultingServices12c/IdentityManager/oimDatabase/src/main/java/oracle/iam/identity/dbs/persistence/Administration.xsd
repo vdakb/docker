@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns:xsd          = "http://www.w3.org/2001/XMLSchema"
+            xmlns:dbs          = "http://www.oracle.com/schema/iam/persistence"
+            targetNamespace    = "http://www.oracle.com/schema/iam/persistence"
+            elementFormDefault = "qualified">
+  <xsd:element name="application">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="role"      type="dbs:role"      minOccurs="1" maxOccurs="unbounded"/>
+        <xsd:element name="account"   type="dbs:account"   minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="multi-value-separator"        type="xsd:string" default="|"/>
+      <xsd:attribute name="database-driver-class"        type="xsd:string" use="required"/>
+      <xsd:attribute name="database-system-timestamp"    type="xsd:string" use="required"/>
+      <xsd:attribute name="database-catalog-schema"      type="xsd:string" use="required"/>
+      <xsd:attribute name="pseudo-rownum-attribute"      type="xsd:string" use="required"/>
+      <xsd:attribute name="created-timestamp-attribute"  type="xsd:string" use="required"/>
+      <xsd:attribute name="modified-timestamp-attribute" type="xsd:string" use="required"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- the description of a role-->
+  <xsd:complexType name="role">
+    <xsd:complexContent>
+      <xsd:extension base="dbs:entity">
+        <xsd:all>
+          <xsd:element name="member-ship"   type="dbs:member"  minOccurs="1"/>
+          <xsd:element name="member-link"   type="dbs:member"  minOccurs="0"/>
+        </xsd:all>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <!-- the description of an account -->
+  <xsd:complexType name="account">
+    <xsd:complexContent>
+      <xsd:extension base="dbs:entity">
+        <xsd:all>
+          <xsd:element name="member-link"   type="dbs:member"  minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+        <xsd:attribute name="password"      type="xsd:string"  default="password"/>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="member">
+    <xsd:attribute name="entity"      type="xsd:string"     use="required"/>
+    <xsd:attribute name="reference"   type="xsd:string"     use="required"/>
+    <xsd:attribute name="link"        type="xsd:string"     use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="sequence">
+    <xsd:attribute name="name"        type="xsd:string"     use="required"/>
+    <xsd:attribute name="entity"      type="xsd:string"     use="required"/>
+    <xsd:attribute name="start"       type="xsd:long"       default="1"/>
+    <xsd:attribute name="increment"   type="xsd:long"       default="1"/>
+  </xsd:complexType>
+
+
+  <!-- the description of a role-->
+  <xsd:complexType name="catalog">
+    <xsd:complexContent>
+      <xsd:extension base="dbs:entity">
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="entity">
+    <xsd:attribute name="schema"      type="xsd:string"     use="required"/>
+    <xsd:attribute name="name"        type="xsd:string"     use="required"/>
+    <xsd:attribute name="primary"     type="xsd:string"     use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="returning">
+    <xsd:all>
+    </xsd:all>
+  </xsd:complexType>
+</xsd:schema>

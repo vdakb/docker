@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="endpoint_attributesPageDef"
+                Package="oracle.iam.identity.sysprov.svr.view">
+  <parameters/>
+  <executables>
+    <iterator id="EndpointIterator" Binds="EndpointDetailVO" DataControl="EndpointAMDataControl" RangeSize="20"/>
+  </executables>
+  <bindings>
+    <attributeValues id="endpointKey" IterBinding="EndpointIterator">
+      <AttrNames>
+        <Item Value="endpointKey"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="endpointName" IterBinding="EndpointIterator">
+      <AttrNames>
+        <Item Value="endpointName"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="endpointType" IterBinding="EndpointIterator">
+      <AttrNames>
+        <Item Value="endpointType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="remoteManager" IterBinding="EndpointIterator">
+      <AttrNames>
+        <Item Value="remoteManager"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues id="note" IterBinding="EndpointIterator">
+      <AttrNames>
+        <Item Value="note"/>
+      </AttrNames>
+    </attributeValues>
+    <action id="commit"   RequiresUpdateModel="true"  Action="commitTransaction"   DataControl="EndpointAMDataControl"/>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="EndpointAMDataControl"/>
+    <methodAction id                 ="refreshAttribute"
+                  DataControl        ="EndpointAMDataControl"
+                  InstanceName       ="EndpointAMDataControl.dataProvider"
+                  MethodName         ="refreshAttribute"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id                 ="requeryParameter"
+                  DataControl        ="EndpointAMDataControl"
+                  InstanceName       ="EndpointAMDataControl.dataProvider"
+                  MethodName         ="requeryParameter"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+      <NamedData NDName="pending"    NDType="java.util.Map"/>
+    </methodAction>
+    <methodAction id                 ="requeryAdministrator"
+                  DataControl        ="EndpointAMDataControl"
+                  InstanceName       ="EndpointAMDataControl.dataProvider"
+                  MethodName         ="requeryAdministrator"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+      <NamedData NDName="pending"    NDType="java.util.Map"/>
+    </methodAction>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowRemoveEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowRemoveEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkDirtyEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkDirtyEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

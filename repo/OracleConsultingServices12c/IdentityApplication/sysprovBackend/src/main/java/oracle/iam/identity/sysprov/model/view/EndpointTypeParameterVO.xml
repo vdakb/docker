@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+            Name                  ="EndpointTypeParameterVO"
+            BindingStyle          ="OracleName"
+            FetchMode             ="FETCH_ALL"
+            FetchSize             ="100"
+            AccessMode            ="FORWARD_ONLY"
+            PageIterMode          ="Partial"
+            CustomQuery           ="false"
+            FromList              ="SPD EndpointTypeParameterEO"
+            InheritPersonalization="merge"
+            RowClass              ="oracle.iam.identity.sysprov.model.view.EndpointTypeParameterVORowImpl"
+            ComponentClass        ="oracle.iam.identity.sysprov.model.view.EndpointTypeParameterVOImpl">
+  <DesignTime>
+    <Attr Name="_isCodegen"    Value="true"/>
+    <Attr Name="_diagramName"  Value="Enpoint Type Parameter View"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL        ResId="spd.single"/>
+      <LABEL_PLURAL ResId="spd.multiple"/>
+      <TOOLTIP      ResId="spd.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <EntityUsage Name="EndpointTypeParameterEO" Entity="oracle.iam.identity.sysprov.model.entity.EndpointTypeParameterEO"/>
+  <ViewAttribute Name="parameterKey" PrecisionRule="true" EntityUsage="EndpointTypeParameterEO" EntityAttrName="parameterKey" AliasName="PARAMETERKEY" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="endpointTypeKey" PrecisionRule="true" EntityUsage="EndpointTypeParameterEO" EntityAttrName="endpointTypeKey" AliasName="ENDPOINTTYPEKEY" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="name" PrecisionRule="true" EntityUsage="EndpointTypeParameterEO" EntityAttrName="name" AliasName="NAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="value" PrecisionRule="true" EntityUsage="EndpointTypeParameterEO" EntityAttrName="value" AliasName="VALUE">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="encrypted" PrecisionRule="true" EntityUsage="EndpointTypeParameterEO" EntityAttrName="encrypted" AliasName="ENCRYPTED">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="pendingAction" PrecisionRule="true" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" AliasName="PENDINGACTION" IsPersistent="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="add" Type="java.lang.String" SQLType="VARCHAR" ColumnType="CHAR" AliasName="ADD" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewAttribute Name="del" Type="java.lang.String" SQLType="VARCHAR" ColumnType="CHAR" AliasName="DEL" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewAttribute Name="mod" Type="java.lang.String" SQLType="VARCHAR" ColumnType="CHAR" AliasName="MOD" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewCriteria Name="EndpointTypeParameterVC" ViewObjectName="oracle.iam.identity.sysprov.model.view.EndpointTypeParameterVO" Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property Name="mode"                     Value="Basic"/>
+        <Property Name="showInList"               Value="true"/>
+        <Property Name="autoExecute"              Value="false"/>
+        <Property Name="displayOperators"         Value="InAdvancedMode"/>
+        <Property Name="allowConjunctionOverride" Value="false"/>
+        <Property Name="displayName"              ResId="spd.search"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow Name="vcrSPD" UpperColumns="1">
+      <ViewCriteriaItem Name="name"      ViewAttribute="name"      Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="value"     ViewAttribute="value"     Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="encrypted" ViewAttribute="encrypted" Operator="="          Conjunction="AND" Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysprov.bundle.Backend"/>
+  </ResourceBundle>
+</ViewObject>

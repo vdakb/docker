@@ -1,0 +1,2163 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-account-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ######   #####
+  **              #    #     # #     #
+  **              #    #     # #
+  **              #    #     #  #####
+  **              #    #     #       #
+  **              #    #     # #     #
+  **            #####  ######   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0301" description="On-Boarding Access Manager Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0301 On-Boarding Accounts Access Manager Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Access Manager Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="AM IDS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0301 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####
+  **           #     #    #    #     #
+  **           #          #    #
+  **           #          #     #####
+  **           #          #          #
+  **           #     #    #    #     #
+  **            #####     #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0401" description="On-Boarding eFBS Citrix Terminal Services Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0401 On-Boarding Accounts eFBS Citrix Terminal Services ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from eFBS Citrix Terminal Services for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="TS ADS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0401 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **                   ####### ######   #####
+  **                   #       #     # #     #
+  **            #####  #       #     # #
+  **           #     # ######  ######   #####
+  **           # ####  #       #     #       #
+  **           #       #       #     # #     #
+  **            #####  #       ######   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0501-01" description="On-Boarding eFBS Application Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501-01 On-Boarding Accounts eFBS ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from eFBS Application for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="eFBS Production Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0501-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **                   ####### ######   #####
+  **                   #       #     # #     #
+  **            #####  #       #     # #
+  **           #     # ######  ######   #####
+  **           # ####  #       #     #       #
+  **           #       #       #     # #     #
+  **            #####  #       ######   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0501-02" description="On-Boarding eFBS Application Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501-02 On-Boarding Accounts eFBS ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from eFBS Application for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="eFBS Education Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0501-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####   #####
+  **           #     # #     # #     #
+  **           #     # #       #
+  **           ######   #####  #
+  **           #             # #
+  **           #       #     # #     #
+  **           #        #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0601" description="On-Boarding VMware Platform Service Controller Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0601 On-Boarding Accounts VMware Platform Service Controller ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from VMware Platform Service Controller for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PSC ADS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0601 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      ######
+  **           #       #       #           #
+  **           #       #     # #           #
+  **           #        #####  #           #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0701-01" description="On-Boarding Pivotal Cloud Foundry Production Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 On-Boarding Accounts Pivotal Cloud Foundry Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Pivotal Cloud Foundry Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Production Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      #     #
+  **           #       #       #           #     #
+  **           #       #     # #           #     #
+  **           #        #####  #           ######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0701-02" description="On-Boarding Pivotal Cloud Foundry Development Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 On-Boarding Accounts Pivotal Cloud Foundry Development ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Pivotal Cloud Foundry Development for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Development Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####     #     #     #
+  **           #     #    #      # #    #     #
+  **           #     #    #     #   #   #     #
+  **           ######     #    #     #  #     #
+  **           #          #    #######   #   #
+  **           #          #    #     #    # #
+  **           #        #####  #     #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0801" description="On-Boarding Access Manager Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0801 On-Boarding Accounts PIAV Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from PIAV Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IM PIAV Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0801 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######     #    ######
+  **           #     #   # #   #     #
+  **           #     #  #   #  #     #
+  **           ######  #     # ######
+  **           #       ####### #
+  **           #       #     # #
+  **           #       #     # #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0901" description="On-Boarding PAP Active Directory Service Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0901 On-Boarding Accounts PAP Active Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from PAP Active Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PAP ADS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0901 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######     ##
+  **           #     #      #     # #
+  **           #           #     #  #
+  **            #####     #     #   #
+  **                 #   #     #######
+  **           #     #  #           #
+  **            #####  #######      #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="0902" description="On-Boarding SZ4 Active Directory Service Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0902 On-Boarding Accounts SZ4 Active Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from SZ4 Active Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SZ4 ADS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0902 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **               #    #######  #####
+  **              # #         # #     #
+  **             #   #        # #
+  **            #     #       #  #####
+  **            #######       #       #
+  **            #     # #     # #     #
+  **            #     #  #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1001" description="On-Boarding Atlassian Jira Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1001 On-Boarding Accounts Atlassian Jira Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Atlassian Jira Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="AJS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######
+  **            #     #   # #   #          #     #
+  **            #        #   #  #          #     #
+  **            # ##### #     # #####      ######
+  **            #     # ####### #          #
+  **            #     # #     # #          #
+  **             #####  #     # #######    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1101-01" description="On-Boarding Google Apigee Edge Production Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 On-Boarding Accounts Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAEP Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######
+  **            #     #   # #   #             #
+  **            #        #   #  #             #
+  **            # ##### #     # #####         #
+  **            #     # ####### #             #
+  **            #     # #     # #             #
+  **             #####  #     # #######       #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1101-02" description="On-Boarding Google Apigee Edge Pre-Production Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 On-Boarding Accounts Google Apigee Edge Pre-Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Google Apigee Edge Pre-Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAET Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####     #
+  **            #     #   # #   #          #     #   #     # #    ##   ##
+  **            #        #   #  #          #     #   #     # #   # #  # #
+  **            # ##### #     # #####      ######    #     # #  #  #    #
+  **            #     # ####### #          #         #     # # #   #    #
+  **            #     # #     # #          #         #     # ##    #    #
+  **             #####  #     # #######    #         ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1101-03" description="On-Boarding Google Apigee Edge Production Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-03 On-Boarding Accounts Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAEP D01 Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####   #####
+  **            #     #   # #   #          #     #   #     # #    ## #     #
+  **            #        #   #  #          #     #   #     # #   # #       #
+  **            # ##### #     # #####      ######    #     # #  #  #   ####
+  **            #     # ####### #          #         #     # # #   #  #
+  **            #     # #     # #          #         #     # ##    # #
+  **             #####  #     # #######    #         ######   #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1101-04" description="On-Boarding Google Apigee Edge Production Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-04 On-Boarding Accounts Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAEP D02 Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####   #####
+  **            #     #   # #   #          #     #   #     # #    ## #     #
+  **            #        #   #  #          #     #   #     # #   # #       #
+  **            # ##### #     # #####      ######    #     # #  #  #   ####
+  **            #     # ####### #          #         #     # # #   #       #
+  **            #     # #     # #          #         #     # ##    # #     #
+  **             #####  #     # #######    #         ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1101-05" description="On-Boarding Google Apigee Edge Production Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-05 On-Boarding Accounts Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAEP D03 Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-05 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######   ######   #####     #
+  **            #     #   # #   #             #      #     # #    ##   ##
+  **            #        #   #  #             #      #     # #   # #  # #
+  **            # ##### #     # #####         #      #     # #  #  #    #
+  **            #     # ####### #             #      #     # # #   #    #
+  **            #     # #     # #             #      #     # ##    #    #
+  **             #####  #     # #######       #      ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1101-06" description="On-Boarding Google Apigee Edge Production Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-06 On-Boarding Accounts Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAET D01 Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-06 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######   ######   #####   #####
+  **            #     #   # #   #             #      #     # #    ## #     #
+  **            #        #   #  #             #      #     # #   # #       #
+  **            # ##### #     # #####         #      #     # #  #  #   ####
+  **            #     # ####### #             #      #     # # #   #  #
+  **            #     # #     # #             #      #     # ##    # #
+  **             #####  #     # #######       #      ######   #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1101-07" description="On-Boarding Google Apigee Edge Production Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-07 On-Boarding Accounts Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAET D02 Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-07 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####   #####
+  **            #     #   # #   #          #     #   #     # #    ## #     #
+  **            #        #   #  #          #     #   #     # #   # #       #
+  **            # ##### #     # #####      ######    #     # #  #  #   ####
+  **            #     # ####### #          #         #     # # #   #       #
+  **            #     # #     # #          #         #     # ##    # #     #
+  **             #####  #     # #######    #         ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1101-08" description="On-Boarding Google Apigee Edge Production Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-08 On-Boarding Accounts Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAET D03 Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-08 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######      #####  #######  #####
+  **           #     # #     # #           #     #      #  #     #
+  **           #     # #       #           #           #         #
+  **           ######  #       ######       #####     #     #####
+  **           #       #       #                 #   #           #
+  **           #       #     # #           #     #  #      #     #
+  **           #        #####  #            #####  #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1201-01" description="On-Boarding Pivotal Cloud Foundry IuA Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 On-Boarding Accounts Pivotal Cloud Foundry IuA ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Pivotal Cloud Foundry IuA for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF IUA Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######      #####  #######     ##
+  **           #     # #     # #           #     #      #     # #
+  **           #     # #       #           #           #     #  #
+  **           ######  #       ######       #####     #     #   #
+  **           #       #       #                 #   #     #######
+  **           #       #     # #           #     #  #           #
+  **           #        #####  #            #####  #######      #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1201-02" description="On-Boarding Pivotal Cloud Foundry ARES Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1201-02 On-Boarding Accounts Pivotal Cloud Foundry ARES ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Pivotal Cloud Foundry ARES for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Ares Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1201-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ####### ######  #     # #######  #####
+  **           #     # #       #     # ##   ## #       #     #
+  **           #     # #       #     # # # # # #       #
+  **           ####### ######  ######  #  #  # ######   #####
+  **           #     # #       #  #    #     # #             #
+  **           #     # #       #   #   #     # #       #     #
+  **           #     # ####### #    #  #     # #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1301" description="On-Boarding Active Directory Domain Hermes Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1301 On-Boarding Accounts Active Directory Domain Hermes ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Active Directory Domain Hermes for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="ADH ADS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1301 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######   #####
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ######  # #####
+  **           #     # #             #     #       #     #
+  **           #     # #       #     #     #       #     #
+  **            #####  #        #####      #        #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-PG" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-PG On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PG OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-PG completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####         #    #     #
+  **           #     # #       #     #       # #   ##    #
+  **           #     # #       #            #   #  # #   #
+  **           #     # ######   #####      #     # #  #  #
+  **           #     # #             #     ####### #   # #
+  **           #     # #       #     #     #     # #    ##
+  **            #####  #        #####      #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-AN" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-AN On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="AN OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-AN completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      ######  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-BB" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BB On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BB OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #######
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-BE" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BE On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BE OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #    #
+  **           #     # #       #     #     #     # #   #
+  **           #     # #       #           #     # #  #
+  **           #     # ######   #####      ######  ###
+  **           #     # #             #     #     # #  #
+  **           #     # #       #     #     #     # #   #
+  **            #####  #        #####      ######  #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-BK" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BK On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BK OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BK completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-BP" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BP On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BP OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #     #
+  **           #     # #       #     #     #     # #  #  #
+  **           #     # #       #           #     # #  #  #
+  **           #     # ######   #####      ######  #  #  #
+  **           #     # #             #     #     # #  #  #
+  **           #     # #       #     #     #     # #  #  #
+  **            #####  #        #####      ######   ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-BW" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BW On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BW OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     #  #   #
+  **           #     # ######   #####      ######    ###
+  **           #     # #             #     #     #    #
+  **           #     # #       #     #     #     #    #
+  **            #####  #        #####      ######     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-BY" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BY On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BY OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BY completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ####### ######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      #     # ######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-HB" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HB On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HB OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-HB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #######
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ####### ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      #     # #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-HE" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HE On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HE OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-HE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ####### #######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-HH" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HH On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HH OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-HH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     ##   ## #     #
+  **           #     # #       #           # # # # #     #
+  **           #     # ######   #####      #  #  # #     #
+  **           #     # #             #     #     #  #   #
+  **           #     # #       #     #     #     #   # #
+  **            #####  #        #####      #     #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-MV" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-MV On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="MV OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-MV completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     #  #####
+  **           #     # #       #     #     ##    #    #
+  **           #     # #       #           # #   #    #
+  **           #     # ######   #####      #  #  #    #
+  **           #     # #             #     #   # #    #
+  **           #     # #       #     #     #    ##    #
+  **            #####  #        #####      #     #  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-NI" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-NI On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="NI OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-NI completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     ##    # #  #  #
+  **           #     # #       #           # #   # #  #  #
+  **           #     # ######   #####      #  #  # #  #  #
+  **           #     # #             #     #   # # #  #  #
+  **           #     # #       #     #     #    ## #  #  #
+  **            #####  #        #####      #     #  ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-NW" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-NW On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="NW OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-NW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #  #    #
+  **           #     # #       #     #     #   #   #
+  **            #####  #        #####      #    #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-RP" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-RP On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="RP OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-RP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #       #     #
+  **           #     # ######   #####       #####  #######
+  **           #     # #             #           # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####       #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-SH" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SH On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SH OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-SH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #       #
+  **           #     # ######   #####       #####  #
+  **           #     # #             #           # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####       #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-SL" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SL On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SL OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-SL completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #     #
+  **           #     # #       #     #     #     # ##    #
+  **           #     # #       #           #       # #   #
+  **           #     # ######   #####       #####  #  #  #
+  **           #     # #             #           # #   # #
+  **           #     # #       #     #     #     # #    ##
+  **            #####  #        #####       #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-SN" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SN On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SN OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-SN completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ####### #     #
+  **           #     # #       #     #        #    #     #
+  **           #     # #       #              #    #     #
+  **           #     # ######   #####         #    #######
+  **           #     # #             #        #    #     #
+  **           #     # #       #     #        #    #     #
+  **            #####  #        #####         #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-TH" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-TH On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="TH OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-TH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ####### #######
+  **           #     # #       #     #          #  #
+  **           #     # #       #               #   #
+  **           #     # ######   #####         #    ######
+  **           #     # #             #       #     #
+  **           #     # #       #     #      #      #
+  **            #####  #        #####      ####### #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1401-ZF" description="On-Boarding openfire XMPP Server Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-ZF On-Boarding openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="ZF OFS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-ZF completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #    ######
+  **           #     # #     #  #   #     #     #
+  **           #     # #     #   # #      #     #
+  **           ######  #######    #       #     #
+  **           #       #     #   # #      #     #
+  **           #       #     #  #   #     #     #
+  **           #       #     # #     #    ######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1501-01" description="On-Boarding Phoenix Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-01 On-Boarding Accounts Phoenix Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXD Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1501-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     #######
+  **           #     # #     #  #   #         #
+  **           #     # #     #   # #          #
+  **           ######  #######    #           #
+  **           #       #     #   # #          #
+  **           #       #     #  #   #         #
+  **           #       #     # #     #        #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1501-02" description="On-Boarding Phoenix Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-02 On-Boarding Accounts Phoenix Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXT Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1501-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #      #####
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        #     #
+  **           #       #     #   # #       #  #  #
+  **           #       #     #  #   #      #   # #
+  **           #       #     # #     #      #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1501-03" description="On-Boarding Phoenix Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-03 On-Boarding Accounts Phoenix Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXQ Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1501-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     ######
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        ######
+  **           #       #     #   # #       #
+  **           #       #     #  #   #      #
+  **           #       #     # #     #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1501-04" description="On-Boarding Phoenix Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-04 On-Boarding Accounts Phoenix Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXP Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1501-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######  #
+  **           ##   ## #     # #
+  **           # # # # #     # #
+  **           #  #  # #     # #
+  **           #     # #     # #
+  **           #     # #     # #
+  **           #     # ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1601" description="On-Boarding Moodle Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1601 On-Boarding Accounts Moodle Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Moodle Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="MDL Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1601 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####        ######
+  **           ##    #    #     #    #    #     #       #     #
+  **           # #   #    #          #    #             #     #
+  **           #  #  #     #####     #     #####   ###  ######
+  **           #   # #          #    #          #       #
+  **           #    ## ## #     #    #    #     #       #
+  **           #     # ##  #####   #####   #####        #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1701-01" description="On-Boarding NSISP Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1701-01 On-Boarding Accounts NSISP Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from NSISP Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="NSISP Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1701-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####       #######
+  **           ##    #    #     #    #    #     #         #
+  **           # #   #    #          #    #               #
+  **           #  #  #     #####     #     #####   ###    #
+  **           #   # #          #    #          #         #
+  **           #    ## ## #     #    #    #     #         #
+  **           #     # ##  #####   #####   #####          #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1701-02" description="On-Boarding IGSP Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1701-02 On-Boarding Accounts IGSP Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from IGSP Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IGSP Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1701-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####        ######
+  **             #    #     # #     #       #     #
+  **             #    #       #             #     #
+  **             #    #   ###  #####   ###  ######
+  **             #    #     #       #       #
+  **             #    #     # #     #       #
+  **           #####   #####   #####        #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1801-01" description="On-Boarding IGSP Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 On-Boarding Accounts IGSP Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from IGSP Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IGSP Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####       #######
+  **             #    #     # #     #         #
+  **             #    #       #               #
+  **             #    #   ###  #####   ###    #
+  **             #    #     #       #         #
+  **             #    #     # #     #         #
+  **           #####   #####   #####          #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1801-02" description="On-Boarding IGST Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 On-Boarding Accounts IGST Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from IGST Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IGST Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####   #####
+  **           #     #    #    #     #
+  **           #     #    #    #      
+  **           #     #    #    #   ###
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="1901" description="On-Boarding OIG Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1901 On-Boarding Accounts OIG Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from OIG Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OIG Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1901 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####  #     #  ######
+  **                #     #    ##   ##  #     #
+  **               #      #    # # # #  #     #
+  **              #       #    #  #  #  ######
+  **             #        #    #     #  #
+  **            #         #    #     #  #
+  **           #######  #####  #     #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2001-01" description="On-Boarding ZIMP Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-01 On-Boarding Accounts ZIMP Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from ZIMP Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="ZIMP Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######  ######
+  **           #     # #     # #     #
+  **           #     # #     # #     #
+  **           ######  #     # ######
+  **           #     # #     # #
+  **           #     # #     # #
+  **           ######  ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2001-02" description="On-Boarding BDP Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-02 On-Boarding Accounts BDP Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from BDP Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BDP Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####
+  **           ##    #    #     #    #    #     #
+  **           # #   #    #          #    #
+  **           #  #  #     #####     #     #####
+  **           #   # #          #    #          #
+  **           #    ## ## #     #    #    #     #
+  **           #     # ##  #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2001-03" description="On-Boarding NSIS Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 On-Boarding Accounts NSIS Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from NSIS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="NSIS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ####### #    #    #
+  **           #     # #       #   #    # #
+  **           #     # #       #  #    #   #
+  **           #     # ######  ###    #     #
+  **            #   #  #       #  #   #######
+  **             # #   #       #   #  #     #
+  **              #    #       #    # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2001-04" description="On-Boarding VFKA Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-04 On-Boarding Accounts VFKA Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from VFKA Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="VFKA Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #    # ##### #     # #     #
+  **           #   #    #   #     # #     #
+  **           #  #     #   #     # #     #
+  **           ###      #   #     # #     #
+  **           #  #     #    #   #  #     #
+  **           #   #    #     # #   #     #
+  **           #    # #####    #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2001-05" description="On-Boarding KIVU Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-05 On-Boarding Accounts KIVU Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from KIVU Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="KIVU Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-05 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #     #  #####  #####
+  **           #     # #     # #     #   #
+  **           #       #     # #         #
+  **            #####  #     #  #####    #
+  **                 # #     #       #   #
+  **           #     # #     # #     #   #
+  **            #####   #####   #####  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2001-06" description="On-Boarding SUSI Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-06 On-Boarding Accounts SUSI Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from SUSI Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SUSI Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-06 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####  #####  ######  #
+  **             #   #     # #     # #
+  **             #   #       #     # #
+  **             #    #####  ######  #
+  **             #         # #       #
+  **             #   #     # #       #
+  **           #####  #####  #       #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2001-07" description="On-Boarding ISPL Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-07 On-Boarding Accounts ISPL Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from ISPL Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="ISPL Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-07 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ##### ####### #     #
+  **           #     #   #      #    #     #
+  **           #         #      #    #     #
+  **            #####    #      #    #     #
+  **                 #   #      #    #     #
+  **           #     #   #      #    #     #
+  **            #####  #####    #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+-->
+  <target name="2001-08" description="On-Boarding SITU Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-08 On-Boarding Accounts SITU Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from SITU Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SITU Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-08 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######   #####
+  **           #     # #     # #     #
+  **           #     # #     # #
+  **           #     # ######  #
+  **           #     # #       #
+  **           #     # #       #     #
+  **            #####  #        #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2001-09" description="On-Boarding UPC Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-09 On-Boarding Accounts UPC Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from UPC Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="UPC Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-09 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     #  #####  #######
+  **           #     # #     # #     # #
+  **           #     # #     # #     # #
+  **           #     # ####### #     # ######
+  **           #     # #     # #     # #
+  **           #     # #     # #     # #
+  **           ######  #     #  #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2001-10" description="On-Boarding DHOE Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-10 On-Boarding Accounts DHOE Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from DHOE Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="DHOE Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-10 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####     ######  #     #
+  **           #     # #   #  #     #    #     # #     #
+  **           #     # #  #   #          #     # #     #
+  **           ######  ###    #          #     # #######
+  **           #   #   #  #   #          #     # #     #
+  **           #    #  #   #  #     #    #     # #     #
+  **           #     # #    #  #####     ######  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile accounts.
+  ******************************************************************************
+  -->
+  <target name="2101" description="On-Boarding Redhat Keycloak DH Identity Store Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101 On-Boarding Accounts Redhat Keycloak DH Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Accounts from Redhat Keycloak DH Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="RKDH Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

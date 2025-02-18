@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="fnd$bundle" value="#{adfBundle['bka.employee.portal.bundle.Foundation']}"/>
+  <c:set var="mod$bundle" value="#{adfBundle['bka.employee.portal.vehicle.Frontend']}"/>
+  <af:panelGridLayout id="pgl1" inlineStyle="width:850.0px;">
+    <af:gridRow id="gr01" marginTop="5px" height="auto">
+      <af:gridCell id="gc01" marginStart="5px" width="100%" marginEnd="5px">
+        <af:quickQuery id           ="qq01"
+                       label        ="#{fnd$bundle.SEARCH}"
+                       searchDesc   ="#{fnd$bundle.SEARCH}"
+                       value        ="#{bindings.BrandVC.queryDescriptor}"
+                       model        ="#{bindings.BrandVC.queryModel}"
+                       queryListener="#{bindings.BrandVC.processQuery}">
+            <f:facet name="end">
+              <af:outputText id="gc01ot01" value="#{mod$bundle.VMB_SEARCH_PICKER}"/>
+            </f:facet>
+        </af:quickQuery>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow  id="gr02" marginTop="5px" height="auto">
+      <af:gridCell id="gc02" marginStart="5px" width="100%" marginEnd="5px">
+        <af:outputText id="gc02ot1" value="#{mod$bundle.VMB_SEARCH_RESULT}" styleClass="AFLabelText" inlineStyle="font-weight:bolder; color:Black;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr03" marginTop="5px" height="auto">
+      <af:gridCell id="gc03" marginStart="5px" width="100%" marginEnd="5px" halign="stretch">
+        <af:table id                    ="t1" var="row" varStatus="vs"
+                  value                 ="#{bindings.Brand.collectionModel}"
+                  rows                  ="#{bindings.Brand.rangeSize}"
+                  binding               ="#{pageFlowScope.brandPicker.searchTable}"
+                  fetchSize             ="6"
+                  selectionListener     ="#{pageFlowScope.brandPicker.selectionListener}"
+                  columnStretching      ="last"
+                  columnBandingInterval ="0"
+                  rowBandingInterval    ="1"
+                  rowSelection          ="single"
+                  autoHeightRows        ="0"
+                  scrollPolicy          ="page"
+                  emptyText             ="#{fnd$bundle.SEARCH_EMPTY}"
+                  partialTriggers       =":::qq01">
+          <af:column id="t1c0" rowHeader="true" headerText=" " width="20"/>
+          <af:column id="t1c1" headerText="#{bindings.Brand.hints.name.label}">
+            <af:outputText id="t1ot1" value="#{row.name}"/>
+          </af:column>
+          <af:column sortProperty="#{bindings.Brand.hints.icon.name}"
+                     sortable="true"
+                     headerText="#{bindings.Brand.hints.icon.label}"
+                     id="c2">
+            <af:image id="i01" source="/images/brand/#{row.icon}" shortDesc="#{bindings.Brand.hints.icon.tooltip}"/>
+          </af:column>
+        </af:table>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr08" marginTop="5px" height="auto">
+      <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc08"
+                   halign="end">
+        <af:button id      ="gc06cb01"
+                   text    ="#{fnd$bundle.GENERIC_SELECT}"
+                   binding ="#{pageFlowScope.brandPicker.addButton}"
+                   action  ="#{pageFlowScope.brandPicker.addSelectedRows}"
+                   disabled="#{pageFlowScope.brandPicker.selectionEmpty}"/>
+        <af:spacer width="5" height="1" id="s23"/>
+        <af:button id      ="gc06cb02"
+                   text    ="#{fnd$bundle.GENERIC_CANCEL}"
+                   action  ="cancel"/>
+      </af:gridCell>
+    </af:gridRow>
+  </af:panelGridLayout>
+</jsp:root>

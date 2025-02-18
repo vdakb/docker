@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Oracle Directory Service Deployment Context Definitions"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:config="http://oracle.ods.deployment/config"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+
+  <import file="bka-oud-server.xml"/>
+  <!--
+  ==============================================================================
+  == Import custom type and task definitions
+  ==============================================================================
+  -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <taskdef resource="oracle/hst/deployment/ant-fusion-lib.xml"     uri="http://oracle.hst.deployment/fusion"/>
+  <taskdef resource="oracle/hst/deployment/ant-topology-lib.xml"   uri="http://oracle.hst.deployment/topology"/>
+  <taskdef resource="oracle/hst/deployment/ant-webservice-lib.xml" uri="http://oracle.hst.deployment/webservice"/>
+  <taskdef resource="oracle/hst/deployment/ant-security-lib.xml"   uri="http://oracle.hst.deployment/security"/>
+  <taskdef resource="oracle/iam/directory/ant-config-lib.xml"      uri="http://oracle.ods.deployment/config"/>
+  <taskdef resource="oracle/iam/directory/ant-entry-lib.xml"       uri="http://oracle.ods.deployment/entry"/>
+  <taskdef resource="oracle/iam/directory/ant-object-lib.xml"      uri="http://oracle.ods.deployment/object"/>
+  <!--
+  ==============================================================================
+  == Declaring the container specifiying connectivity to the remote systems
+  ==============================================================================
+  -->
+  <server:principal id="bka-principal" username="${bka.server.username}" password="${bka.server.password}"/>
+  <server:ods-context id="bka-context" type="${bka.server.type}" protocol="${bka.server.protocol}" host="${bka.server.host}" port="${bka.server.port}" principalRef="bka-principal"/>
+</project>

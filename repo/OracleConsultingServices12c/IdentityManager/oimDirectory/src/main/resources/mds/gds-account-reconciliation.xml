@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="User ID"
+            transformation="false"
+            natively      ="false">
+
+  <attribute name="User ID"             source="uid"/>
+  <attribute name="First Name"          source="givenname"/>
+  <attribute name="Last Name"           source="sn"/>
+  <attribute name="Type"                source="employeetype"/>
+  <attribute name="E Mail Address"      source="mail"/>
+  <attribute name="Telephone Number"    source="telephonenumber"/>
+  <attribute name="Facsimile Number"    source="facsimiletelephonenumber"/>
+  <attribute name="Mobile Number"       source="mobile"/>
+  <attribute name="Country"             source="c"/>
+  <attribute name="Language"            source="preferredlanguage"/>
+
+  <lookup    name="Directory Hierarchy" code="GDS.Directory Hierarchy"/>
+
+  <reference  name="Group MemberShip" object-class="groupOfUniqueNames" search-base="cn=Groups" link="uniqueMember" transformation="false">
+    <attribute name="Group Name" source="cn"/>
+  </reference>
+</descriptor>

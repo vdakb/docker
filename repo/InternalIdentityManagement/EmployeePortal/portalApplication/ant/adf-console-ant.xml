@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project basedir=".." default="make" name="Employee Self Service Portal Application">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description" value="Employee Self Service Portal Application"/>
+  <property name="application" value="bka.employee.portal"/>
+  <property name="destination" value="../../deployment/oim/0000 systemCustomization"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import   file="../../adf-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.jee"/>
+    <path refid="oracle.fmw.jsf"/>
+    <path refid="oracle.fmw.xml"/>
+    <path refid="oracle.fmw.adf.view"/>
+    <path refid="oracle.fmw.adf.model"/>
+    <path refid="oracle.fmw.adf.platform"/>
+    <path refid="oracle.fmw.adf.controller"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.iam.oim.backend"/>
+    <path refid="oracle.fmw.iam.oim.frontend"/>
+    <path refid="oracle.ocs.iam.hst.foundation"/>
+    <path refid="oracle.ocs.iam.hst.faces"/>
+    <path refid="bka.bund.de.epp.frontend"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT macro to cleanup a project
+  =====================================================================
+  -->
+  <macrodef name="cleanup-project">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Project @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <exec executable="svn">
+        <arg value="cleanup"/>
+        <arg value="--remove-unversioned"/>
+        <arg value="../@{path}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <macrodef name="clean-project">
+    <attribute name="file"/>
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Clean Project @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <call-subproject target="clean" file="@{file}" path="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to remove particular unversioned files
+  =====================================================================
+  -->
+  <target name="cleanup" description="Remove particular unversioned filess">
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Employee Portal Console"/>
+    <echo message="============================================================="/>
+    <cleanup-project path="vehicleFrontend"   component="Employee Portal Vehicle View"/>
+    <cleanup-project path="vehicleBackend"    component="Employee Portal Vehicle Model"/>
+    <cleanup-project path="portalBackend"     component="Employee Portal Console Backend"/>
+    <cleanup-project path="portalFrontend"    component="Employee Portal Console Frontend"/>
+    <cleanup-project path="portalApplication" component="Employee Portal Console Application"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables">
+    <echo message="============================================================="/>
+    <echo message="Clean of Employee Portal Console"/>
+    <echo message="============================================================="/>
+    <clean-project file="adf-module-ant.xml"  path="${wks.base.epp}/vehicleFrontend" component="Employee Portal Vehicle View"/>
+    <clean-project file="adf-library-ant.xml" path="${wks.base.epp}/vehicleBackend"  component="Employee Portal Vehicle Model"/>
+    <clean-project file="adf-library-ant.xml" path="${wks.base.epp}/portalBackend"   component="Employee Portal Console Backend"/>
+    <clean-project file="adf-library-ant.xml" path="${wks.base.epp}/portalFrontend"  component="Employee Portal Console Frontend"/>
+    <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+    <echo message="Clean Project Employee Portal Console Module"/>
+    <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}" includes="**/*"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the frontend application to be deployed on
+  == the JEE application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="clean,init,manifest">
+    <echo message="Packaging Identity Frontend Application ${application} from path ${output.dir} and ${static.dir}"/>
+    <call-subproject target="make"    file="adf-library-ant.xml" path="${wks.base.epp}/portalBackend"/>
+    <call-subproject target="make"    file="adf-library-ant.xml" path="${wks.base.epp}/portalFrontend"/>
+    <call-subproject target="make"    file="adf-library-ant.xml" path="${wks.base.epp}/vehicleBackend"/>
+    <call-subproject target="make"    file="adf-module-ant.xml"  path="${wks.base.epp}/vehicleFrontend"/>
+    <call-subproject target="compile" file="adf-console-ant.xml" path="${wks.base.epp}/portalApplication"/>
+    <jar destfile="${deploy.dir}/adf-loc.jar">
+      <manifest>
+        <attribute name="Class-Path" value="../adf"/>
+      </manifest>
+    </jar>
+    <adf-war-module description="${description}" module="${application}"/>
+    <ear compress="false" destfile="${deploy.dir}/${application}.ear" appxml="${wks.base.epp}/.src/META-INF/application.xml"  manifest="${manifest}">
+      <metainf dir="${wks.base.epp}/.src/META-INF">
+        <exclude name="cwallet.sso"/>
+        <exclude name="jazn-data.xml"/>
+        <exclude name="jps-config.xml"/>
+        <exclude name="cwallet.sso.lck"/>
+        <exclude name="application.xml"/>
+        <exclude name="jazn-data-sysadmin.xml"/>
+      </metainf>
+      <zipfileset prefix="adf"         dir="${wks.base.epp}/.adf">
+        <exclude name="**/connections.xml"/>
+        <exclude name="**/wsm-assembly.xml"/>
+      </zipfileset>
+      <zipfileset prefix="lib"         file="${deploy.dir}/adf-loc.jar"/>
+      <zipfileset prefix="APP-INF/lib" file="${hst.home}/hstFoundation/lib/hst-foundation.jar"/>
+      <zipfileset prefix="APP-INF/lib" file="${wks.base.epp}/portalBackend/lib/bka.employee.portal.backend.jar"/>
+      <zipfileset prefix="APP-INF/lib" file="${wks.base.epp}/vehicleBackend/lib/bka.employee.vehicle.backend.jar"/>
+      <fileset    file="${wks.base.epp}/portalApplication/${deploy.dir}/${application}.war"/>
+    </ear>
+    <delete file="${deploy.dir}/adf-loc.jar"/>
+    <delete file="${deploy.dir}/${application}.war"/>
+    <copy todir="${destination}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+      <fileset dir="${deploy.dir}">
+        <include  name="${application}.ear"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the service application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="deploy" depends="make">
+    <adf-ear-deploy application="${application}" target="${oim.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the service application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="redeploy" depends="make">
+    <adf-ear-redeploy application="${application}" target="${oim.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the service application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="undeploy">
+    <adf-ear-undeploy application="${application}"/>
+  </target>
+</project>

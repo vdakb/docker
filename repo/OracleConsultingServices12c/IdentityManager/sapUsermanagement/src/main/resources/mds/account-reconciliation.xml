@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<descriptor xmlns           ="http://www.oracle.com/schema/oim/mapping"
+            identifier      ="User ID"
+            changelog       ="USR04"
+            changelog_filter="MODDA GE '%s' AND MODTI GT '%s'"
+            notexists       ="does not exist"
+            cua             ="false"
+            transformation  ="false"
+            natively        ="false">
+  <!--
+  USR04:    MODDA GE '%s'AND MODTI GT '%s'
+  USZBVSYS: MODDATE GE '%s'AND MODTIME GT '%s'"
+  -->
+  <attribute name="Accounting Number"     source="LOGONDATA.ACCNT"/>
+  <attribute name="User Type"             source="LOGONDATA.USTYP"/>
+  <attribute name="User Group"            source="LOGONDATA.CLASS"/>
+  <attribute name="Time Zone"             source="LOGONDATA.TZONE"/>
+  <attribute name="Valid From"            source="LOGONDATA.GLTGV"/>
+  <attribute name="Valid Through"         source="LOGONDATA.GLTGB"/>
+
+  <!-- UCLASSSYS.LIC_TYPE -->
+  <attribute name="Contractual User Type" source="UCLASS.LIC_TYPE"/>
+
+  <attribute name="Logon Language"        source="DEFAULTS.LANGU"/>
+  <attribute name="Decimal Notation"      source="DEFAULTS.DCPFM"/>
+  <attribute name="Date Format"           source="DEFAULTS.DATFM"/>
+  <attribute name="Start Menu"            source="DEFAULTS.START_MENU"/>
+  <attribute name="Cost Center"           source="DEFAULTS.KOSTL"/>
+
+  <attribute name="Function"              source="ADDRESS.FUNCTION"/>
+  <attribute name="Department"            source="ADDRESS.DEPARTMENT"/>
+  <attribute name="Title"                 source="ADDRESS.TITLE_P"/>
+  <attribute name="First Name"            source="ADDRESS.FIRSTNAME"/>
+  <attribute name="Last Name"             source="ADDRESS.LASTNAME"/>
+  <attribute name="Communication Type"    source="ADDRESS.COMM_TYPE"/>
+  <attribute name="Lang Communication"    source="ADDRESS.LANGU_P"/>
+  <attribute name="E Mail"                source="ADDRESS.E_MAIL"/>
+  <attribute name="Telephone Number"      source="ADDRESS.TEL1_NUMBR"/>
+  <attribute name="Telephone Extension"   source="ADDRESS.TEL1_EXT"/>
+  <attribute name="Fax Number"            source="ADDRESS.FAX_NUMBER"/>
+  <attribute name="Fax Extension"         source="ADDRESS.FAX_EXTENS"/>
+  <attribute name="Building"              source="ADDRESS.BUILDING_P"/>
+  <attribute name="Room Number"           source="ADDRESS.ROOM_NO_P"/>
+  <attribute name="Floor"                 source="ADDRESS.FLOOR_P"/>
+
+  <attribute name="Alias"                 source="ALIAS.USERALIAS"/>
+  <attribute name="Company"               source="COMPANY.COMPANY"/>
+<!--
+  <attribute name="License Type"          source="UCLASS.LIC_TYPE"/>
+  <attribute name="System ID"             source="UCLASS.SYSID"/>
+  <attribute name="Client"                source="UCLASS.CLIENT"/>
+  <attribute name="Substitute From"       source="UCLASS.SUBSTITUTE_FROM"/>
+  <attribute name="Substitute Until"      source="UCLASS.SUBSTITUTE_UNTIL"/>
+  <attribute name="RCV System"            source="UCLASS.RCVSYSTEM"/>
+-->
+<!--
+  We need an idea how to map those attributes
+  <attribute name="User ID"               source="LOGONDATA.ACCNT"/>
+  <attribute name="Status"                source=""/>
+  <attribute name="Lock"                  source=""/>
+-->
+  <reference  name="User Role" transformation="false">
+    <attribute name="Role Name"           source="ACTIVITYGROUPS.AGR_NAME"/>
+    <attribute name="Role System Name"    source="ACTIVITYGROUPS.SUBSYSTEM"/>
+    <attribute name="Start Date"          source="ACTIVITYGROUPS.FROM_DAT"/>
+    <attribute name="End Date"            source="ACTIVITYGROUPS.TO_DAT"/>
+  </reference>
+
+  <reference  name="User Profile" transformation="false">
+    <attribute name="Profile Name"        source="PROFILES.PROFILE|BAPIPROF"/>
+    <attribute name="Profile System Name" source="PROFILES.SUBSYSTEM"/>
+  </reference>
+</descriptor>

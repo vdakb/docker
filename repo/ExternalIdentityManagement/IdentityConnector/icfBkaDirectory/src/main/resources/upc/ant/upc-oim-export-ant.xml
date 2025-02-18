@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter UPC"
+         basedir         ="../"
+         default        ="all"
+         xmlns:object   ="http://oracle.iam.identity/object">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-export-ant.log"/>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Identity Manager System Integration Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports the BKA Directory Connector Base Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/base/bds-resource-dm.xml"
+                        description="BKA Directory Service IT Resource Type Configuration ${application.release}">
+        <object:category value="ITResourceDef" name="BKA Directory Service"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/bds-adapter-dm.xml"
+                        description="BKA Directory Service Adapter Configuration ${application.release}">
+        <object:category value="TaskAdapter"   name="adpBDSACCOUNTCREATE"/>
+        <object:category value="TaskAdapter"   name="adpBDSACCOUNTMODIFY"/>
+        <object:category value="TaskAdapter"   name="adpBDSACCOUNTMODIFYATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpBDSACCOUNTASSIGNATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpBDSACCOUNTREVOKEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpBDSACCOUNTREVOKE"/>
+        <object:category value="TaskAdapter"   name="adpBDSACCOUNTACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpBDSACCOUNTDEACTIVATE"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/bds-scheduler-dm.xml"
+                        description="BKA Directory Service Scheduler Configuration ${application.release}">
+        <object:category value="scheduledTask" name="BKA Directory Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="BKA Directory Account Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the BKA Directory Service Provider Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Lookup Definition
+  **           o Resource Form
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Exports UPC Target Configuration ${application.release}" depends="base">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the Lookup configuration -->
+      <object:exportSet exportFile ="${resource.dir}/upc/xml/target/upc-lookup-dm.xml"
+                        description="UPC Target Configuration ${application.release}">
+        <object:category value="Lookup"        name="UPC.Group"/>
+      </object:exportSet>
+      <!-- export the IT Resource configuration -->
+      <object:exportSet exportFile ="${resource.dir}/upc/xml/target/upc-resource-dm.xml"
+                        description="UPC Target Configuration ${application.release}">
+        <object:category value="ITResource"    name="UPC.Endpoint"/>
+      </object:exportSet>
+      <!-- export the User Defined Form configuration -->
+      <object:exportSet exportFile ="${resource.dir}/upc/xml/target/upc-model-dm.xml"
+                        description="UPC Target Configuration ${application.release}">
+        <object:category value="Process Form" name="UD_UPC_UGP"/>
+        <object:category value="Process Form" name="UD_UPC_USR"/>
+      </object:exportSet>
+      <!-- export the Provisioning Process configuration -->
+      <object:exportSet exportFile ="${resource.dir}/upc/xml/target/upc-process-dm.xml"
+                        description="UPC Target Configuration ${application.release}">
+        <object:category value="Resource"     name="UPC Account"/>
+        <object:category value="Process"      name="UPC Account"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/upc/xml/target/upc-scheduler-dm.xml"
+                        description="UPC Target Configuration ${application.release}">
+        <object:category value="Job"           name="UPC Group Reconciliation"/>
+        <object:category value="Job"           name="UPC Account Reconciliation"/>
+      </object:exportSet>
+      <!-- export the Request Catalog configuration -->
+      <object:exportSet exportFile ="${resource.dir}/upc/xml/target/upc-request-dm.xml"
+                        description="UPC Target Configuration ${application.release}">
+        <object:category value="RequestDataset"      name="UPCRequest"/>
+        <object:category value="ApplicationInstance" name="UPCAccount"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" depends="target" description="Exports the project artifacts from the target host and Identity Manager Instance"/>
+</project>

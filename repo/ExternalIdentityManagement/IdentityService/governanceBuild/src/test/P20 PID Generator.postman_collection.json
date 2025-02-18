@@ -1,0 +1,359 @@
+{
+	"info": {
+		"_postman_id": "086bf18c-af01-4081-9401-086ad09d5097",
+		"name": "P2020 PID Generator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12777809"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "pid-token-request",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "pidservice",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-oauth-identity-domain-name",
+								"value": "{{identityDomain}}",
+								"type": "text",
+								"description": "Identity Domain under which the token is being requested."
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"description": "Grant Type for the Access Token Request",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "igssysadm",
+									"description": "Username of resource owner",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"description": "Password of resource owner",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{sso-endpoint}}/oauth2/rest/token",
+							"host": [
+								"{{sso-endpoint}}"
+							],
+							"path": [
+								"oauth2",
+								"rest",
+								"token"
+							]
+						},
+						"description": "The Password grant is used when the application exchanges the user’s username and password for an access token.\n\nThis is exactly the thing OAuth was created to prevent in the first place, so you should never allow third-party apps to use this grant."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Identifier",
+			"item": [
+				{
+					"name": "list",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/pid/v1/pid?startIndex=1",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"pid",
+								"v1",
+								"pid"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/pid/v1/pid/pafm2uh",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"pid",
+								"v1",
+								"pid",
+								"pafm2uh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/plain",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prefix",
+									"value": "p",
+									"type": "text"
+								},
+								{
+									"key": "usedby",
+									"value": "an4711126",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/pid/v1/pid",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"pid",
+								"v1",
+								"pid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deactivate",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"active\" : true }"
+						},
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/pid/v1/pid/p0aof3j",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"pid",
+								"v1",
+								"pid",
+								"p0aof3j"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/pid/v1/pid/phgfs9k",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"pid",
+								"v1",
+								"pid",
+								"phgfs9k"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0IjoiSjFsVmdQWTFvSEpMVDdqaFhqeWJZMTJYMlRVIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL3Nzby5jaW5uYW1vbnN0YXIub2FtOjQ0My9vYXV0aDIiLCJhdWQiOlsiaHR0cHM6Ly9zc28uY2lubmFtb25zdGFyLm9hbTo0NDMvb2F1dGgyIiwicGlkcmVzb3VyY2UiXSwiZXhwIjoxNjg2OTExNzI3LCJqdGkiOiJLd19hQmluaXY1dHhIR3NIeTNMcllBIiwiaWF0IjoxNjg2OTA0NTI3LCJzdWIiOiJpZ3NzeXNhZG0iLCJjbGllbnQiOiJwaWRzZXJ2aWNlIiwic2NvcGUiOlsicGlkcmVzb3VyY2UuYWxsIl0sImRvbWFpbiI6IlNlY3VyZURvbWFpbjIiLCJzZXNzaW9uSWQiOiJlOGE5M2ZkNWJjODE3MjA2YzRhZWY2OThlMGY3OTViOTEwOWEwYTBlOWMzYTkyMWFhMzVlMmVhNjBjZDFlMjk4In0.gfgDBQ9_-M-SR04bZcbl238SML2ctXqbMf7KPYolGvz8yQHyKTYfj09c2f6fXHnYfCPXllXLYK9k0MPNGDhRt5FSOKYt2F8AAvrqJmUt1QIeaqSbmYoWCQ6N_Ygc6qaLEg7nU5TygOWmW_N1eiqL8FFsSaU5vdUQmvLRwc9xrmK7wlcozfuq4KqNZYO2L2xaOpJRCiA9TyMb8Q1i1xx9DvrSNmHJeFjV_1ycMl_ZIsZu3I3CANg1sDXuhKD5WtORgGjXIwu2apkxoqZ7TSuHgFx8xmmOm65_C8Lph407-mdfn6H885dVtzs_ePTWzNDviYyXrmirdWkMNrBJX4k7BA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "sso-endpoint",
+			"value": "https://sso.cinnamonstar.oam",
+			"type": "string"
+		},
+		{
+			"key": "identityDomain",
+			"value": "PlayGroundDomain",
+			"type": "string"
+		},
+		{
+			"key": "igs-endpoint",
+			"value": "https://igs.cinnamonstar.oam",
+			"type": "string"
+		}
+	]
+}

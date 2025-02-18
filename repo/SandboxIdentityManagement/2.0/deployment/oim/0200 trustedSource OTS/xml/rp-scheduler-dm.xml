@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xl-ddm-data database="" description="Federated Identity Management Scheduler Configuration Police Rhineland-Palatinate 12.2.1.3" exported-date="1593850375543" user="XELSYSADM" version="12.2.1.3.0">
+  <Job name="RP OTS Identity Reconciliation" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>43</taskKey>
+    <taskClassName>oracle.iam.identity.ots.service.reconciliation.IdentityReconciliation</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this task was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">1</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Offline Event</key>
+        <value type="jobparameter">
+          <name type="string">Offline Event</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if reconciliation events should be handled offline; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">2</paramKey>
+          <paramValue type="boolean">true</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">3</paramKey>
+          <paramValue type="string">RP OTS Identity</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Identity Role</key>
+        <value type="jobparameter">
+          <name type="string">Identity Role</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the default identity role which should be assigned to a new created identity</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">4</paramKey>
+          <paramValue type="string">End-User</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Identity Organization</key>
+        <value type="jobparameter">
+          <name type="string">Identity Organization</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the organization that should be assigned to a new created identity if the loaded organization name could not be resolved</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">5</paramKey>
+          <paramValue type="string">RP</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Descriptor</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Descriptor</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The path to the descriptor which specifies the mapping between the incomming field names and the reconciliation fields of the object to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">6</paramKey>
+          <paramValue type="string">/metadata/bka-features-reconciliation/ots/rp-identity-reconciliation.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Error Folder</key>
+        <value type="jobparameter">
+          <name type="string">Error Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder where the raw files should be copied to after they are proceed by the preprocessor and there might be some errors detected</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">7</paramKey>
+          <paramValue type="string">/var/opt/Anwendungen/files/RP/error</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Identity Status</key>
+        <value type="jobparameter">
+          <name type="string">Identity Status</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The value of the default identity status which should be assigned to a new created identity</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">8</paramKey>
+          <paramValue type="string">Active</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Data Filename</key>
+        <value type="jobparameter">
+          <name type="string">Data Filename</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the raw file to reconcile</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">9</paramKey>
+          <paramValue type="string">identity.xml</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Data Folder</key>
+        <value type="jobparameter">
+          <name type="string">Data Folder</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the folder the file to reconcile is located in the filesystem</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">10</paramKey>
+          <paramValue type="string">/var/opt/Anwendungen/files/RP/data</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the data should only be gathered from the reconciliation source; otherwise select option No</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">11</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Batch Size</key>
+        <value type="jobparameter">
+          <name type="string">Batch Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the size of a block read from the reconciliation source</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">12</paramKey>
+          <paramValue type="long">1000</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">13</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>File Encoding</key>
+        <value type="jobparameter">
+          <name type="string">File Encoding</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Tell the process how the raw files are encoded</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">14</paramKey>
+          <paramValue type="string">US-ASCII</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Identity Type</key>
+        <value type="jobparameter">
+          <name type="string">Identity Type</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the default identity type should be assigned to a new created identity</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">15</paramKey>
+          <paramValue type="string">EMP</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Validate Import</key>
+        <value type="jobparameter">
+          <name type="string">Validate Import</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select the option Yes if the entire file to import should be validated against the XML schema before it is unmarshalled</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramKey type="string">16</paramKey>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Unmarshaller Implementation</key>
+        <value type="jobparameter">
+          <name type="string">Unmarshaller Implementation</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The fullqualified name of the Java Class governs the process of deserializing XML data into newly created Java content trees, optionally validating the XML data as it is unmarshalled</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">17</paramKey>
+          <paramValue type="string">oracle.iam.identity.utility.file.XMLIdentityFactory</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1593847351036</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="OTS Identity Trusted Reconciliation" type="scheduledTask"/>
+    <taskName scheduledTask="OTS Identity Trusted Reconciliation"/>
+  </Job>
+</xl-ddm-data>

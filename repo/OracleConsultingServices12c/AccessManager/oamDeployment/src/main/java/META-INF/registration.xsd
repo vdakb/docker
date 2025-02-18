@@ -1,0 +1,1002 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <!-- OSSO - Request xml schema -->
+  <xs:element name="OSSORegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type"                       type="xs:string" minOccurs="0"/>
+        <xs:element name="mode"                       type="xs:string" minOccurs="0"/>
+        <xs:element name="username"                   type="xs:string" minOccurs="0"/>
+        <xs:element name="password"                   type="xs:string" minOccurs="0"/>
+        <xs:element name="serverAddress"              type="xs:anyURI"/>
+        <xs:element name="hostIdentifier"             type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName"                  type="xs:string"/>
+        <xs:element name="agentBaseUrl"               type="xs:anyURI"/>
+        <xs:element name="applicationDomain"          type="xs:string" minOccurs="0"/>
+        <xs:element name="autoCreatePolicy"           type="xs:boolean" minOccurs="0"/>
+        <xs:element name="ssoServerVersion"           type="xs:string" minOccurs="0"/>
+        <xs:element name="oracleHomePath"             type="xs:string"/>
+        <xs:element name="virtualHost"                type="xs:string" minOccurs="0"/>
+        <xs:element name="updateMode"                 type="xs:string" minOccurs="0"/>
+        <xs:element name="adminInfo"                  type="xs:string" minOccurs="0"/>
+        <xs:element name="adminId"                    type="xs:string" minOccurs="0"/>
+        <xs:element ref="protectedResourcesList"                      minOccurs="0"/>
+        <xs:element ref="publicResourcesList"                         minOccurs="0"/>
+        <xs:element name="protectedAuthnScheme"       type="xs:string" minOccurs="0"/>
+        <xs:element name="publicAuthnScheme"          type="xs:string" minOccurs="0"/>
+        <xs:element ref="rregApplicationDomain"                       minOccurs="0"/>
+        <xs:element name="logoutUrl"                  type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="failureUrl"                 type="xs:anyURI" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- start of OSSO - update request xml schema -->
+  <xs:element name="OSSOUpdateAgentRegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type"                       type="xs:string" minOccurs="0"/>
+        <xs:element name="mode"                       type="xs:string" minOccurs="0"/>
+        <xs:element name="username"                   type="xs:string" minOccurs="0"/>
+        <xs:element name="password"                   type="xs:string" minOccurs="0"/>
+        <xs:element name="serverAddress"              type="xs:anyURI"/>
+        <xs:element name="agentName"                  type="xs:string"/>
+        <xs:element name="adminInfo"                  type="xs:string" minOccurs="0"/>
+        <xs:element name="adminId"                    type="xs:string" minOccurs="0"/>
+        <xs:element name="successUrl"                 type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="failureUrl"                 type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="startDate"                  type="xs:string" minOccurs="0"/>
+        <xs:element name="homeUrl"                    type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="logoutUrl"                  type="xs:anyURI" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- end of OSSO - update request xml schema-->
+  <xs:element name="protectedResourcesList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="resource"                   type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="publicResourcesList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="resource"                   type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="excludedResourcesList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="resource"                   type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- OSSO - Response xml schema -->
+  <xs:element name="OSSORegResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type"                       type="xs:string" minOccurs="0"/>
+        <xs:element name="mode"                       type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName"                  type="xs:string" minOccurs="0"/>
+        <xs:element name="ssoServerVersion"           type="xs:string"/>
+        <xs:element name="cipherKey"                  type="xs:string"/>
+        <xs:element name="siteId"                     type="xs:string"/>
+        <!-- hex characters: length limit - eight characters -->
+        <xs:element name="siteToken"                  type="xs:string"/>
+        <xs:element name="loginUrl"                   type="xs:anyURI"/>
+        <xs:element name="logoutUrl"                  type="xs:anyURI"/>
+        <xs:element name="cancelUrl"                  type="xs:anyURI"/>
+        <xs:element name="ssoTimeoutCookieName"       type="xs:string"/>
+        <xs:element name="ssoTimeoutCookieKey"        type="xs:string"/>
+        <xs:element name="nonsslSSOPort"              type="xs:int"/>
+        <xs:element ref="errorMsgs"                                minOccurs="0"/>
+        <!-- xs:element ref="messages" minOccurs="0"></xs:element-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- OAM - Request xml schema -->
+  <xs:element name="OAMRegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type"                       type="xs:string"  minOccurs="0"/>
+        <xs:element name="mode"                       type="xs:string"  minOccurs="0"/>
+        <xs:element name="username"                   type="xs:string"  minOccurs="0"/>
+        <xs:element name="password"                   type="xs:string"  minOccurs="0"/>
+        <xs:element name="serverAddress"              type="xs:anyURI"/>
+        <xs:element name="hostIdentifier"             type="xs:string"  minOccurs="0"/>
+        <xs:element name="agentName"                  type="xs:string"/>
+        <xs:element name="agentBaseUrl"               type="xs:anyURI"  minOccurs="0"/>
+        <xs:element name="virtualHost"                type="xs:boolean" minOccurs="0"/>
+        <xs:element ref="hostPortVariationsList"                        minOccurs="0"/>
+        <xs:element name="applicationDomain"          type="xs:string"  minOccurs="0"/>
+        <xs:element name="autoCreatePolicy"           type="xs:boolean" minOccurs="0"/>
+        <xs:element name="accessClientPasswd"         type="xs:string"  minOccurs="0"/>
+        <xs:element name="primaryCookieDomain"        type="xs:string"  minOccurs="0"/>
+        <!-- preferredHost is not specified by user anymore. Present in the schema for MATS only -->
+        <xs:element name="preferredHost"              type="xs:string"  minOccurs="0"/>
+        <xs:element name="maxCacheElems"              type="xs:int"     minOccurs="0"/>
+        <xs:element name="cacheTimeout"               type="xs:int"     minOccurs="0"/>
+        <xs:element name="cookieSessionTime"          type="xs:int"     minOccurs="0"/>
+        <xs:element name="maxConnections"             type="xs:int"     minOccurs="0"/>
+        <xs:element name="maxSessionTime"             type="xs:int"     minOccurs="0"/>
+        <xs:element name="idleSessionTimeout"         type="xs:int"     minOccurs="0"/>
+        <xs:element name="failoverThreshold"          type="xs:int"     minOccurs="0"/>
+        <xs:element name="aaaTimeoutThreshold"        type="xs:int"     minOccurs="0"/>
+        <xs:element name="sleepFor"                   type="xs:int"     minOccurs="0"/>
+        <xs:element name="debug"                      type="xs:boolean" minOccurs="0"/>
+        <xs:element name="security"                   type="xs:string"  minOccurs="0"/>
+        <xs:element name="denyOnNotProtected"         type="xs:int"     minOccurs="0"/>
+        <xs:element name="allowManagementOperations"  type="xs:boolean" minOccurs="0"/>
+        <xs:element name="cachePragmaHeader"          type="xs:string"  minOccurs="0"/>
+        <xs:element name="cacheControlHeader"         type="xs:string"  minOccurs="0"/>
+        <xs:element name="ipValidation"               type="xs:int"     minOccurs="0"/>
+        <xs:element ref="ipValidationExceptions"                        minOccurs="0"/>
+        <xs:element ref="logOutUrls"                                    minOccurs="0"/>
+        <xs:element name="logoutTargetUrlParamName"   type="xs:string"  minOccurs="0"/>
+        <xs:element ref="primaryServerList"                             minOccurs="0"/>
+        <xs:element ref="secondaryServerList"                           minOccurs="0"/>
+        <xs:element ref="protectedResourcesList"                        minOccurs="0"/>
+        <xs:element ref="publicResourcesList"                           minOccurs="0"/>
+        <xs:element ref="excludedResourcesList"                         minOccurs="0"/>
+        <xs:element name="protectedAuthnScheme"       type="xs:string"  minOccurs="0"/>
+        <xs:element name="publicAuthnScheme"          type="xs:string"  minOccurs="0"/>
+        <xs:element ref="userDefinedParameters"                         minOccurs="0"/>
+        <xs:element ref="rregApplicationDomain"                         minOccurs="0"/>
+        <xs:element name="isFusionAppRegistration"    type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- end of OAM - Request xml schema -->
+  <!-- start of OAM - Update Agent Request xml schema -->
+  <xs:element name="OAMUpdateAgentRegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="username" type="xs:string" minOccurs="0"/>
+        <xs:element name="password" type="xs:string" minOccurs="0"/>
+        <xs:element name="serverAddress" type="xs:anyURI"/>
+        <xs:element name="agentName" type="xs:string"/>
+        <xs:element name="preferredHost" type="xs:string" minOccurs="0"/>
+        <xs:element name="accessClientPasswd" type="xs:string" minOccurs="0"/>
+        <xs:element name="modifyAccessClientPasswdFlag" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="primaryCookieDomain" type="xs:string" minOccurs="0"/>
+        <xs:element name="security" type="xs:string" minOccurs="0"/>
+        <xs:element name="state" type="xs:string" minOccurs="0"/>
+        <xs:element name="maxCacheElems" type="xs:int" minOccurs="0"/>
+        <xs:element name="cacheTimeout" type="xs:int" minOccurs="0"/>
+        <xs:element name="maxConnections" type="xs:int" minOccurs="0"/>
+        <xs:element name="maxSessionTime" type="xs:int" minOccurs="0"/>
+        <xs:element name="failoverThreshold" type="xs:int" minOccurs="0"/>
+        <xs:element name="aaaTimeoutThreshold" type="xs:int" minOccurs="0"/>
+        <xs:element ref="logOutUrls" minOccurs="0"/>
+        <xs:element ref="userDefinedParameters" minOccurs="0"/>
+        <xs:element name="sleepFor" type="xs:int" minOccurs="0"/>
+        <xs:element name="cachePragmaHeader" type="xs:string" minOccurs="0"/>
+        <xs:element name="cacheControlHeader" type="xs:string" minOccurs="0"/>
+        <xs:element name="debug" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="ipValidation" type="xs:int" minOccurs="0"/>
+        <xs:element ref="ipValidationExceptions" minOccurs="0"/>
+        <xs:element name="denyOnNotProtected" type="xs:int" minOccurs="0"/>
+        <xs:element name="allowManagementOperations" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--  end of OAM - Update Agent Request xml schema -->
+  <xs:element name="userDefinedParameters">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="userDefinedParam" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="userDefinedParam">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="primaryServerList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Server" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="secondaryServerList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Server" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Server">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="host" type="xs:string"/>
+        <xs:element name="port" type="xs:int"/>
+        <xs:element name="numOfConnections" type="xs:int"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- OAM - Response xml schema -->
+  <xs:element name="OAMRegResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName" type="xs:string"/>
+        <xs:element name="accessClientPasswd" type="xs:string"/>
+        <xs:element name="primaryCookieDomain" type="xs:string"/>
+        <xs:element name="preferredHost" type="xs:string"/>
+        <xs:element name="state" type="xs:string"/>
+        <xs:element name="maxCacheElems" type="xs:int"/>
+        <xs:element name="cacheTimeout" type="xs:int"/>
+        <xs:element name="cookieSessionTime" type="xs:int"/>
+        <xs:element name="maxConnections" type="xs:int"/>
+        <xs:element name="maxSessionTime" type="xs:int"/>
+        <xs:element name="idleSessionTimeout" type="xs:int"/>
+        <xs:element name="failoverThreshold" type="xs:int"/>
+        <xs:element name="aaaTimeoutThreshold" type="xs:int"/>
+        <xs:element name="sleepFor" type="xs:int"/>
+        <xs:element name="debug" type="xs:boolean"/>
+        <xs:element name="security" type="xs:string" minOccurs="0"/>
+        <xs:element name="denyOnNotProtected" type="xs:int"/>
+        <xs:element name="allowManagementOperations" type="xs:boolean"/>
+        <xs:element name="cachePragmaHeader" type="xs:string"/>
+        <xs:element name="cacheControlHeader" type="xs:string"/>
+        <xs:element name="ipValidation" type="xs:int"/>
+        <xs:element ref="ipValidationExceptions" minOccurs="0"/>
+        <!-- For simple mode -->
+        <xs:element name="globalPassphrase" type="xs:string" minOccurs="0"/>
+        <xs:element ref="logOutUrls" minOccurs="0"/>
+        <xs:element ref="primaryServerList"/>
+        <xs:element ref="secondaryServerList"/>
+        <xs:element ref="errorMsgs" minOccurs="0"/>
+        <!-- xs:element ref="messages" minOccurs="0"></xs:element-->
+        <xs:element name="cert" type="xs:base64Binary" minOccurs="0"/>
+        <xs:element name="certKey" type="xs:base64Binary" minOccurs="0"/>
+        <xs:element ref="userDefinedParameters" minOccurs="0"/>
+        <xs:element name="managedServerUrl" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="errorMsgs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="message" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- xs:element name="messages">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="message" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="message">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="level" type="xs:string"/>
+                <xs:element name="value" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element-->
+  <!-- OAM11G - Request xml schema -->
+  <xs:element name="OAM11GRegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="username" type="xs:string" minOccurs="0"/>
+        <xs:element name="password" type="xs:string" minOccurs="0"/>
+        <xs:element name="serverAddress" type="xs:anyURI"/>
+        <xs:element name="hostIdentifier" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName" type="xs:string"/>
+        <xs:element name="agentBaseUrl" type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="virtualHost" type="xs:boolean" minOccurs="0"/>
+        <xs:element ref="hostPortVariationsList" minOccurs="0"/>
+        <xs:element name="applicationDomain" type="xs:string" minOccurs="0"/>
+        <xs:element name="autoCreatePolicy" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="accessClientPasswd" type="xs:string" minOccurs="0"/>
+        <!-- preferredHost is not specified by user anymore. Present in the schema for MATS only -->
+        <xs:element name="preferredHost" type="xs:string" minOccurs="0"/>
+        <xs:element name="maxCacheElems" type="xs:int" minOccurs="0"/>
+        <xs:element name="cacheTimeout" type="xs:int" minOccurs="0"/>
+        <!-- cookieSessionTime replaced by tokenValidityPeriod -->
+        <xs:element name="tokenValidityPeriod" type="xs:int" minOccurs="0"/>
+        <xs:element name="maxConnections" type="xs:int" minOccurs="0"/>
+        <xs:element name="maxSessionTime" type="xs:int" minOccurs="0"/>
+        <xs:element name="failoverThreshold" type="xs:int" minOccurs="0"/>
+        <xs:element name="aaaTimeoutThreshold" type="xs:int" minOccurs="0"/>
+        <xs:element name="sleepFor" type="xs:int" minOccurs="0"/>
+        <xs:element name="debug" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="security" type="xs:string" minOccurs="0"/>
+        <xs:element name="denyOnNotProtected" type="xs:int" minOccurs="0"/>
+        <xs:element name="allowManagementOperations" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="allowTokenScopeOperations" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="allowMasterTokenRetrieval" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="allowCredentialCollectorOperations" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="cachePragmaHeader" type="xs:string" minOccurs="0"/>
+        <xs:element name="cacheControlHeader" type="xs:string" minOccurs="0"/>
+        <xs:element name="ipValidation" type="xs:int" minOccurs="0"/>
+        <xs:element ref="ipValidationExceptions" minOccurs="0"/>
+        <xs:element ref="logOutUrls" minOccurs="0"/>
+        <xs:element name="logoutCallbackUrl" type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="logoutTargetUrlParamName" type="xs:string" minOccurs="0"/>
+        <xs:element ref="primaryServerList" minOccurs="0"/>
+        <xs:element ref="secondaryServerList" minOccurs="0"/>
+        <xs:element ref="protectedResourcesList" minOccurs="0"/>
+        <xs:element ref="publicResourcesList" minOccurs="0"/>
+        <xs:element ref="excludedResourcesList" minOccurs="0"/>
+        <xs:element name="protectedAuthnScheme" type="xs:string" minOccurs="0"/>
+        <xs:element name="publicAuthnScheme" type="xs:string" minOccurs="0"/>
+        <xs:element ref="userDefinedParameters" minOccurs="0"/>
+        <xs:element ref="rregApplicationDomain" minOccurs="0"/>
+        <xs:element name="isFusionAppRegistration" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- end of OAM11G - Request xml schema -->
+  <!-- start of OAM11G - Update Agent Request xml schema -->
+  <xs:element name="OAM11GUpdateAgentRegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="username" type="xs:string" minOccurs="0"/>
+        <xs:element name="password" type="xs:string" minOccurs="0"/>
+        <xs:element name="serverAddress" type="xs:anyURI"/>
+        <xs:element name="agentName" type="xs:string"/>
+        <xs:element name="preferredHost" type="xs:string" minOccurs="0"/>
+        <xs:element name="accessClientPasswd" type="xs:string" minOccurs="0"/>
+        <xs:element name="modifyAccessClientPasswdFlag" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="security" type="xs:string" minOccurs="0"/>
+        <xs:element name="state" type="xs:string" minOccurs="0"/>
+        <xs:element name="maxCacheElems" type="xs:int" minOccurs="0"/>
+        <xs:element name="cacheTimeout" type="xs:int" minOccurs="0"/>
+        <xs:element name="tokenValidityPeriod" type="xs:int" minOccurs="0"/>
+        <xs:element name="maxConnections" type="xs:int" minOccurs="0"/>
+        <xs:element name="maxSessionTime" type="xs:int" minOccurs="0"/>
+        <xs:element name="failoverThreshold" type="xs:int" minOccurs="0"/>
+        <xs:element name="aaaTimeoutThreshold" type="xs:int" minOccurs="0"/>
+        <xs:element ref="logOutUrls" minOccurs="0"/>
+        <xs:element name="logoutCallbackUrl" type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="logoutRedirectUrl" type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="logoutTargetUrlParamName" type="xs:string" minOccurs="0"/>
+        <xs:element ref="userDefinedParameters" minOccurs="0"/>
+        <xs:element name="sleepFor" type="xs:int" minOccurs="0"/>
+        <xs:element name="cachePragmaHeader" type="xs:string" minOccurs="0"/>
+        <xs:element name="cacheControlHeader" type="xs:string" minOccurs="0"/>
+        <xs:element name="debug" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="ipValidation" type="xs:int" minOccurs="0"/>
+        <xs:element ref="ipValidationExceptions" minOccurs="0"/>
+        <xs:element name="denyOnNotProtected" type="xs:int" minOccurs="0"/>
+        <xs:element name="allowManagementOperations" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="allowTokenScopeOperations" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="allowMasterTokenRetrieval" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="allowCredentialCollectorOperations" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- end of OAM11G - Update Agent Request xml schema -->
+  <xs:element name="logOutUrls">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="url" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="notEnforcedUrls">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="url" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ipValidationExceptions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ipAddress" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- OAM11G - Response xml schema -->
+  <xs:element name="OAM11GRegResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName" type="xs:string"/>
+        <xs:element name="accessClientPasswd" type="xs:string"/>
+        <xs:element name="preferredHost" type="xs:string"/>
+        <xs:element name="state" type="xs:string"/>
+        <xs:element name="maxCacheElems" type="xs:int"/>
+        <xs:element name="cacheTimeout" type="xs:int"/>
+        <!-- cookieSessionTime replaced by tokenValidityPeriod  -->
+        <xs:element name="tokenValidityPeriod" type="xs:int"/>
+        <xs:element name="maxConnections" type="xs:int"/>
+        <xs:element name="maxSessionTime" type="xs:int"/>
+        <xs:element name="failoverThreshold" type="xs:int"/>
+        <xs:element name="aaaTimeoutThreshold" type="xs:int"/>
+        <xs:element name="sleepFor" type="xs:int"/>
+        <xs:element name="debug" type="xs:boolean"/>
+        <xs:element name="security" type="xs:string" minOccurs="0"/>
+        <xs:element name="denyOnNotProtected" type="xs:int"/>
+        <xs:element name="allowManagementOperations" type="xs:boolean"/>
+        <xs:element name="allowTokenScopeOperations" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="allowMasterTokenRetrieval" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="allowCredentialCollectorOperations" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="cachePragmaHeader" type="xs:string"/>
+        <xs:element name="cacheControlHeader" type="xs:string"/>
+        <xs:element name="ipValidation" type="xs:int"/>
+        <xs:element ref="ipValidationExceptions" minOccurs="0"/>
+        <!-- For simple mode -->
+        <xs:element name="globalPassphrase" type="xs:string" minOccurs="0"/>
+        <!-- key per webgate 11g -->
+        <xs:element name="secretKey" type="xs:string" minOccurs="0"/>
+        <xs:element ref="logOutUrls" minOccurs="0"/>
+        <xs:element name="logoutRedirectUrl" type="xs:anyURI"/>
+        <xs:element name="logoutCallbackUrl" type="xs:anyURI"/>
+        <xs:element name="logoutTargetUrlParamName" type="xs:string" minOccurs="0"/>
+        <xs:element ref="primaryServerList"/>
+        <xs:element ref="secondaryServerList"/>
+        <xs:element ref="errorMsgs" minOccurs="0"/>
+        <!-- xs:element ref="messages" minOccurs="0"></xs:element-->
+        <xs:element name="cert" type="xs:base64Binary" minOccurs="0"/>
+        <xs:element name="cert-key" type="xs:base64Binary" minOccurs="0"/>
+        <xs:element ref="userDefinedParameters" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- OpenSSO agent - Request xml schema -->
+  <xs:element name="OpenSSORegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="username" type="xs:string" minOccurs="0"/>
+        <xs:element name="password" type="xs:string" minOccurs="0"/>
+        <xs:element name="serverAddress" type="xs:anyURI"/>
+        <xs:element name="hostIdentifier" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName" type="xs:string"/>
+        <xs:element name="agentBaseUrl" type="xs:anyURI"/>
+        <xs:element name="applicationDomain" type="xs:string" minOccurs="0"/>
+        <xs:element name="autoCreatePolicy" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="agentType" type="xs:string" minOccurs="0"/>
+        <!--<xs:element name="configMode" type="xs:string" minOccurs="0"/>-->
+        <xs:element name="agentVersion" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentPassword" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentDebugDir" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentAuditDir" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentAuditFileName" type="xs:string" minOccurs="0"/>
+        <!--xs:element name="debug" type="xs:boolean" minOccurs="0"/>
+                <xs:element name="cookieName" type="xs:string" minOccurs="0"/>
+                <xs:element name="accessDeniedUrl" type="xs:string" minOccurs="0"></xs:element -->
+        <xs:element name="protectedAuthnScheme" type="xs:string" minOccurs="0"/>
+        <!-- xs:element ref="logOutUrls" minOccurs="0"></xs:element -->
+        <xs:element ref="protectedResourcesList" minOccurs="0"/>
+        <xs:element ref="publicResourcesList" minOccurs="0"/>
+        <xs:element ref="excludedResourcesList" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- end of OpenSSO agent - Request xml schema -->
+  <!-- OpenSSO agent - Update Agent Request xml schema -->
+  <xs:element name="OpenSSOUpdateAgentRegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="username" type="xs:string" minOccurs="0"/>
+        <xs:element name="password" type="xs:string" minOccurs="0"/>
+        <xs:element name="serverAddress" type="xs:anyURI"/>
+        <xs:element name="hostIdentifier" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName" type="xs:string"/>
+        <xs:element name="agentBaseUrl" type="xs:anyURI"/>
+        <xs:element name="agentType" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentPassword" type="xs:string" minOccurs="0"/>
+        <xs:element name="modifyAccessClientPasswdFlag" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="organizationName" type="xs:string" minOccurs="0"/>
+        <xs:element name="state" type="xs:string" minOccurs="0"/>
+        <xs:element name="filterMode" type="xs:string" minOccurs="0"/>
+        <xs:element name="sessionTimeout" type="xs:string" minOccurs="0"/>
+        <xs:element name="maxSession" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentDebugDir" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentDebugFileName" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentAuditDir" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentAuditFileName" type="xs:string" minOccurs="0"/>
+        <xs:element name="cookieName" type="xs:string" minOccurs="0"/>
+        <xs:element name="cookieSeperator" type="xs:string" minOccurs="0"/>
+        <xs:element name="cookieEncode" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="ssoOnly" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="accessDeniedUrl" type="xs:string" minOccurs="0"/>
+        <xs:element ref="logInUrls" minOccurs="0"/>
+        <xs:element ref="logOutUrls" minOccurs="0"/>
+        <xs:element ref="notEnforcedUrls" minOccurs="0"/>
+        <xs:element name="debugLevel" type="xs:string" minOccurs="0"/>
+        <xs:element name="userIdParamType" type="xs:string" minOccurs="0"/>
+        <xs:element name="userIdParam" type="xs:string" minOccurs="0"/>
+        <xs:element name="userMappingMode" type="xs:string" minOccurs="0"/>
+        <xs:element name="userAttributeName" type="xs:string" minOccurs="0"/>
+        <xs:element name="userPrincipal" type="xs:string" minOccurs="0"/>
+        <xs:element name="userToken" type="xs:string" minOccurs="0"/>
+        <xs:element name="profileAttributeFetchMode" type="xs:string" minOccurs="0"/>
+        <xs:element ref="profileAttributeMapping" minOccurs="0"/>
+        <xs:element name="sessionAttributeFetchMode" type="xs:string" minOccurs="0"/>
+        <xs:element ref="sessionAttributeMapping" minOccurs="0"/>
+        <xs:element name="responseAttributeFetchMode" type="xs:string" minOccurs="0"/>
+        <xs:element ref="responseAttributeMapping" minOccurs="0"/>
+        <xs:element ref="miscellaneousProperties" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- end of OpenSSO agent - Update Agent Request xml schema -->
+  <xs:element name="miscellaneousProperties">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="miscellaneousProperty" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="miscellaneousProperty">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="value" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- OpenSSO - Response xml schema -->
+  <xs:element name="OpenSSORegResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName" type="xs:string"/>
+        <xs:element name="agentBaseUrl" type="xs:anyURI" minOccurs="0"/>
+        <xs:element name="agentType" type="xs:string" minOccurs="0"/>
+        <!--<xs:element name="configMode" type="xs:string" minOccurs="0"/>-->
+        <xs:element name="agentVersion" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentPassword" type="xs:string" minOccurs="0"/>
+        <xs:element name="organizationName" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentEncryptionKey" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentDebugDir" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentAuditDir" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentAuditFileName" type="xs:string" minOccurs="0"/>
+        <xs:element name="managedServerUrl" type="xs:string" minOccurs="0"/>
+        <!-- extra fields that are set with default values during create -->
+        <xs:element name="debug" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="cookieName" type="xs:string" minOccurs="0"/>
+        <xs:element name="accessDeniedUrl" type="xs:string" minOccurs="0"/>
+        <xs:element ref="logOutUrls" minOccurs="0"/>
+        <xs:element name="filterMode" type="xs:string" minOccurs="0"/>
+        <xs:element name="sessionTimeout" type="xs:string" minOccurs="0"/>
+        <xs:element name="sessionTimeoutUnit" type="xs:string" minOccurs="0"/>
+        <xs:element name="cookieSeparator" type="xs:string" minOccurs="0"/>
+        <xs:element name="cookieEncode" type="xs:boolean" minOccurs="0"/>
+        <xs:element ref="logInUrls" minOccurs="0"/>
+        <xs:element name="debugLevel" type="xs:string" minOccurs="0"/>
+        <xs:element name="userMappingMode" type="xs:string" minOccurs="0"/>
+        <xs:element name="userAttributeName" type="xs:string" minOccurs="0"/>
+        <xs:element name="userPrincipal" type="xs:string" minOccurs="0"/>
+        <xs:element name="userToken" type="xs:string" minOccurs="0"/>
+        <xs:element name="profileAttributeFetchMode" type="xs:string" minOccurs="0"/>
+        <xs:element name="sessionAttributeFetchMode" type="xs:string" minOccurs="0"/>
+        <xs:element name="responseAttributeFetchMode" type="xs:string" minOccurs="0"/>
+        <xs:element ref="profileAttributeMapping" minOccurs="0"/>
+        <xs:element ref="sessionAttributeMapping" minOccurs="0"/>
+        <xs:element ref="responseAttributeMapping" minOccurs="0"/>
+        <xs:element ref="responseProperties" minOccurs="0"/>
+        <xs:element ref="errorMsgs" minOccurs="0"/>
+        <!-- xs:element ref="messages" minOccurs="0"></xs:element-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- OpenSSO - End of Response xml schema -->
+  <xs:element name="responseProperties">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="property" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="property">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="value" type="xs:anySimpleType" minOccurs="0"/>
+        <xs:element ref="listValue" minOccurs="0"/>
+        <xs:element ref="AttrMappingValue" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="listValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="val" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AttrMappingValue">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="attributeMapping" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="logInUrls">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="url" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="profileAttributeMapping">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="attributeMapping" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sessionAttributeMapping">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="attributeMapping" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="responseAttributeMapping">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="attributeMapping" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="attributeMapping">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="value" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Validate and Delete modes - Request xml schema -->
+  <xs:element name="BasicRegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="username" type="xs:string" minOccurs="0"/>
+        <xs:element name="password" type="xs:string" minOccurs="0"/>
+        <xs:element name="serverAddress" type="xs:anyURI"/>
+        <xs:element name="hostIdentifier" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- Validate and Delete modes - Response xml schema -->
+  <xs:element name="BasicRegResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="agentName" type="xs:string"/>
+        <xs:element name="version" type="xs:string" minOccurs="0"/>
+        <xs:element name="security" type="xs:string" minOccurs="0"/>
+        <xs:element name="hostIdentifier" type="xs:string" minOccurs="0"/>
+        <xs:element name="applicationDomain" type="xs:string" minOccurs="0"/>
+        <xs:element name="policy" type="xs:string" minOccurs="0"/>
+        <!--xs:element ref="resourceList"></xs:element-->
+        <xs:element ref="uriList" minOccurs="0"/>
+        <xs:element ref="authnPolicyList"/>
+        <xs:element ref="authzPolicyList"/>
+        <xs:element ref="errorMsgs" minOccurs="0"/>
+        <!-- xs:element ref="messages" minOccurs="0"></xs:element-->
+        <xs:element name="managedServerUrl" type="xs:anyURI" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!--xs:element name="resourceList">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="resource" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element-->
+  <xs:element name="successResponseList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="successResponse" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="successResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string" minOccurs="0"/>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="value" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="authnPolicyList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rregAuthenticationPolicy" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="RREGPolicy" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="authzPolicyList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rregAuthorizationPolicy" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="RREGPolicy" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RREGPolicy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="policyName" type="xs:string"/>
+        <xs:element name="scheme" type="xs:string" minOccurs="0"/>
+        <!--xs:element ref="resourceList"></xs:element-->
+        <xs:element ref="uriList" minOccurs="0"/>
+        <xs:element ref="successResponseList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PolicyRegRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="username" type="xs:string" minOccurs="0"/>
+        <xs:element name="password" type="xs:string" minOccurs="0"/>
+        <xs:element name="serverAddress" type="xs:anyURI"/>
+        <xs:element name="hostIdentifier" type="xs:string"/>
+        <xs:element name="applicationDomainName" type="xs:string"/>
+        <xs:element name="protectedAuthnScheme" type="xs:string" minOccurs="0"/>
+        <xs:element name="publicAuthnScheme" type="xs:string" minOccurs="0"/>
+        <xs:element ref="protectedResourcesList" minOccurs="0"/>
+        <xs:element ref="publicResourcesList" minOccurs="0"/>
+        <xs:element ref="excludedResourcesList" minOccurs="0"/>
+        <xs:element ref="hostPortVariationsList" minOccurs="0"/>
+        <xs:element ref="rregApplicationDomain" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PolicyRegResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="type" type="xs:string" minOccurs="0"/>
+        <xs:element name="mode" type="xs:string" minOccurs="0"/>
+        <xs:element name="hostIdentifier" type="xs:string"/>
+        <xs:element name="applicationDomainName" type="xs:string"/>
+        <xs:element ref="hostPortVariationsList" minOccurs="0"/>
+        <xs:element name="policy" type="xs:string" minOccurs="0"/>
+        <!--xs:element ref="resourceList"></xs:element-->
+        <xs:element ref="uriList" minOccurs="0"/>
+        <xs:element ref="authnPolicyList"/>
+        <xs:element ref="authzPolicyList"/>
+        <xs:element ref="errorMsgs" minOccurs="0"/>
+        <!-- xs:element ref="messages" minOccurs="0"></xs:element-->
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hostPortVariationsList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="hostPortVariations" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="hostPortVariations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="host" type="xs:string"/>
+        <xs:element name="port" type="xs:int" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- start of application domain xml schema-->
+  <xs:element name="rregApplicationDomain">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string" minOccurs="0"/>
+        <xs:element name="description" type="xs:string" minOccurs="0"/>
+        <xs:element ref="uriList" minOccurs="0"/>
+        <xs:element ref="deletedUriList" minOccurs="0"/>
+        <xs:element ref="rregAuthenticationPolicies" minOccurs="0"/>
+        <xs:element ref="rregAuthorizationPolicies" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rregAuthenticationPolicies">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rregAuthenticationPolicy" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rregAuthorizationPolicies">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rregAuthorizationPolicy" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rregAuthenticationPolicy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="description" type="xs:string" minOccurs="0"/>
+        <xs:element name="authnSchemeName" type="xs:string" minOccurs="0"/>
+        <xs:element ref="uriList" minOccurs="0"/>
+        <xs:element ref="deletedUriList" minOccurs="0"/>
+        <xs:element ref="successResponseList" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rregAuthorizationPolicy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="description" type="xs:string" minOccurs="0"/>
+        <xs:element ref="uriList" minOccurs="0"/>
+        <xs:element ref="deletedUriList" minOccurs="0"/>
+        <xs:element ref="conditionsList" minOccurs="0"/>
+        <xs:element ref="rules" minOccurs="0"/>
+        <xs:element ref="successResponseList" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="uriList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="uriResource" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="deletedUriList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="uriResource" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="uriResource">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="uri" type="xs:anyURI"/>
+        <xs:element name="description" type="xs:string" minOccurs="0"/>
+        <xs:element name="queryString" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- start of conditionsList -->
+  <xs:element name="conditionsList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="condition" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="condition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="conditionClassType" type="xs:string"/>
+        <xs:element name="conditionCombiner" type="xs:string" minOccurs="0"/>
+        <xs:element ref="ip4RangeList" minOccurs="0"/>
+        <xs:element ref="temporal" minOccurs="0"/>
+        <xs:element ref="identity" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="attributeCondition" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ip4RangeList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ip4Range" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ip4Range">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="fromIp" type="xs:string"/>
+        <xs:element name="toIp" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="temporal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="startTime" type="xs:string"/>
+        <xs:element name="endTime" type="xs:string"/>
+        <xs:element ref="dayOfWeek" minOccurs="0"/>
+        <xs:element name="daysToString" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="dayOfWeek">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Monday" type="xs:string"/>
+        <xs:element name="Tuesday" type="xs:string"/>
+        <xs:element name="Wednesday" type="xs:string"/>
+        <xs:element name="Thursday" type="xs:string"/>
+        <xs:element name="Friday" type="xs:string"/>
+        <xs:element name="Saturday" type="xs:string"/>
+        <xs:element name="Sunday" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="identity">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="storeName" type="xs:string"/>
+        <xs:element name="entityType" type="xs:string"/>
+        <xs:element name="entityName" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="attributeCondition">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="namespace" type="xs:string" minOccurs="0"/>
+        <xs:element name="attributeName" type="xs:string" minOccurs="0"/>
+        <xs:element name="operator" type="xs:string"/>
+        <xs:element name="value" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- end of conditionsList -->
+  <xs:element name="rules">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="rule" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="rule">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ruleEffect" type="xs:string"/>
+        <xs:element ref="conditionCombiner" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="conditionCombiner">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="combinerType" type="xs:string"/>
+        <xs:element ref="combinerMode" minOccurs="0"/>
+        <xs:element name="expression" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="combinerMode">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="mode" type="xs:string"/>
+        <xs:element ref="conditionNameList" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="conditionNameList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="conditionName" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <!-- end of application domain xml schema -->
+</xs:schema>

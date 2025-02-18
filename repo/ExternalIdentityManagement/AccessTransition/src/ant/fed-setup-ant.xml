@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Access Manager Deployment Controller" basedir="../../../deployment/oam">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../tpl/oam-context.xml"/>
+  <import file="../../tpl/ant/fed-setup.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Oracle Access Manager">
+    <record name="${oud.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <call-targets package="000"/>
+    <echo message="============================================================="/>
+    <echo message="Please restart Access Manager Managed Server"/>
+    <echo message="============================================================="/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to System Configuration
+  =====================================================================
+  -->
+  <target name="000" description="System Configuration">
+    <call-targets package="0001,0002,0003"/>
+  </target>
+</project>

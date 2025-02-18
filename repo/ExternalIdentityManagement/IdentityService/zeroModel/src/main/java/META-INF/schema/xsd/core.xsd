@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:igs           ="http://www.oracle.com/schema/igs"
+            targetNamespace     ="http://www.oracle.com/schema/igs"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="core"
+            version             ="1.0.0.0">
+  <!--
+   | Risk Level
+   -->
+  <xsd:simpleType name="risk">
+    <annotation>
+      <documentation>
+        Risk is an enumeration that determines ...
+      </documentation>
+    </annotation>
+    <xsd:restriction base="igs:token">
+      <xsd:enumeration value="none"/>
+      <xsd:enumeration value="low"/>
+      <xsd:enumeration value="medium"/>
+      <xsd:enumeration value="high"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!--
+   | Encode
+   -->
+  <xsd:simpleType name="encode">
+    <annotation>
+      <documentation>
+        Encode is an enumeration that determines the algorithms used to encode
+        the values that may not be sent within an HTTP request due to OWASP
+        filtering and for which native encoding is not provided depending on the
+        markup language used.
+      </documentation>
+    </annotation>
+    <xsd:restriction base="igs:token">
+      <xsd:enumeration value="none"/>
+      <xsd:enumeration value="base16"/>
+      <xsd:enumeration value="base64"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!--
+   | Token
+   -->
+  <xsd:simpleType name="token">
+    <annotation>
+      <documentation>
+       A token is a simple string with all whitespaces condensed.
+       This means that all control characters are replaced with spaces and the
+       resulting consecutive spaces are reduced to a single space.
+      </documentation>
+    </annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:whiteSpace value="collapse"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+  <c:set var="uiBundle" value="#{adfBundle['oracle.iam.ui.OIMUIBundle']}"/>
+  <c:set var="oauthBundle" value="#{adfBundle['bka.iam.identity.ui.oauth.OAuthBundle']}"/>
+  <af:panelGridLayout id="pgl2" inlineStyle="width:750.0px;">
+    <af:gridRow marginTop="5px" height="auto" id="gr4">
+      <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc5">
+        <af:quickQuery label="#{uiBundle.SEARCH}"
+                       searchDesc="#{uiBundle.SEARCH}" id="qryId2"
+                       value="#{bindings.allScopesQuery.quickQueryDescriptor}"
+                       model="#{bindings.allScopesQuery.queryModel}"
+                       queryListener="#{bindings.allScopesQuery.processQuery}">
+          <f:facet name="end">
+            <af:outputText value="#{pageFlowScope.selection_type == 'multiple' ? oauthBundle['scope-picker-search-scope-instruction'] : ''}"
+                           id="output10"/>
+          </f:facet>
+        </af:quickQuery>
+      </af:gridCell>
+    </af:gridRow>
+    
+     <af:gridRow marginTop="5px" height="auto"
+                id="gr303">
+      <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc203">
+        <af:outputText value="#{uiBundle.RESULTS}"
+                       styleClass="AFLabelText" id="ot1103"
+                       inlineStyle="font-weight:bolder; color:Black;"/>
+      </af:gridCell>
+    </af:gridRow>
+    
+    <af:gridRow marginTop="5px" height="auto" id="gr5">
+      <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc3"
+                   halign="stretch">
+        <af:panelCollection featuresOff="detach statusBar"
+                            styleClass="AFStretchWidth" id="pc1">
+          <af:table value="#{bindings.allScopes.collectionModel}" var="row" 
+                    rows="#{bindings.allScopes.rangeSize}"
+                    emptyText="#{bindings.allScopes.viewable ? 'No data to display.' : 'Access Denied.'}"
+                    fetchSize="4" autoHeightRows="0" scrollPolicy="page"
+                    rowBandingInterval="0" columnStretching="last"
+                    queryListener="#{bindings.allScopesQuery.processQuery}" varStatus="vs"
+                    selectionListener="#{pageFlowScope.scopePicker.selectionListener}"
+                    rowSelection="#{pageFlowScope.selection_type}"
+                    filterModel="#{bindings.allScopesQuery.queryDescriptor}" filterVisible="true"
+                    partialTriggers=":::qryId2"
+                    binding="#{pageFlowScope.scopePicker.searchTable}"
+                    id="t2">
+            <af:column rowHeader="true" headerText=" " width="20" id="c1">
+              <af:outputText value="" id="ot1"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.allScopes.hints.scopeName.name}" filterable="true" sortable="true"
+                       headerText="#{oauthBundle['scope-picker-scope-name']}" id="c2">
+              <af:outputText value="#{row.scopeName}" shortDesc="#{bindings.allScopes.hints.scopeName.tooltip}"
+                             id="ot2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.allScopes.hints.description.name}" filterable="true" sortable="true"
+                       headerText="#{oauthBundle['scope-picker-scope-description']}" id="c3">
+              <af:outputText value="#{row.description}" shortDesc="#{bindings.allScopes.hints.description.tooltip}"
+                             id="ot3"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow marginTop="5px" height="auto"
+                rendered="#{pageFlowScope.selection_type == 'multiple'}"
+                id="gr2">
+      <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc1"
+                   halign="center">
+        <af:toolbar id="toolbar11"
+                    rendered="#{pageFlowScope.selection_type == 'multiple'}">
+          <af:commandToolbarButton text="#{uiBundle.GENERIC_ADD_SELECTED}"
+                                   binding="#{pageFlowScope.scopePicker.addSelectedButton}"
+                                   icon="/images/shuttle_down_ena.png"
+                                   disabledIcon="/images/shuttle_down_dis.png"
+                                   partialTriggers="qryId2" partialSubmit="true"
+                                   actionListener="#{pageFlowScope.scopePicker.addSelectedActionListener}"
+                                   depressedIcon="/images/shuttle_down_ena.png"
+                                   hoverIcon="/images/shuttle_down_ena.png"
+                                   id="ctb1"
+                                   disabled="#{pageFlowScope.scopePicker.addSelectedDisabled}"/>
+          <af:commandToolbarButton text="#{uiBundle.GENERIC_ADD_ALL}"
+                                   partialSubmit="true"
+                                   binding="#{pageFlowScope.scopePicker.addAllButton}"
+                                   icon="/images/shuttle_down_all_ena.png"
+                                   disabledIcon="/images/shuttle_down_all_dis.png"
+                                   actionListener="#{pageFlowScope.scopePicker.addAllActionListener}"
+                                   depressedIcon="/images/shuttle_down_all_ena.png"
+                                   hoverIcon="/images/shuttle_down_all_ena.png"
+                                   partialTriggers="qryId2" id="ctb2"
+                                   disabled="#{pageFlowScope.scopePicker.addAllDisabled}"/>
+          <af:commandToolbarButton text="#{uiBundle.GENERIC_REMOVE_SELECTED}"
+                                   icon="/images/shuttle_up_ena.png"
+                                   disabledIcon="/images/shuttle_up_dis.png"
+                                   id="removeSelectedButton"
+                                   binding="#{pageFlowScope.scopePicker.removeSelectedButton}"
+                                   actionListener="#{pageFlowScope.scopePicker.removeSelectedActionListener}"
+                                   depressedIcon="/images/shuttle_up_ena.png"
+                                   hoverIcon="/images/shuttle_up_ena.png"
+                                   disabled="#{pageFlowScope.scopePicker.removeSelectedDisabled}"/>
+          <af:commandToolbarButton text="#{uiBundle.GENERIC_REMOVE_ALL}"
+                                   icon="/images/shuttle_up_all_ena.png"
+                                   disabledIcon="/images/shuttle_up_all_dis.png"
+                                   id="removeAllButton"
+                                   binding="#{pageFlowScope.scopePicker.removeAllButton}"
+                                   actionListener="#{pageFlowScope.scopePicker.removeAllActionListener}"
+                                   depressedIcon="/images/shuttle_up_all_ena.png"
+                                   hoverIcon="/images/shuttle_up_all_ena.png"
+                                   disabled="#{pageFlowScope.scopePicker.removeAllDisabled}"/>
+        </af:toolbar>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow marginTop="5px" height="auto" id="gr66">
+      <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc66">
+        <af:outputText value="#{requestScope.overThousandResultsPicker}" id="outpText1"
+                       partialTriggers="ctb1 ctb2 removeSelectedButton removeAllButton qryId2" 
+                       inlineStyle="font-size:small;padding-top:20px;padding-bottom:20px;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow marginTop="5px" height="auto"
+                rendered="#{pageFlowScope.selection_type == 'multiple'}"
+                id="gr3">
+      <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc2">
+        <af:outputText value="#{uiBundle.GENERIC_SELECTED_USERS}"
+                       styleClass="AFLabelText" id="selot112" inlineStyle="font-weight:bolder; color:Black;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow marginTop="5px" height="auto"
+                rendered="#{pageFlowScope.selection_type == 'multiple'}"
+                id="gr6">
+      <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc6"
+                   halign="stretch">
+        <af:panelCollection featuresOff="detach statusBar"
+                            styleClass="AFStretchWidth" id="pc2">
+          <af:table rowBandingInterval="0" var="row"
+                    value="#{pageFlowScope.scopePicker.selectedTargets}"
+                    columnStretching="last" rowSelection="multiple"
+                    selectionListener="#{pageFlowScope.scopePicker.selectedRowsSelectListener}"
+                    fetchSize="4" autoHeightRows="0" scrollPolicy="page"
+                    id="t301" emptyText="#{bindings.allScopes.viewable  ? uiBundle.NO_DATA : uiBundle.ACCESS_DENIED}"
+                    binding="#{pageFlowScope.scopePicker.selectedRowsTable}"
+                    >
+            <af:column rowHeader="true" headerText=" " width="20" id="c4">
+              <af:outputText value="" id="ot4"/>
+            </af:column>
+            <af:column sortable="false" filterable="true"
+                       headerText="#{oauthBundle['scope-picker-scope-name']}"
+                       id="c5" width="200">
+              <af:outputText value="#{row.scopeName}"
+                             id="ot5"/>
+            </af:column>
+            <af:column sortable="false" filterable="true"
+                       headerText="#{oauthBundle['scope-picker-scope-description']}"
+                       id="c6" width="200">
+              <af:outputText value="#{row.description}"
+                             id="ot6"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow marginTop="5px" height="auto" marginBottom="5px" id="gr1">
+      <af:gridCell marginStart="5px" width="100%" marginEnd="5px" id="gc4"
+                   halign="end">
+        <af:commandButton text="#{uiBundle.GENERIC_SELECT}" id="cb1"
+                          action="#{pageFlowScope.scopePicker.addSelectedRows}"
+                          binding="#{pageFlowScope.scopePicker.addButton}"
+                          disabled="#{pageFlowScope.scopePicker.addButtonDisabled}"/>
+        <af:spacer width="5" height="1" id="s23"/>
+        <af:commandButton text="#{uiBundle.GENERIC_CANCEL}" id="cb2"
+                          action="#{pageFlowScope.scopePicker.cancelAction}"/>
+      </af:gridCell>
+    </af:gridRow>
+  </af:panelGridLayout>
+</jsp:root>

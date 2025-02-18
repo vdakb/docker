@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="#{ant.project}" basedir=".">
+  <!--
+  =====================================================================
+  == properties specific to project environment
+  =====================================================================
+  -->
+  <property name="project.dir"       value="./"/>
+  <property name="adfsrc.dir"        value="${project.dir}src/main/adf"/>
+  <property name="source.dir"        value="${project.dir}src/main/java"/>
+  <property name="groovy.dir"        value="${project.dir}src/main/groovy"/>
+  <property name="resource.dir"      value="${project.dir}src/main/resources"/>
+  <property name="output.dir"        value="${project.dir}bin"/>
+  <property name="deploy.dir"        value="${project.dir}lib"/>
+  <property name="plugin.dir"        value="${project.dir}tmp"/>
+  <property name="static.dir"        value="${project.dir}src/main/static"/>
+  <property name="webinf.dir"        value="${static.dir}/WEB-INF"/>
+  <property name="deploy.doc"        value="${project.dir}doc"/>
+  <property name="sitesrc.dir"       value="${project.dir}src/site"/>
+  <property name="sitetmp.dir"       value="${project.dir}src/temp"/>
+  <property name="manifest"          value="${output.dir}/META-INF/manifest.mf"/>
+  <!--
+  =====================================================================
+  == properties specific to the java development kit
+  =====================================================================
+  -->
+  <property name="jdk.home"          value="#{jdk.home}"/>
+  <property name="jdk.compiler"      value="${jdk.home}/bin/javac"/>
+  <property name="jdk.version"       value="#{jdk.version}"/>
+  <!--
+  =====================================================================
+  == properties specific to the java encryption
+  =====================================================================
+  -->
+  <property name="jce.passphrase"    value="#{jce.passphrase}"/>
+  <!--
+  =====================================================================
+  == properties specific to the java compiler
+  =====================================================================
+  -->
+  <property name="javac.debug"       value="off"/>
+  <property name="javac.nowarn"      value="on"/>
+  <property name="javac.deprecation" value="off"/>
+  <property name="javac.encoding"    value="Cp1252"/>
+  <!--
+  =====================================================================
+  == properties specific to the product installation
+  =====================================================================
+  -->
+  <property name="fmw.base"          value="#{fmw.base}"/>
+  <property name="fmw.base.ide"      value="${fmw.base}/jdeveloper"/>
+  <property name="fmw.base.wls"      value="${fmw.base}/wlserver"/>
+  <property name="fmw.base.jrf"      value="${fmw.base}/oracle_common/modules"/>
+  <property name="fmw.base.soa"      value="${fmw.base}/soa/soa/modules"/>
+  <property name="fmw.base.osb"      value="${fmw.base}/osb"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="fmw.base.ide: ${fmw.base.ide} doesn't exist.">
+    <condition>
+      <not><available file="${fmw.base.ide}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="fmw.base.wls: ${fmw.base.wls} doesn't exist.">
+    <condition>
+      <not><available file="${fmw.base.wls}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="fmw.base.jrf: ${fmw.base.jrf} doesn't exist.">
+    <condition>
+      <not><available file="${fmw.base.jrf}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="fmw.base.soa: ${fmw.base.soa} doesn't exist.">
+    <condition>
+      <not><available file="${fmw.base.soa}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="fmw.base.osb: ${fmw.base.osb} doesn't exist.">
+    <condition>
+      <not><available file="${fmw.base.osb}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == properties specific to the project and workspace folder structure
+  =====================================================================
+  -->
+  <property name="wks.base"          value="#{wks.base}"/>
+  <property name="ocs.base"          value="#{ocs.base}"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="wks.base: ${wks.base} doesn't exist.">
+    <condition>
+      <not><available file="${wks.base}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="ocs.base: ${ocs.base} doesn't exist.">
+    <condition>
+      <not><available file="${ocs.base}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == patterns to exclude in packaging and cleanup targets
+  =====================================================================
+  -->
+  <patternset id="document.patterns">
+    <exclude name="**/*.txt"/>
+    <exclude name="**/*.pdf"/>
+    <exclude name="**/*.doc"/>
+    <exclude name="**/*.docx"/>
+    <exclude name="**/*.docm"/>
+    <exclude name="**/*.xls"/>
+    <exclude name="**/*.xlsx"/>
+    <exclude name="**/*.xlsm"/>
+    <exclude name="**/*.ppt"/>
+    <exclude name="**/*.pptx"/>
+    <exclude name="**/*.pptm"/>
+    <exclude name="**/*.vsd"/>
+    <exclude name="**/*.vsdx"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == patterns to include in compile and packaging targets
+  =====================================================================
+  -->
+  <patternset id="filetype.patterns">
+    <include name="**/*.txt"/>
+    <include name="**/*.ini"/>
+    <include name="**/*.gif"/>
+    <include name="**/*.jpg"/>
+    <include name="**/*.jpeg"/>
+    <include name="**/*.png"/>
+    <include name="**/*.tld"/>
+    <include name="**/*.xlf"/>
+    <include name="**/*.ejx"/>
+    <include name="**/*.jpx"/>
+    <include name="**/*.cpx"/>
+    <include name="**/*.dcx"/>
+    <include name="**/*.xcfg"/>
+    <include name="**/*.sva"/>
+    <include name="**/*.xsl"/>
+    <include name="**/*.xml"/>
+    <include name="**/*.xsd"/>
+    <include name="**/*.wsdl"/>
+    <include name="**/*.tld"/>
+    <include name="**/*.tag"/>
+    <include name="**/*.sql"/>
+    <include name="**/*.json"/>
+    <include name="**/*.properties"/>
+  </patternset>
+  <!--
+  =====================================================================
+  == properties specific to library declarations
+  =====================================================================
+  -->
+  <path id="java.runtime">
+    <pathelement location="${jdk.home}/jre/lib/rt-build.jar"/>
+  </path>
+  <path id="apache.ant">
+    <pathelement location="${fmw.base.jrf}/thirdparty/org.apache.ant/1.9.8.0.0/apache-ant-1.9.8/lib/ant.jar"/>
+    <pathelement location="${fmw.base.ide}/jdev/lib/ant-jdeveloper.jar"/>
+  </path>
+  <path id="apache.commons">
+    <pathelement location="${fmw.base.jrf}/thirdparty/commons-logging-1.2.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.apache.commons.digester_1.8.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/commons-beanutils-1.9.3.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/commons-collections-3.2.2.jar"/>
+  </path>
+  <path id="apache.webclient">
+    <pathelement location="${fmw.base.jrf}/thirdparty/httpcore-4.4.3.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/httpmime-4.5.1.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/httpclient-4.5.1.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/httpclient-cache-4.5.1.jar"/>
+  </path>
+  <path id="apache.groovy">
+    <pathelement location="D:/oracle/Middleware/Oracle_Home/oracle_common/modules/groovy-all-2.4.11.jar"/>
+    <pathelement location="${fmw.base.jrf}/groovy-all-2.4.11.jar"/>
+  </path>
+  <path id="apache.maven">
+    <pathelement location="${fmw.base.jrf}/org.apache.maven_3.2.5/lib/maven-core-3.2.5.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.apache.maven_3.2.5/lib/maven-model-3.2.5.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.apache.maven_3.2.5/lib/plexus-utils-3.0.20.jar"/>
+  </path>
+  <path id="oracle.fmw.jrf">
+    <pathelement location="${fmw.base.jrf}/oracle.jrf/jrf-api.jar"/>
+  </path>
+  <path id="oracle.fmw.jee">
+    <pathelement location="${fmw.base.jrf}/javax.activation.javax.activation.jar"/>
+    <pathelement location="${fmw.base.jrf}/javax.ejb.javax.ejb-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/javax.jms.javax.jms-api.jar"/>
+    <pathelement location="${fmw.base.wls}/modules/javax.transaction.javax.transaction-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/com.sun.mail.javax.mail.jar"/>
+    <pathelement location="${fmw.base.jrf}/javax.servlet.javax.servlet-api.jar"/>
+  </path>
+  <path id="oracle.fmw.jdbc">
+    <pathelement location="${fmw.base.jrf}/oracle.jdbc/ojdbc8.jar"/>
+  </path>
+  <path id="oracle.fmw.xml">
+    <pathelement location="${fmw.base.jrf}/oracle.xdk/xml.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.xdk/xmlparserv2.jar"/>
+  </path>
+  <path id="oracle.fmw.xml.security">
+    <pathelement location="${fmw.base.jrf}/oracle.osdt/osdt_core.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.osdt/osdt_xmlsec.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.osdt/osdt_saml2.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.jaxen_1.1.6.jar"/>
+  </path>
+  <path id="oracle.fmw.odl">
+    <pathelement location="${fmw.base.jrf}/oracle.odl/ojdl.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.odl/ojdl2.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.odl/ojdl-log4j.jar"/>
+  </path>
+  <path id="oracle.fmw.json">
+   <pathelement location="${fmw.base.jrf}/javax.annotation.javax.annotation-api.jar"/>
+   <pathelement location="${fmw.base.jrf}/org.glassfish.javax.json.jar"/>
+  </path>
+  <path id="oracle.fmw.jax.jackson">
+    <pathelement location="${fmw.base.jrf}/thirdparty/jackson-core-2.7.9.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/jackson-databind-2.7.9.1.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/jackson-annotations-2.7.9.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/jackson-jaxrs-base-2.7.9.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/jackson-module-jsonSchema-2.7.9.jar"/>
+    <pathelement location="${fmw.base.jrf}/thirdparty/jackson-jaxrs-json-provider-2.7.9.jar"/>
+    <!--
+    <pathelement location="${fmw.base.jrf}/thirdparty/jackson-module-jaxb-annotations-2.7.9.jar"/>
+    -->
+  </path>
+  <path id="oracle.fmw.jax.jersey.core">
+    <pathelement location="${fmw.base.jrf}/javax.annotation.javax.annotation-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/javax.inject.javax.inject.jar"/>
+    <pathelement location="${fmw.base.jrf}/javax.ws.rs.javax.ws.rs-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/com.sun.jersey.jersey-core.jar"/>
+    <pathelement location="${fmw.base.jrf}/com.sun.jersey.jersey-client.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.glassfish.hk2.hk2-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.glassfish.hk2.hk2-utils.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.glassfish.hk2.hk2-locator.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.glassfish.jersey.core.jersey-common.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.glassfish.jersey.core.jersey-client.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.glassfish.jersey.ext.jersey-entity-filtering.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.glassfish.jersey.bundles.repackaged.jersey-guava.jar"/>
+  </path>
+  <path id="oracle.fmw.wls">
+    <pathelement location="${fmw.base.wls}/server/lib/wls-api.jar"/>
+  </path>
+  <path id="oracle.fmw.wls.thin">
+    <pathelement location="${fmw.base.wls}/server/lib/wlthint3client.jar"/>
+  </path>
+  <path id="oracle.fmw.wls.client">
+    <pathelement location="${fmw.base.wls}/modules/com.bea.core.weblogic.rmi.client.jar"/>
+    <pathelement location="${fmw.base.wls}/modules/com.bea.core.weblogic.lifecycle.jar"/>
+    <pathelement location="${fmw.base.wls}/modules/com.bea.core.repackaged.apache.velocity.jar"/>
+  </path>
+  <path id="oracle.fmw.wls.security">
+    <pathelement location="${fmw.base.jrf}/clients/com.oracle.jersey.fmw.client.jar"/>
+    <pathelement location="${fmw.base.wls}/modules/com.oracle.weblogic.security.logger.css.jar"/>
+    <pathelement location="${fmw.base.wls}/modules/com.oracle.weblogic.security.service.cssenv.jar"/>
+    <pathelement location="${fmw.base.wls}/modules/com.oracle.weblogic.management.security.api.jar"/>
+  </path>
+  <path id="oracle.fmw.wls.wsssl">
+    <pathelement location="${fmw.base.wls}/modules/weblogic.jaxrs.integration.jar"/>
+    <pathelement location="${fmw.base.wls}/modules/clients/com.oracle.webservices.wls.jaxws-wlswss-client.jar"/>
+  </path>
+  <path id="oracle.fmw.wsm">
+    <pathelement location="${fmw.base.jrf}/com.oracle.webservices.fmw.ws-config-mbeans-impl.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.wsm.common/wsm-policy-core.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.wsm.common/wsm-pmclient.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.wsm.pmlib/wsm-pmlib.jar"/>
+  </path>
+  <path id="oracle.fmw.mds">
+    <pathelement location="${fmw.base.jrf}/thirdparty/commons-cli-1.3.1.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.javatools/javatools-annotations.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.mds/mdsrt.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.mds/oramds.jar"/>
+  </path>
+  <path id="oracle.fmw.jmx">
+    <pathelement location="${fmw.base.jrf}/javax.management.j2ee.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.xmlef/xmlef.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.dms/dms.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.ucp.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.javatools/javatools-nodeps.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.jmx/jmxframework.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.jmx/jmxspi.jar"/>
+  </path>
+  <path id="oracle.fmw.jsf">
+    <pathelement location="${fmw.base.jrf}/javax.servlet.jsp.javax.servlet.jsp-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.jsf/glassfish.jsf.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.jsf/org.glassfish.web.javax.servlet.jsp.jstl.jar"/>
+  </path>
+  <path id="oracle.fmw.ums">
+    <pathelement location="${fmw.base.jrf}/oracle.sdp.client/sdpclient.jar"/>
+  </path>
+  <path id="oracle.fmw.adf.platform">
+    <pathelement location="${fmw.base.jrf}/javax.servlet.jsp.javax.servlet.jsp-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/org.glassfish.javax.el.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.share/adf-share-support.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.share.ca/adf-share-ca.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.share.ca/adf-share-base.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.share/adfsharembean.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.share/adflogginghandler.jar"/>
+<!--
+!    <pathelement location="${fmw.base.jrf}/oracle.adf.share_11.1.1/jsp-el-api.jar"/>
+-->
+    <pathelement location="${fmw.base.jrf}/oracle.adf.share/oracle-el.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.bali.share/share.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.idm/identitystore.jar"/>
+<!--
+!    <pathelement location="${fmw.base.jrf}/oracle.javacache_11.1.1/cache.jar"/>
+-->
+    <pathelement location="${fmw.base.jrf}/oracle.adf.security/adf-share-security.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.security/adf-controller-security.jar"/>
+  </path>
+  <path id="oracle.fmw.adf.model">
+    <pathelement location="${fmw.base.jrf}/oracle.adf.model/adfm.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.model/adfmweb.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.model/adflibrary.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.model/adfdt_common.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.model/adf-controller-schema.jar"/>
+  </path>
+  <path id="oracle.fmw.adf.view">
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/bundleresolver.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.javatools/resourcebundle.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/trinidad-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/trinidad-impl.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/adf-richclient-api-11.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/adf-richclient-impl-11.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/adf-faces-databinding-rt.jar"/>
+  </path>
+  <path id="oracle.fmw.adf.controller">
+    <pathelement location="${fmw.base.jrf}/oracle.adf.controller/adf-controller.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.controller/adf-controller-api.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.controller/adf-controller-rt-common.jar"/>
+  </path>
+  <path id="oracle.fmw.adf.pageflow">
+    <pathelement location="${fmw.base.jrf}/oracle.adf.pageflow/adf-pageflow-impl.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.pageflow/adf-pageflow-dtrt.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.pageflow/adf-pageflow-fwk.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.pageflow/adf-pageflow-rc.jar"/>
+  </path>
+  <path id="oracle.fmw.adf.faces">
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/dvt-utils.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/dvt-jclient.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/dvt-trinidad.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/dvt-faces.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/dvt-databindings.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/dvt-facesbindings.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.model/dvt-databindings-mds.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-anim.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-awt-util.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-bridge.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-codec.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-css.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-dom.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-extension.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-ext.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-gui-util.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-gvt.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-parser.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-script.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-svg-dom.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-svggen.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-swing.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-transcoder.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-util.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/batik-xml.jar"/>
+    <pathelement location="${fmw.base.jrf}/oracle.adf.view/xml-apis-ext.jar"/>
+  </path>
+  <path id="oracle.fmw.adf.composer">
+    <pathelement location="${fmw.base.jrf}/oracle.wccore/adfp-pageeditor-rt.jar"/>
+  </path>
+  <path id="oracle.fmw.soa.management">
+    <pathelement location="${fmw.base.jrf}/clients/com.oracle.webservices.fmw.client.jar"/>
+    <pathelement location="${fmw.base.soa}/oracle.webservices_11.1.1/wsclient-rt.jar"/>
+    <pathelement location="${fmw.base.soa}/oracle.fabriccommon_11.1.1/fabric-common.jar"/>
+    <pathelement location="${fmw.base.soa}/oracle.soa.fabric_11.1.1/fabric-runtime.jar"/>
+    <pathelement location="${fmw.base.soa}/oracle.soa.fabric_11.1.1/soa-infra-tools.jar"/>
+    <pathelement location="${fmw.base.soa}/oracle.soa.fabric_11.1.1/oracle-soa-client-api.jar"/>
+    <pathelement location="${fmw.base.soa}/oracle.soa.mgmt_11.1.1/soa-infra-mgmt.jar"/>
+  </path>
+  <path id="oracle.fmw.bpm.management">
+    <pathelement location="${fmw.base.soa}/oracle.soa.fabric_11.1.1/bpm-infra.jar"/>
+    <pathelement location="${fmw.base.soa}/oracle.soa.workflow_11.1.1/bpm-services.jar"/>
+  </path>
+</project>

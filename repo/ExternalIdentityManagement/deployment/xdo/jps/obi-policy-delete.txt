@@ -1,0 +1,189 @@
+revokeEntitlement(
+  appStripe      ="obi"
+, principalClass ="oracle.security.jps.service.policystore.ApplicationRole"
+, principalName  ="BIServiceAdministrator"
+, entitlementName="bip.administrator"
+)
+revokeEntitlement(
+  appStripe      ="obi"
+, principalClass ="oracle.security.jps.service.policystore.ApplicationRole"
+, principalName  ="BIContentAuthor"
+, entitlementName="bip.author"
+)
+revokeEntitlement(
+  appStripe      ="obi"
+, principalClass ="oracle.security.jps.service.policystore.ApplicationRole"
+, principalName  ="BIConsumer"
+, entitlementName="bip.consumer"
+)
+
+# #####################################################################
+#
+# Delete previously created application roles
+#
+# use getAllApplicationRoles(appStripe="obi") to verify
+#
+# #####################################################################
+
+#
+# BIConsumer
+#
+deleteAppRole (
+  appStripe   ="obi"
+, name        ="BIConsumer"
+)
+#
+# BIContentAuthor
+#
+deleteAppRole (
+  appStripe   ="obi"
+, name        ="BIContentAuthor"
+)
+#
+# BIServiceAdministrator
+#
+deleteAppRole (
+  appStripe   ="obi"
+, name        ="BIServiceAdministrator"
+)
+# #####################################################################
+#
+# Revoke granted resources and delete previously created entitlements
+#
+# use listEntitlements(appStripe="obi") to verify
+#
+# #####################################################################
+#
+# bip.author
+#
+revokeResourceFromEntitlement(
+  appStripe   ="obi"
+, name        ="bip.author"
+, resourceName="oracle.bi.publisher.developDataModel"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+deleteEntitlement(
+  appStripe   ="obi"
+, name        ="bip.author"
+)
+#
+# bip.administrator
+#
+deleteEntitlement(
+  appStripe   ="obi"
+, name        ="bip.administrator"
+)
+#
+# bip.consumer
+#
+revokeResourceFromEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bi.publisher.accessExcelReportAnalyzer"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+revokeResourceFromEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bip.ess.JobDefinition.EssBipJob"
+, resourceType="ESSMetadataPermission"
+, actions     ="READ,EXECUTE"
+)
+revokeResourceFromEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bi.publisher.scheduleReport"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+revokeResourceFromEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bi.publisher.runReportOnline"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+revokeResourceFromEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+, resourceName="oracle.bi.publisher.accessReportOutput"
+, resourceType="oracle.bi.publisher.permission"
+, actions     ="_all_"
+)
+deleteEntitlement(
+  appStripe   ="obi"
+, name        ="bip.consumer"
+)
+# #####################################################################
+#
+# Delete previously created resources
+#
+# use listResources(appStripe="obi") to verify
+#
+# #####################################################################
+deleteResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.scheduleReport"
+)
+deleteResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.runReportOnline"
+)
+deleteResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.developReport"
+)
+deleteResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.developDataModel"
+)
+deleteResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.administerServer"
+)
+deleteResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.accessReportOutput"
+)
+deleteResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.accessOnlineReportAnalyzer"
+)
+deleteResource(
+  appStripe  ="obi"
+, type       ="oracle.bi.publisher.permission"
+, name       ="oracle.bi.publisher.accessExcelReportAnalyzer"
+)
+deleteResource(
+  appStripe  ="obi"
+, type       ="ESSMetadataPermission"
+, name       ="oracle.bip.ess.JobDefinition.EssBipJob"
+)
+# #####################################################################
+#
+# Delete previously created resource types
+#
+# use listResourceTypes(appStripe="obi") to verify
+#
+# #####################################################################
+deleteResourceType(
+  appStripe       ="obi"
+, resourceTypeName="oracle.bi.publisher.permission"
+)
+deleteResourceType(
+  appStripe       ="obi"
+, resourceTypeName="oracle.bi.user"
+)
+deleteResourceType(
+  appStripe       ="obi"
+, resourceTypeName="ESSMetadataPermission"
+)

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Controller" basedir="../../deployment/oim">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../tpl/oim-context.xml"/>
+  <import file="../../tpl/ant/oim-patch.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <target name="000" description="Deploys the Base System Integration Configuration">
+    <call-targets package="0007"/>
+  </target>
+  <target name="001" description="Deploys the Base System Integration Configuration">
+    <call-targets package="0100,0102"/>
+  </target>
+  <target name="003" description="OAM Identity Store Provisioning">
+    <call-targets package="0301"/>
+  </target>
+  <target name="004" description="Active Directory Terminal Server Provisioning">
+    <call-targets package="0401"/>
+  </target>
+  <target name="006" description="Platform Service Controller Provisioning">
+    <call-targets package="0601"/>
+  </target>
+  <target name="007" description="Pivotal Cloud Foundry Provisioning">
+    <call-targets package="0701-01,0701-02"/>
+  </target>
+  <target name="008" description="PIAV Provisioning">
+    <call-targets package="0801"/>
+  </target>
+  <target name="009" description="Active Directory Terminal Server Provisioning">
+    <call-targets package="0901"/>
+  </target>
+  <target name="010" description="Atlassian Jira Server Provisioning">
+    <call-targets package="1001"/>
+  </target>
+  <target name="011" description="Google Apigee Edge Provisioning">
+    <call-targets package="1101-01,1101-02"/>
+  </target>
+  <target name="012" description="Google Apigee Edge Provisioning">
+    <call-targets package="1201-01,1201-02"/>
+  </target>
+  <target name="013" description="Active Directory Domain Hermes Provisioning">
+    <call-targets package="1301"/>
+  </target>
+  <target name="016" description="Moodle Service Provisioning">
+    <call-targets package="1601"/>
+  </target>
+  <target name="017" description="N.SIS Service Provisioning">
+    <call-targets package="1701-01,1701-02"/>
+  </target>
+  <target name="018" description="Identity Governance Service Provisioning">
+    <call-targets package="1801-01,1801-02"/>
+  </target>
+  <target name="020" description="LDAP APPs Service Provisioning">
+    <call-targets package="2001-01,2001-02,2001-03"/>
+  </target>
+  <target name="021" description="RedHat KeyCloack Provisioning">
+    <call-targets package="2101"/>
+  </target>
+  <target name       ="all"
+          description="Deploys and configures the project artifacts on the target host and the Oracle WebLogic Domain Servers"
+          depends    ="000,001,003,004,006,007,008,009,010,011,012,013,016,017,018,020,021,9999">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="All patches done"/>
+    <echo message="Restart WebLogic Managed Servers belonging to Identity Manager"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

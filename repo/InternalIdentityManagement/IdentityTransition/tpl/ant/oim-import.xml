@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-import-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager System Adapter Configuration
+  **           To be able to compile adapter correctly and register scheduled
+  **           jobs this target deploys the necessary libraries to the remote
+  **           host
+  **
+  ** Synopsis: The tasks deploys the object definitions for System Adapter
+  **           Configuration. This includes:
+  **           o Java Binary Archives
+  **           o System Properties
+  **           o Lookup Definitions
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="0100" description="Deploys the System Framework Configuration ${appication.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 System Framework Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <library-deploy dir="0100 systemFramework/lib" file="hst-foundation.jar" location="${oim.remote.thirdparty}"/>
+    <library-deploy dir="0100 systemFramework/lib" file="ocs-foundation.jar" location="${oim.remote.thirdparty}"/>
+    <library-deploy dir="0100 systemFramework/lib" file="ocs-utility.jar"    location="${oim.remote.thirdparty}"/>
+    <library-deploy dir="0100 systemFramework/lib" file="ocs-adapter.jar"    location="${oim.remote.adapter}"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

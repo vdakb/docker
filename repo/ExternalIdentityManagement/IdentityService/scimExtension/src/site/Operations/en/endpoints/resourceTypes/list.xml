@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="api-resourceTypes-list"
+         xml:lang="en"
+         version ="5.0">
+  <title>List available Resource Types</title>
+  <para>
+    This endpoint provides the ability to list available resource types.
+    Request supports filtering, sorting and limiting attributes to return, see the <link linkend='api-resourceTypes-list-req-q'>Query Parameters</link> section for more information.
+  </para>
+  <section xml:id="api-resourceTypes-list-req">
+    <title>Request</title>
+    <warning>
+      <title>Authorization</title>
+      <para>
+        This end-point is available publicly and no authentication and/or authorization is required.
+      </para>
+    </warning>
+    <para>
+      <restapi role="search">/ResourceTypes/</restapi>
+    </para>
+    <section xml:id="api-resourceTypes-list-req-h">
+      <title>Request Header</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-resourceTypes-list-req-q">
+      <title>Query Parameters</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">attributes</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Comma separated list of attributes to return.</para>
+                <para>Any resource type attributes can be listed (inclusing complex sub-attributes).</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">excludedAttributes</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Comma separated list of attributes to exclude from the listing.</para>
+                <para>Any top-level resource attributes can be listed.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">filter</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Specifies filtering of the entries to return. For general filtering information see <link linkend='filters'>Filters</link> chapter.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">sortBy</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Attribute to use for output sorting.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">sortOrder</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Output sorting direction. Possible values are "ascending" and "descending".</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">startIndex</emphasis></entry>
+              <entry>integer</entry>
+              <entry>no</entry>
+              <entry>
+                <para>The 1-based index of the first query result to return.</para>
+                <para>A value less than 1 is interpreted as 1.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">count</emphasis></entry>
+              <entry>integer</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Specifies the desired maximum number of query results per batch.</para>
+                <para>A negative value is interpreted as 0.</para>
+                <para>A value of 0 indicates that no resource results are to be returned.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="api-resourceTypes-list-res">
+    <title>Response</title>
+    <para>
+      The list of resource types supported by this SCIM server as defined by the RFC7644.
+    </para>
+    <section xml:id="api-resourceTypes-list-res-r0">
+      <title>Envelope</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">schemas</emphasis></entry>
+              <entry>array of strings</entry>
+              <entry>yes</entry>
+              <entry>Schemas of the entry/entries returned.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">totalResults</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Non-negative integer in string representation. Specifies the total number of results.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">itemsPerPage</emphasis></entry>
+              <entry>integer</entry>
+              <entry>no</entry>
+              <entry>Non-negative integer. Specifies the number of query results that are returned in a query response page.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">startIndex</emphasis></entry>
+              <entry>integer</entry>
+              <entry>no</entry>
+              <entry>The 0-based index of the first result in the current set of query results.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Resources</emphasis></entry>
+              <entry>array of <link linkend='api-resourceTypes-list-res-r1'>Resource</link> objects</entry>
+              <entry>yes</entry>
+              <entry>The resource array of the populated result set.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-resourceTypes-list-res-r1">
+      <title>Resource</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">schemas</emphasis></entry>
+              <entry>array of strings</entry>
+              <entry>yes</entry>
+              <entry>Schemas of the entry/entries returned.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">meta</emphasis></entry>
+              <entry><link linkend='api-resourceTypes-list-res-r2'>Meta Information</link> object</entry>
+              <entry>yes</entry>
+              <entry>Meta information for the resource.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">name</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The name for this resource type.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">endpoint</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The URI to access this resource type.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">description</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The description of this resource type.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">schemaExtensions</emphasis></entry>
+              <entry>array of <link linkend='api-resourceTypes-list-res-r3'>Extension</link> objects</entry>
+              <entry>yes</entry>
+              <entry>The array of schemas extending this resource type.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-resourceTypes-list-res-r2">
+      <title>Meta Information</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">resourceType</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The type of this resource.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">location</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The URL for accessing this particular resource schema.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-resourceTypes-list-res-r3">
+      <title>Extension</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">required</emphasis></entry>
+              <entry>boolean</entry>
+              <entry>yes</entry>
+              <entry>Boolean flag indicating whether this schema is required.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">schema</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The schema specification of this extension.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="api-resourceTypes-list-ex">
+    <title>Example for listing resource types</title>
+    <para>
+      <restapi role="search">/ResourceTypes</restapi>
+    </para>
+    <programlisting>
+{
+    "schemas": [
+        "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+    ],
+    "totalResults": "2",
+    "itemsPerPage": 0,
+    "startIndex": 0,
+    "Resources": [
+        {
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:"
+            ],
+            "meta": {
+                "resourceType": "",
+                "location": "http://192.168.64.11:8005/igs/scim/v2/ResourceTypes"
+            },
+            "schema": "urn:ietf:params:scim:schemas:core:2.0:User",
+            "name": "User",
+            "endpoint": "/Users",
+            "description": "Oracle User",
+            "schemaExtensions": [
+                {
+                    "required": false,
+                    "schema": "urn:ietf:params:scim:schemas:extension:oracle:2.0:IDM:User"
+                },
+                {
+                    "required": false,
+                    "schema": "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:User"
+                },
+                {
+                    "required": false,
+                    "schema": "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+                },
+                {
+                    "required": false,
+                    "schema": "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:UserApplication"
+                }
+            ]
+        },
+        {
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:"
+            ],
+            "meta": {
+                "resourceType": "",
+                "location": "http://192.168.64.11:8005/igs/scim/v2/ResourceTypes"
+            },
+            "schema": "urn:ietf:params:scim:schemas:oracle:core:2.0:IDM:ApplicationAccount",
+            "name": "ApplicationAccount",
+            "endpoint": "/Accounts",
+            "description": "Oracle Account"
+        }
+    ]
+}
+    </programlisting>
+  </section>
+  <section xml:id="api-resourceTypes-list-err">
+    <title>Possible Errors</title>
+    <table>
+      <thead>
+        <tr>
+          <td>Error</td>
+          <td>Condition</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><emphasis role="strong">401 Unauthorized</emphasis></td>
+          <td>No or invalid authentication was provided.</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">403 Forbidden</emphasis></td>
+          <td>Request was authenticated but authorization was not passed (authenticated user lacks role required to acces the resource).</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">503 Service Unavailable</emphasis></td>
+          <td>Other processing error occured including invalid filter syntax. Response <literal>description</literal> attribute contains more details.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</section>

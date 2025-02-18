@@ -1,0 +1,52 @@
+-- D:\Project\Bundeskriminalamt12c\InternalIdentityManagement\EmployeePortal\eppAplication\src\main\dbs\qms\obj\qms-msp.con
+--
+-- Generated for Oracle Database 12c on Fri Apr 24 10:07:06 2020 by Server Generator 10.1.2.93.10
+
+PROMPT Creating Primary Key on 'qms_message_properties'
+ALTER TABLE qms_message_properties
+  ADD (
+    CONSTRAINT qms_msp_pk PRIMARY KEY (
+      code
+    ) USING INDEX TABLESPACE &&qmsindex
+  )
+/
+PROMPT Creating Unique Key on 'qms_message_properties'
+ALTER TABLE qms_message_properties
+  ADD (
+    CONSTRAINT qms_msp_uk UNIQUE (
+      constraint_name
+    ) USING INDEX TABLESPACE &&qmsindex
+  )
+/
+PROMPT Creating Check Constraint on 'qms_message_properties'
+ALTER TABLE qms_message_properties
+ ADD (
+   CONSTRAINT qms_msp_ck1 CHECK (
+     severity IN ('E', 'I', 'W', 'M', 'Q')
+   )
+  )
+/
+PROMPT Creating Check Constraint on 'qms_message_properties'
+ALTER TABLE qms_message_properties
+  ADD (
+    CONSTRAINT qms_msp_ck2 CHECK (
+      logging IN ('Y', 'N')
+    )
+  )
+/
+PROMPT Creating Check Constraint on 'qms_message_properties'
+ALTER TABLE qms_message_properties
+  ADD (
+    CONSTRAINT qms_msp_ck3 CHECK (
+      suppress_warning IN ('Y', 'N')
+   )
+  )
+/
+PROMPT Creating Check Constraint on 'qms_message_properties'
+ALTER TABLE qms_message_properties
+  ADD (
+    CONSTRAINT qms_msp_ck4 CHECK (
+      suppress_always IN ('Y', 'N')
+    )
+  )
+/

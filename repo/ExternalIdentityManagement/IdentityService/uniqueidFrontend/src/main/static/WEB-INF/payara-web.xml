@@ -1,0 +1,24 @@
+<!DOCTYPE payara-web-app PUBLIC "-//Payara.fish//DTD Payara Server 4 Servlet 3.0//EN" "https://raw.githubusercontent.com/payara/Payara-Community-Documentation/master/docs/modules/ROOT/pages/schemas/payara-web-app_4.dtd">
+<payara-web-app httpservlet-security-provider="IdentifierAuthnModule">
+  <context-root>/uid/sysadmin</context-root>
+  <session-config>
+    <session-properties>
+      <property name="enableCookies" value="true"/>
+    </session-properties>
+    <cookie-properties>
+      <property name="cookieSecure"  value="false"/>
+    </cookie-properties>
+  </session-config>
+  <security-role-mapping>
+    <role-name>Viewer</role-name>
+    <group-name>authenticated-user</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>Administrator</role-name>
+    <group-name>uid.admin</group-name>
+  </security-role-mapping>
+  <security-role-mapping>
+    <role-name>SystemAdministrator</role-name>
+    <group-name>igs.admin</group-name>
+  </security-role-mapping>
+</payara-web-app>

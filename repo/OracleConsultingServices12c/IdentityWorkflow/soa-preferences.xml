@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="#{ant.project}" basedir=".">
+  <!--
+  =====================================================================
+  == properties specific to the version control
+  =====================================================================
+  -->
+  <property name="composite.archive"  value="sca_${composite.name}_rev${composite.revision}"/>
+  <!--
+  =====================================================================
+  == properties specific to control the compiler progress
+  =====================================================================
+  -->
+  <import file="../wks-preferences.xml"/>
+  <!--
+  =====================================================================
+  == properties specific to the project installation
+  =====================================================================
+  -->
+  <property name="ocs.base.oim"        value="${ocs.home}/IdentityManager"/>
+  <property name="wks.base.oim"        value="${wks.home}/IdentityManager"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="ocs.base.oim: ${ocs.base.oim} doesn't exist.">
+    <condition>
+      <not><available file="${ocs.base.oim}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="wks.base.oim: ${wks.base.oim} doesn't exist.">
+    <condition>
+      <not><available file="${wks.base.oim}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == properties specific to the composite build targets
+  =====================================================================
+  -->
+  <property name="compiler.source"      location="${basedir}/SOA/composite.xml"/>
+  <property name="compiler.output"      location="${basedir}/log/compiler.xml"/>
+  <property name="compiler.error"       location="${basedir}/log/compiler.log"/>
+  <property name="compiler.overwrite"   value="true"/>
+  <property name="compiler.verbosity"   value="2"/>
+  <property name="compiler.schemaError" value="false"/>
+  <property name="sca.inf.dir"          location="${basedir}/SOA/SCA-INF"/>
+  <property name="sca.inf.src"          location="${sca.inf.dir}/src"/>
+  <property name="sca.inf.bin"          location="${sca.inf.dir}/classes"/>
+  <path id="compiler.classpath">
+    <!--
+     | Oracle BPM
+     -->
+    <fileset dir="${fmw.base.soa}">
+      <include name="oracle.bpm.runtime_11.1.1/*.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.project.catalog.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.soa.component-model.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.project.compile.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.project.io.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.project.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.common.model.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.project.model.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.casemgmt.model.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.scripting.sexpr-compiler.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.scripting.catalog.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.scripting.groovy.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.scripting.lib.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.scripting.bytecode.jar"/>
+      <include name="oracle.bpm.project_11.1.1/slf4j-api.jar"/>
+      <include name="oracle.bpm.project_11.1.1/slf4j-jdk14.jar"/>
+      <include name="oracle.bpm.project_11.1.1/asm-4.0.jar"/>
+      <include name="oracle.bpm.project_11.1.1/asm-tree-4.0.jar"/>
+      <include name="oracle.bpm.project_11.1.1/asm-commons-4.0.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.project.interface.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.lexer.jar"/>
+      <include name="oracle.bpm.project_11.1.1/oracle.bpm.scripting.asmgen.jar"/>
+      <include name="oracle.bpm.client_11.1.1/oracle.bpm.bpm-services.interface.jar"/>
+      <include name="oracle.bpm.client_11.1.1/oracle.bpm.web-resources.jar"/>
+    </fileset>
+    <fileset dir="${fmw.base.jrf}">
+      <include name="groovy-all-2.3.7.jar"/>
+    </fileset>
+    <fileset dir="${fmw.base}/coherence/lib">
+      <include name="coherence.jar"/>
+    </fileset>
+    <!--
+     | Tools libraries
+     -->
+    <fileset dir="${fmw.base.soa}">
+      <include name="oracle.soa.bpel_11.1.1/orabpel-common.jar"/>
+      <include name="oracle.soa.bpel_11.1.1/orabpel-thirdparty.jar"/>
+      <include name="oracle.soa.bpel_11.1.1/orabpel-validator.jar"/>
+      <include name="oracle.soa.bpel_11.1.1/orabpel.jar"/>
+      <include name="oracle.soa.fabric_11.1.1/bpm-infra.jar"/>
+      <include name="oracle.soa.fabric_11.1.1/fabric-runtime.jar"/>
+      <include name="oracle.soa.fabric_11.1.1/soa-infra-tools.jar"/>
+      <include name="oracle.soa.fabric_11.1.1/testfwk-xbeans.jar"/>
+      <include name="oracle.soa.fabric_11.1.1/tracking-core.jar"/>
+      <include name="oracle.soa.fabric_11.1.1/tracking-fabric.jar"/>
+      <include name="oracle.soa.mediator_11.1.1/mediator_client.jar"/>
+      <include name="oracle.soa.workflow_11.1.1/bpm-services.jar"/>
+      <!--
+      <include name="oracle.soa.fabric_11.1.1/fabric-pcl.jar"/>
+      <include name="fabric-url-handler_11.1.1.jar"/>
+      -->
+    </fileset>
+    <!-- Service Bus -->
+    <fileset dir="${fmw.base}/osb/lib/external">
+      <include name="js.jar"/>
+    </fileset>
+    <!--
+     | Rules SDK2, and IBM JDK specific soa-ibm-addon ja
+     -->
+    <fileset dir="${fmw.base.soa}">
+      <include name="oracle.rules_11.1.1/rl.jar"/>
+      <include name="oracle.rules_11.1.1/rulesdk2.jar"/>
+      <!-- include name="soa-ibm-addon.jar" if="is_ibm_jdk"/ -->
+    </fileset>
+
+    <!--
+     | WebLogic server
+     -->
+    <fileset dir="${fmw.base.wls}">
+     <include name="modules/com.bea.core.xml.xmlbeans.jar"/>
+     <include name="server/lib/pcl2.jar"/>
+    </fileset>
+    <fileset dir="${fmw.base.jrf}">
+      <include name="com.bea.core.apache.commons.lang.jar"/>
+      <include name="com.bea.core.apache.commons.collections.jar"/>
+    </fileset>
+
+    <fileset dir="${fmw.base.jrf}">
+      <include name="org.glassfish.javax.el.jar"/>
+      <include name="javax.servlet.jsp.javax.servlet.jsp-api.jar"/>
+      <include name="com.bea.core.apache.commons.lang.jar"/>
+      <include name="com.bea.core.apache.commons.collections.jar"/>
+      <include name="javax.management.j2ee.jar"/>
+      <include name="com.sun.xml.bind.jaxb-impl.jar"/>
+      <include name="javax.xml.jaxrpc-api.jar"/>
+      <include name="javax.servlet.javax.servlet-api.jar"/>
+      <!-- this must be after jaxb jars in the class path -->
+      <include name="oracle.xdk/xml.jar"/>
+      <include name="features/com.oracle.db.jdbc-dms.jar"/>
+      <include name="oracle.dms/dms.jar"/>
+      <include name="oracle.odl/ojdl.jar"/>
+      <include name="oracle.jps/jps-unsupported-api.jar"/>
+      <include name="oracle.jps/jps-internal.jar"/>
+    </fileset>
+
+    <fileset dir="${fmw.base.jrf}">
+      <include name="oracle.toplink/eclipselink.jar"/>
+      <include name="commonj.sdo.jar"/>
+      <include name="com.sun.xml.bind.jaxb-xjc.jar"/>
+      <include name="oracle.ucp.jar"/>
+      <include name="org.springframework_2.5.jar"/>
+      <include name="oracle.adf.model/adfbcsvc-share.jar"/>
+      <include name="oracle.adf.model/adfm.jar"/>
+      <include name="oracle.adf.share.ca/adf-share-base.jar"/>
+      <include name="oracle.adf.share.ca/adf-share-ca.jar"/>
+      <include name="oracle.adf.share/adf-share-base.jar"/>
+      <include name="oracle.adf.share/adf-share-ca.jar"/>
+      <include name="oracle.adf.share/adf-share-support.jar"/>
+      <include name="oracle.adf.share/adflogginghandler.jar"/>
+      <include name="oracle.adf.share/jsp-el-api.jar"/>
+      <include name="oracle.bali.share/share.jar"/>
+      <include name="oracle.dms/dms.jar"/>
+      <include name="clients/com.oracle.webservices.fmw.client.jar"/>
+      <include name="com.oracle.webservices.fabric-common-api.jar"/>
+      <include name="com.oracle.http_client.http_client.jar"/>
+      <include name="oracle.jmx/jmxframework.jar"/>
+      <include name="oracle.jmx/jmxspi.jar"/>
+      <include name="oracle.logging-utils.jar"/>
+      <include name="oracle.mds/mdsrt.jar"/>
+      <include name="oracle.mds/oramds.jar"/>
+      <include name="com.oracle.webservices.orawsdl-api.jar"/>
+      <include name="com.oracle.webservices.fmw.wsclient-impl.jar"/>
+      <include name="com.oracle.webservices.fmw.wsclient-rt-impl.jar"/>
+      <include name="oracle.wsm.common/wsm-policy-core.jar"/>
+      <include name="oracle.wsm.common/wsm-secpol.jar"/>
+      <include name="oracle.nlsrtl/orai18n-mapping.jar"/>
+      <include name="oracle.javatools/javatools-nodeps.jar"/>
+      <include name="oracle.xdk/xmlparserv2.jar"/>
+      <include name="oracle.xmlef/xmlef.jar"/>
+      <include name="thirdparty/commons-beanutils-1.9.3.jar"/>
+      <include name="org.apache.commons.digester_1.8.jar"/>
+      <include name="org.apache.commons.logging_1.1.1.jar"/>
+      <include name="org.apache.commons.logging_1.2.jar"/>
+      <include name="org.glassfish.jersey.core.jersey-server.jar"/>
+      <include name="org.glassfish.jersey.core.jersey-client.jar"/>
+      <include name="org.glassfish.jersey.core.jersey-common.jar"/>
+      <include name="oracle.toplink/org.eclipse.persistence.jpa.jpql.jar"/>
+      <include name="oracle.odl/ojdl.jar"/>
+      <include name="oracle.pki/oraclepki.jar"/>
+    </fileset>
+    <pathelement path="${sca.inf.bin}"/>
+  </path>
+  <!--
+   | set the properties the validator class needs
+   -->
+  <property name="oracle.home"            value="${fmw.base.ide}"/>
+  <property name="soa.oracle.home"        value="${fmw.base.soa}"/>
+  <property name="soamds.apps.home"       value="D:/Project/OracleConsultingServices12c/IdentityWorkflow"/>
+  <property name="common.components.home" value="${fmw.base.jrf}"/>
+  <property name="scac.tasks.class.path"  refid="compiler.classpath"/>
+  <import file="${oracle.home}/../soa/bin/ant-soa-common.xml"/>
+  <!--
+  =====================================================================
+  == Import custom type and task definitions
+  =====================================================================
+  -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <taskdef resource="oracle/hst/deployment/ant-security-lib.xml"   uri="http://oracle.hst.deployment/security"/>
+  <taskdef resource="oracle/hst/deployment/ant-webservice-lib.xml" uri="http://oracle.hst.deployment/webservice"/>
+  <taskdef resource="oracle/hst/deployment/ant-topology-lib.xml"   uri="http://oracle.hst.deployment/topology"/>
+  <taskdef resource="oracle/iam/identity/ant-object-lib.xml"       uri="http://oracle.iam.identity/object"/>
+  <taskdef resource="oracle/iam/identity/ant-plugin-lib.xml"       uri="http://oracle.iam.identity/plugin"/>
+  <taskdef resource="oracle/iam/identity/ant-scheduler-lib.xml"    uri="http://oracle.iam.identity/scheduler"/>
+  <taskdef resource="oracle/iam/identity/ant-operation-lib.xml"    uri="http://oracle.iam.identity/operation"/>
+  <taskdef resource="oracle/iam/identity/ant-metadata-lib.xml"     uri="http://oracle.iam.identity/metadata"/>
+  <taskdef resource="oracle/iam/identity/ant-composite-lib.xml"    uri="http://oracle.iam.identity/composite"/>
+  <taskdef resource="oracle/iam/identity/ant-workflow-lib.xml"     uri="http://oracle.iam.identity/workflow"/>
+</project>

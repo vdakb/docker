@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+            Name                  ="ReconciliationEventHistoryVO"
+            UseGlueCode           ="false"
+            BindingStyle          ="OracleName"
+            FetchMode             ="FETCH_AS_NEEDED"
+            RangeSize             ="25"
+            CustomQuery           ="false"
+            FromList              ="RCE ReconciliationEventHistoryEO"
+            PageIterMode          ="Full"
+            InheritPersonalization="merge"
+            RowClass              ="oracle.iam.identity.sysprov.model.view.ReconciliationEventHistoryVORowImpl"
+            ComponentClass        ="oracle.iam.identity.sysprov.model.view.ReconciliationEventHistoryVOImpl">
+  <DesignTime>
+    <Attr Name="_isCodegen"    Value="true"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_diagramName"  Value="Reconciliation Event History"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL        ResId="reh.single"/>
+      <LABEL_PLURAL ResId="reh.multiple"/>
+      <TOOLTIP      ResId="reh.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <EntityUsage Name="ReconciliationEventHistoryEO" Entity="oracle.iam.identity.sysprov.model.entity.ReconciliationEventHistoryEO"/>
+  <ListBinding  Name="StatusLV" ListVOName="statusLV" ListRangeSize="10" ComboRowCountHint="10" MRUCount="0" NullValueFlag="start" NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}">
+    <AttrArray Name="AttrNames">
+      <Item Value="status"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="encoded"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="decoded"/>
+    </AttrArray>
+    <DisplayCriteria Hint="showAndExecute"/>
+  </ListBinding>
+  <ViewAttribute Name="historyKey" PrecisionRule="true" EntityUsage="ReconciliationEventHistoryEO" EntityAttrName="historyKey" AliasName="HISTORYKEY">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="eventKey" PrecisionRule="true" EntityUsage="ReconciliationEventHistoryEO" EntityAttrName="eventKey" AliasName="EVENTKEY">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="actionPerformed" PrecisionRule="true" EntityUsage="ReconciliationEventHistoryEO" EntityAttrName="actionPerformed" AliasName="ACTIONPERFORMED">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="status" PrecisionRule="true" EntityUsage="ReconciliationEventHistoryEO" EntityAttrName="status" AliasName="STATUS" LOVName="StatusLV">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="note" PrecisionRule="true" EntityUsage="ReconciliationEventHistoryEO" EntityAttrName="note" AliasName="NOTE" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <!--
+        attribute will be implemented by a text area hence we decrease the
+        default width by 4 to vertical adjust the right border of the UI
+        component with the borders of the other components
+        -->
+        <DISPLAYWIDTH Value="36"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <!--
+  Static Lists used by this view
+  -->
+  <ViewAccessor Name="statusLV"     AMUsageName="ReconciliationEventHistoryAM" ViewInstanceName="ReconciliationEventHistoryStatusVO"     RowLevelBinds="true" ViewObjectName="oracle.iam.identity.sysprov.model.view.ReconciliationEventHistoryStatusVO"/>
+  <!--
+  View Criteria declared by this view
+  -->
+  <ViewCriteria Name="ReconciliationEventHistoryVC" ViewObjectName="oracle.iam.identity.sysprov.model.view.ReconciliationEventHistoryVO" Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property Name="mode"                     Value="Basic"/>
+        <Property Name="showInList"               Value="true"/>
+        <Property Name="autoExecute"              Value="false"/>
+        <Property Name="displayOperators"         Value="InAdvancedMode"/>
+        <Property Name="allowConjunctionOverride" Value="false"/>
+        <Property Name="displayName"              ResId="rce.search"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow Name="vcrREH" UpperColumns="1">
+      <!--
+      Search conditions are limited by API
+      Only status are options for search
+      -->
+      <ViewCriteriaItem Name="status"     ViewAttribute="status"     Conjunction="AND" Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysprov.bundle.Backend"/>
+  </ResourceBundle>
+</ViewObject>

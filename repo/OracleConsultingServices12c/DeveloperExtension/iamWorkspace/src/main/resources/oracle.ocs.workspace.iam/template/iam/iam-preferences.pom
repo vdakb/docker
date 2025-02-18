@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>workspace.preferences</groupId>
+  <artifactId>iam-preferences</artifactId>
+  <version>12.2.1.3</version>
+  <description>Identity and Access Management Global Preferences</description>
+  <packaging>pom</packaging>
+  <properties>
+    <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
+    <!--
+     | ====================================================================
+     | == properties specific to the product installation
+     | ====================================================================
+    -->
+    <fmw.base>__FMW_BASE__</fmw.base>
+    <fmw.base.ide>${fmw.base}/jdeveloper</fmw.base.ide>
+    <fmw.base.wls>${fmw.base}/wlserver</fmw.base.wls>
+    <fmw.base.jrf>${fmw.base}/oracle_common</fmw.base.jrf>
+    <fmw.base.soa>${fmw.base}/soa/soa</fmw.base.soa>
+    <!--
+     | ====================================================================
+     | == properties specific to the project and workspace folder structure
+     | ====================================================================
+    -->
+    <ocs.base>/__OCS_BASE__</ocs.base>
+    <wks.base>/__WKS_BASE__</wks.base>
+  </properties>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>ant</artifactId>
+        <version>1.9.8.0.0</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/org.apache.ant/1.9.8.0.0/apache-ant-1.9.8/lib/ant.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>groovy</artifactId>
+        <version>2.4.11</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/groovy-all-2.4.11.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.2</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/commons-logging-1.2.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>commons-digester</artifactId>
+        <version>1.8</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/org.apache.commons.digester_1.8.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>commons-beanutils</artifactId>
+        <version>1.9.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/commons-beanutils-1.9.3.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2.2</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/commons-collections-3.2.2.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>http-core</artifactId>
+        <version>4.4.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/httpcore-4.4.3.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>http-mime</artifactId>
+        <version>4.5.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/httpmime-4.5.1.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>http-client</artifactId>
+        <version>4.5.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/httpclient-4.5.1.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>apache</groupId>
+        <artifactId>httpclient-cache</artifactId>
+        <version>4.5.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/httpclient-cache-4.5.1.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>jersey</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>2.7.9</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/jackson-core-2.7.9.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>jersey</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.7.9.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/jackson-databind-2.7.9.1.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>jersey</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>2.7.9</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/thirdparty/jackson-annotations-2.7.9.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw</groupId>
+        <artifactId>jrf-api</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.jrf/jrf-api.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.jee</groupId>
+        <artifactId>javax.activation</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/javax.activation.javax.activation.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.jee</groupId>
+        <artifactId>javax.ejb.javax.ejb-api</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/javax.ejb.javax.ejb-api.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.jee</groupId>
+        <artifactId>javax.jms.javax.jms-api</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/javax.jms.javax.jms-api.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.jee</groupId>
+        <artifactId>javax.transaction.javax.transaction-api</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/modules/javax.transaction.javax.transaction-api.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.jee</groupId>
+        <artifactId>javax.servlet.javax.servlet-api</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/javax.servlet.javax.servlet-api.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.jee</groupId>
+        <artifactId>com.sun.mail.javax.mail</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/com.sun.mail.javax.mail.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.jdbc</groupId>
+        <artifactId>ojdbc8</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.jdbc/ojdbc8.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.xml</groupId>
+        <artifactId>xml</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.xdk/xml.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.xml</groupId>
+        <artifactId>xmlparserv2</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.xdk/xmlparserv2.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.xml.security</groupId>
+        <artifactId>osdt_core</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.osdt/osdt_core.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.xml.security</groupId>
+        <artifactId>osdt_xmlsec</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.osdt/osdt_xmlsec.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.xml.security</groupId>
+        <artifactId>osdt_saml2</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.osdt/osdt_saml2.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.xml.security</groupId>
+        <artifactId>org.jaxen</artifactId>
+        <version>1.1.6</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/org.jaxen_1.1.6.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.odl</groupId>
+        <artifactId>ojdl</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.odl/ojdl.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.odl</groupId>
+        <artifactId>ojdl2</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.odl/ojdl2.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.odl</groupId>
+        <artifactId>ojdl-log4j</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.odl/ojdl-log4j.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls</groupId>
+        <artifactId>wls-api</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/server/lib/wls-api.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls.thin</groupId>
+        <artifactId>wlthint3client</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/server/lib/wlthint3client.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls.client</groupId>
+        <artifactId>com.bea.core.weblogic.rmi.client</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/modules/com.bea.core.weblogic.rmi.client.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls.client</groupId>
+        <artifactId>com.bea.core.weblogic.lifecycle</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/modules/com.bea.core.weblogic.lifecycle.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls.client</groupId>
+        <artifactId>com.bea.core.repackaged.apache.velocity</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/modules/com.bea.core.repackaged.apache.velocity.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls.security</groupId>
+        <artifactId>com.oracle.jersey.fmw.client</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/clients/com.oracle.jersey.fmw.client.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls.security</groupId>
+        <artifactId>com.oracle.weblogic.security.logger.css</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/modules/com.oracle.weblogic.security.logger.css.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls.security</groupId>
+        <artifactId>com.oracle.weblogic.security.service.cssenv</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/modules/com.oracle.weblogic.security.service.cssenv.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls.security</groupId>
+        <artifactId>com.oracle.weblogic.management.security.api</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/modules/com.oracle.weblogic.management.security.api.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wls.wsssl</groupId>
+        <artifactId>com.oracle.webservices.wls.jaxws-wlswss-client</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.wls}/modules/clients/com.oracle.webservices.wls.jaxws-wlswss-client.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wsm</groupId>
+        <artifactId>com.oracle.webservices.fmw.ws-config-mbeans-impl</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/com.oracle.webservices.fmw.ws-config-mbeans-impl.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wsm</groupId>
+        <artifactId>wsm-policy-core</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.wsm.common/wsm-policy-core.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wsm</groupId>
+        <artifactId>wsm-pmclient</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.wsm.common/wsm-pmclient.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.wsm</groupId>
+        <artifactId>wsm-pmlib</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.wsm.pmlib/wsm-pmlib.jar</systemPath>
+      </dependency>
+      <!--
+       | Note to myself: obtain the libraries:
+       |  o oracle.fmw.mds
+       |  o oracle.fmw.jmx
+       |  o oracle.fmw.jsf
+       |  o oracle.fmw.jmx
+       |  o oracle.fmw.adf.platform
+       |  o oracle.fmw.adf.model
+       |  o oracle.fmw.adf.view
+       |  o oracle.fmw.adf.controller
+       |  o oracle.fmw.adf.pageflow
+       |  o oracle.fmw.adf.faces
+       | from the global prefence file
+       | -->
+      <dependency>
+        <groupId>oracle.adf.composer</groupId>
+        <artifactId>adfp-pageeditor-rt</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/oracle.wccore/adfp-pageeditor-rt.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.soa.management</groupId>
+        <artifactId>com.oracle.webservices.fmw.client</artifactId>
+        <version>12.2.1.3</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.jrf}/modules/clients/com.oracle.webservices.fmw.client.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.soa.management</groupId>
+        <artifactId>fabric-runtime</artifactId>
+        <version>11.1.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.soa}/modules/oracle.soa.fabric_11.1.1/fabric-runtime.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.soa.management</groupId>
+        <artifactId>soa-infra-tools</artifactId>
+        <version>11.1.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.soa}/modules/oracle.soa.fabric_11.1.1/soa-infra-tools.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.soa.management</groupId>
+        <artifactId>oracle-soa-client-api</artifactId>
+        <version>11.1.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.soa}/modules/oracle.soa.fabric_11.1.1/oracle-soa-client-api.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.soa.management</groupId>
+        <artifactId>soa-infra-mgmt</artifactId>
+        <version>11.1.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.soa}/modules/oracle.soa.mgmt_11.1.1/soa-infra-mgmt.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.bpm.management</groupId>
+        <artifactId>bpm-infra</artifactId>
+        <version>11.1.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.soa}/modules/oracle.soa.fabric_11.1.1/bpm-infra.jar</systemPath>
+      </dependency>
+      <dependency>
+        <groupId>oracle.fmw.bpm.management</groupId>
+        <artifactId>bpm-services</artifactId>
+        <version>11.1.1</version>
+        <scope>system</scope>
+        <systemPath>${fmw.base.soa}/modules/oracle.soa.workflow_11.1.1/bpm-services.jar</systemPath>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <licenses>
+    <license>
+      <name>
+        The "Oracle Technology Network License Agreement - Oracle
+        Maven Repository" is the license for this Project Object
+        Model (POM) file and the associated software and documentation
+        unless you have accepted or agreed to different license terms
+        with Oracle when you obtained the right to use the POM file,
+        software and documentation.  Please refer to the comments below
+        for additional information.
+      </name>
+      <url>https://www.oracle.com/webapps/maven/register/license.html</url>
+      <distribution>repo</distribution>
+      <comments>
+        Copyright (c) 2021, Oracle and/or its affiliates. All rights
+        reserved.
+
+        This Project Object Model (POM) file and the associated software and
+        documentation are provided under a license agreement containing
+        restrictions on use and disclosure and are protected by intellectual
+        property laws. You acknowledge that your use of this POM file and the
+        associated software and documentation is subject to the license terms
+        that you accepted or agreed to when you obtained the right to use the
+        POM file, software and documentation. In the event you have not
+        accepted or agreed to any such license terms, you cannot use this
+        POM file or the associated software and documentation without first
+        accepting the Oracle Technology Network License Agreement - Oracle
+        Maven Repository terms and conditions set forth at the above-listed
+        URL.
+
+        Except as expressly permitted in your license agreement or allowed
+        by law, you may not:
+
+        - use, copy, reproduce, translate, broadcast, modify, license,
+        transmit, distribute, exhibit, perform, publish, or display any part,
+        in any form, or by any means, the POM file or the associated software
+        or documentation; and
+
+        - deploy the POM file or the associated software or documentation to
+        any Maven or other repositories except for your local Maven repository
+        that is not accessible to any third party (other than contractors
+        acting on your behalf if expressly permitted in your license
+        agreement), including but not limited to the Maven Central Repository
+        or any other public Maven repository.
+
+        Reverse engineering, disassembly, or decompilation of this software,
+        unless required by law for interoperability, is prohibited.
+
+        Additional Notices
+
+        The information contained herein is subject to change without notice
+        and is not warranted to be error-free. If you find any errors, please
+        report them to us in writing.
+
+        If this is software or related documentation that is delivered to the
+        U.S. Government or anyone licensing it on behalf of the
+        U.S. Government, the following notice is applicable:
+
+        U.S. GOVERNMENT END USERS: Oracle programs, including any operating
+        system, integrated software, any programs installed on the hardware,
+        and/or documentation, delivered to U.S. Government end users are
+        "commercial computer software" pursuant to the applicable Federal
+        Acquisition Regulation and agency-specific supplemental regulations.
+        As such, use, duplication, disclosure, modification, and adaptation
+        of the programs, including any operating system, integrated software,
+        any programs installed on the hardware, and/or documentation, shall be
+        subject to the license terms and license restrictions applicable to the
+        programs. No other rights are granted to the U.S. Government.
+
+        Oracle and Java are registered trademarks of Oracle and/or its
+        affiliates. Other names may be trademarks of their respective owners.
+
+        This software or hardware and documentation may provide access to or
+        information about content, products, and services from third parties.
+        Oracle Corporation and its affiliates are not responsible for and
+        expressly disclaim all warranties of any kind with respect to
+        third-party content, products, and services unless otherwise set
+        forth in an applicable agreement between you and Oracle. Oracle
+        Corporation and its affiliates will not be responsible for any loss,
+        costs, or damages incurred due to your access to or use of third-party
+        content, products, or services, except as set forth in an applicable
+        agreement between you and Oracle.
+      </comments>
+    </license>
+  </licenses>
+</project>

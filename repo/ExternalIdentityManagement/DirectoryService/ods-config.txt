@@ -1,0 +1,49 @@
+. ods.env
+dsconfig -X -n set-administration-connector-prop \
+  --hostname         oliver.cinnamonstar.net \
+  --port             7441 \
+  --bindDN           cn=Directory\ Manager \
+  --bindPasswordFile ~/.secrets/credential/directory \
+  --connector-name   HTTP \
+  --set              listen-port:8444 \
+  --set              enabled:true
+  
+dsconfig -X -n set-end-point-prop \
+  --hostname         oliver.cinnamonstar.net \
+  --port             7441 \
+  --portProtocol     LDAP \
+  --bindDN           cn=Directory\ Manager \
+  --bindPasswordFile ~/.secrets/credential/directory \
+  --point-name       'Token Generator' \
+  --set              enabled:true
+
+dsconfig -X -n set-extension-prop \
+  --hostname         oliver.cinnamonstar.net \
+  --port             7441 \
+  --portProtocol     LDAP \
+  --bindDN           cn=Directory\ Manager \
+  --bindPasswordFile ~/.secrets/credential/directory \
+  --extension-name   'REST Server' \
+  --set               enabled:true
+ 
+dsconfig -X -n set-directory-end-point-prop \
+  --hostname         oliver.cinnamonstar.net \
+  --port             7441 \
+  --portProtocol     LDAP \
+  --bindDN           cn=Directory\ Manager \
+  --bindPasswordFile ~/.secrets/credential/directory \
+  --set              enabled:true
+
+dsconfig -X -n list-connection-handler \
+  --hostname         oliver.cinnamonstar.net \
+  --port             7441 \
+  --portProtocol     LDAP \
+  --bindDN           cn=Directory\ Manager \
+  --bindPasswordFile ~/.secrets/credential/directory
+
+
+curl -k -X GET  --location 'https://oliver.cinnamonstar.net:8444/rest/v1/directory/ou=Groups,dc=bka,dc=bund,dc=de' \
+  --header 'accept: application/json' \
+  --user   'cn=Directory Manager:Welcome1'
+
+ou=Groups,dc=bka,dc=bund,dc=de

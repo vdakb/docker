@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="about"
+         xml:lang="en"
+         version ="5.0">
+  <title>About the Connector</title>
+  <para>
+    Identity Governance is a centralized identity management solution that provides self service, compliance, provisioning and password management services for applications residing on-premises or on the Cloud.
+    Identity Governance connectors are used to integrate Identity Governance with external, identity-aware applications.
+  </para>
+  <para>
+    The Generic Directory Service connector lets you onboard LDAP directory server applications in Identity Governance.
+    The various LDAP directory servers that this connector supports are
+  </para>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      <para>Oracle Internet Directory (OID)</para>
+    </listitem>
+    <listitem>
+      <para>Oracle Unified Directory (OUD)</para>
+    </listitem>
+    <listitem>
+      <para>Oracle Directory Server Enterprise Edition (ODSEE)</para>
+    </listitem>
+  </itemizedlist>
+  <note>
+    <para>
+      In this guide, the connector that is deployed using the <emphasis role="strong">Applications</emphasis> option on the <emphasis role="strong">Applications Manage</emphasis> tab of Identity Self Service is referred to as an <emphasis role="strong">AOB application</emphasis>.
+      The connector that is deployed using the <emphasis role="strong">Manage Connector</emphasis> option in Identity System Administration is referred to as a <emphasis role="strong">CI-based connector</emphasis> (Connector Installer-based connector).
+    </para>
+  </note>
+  <para>
+    From Identity Governance release 12.2.1.3.0 onward, connector deployment is handled using the application onboarding capability of Identity Self Service.
+    This capability lets business users to onboard applications with minimum details and effort.
+    The connector installation package includes a collection of predefined templates (XML files) that contain all the information required for provisioning and reconciling data from a given application or target system.
+    These templates also include basic connectivity and configuration details specific to your target system.
+    The connector uses information from these predefined templates allowing you to onboard your applications quickly and easily using only a single and simplified UI.
+  </para>
+  <para>
+    <emphasis role="strong">Application onboarding</emphasis> is the process of registering or associating an application with Identity Governance and making that application available for provisioning and reconciliation of user information.
+  </para>
+  <para>
+    The following sections provide a high-level overview of the connector:
+  </para>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      <link linkend='about-component'>Components</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-usage'>Usage Recommendation</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-language'>Languages</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-operation'>Connector Operations</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-architecture'>Connector Architecture</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-matrix'>Connector Feature Matrix</link>
+    </listitem>
+    <listitem>
+      <link linkend='about-feature'>Connector Features</link>
+    </listitem>
+  </itemizedlist>
+  <note>
+    At some places in this guide, ODSEE, OID, OUD, and an LDAPv3-compliant directory server are referred to as the <emphasis role="strong">target system</emphasis>.
+  </note>
+  <section xml:id="about-component">
+    <title>Components</title>
+    <para>
+      These are the software components and their versions required for installing and using the connector.
+    </para>
+  </section>
+  <section xml:id="about-usage">
+    <title>Usage Recommendation</title>
+    <para>
+      These are the recommendations for the Generic Directory Service connector versions that you can deploy and use depending on the Identity Governance or Identity Manager version that you are using.
+    </para>
+    <note>
+      <para>
+        If you are using Identity Manager release 11.1.x, then you can install and use the connector only in the CI-based mode.
+        If you want to use the AOB application, then you must upgrade to Oracle Identity Governance release 12.2.1.3.0.
+      </para>
+    </note>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <para>
+          If you are using Identity Governance 12c (12.2.1.3.0) and want to integrate it with any of the following target systems, then use the latest 12.2.1.x version of this connector and deploy it using the <emphasis role="strong">Applications</emphasis> option on the <emphasis role="strong">Manage</emphasis> tab of Identity Self Service:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              Oracle Internet Directory release 9.x, 10.1.4.x, and 11g release 1 (11.1.1.5.0, 11.1.1.6.0, 11.1.1.7.0 and 11.1.1.9.0)
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Oracle Unified Directory 11g release (11.1.1.5.0, 11.1.2.0.0, 11.1.2.2.0, and 11.1.2.3.0)
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Oracle Directory Server Enterprise Edition 11g release 1 (11.1.1.5.0 and 11.1.1.7.2)
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              An LDAPv3-compliant directory server
+            </para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>
+          If you are using Identity Governance 12c (12.2.1.3.0) and want to integrate it with any of the following target systems, then use the latest 12.2.1.x version of this connector and deploy it using the <emphasis role="strong">Manage Connector</emphasis> option in Identity System Administration:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+               Oracle Virtual Directory 10g and 11g release 1 (11.1.1.5.0)
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+               Novell eDirectory 8.7.3 and 8.8
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+               Sun Java System Directory Server Enterprise Edition 6.3 and 7.0
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+               Sun ONE Directory Server 5.2
+            </para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>
+          If you are using any of the Identity Manager 11.1.x releases listed in the Requirement for CI-Based Connector column of Table 1-1, then use the 11.1.x version of the Generic Directory Service connector.
+          If you want to use the 12.2.1.x version of this connector with Identity Manager 11.1.x releases, then you can install and use it only in the CI-based mode.
+          If you want to use the AOB application, then you must upgrade to Oracle Identity Governance release 12.2.1.3.0.
+          <note>
+            <para>
+              f you are using the latest 12.2.1.x version of the Oracle Internet Directory connector in the CI-based mode, then see Identity Manager Connector Guide for Internet Directory, Release 11.1.1 for complete details on connector deployment, usage, and customization.
+            </para>
+          </note>
+        </para>
+      </listitem>
+      <listitem>
+        <para>
+          If you are using an Identity Manager release that is earlier than Oracle Identity Manager 11g Release 1 (11.1.1), then depending on the target system that you are using, install and use one of the following connectors:
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+               For Oracle Internet Directory, use the 9.0.4.x version of the Oracle Internet Directory connector.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+               For Sun ONE Directory Server and Sun Java System Directory Server Enterprise Edition, use the 9.0.4.x version of the Sun Java System Directory connector.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+               For Novell eDirectory, use the 9.0.4.x version of the Novell eDirectory connector.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="about-language">
+    <title>Languages</title>
+    <para>
+      The connector supports the following languages:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <para>English</para>
+      </listitem>
+      <listitem>
+        <para>French</para>
+      </listitem>
+      <listitem>
+        <para>German</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="about-operation">
+    <title>Supported Connector Operations</title>
+    <para>
+      These are the list of operations that the connector supports for your target system:
+    </para>
+    <table>
+      <thead>
+        <tr>
+          <td>Operation</td>
+          <td>OID?</td>
+          <td>OUD?</td>
+          <td>ODSEE?</td>
+          <td>LDAPv3?</td>
+          <td>Novell eDirectory?</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><emphasis role="strong">User Management</emphasis></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Create Account</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Modify Account</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Delete Account</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Enable Account</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Disable Account</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Reset password</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">Groups and Organization Units Management</emphasis></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Create group or organization unit</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Update group name or organization unit name</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Delete group or organization unit</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Update container DN</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">Entitlement Grant Management</emphasis></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>Add groups</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Revoke groups</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Add roles</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Revoke Roles</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Add organizations</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+          <td>n.a</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Remove organizations</td>
+          <td>No</td>
+          <td>No</td>
+          <td>No</td>
+          <td>n.a</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Add domain scope</td>
+          <td>n.a</td>
+          <td>n.a</td>
+          <td>n.a</td>
+          <td>n.a</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Add profiles</td>
+          <td>n.a</td>
+          <td>n.a</td>
+          <td>n.a</td>
+          <td>n.a</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Add role containers</td>
+          <td>n.a</td>
+          <td>n.a</td>
+          <td>n.a</td>
+          <td>n.a</td>
+          <td>Yes</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section xml:id="about-architecure">
+    <title>Connector Architecture</title>
+    <para>
+      The Generic Directory Service connector is implemented by using the Identity Connector Framework (ICF).
+      The ICF is a component that provides basic reconciliation and provisioning operations that are common to all Identity Governance connectors.
+      The ICF is shipped along with Identity Governance.
+      Therefore, you need not configure or modify the ICF.
+    </para>
+    <image>
+    </image>
+    <para>
+      The Generic Directory Service connector uses JNDI to access the target system.
+    </para>
+    <para>
+      This connector can be configured to run in one of the following modes:
+    </para>
+  </section>
+  <section xml:id="about-matrix">
+    <title>Supported Connector Features Matrix</title>
+    <para>
+      Provides the list of features supported by the AOB application and CI-based connector.
+    </para>
+    <table>
+      <thead>
+        <tr>
+          <td>Feature</td>
+          <td>AOB Application</td>
+          <td>CI-Based Connector</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Full Reconciliation</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Incremental Reconciliation</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Limited R	econciliation</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Connection pooling</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Use connector server</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Transformation of account data</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Secure communication</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Reconcile deleted user records</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Reconcile deleted groups, roles, and organizations</td>
+          <td>Yes</td>
+          <td>Yes</td>
+        </tr>
+        <tr>
+          <td>Test connection</td>
+          <td>Yes</td>
+          <td>No</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+  <section xml:id="about-feature">
+    <title>Features of the Connector</title>
+    <para>
+      The features of the connector include support for connector server, support for high-availability configuration of the target system, connection pooling, reconciliation of deleted user records, support for groovy scripts, and so on.
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend='about-feature-recon-full'>Full and Incremental Reconciliation</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-recon-limited'>Limited Reconciliation</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-recon-deleted'>Reconciliation of Deleted User Records</link>
+      </listitem>
+      <listitem>
+        <link linkend='bout-feature-connector-server'>Support for the Connector Server</link>
+      </listitem>
+      <listitem>
+        <link linkend='bout-feature-connector-scripts'>Support for Running Pre and Post Action Scripts</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-transformation'>Transformation of Account Data</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-connection-security'>Secure Communication to the Target System</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-connection-pooling'>Connection Pooling</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature-high-availability'>Support for High-Availability Configuration of the Target System</link>
+      </listitem>
+      <listitem>
+        <link linkend='about-feature'>Connector Features</link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="about-feature-recon-full">
+      <title>Full and Incremental Reconciliation</title>
+      <para>
+        Full reconciliation involves reconciling all existing user records from the target system into Oracle Identity Governance.
+        In incremental reconciliation, only records that are added or modified after the last reconciliation run are fetched into Oracle Identity Governance.
+      </para>
+      <para>
+        After you create the application, you can perform full reconciliation to bring all existing user data from the target system to Oracle Identity Governance.
+        After the first full reconciliation run, incremental reconciliation is automatically enabled.
+        In incremental reconciliation, user accounts that have been added or modified since the last reconciliation run are fetched into Oracle Identity Governance.
+      </para>
+      <para>
+        After you create the application, you can first perform full reconciliation.
+        After the first full reconciliation run, incremental reconciliation is automatically enabled.
+      </para>
+    </section>
+    <section xml:id="about-feature-recon-limited">
+      <title>Limited Reconciliation</title>
+      <para>
+        You can set a reconciliation filter as the value of the Filter attribute of a reconciliation scheduled job.
+        This filter specifies the subset of added and modified target system records that must be reconciled.
+      </para>
+    </section>
+    <section xml:id="about-feature-recon-deleted">
+      <title>Reconciliation of Deleted User Records</title>
+      <para>
+        You can use the connector to reconcile user records that are deleted on the target system into Oracle Identity Governance.
+      </para>
+      <para>
+        For more information about the reconciliation job used for reconciling these deleted records, see one of the following sections:
+      </para>
+      <insert>link</insert>
+    </section>
+    <section xml:id="about-feature-connector-server">
+      <title>Support for the Connector Server</title>
+      <para>
+        Connector Server is one of the features provided by ICF.
+        By using one or more connector servers, the connector architecture permits your application to communicate with externally deployed bundles.
+      </para>
+      <para>
+        A Java connector server is useful when you do not wish to execute a Java connector bundle in the same VM as your application.
+        It can be beneficial to run a Java connector on a different host for performance improvements.
+      </para>
+      <para>
+        For information about installing, configuring, and running the Connector Server, and then installing the connector in a Connector Server, see <link xl:show="new" xl:href="https://docs.oracle.com/en/middleware/idm/identity-governance/12.2.1.3/omdev/understanding-identity-connector-framework.html#GUID-3456CEE2-CAFC-4B11-93AE-BE3234EB41DC" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Using an Identity Connector Server</citetitle></link> in <emphasis>Oracle Fusion Middleware Developing and Customizing Applications for Oracle Identity Governance</emphasis>.
+      </para>
+    </section>
+    <section xml:id="about-feature-connector-scripts">
+      <title>Support for Running Pre and Post Action Scripts</title>
+      <para>
+        You can run pre and post action scripts on a computer where the
+        connector is deployed. These scripts can be of type SQL/StoredProc/Groovy.
+        You can configure the scripts to run before or after the create, update, or delete an account provisioning operations.
+      </para>
+      <para>
+        For more information, see <link xl:show="new" xl:href="https://docs.oracle.com/en/middleware/idm/identity-governance/12.2.1.3/omusg/managing-application-onboarding.html#GUID-C34B1E37-2B3C-4379-8032-94F370DC9708" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Updating the Provisioning Configuration</citetitle></link> in <emphasis>Oracle Fusion Middleware Performing Self Service Tasks with Oracle Identity Governance</emphasis>.
+      </para>
+    </section>
+    <section xml:id="about-feature-transformation">
+      <title>Transformation of Account Data</title>
+      <para>
+        You can configure transformation of account data that is brought into or sent from Oracle Identity Governance during reconciliation and provisioning operations by writing Groovy scripts while creating your application.
+      </para>
+      <para>
+        For more information, see <link xl:show="new" xl:href="https://docs.oracle.com/en/middleware/idm/identity-governance/12.2.1.3/omusg/managing-application-onboarding.html#GUID-E3D51F24-B419-4676-80D3-EFA56133DD56" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Validation and Transformation of Provisioning and Reconciliation Attributes</citetitle></link> in <emphasis>Oracle Fusion Middleware Performing Self Service Tasks with Oracle Identity Governance</emphasis>.
+      </para>
+    </section>
+    <section xml:id="about-feature-connection-security">
+      <title>Secure Communication to the Target System</title>
+      <para>
+        To provide secure communication to the target system, SSL is required.
+        You can configure SSL between Oracle Identity Governance and the Connector Server and between the Connector Server and the target system.
+      </para>
+      <para>
+        If you do not configure SSL, passwords can be transmitted over the network in clear text.
+        For example, this problem can occur when you are creating a user or modifying a user's password.
+      </para>
+      <para>
+        For more information, see <insert>link</insert>.
+      </para>
+    </section>
+    <section xml:id="about-feature-connection-pooling">
+      <title>Connection Pooling</title>
+      <para>
+        A connection pool is a cache of objects that represent physical connections to the target.
+        Oracle Identity Governance connectors can use these connections to communicate with target systems.
+      </para>
+      <para>
+        At run time, the application requests a connection from the pool.
+        If a connection is available, then the connector uses it and then returns it to the pool.
+        A connection returned to the pool can again be requested for and used by the connector for another operation.
+        By enabling the reuse of connections, the connection pool helps reduce connection creation overheads like network latency, memory allocation, and authentication.
+      </para>
+      <para>
+        One connection pool is created for each set of basic configuration parameters that you provide while creating an application.
+        For example, if you have three applications for three installations of the target system, then three connection pools will be created, one for each target system installation.
+      </para>
+      <para>
+        For more information about the parameters that you can configure for connection pooling, see:
+      </para>
+      <insert>link</insert>
+    </section>
+    <section xml:id="about-feature-high-availability">
+      <title>Support for High-Availability Configuration of the Target System</title>
+      <para>
+        You can configure the connector for compatibility with high-availability target system environments.
+      </para>
+      <para>
+        The connector can read information about backup target system hosts from the failover parameter of the Basic Configuration section and apply this information when it is unable to connect to the primary host
+      </para>
+      <para>
+        For more information about the Failover parameter, see<insert>link</insert>
+      </para>
+    </section>
+  </section>
+</chapter>

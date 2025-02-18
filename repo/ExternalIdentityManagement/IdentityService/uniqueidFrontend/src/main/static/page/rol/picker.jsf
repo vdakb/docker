@@ -1,0 +1,71 @@
+<u:composition xmlns   ="http://www.w3.org/1999/xhtml"
+               xmlns:f ="http://xmlns.jcp.org/jsf/core"
+               xmlns:h ="http://xmlns.jcp.org/jsf/html"
+               xmlns:p ="http://primefaces.org/ui"
+               xmlns:u ="http://java.sun.com/jsf/facelets"
+               template="/WEB-INF/template/picker.jsf">
+  <u:define name="title">#{app$bundle['dialog.title.lookup']} #{uid$bundle['rol.menu']}</u:define>
+  <u:define name="content">
+    <p:dataTable id                       ="t03"
+                 var                      ="item"
+                 liveResize               ="true"
+                 stripedRows              ="true"
+                 resizableColumns         ="true"
+                 value                    ="#{role}"
+                 rows                     ="#{role.pageSize}"
+                 selection                ="#{role.selected}"
+                 selectionMode            ="single"
+                 sortMode                 ="multiple"
+                 allowUnsorting           ="true"
+                 paginator                ="true"
+                 paginatorPosition        ="top"
+                 paginatorTemplate        ="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                 paginatorAlwaysVisible   ="true"
+                 rowsPerPageTemplate      ="5,10,15"
+                 widgetVar                ="rolePicker">
+      <p:ajax event="rowSelect"   update=":f03:cb51"/>
+      <p:ajax event="rowUnselect" update=":f03:cb51"/>
+      <p:column id="c40" width="1px" sortable="false" draggable="false" resizable="false" selectRow="true" filterable="false" toggleable="true"/>
+      <p:column id="c41" headerText="#{uid$bundle['item.id.label']}" sortBy="#{item.id}" filterable="true" width="8rem">
+        <h:outputText id ="ot41" value="#{item.id}"/>
+      </p:column>
+      <p:column id="c42" headerText="#{uid$bundle['rol.displayname.label']}" sortBy="#{item.displayName}" filterable="true">
+        <h:outputText id ="ot42" value="#{item.displayName}"/>
+      </p:column>
+      <f:facet name="header">
+        <p:toolbar id="tb41">
+          <p:toolbarGroup id="tg41" align="left" styleClass="mr-4">
+            <p:commandButton id    ="cb41"
+                             icon  ="fa fa-filter"
+                             title ="#{app$bundle['action.filter.hint']}"
+                             action="#{rolePicker.filter}"
+                             update="@form">
+            </p:commandButton>
+            <p:inputText id="it41" styleClass="ml-2 mr-2" onkeyup="PF('rolePicker').filter()" placeholder="#{app$bundle['action.search.value']}"/>
+            <p:commandButton id    ="cb42"
+                             icon  ="fa fa-search"
+                             title ="#{app$bundle['action.search.hint']}"
+                             action="#{rolePicker.filter}"
+                             update="@form"/>
+          </p:toolbarGroup>
+        </p:toolbar>
+      </f:facet>
+    </p:dataTable>
+  </u:define>
+  <u:define name="footer">
+    <p:commandButton id        ="cb51"
+                     icon      ="fa fa-check"
+                     action    ="#{role.dialogReturn}"
+                     process   ="@this"
+                     value     ="#{app$bundle['action.choose.label']}"
+                     disabled  ="#{role.selected == null}"
+                     styleClass="ui-button-primary"/>
+    <p:commandButton id        ="cb52"
+                     icon      ="fa fa-times"
+                     action    ="#{role.dialogCancel}"
+                     process   ="@this"
+                     value     ="#{app$bundle['action.cancel.label']}"
+                     styleClass="ui-button-secondary ui-button-outlined"/>
+  </u:define>
+</u:composition>

@@ -1,0 +1,565 @@
+<extension id            ="oracle.ocs.workspace.oam"
+           version       ="12.2.1.3.42.60.101"
+           esdk-version  ="2.0"
+           rsbundle-class="oracle.jdeveloper.workspace.oam.Manifest"
+           xmlns         ="http://jcp.org/jsr/198/extension-manifest">
+  <name>${oam}</name>
+  <owner>${oam.vendor}</owner>
+  <trigger-hooks xmlns="http://xmlns.oracle.com/ide/extension">
+    <rules>
+      <rule id="oam-extension-state" type="extension-is-enabled">
+        <parameters>
+          <param name="extension-id" value="oracle.ocs.workspace.oam"/>
+        </parameters>
+      </rule>
+      <!--
+      This rule checks if context has a Project with a minimum technology scope
+      as specified.
+      The technology-keys parameter is a comma-separated list of technology
+      keys. The match parameter is optional, valid values are 'all' or 'any',
+      default is 'all'
+      -->
+      <rule id="oam-technology-scope" type="project-has-techscope">
+        <parameters>
+          <param name="technology-keys" value="oam.technology"/>
+        </parameters>
+      </rule>
+      <rule id="oam-workspace" type="workspace-property-equals">
+        <parameters>
+          <param name="property-name"  value="appTemplateId"/>
+          <param name="property-value" value="oam.application"/>
+        </parameters>
+      </rule>
+      <composite-rule id="oam-workspace-technology-scope">
+        <and>
+          <rule-reference id="oam-workspace"/>
+          <rule-reference id="oam-technology-scope"/>
+        </and>
+      </composite-rule>
+    </rules>
+    <triggers>
+      <technology-hook>
+        <!--
+        ========================================================================
+        == Access Manager                                                     ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oam.technology</key>
+          <name>${oam.technology}</name>
+          <description>${oam.description}</description>
+          <technology-dependencies>
+            <key>amf.technology</key>
+          </technology-dependencies>
+        </technology>
+        <!--
+        ========================================================================
+        == Access Manager Server                                              ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oam.server</key>
+          <name>${oam.server}</name>
+          <description>${oam.server.description}</description>
+          <technology-dependencies>
+            <key>oam.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oam.wizard.OAMServerPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oam-server.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Access Manager Library                                             ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oam.library</key>
+          <name>${oam.library}</name>
+          <description>${oam.library.description}</description>
+          <technology-dependencies>
+            <key>oam.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Access Manager 12c Server</name>
+              <description>${oracle-oam-12c-server}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Access Manager 12c Foundation</name>
+              <description>${oracle-oam-12c-foundation}</description>
+            </library>
+          </library-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oam.wizard.LibraryPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oam-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-library-ant.xml</name>
+              <path>./</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Access Manager Agent                                               ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oam.agent</key>
+          <name>${oam.agent}</name>
+          <description>${oam.agent.description}</description>
+          <technology-dependencies>
+            <key>oam.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Access Manager 12c Server</name>
+              <description>${oracle-oam-12c-server}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Access Manager 12c Foundation</name>
+              <description>${oracle-oam-12c-foundation}</description>
+            </library>
+          </library-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oam.wizard.AgentPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oam-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-agent-ant.xml</name>
+              <path>../ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Access Manager Authentication Plug-In                              ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oam.plugin</key>
+          <name>${oam.plugin}</name>
+          <description>${oam.plugin.description}</description>
+          <technology-dependencies>
+            <key>oam.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == List of libraries on which this technology is dependant.         ==
+          ==                                                                  ==
+          == At this time this information is for display purposes only.      ==
+          ======================================================================
+          -->
+          <library-dependencies>
+            <library>
+              <name>Access Manager 12c Server</name>
+              <description>${oracle-oam-12c-plugin}</description>
+            </library>
+            <library>
+              <name>Consulting Headstart 12c Foundation</name>
+              <description>${oracle-hst-12c-foundation}</description>
+            </library>
+            <library>
+              <name>Access Manager 12c Foundation</name>
+              <description>${oracle-oam-12c-foundation}</description>
+            </library>
+          </library-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oam.wizard.PluginPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oam-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-plugin-ant.xml</name>
+              <path>../ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Access Manager Credential Collector                                ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oam.collector</key>
+          <name>${oam.collector}</name>
+          <description>${oam.collector.description}</description>
+          <technology-dependencies>
+            <key>oam.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oam.wizard.CollectorPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oam-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-preferences.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-targets.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-collector-ant.xml</name>
+              <path>../ant</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+        <!--
+        ========================================================================
+        == Access Manager Deployment                                          ==
+        ========================================================================
+        -->
+        <technology>
+          <key>oam.deployment</key>
+          <name>${oam.deployment}</name>
+          <description>${oam.deployment.description}</description>
+          <technology-dependencies>
+            <key>oam.technology</key>
+          </technology-dependencies>
+          <!--
+          ======================================================================
+          == Pages that should be added to a wizard using this technology     ==
+          ======================================================================
+          -->
+          <wizard-pages>
+            <page>
+              <traversable-class>oracle.jdeveloper.workspace.oam.wizard.DeploymentPage</traversable-class>
+            </page>
+          </wizard-pages>
+          <!--
+          ======================================================================
+          == A list of generated files.                                       ==
+          ==                                                                  ==
+          == Each file has a name and a path relative to the Project source   ==
+          == root. At this time this information is for display purposes      ==
+          == only, but may in future used to seed an actual file generator    ==
+          == associated with this technology scope.                           ==
+          ======================================================================
+          -->
+          <generated-files>
+            <file>
+              <name>oam-context.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-deployment.xml</name>
+              <path>../</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-export-ant.xml</name>
+              <path>./</path>
+              <type>xml</type>
+            </file>
+            <file>
+              <name>oam-import-ant.xml</name>
+              <path>./</path>
+              <type>xml</type>
+            </file>
+          </generated-files>
+        </technology>
+      </technology-hook>
+      <actions xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+        <!--
+        ========================================================================
+        == the commmand that the oam feature will use to regenerate the build ==
+        == hierarchy                                                          ==
+        ========================================================================
+        -->
+        <action id="oam.jpr.configurator" canBePlacedOnMainToolbar="true">
+          <properties>
+            <property name="Name">${oam.project.configurator}</property>
+            <property name="SmallIcon">${oam.project.configurator.icon}</property>
+            <property name="LongDescription">${oam.project.configurator.description}</property>
+          </properties>
+          <command-class>oracle.jdeveloper.workspace.oam.project.Configurator</command-class>
+        </action>
+        <!--
+        ========================================================================
+        == the commmand that the oam feature will use to regenerate the ANT   ==
+        == runtime classpath                                                  ==
+        ========================================================================
+        -->
+        <action id="oam.jpr.runtime" canBePlacedOnMainToolbar="true">
+          <properties>
+            <property name="Name">${oam.project.runtime}</property>
+            <property name="SmallIcon">${oam.project.runtime.icon}</property>
+            <property name="LongDescription">${oam.project.runtime.description}</property>
+          </properties>
+          <command-class>oracle.jdeveloper.workspace.oam.project.Runtime</command-class>
+        </action>
+      </actions>
+      <settings-ui-hook>
+        <!--
+        ========================================================================
+        == the pages display in the Oracle JDeveloper Preference Navigator    ==
+        ========================================================================
+        -->
+        <page id="oam" parent-idref="/preferences/iam">
+          <label>${oam.name}</label>
+          <traversable-class>oracle.jdeveloper.workspace.oam.preference.Panel</traversable-class>
+        </page>
+        <!--
+        ========================================================================
+        == the pages display in the Oracle JDeveloper Project Settings        ==
+        ========================================================================
+        -->
+        <page id="oam" parent-idref="/Project/iam">
+          <label>${oam.name}</label>
+          <traversable-class>oracle.jdeveloper.workspace.oam.project.Panel</traversable-class>
+        </page>
+      </settings-ui-hook>
+      <gallery xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+        <folders>
+          <!--
+          ======================================================================
+          == The 'label' attribute allows the folder name to be translated;   ==
+          == the key must be in the extension manifest resource bundle.       ==
+          ==                                                                  ==
+          == Note to myself:                                                  ==
+          == Ensure always that the key defined here is the same that we used ==
+          == in the extension manifest resource bundle as the key of the      ==
+          == Please vistit Manifest.FEATURE to check                          ==
+          ======================================================================
+          -->
+          <name label="${oam.name}">oam</name>
+          <category>iam</category>
+        </folders>
+      </gallery>
+    </triggers>
+  </trigger-hooks>
+  <feature id="oracle.ocs.workspace.oam" xmlns="http://xmlns.oracle.com/ide/extension">
+    <name>${oam.name}</name>
+    <category-id>iam-category amf-category</category-id>
+    <description>${oam.description}</description>
+    <members/>
+    <type>
+      <technology key="oam.technology"/>
+    </type>
+    <vendor>${oam.vendor}</vendor>
+    <license>${oam.license}</license>
+    <copyright>${oam.copyright}</copyright>
+  </feature>
+  <hooks>
+    <jdeveloper-hook xmlns="http://xmlns.oracle.com/jdeveloper/1013/extension">
+      <context-menu-listeners>
+        <site idref="navigator"> <!-- or "editor", or "explorer" -->
+          <!--
+          ======================================================================
+          == the context menu listener in the navigator to display the menu   ==
+          == item for action oam.jpr.configurator to regenerate the build     ==
+          == file hierarchy                                                   ==
+          ======================================================================
+          -->
+          <listener-class>oracle.jdeveloper.workspace.oam.project.ConfiguratorContextListener</listener-class>
+          <!--
+          ======================================================================
+          == the context menu listener in the navigator to display the menu   ==
+          == item for action oam.jpr.runtime to regenerate the ANT runtime    ==
+          == classpath                                                        ==
+          ======================================================================
+          -->
+          <listener-class>oracle.jdeveloper.workspace.oam.project.RuntimeContextListener</listener-class>
+        </site>
+      </context-menu-listeners>
+      <addins>
+        <!--
+        ========================================================================
+        == The addin that initialize this extension                           ==
+        ==                                                                    ==
+        == All technologies and templates will be created by this             ==
+        == implementation. It was not possible to prevent JDeveloper to list  ==
+        == the templates that can be created by the template-hook.            ==
+        == All templates that are registered through the TemplateManager will ==
+        == be handled by NewObjectFromTemplate and the appropriate subclasses ==
+        == for applications and projects. Those wizards cannot be intercepted ==
+        == due to the classes are declared as final (really stupid).         ==
+        ==                                                                    ==
+        == Due to that reason we will not declare gallery items in the        ==
+        == section above like:                                                ==
+        ==                                                                    ==
+        ==   <item>                                                           ==
+        ==     <name>fullqualified class name</name>                          ==
+        ==     <folder>oam</folder>                                           ==
+        ==     <technologyKey>oam.technology</technologyKey>                  ==
+        ==   </item>                                                          ==
+        ==                                                                    ==
+        ========================================================================
+        -->
+        <addin headless="true">oracle.jdeveloper.workspace.oam.Feature</addin>
+      </addins>
+    </jdeveloper-hook>
+  </hooks>
+</extension>

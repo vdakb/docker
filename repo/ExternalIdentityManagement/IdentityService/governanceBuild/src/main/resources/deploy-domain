@@ -1,0 +1,58 @@
+#!/bin/sh
+#
+# Payara Variable Initialization
+#
+# DOMAIN will be the name used to reference the domain when working with some
+# Payara/Glassfish commands.
+#
+DOMAIN="igs"
+#
+# The VERSION variable points to your Payara version used.
+# The below path would be appropriate for Payara version 5.2022.5
+#
+VERSION="5.2022.5"
+#
+# The HOME variable points to your Payara install location. The below
+# path would be appropriate for Payara versions 5.2022.x
+#
+HOME="/opt/oracle/product/pgs/${VERSION}"
+#
+# The USERNAME variable points the administrative user.
+#
+USERNAME="pgsadmin"
+#
+# The PASSWORD variable points the password file location.
+#
+PASSWORD="/Users/dsteding/.gfclient/secret"
+#
+# The CLI variable points to the location of the asadmin script used to run the
+# Payara asadmin commands
+#
+CLI=${HOME}/bin/asadmin
+#
+# The PORT_ADMIN variable indicates the port will be used for administration
+# (defaults to 4848).
+# The PORT_ADMIN that Payara assigns by default or when using --portbase
+# (see below). You can access the admin console at http://yourserver:PORT_ADMIN
+PORT_ADMIN="8001"
+#
+# The DEPLOYMENT variable indicates the location of the application WAR file to
+# be deployed. The path needs to point to the Payara_Examples folder in this
+# instance.
+#
+DEPLOYMENT="/Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/deployment/igs"
+#
+# asadmin subcommand to deploy the application and services to the created
+# cluster
+#
+# The option -p specifies the admin port used by the cluster.
+#
+# The --target option here points the asadmin subcommand to the cluster which we
+# want to deploy the app on.
+#
+# Following the options the location of the WAR files to deploy is given.
+# Here the location points to the directory given by the DEPLOYMENT variable.
+#
+${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} deploy --target server --deploymentDir ${DEPLOYMENT}/0100\ systemServices/lib
+
+${CLI} -u ${USERNAME} -W ${PASSWORD} -p ${PORT_ADMIN} list-applications

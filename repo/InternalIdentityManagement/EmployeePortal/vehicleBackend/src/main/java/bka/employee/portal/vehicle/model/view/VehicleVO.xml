@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject xmlns="http://xmlns.oracle.com/bc4j" Version="12.2.1.22.48"
+            xmlns:validation="http://xmlns.oracle.com/adfm/validation"
+            Name                  ="VehicleVO"
+            WhereFlags            ="1"
+            FromListFlags         ="1"
+            SelectListFlags       ="1"
+            CustomQuery           ="false"
+            FetchMode             ="FETCH_AS_NEEDED"
+            AccessMode            ="RANGE_PAGING"
+            RangeSize             ="8"
+            BindingStyle          ="OracleName"
+            InheritPersonalization="merge"
+            SelectAllAttributes   ="false"
+            PageIterMode          ="Full"
+            ComponentClass        ="bka.employee.portal.vehicle.model.view.VehicleVOImpl"
+            RowClass              ="bka.employee.portal.vehicle.model.view.VehicleVORowImpl">
+  <DesignTime>
+    <Attr Name="_objectSuperClassName" Value="bka.employee.portal.model.PortalViewObjectImpl"/>
+    <Attr Name="_isCodegen"    Value="true"/>
+    <Attr Name="_codeGenFlag2" Value="Coll"/>
+  </DesignTime>
+  <ViewAccessor
+    Name="BrandVO"
+    ViewObjectName="bka.employee.portal.vehicle.model.view.BrandVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="TypeVO"
+    ViewObjectName="bka.employee.portal.vehicle.model.view.TypeVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="ColorVO"
+    ViewObjectName="bka.employee.portal.vehicle.model.view.ColorVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_typeKey"
+    ListVOName="TypeVO"
+    ComboRowCountHint="10"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="typeKey"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="id"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="meaning"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_brandKey"
+    ListVOName="BrandVO"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="brandKey"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="brandIcon"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="id"/>
+      <Item Value="icon"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="name"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_colorKey"
+    ListVOName="ColorVO"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="colorKey"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="id"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="meaning"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage Name="vhu" Entity="bka.employee.portal.vehicle.model.entity.VehicleEO"/>
+  <ViewAttribute Name="id" EntityUsage="vhu" EntityAttrName="id" AliasName="ID" PrecisionRule="true" IsNotNull="true"  IsUpdateable="while_insert" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="vhu.id.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="carPlateNumber" EntityUsage="vhu" EntityAttrName="carPlateNumber" AliasName="CAR_PLATE_NUMBER"  PrecisionRule="true" IsNotNull="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="vhu.licencePlate.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="brandKey" EntityUsage="vhu" EntityAttrName="brandKey"  AliasName="BRAND_KEY" PrecisionRule="true" LOVName="LOV_brandKey">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE Value="combo_lov"/>
+        <LABEL ResId="vhu.brand.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+    <Dependencies>
+      <Item Value="brandIcon" Type="notify"/>
+    </Dependencies>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="typeKey" EntityUsage="vhu" EntityAttrName="typeKey" AliasName="TYPE_KEY" PrecisionRule="true" LOVName="LOV_typeKey">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE Value="combo_lov"/>
+        <LABEL ResId="vht.vehicle.single"/>
+        <TOOLTIP ResId="vht.vehicle.tooltip"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="colorKey" EntityUsage="vhu"  EntityAttrName="colorKey" AliasName="COLOR_KEY" PrecisionRule="true" LOVName="LOV_colorKey">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="vhc.vehicle.single"/>
+        <TOOLTIP ResId="vhc.vehicle.tooltip"/>
+        <CONTROLTYPE Value="combo_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="usrKey" EntityUsage="vhu"  EntityAttrName="usrKey" AliasName="USR_KEY" PrecisionRule="true" IsUpdateable="while_insert">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="vhu.usrKey.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="rowversion" EntityUsage="vhu" EntityAttrName="rowVersion" AliasName="ROWVERSION" PrecisionRule="true" IsQueriable="false" IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+		<DISPLAYWIDTH Value="40"/>
+        <LABEL ResId="vhu.rowVersion.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="createdBy" EntityUsage="vhu" EntityAttrName="createdBy" AliasName="CREATED_BY"  PrecisionRule="true" IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="vhu.createdBy.label"/>
+		<DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="createdOn" EntityUsage="vhu" EntityAttrName="createdOn" AliasName="CREATED_ON"  PrecisionRule="true" IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+	    <DISPLAYWIDTH Value="40"/>
+        <LABEL ResId="vhu.createdOn.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="updatedBy" EntityUsage="vhu" EntityAttrName="updatedBy"  AliasName="UPDATED_BY" PrecisionRule="true" IsUpdateable="false">
+    <Properties>
+      <SchemaBasedProperties>
+		<DISPLAYWIDTH Value="40"/>
+        <LABEL ResId="vhu.updatedBy.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="updatedOn" EntityUsage="vhu" EntityAttrName="updatedOn" IsUpdateable="false" PrecisionRule="true" AliasName="UPDATED_ON">
+    <Properties>
+      <SchemaBasedProperties>
+		<DISPLAYWIDTH Value="40"/>
+        <LABEL ResId="vhu.updatedOn.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="brandIcon" PrecisionRule="true" AliasName="BRAND_ICON" Type="java.lang.String" ColumnType="$none$" SQLType="VARCHAR" IsPersistent="false" IsQueriable="false"
+    Expression="SELECT vhb.ICON FROM ept_vehicle_brands vhb WHERE ( ( (vhb.ID = vhu.BRAND_KEY ) ) )">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="vhu.brandIcon.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewCriteria Name="VehicleV0Criteria" ViewObjectName="bka.employee.portal.vehicle.model.view.VehicleVO" Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property Name="mode"                     Value="Advanced"/>
+        <Property Name="showInList"               Value="true"/>
+        <Property Name="autoExecute"              Value="false"/>
+        <Property Name="displayOperators"         Value="InAdvancedMode"/>
+        <Property Name="allowConjunctionOverride" Value="true"/>
+        <Property Name="displayName"              ResId="vhu.search"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow Name="vcrVHU" UpperColumns="1">
+      <ViewCriteriaItem Name="carPlateNumber" ViewAttribute="carPlateNumber" Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="brandKey"       ViewAttribute="brandKey"       Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ViewLinkAccessor
+    Name="BrandVO1"
+    ViewLink="bka.employee.portal.vehicle.model.view.link.BrandVOVehicleVO"
+    Type="oracle.jbo.Row"
+    Reversed="true"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="bka.employee.portal.vehicle.Backend"/>
+  </ResourceBundle>
+</ViewObject>

@@ -1,0 +1,413 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysauth$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Authorization']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysauth$bundle.CAT_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysauth$bundle.CAT_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysauth$bundle.CAT_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysauth$bundle.CAT_ATTRIBUTE}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysauth$bundle.CAT_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{af:formatString(sysauth$bundle.CAT_DETAIL, pageFlowScope.itemName)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysauth$bundle.CAT_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="subtabs"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id             ="btn11"
+                   text           ="#{sysbase$bundle.GENERIC_DELETE}"
+                   shortDesc      ="#{af:formatString(sysbase$bundle.GENERIC_DELETE_HINT, sysauth$bundle.CAT_SINGLE)}"
+                   rendered       ="#{!bindings.deleted.inputValue}"
+                   action         ="#{pageFlowScope.catalogitemTrain.delete}"
+                   partialTriggers="pf10 btn12"
+                   immediate      ="true">
+          <af:clientAttribute name="attribute" value="true"/>
+        </af:button>
+        <af:button id             ="btn12"
+                   text           ="#{sysbase$bundle.GENERIC_RESTORE}"
+                   shortDesc      ="#{af:formatString(sysbase$bundle.GENERIC_RESTORE_HINT, sysauth$bundle.CAT_SINGLE)}"
+                   rendered       ="#{bindings.deleted.inputValue}"
+                   action         ="#{pageFlowScope.catalogitemTrain.restore}"
+                   partialTriggers="pf10 btn11"
+                   immediate      ="true">
+          <af:clientAttribute name="attribute" value="true"/>
+        </af:button>
+        <af:button id            ="btn15"
+                   text          ="#{sysbase$bundle.GENERIC_APPLY}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysauth$bundle.CAT_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view' or (!pageFlowScope.catalogitemTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.catalogitemAttribute.submit}"
+                   action        ="#{pageFlowScope.catalogitemTrain.submit}"
+                   styleClass    ="whiteTextButton"
+                   inlineStyle   ="#{pageFlowScope.catalogitemTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+        <af:button id            ="btn16"
+                   text          ="#{sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysauth$bundle.CAT_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{bindings.deleted.inputValue or bindings.deleted.inputValue or pageFlowScope.mode == 'view' or (!pageFlowScope.catalogitemTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.catalogitemAttribute.revert}"
+                   actionListener="#{pageFlowScope.catalogitemTrain.revert}"
+                   immediate     ="true">
+          <af:clientAttribute name="attribute" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical">
+            <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="17%" fieldWidth="83%" binding="#{pageFlowScope.catalogitemTrain.formLayout}">
+              <af:spacer  id="sp111" width="0" height="1"/>
+              <af:inputText id                 ="it111"
+                            value              ="#{bindings.entityName.inputValue}"
+                            label              ="#{bindings.entityName.hints.label}"
+                            required           ="#{bindings.entityName.hints.mandatory}"
+                            columns            ="#{bindings.entityName.hints.displayWidth}"
+                            maximumLength      ="#{bindings.entityName.hints.precision}"
+                            shortDesc          ="#{bindings.entityName.hints.tooltip}"
+                            disabled           ="true"/>
+              <af:inputText id                 ="it112"
+                            value              ="#{bindings.entityType.inputValue}"
+                            label              ="#{bindings.entityType.hints.label}"
+                            required           ="#{bindings.entityType.hints.mandatory}"
+                            columns            ="#{bindings.entityType.hints.displayWidth}"
+                            maximumLength      ="#{bindings.entityType.hints.precision}"
+                            shortDesc          ="#{bindings.entityName.hints.tooltip}"
+                            disabled           ="true"/>
+              <af:inputText id                 ="it113"
+                            value              ="#{bindings.category.inputValue}"
+                            label              ="#{bindings.category.hints.label}"
+                            required           ="#{bindings.category.hints.mandatory}"
+                            columns            ="#{bindings.category.hints.displayWidth}"
+                            maximumLength      ="#{bindings.category.hints.precision}"
+                            shortDesc          ="#{bindings.category.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                            disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.category.validator}"/>
+              </af:inputText>
+              <af:panelLabelAndMessage id="plm114" label="#{bindings.risk.hints.label}" showRequired="#{bindings.risk.hints.mandatory}">
+                <af:panelGroupLayout id="pgl114" layout="horizontal" valign="middle">
+                  <af:inputText id                 ="it114"
+                                value              ="#{bindings.risk.inputValue}"
+                                label              ="#{bindings.risk.hints.label}"
+                                simple             ="true"
+                                required           ="#{bindings.risk.hints.mandatory}"
+                                columns            ="#{bindings.risk.hints.displayWidth}"
+                                maximumLength      ="#{bindings.risk.hints.precision}"
+                                shortDesc          ="#{bindings.risk.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.risk.validator}"/>
+                  </af:inputText>
+                  <af:spacer  id="sp1141" width="10" height="0"/>
+                  <af:outputText id="ot114" value ="#{bindings.riskUpdate.inputValue}">
+                    <af:convertDateTime id="dt114" type="both" dateStyle="full"/>
+                  </af:outputText>
+                </af:panelGroupLayout>
+              </af:panelLabelAndMessage>
+              <af:panelGroupLayout id="pgl115" layout="horizontal" valign="top">
+                <af:selectBooleanCheckbox id                 ="cb115"
+                                          value              ="#{bindings.auditable.inputValue}"
+                                          label              ="#{bindings.auditable.hints.label}"
+                                          shortDesc          ="#{bindings.auditable.hints.tooltip}"
+                                          valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                          disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                          autoSubmit         ="true"/>
+                <af:spacer  id="sp115" width="30" height="0"/>
+                <af:selectBooleanCheckbox id                 ="cb116"
+                                          value              ="#{bindings.requestable.inputValue}"
+                                          label              ="#{bindings.requestable.hints.label}"
+                                          shortDesc          ="#{bindings.requestable.hints.tooltip}"
+                                          valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                          disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                          autoSubmit         ="true"/>
+                <af:spacer  id="sp116" width="30" height="0"/>
+                <af:selectBooleanCheckbox id                 ="cb117"
+                                          value              ="#{bindings.certifiable.inputValue}"
+                                          label              ="#{bindings.certifiable.hints.label}"
+                                          shortDesc          ="#{bindings.certifiable.hints.tooltip}"
+                                          valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                          disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                          autoSubmit         ="true"/>
+              </af:panelGroupLayout>
+              <af:spacer  id="sp118" width="0" height="1"/>
+              <af:inputText id                 ="it118"
+                            value              ="#{bindings.entityDisplayName.inputValue}"
+                            label              ="#{bindings.entityDisplayName.hints.label}"
+                            required           ="#{bindings.entityDisplayName.hints.mandatory}"
+                            columns            ="#{bindings.entityDisplayName.hints.displayWidth}"
+                            maximumLength      ="#{bindings.entityDisplayName.hints.precision}"
+                            shortDesc          ="#{bindings.entityDisplayName.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                            disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.entityDisplayName.validator}"/>
+              </af:inputText>
+              <af:inputText id                 ="it119"
+                            value              ="#{bindings.entityDescription.inputValue}"
+                            label              ="#{bindings.entityDescription.hints.label}"
+                            required           ="#{bindings.entityDescription.hints.mandatory}"
+                            columns            ="#{bindings.entityDescription.hints.displayWidth}"
+                            rows               ="#{bindings.auditObjective.hints.displayHeight}"
+                            maximumLength      ="#{bindings.entityDescription.hints.precision}"
+                            shortDesc          ="#{bindings.entityDescription.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                            disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.entityDescription.validator}"/>
+              </af:inputText>
+              <af:spacer  id="sp120" width="0" height="1"/>
+              <af:inputText id                 ="it120"
+                            value              ="#{bindings.auditObjective.inputValue}"
+                            label              ="#{bindings.auditObjective.hints.label}"
+                            required           ="#{bindings.auditObjective.hints.mandatory}"
+                            columns            ="#{bindings.auditObjective.hints.displayWidth}"
+                            rows               ="#{bindings.auditObjective.hints.displayHeight}"
+                            maximumLength      ="#{bindings.auditObjective.hints.precision}"
+                            shortDesc          ="#{bindings.auditObjective.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                            disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.auditObjective.validator}"/>
+              </af:inputText>
+              <af:spacer  id="sp121" width="0" height="1"/>
+              <af:panelLabelAndMessage id="plm121" label="#{bindings.approverUserName.hints.label}" for="it121">
+                <af:panelGroupLayout id="pgl121" layout="horizontal" valign="middle">
+                  <af:inputText id                 ="it121"
+                                value              ="#{bindings.approverUserName.inputValue}"
+                                label              ="#{bindings.approverUserName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.approverUserName}"
+                                validator          ="#{backingBeanScope.catalogitemAttribute.validateApproverUser}"
+                                required           ="#{bindings.approverUserName.hints.mandatory}"
+                                columns            ="#{bindings.approverUserName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.approverUserName.hints.precision}"
+                                shortDesc          ="#{bindings.approverUserName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true"
+                                partialTriggers    ="li122">
+                    <f:validator binding="#{bindings.approverUserName.validator}"/>
+                  </af:inputText>
+                  <af:spacer  id="sp122" width="2" height="0"/>
+                  <af:inputText id                 ="it122"
+                                value              ="#{bindings.approverUserDisplayName.inputValue}"
+                                label              ="#{bindings.approverUserDisplayName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.approverUserDisplayName}"
+                                required           ="#{bindings.approverUserDisplayName.hints.mandatory}"
+                                columns            ="#{bindings.approverUserDisplayName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.approverUserDisplayName.hints.precision}"
+                                shortDesc          ="#{bindings.approverUserDisplayName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true"
+                                partialTriggers    ="li122">
+                    <f:validator binding="#{bindings.approverUserDisplayName.validator}"/>
+                  </af:inputText>
+                  <af:link id="li122" actionListener="#{backingBeanScope.catalogitemAttribute.pickApproverUser}" icon="/images/func_search_16_ena.png" inlineStyle="margin-left: 5px;" immediate="true"/>
+                </af:panelGroupLayout>
+              </af:panelLabelAndMessage>
+              <af:panelLabelAndMessage id="plm123" label="#{bindings.approverRoleName.hints.label}" for="it123">
+                <af:panelGroupLayout id="pgl123" layout="horizontal" valign="middle">
+                  <af:inputText id                 ="it123"
+                                value              ="#{bindings.approverRoleName.inputValue}"
+                                label              ="#{bindings.approverRoleName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.approverRoleName}"
+                                required           ="#{bindings.approverRoleName.hints.mandatory}"
+                                columns            ="#{bindings.approverRoleName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.approverRoleName.hints.precision}"
+                                shortDesc          ="#{bindings.approverRoleName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.approverRoleName.validator}"/>
+                  </af:inputText>
+                  <af:spacer  id="sp124" width="2" height="0"/>
+                  <af:inputText id                 ="it124"
+                                value              ="#{bindings.approverRoleDisplayName.inputValue}"
+                                label              ="#{bindings.approverRoleDisplayName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.approverRoleDisplayName}"
+                                required           ="#{bindings.approverRoleDisplayName.hints.mandatory}"
+                                columns            ="#{bindings.approverRoleDisplayName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.approverRoleDisplayName.hints.precision}"
+                                shortDesc          ="#{bindings.approverRoleDisplayName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.approverRoleDisplayName.validator}"/>
+                  </af:inputText>
+                  <af:link id="li124" actionListener="#{backingBeanScope.catalogitemAttribute.pickApproverRole}" icon="/images/func_search_16_ena.png" inlineStyle="margin-left: 5px;" immediate="true"/>
+                </af:panelGroupLayout>
+              </af:panelLabelAndMessage>
+              <af:panelLabelAndMessage id="plm125" label="#{bindings.certifierUserName.hints.label}" for="it125">
+                <af:panelGroupLayout id="pgl125" layout="horizontal" valign="middle">
+                  <af:inputText id                 ="it125"
+                                value              ="#{bindings.certifierUserName.inputValue}"
+                                label              ="#{bindings.certifierUserName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.certifierUserName}"
+                                required           ="#{bindings.certifierUserName.hints.mandatory}"
+                                columns            ="#{bindings.certifierUserName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.certifierUserName.hints.precision}"
+                                shortDesc          ="#{bindings.certifierUserName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.certifierUserName.validator}"/>
+                  </af:inputText>
+                  <af:spacer  id="sp126" width="2" height="0"/>
+                  <af:inputText id                 ="it126"
+                                value              ="#{bindings.certifierUserDisplayName.inputValue}"
+                                label              ="#{bindings.certifierUserDisplayName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.certifierUserDisplayName}"
+                                required           ="#{bindings.certifierUserDisplayName.hints.mandatory}"
+                                columns            ="#{bindings.certifierUserDisplayName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.certifierUserDisplayName.hints.precision}"
+                                shortDesc          ="#{bindings.certifierUserDisplayName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.certifierUserDisplayName.validator}"/>
+                  </af:inputText>
+                  <af:link id="li125" actionListener="#{backingBeanScope.catalogitemAttribute.pickCertifierUser}" icon="/images/func_search_16_ena.png" inlineStyle="margin-left: 5px;" immediate="true"/>
+                </af:panelGroupLayout>
+              </af:panelLabelAndMessage>
+              <af:panelLabelAndMessage id="plm127" label="#{bindings.certifierRoleName.hints.label}" for="it127">
+                <af:panelGroupLayout id="pgl127" layout="horizontal" valign="middle">
+                  <af:inputText id                 ="it127"
+                                value              ="#{bindings.certifierRoleName.inputValue}"
+                                label              ="#{bindings.certifierRoleName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.certifierRoleName}"
+                                required           ="#{bindings.certifierRoleName.hints.mandatory}"
+                                columns            ="#{bindings.certifierRoleName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.certifierRoleName.hints.precision}"
+                                shortDesc          ="#{bindings.certifierRoleName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.certifierRoleName.validator}"/>
+                  </af:inputText>
+                  <af:spacer  id="sp128" width="2" height="0"/>
+                  <af:inputText id                 ="it128"
+                                value              ="#{bindings.certifierRoleDisplayName.inputValue}"
+                                label              ="#{bindings.certifierRoleDisplayName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.certifierRoleDisplayName}"
+                                required           ="#{bindings.certifierRoleDisplayName.hints.mandatory}"
+                                columns            ="#{bindings.certifierRoleDisplayName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.certifierRoleDisplayName.hints.precision}"
+                                shortDesc          ="#{bindings.certifierRoleDisplayName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.certifierRoleDisplayName.validator}"/>
+                  </af:inputText>
+                  <af:link id="li127" actionListener="#{backingBeanScope.catalogitemAttribute.pickCertifierRole}" icon="/images/func_search_16_ena.png" inlineStyle="margin-left: 5px;" immediate="true"/>
+                </af:panelGroupLayout>
+              </af:panelLabelAndMessage>
+              <af:panelLabelAndMessage id="plm129" label="#{bindings.fulfillmentUserName.hints.label}" for="it129">
+                <af:panelGroupLayout id="pgl129" layout="horizontal" valign="middle">
+                  <af:inputText id                 ="it129"
+                                value              ="#{bindings.fulfillmentUserName.inputValue}"
+                                label              ="#{bindings.fulfillmentUserName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.fulfillmentUserName}"
+                                required           ="#{bindings.fulfillmentUserName.hints.mandatory}"
+                                columns            ="#{bindings.fulfillmentUserName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.fulfillmentUserName.hints.precision}"
+                                shortDesc          ="#{bindings.fulfillmentUserName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.fulfillmentUserName.validator}"/>
+                  </af:inputText>
+                 <af:spacer  id="sp130" width="2" height="0"/>
+                  <af:inputText id                 ="it130"
+                                value              ="#{bindings.fulfillmentUserDisplayName.inputValue}"
+                                label              ="#{bindings.fulfillmentUserDisplayName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.fulfillmentUserDisplayName}"
+                                required           ="#{bindings.fulfillmentUserDisplayName.hints.mandatory}"
+                                columns            ="#{bindings.fulfillmentUserDisplayName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.fulfillmentUserDisplayName.hints.precision}"
+                                shortDesc          ="#{bindings.fulfillmentUserDisplayName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.fulfillmentUserDisplayName.validator}"/>
+                  </af:inputText>
+                  <af:link id="li129" actionListener="#{backingBeanScope.catalogitemAttribute.pickFulfillmentUser}" icon="/images/func_search_16_ena.png" inlineStyle="margin-left: 5px;" immediate="true"/>
+                </af:panelGroupLayout>
+              </af:panelLabelAndMessage>
+             <af:panelLabelAndMessage id="plm131" label="#{bindings.fulfillmentRoleName.hints.label}" for="it131">
+                <af:panelGroupLayout id="pgl131" layout="horizontal" valign="middle">
+                  <af:inputText id                 ="it131"
+                                value              ="#{bindings.fulfillmentRoleName.inputValue}"
+                                label              ="#{bindings.fulfillmentRoleName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.fulfillmentRoleName}"
+                                required           ="#{bindings.fulfillmentRoleName.hints.mandatory}"
+                                columns            ="#{bindings.fulfillmentRoleName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.fulfillmentRoleName.hints.precision}"
+                                shortDesc          ="#{bindings.fulfillmentRoleName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.fulfillmentRoleName.validator}"/>
+                  </af:inputText>
+                  <af:spacer  id="sp132" width="2" height="0"/>
+                  <af:inputText id                 ="it132"
+                                value              ="#{bindings.fulfillmentRoleDisplayName.inputValue}"
+                                label              ="#{bindings.fulfillmentRoleDisplayName.hints.label}"
+                                simple             ="true"
+                                binding            ="#{backingBeanScope.catalogitemAttribute.fulfillmentRoleDisplayName}"
+                                required           ="#{bindings.fulfillmentRoleDisplayName.hints.mandatory}"
+                                columns            ="#{bindings.fulfillmentRoleDisplayName.hints.displayWidth}"
+                                maximumLength      ="#{bindings.fulfillmentRoleDisplayName.hints.precision}"
+                                shortDesc          ="#{bindings.fulfillmentRoleDisplayName.hints.tooltip}"
+                                valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                                disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                                autoSubmit         ="true">
+                    <f:validator binding="#{bindings.fulfillmentRoleDisplayName.validator}"/>
+                  </af:inputText>
+                  <af:link id="li131" actionListener="#{backingBeanScope.catalogitemAttribute.pickFulfillmentRole}" icon="/images/func_search_16_ena.png" inlineStyle="margin-left: 5px;" immediate="true"/>
+                </af:panelGroupLayout>
+              </af:panelLabelAndMessage>
+              <af:spacer  id="sp133" width="0" height="1"/>
+              <af:inputText id                 ="it133"
+                            value              ="#{bindings.userTags.inputValue}"
+                            label              ="#{bindings.userTags.hints.label}"
+                            required           ="#{bindings.userTags.hints.mandatory}"
+                            columns            ="#{bindings.userTags.hints.displayWidth}"
+                            rows               ="#{bindings.auditObjective.hints.displayHeight}"
+                            maximumLength      ="#{bindings.userTags.hints.precision}"
+                            shortDesc          ="#{bindings.userTags.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.catalogitemAttribute.changed}"
+                            disabled           ="#{bindings.deleted.inputValue or pageFlowScope.mode == 'view'}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.userTags.validator}"/>
+              </af:inputText>
+            </af:panelFormLayout>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

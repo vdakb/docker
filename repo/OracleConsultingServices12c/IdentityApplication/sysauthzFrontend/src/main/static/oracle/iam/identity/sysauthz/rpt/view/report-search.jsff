@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysauth$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Authorization']}"/>
+  <af:panelHeader id="ph10" text="#{sysauth$bundle.RPT_MULTIPLE}" icon="#{sysauth$bundle.RPT_ICON}">
+    <!--
+    the panel which renders the search criteria and the controls belonging to
+    this panel
+    -->
+    <af:panelGroupLayout id="pgl0" styleClass="AFStretchWidth">
+      <af:declarativeComponent id="dc10" viewId="/searchQuickSearch.jspx" viewCriteriaQuery="#{bindings.ReportCriteria}" resultComponentId="pc10:rpt" advancedMaxColumns="2" advancedRows="5"/>
+      <!--
+      the panel collection which renders the search result and the controls
+      belonging to this panel
+      -->
+      <af:panelCollection id="pc10" styleClass="AFStretchWidth" featuresOff="statusBar">
+        <f:facet name="menus">
+          <af:menu id="m10" partialTriggers="::dc10" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{pageFlowScope.reportSearch.actionMenu}" clientComponent="true">
+            <af:commandMenuItem id           ="cmi11"
+                                text         ="#{sysauth$bundle.RPT_GENERATEDOT}"
+                                icon         ="/images/func_monitorbargraph_16_ena.png"
+                                shortDesc    ="#{sysauth$bundle.RPT_GENERATE_HINT}"
+                                action       ="#{pageFlowScope.reportSearch.launch}"
+                                disabled      ="#{pageFlowScope.reportSearch.actionDisabled}"
+                                partialSubmit="true"/>
+            <af:commandMenuItem id            ="cmi12"
+                                text          ="#{sysauth$bundle.RPT_EMAILMEDOT}"
+                                icon          ="/images/func_envelope_16_ena.png"
+                                shortDesc     ="#{sysauth$bundle.RPT_EMAILME_HINT}"
+                                action        ="#{pageFlowScope.reportSearch.launch}"
+                                disabled      ="#{pageFlowScope.reportSearch.actionDisabled}"
+                                partialSubmit ="true"/>
+            <af:commandMenuItem id            ="cmi14"
+                                icon          ="/images/func_refresh_16_ena.png"
+                                text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                action        ="#{pageFlowScope.reportSearch.refresh}"/>
+          </af:menu>
+        </f:facet>
+        <f:facet name="toolbar">
+          <af:toolbar id="t10" partialTriggers="::dc10" binding="#{pageFlowScope.reportSearch.toolbar}">
+            <af:group id="g10">
+              <af:button id           ="btn11"
+                         text         ="#{sysauth$bundle.RPT_GENERATE}"
+                         icon         ="/images/func_monitorbargraph_16_ena.png"
+                         hoverIcon    ="/images/func_monitorbargraph_16_hov.png"
+                         disabledIcon ="/images/func_monitorbargraph_16_dis.png"
+                         depressedIcon="/images/func_monitorbargraph_16_act.png"
+                         shortDesc    ="#{sysauth$bundle.RPT_GENERATE_HINT}"
+                         action       ="#{pageFlowScope.reportSearch.launch}"
+                         disabled     ="#{pageFlowScope.reportSearch.actionDisabled}"
+                         partialSubmit="true"/>
+              <af:button id           ="btn12"
+                         text         ="#{sysauth$bundle.RPT_EMAILME}"
+                         icon         ="/images/func_envelope_16_ena.png"
+                         hoverIcon    ="/images/func_envelope_16_hov.png"
+                         disabledIcon ="/images/func_envelope_16_dis.png"
+                         depressedIcon="/images/func_envelope_16_act.png"
+                         shortDesc    ="#{sysauth$bundle.RPT_EMAILME_HINT}"
+                         action       ="#{pageFlowScope.reportSearch.launch}"
+                         disabled     ="#{pageFlowScope.reportSearch.actionDisabled}"
+                         partialSubmit="true"/>
+              <af:button id           ="btn14"
+                         text         ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         icon         ="/images/func_refresh_16_ena.png"
+                         hoverIcon    ="/images/func_refresh_16_hov.png"
+                         disabledIcon ="/images/func_refresh_16_dis.png"
+                         depressedIcon="/images/func_refresh_16_act.png"
+                         disabled     ="false"
+                         shortDesc    ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         action       ="#{pageFlowScope.reportSearch.refresh}"
+                         partialSubmit="true"/>
+            </af:group>
+          </af:toolbar>
+        </f:facet>
+        <!--
+        we use columnStretching="multiple" to give us the opportunity to size
+        the columns by witdh="nn%"
+        The default width for a column is 100px. There is no auto sizing for
+        columns. Set the width attribute to ensure the column is wide enough to
+        accommodate the width of the contents. When the "multiple" option is
+        used in the table that contains the column, the width can be set to a
+        percentage.
+        -->
+        <af:table id                   ="rpt" var="row" varStatus="vs"
+                  value                ="#{bindings.Report.collectionModel}"
+                  rows                 ="#{bindings.Report.rangeSize}"
+                  fetchSize            ="#{bindings.Report.rangeSize}"
+                  binding              ="#{pageFlowScope.reportSearch.searchTable}"
+                  summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                  filterVisible        ="false"
+                  filterModel          ="#{bindings.ReportCriteria.queryDescriptor}"
+                  queryListener        ="#{bindings.ReportCriteria.processQuery}"
+                  selectionListener    ="#{pageFlowScope.reportSearch.searchSelect}"
+                  columnStretching     ="multiple"
+                  columnBandingInterval="0"
+                  rowBandingInterval   ="1"
+                  autoHeightRows       ="0"
+                  rowSelection         ="multiple"
+                  columnSelection      ="none"
+                  verticalGridVisible  ="false"
+                  scrollPolicy         ="page"
+                  immediate            ="true"
+                  emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}"
+                  partialTriggers      =":::dc10">
+          <af:column id="c10" rowHeader="true" width="20" headerText="" align="right"/>
+          <af:column id="c11" width="25%" filterable="true" sortable="true" sortProperty="name" headerText="#{bindings.Report.hints.name.label}">
+            <af:link id="ci11" text="#{row.name}" action="#{pageFlowScope.reportSearch.launch}" icon="#{sysauth$bundle.RPT_LIST}"/>
+          </af:column>
+          <af:column id="c13" width="75%" filterable="true" sortable="true" sortProperty="description" headerText="#{bindings.Report.hints.description.label}">
+            <af:outputText id="ot13" value="#{row.description}"/>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup id="pid11" contentDelivery="lazyUncached">
+              <af:menu id="m20" clientComponent="true">
+                <af:commandMenuItem id            ="cmi21"
+                                    icon          ="/images/func_monitorbargraph_16_ena.png"
+                                    text          ="#{sysauth$bundle.RPT_GENERATEDOT}"
+                                    shortDesc     ="#{sysauth$bundle.RPT_GENERATE_HINT}"
+                                    action        ="#{pageFlowScope.reportSearch.launch}"
+                                    partialSubmit ="true"/>
+                <af:commandMenuItem id            ="cmi22"
+                                    icon          ="/images/func_envelope_16_ena.png"
+                                    text          ="#{sysauth$bundle.RPT_EMAILMEDOT}"
+                                    shortDesc     ="#{sysauth$bundle.RPT_EMAILME_HINT}"
+                                    action        ="#{pageFlowScope.reportSearch.launch}"
+                                    partialSubmit ="true"/>
+                <af:commandMenuItem id            ="cmi24"
+                                    icon          ="/images/func_refresh_16_ena.png"
+                                    text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    disabled      ="false"
+                                    shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    action        ="#{pageFlowScope.reportSearch.refresh}"/>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelHeader>
+</jsp:root>

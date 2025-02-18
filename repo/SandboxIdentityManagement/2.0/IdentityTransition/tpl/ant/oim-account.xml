@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-patch-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####  #     #
+  **           #     #    #    ##   ##
+  **           #     #    #    # # # #
+  **           #     #    #    #  #  #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager System Adapter Configuration
+  **           To be able to compile adapter correctly and register scheduled
+  **           jobs this target deploys the necessary libraries to the remote
+  **           host
+  **
+  ** Synopsis: The tasks deploys the object definitions for System Adapter
+  **           Configuration. This includes:
+  **           o Java Binary Archives
+  **           o System Properties
+  **           o Lookup Definitions
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="0100" description="Deploys the System Framework Configuration ${appication.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 System Framework Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.thirdparty}" file="hst-foundation.jar"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.thirdparty}" file="ocs-foundation.jar"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.thirdparty}" file="ocs-scheduler.jar"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.thirdparty}" file="ocs-utility.jar"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.thirdparty}" file="ocs-integration.jar"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.thirdparty}" file="ocs-common.jar"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.adapter}"    file="ocs-adapter.jar"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.adapter}"    file="ocs-hst-core.jar"/>
+    <library-deploy dir="0100 systemFramework/lib" location="${oim.remote.adapter}"    file="ocs-hst-rest.jar"/>
+    <plugin-deploy  dir="0100 systemFramework/lib" location="${oim.remote.plugin}"     file="bka-handler.zip"/>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/bka-features-identity/event-definition/EventHandlers.xml"/>
+    </metadata:delete>
+    <!--
+     | EventHandler for UID validation postponed due to its unclear how to
+     | enforce per participant
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0101 entityCustomization/xml">
+        <object:importFile name="bka-handler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+     -->
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####  #     #
+  **           #     #    #    ##   ##
+  **           #     #    #    # # # #
+  **           #     #    #    #  #  #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager System Integration
+  **           Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Oracle Identity
+  **           Sytsem integration connectors. This includes:
+  **           o Java Binary Archives
+  **           o IT Resource Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  **           o Workflows
+  ******************************************************************************
+  -->
+  <target name="0102" description="Deploys the Base System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0102 System Integration Foundation ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying files for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.thirdparty}" file="bka-common.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.scheduler}"  file="bka-scheduler.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.adapter}"    file="bka-adapter.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.thirdparty}" file="igs-common.jar"/>
+    <library-deploy dir="0102 systemIntegration/lib" location="${oim.remote.scheduler}"  file="igs-scheduler.jar"/>
+    <plugin-deploy  dir="0102 systemIntegration/lib" location="${oim.remote.plugin}"     file="igs-handler.zip"/>
+    <echo message="Deleting previously deployed metadata descriptors for ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" failonerror="false">
+      <metadata:path path="/metadata/igs-features-identity/event-definition/EventHandlers.xml"/>
+    </metadata:delete>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0102 systemIntegration/xml">
+        <object:importFile name="gws-resource-dm.xml"/>
+        <object:importFile name="igs-handler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0102 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######     ##
+  **           #     #      #     # #
+  **           #           #     #  #
+  **            #####     #     #   #
+  **                 #   #     #######
+  **           #     #  #           #
+  **            #####  #######      #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Identity Manager SZ4 Active Directory Service
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for SZ4 Active Directory
+  **           Configuration. This includes:
+  **           o Lookup Definition
+  **           o IT Resource Instance
+  **           o User Defined Forms
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Job Instances
+  ******************************************************************************
+  -->
+ <target name="0902" description="Deploys the SZ4 Active Directory System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0902 SZ4 Active Directory System Integration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="0902 systemConnector SZ4/fix">
+        <object:importFile name="ads-model-dm.xml"/>
+        <object:importFile name="ads-process-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0902 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

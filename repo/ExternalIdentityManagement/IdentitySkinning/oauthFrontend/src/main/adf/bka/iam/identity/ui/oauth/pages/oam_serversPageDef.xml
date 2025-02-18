@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="oam_serversPageDef"
+                Package="bka.iam.identity.ui.oauth.pages">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="root" RangeSize="25" DataControl="OAMConnectionSessionFacade"
+              id="OAMConnectionSessionFacadeIterator"/>
+    <accessorIterator MasterBinding="OAMConnectionSessionFacadeIterator" Binds="OAMConnections" RangeSize="25"
+                      DataControl="OAMConnectionSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.OAMConnection"
+                      id="OAMConnectionsIterator"/>
+    <searchRegion Binds="OAMConnectionsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="OAMConnectionsQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="OAMConnectionsIterator" id="OAMConnections">
+      <nodeDefinition DefName="bka.iam.identity.ui.oauth.model.OAMConnection" Name="OAMConnections0">
+        <AttrNames>
+          <Item Value="name"/>
+          <Item Value="host"/>
+          <Item Value="port"/>
+          <Item Value="username"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <methodAction id="loadIdentityDomains" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="loadIdentityDomains" IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.loadIdentityDomains.dataControl.dataProvider"
+                  ReturnName="data.IdentityDomainSessionFacade.methodResults.loadIdentityDomains_loadIdentityDomains_dataControl_dataProvider_loadIdentityDomains_result">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+    </methodAction>
+  </bindings>
+  
+</pageDefinition>

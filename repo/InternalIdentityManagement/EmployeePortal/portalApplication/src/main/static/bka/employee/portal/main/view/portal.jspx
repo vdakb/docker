@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1">
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <c:set var="main$bundle" value="#{adfBundle['bka.employee.portal.bundle.Main']}"/>
+  <c:set var="build$bundle" value="#{adfBundle['oracle.iam.ui.Build']}"/>
+  <f:view>
+    <af:document id="d1" theme="contentBody" title="#{main$bundle.SHELL_TITLE}">
+      <af:resource type="css"        source="/oracle/iam/ui/platform/css/platform.css"></af:resource>
+      <af:resource type="javascript" source="/oracle/iam/ui/platform/js/platform.js"/>
+      <af:popup id="aboutDialog">
+        <af:dialog id="dialog" title="#{main$bundle.ABOUT_LABEL}" shortDesc="#{main$bundle.ABOUT_HINT}" type="ok" closeIconVisible="true" modal="true">
+          <af:panelStretchLayout id="psl3" inlineStyle="background-color: white;">
+            <f:facet name="top">
+              <af:panelBorderLayout id="ptpbl1" styleClass="AFBrandingBar">
+                <f:facet name="start">
+                  <af:panelGroupLayout id="ptpgl1" styleClass="AFBrandingBarItem" inlineStyle="background-color: white;">
+                    <af:spacer shortDesc="#{main$bundle.ABOUT_LABEL}" styleClass="AFBrandingBarLogo" id="pts1"/>
+                  </af:panelGroupLayout>
+                </f:facet>
+                <f:facet name="innerStart">
+                  <af:panelGroupLayout id="ptpgl2" styleClass="AFBrandingBarItem" inlineStyle="background-color: white;">
+                    <af:panelGroupLayout id="ptpgl3" layout="vertical" styleClass="AFBrandingBarTitle">
+                      <af:outputText id="ot1" value="#{main$bundle.ADVANCED_TITLE}"/>
+                    </af:panelGroupLayout>
+                  </af:panelGroupLayout>
+                </f:facet>
+              </af:panelBorderLayout>
+            </f:facet>
+            <f:facet name="center">
+              <af:panelGroupLayout layout="vertical" id="pgl11" inlineStyle="background-color: white;padding: 10px">
+                <af:outputText id="ot4" value="#{main$bundle.PRODUCT_RELEASE}" escape="false"/>
+                <af:outputText id="ot7" value="#{main$bundle.PRODUCT_BUILD} #{main$bundle.PRODUCT_LABEL}"/>
+                <af:outputText id="ot5" value="#{main$bundle.PRODUCT_COPYRIGHT}" escape="false"/>
+                <af:spacer id="s1" height="10"/>
+                <af:outputText id="ot6" value="#{main$bundle.PRODUCT_DETAILS}"/>
+              </af:panelGroupLayout>
+            </f:facet>
+          </af:panelStretchLayout>
+        </af:dialog>
+      </af:popup>
+      <af:panelGroupLayout id="wrapper_pg">
+        <af:pageTemplate id="pt1" viewId="/templates/IdmShellV3.jspx" value="#{bindings.pageTemplateBinding}">
+          <f:attribute name="signout_url"         value="/epp/adfAuthentication?logout=true&amp;amp;end_url=/logout?OIM_CSRFTOKEN=#{sessionScope.OIM_CSRFTOKEN}"/>
+          <f:attribute name="enableHelp"          value="true"/>
+          <f:attribute name="enableAccessibility" value="true"/>
+          <f:attribute name="enableCustomization" value="#{oimui.customizeSelfServiceUI.allowed}"/>
+          <f:attribute name="enableSandboxes"     value="#{oimui.customizeSelfServiceUI.allowed}"/>
+          <f:attribute name="usesUpload"          value="true"/>
+          <f:facet name="appAbout">
+            <af:group id="g1">
+              <af:commandMenuItem id="cmi1" text="#{main$bundle.INBOX}" actionListener="#{pageFlowScope.mainStateBean.navigateInbox}" partialSubmit="true" rendered="#{pageFlowScope.mainStateBean.soaEnabled}"/>
+              <af:commandMenuItem id="cni6" text="#{main$bundle.ABOUT_LABEL}">
+                <af:showPopupBehavior popupId=":::aboutDialog"/>
+              </af:commandMenuItem>
+            </af:group>
+          </f:facet>
+          <f:facet name="appCopyright">
+            <af:group id="g2">
+              <af:outputText id="ot2" escape="false" value="#{main$bundle.PRODUCT_COPYRIGHT}"/>
+              <af:inputText id="hiddenInput"  label="hidden" clientComponent="true" value="Can send custom events" visible="false">
+                <af:serverListener type="IdmShellCloseTabEvent" method="#{pageFlowScope.mainStateBean.closeTab}"/>
+              </af:inputText>
+            </af:group>
+          </f:facet>
+          <f:facet name="branding">
+            <af:outputText id="ot3" value="#{main$bundle.SHELL_TITLE}"/>
+          </f:facet>
+        </af:pageTemplate>
+      </af:panelGroupLayout>
+    </af:document>
+  </f:view>
+</jsp:root>

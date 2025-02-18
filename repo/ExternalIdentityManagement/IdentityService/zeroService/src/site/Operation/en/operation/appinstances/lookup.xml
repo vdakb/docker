@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="api-appi-lookup"
+         xml:lang="en"
+         version ="5.0">
+  <title>Lookup Application Instance</title>
+  <para>
+    This endpoint provides the ability to lookup existing application instance identified by a key.
+    Request does not support pagination and filtering.
+  </para>
+  <section xml:id="api-appi-lookup-req">
+    <title>Request</title>
+    <warning>
+      <title>Permission</title>
+      <para>There are no elevated permission required to access this resource method.</para>
+    </warning>
+    <para>
+      <restapi role="search">/appinstances/{key}</restapi>
+    </para>
+    <section xml:id="api-appi-lookup-req-h">
+      <title>Request Header</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-appi-lookup-req-q">
+      <title>Query Parameters</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>none</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>    
+  </section>
+  <section xml:id="api-appi-lookup-res">
+    <title>Response</title>
+    <para>
+      The representation of the application instance with the given <emphasis role="strong">key</emphasis>.
+    </para>
+    <bridgehead renderas="sect6">Example</bridgehead>
+    <para>
+      <restapi role="search">/appinstances/2</restapi>
+    </para>
+    <programlisting>
+{
+    "key": 2,
+    "name": "CTSAccount",
+    "displayName": "eFBS Citrix Terminal Services",
+    "description": "An account assignable to identities that need access to hosted
+                  applications at Citrix Terminal Server where permissions for access
+                  those applications are backed by Microsoft Active Directory.",
+    "itResourceName": "TS.ADS Endpoint",
+    "createDate": "2020-04-22 15:45:08",
+    "updateDate": "2020-04-22 15:45:09"
+}
+    </programlisting>
+    <para>
+      Output data is in form of:
+    </para>
+    <section xml:id="api-appi-lookup-res-r0">
+      <title>Application Instance</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">key</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The identifier key for this application instance.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">name</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The name for this application instance.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">displayName</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The name for this application instance suitable for GUI displaying purpose.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">description</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes, can be null</entry>
+              <entry>The description of the application instance, if filled in.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">itResourceName</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The name of the associated IT resource.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">createDate</emphasis></entry>
+              <entry>timestamp</entry>
+              <entry>yes</entry>
+              <entry>The date and time of this application instance creation.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">updateDate</emphasis></entry>
+              <entry>timestamp</entry>
+              <entry>yes</entry>
+              <entry>The date and time of the last update of this application instance.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-appi-lookup-err">
+      <title>Possible Errors</title>
+      <table>
+        <thead>
+          <tr>
+            <td>Error</td>
+            <td>Condition</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><emphasis role="strong">401 Unauthorized</emphasis></td>
+            <td>No or invalid authentication was provided.</td>
+          </tr>
+          <tr>
+            <td><emphasis role="strong">403 Forbidden</emphasis></td>
+            <td>Request was authenticated but authorization was not passed (authenticated user lacks role required to acces the resource).</td>
+          </tr>
+          <tr>
+            <td><emphasis role="strong">404 Not Found</emphasis></td>
+            <td>Requested application instance was not found.</td>
+          </tr>
+          <tr>
+            <td><emphasis role="strong">503 Service Unavailable</emphasis></td>
+            <td>Other processing error occured including invalid filter syntax. Response <literal>description</literal> attribute contains more details.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+</section>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Oracle Consulting Services Deployment Task Definitions"
+         default     ="all"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:config="http://oracle.ods.deployment/config"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  =====================================================================
+  == custom type and task definitions
+  =====================================================================
+  -->
+  <import file="../../ods-context.xml"/>
+  <target name="0100" description="Exports the Base Configuration">
+    <record name="../log/oud-export-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 System Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects from ${oud.server.host}:${oud.server.port}"/>
+    <object:export contextRef="oud-context" contextRoot="dc=vm,dc=oracle,dc=com">
+      <exportSet exportFile   ="../ocsV2.dsml"
+                 format       ="dsml"
+                 version      ="2"
+                 forceOverride= "true"
+                 description  ="xxxxx">
+        <search base="ou=People" filter ="objectClass=*" scope="sub">
+          <includes>
+            <name value="ou"/>
+            <name value="uid"/>
+            <name value="cn"/>
+            <name value="sn"/>
+            <name value="givenName"/>
+            <name value="gidNumber"/>
+            <name value="uidNumber"/>
+          </includes>
+          <excludes>
+            <name value="userPassword"/>
+          </excludes>
+        </search>
+      </exportSet>
+    </object:export>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="../log/oud-export-ant.log" action="stop"/>
+   </target>
+  <target name="0200" description="Exports the Base Configuration">
+    <record name="../log/oud-export-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200 System Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects from ${oud.server.host}:${oud.server.port}"/>
+    <object:export contextRef="oud-context" contextRoot="dc=vm,dc=oracle,dc=com">
+      <exportSet exportFile   ="../ocs-system-user.dsml"
+                 format       ="dsml"
+                 version      ="2.0"
+                 forceOverride= "true"
+                 description  ="xxxxx">
+        <search base="" filter ="(&amp;(objectClass=inetOrgPerson)(|(uid=iamuser)(uid=oimuser)(uid=zimtstern)))" scope="sub">
+          <includes>
+            <name value="uid"/>
+            <name value="cn"/>
+            <name value="sn"/>
+            <name value="givenName"/>
+            <name value="displayName"/>
+            <name value="middleName"/>
+            <name value="description"/>
+            <name value="mail"/>
+            <name value="employeeNumber"/>
+            <name value="preferredLanguage"/>
+            <name value="postalCode"/>
+            <name value="l"/>
+            <name value="street"/>
+          </includes>
+       </search>
+      </exportSet>
+      <exportSet exportFile   ="../ocs-system-context.dsml"
+                 format       ="dsml"
+                 version      ="2.0"
+                 forceOverride= "true"
+                 description  ="xxxxx">
+        <search base="cn=IdentityAccess,cn=Products,cn=OracleContext" filter ="objectClass=groupOfUniqueNames" scope="sub">
+          <includes>
+            <name value="cn"/>
+            <name value="description"/>
+            <name value="uniqueMember"/>
+          </includes>
+       </search>
+      </exportSet>
+      <exportSet exportFile   ="../ocs-system-group.dsml"
+                 format       ="dsml"
+                 version      ="2.0"
+                 forceOverride= "true"
+                 description  ="xxxxx">
+        <search base="cn=Groups" filter ="objectClass=groupOfUniqueNames" scope="sub">
+          <includes>
+            <name value="cn"/>
+            <name value="description"/>
+            <name value="uniqueMember"/>
+          </includes>
+       </search>
+      </exportSet>
+    </object:export>
+    <echo message="=================================================================="/>
+    <echo message="0200 completed"/>
+    <echo message="=================================================================="/>
+    <record name="../log/oud-export-ant.log" action="stop"/>
+ </target>
+</project>

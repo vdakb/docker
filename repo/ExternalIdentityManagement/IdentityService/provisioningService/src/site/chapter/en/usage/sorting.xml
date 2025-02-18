@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="use-sorting"
+         xml:lang="en"
+         version ="5.0">
+  <title>Sorting</title>
+  <para>
+    Sorting allows you to specify the order in which the resources are returned, by specifying a combination of <literal>sortBy</literal> and <literal>sortOrder</literal> URL parameters.
+  </para>
+  <para>
+    Sorting is applied in two conditions:
+  </para>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      <para>When querying a resource using a HTTP GET method.</para>
+      <para/>
+    </listitem>
+    <listitem>
+      <para>When querying a resource using a HTTP POST method to a resource or search.</para>
+    </listitem>
+  </itemizedlist>
+  <para>
+    The value of the sort query parameter is a comma-separated list of sort keys.
+  </para>
+  <table colsep="0">
+    <tgroup cols="2">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="*"/>
+      <thead>
+        <row>
+          <entry>Parameter</entry>
+          <entry>Description</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>sortBy</entry>
+          <entry>
+            <para>
+              Specifies the attribute whose value is used to order the returned responses.
+              If <literal>sortBy</literal> attribute corresponds to a singular attribute, resources are sorted according to that attributes value.
+              If it is a multi valued attribute, resources are sorted by the value of the primary value, or else, first value in the list.
+              If the attribute is complex, the attribute name <emphasis role="strong">MUST</emphasis> be a path to a sub attribute in standard attribute notation.
+            </para>
+            <para>
+              For example,; <literal>sortBy=id</literal>
+            </para>
+          </entry>
+        </row>
+        <row>
+          <entry>sortOrder</entry>
+          <entry>
+            <para>
+              Specifies the order in which the sorting is performed, like in ascending or descending order.
+            </para>
+            <para>
+              For example,; the GET request- <emphasis>GET /igs/scim/v2/Users?sortOrder=descending</emphasis>, sorts the list in descending order of participants.
+            </para>
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <caution>
+    <title>Caution</title>
+    <para>
+      The <literal>sortOrder</literal> parameter works only when <literal>sortBy</literal> parameter is defined.
+    </para>
+  </caution>
+</section>

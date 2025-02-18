@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<Plugin type="Authentication">
+	<author>Oracle</author>
+	<email>donotreply@oracle.com</email>
+	<creationDate>2020-03-06 09:53:37</creationDate>
+	<description>Failure Attempts AuthN Plugin</description>
+	<version>1</version>
+	<interface>oracle.security.am.plugin.authn.AbstractAuthenticationPlugIn</interface>
+	<implementation>bka.iam.access.plugin.authnplugin.OTPAuthenticationPlugin</implementation>
+	<configuration>
+    <AttributeValuePair>
+			<Attribute type="string" length="50">IDENTITY_STORE_REF</Attribute>
+			<mandatory>false</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value></value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="200">UMS_URL</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>https://[host]:[port]/ucs/messaging/webservice</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="50">EMAIL_FROM</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>TestSender@ocipoc.de</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="50">EMAIL_FROM_NAME</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>BKA Admin</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="20">EMAIL_LDAP_ATTR</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>mail</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="100">EMAIL_SUBJECT</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>One Time Pin</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="100">EMAIL_BODY</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>Please use @@ as a One Time Pin to access the requested resource.</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="20">UMS_IS_WSS</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>false</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="20">UMS_CSF_KEY</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>umsKey</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="200">PIN_CHARACTERS</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>0123456789</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="20">PIN_LENGHT</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>6</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="20">PIN_VALIDITY</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>60000</value>
+		</AttributeValuePair>
+    <AttributeValuePair>
+			<Attribute type="string" length="20">PIN_MAX_ATTEMPTS</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>5</value>
+		</AttributeValuePair>		
+    <AttributeValuePair>
+			<Attribute type="string" length="20">PIN_MAX_NEW_PINS</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>5</value>
+		</AttributeValuePair>		
+    <AttributeValuePair>
+			<Attribute type="string" length="20">USER_ACTION</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>FORWARD</value>
+		</AttributeValuePair>		
+    <AttributeValuePair>
+			<Attribute type="string" length="2">EMAIL_MASK_START</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>1</value>
+		</AttributeValuePair>	
+    <AttributeValuePair>
+			<Attribute type="string" length="2">EMAIL_MASK_END</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>1</value>
+		</AttributeValuePair>	
+    <AttributeValuePair>
+			<Attribute type="string" length="2">EMAIL_DEFAULT_LANGUAGE</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>en</value>
+		</AttributeValuePair>	
+    <AttributeValuePair>
+			<Attribute type="string" length="200">EMAIL_TEMPLATE_MBEAN_NAME</Attribute>
+			<mandatory>true</mandatory>
+			<instanceOverride>false</instanceOverride>
+			<globalUIOverride>true</globalUIOverride>
+			<value>bka.iam.platform:Name=config,Type=idp,Application=idp.iam.access.module,ApplicationVersion=12.2.1.3</value>
+		</AttributeValuePair>	            
+	</configuration>
+</Plugin>

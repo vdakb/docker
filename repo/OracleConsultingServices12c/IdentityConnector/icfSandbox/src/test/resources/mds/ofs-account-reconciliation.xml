@@ -1,0 +1,41 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="User Name"
+            uniqueName    ="User Name"
+            status        ="Status"
+            password      ="Password"
+            transformation="false"
+            natively      ="false">
+  <attribute type="string"  name="User Name"       source="__UID__">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string"  name="Name"            source="name">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string"  name="e-Mail"          source="email"/>
+  <attribute type="boolean" name="Administrator"   source="administrator"/>
+  <attribute type="string"  name="Gender"          source="property.gender"/>
+  <attribute type="string"  name="Age"             source="property.age"/>
+  <multivalue name="Group" source="__GROUP__">
+    <attribute type="string" name="Name"           source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="boolean" name="Administrator" source="administrator">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <multivalue name="Room" source="__ROOM__">
+    <attribute type="string" name="Name"           source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="string" name="User Name"      source="jid"/>
+    <attribute type="string" name="Nick Name"      source="nickName"/>
+    <attribute type="string" name="Last Name"      source="lastName"/>
+    <attribute type="string" name="First Name"     source="firstName"/>
+    <attribute type="string" name="e-Mail"         source="email"/>
+    <attribute type="string" name="URL"            source="url"/>
+    <attribute type="string" name="FAQ"            source="faq"/>
+  </multivalue>
+</descriptor>

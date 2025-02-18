@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"  value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysadmin$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Administration']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{!pageFlowScope.jobTrain.saveEnabled}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysadmin$bundle.JOB_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysadmin$bundle.JOB_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysadmin$bundle.JOB_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysadmin$bundle.JOB_HISTORY}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysadmin$bundle.JOB_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysadmin$bundle.JOB_CREATE_TITLE : af:formatString(sysadmin$bundle.JOB_DETAIL, pageFlowScope.name)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysadmin$bundle.JOB_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:group id="gr01" rendered="#{pageFlowScope.mode == 'edit'}">
+          <af:button id             ="btn11"
+                     text           ="#{sysadmin$bundle.JOB_RUN_TEXT}"
+                     shortDesc      ="#{sysadmin$bundle.JOB_RUN_HINT}"
+                     rendered       ="#{bindings.status ne '5'}"
+                     action         ="#{pageFlowScope.jobTrain.start}"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+          <af:button id             ="btn12"
+                     text           ="#{sysadmin$bundle.JOB_STOP_TEXT}"
+                     shortDesc      ="#{sysadmin$bundle.JOB_STOP_HINT}"
+                     rendered       ="#{bindings.status eq '5'}"
+                     action         ="#{pageFlowScope.jobTrain.stop}"
+                     partialTriggers="btn11"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+          <af:button id             ="btn13"
+                     text           ="#{sysadmin$bundle.JOB_ENABLE_TEXT}"
+                     shortDesc      ="#{sysadmin$bundle.JOB_ENABLE_HINT}"
+                     action         ="#{pageFlowScope.jobTrain.enable}"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+          <af:button id             ="btn14"
+                     text           ="#{sysadmin$bundle.JOB_DISABLE_TEXT}"
+                     shortDesc      ="#{sysadmin$bundle.JOB_DISABLE_HINT}"
+                     action         ="#{pageFlowScope.jobTrain.disable}"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+        </af:group>
+        <af:group id="gr02">
+          <af:button id             ="btn15"
+                     text           ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                     shortDesc      ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysadmin$bundle.JOB_SINGLE)}"
+                     rendered       ="#{pageFlowScope.jobTrain.saveEnabled}"
+                     disabled       ="#{!pageFlowScope.jobTrain.flowDirty}"
+                     binding        ="#{backingBeanScope.jobHistory.submit}"
+                     action         ="#{pageFlowScope.jobTrain.submit}"
+                     styleClass     ="whiteTextButton"
+                     inlineStyle    ="#{pageFlowScope.jobTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+          <af:button id             ="btn16"
+                     text           ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                     shortDesc      ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysadmin$bundle.JOB_SINGLE)}"
+                     rendered       ="#{pageFlowScope.jobTrain.saveEnabled}"
+                     disabled       ="#{!pageFlowScope.jobTrain.flowDirty}"
+                     binding        ="#{backingBeanScope.jobHistory.revert}"
+                     actionListener ="#{pageFlowScope.jobTrain.revert}"
+                     immediate      ="true">
+            <af:clientAttribute name="attribute" value="true"/>
+          </af:button>
+        </af:group>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelGroupLayout id="pg02" layout="scroll">
+        <af:spacer id="sp05" width="0" height="10"/>
+        <af:panelCollection id="pc01" styleClass="AFStretchWidth" featuresOff="statusBar">
+          <f:facet name="toolbar">
+            <af:toolbar id="tb03" binding="#{backingBeanScope.jobHistory.toolbar}" >
+              <af:group id="g01">
+                <af:button id            ="btn04"
+                           text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                           icon          ="/images/func_refresh_16_ena.png"
+                           hoverIcon     ="/images/func_refresh_16_hov.png"
+                           disabledIcon  ="/images/func_refresh_16_dis.png"
+                           depressedIcon ="/images/func_refresh_16_act.png"
+                           shortDesc     ="#{sysadmin$bundle.JOB_HISTORY_REFRESH}"
+                           actionListener="#{backingBeanScope.jobHistory.refreshListener}"/>
+              </af:group>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="menus">
+            <af:menu id ="m01" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{backingBeanScope.jobHistory.actionMenu}">
+              <af:commandMenuItem id            ="cmi04"
+                                  text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                  icon          ="/images/func_refresh_16_ena.png"
+                                  shortDesc     ="#{sysadmin$bundle.JOB_HISTORY_REFRESH}"
+                                  actionListener="#{backingBeanScope.jobHistory.refreshListener}"
+                                  useWindow     ="false"/>
+            </af:menu>
+          </f:facet>
+          <!--
+          we use columnStretching="multiple" to give us the opportunity
+          to size the columns by witdh="nn%"
+          The default width for a column is 100px. There is no auto
+          sizing for columns. Set the width attribute to ensure the
+          column is wide enough to accommodate the width of the
+          contents. When the "multiple" option is used in the table that
+          contains the column, the width can be set to a percentage.
+          -->
+          <af:table id                   ="act1" var="row" varStatus="vs"
+                    value                ="#{bindings.History.collectionModel}"
+                    rows                 ="#{bindings.History.rangeSize}"
+                    fetchSize            ="#{bindings.History.rangeSize}"
+                    binding              ="#{backingBeanScope.jobHistory.searchTable}"
+                    selectionListener    ="#{backingBeanScope.jobHistory.selectionListener}"
+                    summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                    columnStretching     ="multiple"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    autoHeightRows       ="0"
+                    rowSelection         ="single"
+                    columnSelection      ="none"
+                    scrollPolicy         ="page"
+                    immediate            ="true"
+                    emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+            <af:column id="c00" rowHeader="true" width="20" headerText="" align="right"/>
+            <af:column id="c01" width="10%" headerText="#{bindings.History.hints.status.label}">
+              <af:outputText id="ot11" value="#{row.statusDecode}"/>
+            </af:column>
+            <af:column id="c02" width="70%" headerText="#{bindings.History.hints.exception.label}">
+              <af:outputText id="ot12" value="#{row.exception}"/>
+            </af:column>
+            <af:column id="c03" width="10%" headerText="#{bindings.History.hints.startTime.label}">
+              <af:outputText id="ot13" value="#{row.startTime}">
+                <af:convertDateTime id="dt12" type="both" dateStyle="full"/>
+              </af:outputText>
+            </af:column>
+            <af:column id="c04" width="10%" headerText="#{bindings.History.hints.endTime.label}">
+              <af:outputText id="ot14" value="#{row.endTime}">
+                <af:convertDateTime id="dt13" type="both" dateStyle="full"/>
+              </af:outputText>
+            </af:column>
+            <f:facet name="contextMenu">
+              <af:popup id="p01" contentDelivery="lazyUncached">
+                <af:menu id="m02">
+                  <af:commandMenuItem id            ="cmi08"
+                                      text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                      icon          ="/images/func_refresh_16_ena.png"
+                                      shortDesc     ="#{sysadmin$bundle.JOB_HISTORY_REFRESH}"
+                                      actionListener="#{backingBeanScope.jobHistory.refreshListener}"
+                                      useWindow     ="false"/>
+                </af:menu>
+              </af:popup>
+            </f:facet>
+          </af:table>
+        </af:panelCollection>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

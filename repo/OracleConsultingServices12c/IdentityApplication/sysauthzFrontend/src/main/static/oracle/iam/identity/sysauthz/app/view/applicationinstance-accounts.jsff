@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysauth$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Authorization']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{pageFlowScope.mode == 'view'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysauth$bundle.APP_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysauth$bundle.APP_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysauth$bundle.APP_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysauth$bundle.APP_ACCOUNT}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysauth$bundle.APP_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysauth$bundle.APP_CREATE_TITLE : af:formatString(sysauth$bundle.APP_DETAIL, pageFlowScope.displayName)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysauth$bundle.APP_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id             ="btn15"
+                   text           ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                   shortDesc      ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysauth$bundle.APP_SINGLE)}"
+                   visible        ="#{pageFlowScope.mode != 'view'}"
+                   disabled       ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.applicationTrain.flowDirty)}"
+                   binding        ="#{backingBeanScope.applicationAccount.submit}"
+                   action         ="#{pageFlowScope.applicationTrain.submit}"
+                   styleClass     ="whiteTextButton"
+                   inlineStyle    ="#{pageFlowScope.applicationTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+        <af:button id             ="btn16"
+                   text           ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc      ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysauth$bundle.APP_SINGLE)}"
+                   visible        ="#{pageFlowScope.mode != 'view'}"
+                   disabled       ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.applicationTrain.flowDirty)}"
+                   binding        ="#{backingBeanScope.applicationAccount.revert}"
+                   actionListener ="#{pageFlowScope.applicationTrain.revert}"
+                   immediate      ="true">
+          <af:clientAttribute name="account" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+<!--
+      <af:popup id="modifyGrantDuration" contentDelivery="lazyUncached" eventContext="launcher" launcherVar="source" popupFetchListener="#{pageFlowScope.MyAccessAccountBean.initializeGrantDetailsCB}">
+        <af:dialog id="d5g16" title="#{oimuiBundle['MODIFY_GRANT_DURATION']}" type="okCancel" affirmativeTextAndAccessKey="#{oimuiBundle['GENERIC_OK']}" contentWidth="300" contentHeight="200" dialogListener="#{pageFlowScope.MyAccessAccountBean.modifyGrantDurationCB}">
+          <af:panelFormLayout id="pfl0" labelWidth="5" rows="6" maxColumns="1" fieldWidth="300">
+            <af:inputText label="#{oimuiBundle['JUSTIFICATION']}" id="editGrantReason" rows="3" columns="32" contentStyle="height:100px" value="#{pageFlowScope.accountReason}"/>
+            <af:selectBooleanCheckbox id                 ="sbc1"
+                                      text               ="#{oimuiBundle['TIME_COMPONENT']}"
+                                      selected           ="false"
+                                      autoSubmit         ="true"
+                                      immediate          ="true"
+                                      binding            ="#{pageFlowScope.MyAccessAccountBean.useTimeComp}"
+                                      value              ="false"                                            
+                                      valueChangeListener="#{pageFlowScope.MyAccessAccountBean.enableTimeComponent}"/>
+            <af:selectOneChoice id                 ="tzpick"
+                                label              ="#{oimuiBundle['TIME_ZONE']}"
+                                value              ="Europe/London"
+                                autoSubmit         ="true"
+                                immediate          ="true"
+                                valueChangeListener="#{pageFlowScope.MyAccessAccountBean.processTimeZoneChange}" partialTriggers="sbc1" visible="#{pageFlowScope.MyAccessAccountBean.startDateVisible}">
+              <f:selectItems id="tzones" value="#{af:getCommonTimeZoneSelectItems()}"/>
+            </af:selectOneChoice> 
+            <af:panelGroupLayout layout="vertical" id="pgl18" binding="#{pageFlowScope.MyAccessAccountBean.datePG}">
+              <af:inputDate id                 ="editGrantStartDate"
+                            label              ="#{oimuiBundle['START_DATE']}"
+                            binding            ="#{pageFlowScope.MyAccessAccountBean.grantStartDateField}"
+                            minValue           ="#{pageFlowScope.MyAccessAccountBean.startDateMin}"
+                            visible            ="#{!pageFlowScope.MyAccessAccountBean.startDateVisible}"
+                            valueChangeListener="#{pageFlowScope.MyAccessAccountBean.startDateModifiedCB}"
+                            columns            ="30"
+                            autoSubmit         ="true"
+                            partialTriggers    ="sbc1"/>  
+              <af:inputDate id                 ="editGrantStartDateTime"
+                            label              ="#{oimuiBundle['START_DATE']}"
+                            binding            ="#{pageFlowScope.MyAccessAccountBean.grantStartDateTimeField}"
+                            valueChangeListener="#{pageFlowScope.MyAccessAccountBean.startDateModifiedCB}"
+                            minValue           ="#{pageFlowScope.MyAccessAccountBean.startDateMin}"
+                            visible            ="#{pageFlowScope.MyAccessAccountBean.startDateVisible}"
+                            columns            ="30"
+                            autoSubmit         ="true"
+                            partialTriggers="sbc1">
+                <af:convertDateTime type="both" timeStyle="full" dateStyle="full"  timeZone="UTC" pattern="MM/dd/yyyy HH:mm:ss"/>
+              </af:inputDate>
+              <af:inputDate id                 ="editGrantEndDate"
+                            label              ="#{oimuiBundle['END_DATE']}"
+                            binding            ="#{pageFlowScope.MyAccessAccountBean.grantEndDateField}"
+                            valueChangeListener="#{pageFlowScope.MyAccessAccountBean.endDateModifiedCB}"
+                            minValue           ="#{pageFlowScope.MyAccessAccountBean.endDateMin}"
+                            visible            ="#{!pageFlowScope.MyAccessAccountBean.startDateVisible}"
+                            columns            ="30" 
+                            autoSubmit         ="true"
+                            partialTriggers    ="sbc1"/>
+              <af:inputDate id                 ="editGrantEndDateTime"
+                            label              ="#{oimuiBundle['END_DATE']}"
+                            binding            ="#{pageFlowScope.MyAccessAccountBean.grantEndDateTimeField}"
+                            valueChangeListener="#{pageFlowScope.MyAccessAccountBean.endDateModifiedCB}"
+                            minValue           ="#{pageFlowScope.MyAccessAccountBean.endDateTimeMin}"
+                            visible            ="#{pageFlowScope.MyAccessAccountBean.startDateVisible}"
+                            columns            ="30" 
+                            autoSubmit         ="true"
+                            partialTriggers    ="sbc1">
+                <af:convertDateTime type="both" timeStyle="full" dateStyle="full"  timeZone="UTC" pattern="MM/dd/yyyy HH:mm:ss"/>
+              </af:inputDate>
+            </af:panelGroupLayout>
+          </af:panelFormLayout>
+        </af:dialog>
+      </af:popup>
+-->
+      <af:panelGroupLayout id="pg02" layout="scroll">
+        <af:spacer id="sp05" width="0" height="10"/>
+        <af:panelCollection id="pc01" styleClass="AFStretchWidth" featuresOff="statusBar">
+          <f:facet name="toolbar">
+            <af:toolbar id="tb03" binding="#{backingBeanScope.applicationAccount.toolbar}" >
+              <af:group id="g01">
+                <af:button id            ="btn01"
+                           text          ="#{sysbase$bundle.GENERIC_ASSIGN}"
+                           icon          ="/images/func_add_16_ena.png"
+                           hoverIcon     ="/images/func_add_16_hov.png"
+                           disabledIcon  ="/images/func_add_16_dis.png"
+                           depressedIcon ="/images/func_add_16_act.png"
+                           shortDesc     ="#{sysauth$bundle.APP_ACCOUNT_ASSIGN}"
+                           actionListener="#{backingBeanScope.applicationAccount.launchAssignRequest}"
+                           partialSubmit ="true"/>
+                <af:button id            ="btn02"
+                           text          ="#{sysbase$bundle.GENERIC_REVOKE}"
+                           icon          ="/images/func_delete_16_ena.png"
+                           hoverIcon     ="/images/func_delete_16_hov.png"
+                           disabledIcon  ="/images/func_delete_16_dis.png"
+                           depressedIcon ="/images/func_delete_16_act.png"
+                           disabled      ="#{backingBeanScope.applicationAccount.revokeDisabled}"
+                           shortDesc     ="#{sysauth$bundle.APP_ACCOUNT_REVOKE}"
+                           actionListener="#{backingBeanScope.applicationAccount.launchRevokeRequest}"
+                           partialSubmit ="true"/>
+                <af:button id            ="btn04"
+                           text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                           icon          ="/images/func_refresh_16_ena.png"
+                           hoverIcon     ="/images/func_refresh_16_hov.png"
+                           disabledIcon  ="/images/func_refresh_16_dis.png"
+                           depressedIcon ="/images/func_refresh_16_act.png"
+                           shortDesc     ="#{sysauth$bundle.APP_ACCOUNT_REFRESH}"
+                           actionListener="#{backingBeanScope.applicationAccount.refreshListener}"/>
+              </af:group>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="menus">
+            <af:menu id ="m01" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{backingBeanScope.applicationAccount.actionMenu}">
+              <af:commandMenuItem id            ="cmi01"
+                                  text          ="#{sysbase$bundle.GENERIC_ASSIGN}"
+                                  icon          ="/images/func_add_16_ena.png"
+                                  shortDesc     ="#{sysauth$bundle.APP_ACCOUNT_ASSIGN}"
+                                  actionListener="#{backingBeanScope.applicationAccount.launchAssignRequest}"
+                                  useWindow     ="false"/>
+              <af:commandMenuItem id            ="cmi02"
+                                  text          ="#{sysbase$bundle.GENERIC_REVOKE}"
+                                  icon          ="/images/func_delete_16_ena.png"
+                                  shortDesc     ="#{sysauth$bundle.APP_ACCOUNT_REVOKE}"
+                                  actionListener="#{backingBeanScope.applicationAccount.launchRevokeRequest}"
+                                  useWindow     ="false"/>
+              <af:commandMenuItem id            ="cmi04"
+                                  text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                  icon          ="/images/func_refresh_16_ena.png"
+                                  shortDesc     ="#{sysauth$bundle.APP_ACCOUNT_REFRESH}"
+                                  actionListener="#{backingBeanScope.applicationAccount.refreshListener}"
+                                  useWindow     ="false"/>
+            </af:menu>
+          </f:facet>
+          <!--
+          we use columnStretching="multiple" to give us the opportunity
+          to size the columns by witdh="nn%"
+          The default width for a column is 100px. There is no auto
+          sizing for columns. Set the width attribute to ensure the
+          column is wide enough to accommodate the width of the
+          contents. When the "multiple" option is used in the table that
+          contains the column, the width can be set to a percentage.
+          -->
+          <af:table id                   ="act1" var="row" varStatus="vs"
+                    value                ="#{bindings.Account.collectionModel}"
+                    rows                 ="#{bindings.Account.rangeSize}"
+                    fetchSize            ="#{bindings.Account.rangeSize}"
+                    binding              ="#{backingBeanScope.applicationAccount.searchTable}"
+                    selectionListener    ="#{backingBeanScope.applicationAccount.selectionListener}"
+                    summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                    filterVisible        ="false"
+                    filterModel          ="#{bindings.AccountListCriteria.queryDescriptor}"
+                    queryListener        ="#{bindings.AccountListCriteria.processQuery}"
+                    columnStretching     ="multiple"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    autoHeightRows       ="0"
+                    rowSelection         ="single"
+                    columnSelection      ="none"
+                    scrollPolicy         ="page"
+                    immediate            ="true"
+                    emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+            <af:column id="c00" rowHeader="true" width="20" headerText="" align="right"/>
+            <af:column id="c01" width="10%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="processInstanceStatus" headerText="#{bindings.Account.hints.processInstanceStatus.label}">
+              <af:link id="cl11" text="#{row.processInstanceStatus}" actionListener="#{backingBeanScope.applicationAccount.detail}" icon="#{sysauth$bundle.APP_LIST}"/>
+            </af:column>
+            <af:column id="c02" width="15%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="accountMechanism" headerText="#{bindings.Account.hints.accountMechanism.label}">
+              <af:outputText id="ot12" value="#{row.accountMechanism}"/>
+            </af:column>
+            <af:column id="c03" width="5%" sortable="false" headerText="#{bindings.Account.hints.accountRiskMechanism.label}">
+              <af:image id="im03" source="#{row.accountRiskMechanismIcon}" shortDesc="#{sysbase$bundle[af:formatString(sysbase$bundle.RISK_LEVEL, af:formatString('RISK_LEVEL_{0}', row.accountRiskMechanism))]}"/>
+            </af:column>
+            <af:column id="c04" width="5%" sortable="false" headerText="#{bindings.Account.hints.accountRiskItem.label}">
+              <af:image id="im04" source="#{row.accountRiskIcon}" shortDesc="#{sysbase$bundle[af:formatString(sysbase$bundle.RISK_LEVEL, af:formatString('RISK_LEVEL_{0}', row.accountRiskItem))]}"/>
+            </af:column>
+            <af:column id="c05" width="15%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="organizationName" headerText="#{bindings.Account.hints.organizationName.label}">
+              <af:outputText id="ot15" value="#{row.organizationName}"/>
+            </af:column>
+            <af:column id="c06" width="10%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="beneficiaryLogin" headerText="#{bindings.Account.hints.beneficiaryLogin.label}">
+              <af:link id="cl16" text="#{row.beneficiaryLogin}" actionListener="#{backingBeanScope.applicationAccount.userDetail}" icon="/images/qual_user_16.png"/>
+            </af:column>
+            <af:column id="c07" width="20%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="beneficiaryFirstName" headerText="#{bindings.Account.hints.beneficiaryFirstName.label}">
+              <af:outputText id="ot17" value="#{row.beneficiaryFirstName}"/>
+            </af:column>
+            <af:column id="c08" width="20%" filterable="true" filterFeatures="caseInsensitive" sortable="true" sortProperty="beneficiaryLastName" headerText="#{bindings.Account.hints.beneficiaryLastName.label}">
+              <af:outputText id="ot18" value="#{row.beneficiaryLastName}"/>
+            </af:column>
+            <f:facet name="contextMenu">
+              <af:popup id="p01" contentDelivery="lazyUncached">
+                <af:menu id="m02">
+                  <af:commandMenuItem id            ="cmi08"
+                                      text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                      icon          ="/images/func_refresh_16_ena.png"
+                                      shortDesc     ="#{sysbase$bundle.APP_ACCOUNT_REFRESH}"
+                                      actionListener="#{backingBeanScope.applicationAccount.refreshListener}"
+                                      useWindow     ="false"/>
+                </af:menu>
+              </af:popup>
+            </f:facet>
+          </af:table>
+        </af:panelCollection>
+<!--        
+        <af:spacer id="s1" width="0" height="10"/>
+        <af:panelGroupLayout id="pg03" partialTriggers="pc01:act1 pc01:btn04 pc01:cmi04" rendered="#{pageFlowScope.mode ne 'view'}">
+          <af:panelTabbed id            ="pt31"
+                          visible       ="#{backingBeanScope.applicationAccount.accountSelected}"
+                          rendered      ="#{oimappinstanceAuth.view[pageFlowScope.applicationTrain.appInstanceKey].allowed}"
+                          childCreation ="immediate"
+                          dimensionsFrom="disclosedChild"
+                          styleClass    ="AFStretchWidth">
+            <af:showDetailItem id  ="sdi31"
+                               text           ="#{backingBeanScope.applicationAccount.myAccountsRowSelectionHandler.currentRowValue.applicationInstancename}"
+                               binding        ="#{pageFlowScope.MyAccessAccountBean.detailInfoRegion}"
+                               disclosed      ="true"
+                               stretchChildren="first">
+              <af:panelGroupLayout id="pg31" layout="scroll" styleClass="AFStretchWidth">
+                <af:region id="rg31" value="#{bindings.detailsinformationtf1.regionModel}"/>
+              </af:panelGroupLayout>
+            </af:showDetailItem>
+            <af:showDetailItem id             ="sdi32"
+                               text           ="#{oimuiBundle.MY_ACCESS_CATALOG_TAB_HEADER}"
+                               binding        ="#{pageFlowScope.MyAccessAccountBean.catalogRegion}"
+                               stretchChildren="first">
+              <af:panelGroupLayout id="pg32" layout="scroll" styleClass="AFStretchWidth">
+                <af:outputText id="ot32" value="#{oimuiBundle.NO_ACCOUNT_DETAILS}" rendered="#{pageFlowScope.MyAccessAccountBean.processInstaceKeyNull}"/>
+                <af:panelGroupLayout id="pg32" rendered="#{!pageFlowScope.MyAccessAccountBean.processInstaceKeyNull}">
+                  <af:region id="rg32" value="#{bindings.catalogtf1.regionModel}"/>
+                </af:panelGroupLayout>
+              </af:panelGroupLayout>
+            </af:showDetailItem>
+          </af:panelTabbed>
+        </af:panelGroupLayout>
+-->      
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

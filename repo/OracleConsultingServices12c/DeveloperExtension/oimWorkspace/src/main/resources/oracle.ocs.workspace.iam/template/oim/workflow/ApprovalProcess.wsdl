@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<wsdl:definitions xmlns:ns2      ="http://www.w3.org/2005/08/addressing"
+                  xmlns:wsdl     ="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:plnk     ="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+                  xmlns:ns1      ="http://xmlns.oracle.com/iam/oim/approval/process"
+                  xmlns:client   ="http://xmlns.oracle.com/iam/oim/approval/process"
+                  targetNamespace="http://xmlns.oracle.com/iam/oim/approval/process"
+                  name           ="ApprovalProcess">
+
+  <plnk:partnerLinkType name="ApprovalProcess">
+    <plnk:role name="ApprovalProcessProvider">
+      <plnk:portType name="client:ApprovalProcess"/>
+    </plnk:role>
+    <plnk:role name="ApprovalProcessRequester">
+      <plnk:portType name="client:ApprovalProcessCallback"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://xmlns.oracle.com/iam/oim/approval/process" schemaLocation="xsd/approval-process.xsd"/>
+    </schema>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import namespace="http://www.w3.org/2005/08/addressing"         schemaLocation="xsd/wsaddr.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+
+  <wsdl:message name="ApprovalProcessRequestMessage">
+    <wsdl:part name="payload" element="ns1:process"/>
+  </wsdl:message>
+  <wsdl:message name="ApprovalProcessResponseMessage">
+    <wsdl:part name="payload" element="ns1:processResponse"/>
+  </wsdl:message>
+
+  <wsdl:portType name="ApprovalProcess">
+    <wsdl:operation name="process">
+      <wsdl:input message="client:ApprovalProcessRequestMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ApprovalProcessCallback">
+    <wsdl:operation name="processResponse">
+      <wsdl:input message="client:ApprovalProcessResponseMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

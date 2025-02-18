@@ -1,0 +1,1077 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Identity Directory Deployment Controller"
+         basedir     ="../../../deployment/fed"
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../ods-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="ods.recorder.name"      value="../log/fed-import-ant.log"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name       ="all"
+          description="Deploys and configures the project artifacts on the target host and the Oracle Directory Servers">
+    <call-targets package="0100,0200"/>
+  </target>
+  <target name       ="0100"
+          description="Deploys and configures the project artifacts on the target host and the Oracle Directory Servers">
+    <call-targets package="0100-00,0100-01,0100-02"/>
+  </target>
+  <target name       ="0200"
+          description="Deploys and configures the project artifacts on the target host and the Oracle Directory Servers">
+    <call-targets package="0200-BASE,0200-ZIMP,0200-BDP,0200-NSIS"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Infrastructure Administration Groups (Technical Groups)
+  **           o Infrastructure Administration Users (Technical Users)
+  **           o Access ControlInformation (ACI)
+  ******************************************************************************
+  -->
+  <target name="0100-00" description="Imports the Base Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100-00 Base Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0100 systemFramework">
+        <importFile name="app-system-context.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0100-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Infrastructure Administration Groups (Technical Groups)
+  **           o Infrastructure Administration Users (Technical Users)
+  **           o Access ControlInformation (ACI)
+  ******************************************************************************
+  -->
+  <target name="0100-01" description="Imports the Base Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100-01 Base Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0100 systemFramework">
+        <importFile name="fed-system-context.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0100-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Infrastructure Administration Groups (Technical Groups)
+  **           o Infrastructure Administration Users (Technical Users)
+  **           o Access ControlInformation (ACI)
+  ******************************************************************************
+  -->
+  <target name="0100-02" description="Imports the Base Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100-02 Base Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0100 systemFramework">
+        <importFile name="igs-system-context.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0100-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  ******************************************************************************
+  -->
+  <target name="0200-BASE" description="Imports the Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BASE Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-context.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-BASE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####  #     #  ######
+  **                #     #    ##   ##  #     #
+  **               #      #    # # # #  #     #
+  **              #       #    #  #  #  ######
+  **             #        #    #     #  #
+  **            #         #    #     #  #
+  **           #######  #####  #     #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application ZIMP
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-ZIMP" description="Imports the ZIMP Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-ZIMP ZIMP Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-zimp.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-zimp-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-zimp-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-ZIMP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######  ######
+  **           #     # #     # #     #
+  **           #     # #     # #     #
+  **           ######  #     # ######
+  **           #     # #     # #
+  **           #     # #     # #
+  **           ######  ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application BDP
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-BDP" description="Imports the BDP Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BDP BDP Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-bdp.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-bdp-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-bdp-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-BDP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####
+  **           ##    #    #     #    #    #     #
+  **           # #   #    #          #    #
+  **           #  #  #     #####     #     #####
+  **           #   # #          #    #          #
+  **           #    ## ## #     #    #    #     #
+  **           #     # ##  #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application N.SIS
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-NSIS" description="Imports the N.SIS Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-NSIS NSIS Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-nsis.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-nsis-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-nsis-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-NSIS completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ####### #    #    #
+  **           #     # #       #   #    # #
+  **           #     # #       #  #    #   #
+  **           #     # ######  ###    #     #
+  **            #   #  #       #  #   #######
+  **             # #   #       #   #  #     #
+  **              #    #       #    # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration to
+  **           Application VFKA
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-VFKA" description="Imports the VFKA Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-VFKA VFKA Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-vfka.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-vfka-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-vfka-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-VFKA completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #    # ##### #     # #     #
+  **           #   #    #   #     # #     #
+  **           #  #     #   #     # #     #
+  **           ###      #   #     # #     #
+  **           #  #     #    #   #  #     #
+  **           #   #    #     # #   #     #
+  **           #    # #####    #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration to
+  **           Application KIVU
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-KIVU" description="Imports the KIVU Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-KIVU KIVU Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-kivu.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-kivu-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-kivu-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-KIVU completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #     #  #####  #####
+  **           #     # #     # #     #   #
+  **           #       #     # #         #
+  **            #####  #     #  #####    #
+  **                 # #     #       #   #
+  **           #     # #     # #     #   #
+  **            #####   #####   #####  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration belonging to
+  **           Application SUSI
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-SUSI" description="Imports the SUSI Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-SUSI Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-susi.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-susi-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-susi-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-SUSI completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####  #####  ######  #
+  **             #   #     # #     # #
+  **             #   #       #     # #
+  **             #    #####  ######  #
+  **             #         # #       #
+  **             #   #     # #       #
+  **           #####  #####  #       #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration belonging to
+  **           Application INSITU
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-ISPL" description="Imports the INSITU-Plus Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-ISPL Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <!-- intentionally left blank -->
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-ISPL completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ##### ####### #     #
+  **           #     #   #      #    #     #
+  **           #         #      #    #     #
+  **            #####    #      #    #     #
+  **                 #   #      #    #     #
+  **           #     #   #      #    #     #
+  **            #####  #####    #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration belonging to
+  **           Application INSITU
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-SITU" description="Imports the INSITU Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-SITU Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <!-- intentionally left blank -->
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-SITU completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######   #####
+  **           #     # #     # #     #
+  **           #     # #     # #
+  **           #     # ######  #
+  **           #     # #       #
+  **           #     # #       #     #
+  **            #####  #        #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration belonging to
+  **           Application UPC
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-UPC" description="Imports the UPC Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-UPC Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <!-- intentionally left blank -->
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-UPC completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     #  #####  #######
+  **           #     # #     # #     # #      
+  **           #     # #     # #     # #      
+  **           #     # ####### #     # ###### 
+  **           #     # #     # #     # #      
+  **           #     # #     # #     # #      
+  **           ######  #     #  #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration belonging to
+  **           Application DHOE
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-DHOE" description="Imports the DHOE Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-DHOE Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-dhoe.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-dhoe-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-dhoe-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-DHOE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #######  ####### #######
+  **           #     # ##   ##    #     #       #
+  **           #     # # # # #    #     #       #
+  **           #     # #  #  #    #     ######  #####
+  **           #     # #     #    #     #       #
+  **           #     # #     #    #     #       #
+  **           ######  #     #    #     #       #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application DMTFE
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-DMTFE" description="Imports the DMTFE Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-DMTFE DMTFE Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-dmtfe.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-dmtfe-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-dmtfe-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-DMTFE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #######  ######  #######
+  **           #     # ##   ##    #     #     # #
+  **           #     # # # # #    #     #     # #
+  **           #     # #  #  #    #     ######  #####
+  **           #     # #     #    #     #     # #
+  **           #     # #     #    #     #     # #
+  **           ######  #     #    #     ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application DMTBE
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-DMTBE" description="Imports the DMTBE Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-DMTBE DMTBE Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-dmtbe.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-dmtbe-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-dmtbe-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-DMTBE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####   #####   ######  #######
+  **              #    #     # #     #  #     # #
+  **              #    #       #        #     # #
+  **              #     #####   #####   ######  #####
+  **              #          #       #  #     # #
+  **              #    #     # #     #  #     # #
+  **              #     #####   #####   ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application TSSBE
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-TSSBE" description="Imports the TSSBE Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-TSSBE TSSBE Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-tssbe.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-tssbe-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-tssbe-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-TSSBE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####   #####
+  **           #       #     # #     #
+  **           #       #     # #
+  **           ######  #     #  #####
+  **           #       #     #       #
+  **           #       #     # #     #
+  **           #        #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application FOS
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-FOS" description="Imports the FOS Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-FOS FOS Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-fos.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-fos-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-fos-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-FOS completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######   #####  #
+  **            #   #  #     # #     # #
+  **             # #   #     # #     # #
+  **              #    ######  #     # #
+  **             # #   #       #     # #
+  **            #   #  #       #     # #
+  **           #     # #        #####  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application XPOL
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-XPOL" description="Imports the XPOL Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-XPOL XPOL Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-xpol.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-xpol-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-xpol-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-XPOL completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **              #    ######  ####### #     #
+  **             # #   #     # #       ##   ##
+  **            #   #  #     # #       # # # #
+  **           #     # ######  ######  #  #  #
+  **           ####### #     # #       #     #
+  **           #     # #     # #       #     #
+  **           #     # ######  #       #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application ABFM
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-ABFM" description="Imports the ABFM Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-ABFM ABFM Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-abfm.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-abfm-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-abfm-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-ABFM completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ######     #    #######    #    #     #    #
+  **           #     # #     #   # #   #         # #   ##    #   # #
+  **           #       #     #  #   #  #        #   #  # #   #  #   #
+  **           #   ### ######  #     # ######  #     # #  #  # #     #
+  **           #     # #  #    ####### #       ####### #   # # #######
+  **           #     # #   #   #     # #       #     # #    ## #     #
+  **            #####  #    #  #     # #       #     # #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application GRF
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-GRF" description="Imports the GRF Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-GRF GRF Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-grf.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-grf-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-grf-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-GRF completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #    #    #     # #     #######
+  **           #     #   # #   #     # #        #
+  **           #     #  #   #  #     # #        #
+  **           #     # #     # #     # #        #
+  **            #   #  ####### #     # #        #
+  **             # #   #     # #     # #        #
+  **              #    #     #  #####  #####    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application VLT
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-VLT" description="Imports the VLT Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-VLT VLT Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-vlt.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-vlt-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-vlt-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-VLT completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **              #    ######   #####   #####    #####  ######
+  **             # #   #     # #     # #     #  #     # #     #
+  **            #   #  #     # #       #     #  #       #     #
+  **           #     # ######  #   ### #     #  #       #     #
+  **           ####### #  #    #     # #     #  #       #     #
+  **           #     # #   #   #     # #     #  #     # #     #
+  **           #     # #    #   #####   #####    #####  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application ACD
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-ACD" description="Imports the ACD Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-ACD ACD Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-acd.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-acd-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-acd-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-ACD completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######  #    #
+  **           #     # #     # #   #
+  **           #     # #     # #  #
+  **           ######  #     # ###
+  **           #     # #     # #  #
+  **           #     # #     # #   #
+  **           ######  ######  #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application BDK
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-BDK" description="Imports the BDK Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BDK BDK Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-bdk.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-bdk-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-bdk-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-BDK completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **                   ####### #####  #####
+  **                   #         #   #     #
+  **             ##### #         #   #
+  **                #  ######    #    #####
+  **               #   #         #         #
+  **              #    #         #   #     #
+  **             ##### #       #####  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application zFIS
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-zFIS" description="Imports the zFIS Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-zFIS zFIS Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-zfis.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-zfis-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-zfis-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-zFIS completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ####### ######
+  **           ##    #    #    #     #
+  **           # #   #    #    #     #
+  **           #  #  #    #    ######
+  **           #   # #    #    #
+  **           #    ##    #    #
+  **           #     #    #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **           Application NTP
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Accounts
+  **           o Entitlements
+  ******************************************************************************
+  -->
+  <target name="0200-NTP" description="Imports the NTP Application Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-NTP NTP Application Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0200 systemService">
+        <importFile name="app-service-ntp.xml"        format="dsml" version="2.0"/>
+        <importFile name="app-service-ntp-people.xml" format="dsml" version="2.0"/>
+        <importFile name="app-service-ntp-groups.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0200-NTP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Directory Service Configuration
+  **
+  ** Synopsis: The tasks deploys the object definitions for Identity and Access
+  **           Management entries
+  **           This includes:
+  **           o Directory Information Tree (DIT)
+  **           o Infrastructure Administration Groups (Technical Groups)
+  **           o Infrastructure Administration Users (Technical Users)
+  **           o Access ControlInformation (ACI)
+  ******************************************************************************
+  -->
+  <target name="0600" description="Imports the Base Configuration">
+    <record name="${ods.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0600 Base Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Importing objects into ${fed.server.host}:${fed.server.port}"/>
+    <object:import contextRef="fed-context" contextRoot="${fed.server.context}" failonerror="false">
+      <importSet dir="0100 systemFramework">
+        <importFile name="ocs-system-context.xml" format="dsml" version="2.0"/>
+      </importSet>
+    </object:import>
+    <echo message="=================================================================="/>
+    <echo message="0600 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${ods.recorder.name}" action="stop"/>
+  </target>
+</project>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns           ="http://xmlns.oracle.com/bpel/workflow/task"
+            targetNamespace     ="http://xmlns.oracle.com/bpel/workflow/task"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="payload"
+            version             ="3.1.0.0">
+
+  <xsd:element name="payload" type="tns:payload"/>
+  <xsd:complexType name="payload">
+    <xsd:sequence>
+      <xsd:element name="beneficiary"       type="tns:identity"  minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="manager"           type="tns:identity"  minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="requester"         type="tns:identity"  minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="operation"         type="tns:operation" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="resource"          type="tns:resource"  minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="entity"            type="tns:catalog"   minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="identity"/>
+  <xsd:complexType name="identity">
+    <xsd:sequence>
+      <xsd:element name="loginName"         type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="firstName"         type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="lastName"          type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="displayName"       type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="organizationName"  type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="operation"/>
+  <xsd:complexType name="operation">
+    <xsd:sequence>
+      <xsd:element name="key"               type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="type"              type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="catalog"/>
+  <xsd:complexType name="catalog">
+    <xsd:sequence>
+      <xsd:element name="key"               type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="type"              type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="name"              type="xsd:string" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="displayName"       type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="resource"/>
+  <xsd:complexType name="resource">
+    <xsd:sequence>
+      <xsd:element name="instance"          type="tns:entity" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="object"            type="tns:entity" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="endpoint"          type="tns:entity" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="description"       type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:element name="entity"/>
+  <xsd:complexType name="entity">
+    <xsd:sequence>
+      <xsd:element name="key"               type="xsd:long"   minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="name"              type="xsd:string" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

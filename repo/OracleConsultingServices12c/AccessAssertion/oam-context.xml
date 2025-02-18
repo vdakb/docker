@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Access Manager Deployment Context Definitions"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../.env/icd/${fmw.env}/scp-server.xml"/>
+  <import file="../.env/icd/${fmw.env}/jee-server.xml"/>
+  <!--
+  =====================================================================
+  == Import custom type and task definitions
+  =====================================================================
+  -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <taskdef resource="oracle/hst/deployment/ant-topology-lib.xml"   uri="http://oracle.hst.deployment/topology"/>
+  <!--
+  ==============================================================================
+  == Import custom type and task definitions
+  ==============================================================================
+  -->
+  <import file="oam-preferences.xml"/>
+  <!--
+  ==============================================================================
+  == Declaring the container specifiying connectivity to the remote systems
+  ==============================================================================
+  -->
+  <server:principal id="jee-principal" username="${jee.server.username}" password="${jee.server.password}"/>
+  <server:principal id="icd-principal" username="${jee.server.username}" password="${jee.server.password}"/>
+
+  <server:jmx-context id="jmx-context" type="${jee.server.type}" protocol="${jee.server.protocol}" host="${jee.server.host}" port="${jee.server.port}" principalRef="jee-principal"/>
+  <server:rmi-context id="icd-context" type="${jee.server.type}" contextFactory="weblogic.jndi.WLInitialContextFactory" contextURL="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" principalRef="jee-principal"/>
+  <!--
+  =====================================================================
+  == These properties specifies where the kernel runtime environment of
+  == Access Manager are located
+  =====================================================================
+  -->
+  <property name="oam.remote.application"     value="${oam.server.home}/server/apps"/>
+</project>

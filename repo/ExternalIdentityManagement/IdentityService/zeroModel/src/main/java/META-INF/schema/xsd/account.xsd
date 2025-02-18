@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:igs           ="http://www.oracle.com/schema/igs"
+            targetNamespace     ="http://www.oracle.com/schema/igs"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="account"
+            version             ="1.0.0.0">
+  <xsd:include schemaLocation="entitlement.xsd"/>
+  <!--
+   | Account
+   -->
+  <xsd:complexType name="account">
+    <annotation>
+      <documentation>
+        Account includes all single-valued attributes as well as the
+        permissions.
+      </documentation>
+    </annotation>
+    <xsd:complexContent>
+      <xsd:extension base="igs:entity">
+        <xsd:sequence>
+          <xsd:element name="entitlements" minOccurs="0" maxOccurs="unbounded">
+            <complexType>
+                <xsd:sequence>
+                  <xsd:element name="actions" type="igs:entitlement" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+              <xsd:attribute name="namespace" type="igs:token"     use="required"/>
+            </complexType>
+          </xsd:element>
+        </xsd:sequence>
+        <xsd:attribute name="action" use="required">
+          <xsd:simpleType>
+            <xsd:restriction base="igs:token">
+              <xsd:enumeration value="create"/>
+              <xsd:enumeration value="delete"/>
+              <xsd:enumeration value="modify"/>
+              <xsd:enumeration value="enable"/>
+              <xsd:enumeration value="disable"/>
+            </xsd:restriction>
+          </xsd:simpleType>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+</xsd:schema>

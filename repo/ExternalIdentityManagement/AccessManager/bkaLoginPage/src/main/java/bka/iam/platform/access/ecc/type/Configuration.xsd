@@ -1,0 +1,33 @@
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xjc           ="http://java.sun.com/xml/ns/jaxb/xjc" jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc"
+            xmlns:jaxb          ="http://java.sun.com/xml/ns/jaxb"
+            xmlns:cfg           ="http://schemas.bka.bund.de/access/ecc/config"
+            targetNamespace     ="http://schemas.bka.bund.de/access/ecc/config"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="collector"
+            version             ="1.0.0.0">
+  <xsd:annotation>
+    <xsd:appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="bka.iam.platform.access.ecc.type"/>
+      </jaxb:schemaBindings>
+    </xsd:appinfo>
+  </xsd:annotation>
+  <xsd:complexType name="configuration">
+    <xsd:sequence>
+      <xsd:element name="authentication"   type="xsd:string"   minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="resetpassword"    type="xsd:string"   minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="pwrhost"          type="xsd:string"   minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="network"                              minOccurs="0" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="cidr"       type="xsd:string" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="symbol"     type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

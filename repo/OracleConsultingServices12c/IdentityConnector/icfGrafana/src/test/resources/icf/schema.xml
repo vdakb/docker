@@ -1,0 +1,187 @@
+<Schema>
+  <ObjectClassInfos>
+    <ObjectClassInfo type='__GROUP__' container='false' embedded='false'>
+      <AttributeInfos>
+        <AttributeInfo name='__UID__'      type='String'>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='__NAME__'     type='String'/>
+        <AttributeInfo name='version'      type='Long'/>
+        <AttributeInfo name='global'       type='Boolean'/>
+        <AttributeInfo name='displayName'  type='String'/>
+        <AttributeInfo name='description'  type='String'/>
+      </AttributeInfos>
+    </ObjectClassInfo>
+    <ObjectClassInfo type='__TEAM__' container='false' embedded='false'>
+      <AttributeInfos>
+        <AttributeInfo name='__UID__'      type='String'>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='__NAME__'     type='String'/>
+      </AttributeInfos>
+    </ObjectClassInfo>
+    <ObjectClassInfo type='__ORGANIZATION__' container='false' embedded='false'>
+      <AttributeInfos>
+        <AttributeInfo name='__UID__'      type='String'>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='__NAME__'     type='String'/>
+      </AttributeInfos>
+    </ObjectClassInfo>
+    <ObjectClassInfo type='__ACCOUNT__' container='false' embedded='false'>
+      <AttributeInfos>
+        <AttributeInfo name='__UID__'      type='String'>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='__NAME__'     type='String'>
+          <AttributeInfoFlag value='REQUIRED'/>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='name'         type='String'/>
+        <AttributeInfo name='email'        type='String'/>
+        <AttributeInfo name='admin'        type='Boolean'>
+          <AttributeInfoFlag value='REQUIRED'/>
+        </AttributeInfo>
+        <AttributeInfo name='home'         type='Long'/>
+        <AttributeInfo name='theme'        type='String'/>
+        <AttributeInfo name='avatarUrl'    type='String'/>
+        <AttributeInfo name='language'     type='String'/>
+        <AttributeInfo name='timezone'     type='String'/>
+        <AttributeInfo name='role'         type='EmbeddedObject' objectClassName='__ACCOUNT__.role'>
+          <AttributeInfoFlag value='MULTIVALUED'/>
+        </AttributeInfo>
+        <AttributeInfo name='organization' type='EmbeddedObject' objectClassName='__ACCOUNT__.organization'>
+          <AttributeInfoFlag value='MULTIVALUED'/>
+        </AttributeInfo>
+        <AttributeInfo name='disabled'     type='Boolean'>
+          <AttributeInfoFlag value='REQUIRED'/>
+        </AttributeInfo>
+        <AttributeInfo name='team'         type='EmbeddedObject' objectClassName='__ACCOUNT__.team'>
+          <AttributeInfoFlag value='MULTIVALUED'/>
+        </AttributeInfo>
+      </AttributeInfos>
+    </ObjectClassInfo>
+    <ObjectClassInfo type='__ACCOUNT__.role' container='false' embedded='true'>
+      <AttributeInfos>
+        <AttributeInfo name='global' type='EmbeddedObject' objectClassName='__ACCOUNT__.role'>
+          <AttributeInfoFlag value='REQUIRED'/>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='__NAME__' type='EmbeddedObject' objectClassName='__ACCOUNT__.role'>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='__UID__' type='EmbeddedObject' objectClassName='__ACCOUNT__.role'>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+      </AttributeInfos>
+    </ObjectClassInfo>
+    <ObjectClassInfo type='__ACCOUNT__.team' container='false' embedded='true'>
+      <AttributeInfos>
+        <AttributeInfo name='organization' type='EmbeddedObject' objectClassName='__ACCOUNT__.team'>
+          <AttributeInfoFlag value='REQUIRED'/>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='__NAME__' type='String'>
+          <AttributeInfoFlag value='REQUIRED'/>
+        </AttributeInfo>
+        <AttributeInfo name='__UID__' type='EmbeddedObject' objectClassName='__ACCOUNT__.team'>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+      </AttributeInfos>
+    </ObjectClassInfo>
+    <ObjectClassInfo type='__ACCOUNT__.organization' container='false' embedded='true'>
+      <AttributeInfos>
+        <AttributeInfo name='role' type='EmbeddedObject' objectClassName='__ACCOUNT__.organization'>
+          <AttributeInfoFlag value='REQUIRED'/>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='__NAME__' type='EmbeddedObject' objectClassName='__ACCOUNT__.organization'>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+        <AttributeInfo name='__UID__' type='EmbeddedObject' objectClassName='__ACCOUNT__.organization'>
+          <AttributeInfoFlag value='NOT_CREATABLE'/>
+          <AttributeInfoFlag value='NOT_UPDATEABLE'/>
+        </AttributeInfo>
+      </AttributeInfos>
+    </ObjectClassInfo>
+  </ObjectClassInfos>
+  <OperationOptionInfos />
+  <objectClassesByOperation>
+    <Map>
+      <MapEntry>
+        <Class>SchemaApiOp</Class>
+        <Set>
+          <String>__ACCOUNT__</String>
+        </Set>
+      </MapEntry>
+      <MapEntry>
+        <Class>GetApiOp</Class>
+        <Set>
+          <String>__ACCOUNT__</String>
+          <String>__GROUP__</String>
+          <String>__TEAM__</String>
+          <String>__ORGANIZATION__</String>
+        </Set>
+      </MapEntry>
+      <MapEntry>
+        <Class>DeleteApiOp</Class>
+        <Set>
+          <String>__ACCOUNT__</String>
+        </Set>
+      </MapEntry>
+      <MapEntry>
+        <Class>UpdateApiOp</Class>
+        <Set>
+          <String>__ACCOUNT__</String>
+          <String>__GROUP__</String>
+          <String>__TEAM__</String>
+          <String>__ORGANIZATION__</String>
+        </Set>
+      </MapEntry>
+      <MapEntry>
+        <Class>CreateApiOp</Class>
+        <Set>
+          <String>__ACCOUNT__</String>
+        </Set>
+      </MapEntry>
+      <MapEntry>
+        <Class>SearchApiOp</Class>
+        <Set>
+          <String>__ACCOUNT__</String>
+          <String>__GROUP__</String>
+          <String>__TEAM__</String>
+          <String>__ORGANIZATION__</String>
+        </Set>
+      </MapEntry>
+      <MapEntry>
+        <Class>ValidateApiOp</Class>
+        <Set />
+      </MapEntry>
+      <MapEntry>
+        <Class>ScriptOnConnectorApiOp</Class>
+        <Set />
+      </MapEntry>
+      <MapEntry>
+        <Class>TestApiOp</Class>
+        <Set>
+          <String>__ACCOUNT__</String>
+        </Set>
+      </MapEntry>
+    </Map>
+  </objectClassesByOperation>
+  <optionsByOperation>
+    <Map />
+  </optionsByOperation>
+</Schema>

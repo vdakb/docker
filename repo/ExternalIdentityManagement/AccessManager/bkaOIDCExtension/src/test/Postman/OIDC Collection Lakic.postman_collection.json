@@ -1,0 +1,1206 @@
+{
+  "info": {
+    "_postman_id": "bf075e90-ad83-455c-9f08-9b6c5c61dd0a",
+    "name": "OIDC Collection Lakic",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "IdentityDomain",
+      "item": [
+        {
+          "name": "createDomain",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"OIDCDefaultDomain\",\n    \"identityProvider\": \"OUDStore\",\n    \"description\": \"OAuth Domain\",\n    \"tokenSettings\": [\n        {\n            \"tokenType\": \"ACCESS_TOKEN\",\n            \"tokenExpiry\": 3600,\n            \"lifeCycleEnabled\": false,\n            \"refreshTokenEnabled\": true,\n            \"refreshTokenExpiry\": 86400,\n            \"refreshTokenLifeCycleEnabled\": false\n        },\n        {\n            \"tokenType\": \"AUTHZ_CODE\",\n            \"tokenExpiry\": 3600,\n            \"lifeCycleEnabled\": false,\n            \"refreshTokenEnabled\": true,\n            \"refreshTokenExpiry\": 86400,\n            \"refreshTokenLifeCycleEnabled\": false\n        },\n        {\n            \"tokenType\": \"SSO_LINK_TOKEN\",\n            \"tokenExpiry\": 86400,\n            \"lifeCycleEnabled\": false,\n            \"refreshTokenEnabled\": true,\n            \"refreshTokenExpiry\": 86400,\n            \"refreshTokenLifeCycleEnabled\": false\n        }\n    ],\n    \"customAttrs\": {\"TokenExchange_DelegationEnabled\":\"true\",\"TokenExchange_TokenExpiryInSeconds\":\"300\",\"usePKCE\":\"ALL_CLIENTS_TYPES\"},\n    \"errorPageURL\": \"/oam/pages/error.jsp\",\n    \"consentPageURL\": \"/oamcontext/pages/CustomConsent.jsp\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURLSP}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain",
+              "host": [
+                "{{baseURLSP}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "oauthidentitydomain"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getDomain",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "{{baseURLSP}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?name=OIDCDefaultDomain",
+              "host": [
+                "{{baseURLSP}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "oauthidentitydomain"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "OIDCDefaultDomain"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteDomain",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?name=OIDCDefaultDomain",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "oauthidentitydomain"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "OIDCDefaultDomain"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateDomain",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customAttrs\": \"{\\\"TokenExchange_DelegationEnabled\\\":\\\"true\\\",\\\"TokenExchange_TokenExpiryInSeconds\\\":\\\"300\\\"  }\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?name=OIDCDefaultDomain",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "oauthidentitydomain"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "OIDCDefaultDomain"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getDomain Certificate",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{frontEndURL}}/oauth2/rest/security?identityDomainName=OIDCDefaultDomain",
+              "host": [
+                "{{frontEndURL}}"
+              ],
+              "path": [
+                "oauth2",
+                "rest",
+                "security"
+              ],
+              "query": [
+                {
+                  "key": "identityDomainName",
+                  "value": "OIDCDefaultDomain"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ResourceServer",
+      "item": [
+        {
+          "name": "getAllServer",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURLSP}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=OIDCDefaultDomain",
+              "host": [
+                "{{baseURLSP}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "application"
+              ],
+              "query": [
+                {
+                  "key": "identityDomainName",
+                  "value": "OIDCDefaultDomain"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteServer",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=OIDCDefaultDomain&name=OIDCDemo",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "application"
+              ],
+              "query": [
+                {
+                  "key": "identityDomainName",
+                  "value": "OIDCDefaultDomain"
+                },
+                {
+                  "key": "name",
+                  "value": "OIDCDemo"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createServer - OIDCDemo",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"OIDCDemo\",\n    \"description\": \"\",\n    \"scopes\": [\n        {\n            \"scopeName\": \"profile\",\n            \"description\": \"profile\"\n        },\n        {\n            \"scopeName\": \"openid\",\n            \"description\": \"openid\"\n        },\n        {\n            \"scopeName\": \"email\",\n            \"description\": \"email\"\n        }\n    ],\n    \"tokenAttributes\": [],\n    \"idDomain\": \"OIDCDefaultDomain\",\n    \"audienceClaim\": {\n        \"subjects\": [\n            \"OIDCDemo\"\n        ]\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "application"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createServer - ZIMP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"ZIMP\",\n    \"description\": \"\",\n    \"scopes\": [\n        {\n            \"scopeName\": \"main\",\n            \"description\": \"main\"\n        }\n    ],\n    \"tokenAttributes\": [\n        {\n            \"attrName\": \"groups\",\n            \"attrValue\": \"$user.groups\",\n            \"attrType\": \"DYNAMIC\"\n        }\n    ],\n    \"idDomain\": \"OIDCDefaultDomain\",\n    \"audienceClaim\": {\n        \"subjects\": [\n            \"ZIMP\"\n        ]\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURLSP}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application",
+              "host": [
+                "{{baseURLSP}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "application"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "createServer - OIGDemo",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"OIGDemo\",\n    \"description\": \"\",\n    \"scopes\": [\n        {\n            \"scopeName\": \"admin\",\n            \"description\": \"admin\"\n        }\n    ],\n    \"idDomain\": \"OIDCDefaultDomain\",\n    \"audienceClaim\": {\n        \"subjects\": [\n            \"OIGDemo\"\n        ]\n    },\n    \"tokenAttributes\": [\n        {\n            \"attrName\": \"TokenExchange_AllowedClientsForDelegation\",\n            \"attrValue\": \"oig_demo\",\n            \"attrType\": \"static\"\n        },\n        {\n            \"attrName\": \"TokenExchange_AllowedClientsForImpersonation\",\n            \"attrValue\": \"oig_demo\",\n            \"attrType\": \"static\"\n        },\n        {\n            \"attrName\": \"groups\",\n            \"attrValue\": \"$user.groups\",\n            \"attrType\":    \"DYNAMIC\"\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "application"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "updateServer - OIGDemo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idDomain\": \"OIDCDefaultDomain\",\n    \"tokenAttributes\": [\n        {\n            \"attrName\": \"TokenExchange_AllowedClientsForDelegation\",\n            \"attrValue\": \"oig_demo\",\n            \"attrType\": \"static\"\n        },\n        {\n            \"attrName\": \"TokenExchange_AllowedClientsForImpersonation\",\n            \"attrValue\": \"oig_demo\",\n            \"attrType\": \"static\"\n        },\n        {\n            \"attrName\": \"groups\",\n            \"attrValue\": \"$user.groups\",\n            \"attrType\":    \"DYNAMIC\"\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURLSP}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=OIDCDefaultDomain&name=OIGDemo",
+              "host": [
+                "{{baseURLSP}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "application"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "e242d7ce-a5f6-4ffd-81e1-af1b2d6be03f",
+                  "disabled": true
+                },
+                {
+                  "key": "id",
+                  "value": "OIDCDefaultDomain",
+                  "disabled": true
+                },
+                {
+                  "key": "identityDomainName",
+                  "value": "OIDCDefaultDomain"
+                },
+                {
+                  "key": "name",
+                  "value": "OIGDemo"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Client",
+      "item": [
+        {
+          "name": "Get All Clients",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=OIDCDefaultDomain",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "client"
+              ],
+              "query": [
+                {
+                  "key": "identityDomainName",
+                  "value": "OIDCDefaultDomain"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create oidc_demo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n   \"name\":\"oidc_demo\",\n   \"id\":\"oidc_demo\",\n   \"secret\":\"8fTWvJQO8TTvKtUwxH-123456\",\n   \"idDomain\":\"OIDCDefaultDomain\",\n   \"clientType\":\"CONFIDENTIAL_CLIENT\",\n   \"description\":\"\",\n   \"scopes\":[\n      \"OIDCDemo.openid\"\n   ],\n   \"defaultScope\":\"OIDCDemo.openid\", \n   \"grantTypes\":[\n      \"PASSWORD\",\n      \"CLIENT_CREDENTIALS\",\n      \"JWT_BEARER\",\"REFRESH_TOKEN\",\n      \"AUTHORIZATION_CODE\"\n   ],\n   \"redirectURIs\": [\n        {\"url\":\"http://130.162.212.75:7777/index1234.html\",\n        \"isHttps\" : false}\n        \n        ]\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "client"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create oig_demo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n   \"name\":\"oig_demo\",\n   \"id\":\"oig_demo\",\n   \"secret\":\"Welcome1\",\n   \"idDomain\":\"OIDCDefaultDomain\",\n   \"clientType\":\"CONFIDENTIAL_CLIENT\",\n   \"description\":\"\",\n   \"scopes\":[\n      \"OIGDemo.admin\"\n   ],\n   \"defaultScope\":\"OIGDemo.admin\", \n   \"grantTypes\":[\n      \"PASSWORD\",\n      \"CLIENT_CREDENTIALS\",\n      \"JWT_BEARER\",\"REFRESH_TOKEN\",\n      \"AUTHORIZATION_CODE\"\n   ],\n   \"redirectURIs\": [\n        {\"url\":\"http://130.61.222.206:7777/index1234.html\",\n        \"isHttps\" : false},\n        {\"url\":\"http://130.61.222.206:7013/oig-gateway-ui/#/users\",\n        \"isHttps\" : false}\n        \n        ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseURLSP}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+              "host": [
+                "{{baseURLSP}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "client"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete oidc_demo",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?name=oidc_demo&identityDomainName=OIDCDefaultDomain",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "client"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "oidc_demo"
+                },
+                {
+                  "key": "identityDomainName",
+                  "value": "OIDCDefaultDomain"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update oidc_demo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n   \"name\":\"oidc_demo\",\n    \"redirectURIs\": [\n        {\"url\":\"http://130.162.212.75:7777/index1234.html\",\n        \"isHttps\" : false},\n        {\"url\":\"http://localhost:4200/oig-gateway-ui\",\n        \"isHttps\" : false},\n        {\"url\":\" http://152.70.191.118:7013/oig-gateway-ui\",\n        \"isHttps\" : false}\n        ]\n        \n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=OIDCDefaultDomain",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "client"
+              ],
+              "query": [
+                {
+                  "key": "identityDomainName",
+                  "value": "OIDCDefaultDomain"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update oig_demo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n   \"name\":\"oig_demo\",\n    \"grantTypes\":[\n      \"PASSWORD\",\n      \"CLIENT_CREDENTIALS\",\n      \"JWT_BEARER\",\"REFRESH_TOKEN\",\n      \"AUTHORIZATION_CODE\",\n      \"TOKEN_EXCHANGE\"\n   ]\n        \n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=OIDCDefaultDomain",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "oauthpolicyadmin",
+                "client"
+              ],
+              "query": [
+                {
+                  "key": "identityDomainName",
+                  "value": "OIDCDefaultDomain"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Token Exchange",
+      "item": [
+        {
+          "name": "Get Access Token - oidc_demo",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Welcome1",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "oig_demo",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "description": "(Required) Identity Domain under which the token is being requested.",
+                "key": "x-oauth-identity-domain-name",
+                "value": "OIDCDefaultDomain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "CLIENT_CREDENTIALS",
+                  "description": "(Required) Grant Type for the Access Token Request"
+                },
+                {
+                  "key": "scope",
+                  "value": "OIGDemo.admin",
+                  "description": "Scope requested in the Access Token. In case of REFRESH_TOKEN flows, defaulted to the values in the RefreshToken if not specified. In case JWT_BEARER flow access token requests UserInfo related scopes, supported scopes are UserInfo.me, UserInfo.email, UserInfo.profile, UserInfo.address or UserInfo.phone."
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "http://localhost:4200/selfservice",
+                  "description": "Redirect URI.Mandatory parameter in case GrantType is AUTHORIZATION_CODE.",
+                  "disabled": true
+                },
+                {
+                  "key": "assertion",
+                  "value": "magna Ut veniam",
+                  "description": "User Assertion token.Mandatory parameter in case GrantType is JWT_BEARER.",
+                  "disabled": true
+                },
+                {
+                  "key": "refresh_token",
+                  "value": "et sit",
+                  "description": "Refresh Token played to generate the new Access Token.Mandatory parameter in case GrantType is REFRESH_TOKEN.",
+                  "disabled": true
+                },
+                {
+                  "key": "client_assertion_type",
+                  "value": "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
+                  "description": "Type of client assertion. This is mandatory if the Client Authentication mechanism is via the ClientAssertionToken. If this is passed, then the authorization header is not required.",
+                  "disabled": true
+                },
+                {
+                  "key": "client_assertion",
+                  "value": "labore cupidatat minim non",
+                  "description": "Client Assertion token.  This is mandatory if the Client Authentication mechanism is via the ClientAssertionToken. If this is passed, then the authorization header is not required.",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{frontEndURLSP}}/oauth2/rest/token",
+              "host": [
+                "{{frontEndURLSP}}"
+              ],
+              "path": [
+                "oauth2",
+                "rest",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Access Token - user",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "oidc_demo",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "8fTWvJQO8TTvKtUwxH-123456",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "description": "(Required) Identity Domain under which the token is being requested.",
+                "key": "x-oauth-identity-domain-name",
+                "value": "OIDCDefaultDomain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "AUTHORIZATION_CODE",
+                  "description": "(Required) Grant Type for the Access Token Request"
+                },
+                {
+                  "key": "scope",
+                  "value": "ZIMP.main",
+                  "description": "Scope requested in the Access Token. In case of REFRESH_TOKEN flows, defaulted to the values in the RefreshToken if not specified. In case JWT_BEARER flow access token requests UserInfo related scopes, supported scopes are UserInfo.me, UserInfo.email, UserInfo.profile, UserInfo.address or UserInfo.phone.",
+                  "disabled": true
+                },
+                {
+                  "key": "code",
+                  "value": "bnhNM2hya0Vha2xVWE9obXltU3BSQT09fmVtVGdQVnRKZUwxUWZGVlNsenk3TVpJOHRNWC9iLzVuSkxWR1Z5RU04dFBkYVhGU2dMbFUyOTBxN3QwV1Ftdm0wVzQ3VUZ4cTFFZ1pFQkt6azZGUSszUURpRWdUVDZmb2RlUUVIVVNYSFdCSU5ueWlONzgyUmduYjVwekp5WU9VcWpzT3laT3IxRE9pU0RwKzh2ZjJxSE1kOEhLWTBZUDdxbExUTjRHang2WlZVUlVqeVFVMHR0NGswV2F2SXpYVmQ4RnFMQlg5dXA1dXRJcVNZQ1FGdFU0UFJKZnZVVmVsNUtpcjZ1Y0hyK3RKbDlvUGhlcHJHZkk2YWZ0OGZMUDdwS3JBNTRwU3hxY0FlVlljcG9MWWxFS3VqWEFKdlMwSHVBdjB5UHJnZXNrakhDSDAxRC9ndlBhZStsVWwvTjRZdmxXbWZqaUFCWE16SCtNRVZXZ0JFSVRhMFkwdnU0alZ5Ym1PeGhxRTNGa0M3T1ZXNDFFWEVVMVRGV2g3Z0MwOVNUVGppSE9ZNmRDNW1hMDdIMUZLdWNHT05tbVVDUjZrWklYbmEzTmtBQTduZFdPLzVVb3ZFVUxCWWRSVkVUSEJHTmg1MHNDVzhOamNyNlo1eGk4T2szYi93cE01TVhqdVVWUlQ5a2pMTkE3ejVEWCtpc2lvanJtT1g0MUsrZWozMk5GaytmNHRpNjJsVHg3QkJxS085VlF5eDhVd202c3BuWk9ZVEFYRkFQU2lCK21PZXA5Qlg1SThOVllKeWRpR3lsZ2JERlMvcVJWYjFLVXV4ZDNzQVE9PQ=="
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "http://130.61.222.206:7777/index1234.html",
+                  "type": "default"
+                },
+                {
+                  "key": "code_verifier",
+                  "value": "Y1lgBSx8gRsruplrdpGiG-9Lkv~kna1q2pgwXY7UYKc~~jTgMkmUlZkZkapJGT6X.m12.ZUBDj24qWuPGHl21x3vyFEC.m_XDH_JTw4Qk6_a62Qw~e0sVp3I-AHYhTzn",
+                  "type": "default",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{frontEndURLSP}}/oauth2/rest/token",
+              "host": [
+                "{{frontEndURLSP}}"
+              ],
+              "path": [
+                "oauth2",
+                "rest",
+                "token"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delegation Request - oidc_demo",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Welcome1",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "oig_demo",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "X-OAUTH-IDENTITY-DOMAIN-NAME",
+                "value": "OIDCDefaultDomain",
+                "type": "default"
+              },
+              {
+                "key": "charset",
+                "value": "UTF-8",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "TOKEN_EXCHANGE",
+                  "type": "default"
+                },
+                {
+                  "key": "subject_token_type",
+                  "value": "urn:ietf:params:oauth:token-type:jwt",
+                  "type": "default"
+                },
+                {
+                  "key": "subject_token",
+                  "value": "eyJraWQiOiJPSURDRGVmYXVsdERvbWFpbiIsIng1dCI6IjZ4UEctTWZHY3RRYUZOcl9ObF9YdHpFa1k3WSIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwOi8vMTMwLjYxLjIyMi4yMDY6Nzc3Ny9vYXV0aDIiLCJhdWQiOlsiT0lEQ0RlbW8iLCJodHRwOi8vMTMwLjYxLjIyMi4yMDY6Nzc3Ny9vYXV0aDIiXSwiZXhwIjoxNjg4NjMwNzI1LCJqdGkiOiJ6MjhnQXV4OHVLa2VxUl83RTZWNmp3IiwiaWF0IjoxNjg4NjI3MTI1LCJzdWIiOiJvaWRjX2RlbW8iLCJjbGllbnQiOiJvaWRjX2RlbW8iLCJzY29wZSI6WyJPSURDRGVtby5vcGVuaWQiXSwiZG9tYWluIjoiT0lEQ0RlZmF1bHREb21haW4ifQ.ShfBo6GAIKiUnCsTAr-sduudROMb8KY2YAO2fXsFVJ3f5TdfT2doEIBjOZA5xTUxRIQpuue3EXK--582BERIFTEepdz9e83sa2vTegvkZpnOToRMH0Qn_yENOJRcNWJhn3xdoxWDLfGau4vY_DrG9uJ81QfCbER0qGrpR2QWMHd-PMABFPzcuWBdN_0MLDUkWFFK3fzPilpJ7QWAYzbrJp9ddLdyBXa8bto5vaZaKcB5e2AXsbTDnL83hSIMYuEhkkF1EBhwyzT--TZfNRO_MknVkOd43U5yqs8sWeSfRNIhBz5H-aoaLRbwD0YNCBZb9cPdCIYlJR-D3ca7WNLW1g",
+                  "type": "default"
+                },
+                {
+                  "key": "actor_token_type",
+                  "value": "urn:ietf:params:oauth:token-type:jwt",
+                  "type": "default"
+                },
+                {
+                  "key": "actor_token",
+                  "value": "eyJraWQiOiJPSURDRGVmYXVsdERvbWFpbiIsIng1dCI6IjZ4UEctTWZHY3RRYUZOcl9ObF9YdHpFa1k3WSIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwOi8vMTMwLjYxLjIyMi4yMDY6Nzc3Ny9vYXV0aDIiLCJhdWQiOlsiT0lHRGVtbyIsImh0dHA6Ly8xMzAuNjEuMjIyLjIwNjo3Nzc3L29hdXRoMiJdLCJleHAiOjE2ODg2MzA2NzEsImp0aSI6IklqbGFrT0xWTjUyeXY5dGZ6bk9zalEiLCJpYXQiOjE2ODg2MjcwNzEsInN1YiI6Im9pZ19kZW1vIiwiY2xpZW50Ijoib2lnX2RlbW8iLCJzY29wZSI6WyJPSUdEZW1vLmFkbWluIl0sImRvbWFpbiI6Ik9JRENEZWZhdWx0RG9tYWluIiwiZ3JvdXBzIjoiTk9UX0ZPVU5EIn0.S64d6Qw5WBEGPRDtCLrOX7r-Jliha5CTes7pk8iufwAmnRnL_CeYTV4SZqLvmqLdqQpwREDM_DxAQGYtaJxjI9YPj31jG9ULIIUxjvTbdUA_OzPun091yycxIKRUwVnjsqJWG-4IlN7qgxyvbTb0w4bLhl-qTaokSsDjFQKeIN9s0m9YD-qI1vcn7ZYf1KbUJ3T-Ux7v2wP3JqC_trHPkEwD5As-KqtyZckfJC_zwn2RIswYYP3QA8pgC3NVRIehLVDBKsmCFkuVl-bkze4dyyRda2qov3LIizPv_SFcX7taE8N4c61fac7UGiGfgTVkGFPE4RgrIk6CupDz_YT3Qg",
+                  "type": "default"
+                },
+                {
+                  "key": "scope",
+                  "value": "OIGDemo.admin",
+                  "type": "default"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{frontEndURLSP}}/oauth2/rest/token/exchange",
+              "host": [
+                "{{frontEndURLSP}}"
+              ],
+              "path": [
+                "oauth2",
+                "rest",
+                "token",
+                "exchange"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Imersonation Request - oidc_demo",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "Welcome1",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "oig_demo",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "X-OAUTH-IDENTITY-DOMAIN-NAME",
+                "value": "OIDCDefaultDomain",
+                "type": "default"
+              },
+              {
+                "key": "charset",
+                "value": "UTF-8",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "grant_type",
+                  "value": "TOKEN_EXCHANGE",
+                  "type": "default"
+                },
+                {
+                  "key": "subject_token_type",
+                  "value": "urn:ietf:params:oauth:token-type:jwt",
+                  "type": "default"
+                },
+                {
+                  "key": "subject_token",
+                  "value": "eyJraWQiOiJPSURDRGVmYXVsdERvbWFpbiIsIng1dCI6IjZ4UEctTWZHY3RRYUZOcl9ObF9YdHpFa1k3WSIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwOi8vMTMwLjYxLjIyMi4yMDY6Nzc3Ny9vYXV0aDIiLCJhdWQiOlsiWklNUCIsIm9pZGNfZGVtbyIsImh0dHA6Ly8xMzAuNjEuMjIyLjIwNjo3Nzc3L29hdXRoMiJdLCJleHAiOjE2ODgxMjUwMDIsImp0aSI6IjR5RFRzZmtCY1lwU3BwLW5oSnF3U2ciLCJpYXQiOjE2ODgxMjE0MDIsInN1YiI6Imxha2ljaiIsImNsaWVudCI6Im9pZGNfZGVtbyIsInNjb3BlIjpbIm9wZW5pZCIsIlpJTVAubWFpbiJdLCJkb21haW4iOiJPSURDRGVmYXVsdERvbWFpbiIsImdyYW50IjoiQVVUSE9SSVpBVElPTl9DT0RFIiwiZ3JvdXBzIjpbIlpJTVBfUm9sZTMiXSwidXNlclByb2ZpbGVfQ3VzdG9tQ2xhaW1zIjoicDIwLXVpZCxyb2xlcyxmYW1pbHlfbmFtZSxnaXZlbl9uYW1lLGVtYWlsIn0.VVJb2XbBKVIScdqLUXP4v6UJkX7ZPN7iiDyGRdkHZrC91VKDIWuFfFwA-1yuL8jJ7uBvoiUJjz_QHQBj-Y6sXs8aNVrNOivFEIAnYKB0zPjXjg8yXkLngq2UVoqNQ-u_cLuWTlzBi6isMFNu8JrZsGenjURDbOx4DPhXvbknI_xat7SJB0gMMwe930iUip-u0hO-X4yPB4aABxbSHzbXueIvkFK8fl9NqqSjCr3U7oKdaTsac2o29sVK-KDQ-BJ2cFPhAlzERjXD8SX4Dp58-Ssuk1E2-y4ZsHtIBbZOy03oiKMbjP6c_8Kdi0AxcmlWX1cHqp4mlDVWDGIcVZyaPQ",
+                  "type": "default"
+                },
+                {
+                  "key": "actor_token_type",
+                  "value": "urn:ietf:params:oauth:token-type:jwt",
+                  "type": "default",
+                  "disabled": true
+                },
+                {
+                  "key": "actor_token",
+                  "value": "eyJraWQiOiJPSURDRGVmYXVsdERvbWFpbiIsIng1dCI6Ik1UMGxMQjhKNmRjbW1NcGU3ZmRsd3JiWUJ6ZyIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwOi8vMTMwLjE2Mi4yMTIuNzU6Nzc3Ny9vYXV0aDIiLCJhdWQiOlsiT0lHRGVtbyIsImh0dHA6Ly8xMzAuMTYyLjIxMi43NTo3Nzc3L29hdXRoMiJdLCJleHAiOjE2Nzc0Mjc1MzMsImp0aSI6ImlQaUNCbGhmNUNEWGdENklPOTRyemciLCJpYXQiOjE2Nzc0MjM5MzMsInN1YiI6Im9pZ19kZW1vIiwiY2xpZW50Ijoib2lnX2RlbW8iLCJzY29wZSI6WyJPSUdEZW1vLmFkbWluIl0sImRvbWFpbiI6Ik9JRENEZWZhdWx0RG9tYWluIn0.BoXMkc9sHz-G469IAGIIIwtv7ETmfOmVm0kv18fSfG4cFUR-r0TzASEK0Kd_NeyjRbGREr4ZJnRXoV5L8XjakgQ2YZPmNjrX0T-Z1l02zCfXg7HjFJ0i80_V6B8W060wTZBmhPfJw4Ev3GXQ6P1_mVelLRaAIkb0sySM2wnMfGa4VnDOeGap8qf4FULjwO4At2vQAAXqMWBE6i50k048YrGnyQbIXaNBp1DAlSQC1oq_yKIUGoneHJZte_EJBRfll0fpkM91rUYp-_hOuyxl0GRfpxkZW5AS2VrvB8eveDIXLHVa1Rk40_awkyrAxFiKEbtqNVALNATWwH1Xqzn6zw",
+                  "type": "default",
+                  "disabled": true
+                },
+                {
+                  "key": "scope",
+                  "value": "OIGDemo.admin",
+                  "type": "default"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{frontEndURLSP}}/oauth2/rest/token/exchange",
+              "host": [
+                "{{frontEndURLSP}}"
+              ],
+              "path": [
+                "oauth2",
+                "rest",
+                "token",
+                "exchange"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Profile",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [
+              {
+                "description": "(Required) Identity Domain under which the token is being requested.",
+                "key": "x-oauth-identity-domain-name",
+                "value": "OIDCDefaultDomain"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "token",
+                  "value": "eyJraWQiOiJPSURDRGVmYXVsdERvbWFpbiIsIng1dCI6IjZ4UEctTWZHY3RRYUZOcl9ObF9YdHpFa1k3WSIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwOi8vMTMwLjYxLjIyMi4yMDY6Nzc3Ny9vYXV0aDIiLCJhdWQiOlsiT0lHRGVtbyIsImh0dHA6Ly8xMzAuNjEuMjIyLjIwNjo3Nzc3L29hdXRoMiJdLCJleHAiOjE2ODgxMjI1NTcsImp0aSI6IkluWDhvalFEXzEwdW1xVWl0Z29aQVEiLCJpYXQiOjE2ODgxMjIyNTcsInN1YiI6Imxha2ljaiIsImNsaWVudCI6Im9pZ19kZW1vIiwic2NvcGUiOlsiT0lHRGVtby5hZG1pbiJdLCJkb21haW4iOiJPSURDRGVmYXVsdERvbWFpbiIsImNsaWVudF9pZCI6Im9pZ19kZW1vIiwiZ3JvdXBzIjpbIk9JR0RlbW9fQWRtaW4iXX0.dAHyxXZGBq75LnqUBEv0MStM-iXkXkvwM4jtuIDTpNAnsZe6GR6wtRaYJeszXIsHT0SKMWsQ9LMfJUE0cMq5_QaKsQDn8k8qA2uW6lS56VVI3R4RTFJFjgGrChChXSvuOM2-SNgql90zVnk3Xzp37e_DgCS7nQeZcpUU3thwpk80stnvsc3ikjoHnMcjvvb_XqHuiFM5CjeZbI2AyAzM08tQT8boKh7mTlj0XB2Xkm1nBfOX5UZym0b6hiqdOqaDlq817GOa7xycEIqFRy3ni-GDKDjZUOK616cLj2Mj0XB6ZI4FgKeaO5N5zRVLSukW6rVCKsbz7_bxRzgyH_njkg",
+                  "description": "(Required) Grant Type for the Access Token Request"
+                },
+                {
+                  "key": "scope",
+                  "value": "OIDCDemo.openid ZIMP.main openid",
+                  "description": "Scope requested in the Access Token. In case of REFRESH_TOKEN flows, defaulted to the values in the RefreshToken if not specified. In case JWT_BEARER flow access token requests UserInfo related scopes, supported scopes are UserInfo.me, UserInfo.email, UserInfo.profile, UserInfo.address or UserInfo.phone.",
+                  "disabled": true
+                },
+                {
+                  "key": "code",
+                  "value": "ZVFaUkFQLzJzSElhSXhxM2JxY3M4Zz09fnAwTFRGSTRLeWVjRGtNcVhCdVUxR1Y1Vy9DTXhZMGx3SWIxVGhZRDc4djRHK05ZVlFEcmRmcDJCWkRKdXRFU2g2ZWdOeEJmQlg2TTd3cllDZnROOUE1THRlUTVOVlhDWTBPM3NXMWcydkV5eExwN1k1RXRxSWNyQnFVT2tNTE0wdjNOeCszTlhkSTBYVjA3cU9FQndIdVNQeEpHTmJqMlpFYTFVTEJIaE82alJzK0M1UndvbTB2SzJXTUVnQ2wxQWVYTVVNSWtLSnlOYllUZGVaSmRFWklxbFVjcnBzOFg1U1lQMitIZzVOQThMS2prZThUeVFFVTZ6enlHNDlzTlFmNzBKbjNCZjBaQkxjUlNaSjlZU2JEL1VIbDNVOE1iSmpWZ3lqbzJsR0xGeUxMVmhPd2dScWVUVE0zZko0TUtOTFN1Zm12UUgzak1OVlprbExXZUdGZE5NZEg4eW5tam5xNUdHU1UxS0tCbW9JQ1F6MDdpckJlMkJENHhpb3h4Ky9NYm1DVnVFamc3NjFiVWlpVjZEeTVucjRTYTdmTFVsbVljNFovWnFON2pwZU11T2FzeWJnT0grWXpPb0NSZkhpRTVBY3FZTjRLdFFUNTVLQlBsS0ZtYmRCdGhqc1pmVmtzbFo1U21LMkVDWmIza1hrak9KQVFObTNDN21sd0tZSFlndFlKS1A5ZGtJb3BJSGI0MENhYWw4NzBXTml5aWJKOE9zbW9ZK01rMzVEMmZiUnlRTS9DWnh3dm1DVHd4UENjZkpLRCtRbnN1bG4xOXpuWDNCN1JWQ1dFcWlGN2prOWxGUlJaLzN1UnM9",
+                  "disabled": true
+                },
+                {
+                  "key": "redirect_uri",
+                  "value": "http://130.162.212.75:7777/index1234.html",
+                  "type": "default",
+                  "disabled": true
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{frontEndURLSP}}/oauth2/rest/userprofile",
+              "host": [
+                "{{frontEndURLSP}}"
+              ],
+              "path": [
+                "oauth2",
+                "rest",
+                "userprofile"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Templates",
+      "item": [
+        {
+          "name": "Add Template - ZIMP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"ZIMP\",\n    \"valueMapping\": \"name:family_name:given_name:email\",\n    \"transformFirst\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseURLSP}}//oam/services/rest/ssa/api/v1/template/ZIMP",
+              "host": [
+                "{{baseURLSP}}"
+              ],
+              "path": [
+                "",
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "template",
+                "ZIMP"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Template - ZIMP",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "default"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"valueMapping\": \"$user.groups\",\n    \"transformFirst\": true,\n  \"valueTransformation\": [\n    {\n      \"operation\": \"split\",\n      \"params\": [\n        \":\"\n      ]\n    }\n  ],\n  \"valueFiltering\": {\n    \"populateIf\": \"matches\",\n    \"params\": [\n      \".*(ZIMP).*\"\n    ]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseURL}}//oam/services/rest/ssa/api/v1/template/ZIMP",
+              "host": [
+                "{{baseURL}}"
+              ],
+              "path": [
+                "",
+                "oam",
+                "services",
+                "rest",
+                "ssa",
+                "api",
+                "v1",
+                "template",
+                "ZIMP"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "password",
+        "value": "Welcome1",
+        "type": "string"
+      },
+      {
+        "key": "username",
+        "value": "weblogic",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseURL",
+      "value": "http://130.162.212.75:7001"
+    },
+    {
+      "key": "frontEndURL",
+      "value": "http://130.162.212.75:7777",
+      "type": "default"
+    },
+    {
+      "key": "frontEndURLPS3",
+      "value": "http://152.70.190.7:7777",
+      "type": "default"
+    },
+    {
+      "key": "frontEndURLIdP",
+      "value": "http://130.162.228.242:7777",
+      "type": "default"
+    },
+    {
+      "key": "frontEndURLSP",
+      "value": "http://130.61.222.206:7777",
+      "type": "default"
+    },
+    {
+      "key": "baseURLSP",
+      "value": "http://130.61.222.206:7001",
+      "type": "default"
+    }
+  ]
+}

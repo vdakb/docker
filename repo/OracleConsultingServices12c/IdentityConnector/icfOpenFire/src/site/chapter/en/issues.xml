@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="issue"
+         xml:lang="en"
+         version ="5.0">
+  <title>Issues and Workarounds</title>
+  <para>
+    These ...
+  </para>
+  <section xml:id="issue-admin">
+    <title>Administrators</title>
+    <section>
+      <title>Problem</title>
+      <para>
+        If a user account previously marked as administrator is deleted later on in the server UI, this account remains marked as administrator in the table of the system properties (ofProperty), if this grant has not previously been revoked and saved.
+      </para>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        No workaround available at the time being.
+      </para>
+    </section>
+  </section>
+  <section xml:id="issue-cipher">
+    <title>Password Encryption</title>
+    <section>
+      <title>Problem</title>
+      <para>
+        Passwords are encrypted with the Blowfish Block Cipher.
+      </para>
+      <para>
+        Initializing such a ciper is an expensive operation.
+        A key material is required for this pupose, which is loaded from the database for this purpose.
+      </para>
+      <para>
+        In order not to have to carry out this process every time a new user account is created or the password is changed for an existing user account, the entire Ciper is cached after its initialization.
+        However, it should be noted that if the key material in the database changes, the cipher of the server and the cipher in the connector's cache use different key material for the encryption from this point in time on.
+        But this is a general problem of the server, since the existing passwords are not automatically recalculated after the change and thus no user account can log in to the server anymore.
+      </para>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        A workaround is that Identity Governance is restarted and then the changed value is used for password encryption.
+        This ensures that newly created user accounts and the user accounts for which the password was reset after the restart can log in to the server again.
+      </para>
+      <para>
+        If there is any concern that this practice will have too much impact on the user experience of Identity Governance, the connector should be deployed in a external Connector Server.
+        In this architecture, only the connector server has to be restarted.
+      </para>
+    </section>
+  </section>
+  <section xml:id="issue-status">
+    <title>Status of a user account </title>
+    <section>
+      <title>Problem</title>
+      <para>
+        The status of a user account in openfire&#8482; is defined as a flag with a validity period.
+        Identity Governance, on the other hand, regards the status of a user account as a global property.
+      </para>
+      <note>
+        <para>
+          At a certain point in time there is only one or no status information in openfire&#8482; for a certain user account.
+        </para>
+      </note>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        As a workaround, the status of a user account when the account is deactivated is set with the current date as the start time of the deactivation.
+        The expiry date of the deactivation is set indefinitely.
+        The activation of the relevant user account deletes the status information.
+      </para>
+    </section>
+  </section>
+  <section xml:id="issue-locked">
+    <title>Locked User Accounts</title>
+    <section>
+      <title>Problem</title>
+      <para>
+        If a user account is locked, a login in openfire#8482; Admin Console and opening an XMPP session are no longer possible.
+        This behavior is intentional.
+      </para>
+      <para>
+        If the user account is now unlocked through the connector, a login in openfire&#8482; Admin Console or opening an XMPP session is still not possible.
+      </para>
+    </section>
+    <section>
+      <title>Reason</title>
+      <para>
+        openfire&#8482; relies heavily on caching.
+        Since the connector operates directly on the database, the caches in the middleware remain untouched and can thus indicate a different status for a user account (Split Brain).
+      </para>
+      <para>
+        The caches in the middleware are configured with a maximum lifetime, after which they refreshing themselves.
+      </para>
+      <para>
+        A user who has just been unlocked will have to wait until this maximum lifetime has expired before trying to log in again.
+      </para>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        An administrator resets manually following caches:
+        <itemizedlist>
+          <listitem>
+            <para>
+              Locked Out Accounts
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              User
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  </section>
+  <section xml:id="issue-group-membership">
+    <title>Group Membership</title>
+    <section>
+      <title>Problem</title>
+      <para>
+        If a user account is assigned/revoked to/from a group in openfire&#8482; will not honor this change.
+      </para>
+    </section>
+    <section>
+      <title>Reason</title>
+      <para>
+        openfire&#8482; relies heavily on caching.
+        Since the connector operates directly on the database, the caches in the middleware remain untouched and can thus indicate a different status for a user account (Split Brain).
+      </para>
+      <para>
+        The caches in the middleware are configured with a maximum lifetime, after which they refreshing themselves.
+      </para>
+      <para>
+        A user who has just been assigned/revoked to/from a group will have to wait until this maximum lifetime has expired before this change has an effect.
+      </para>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        An administrator resets manually following caches:
+        <itemizedlist>
+          <listitem>
+            <para>
+              Group
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              User
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  </section>
+  <section xml:id="issue-group-administrator">
+    <title>Group Administrator</title>
+    <section>
+      <title>Problem</title>
+      <para>
+        A user account can be permitted as an adminstrator to a group.
+        Setting this flag is mandatory at the time a membership to a group is assigned.
+        This behavior is intentional.
+      </para>
+      <para>
+        The customized version does not provide any capabilty to managed this flag.
+        (The original OF UI have such capabilities)
+      </para>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        No workaround available at the time being.
+      </para>
+    </section>
+  </section>
+</chapter>

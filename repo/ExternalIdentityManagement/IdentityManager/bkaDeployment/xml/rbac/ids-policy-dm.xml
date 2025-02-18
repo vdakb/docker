@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="Federated Identity Management Access Policy Configuration" exported-date="1548432698150" user="XELSYSADM" version="12.2.1.3.0">
+  <AccessPolicy repo-type="RDBMS" name="IDS Federation Identity">
+    <POL_REQUEST>0</POL_REQUEST>
+    <POL_UPDATE>1548432698150</POL_UPDATE>
+    <POL_DESCRIPTION>Foundation of Federated Identities creates from external UPN a prefixed internal UPN.</POL_DESCRIPTION>
+    <POL_RETROFIT_POLICY>1</POL_RETROFIT_POLICY>
+    <POL_PRIORITY>1</POL_PRIORITY>
+    <source-scope type="UserGroup" name="BaseFederatedIdentity"/>
+    <PolicyField repo-type="RDBMS" id="POF1">
+      <POF_FIELD_VALUE>AM.IDS Endpoint</POF_FIELD_VALUE>
+      <POF_FIELD_NAME>[ITRES]UD_IDS_USR_SERVER</POF_FIELD_NAME>
+      <POF_UPDATE>1548432698150</POF_UPDATE>
+      <SDK_KEY Form="UD_IDS_USR"/>
+      <OBJ_KEY Resource="IDS Account"/>
+    </PolicyField>
+    <PolicyGroup repo-type="RDBMS">
+      <POG_UPDATE>1548432698150</POG_UPDATE>
+      <UGP_KEY UserGroup="BaseFederatedIdentity"/>
+    </PolicyGroup>
+    <PolicyResource repo-type="RDBMS">
+      <POP_UPDATE>1548432698150</POP_UPDATE>
+      <POP_REVOKE_OBJECT>1</POP_REVOKE_OBJECT>
+      <POP_DENIAL>0</POP_DENIAL>
+      <APP_INSTANCE_KEY ApplicationInstance="IDSAccount"/>
+      <OBJ_KEY Resource="IDS Account"/>
+    </PolicyResource>
+  </AccessPolicy>
+</xl-ddm-data>

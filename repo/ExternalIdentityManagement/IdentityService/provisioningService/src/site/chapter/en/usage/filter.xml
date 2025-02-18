@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="use-filter"
+         xml:lang="en"
+         version ="5.0">
+  <title>Filtering</title>
+ <para>
+    Filters provide an additional flexibility to users interacting with large data by narrowing down the result sets.
+  </para>
+  <para>
+    Attribute names and attribute operators used in filters are case insensitive.
+    For example, the following two expressions will evaluate to the same logical value:
+  </para>
+  <para>
+    The filter parameter <emphasis role="strong">MUST</emphasis> contain at least one valid expression.
+    Each expression <emphasis role="strong">MUST</emphasis> contain an attribute name followed by an attribute operator and optional value.
+    Multiple expressions <emphasis role="strong">MAY</emphasis> be combined using logical operators.
+    Expressions <emphasis role="strong">MAY</emphasis> be grouped together using round brackets <literal>(</literal> and <literal>)</literal>.
+  </para>
+  <para>
+    The following table shows the filter operators that are supported:
+  </para>
+  <section xml:id="use-filter-01">
+    <title>Attribute Operators</title>
+    <table colsep="0">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="8em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Filter</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>eq</entry>
+            <entry>Equal</entry>
+          </row>
+          <row>
+            <entry>ne</entry>
+            <entry>Not Equal</entry>
+          </row>
+          <row>
+            <entry>co</entry>
+            <entry>Contains</entry>
+          </row>
+          <row>
+            <entry>sw</entry>
+            <entry>Starts With</entry>
+          </row>
+          <row>
+            <entry>ew</entry>
+            <entry>Ends With</entry>
+          </row>
+          <row>
+            <entry>gt</entry>
+            <entry>Greater Than</entry>
+          </row>
+          <row>
+            <entry>ge</entry>
+            <entry>Greater Than or Equal To</entry>
+          </row>
+          <row>
+            <entry>lt</entry>
+            <entry>Less Than</entry>
+          </row>
+          <row>
+            <entry>le</entry>
+            <entry>Less Than or Equal To</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="use-filter-02">
+    <title>Logical Operators</title>
+    <table colsep="0">
+      <tgroup cols="2">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Filter</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>and</entry>
+            <entry>And</entry>
+          </row>
+          <row>
+            <entry>or</entry>
+            <entry>Or</entry>
+          </row>
+          <row>
+            <entry>not</entry>
+            <entry>Not</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <section xml:id="use-filter-03">
+    <title>Grouping Operators</title>
+    <table colsep="0">
+      <tgroup cols="2">
+      <colspec colname="c1" colwidth="8em"/>
+      <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Filter</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>()</entry>
+            <entry>Precedence Grouping</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+  <para>
+    Filters are evaluated in the following order of operations:
+  </para>
+  <orderedlist>
+    <listitem>
+      <para>Grouping Operators</para>
+      <para/>
+    </listitem>
+    <listitem>
+      <para>Logical Operators</para>
+      <para/>
+    </listitem>
+    <listitem>
+      <para>Attribute Operators</para>
+    </listitem>
+  </orderedlist>
+</section>

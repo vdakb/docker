@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+            Name                  ="JobVO"
+            BindingStyle          ="OracleName"
+            FetchMode             ="FETCH_AS_NEEDED"
+            AccessMode            ="RANGE_PAGING"
+            RangeSize             ="20"
+            CustomQuery           ="false"
+            FromList              ="JOB JobEO"
+            PageIterMode          ="Full"
+            InheritPersonalization="merge"
+            RowClass              ="oracle.iam.identity.sysadmin.model.view.JobVORowImpl"
+            ComponentClass        ="oracle.iam.identity.sysadmin.model.view.JobVOImpl">
+  <DesignTime>
+    <Attr Name="_isCodegen"    Value="true"/>
+    <Attr Name="_diagramName"  Value="Scheduler Job View"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL        ResId="job.single"/>
+      <LABEL_PLURAL ResId="job.multiple"/>
+      <TOOLTIP      ResId="job.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <!--
+  Static Lists used by this view
+  -->
+  <ViewAccessor Name="taskLV"          AMUsageName="JobAM" ViewInstanceName="TaskVO"          RowLevelBinds="true" ViewObjectName="oracle.iam.identity.sysadmin.model.view.TaskVO"/>
+  <ViewAccessor Name="cronTypeLV"      AMUsageName="JobAM" ViewInstanceName="CronTypeVO"      RowLevelBinds="true" ViewObjectName="oracle.iam.identity.sysadmin.model.view.CronTypeVO"/>
+  <ViewAccessor Name="statusLV"        AMUsageName="JobAM" ViewInstanceName="JobStatusVO"     RowLevelBinds="true" ViewObjectName="oracle.iam.identity.sysadmin.model.view.JobStatusVO"/>
+  <ViewAccessor Name="triggerTypeLV"   AMUsageName="JobAM" ViewInstanceName="TriggerTypeVO"   RowLevelBinds="true" ViewObjectName="oracle.iam.identity.sysadmin.model.view.TriggerTypeVO"/>
+  <ListBinding Name="TaskLV" ListVOName="taskLV" ListRangeSize="10" NullValueFlag="start" NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}" MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="task"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="name"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="name"/>
+    </AttrArray>
+    <DisplayCriteria Name="TaskVC"/>
+  </ListBinding>
+  <ListBinding  Name="StatusLV" ListVOName="statusLV" ListRangeSize="10" ComboRowCountHint="10" MRUCount="0" NullValueFlag="start" NullValueId="${adfBundle['oracle.javatools.resourcebundle.SystemBundle']['NULL_VALUE_RESID']}">
+    <AttrArray Name="AttrNames">
+      <Item Value="status"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="encoded"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="decoded"/>
+    </AttrArray>
+    <DisplayCriteria Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding  Name="TriggerTypeLV" ListVOName="triggerTypeLV" ListRangeSize="10" NullValueFlag="none" MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="triggerType"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="encoded"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="decoded"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <ListBinding  Name="CronTypeLV" ListVOName="cronTypeLV" ListRangeSize="10" ComboRowCountHint="10" NullValueFlag="none" MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="cronType"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="encoded"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="decoded"/>
+    </AttrArray>
+    <DisplayCriteria Hint="showAndExecute"/>
+  </ListBinding>
+  <EntityUsage Name="JobEO" Entity="oracle.iam.identity.sysadmin.model.entity.JobEO"/>
+  <ViewAttribute Name="name" EntityUsage="JobEO" EntityAttrName="name" AliasName="NAME" PrecisionRule="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="task" EntityUsage="JobEO" EntityAttrName="task" AliasName="TASK" PrecisionRule="true" LOVName="TaskLV">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="input_text_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="status" EntityUsage="JobEO" EntityAttrName="status" AliasName="STATUS" PrecisionRule="true" LOVName="StatusLV">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="combo"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="statusDecode" AliasName="VIEW_ATTR" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="30" PrecisionRule="true" IsPersistent="false" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="triggerStatus" EntityUsage="JobEO" EntityAttrName="triggerStatus" AliasName="TRIGGERSTATUS" PrecisionRule="true" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="triggerStart" EntityUsage="JobEO" EntityAttrName="triggerStart" AliasName="TRIGGERSTART" PrecisionRule="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="triggerStop" EntityUsage="JobEO" EntityAttrName="triggerStop" AliasName="TRIGGERSTOP" PrecisionRule="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="triggerNext" EntityUsage="JobEO" EntityAttrName="triggerNext" AliasName="TRIGGERNEXT" PrecisionRule="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="concurrent" EntityUsage="JobEO" EntityAttrName="concurrent" AliasName="CONCURRENT" PrecisionRule="true" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="retryCount" EntityUsage="JobEO" EntityAttrName="retryCount" AliasName="RETRYCOUNT" PrecisionRule="true" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="triggerType" EntityUsage="JobEO" EntityAttrName="triggerType" AliasName="TRIGERTYPE" LOVName="TriggerTypeLV" PrecisionRule="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="radio"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="cronType" EntityUsage="JobEO" EntityAttrName="cronType" AliasName="CRONTYPE" LOVName="CronTypeLV" PrecisionRule="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="radio"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <!--
+  View Criteria declared by this view
+  -->
+  <ViewCriteria Name="JobVC" ViewObjectName="oracle.iam.identity.sysadmin.model.view.JobVO" Conjunction="AND">
+    <Properties Name="_Props">
+      <CustomProperties>
+        <Property Name="mode"                     Value="Basic"/>
+        <Property Name="showInList"               Value="true"/>
+        <Property Name="autoExecute"              Value="false"/>
+        <Property Name="displayOperators"         Value="InAdvancedMode"/>
+        <Property Name="allowConjunctionOverride" Value="true"/>
+        <Property Name="displayName"              ResId="job.search"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow Name="vcrJOB" UpperColumns="1">
+      <!--
+      Search conditions are limited by API
+      Only name, status and task name are options for search
+      -->
+      <ViewCriteriaItem Name="name"   ViewAttribute="name"   Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="task"   ViewAttribute="task"   Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="status" ViewAttribute="status" Operator="="          Conjunction="AND" Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ViewLinkAccessor Name="JobHistoryVO"   ViewLink="oracle.iam.identity.sysadmin.model.view.link.JobHistoryVL"   Type="oracle.jbo.RowIterator" IsUpdateable="false"/>
+  <ViewLinkAccessor Name="JobParameterVO" ViewLink="oracle.iam.identity.sysadmin.model.view.link.JobParameterVL" Type="oracle.jbo.RowIterator" IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysadmin.bundle.Backend"/>
+  </ResourceBundle>
+</ViewObject>

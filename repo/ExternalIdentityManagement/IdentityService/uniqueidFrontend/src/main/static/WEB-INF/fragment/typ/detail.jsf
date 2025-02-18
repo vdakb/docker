@@ -1,0 +1,58 @@
+<u:composition xmlns   ="http://www.w3.org/1999/xhtml"
+               xmlns:h ="http://xmlns.jcp.org/jsf/html"
+               xmlns:p ="http://primefaces.org/ui"
+               xmlns:e ="http://primefaces.org/ui/extensions"
+               xmlns:u ="http://java.sun.com/jsf/facelets">
+  <h:form id="f02">
+    <div class="form-group row">
+      <p:outputLabel id="ol21" styleClass="col-sm-1 col-form-label" value="#{uid$bundle['item.id.label']} *" for="@next"/>
+      <p:inputText   id="it21" styleClass="col-sm-2"                value="#{type.selected.id}" required="true" label="#{uid$bundle['item.id.label']}" requiredMessage="#{uid$bundle['typ.id.required']}" disabled="#{type.modify}">
+        <p:ajax event="change" update="cb21 cb22 cb23" listener="#{type.changed}"/>
+      </p:inputText>
+      <p:selectBooleanCheckbox id="ck21" styleClass="col-sm-1 form-control" value="#{type.selected.active}" itemLabel="#{uid$bundle['item.active.label']}" label="#{uid$bundle['item.active.label']}">
+         <p:ajax event="change" update="cb21 cb22 cb23" listener="#{type.changed}"/>
+      </p:selectBooleanCheckbox>
+    </div>
+    <p:message id="ms21" for="it21" styleClass="col-sm-4"/>
+    <div class="form-group row">
+      <p:outputLabel id="ol22" styleClass="col-sm-1 col-form-label" value="#{uid$bundle['item.name.label']} *" for="@next"/>
+      <p:inputText   id="it22" styleClass="col-sm-3"                value="#{type.selected.name}" label="#{uid$bundle['item.name.label']}" requiredMessage="#{uid$bundle['typ.name.required']}" required="true">
+        <p:ajax event="change" update="cb21 cb22 cb23" listener="#{type.changed}"/>
+      </p:inputText>
+    </div>
+    <p:message id="ms22" for="@previous" styleClass="col-sm-4"/>
+    <p:toolbar id="tb21" styleClass="mt-4 mb-4">
+      <p:toolbarGroup id="tg21" align="right" styleClass="mr-4">
+        <p:commandButton id            ="cb21"
+                         icon          ="fa fa-check"
+                         value         ="#{app$bundle['action.save.label']}"
+                         styleClass    ="mr-2 ui-button-primary"
+                         disabled      ="#{!type.changed}"
+                         actionListener="#{type.save}"
+                         update        =":msg :md :f02:cb21 :f02:cb22 :f02:cb23"/>
+        <p:commandButton id            ="cb22"
+                         icon          ="fa fa-undo"
+                         action        ="#{type.discard}"
+                         process       ="@this"
+                         value         ="#{app$bundle['action.discard.label']}"
+                         styleClass    ="mr-4 ui-button-secondary ui-button-outlined"
+                         disabled      ="#{!type.changed}"
+                         immediate     ="true"
+                         update        =":f02 :f02:cb21 :f02:cb22 :f02:cb23">
+          <p:resetInput target="f02" clearModel="true"/>
+        </p:commandButton>
+        <p:commandButton id            ="cb23"
+                         icon          ="fa fa-times"
+                         action        ="#{type.abort}"
+                         process       ="@this"
+                         value         ="#{app$bundle['action.cancel.label']}"
+                         styleClass    ="ui-button-secondary ui-button-outlined"
+                         immediate     ="true"
+                         update        =":msg md f01:t01">
+          <p:confirm header="#{app$bundle['dialog.title.confirm']}" message="#{app$bundle['dialog.leave.confirm']}" icon="pi pi-exclamation-triangle" disabled="#{!type.changed}"/>
+          <e:selectDetailLevel level="1"/>
+        </p:commandButton>
+      </p:toolbarGroup>
+    </p:toolbar>
+  </h:form>
+</u:composition>

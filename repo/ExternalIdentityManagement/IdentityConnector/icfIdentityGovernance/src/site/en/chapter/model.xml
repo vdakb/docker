@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="model"
+         xml:lang="en"
+         version ="5.0">
+  <title>Connector Model</title>
+  <section xml:id="model-ovw">
+    <title>Overview</title>
+    <para>
+      The figure below shows an overview of the data model of the connector.
+    </para>
+    <figure>
+      <title>Connector Model</title>
+      <mediaobject>
+        <alt>Connector Model</alt>
+        <imageobject>
+          <!--
+           | The location of the image path must be relative to the basedir of
+           | the ANT script
+           -->
+          <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/en/images/ICF.IGS Connector Model.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </figure>
+    <para>
+      In addition to the <link linkend="model-usr">Account</link> data model required by an Identity Governance Service, the data model of the connector supports the storage of roles and tenants.
+    </para>
+    <itemizedlist>
+      <listitem>
+        <link linkend="model-url">Roles</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="model-utn">Tenants</link>
+      </listitem>
+    </itemizedlist>
+  </section>
+  <section xml:id="model-usr">
+    <title>Account</title>
+    <para>
+      The account data are stored in the form UD_IGS_USR.
+    </para>
+    <section xml:id="model-usr-a">
+      <title>Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="*"/>
+          <colspec colname="c2" colwidth="*"/>
+          <colspec colname="c3" colwidth="4em"/>
+          <colspec colname="c4" colwidth="4em"/>
+          <thead>
+            <row>
+              <entry>Label</entry>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Length</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Service</entry>
+              <entry>UD_IGS_USR_SVC</entry>
+              <entry>Long</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>Identifier</entry>
+              <entry>UD_IGS_USR_UID</entry>
+              <entry>Long</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry>User Name</entry>
+              <entry>UD_IGS_USR_NAME</entry>
+              <entry>String</entry>
+              <entry>256</entry>
+            </row>
+            <row>
+              <entry>Password</entry>
+              <entry>UD_IGS_USR_PWD</entry>
+              <entry>String</entry>
+              <entry>200</entry>
+            </row>
+            <row>
+              <entry>Last Name</entry>
+              <entry>UD_IGS_USR_SN</entry>
+              <entry>String</entry>
+              <entry>80</entry>
+            </row>
+            <row>
+              <entry>First Name</entry>
+              <entry>UD_IGS_USR_GN</entry>
+              <entry>String</entry>
+              <entry>80</entry>
+            </row>
+            <row>
+              <entry>Preferred Language</entry>
+              <entry>UD_IGS_USR_LANG</entry>
+              <entry>String</entry>
+              <entry>16</entry>
+            </row>
+            <row>
+              <entry>e-Mail</entry>
+              <entry>UD_IGS_USR_MAIL</entry>
+              <entry>String</entry>
+              <entry>256</entry>
+            </row>
+            <row>
+              <entry>Phone</entry>
+              <entry>UD_IGS_USR_PHONE</entry>
+              <entry>String</entry>
+              <entry>24</entry>
+            </row>
+            <row>
+              <entry>Mobile</entry>
+              <entry>UD_IGS_USR_MOBILE</entry>
+              <entry>String</entry>
+              <entry>24</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="model-usr-p">
+      <title>Prepopulation</title>
+      <para>
+        Rules are implemented for some of the attributes described above, which derive values for such an attribute from the profile of an identity the account belongs to.
+      </para>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="10em"/>
+          <colspec colname="c2" colwidth="10em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Label</entry>
+              <entry>Adapter</entry>
+              <entry>Rule</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>User Name</entry>
+              <entry>OCS PrePopulate String Converted</entry>
+              <entry>Derives the value from <emphasis>User Definition</emphasis> attribute <emphasis role="strong">User Login</emphasis> and converts it to lower case.</entry>
+            </row>
+            <row>
+              <entry>Password</entry>
+              <entry>OCS PrePopulate String</entry>
+              <entry>Derives the value from <emphasis>User Definition</emphasis> attribute <emphasis role="strong">Password</emphasis>.case.</entry>
+            </row>
+            <row>
+              <entry>Last Name</entry>
+              <entry>OCS PrePopulate String</entry>
+              <entry>Derives the value from <emphasis>User Definition</emphasis> attribute <emphasis role="strong">Last Name</emphasis>.</entry>
+            </row>
+            <row>
+              <entry>First Name</entry>
+              <entry>OCS PrePopulate String</entry>
+              <entry>Derives the value from <emphasis>User Definition</emphasis> attribute <emphasis role="strong">First Name</emphasis>.</entry>
+            </row>
+            <row>
+              <entry>Preferred Language</entry>
+              <entry>OCS PrePopulate String</entry>
+              <entry>Derives the value from <emphasis>User Definition</emphasis> attribute <emphasis role="strong">Preferred Language</emphasis>.</entry>
+            </row>
+            <row>
+              <entry>e-Mail</entry>
+              <entry>OCS PrePopulate String</entry>
+              <entry>Derives the value from <emphasis>User Definition</emphasis> attribute <emphasis role="strong">Email Address</emphasis>.</entry>
+            </row>
+            <row>
+              <entry>Phone</entry>
+              <entry>OCS PrePopulate String</entry>
+              <entry>Derives the value from <emphasis>User Definition</emphasis> attribute <emphasis role="strong">Telephone Number</emphasis>.</entry>
+            </row>
+            <row>
+              <entry>Mobil</entry>
+              <entry>OCS PrePopulate String</entry>
+              <entry>Derives the value from <emphasis>User Definition</emphasis> attribute <emphasis role="strong">Mobile</emphasis>.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="model-url">
+    <title>Roles</title>
+    <para>
+      The roles assigned to a user account are stored in the UD_IGS_URL form.
+    </para>
+    <section xml:id="model-url-a">
+      <title>Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="*"/>
+          <colspec colname="c2" colwidth="*"/>
+          <colspec colname="c3" colwidth="4em"/>
+          <colspec colname="c4" colwidth="4em"/>
+          <thead>
+            <row>
+              <entry>Label</entry>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Length</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Name</entry>
+              <entry>UD_IGS_URL_UID</entry>
+              <entry>String</entry>
+              <entry>32</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="model-url-p">
+      <title>Prepopulation</title>
+      <para>
+        The form is not subject to any rules for prepopulating values.
+       </para>
+    </section>
+  </section>
+  <section xml:id="model-utn">
+    <title>Tenants</title>
+    <para>
+      The tenants and their scopes assigned to a user account are stored in the UD_IGS_UTN form.
+    </para>
+    <section xml:id="model-utn-a">
+      <title>Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="*"/>
+          <colspec colname="c2" colwidth="*"/>
+          <colspec colname="c3" colwidth="4em"/>
+          <colspec colname="c4" colwidth="4em"/>
+          <thead>
+            <row>
+              <entry>Label</entry>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Length</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Name</entry>
+              <entry>UD_IGS_UTN_UID</entry>
+              <entry>String</entry>
+              <entry>32</entry>
+            </row>
+            <row>
+              <entry>Scope</entry>
+              <entry>UD_IGS_UTN_RID</entry>
+              <entry>String</entry>
+              <entry>32</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="model-utn-p">
+      <title>Prepopulation</title>
+      <para>
+        The form is not subject to any rules for prepopulating values.
+       </para>
+    </section>
+  </section>
+</chapter>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Governance Connector Preferences" default="all" basedir=".." xmlns:sandbox   ="http://oracle.iam.identity/sandbox">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"            value="Identity Governance PLX Connector"/>
+
+  <property name="application"            value="plx.identity.connector"/>
+  <property name="bundle"                 value="plx.identity.connector.bundle"/>
+  <property name="adapter"                value="plx.identity.connector.adapter"/>
+  <property name="scheduler"              value="plx.identity.connector.scheduler"/>
+  <property name="thirdparty"             value="plx.identity.connector.common"/>
+  
+  <property name="destination.base"       value="../../deployment/oim/0102 systemIntegration"/>
+  <property name="destination.bundle"     value="../../deployment/oim/0102 systemIntegration"/>
+  <property name="destination.target"     value="../../deployment/oim/2101 systemConnector PLX"/>
+
+  <property name="packagepath.bundle"     value="oracle/iam/identity/icf/**/*.class"/>
+  <property name="packagepath.adapter"    value="oracle/iam/identity/plx/service/provisioning/*.class"/>
+  <property name="packagepath.scheduler"  value="oracle/iam/identity/plx/service/reconciliation/*.class"/>
+  <property name="packagepath.diagnostic" value="oracle/iam/identity/plx/diagnostic/*.class"/>
+
+  <property name="configuration.base"     value="true"/>
+  <property name="configuration.target"   value="true"/>
+
+  <patternset id="descriptor.pattern.base">
+    <include name="base/plx-resource-dm.xml"/>
+    <include name="base/plx-adapter-dm.xml"/>
+    <include name="base/plx-scheduler-dm.xml"/>
+  </patternset>
+
+  <patternset id="descriptor.pattern.target">
+    <include name="target/plx-lookup-dm.xml"/>
+    <include name="target/plx-model-dm.xml"/>
+    <include name="target/plx-process-dm.xml"/>
+    <include name="target/plx-scheduler-dm.xml"/>
+  </patternset>
+
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../icf-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish a possible plugin runtime path
+  =====================================================================
+  -->
+  <path id="oracle.ocs.icf.runtime">
+    <path refid="oracle.ocs.icf.foundation"/>
+    <path refid="oracle.ocs.hst.foundation"/>
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.mds"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.icf.integration"/>
+    <path refid="oracle.fmw.oim.sun.jndi"/>
+    <path refid="oracle.fmw.oim.adapter"/>
+    <path refid="oracle.fmw.oim.scheduler"/>
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="oracle.ocs.oim.foundation"/>
+    <path refid="oracle.ocs.icf.integration"/>
+    <path refid="oracle.ocs.icf.runtime"/>
+  </path>
+  
+   <target name="sandbox" description="Generates the Identity Governance Sandbox for application PLXAccount">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2201 Generating Sandbox for application PLXAccount"/>
+    <echo message="=================================================================="/>
+    <sandbox:generate contextRef="oim-context" catalogPath="C:/Oracle/Customer/Project/Bundeskriminalamt12c/ExternalIdentityManagement/deployment/oim/2201 systemConnector PLX/adf">
+      <instance name       ="plx-account-sysadmin"
+                description="User Interface Customization along with the PLX Account request and administration task flows."
+                dataSet    ="PLXRequest"
+                resource   ="PLX Account"
+                path       ="C:/Oracle/Customer/Project/Bundeskriminalamt12c/ExternalIdentityManagement">
+        <bundle  class="bka.iam.identity.resource.CatalogBundle" scope="bkaBundle"/>
+        <account name="UD_PLX_USR">
+          <panel name="b" row="5" column="2" disclosed="true" labelWidth="120" header="#{bkaBundle.CAT_BASIC_HEADER}">
+            <attribute name="UD_PLX_USR_SID"            label="#{bkaBundle.PLX_USR_SID_LABEL}"             hint="#{bkaBundle.PLX_USR_SID_HINT}" readOnly="true"/>
+            <attribute name="UD_PLX_USR_COMMON_NAME"    label="#{bkaBundle.PLX_USR_COMMON_NAME_LABEL}"     hint="#{bkaBundle.PLX_USR_COMMON_NAME_HINT}"/>
+            <attribute name="UD_PLX_USR_GIVEN_NAME"     label="#{bkaBundle.PLX_USR_GIVEN_NAME_LABEL}"      hint="#{bkaBundle.PLX_USR_GIVEN_NAME_HINT}"/>
+            <attribute name="UD_PLX_USR_LAST_NAME"      label="#{bkaBundle.PLX_USR_LAST_NAME_LABEL}"       hint="#{bkaBundle.PLX_USR_LAST_NAME_HINT}"/>
+            <attribute name="UD_PLX_USR_DISPLAY_NAME"   label="#{bkaBundle.PLX_USR_DISPLAY_NAME_LABEL}"    hint="#{bkaBundle.PLX_USR_DISPLAY_NAME_HINT}"/>
+            <attribute name="UD_PLX_USR_PWD}"           label="#{bkaBundle.PLX_USR_PASSWORD_LABEL}"        hint="#{bkaBundle.PLX_USR_PASSWORD_HINT}"/>
+            <attribute name="UD_PLX_USR_SAMACCOUNTNAME" label="#{bkaBundle.PLX_USR_SAMACCOUNTNAME_LABEL}"  hint="#{bkaBundle.PLX_USR_SAMACCOUNTNAME_HINT}"/>
+            <attribute name="UD_PLX_USR_INITIALS"       label="#{bkaBundle.PLX_USR_INITIALS_LABEL}"        hint="#{bkaBundle.PLX_USR_INITIALS_HINT}"/>
+            <attribute name="UD_PLX_USR_TITLE"          label="#{bkaBundle.PLX_USR_TITLE_LABEL}"           hint="#{bkaBundle.PLX_USR_TITLE_HINT}"/>
+            <attribute name="UD_PLX_USR_EMPLOYEE_TYPE"  label="#{bkaBundle.PLX_USR_EMPLOYEE_TYPE_LABEL}"   hint="#{bkaBundle.PLX_USR_EMPLOYEE_TYPE_HINT}"/>
+            <attribute name="UD_PLX_USR_UID"            label="#{bkaBundle.PLX_USR_UID_LABEL}"             hint="#{bkaBundle.PLX_USR_UID_HINT}"/>
+            <attribute name="serviceaccount"            label="#{bkaBundle.PLX_USR_SERVICE_ACCOUNT_LABEL}" hint="#{bkaBundle.PLX_USR_SERVICE_ACCOUNT_HINT}"/>
+          </panel>
+          <panel name="o" row="3" column="2" disclosed="false" labelWidth="120" header="#{bkaBundle.CAT_ORGANIZATION_HEADER}">
+            <attribute name="UD_PLX_USR_TENANT"         label="#{bkaBundle.PLX_USR_TENANT_LABEL}"                hint="#{bkaBundle.PLX_USR_TENANT_HINT}"/>
+            <attribute name="UD_PLX_USR_DEPARTMENT_NB"  label="#{bkaBundle.PLX_USR_DEPARTMENT_NUM_LABEL}"  hint="#{bkaBundle.PLX_USR_DEPARTMENT_NUM_HINT}"/>
+            <attribute name="UD_PLX_USR_ORG_NAME"       label="#{bkaBundle.PLX_USR_ORG_NAME_LABEL}"        hint="#{bkaBundle.PLX_USR_ORG_NAME_HINT}"/>
+            <attribute name="UD_PLX_USR_LOC_NAME"       label="#{bkaBundle.PLX_USR_LOC_NAME_LABEL}"        hint="#{bkaBundle.PLX_USR_LOC_NAME_HINT}"/>
+            <attribute name="UD_PLX_USR_ORG_UNIT_NAME"  label="#{bkaBundle.PLX_USR_ORG_UNIT_NAME_LABEL}"   hint="#{bkaBundle.PLX_USR_ORG_UNIT_NAME_HINT}"/>
+          </panel>
+          <panel name="c" row="3" column="2" disclosed="true" labelWidth="120" fieldWidth="330" header="#{bkaBundle.CAT_CONTACT_HEADER}">
+            <attribute name="UD_PLX_USR_MAIL"           label="#{bkaBundle.PLX_USR_MAIL_LABEL}"            hint="#{bkaBundle.PLX_USR_MAIL_HINT}"/>
+            <attribute name="UD_PLX_USR_TEL_PHONE"      label="#{bkaBundle.PLX_USR_TEL_PHONE_LABEL}"       hint="#{bkaBundle.PLX_USR_TEL_PHONE_HINT}"/>
+            <attribute name="UD_PLX_USR_MOBILE"         label="#{bkaBundle.PLX_USR_MOBILE_LABEL}"          hint="#{bkaBundle.PLX_USR_MOBILE_HINT}"/>
+            <attribute name="UD_PLX_USR_FAC_TEL_PHONE"  label="#{bkaBundle.PLX_USR_FAC_TEL_PHONE_LABEL}"   hint="#{bkaBundle.PLX_USR_FAC_TEL_PHONE_HINT}"/>
+            <attribute name="UD_PLX_USR_HOME_PHONE"     label="#{bkaBundle.PLX_USR_HOME_PHONE_LABEL}"      hint="#{bkaBundle.PLX_USR_HOME_PHONE_HINT}"/>
+            <attribute name="UD_PLX_USR_POST_ADDR"      label="#{bkaBundle.PLX_USR_POST_ADDR_LABEL}"       hint="#{bkaBundle.PLX_USR_POST_ADDR_HINT}"/>
+            <attribute name="UD_PLX_USR_STREET"         label="#{bkaBundle.PLX_USR_STREET_LABEL}"          hint="#{bkaBundle.PLX_USR_STREET_HINT}"/>
+            <attribute name="UD_PLX_USR_POST_CODE"      label="#{bkaBundle.PLX_USR_POST_CODE_LABEL}"       hint="#{bkaBundle.PLX_USR_POST_CODE_HINT}"/>
+            <attribute name="UD_PLX_USR_POST_OFFICE"    label="#{bkaBundle.PLX_USR_POST_OFFICE_LABEL}"     hint="#{bkaBundle.PLX_USR_POST_OFFICE_HINT}"/>
+            <attribute name="UD_PLX_USR_HOME_POST_ADDR" label="#{bkaBundle.PLX_USR_HOME_POST_ADDR_LABEL}"  hint="#{bkaBundle.PLX_USR_HOME_POST_ADDR_HINT}"/>
+          </panel>
+          <panel name="e" row="3" column="2" disclosed="false" labelWidth="120" header="#{bkaBundle.PLX_USR_EXT_ATTR_HEADER}">
+            <attribute name="UD_PLX_USR_EXT_ATTR1"      label="#{bkaBundle.PLX_USR_EXT_ATTR1_LABEL}"       hint="#{bkaBundle.PLX_USR_EXT_ATTR1_HINT}"/>
+            <attribute name="UD_PLX_USR_EXT_ATTR3"      label="#{bkaBundle.PLX_USR_EXT_ATTR3_LABEL}"       hint="#{bkaBundle.PLX_USR_EXT_ATTR3_HINT}"/>
+            <attribute name="UD_PLX_USR_EXT_ATTR4"      label="#{bkaBundle.PLX_USR_EXT_ATTR4_LABEL}"       hint="#{bkaBundle.PLX_USR_EXT_ATTR4_HINT}"/>
+            <attribute name="UD_PLX_USR_EXT_ATTR6"      label="#{bkaBundle.PLX_USR_EXT_ATTR6_LABEL}"       hint="#{bkaBundle.PLX_USR_EXT_ATTR6_HINT}"/>
+          </panel>
+          <panel name="p" row="3" column="2" disclosed="false" labelWidth="120" header="#{bkaBundle.PLX_USR_PREFERENCE_HEADER}">
+            <attribute name="UD_PLX_USR_PREF_LANG"      label="#{bkaBundle.PLX_USR_PREF_LANG_LABEL}"       hint="#{bkaBundle.PLX_USR_PREF_LANG_HINT}"/>
+          </panel>
+          <panel name="m" row="3" column="2" disclosed="false" labelWidth="120" header="#{bkaBundle.CAT_MISCELLANEOUS_HEADER}">
+            <attribute name="UD_PLX_USR_EMPLOYEE_NB"    label="#{bkaBundle.PLX_USR_EMPLOYEE_NUM_LABEL}"    hint="#{bkaBundle.PLX_USR_EMPLOYEE_NUM_HINT}"/>
+            <attribute name="UD_PLX_USR_BUSINESS_CAT"   label="#{bkaBundle.PLX_USR_BUSINESS_CAT_LABEL}"    hint="#{bkaBundle.PLX_USR_BUSINESS_CAT_HINT}"/>
+            <attribute name="UD_PLX_USR_MANAGER"        label="#{bkaBundle.PLX_USR_MANAGER_LABEL}"         hint="#{bkaBundle.PLX_USR_MANAGER_HINT}"/>
+            <attribute name="UD_PLX_USR_SECRETARY"      label="#{bkaBundle.PLX_USR_SECRETARY_LABEL}"       hint="#{bkaBundle.PLX_USR_SECRETARY_HINT}"/>
+            <attribute name="UD_PLX_USR_OBJ_SID"        label="#{bkaBundle.PLX_USR_OBJ_SID_LABEL}"         hint="#{bkaBundle.PLX_USR_OBJ_SID_HINT}"/>
+            <attribute name="UD_PLX_USR_ROOM_NB"        label="#{bkaBundle.PLX_USR_ROOM_NUM_LABEL}"        hint="#{bkaBundle.PLX_USR_ROOM_NUM_HINT}"/>
+            <attribute name="UD_PLX_USR_CAR_LICENCE"    label="#{bkaBundle.PLX_USR_CAR_LICENCE_LABEL}"     hint="#{bkaBundle.PLX_USR_CAR_LICENCE_HINT}"/>
+            <attribute name="UD_PLX_USR_DESC"           label="#{bkaBundle.PLX_USR_DESC_LABEL}"            hint="#{bkaBundle.PLX_USR_DESC_HINT}"/>
+          </panel>
+          <form name="UD_PLX_UGP" header="#{bkaBundle.PLX_UGR_HEADER_TEXT}">
+            <attribute name="UD_PLX_UGP_UGP"            label="#{bkaBundle.PLX_UGR_NAME_LABEL}"           hint ="#{bkaBundle.PLX_UGR_NAME_HINT}" title="#{bkaBundle.PLX_UGR_LOOKUP_TITLE}"/>
+          </form>
+          <form name="UD_PLX_UPX" header="#{bkaBundle.PLX_UPX_HEADER_TEXT}">
+            <attribute name="UD_PLX_UPX_PRX"            label="#{bkaBundle.PLX_UPX_NAME_LABEL}"           hint ="#{bkaBundle.PLX_UPX_NAME_HINT}" title="#{bkaBundle.PLX_UPX_LOOKUP_TITLE}"/>
+          </form>
+        </account>
+      </instance>
+    </sandbox:generate>
+    <echo message="=================================================================="/>
+    <echo message="2201 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

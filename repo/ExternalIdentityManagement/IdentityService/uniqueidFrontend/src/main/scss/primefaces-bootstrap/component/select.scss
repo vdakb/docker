@@ -1,0 +1,457 @@
+/*  SelectOneMenu */
+body .ui-selectonemenu,
+body .ui-fluid .ui-selectonemenu,
+body .ui-selectcheckboxmenu,
+body .ui-fluid .ui-selectcheckboxmenu {
+  /* primefaces adds min-width: 328px; when on ui-state-exception */
+  min-width:                     150px;
+  padding-right:                 5px;
+  border:                        $input-border-width solid $input-border-color;
+  @include border-left-radius($box-border-radius);
+  line-height:                   $line-height-base;
+  display:                       block;
+  overflow:                      hidden;
+  &.ui-state-error {
+    border-color:                var(--danger);
+  }
+  &:hover, &.ui-state-hover {
+    border-color:                $input-box-color;
+  }
+  &:focus, &.ui-state-focus {
+    border-color:                $input-box-color;
+    outline:                     0 none;
+    box-shadow:                  $input-box-shadow
+  }
+  .ui-selectonemenu-trigger {
+    padding-top:                 6px;
+    border:                      none;
+    overflow:                    hidden;
+    box-shadow:                  none;
+    &.ui-state-hover, &.ui-state-focus {
+      background:                transparent;
+    }
+    span.ui-icon-triangle-1-s {
+      background-image:          none;
+      display:                   inline;
+      position:                  relative;
+      &:before {
+        content:                 "\f0d7";
+        color:                   var(--dark);
+        font-family:             'FontAwesome';
+        font-size:               $font-awesome-icon-size;
+        font-weight:             bold;
+        position:                relative;
+        overflow:                hidden;
+        @media (max-width: $screen-xs-min) {
+          font-size: $font-awesome-icon-size + 1;
+        }
+      }
+    }
+    .icon-ripple.ui-icon-triangle-1-s {
+      margin-left:               3px;
+    }
+  }
+  .ui-selectonemenu-label {
+    padding-top:                 7px;
+    padding-left:                0px;
+  }
+}
+
+//ie11
+@media screen {
+  body .ui-selectonemenu .ui-selectonemenu-trigger span.ui-icon-triangle-1-s {
+    padding-top:                 1px;
+  }
+}
+body .ui-selectcheckboxmenu-trigger span.ui-icon-triangle-1-s {
+  background-image:              none;
+  display:                       inline;
+  position:                      relative;
+  &:before {
+    content:                     "\e259";
+    color:                       var(--dark);
+    top:                         -2px;
+    left:                        2px;
+    padding:                     0 10px;
+    font-family:                 'Glyphicons Halflings';
+    font-size:                   $glyphicon-icon-size;
+    font-weight:                 bold;
+    position:                    relative;
+    overflow:                    hidden;
+    @media (max-width: $screen-xs-min) {
+      font-size:                 $glyphicon-icon-size + 1;
+    }
+  }
+}
+/* listbox */
+body ul.ui-selectlistbox-list, ul.ui-multiselectlistbox-list {
+  li {
+    &.ui-selectlistbox-item, &.ui-multiselectlistbox-item {
+      padding:                   3px 6px;
+      position:                  relative;
+      overflow:                  hidden;
+      &.ui-state-highlight {
+        border-radius:           $box-border-radius;
+      }
+    }
+    &.ui-listbox-outline {
+      outline:                   none;
+    }
+  }
+}
+body li:not(.ui-state-highlight) {
+  &.ui-selectlistbox-item, &.ui-selectonemenu-item, &.ui-multiselectlistbox-item {
+    &.ui-state-hover, .ui-state-focus, &:hover, &:focus {
+      background:                invert;
+    }
+  }
+}
+/* box-menu */
+body .ui-selectcheckboxmenu {
+  overflow:                      hidden;
+  &.ui-state-focus .ui-selectcheckboxmenu-label, &.ui-selectcheckboxmenu-label.ui-state-hover {
+    background-color:            $white;
+  }
+}
+body .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-close {
+  padding:                       1px;
+  @include box-shadow(none);
+  span.ui-icon-circle-close {
+    background-image:            none;
+    text-indent:                 initial;
+    display:                     inline;
+    overflow:                    visible;
+    &:before {
+      content:                   "\f00d";
+      color:                     var(--dark);
+      top:                       -5px;
+      left:                      5px;
+      font-family:               FontAwesome;
+      font-size:                 $font-awesome-icon-size;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+    &.icon-ripple {
+      left:                      -3px;
+    }
+  }
+}
+body .ui-selectcheckboxmenu-panel .ui-chkbox span.ui-chkbox-icon:before {
+  top:                           1px;
+}
+body li.ui-selectcheckboxmenu-item .ui-chkbox-box {
+  margin-top:                    -15px;
+  position:                      relative;
+}
+body .ui-selectcheckboxmenu-panel .ui-selectcheckboxmenu-list-item .ui-chkbox {
+  margin-top:                    -7px;
+}
+body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
+  border-color:                  transparent;
+  @include box-shadow(none);
+  &.ui-state-hover, &.ui-state-focus {
+    background:                  transparent;
+  }
+  .ui-icon {
+    margin-top:                  6px;
+    margin-left:                 3px;
+    &.icon-ripple {
+      left:                      6px;
+    }
+  }
+}
+body .ui-selectcheckboxmenu-label-container .ui-selectcheckboxmenu-label {
+  min-width:                     100px;
+}
+body .ui-selectcheckboxmenu-header {
+  border: 0;
+  border-bottom:                 $border-width solid $checkboxmenu-border-color;
+  .ui-chkbox span.ui-icon {
+    float:                       none;
+  }
+}
+body .ui-fluid .ui-selectcheckboxmenu-multiple,
+body .ui-selectcheckboxmenu-multiple {
+  border-collapse:               initial;
+  display:                       inline-table;
+  overflow:                      visible;
+}
+body .ui-selectcheckboxmenu-multiple {
+  .ui-selectcheckboxmenu-trigger .ui-icon {
+    top:                         5px;
+  }
+  .ui-selectcheckboxmenu-token-label {
+    color:                       $white;
+    background:                  $primary;
+    height:                      28px;
+    border-radius:               $box-border-radius;
+    white-space:                 normal;
+    float:                       left;
+  }
+  li.ui-selectcheckboxmenu-token {
+    white-space:                 normal;
+  }
+  span.ui-selectcheckboxmenu-token-icon.ui-icon-close {
+    background-image:            none;
+    top:                         2px;
+    margin-left:                 -15px;
+    display:                     inline;
+    position:                    relative;
+    &:before {
+      content:                   "\f00d";
+      color:                     $white;
+      top:                       -5px;
+      left:                      -1px;
+      margin-left:               5px;
+      font-family:               FontAwesome;
+      font-size:                 $font-awesome-icon-size;
+      display:                   inline;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+    &:hover:before {
+      color:                     $checkboxmenu-hover-color;
+    }
+  }
+  /* box colors */
+  &.box-default {
+    .ui-selectcheckboxmenu-token-label {
+      background:                $gray-300;
+    }
+  }
+  &.box-primary {
+    .ui-selectcheckboxmenu-token-label {
+      background:                var(--primary);
+    }
+  }
+  &.box-danger {
+    .ui-selectcheckboxmenu-token-label {
+      background:                var(--danger);
+    }
+  }
+  &.box-fatal {
+    .ui-selectcheckboxmenu-token-label {
+      background:                var(--red-dark);
+    }
+  }
+  &.box-warning {
+    .ui-selectcheckboxmenu-token-label {
+      background:                var(--warning);
+    }
+  }
+  &.box-success {
+    .ui-selectcheckboxmenu-token-label {
+      background:                var(--success);
+    }
+  }
+  &.box-info {
+    .ui-selectcheckboxmenu-token-label {
+      background:                var(--info);
+    }
+  }
+  &.no-color {
+    .ui-selectcheckboxmenu-token-label {
+      background:                $gray-400;
+    }
+  }
+}
+body .ui-selectcheckboxmenu-multiple {
+  .ui-selectcheckboxmenu-trigger .ui-icon {
+    top:                         5px;
+  }
+  .ui-selectcheckboxmenu-token-label {
+    color:                       var(--body-background);
+    background:                  var(--primary);
+    height:                      28px;
+    border-radius:               $box-border-radius;
+    white-space:                 normal;
+    float:                       left;
+  }
+  li.ui-selectcheckboxmenu-token {
+    white-space:                 normal;
+  }
+  span.ui-selectcheckboxmenu-token-icon.ui-icon-close {
+    background-image:            none;
+    display:                     inline;
+    top:                         2px;
+    margin-left:                 -15px;
+    position:                    relative;
+    &:before {
+      content:                   "\f00d";
+      color:                     var(--body-background);
+      top:                       -5px;
+      left:                      -1px;
+      margin-left:               5px;
+      font-family:               FontAwesome;
+      font-size:                 $font-awesome-icon-size;
+      display:                   inline;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+    &:hover:before {
+      color:                     $checkboxmenu-hover-color;
+    }
+  }
+}
+body .ui-selectcheckboxmenu-header .ui-selectcheckboxmenu-filter-container {
+  span.ui-icon-search {
+    background-image:            none;
+    width:                       20px;
+    top:                         7px;
+    right:                       2%;
+    text-indent:                 initial;
+    display:                     inline;
+    &:before {
+      content:                   "\f002";
+      color:                     var(--body-foreground);
+      top:                       -3px;
+      margin-left:               5px;
+      font-family:               FontAwesome;
+      font-size:                 $font-awesome-icon-size;
+      display:                   inline;
+      position:                  relative;
+      overflow:                  hidden;
+    }
+  }
+}
+/* checkboxmenu interactions */
+body ul.ui-selectcheckboxmenu-multiple-container {
+  border:                        none;
+}
+body .ui-selectcheckboxmenu,
+body .ui-fluid .ui-selectcheckboxmenu {
+  &.ui-state-focus {
+    border-color:                lighten($box-shadow-color, 30%);
+    box-shadow:                  0 0 5px $box-shadow-color;
+  }
+  &.ui-state-error {
+    border:                      $border-width solid $box-shadow-color-error;
+  }
+  &.ui-state-error.ui-state-focus {
+    border:                      $border-width solid $box-shadow-color-error;
+    box-shadow:                  0 0 5px $box-shadow-color-error;
+  }
+  .ui-selectcheckboxmenu-trigger.ui-state-error.ui-state-focus {
+    border:                      none;
+    box-shadow:                  none;
+  }
+}
+body .ui-selectcheckboxmenu,
+body .ui-fluid .ui-selectcheckboxmenu {
+  &.ui-state-error, &.ui-state-error.ui-state-focus {
+    color:                       $checkboxmenu-error-color;
+    border:                      $border-width solid $box-shadow-color-error;
+  }
+}
+body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label {
+  padding-top:                   6px;
+}
+/* manyMenu */
+body .ui-selectmanymenu {
+  .ui-selectlistbox-filter-container {
+    margin-bottom:               .4em;
+  }
+  .ui-selectlistbox-item.ui-state-highlight {
+    .ui-chkbox-box, .ui-chkbox-box.ui-state-active {
+      color:                     var(--body-foreground);
+      background:                $white;
+      margin-left:               1px;
+      border:                    none;
+      vertical-align:            sub;
+      .ui-chkbox-icon.ui-icon-check:before {
+        color:                   var(--body-foreground);
+      }
+    }
+  }
+  .ui-selectlistbox-filter-container {
+    input.ui-selectlistbox-filter {
+      width:                     100%;
+    }
+    .ui-icon-search {
+      background-image:          none;
+      width:                     20px;
+      top:                       7px;
+      right:                     0;
+      text-indent:               initial;
+      display:                   inline;
+      &:before {
+        content:                 "\f002";
+        color:                   var(--body-foreground);
+        top:                     -3px;
+        margin-left:             5px;
+        font-family:             FontAwesome;
+        font-size:               $font-awesome-icon-size;
+        display:                 inline;
+        position:                relative;
+        overflow:                hidden;
+      }
+    }
+  }
+  .ui-selectlistbox-listcontainer {
+    tr.ui-selectlistbox-item, tr.ui-selectlistbox-item.ui-state-highlight {
+      .ui-chkbox-box {
+        margin-left:             3px;
+      }
+    }
+  }
+}
+body .ui-selectonemenu-panel {
+  background:                     var(--body-background);
+  border:                         0 none;
+  border-radius:                  $box-border-radius;
+  box-shadow:                     $box-shadow-component;
+  .ui-selectonemenu-list {
+    padding:                      .75rem;
+  }
+  .ui-selectonemenu-items {
+    &.ui-selectonemenu-table > thead tr th {
+      color:                       var(--body-foreground);
+      background:                  $gray-100;
+      border:                      1px solid #e9ecef;
+      font-weight:                 700;
+    }
+    .ui-selectonemenu-item {
+      color:                      $input-fg;
+      background:                 transparent;
+      margin:                     0;
+      padding:                    .5rem .5rem;
+      outline:                    0 none;
+      transition:                 $transition-base;
+      &.ui-selectonemenu-row > td {
+        padding:                  .5rem .5rem;
+        border-color:             $datatable-row-border-color;
+      }
+      &.ui-selectonemenu-row:first-child {
+        border-top-color:         transparent;
+      }
+      &:hover, &.ui-state-hover {
+        background:               $gray-200;
+      }
+    }
+  }
+  .ui-selectonemenu-filter-container {
+    background:                    $gray-100;
+    border-bottom:                 0 none;
+    width:                         98%;
+    .ui-selectonemenu-filter.ui-inputfield {
+      width:                       84%;
+      padding-right:               0;
+      padding-left:                2rem;
+    }
+    .ui-icon {
+      color:                       $input-fg;
+      background:                  none;
+      top:                         1rem;
+      left:                        1rem;
+      bottom:                      auto;
+      right:                       auto;
+      font-family:                 FontAwesome;
+      font-style:                  normal;
+      font-weight:                 normal;
+      display:                     inline-block;
+      &:before {
+        content:                   "\f002";
+      }
+    }
+  }
+}

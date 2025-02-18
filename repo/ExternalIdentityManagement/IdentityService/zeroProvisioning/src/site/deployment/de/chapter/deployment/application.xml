@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="war-application"
+         xml:lang="de"
+         version ="5.0">
+  <title>Bereitstellen der Webanwendung</title>
+  <para>
+    Alle Dienste werden als Webanwendung in der gleich Weblogic Server Domain bereitgestellt, wie die Applikationen der Oracle Identity Governance Suite selbst.
+    Dadurch wird eine hohe Grad an Wiederverwendbarkeit der von der Oracle Identity Governance Suite bereitgestellten Bibliotheken erreicht.
+  </para>
+  <para>
+     In diesem Abschnitt wird nur die Bereitstellung mit dem Deployment Assistant in der Administrationskonsole der WebLogic Domain behandelt.
+     Andere Techniken, wie die Verwendung von Apache Ant-Skripts mit benutzerdefinierten WebLogic-Tasks oder der API f&#252;r die Bereiststellung, werden nicht behandelt.
+  </para>
+  <para>
+    WebLogic Server unterst&#252;tzt die Bereitstellung von Webanwendungen aus WAR-Dateien und aus expadierten Verzeichnissen.
+  </para>
+  <para>
+    Der Bereitstellungsmodus <emphasis>staging</emphasis> bestimmt, wie die Archivdatei eines Moduls den Zielservern die das Modul bereitstellen m&#252;ssen, zur Verf&#252;gung gestellt werden.
+    WebLogic Server bietet drei verschiedene Optionen zum Staging von Archivdateien: den <emphasis>stage</emphasis>-Modus, den <emphasis>nostage</emphasis>-Modus und den <emphasis>external_stage</emphasis>-Modus.
+    Sie k&#246;nnen den Staging-Modus entweder auf der Ebene des WebLogic Server oder auf Ebene der Anwendung festlegen, wodurch der Ebene des WebLogic Server &#252;berschrieben wird.
+  </para>
+  <section xml:id="war-application-stage">
+    <title>Modus Stage</title>
+    <para>
+     Der Modus <emphasis>stage</emphasis> bedeutet, dass der Administrationsserver die Dateien von ihrem urspr&#252;nglichen Speicherort in die Staging-Verzeichnisse jedes Zielservers kopiert.
+     Wenn Sie beispielsweise eine JEE-Anwendung auf drei Servern in einem Cluster bereitstellen, kopiert der Administrationsserver die Bereitstellungsdateien in Verzeichnisse auf jedem der drei Servercomputer.
+     Anschlie&#223;end stellt jeder Server die JEE-Anwendung mithilfe seiner lokalen Kopie der Archivdateien bereit.
+    </para>
+    <para>
+      Der Modus <emphasis>stage</emphasis> ist der standardm?&#223;ige (und bevorzugte) Modus bei der Bereitstellung auf mehr als einer WebLogic Server-Instanz.
+    </para>
+  </section>
+  <section xml:id="war-application-nostage">
+    <title>Modus Nostage</title>
+    <para>
+      Der Modus <emphasis>nostage</emphasis> bedeutet, dass der Administrationsserver die Archivdateien nicht von ihrem Speicherort kopiert.
+      Stattdessen muss jeder Zielserver f&#252;r die Bereitstellung von einem einzigen gleichnaimigen Verzeichnis aus auf die Archivdateien zugreifen k&#246;nnen.
+      Wenn Sie beispielsweise eine JEE-Anwendung auf drei Servern in einem Cluster bereitstellen, muss jeder Server auf identischen Archivdateien der Anwendung zugreifen k&#246;nnen (von einem freigegebenen oder im Netzwerk bereitgestellten Verzeichnis), um die Anwendung bereitzustellen.
+    </para>
+    <para>
+      Im Modus <emphasis>nostage</emphasis> erkennt der Container automatisch &#196;nderungen an JSP's und Servlets.
+    </para>
+    <para>
+      Der Modus <emphasis>nostage</emphasis> ist der Standardmodus, wenn die Bereitstellung nur auf dem Administrationsserver erfolgt (z. B. in einer Dom?ne mit einem einzigen Server).
+      Sie k&#246;nnen den Modus <emphasis>nostage</emphasis> auch ausw?hlen, wenn Sie einen Cluster von Serverinstanzen auf demselben Computer ausf&#252;hren.
+    </para>
+  </section>
+  <section xml:id="war-application-external">
+    <title>Modus External_stage</title>
+    <para>
+      Der Modus <emphasis>external_stage</emphasis> ?hnelt dem Modus <emphasis>stage</emphasis>, da sich die Bereitstellungsdateien lokal auf jedem Zielserver befinden m&#252;ssen.
+      Allerdings kopiert der Administrationsserver die Bereitstellungsdateien nicht automatisch auf Zielserver im Modus <emphasis>external_stage</emphasis>; dtattdessen m&#252;ssen Sie sicherstellen, dass die Dateien in das Staging-Verzeichnis jedes Zielservers kopiert werden.
+    </para>
+    <para>
+      Der Modus <emphasis>external_stage</emphasis> ist der am wenigsten verbreitete Bereitstellungsmodus.
+      Es wird im Allgemeinen nur in Umgebungen verwendet, die von Werkzeugen von Drittanbietern verwaltet werden, die das erforderliche Kopieren von Dateien automatisieren.
+    </para>
+  </section>
+</section>

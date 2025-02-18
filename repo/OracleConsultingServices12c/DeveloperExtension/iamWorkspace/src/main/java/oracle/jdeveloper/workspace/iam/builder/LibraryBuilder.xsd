@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns:xsd          = "http://www.w3.org/2001/XMLSchema"
+            xmlns              = "http://www.oracle.com/schema/iam/library"
+            targetNamespace    = "http://www.oracle.com/schema/iam/library"
+            elementFormDefault = "qualified">
+
+  <xsd:element name="libraries">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="library"         type="library" minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="library">
+    <xsd:sequence>
+      <xsd:element name="classpath"         type="path" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="sourcepath"        type="path" minOccurs="1" maxOccurs="1"/>
+      <xsd:element name="javadocpath"       type="path" minOccurs="1" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="name"              type="xsd:string" use="required"/>
+    <xsd:attribute name="id"                type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="path">
+    <xsd:sequence>
+      <xsd:element name="item"              type="item" minOccurs="1" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="item">
+    <xsd:attribute name="type"              type="item-type"            use="required"/>
+    <xsd:attribute name="file"              type="xsd:normalizedString" use="required"/>
+    <xsd:attribute name="path"              type="xsd:normalizedString" use="required"/>
+    <xsd:attribute name="releaseAware"      type="xsd:boolean"/>
+  </xsd:complexType>
+
+  <!-- the type an attribute must have -->
+  <xsd:simpleType name="item-type">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="jar"/>
+      <xsd:enumeration value="zip"/>
+      <xsd:enumeration value="dir"/>
+      <xsd:enumeration value="url"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

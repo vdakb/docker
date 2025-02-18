@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name                ="Identity Access Deployment Controller"
+         basedir             ="../../../deployment/fed"
+         xmlns:fmw           ="http://oracle.hst.deployment/fusion"
+         xmlns:jps           ="http://oracle.hst.deployment/security"
+         xmlns:wsm           ="http://oracle.hst.deployment/webservice"
+         xmlns:server        ="http://oracle.hst.deployment/topology"
+         xmlns:ids           ="http://oracle.iam.access/identitystore"
+         xmlns:accessagent   ="http://oracle.iam.access/accessagent"
+         xmlns:accesspolicy  ="http://oracle.iam.access/accesspolicy"
+         xmlns:accessservice ="http://oracle.iam.access/accessservice"
+         xmlns:identitydomain="http://oracle.iam.oauth/domain"
+         xmlns:resourceclient="http://oracle.iam.oauth/client"
+         xmlns:resourceserver="http://oracle.iam.oauth/resource">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name" value="${log.env}/fed-import-ant.log"/>
+  <!--
+  ==============================================================================
+  == properties specific to the deployment environment
+  ==============================================================================
+  -->
+  <import file="../../oam-context.xml"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Access Manager OAuth Identity Domain
+  **           Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o OAuth Identity Domain PlayGroundDomain
+  ******************************************************************************
+  -->
+  <target name="0201" description="Configures the OIDC/OAuth Identity Domains">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0201 OIDC/OAuth Identity Domain ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Identity Domain for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <identitydomain:create contextRef="api-context">
+      <!--
+       | Identity Domain Secure Zone 1
+       -->
+      <identitydomain:instance name="PlayGroundDomain">
+        <identitydomain:parameter value="identityProvider"        name="PlayGroundIdentityStore"/>
+        <identitydomain:parameter value="description"             name="The Identity Domains that contain all artifacts required to provide standard OAuth Services belonging to business applications deployed."/>
+        <identitydomain:parameter value="errorPageURL"            name="/p20/error"/>
+        <identitydomain:parameter value="consentPageURL"          name="/p20/consent"/>
+        <!--
+        <identitydomain:attribute id="usePKCE"                    value="PUBLIC_CLIENTS"/>
+        -->
+        <!--
+         | If no value is specified for the parameter at the time of creating an
+         | Identity Domain then the default value for the domain cert becomes
+         | approximately 5 years.
+         | Suppose, we set it to 3650 days (10 years) then the domain cert
+         | becomes valid to 10 years.
+         | The value we use follows the default of 5 years.
+         -->
+        <identitydomain:attribute id="domainCertValidityInDays"   value="1825"/>
+        <!--
+         | Suppose, we provide a value of 1440 (i.e. 24 hours)? for this
+         | parameter, then the consent screen will be presented to the user
+         | during the time of first login. After that the consent provided will
+         | be saved for the next 24 hours and the consent screen would be only
+         | presented to the user after 24 hours.
+         -->
+        <identitydomain:attribute id="consentExpiryTimeInMinutes" value="180"/>
+        <identitydomain:token type="access" expiry="7200" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+        <identitydomain:token type="authz" expiry="900" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+        <identitydomain:token type="link" expiry="86400" refreshToken="true">
+          <identitydomain:tokenRefresh expiry="86400"/>
+        </identitydomain:token>
+      </identitydomain:instance>
+    </identitydomain:create>
+    <echo message="=================================================================="/>
+    <echo message="0201 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Access Manager OAuth Resource Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o OAuth Resource Server PlayGroundResource
+  ******************************************************************************
+  -->
+  <target name="0202" description="Configures the Identity Governance Service OAuth Resource Server Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0202 Identity Governance Service OAuth Resource Server Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Resource Server for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceserver:create contextRef="api-context">
+      <domain name="PlayGroundDomain">
+        <instance name="PlayGroundResource">
+          <parameter value="description" name="The security policy handles authenticated requests after the application has obtained an access token."/>
+
+          <scope name="all"     description="All permissions"/>
+          <scope name="openid"  description="This is the only mandatory scope and will return a sub claim which represents a unique identifier for the authenticated user."/>
+          <scope name="profile" description="This scope value requests access to the End-User's default profile Claims."/>
+          <scope name="email"   description="To know where to send the welcome email"/>
+          <!--
+           | MP-JWT 1.1 4.1
+           -->
+          <tokenAttribute id="groups"             type="dynamic" value="$user.groups"/>
+          <!--
+           | MP-JWT 1.1 4.2
+           -->
+          <tokenAttribute id="upn"                type="dynamic" value="$user.attr.uid"/>
+          <!--
+           | attribute name may be casesensitive ?
+           -->
+          <tokenAttribute id="full_name"          type="dynamic" value="$user.attr.cn"/>
+          <tokenAttribute id="family_name"        type="dynamic" value="$user.attr.sn"/>
+          <tokenAttribute id="given_name"         type="dynamic" value="$user.attr.givenName"/>
+          <tokenAttribute id="email"              type="dynamic" value="$user.attr.mail"/>
+        </instance>
+      </domain>
+    </resourceserver:create>
+    <echo message="=================================================================="/>
+    <echo message="0202 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager OAuth Resource Client Configuration
+  **           The client support credentials grant type.
+  **
+  ** Synopsis: The tasks deploys the Resource Client
+  **           This includes:
+  **           o OAuth Resource Client PlayGroundClient
+  ******************************************************************************
+  -->
+  <target name="0203" description="Creating Unique Identifier Service OAuth Resource Client in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0203 Create Unique Identifier Service OAuth Resource Client Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring OAuth Resource Client for environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceclient:create contextRef="api-context">
+      <domain name="PlayGroundDomain">
+        <instance name="PlayGroundClient" type="confidential">
+          <parameter value="id"                  name="PlayGroundClient"/>
+          <parameter value="secret"              name="Sophie20061990"/>
+          <parameter value="defaultScope"        name="PlayGroundResource.all"/>
+          <parameter value="description"         name="The client application making resource requests on behalf of the resource owner with the resource owners authorization."/>
+          <scope     prefix="PlayGroundResource" name="all"/>
+          <scope     prefix="PlayGroundResource" name="openid"/>
+          <scope     prefix="PlayGroundResource" name="profile"/>
+          <scope     prefix="PlayGroundResource" name="email"/>
+          <grant     type="password"/>
+          <grant     type="credential"/>
+          <grant     type="bearer"/>
+          <grant     type="refresh"/>
+          <grant     type="authorization"/>
+          <attribute id="sessionId"  type="dynamic" value="$session.id"/>
+          <redirect  url="https://sso.cinnamonstar.oam:443/oam/server/auth_cred_submit"/>
+          <!--
+           | workaround for: Redirect URI in request is not part of Client profile
+          <redirect  url="http://sso.cinnamonstar.net:1080/oam/server/auth_cred_submit"/>
+           -->
+        </instance>
+      </domain>
+    </resourceclient:create>
+    <echo message="=================================================================="/>
+    <echo message="0203 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

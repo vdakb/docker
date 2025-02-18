@@ -1,0 +1,180 @@
+Rem ! $ORACLE_HOME/bin/sqlplus
+Rem
+Rem $Header$
+Rem
+Rem Program.....: sqlplus
+Rem
+Rem Requirements: sqlplus
+Rem     The database must be up and running.
+Rem
+Rem Purpose.....:
+Rem     This script creates all object required to use Oracle Identity
+Rem     Manager inside of a Oracle Unified Directory database workflow
+Rem     element.
+Rem
+Rem     This option is mandatory if the database is used as an
+Rem     identity store for participants exposed by Oracle Unified Directory.
+Rem
+Rem      This script creates the view required to expose Federation
+Rem      Participant Police Mecklenburg-Western Pomerania.
+Rem
+Rem Author......: Dieter Steding, Oracle Consulting Berlin
+Rem
+Rem
+Rem Revision   Date        Editor      Comment
+Rem ----------+-----------+-----------+------------------------------------
+Rem 1.0.0.0    2019-06-12  DSteding    First release version
+Rem
+
+PROMPT ********************************************************************
+PROMPT Creating View 'igd_usr_mv'
+PROMPT ********************************************************************
+CREATE OR REPLACE VIEW igd_usr_mv (
+  id
+, rowversion
+, created_by
+, created_on
+, updated_by
+, updated_on
+, name
+, user_principal_name
+, type
+, locked
+, locked_on
+, disabled
+, status
+, start_date
+, end_date
+, initials
+, title
+, last_name
+, first_name
+, middle_name
+, full_name
+, common_name
+, display_name
+, email
+, telephone_number
+, facsimile_number
+, mobile
+, pager
+, organization
+, organizational_unit
+, participant
+, division
+, department
+, authpassword
+) AS
+SELECT usr.usr_key
+,      usr.usr_rowver
+,      usr.usr_createby
+,      usr.usr_create
+,      usr.usr_updateby
+,      usr.usr_update
+,      usr.usr_login
+,      usr.usr_gen_qualifier
+,      usr.usr_type
+,      usr.usr_locked
+,      usr.usr_locked_on
+,      usr.usr_disabled
+,      usr.usr_status
+,      usr.usr_start_date
+,      usr.usr_end_date
+,      usr.usr_initials
+,      usr.usr_title
+,      usr.usr_last_name
+,      usr.usr_first_name
+,      usr.usr_middle_name
+,      usr.usr_full_name
+,      usr.usr_common_name
+,      usr.usr_display_name
+,      usr.usr_email
+,      usr.usr_telephone_number
+,      usr.usr_fax
+,      usr.usr_mobile
+,      usr.usr_pager
+,      act.act_name
+,      usr.usr_udf_orgname
+,      usr.usr_udf_participant
+,      usr.usr_udf_division
+,      usr.usr_udf_department
+,      usr.usr_udf_password
+FROM   igd_oim.usr usr
+,      igd_oim.act act
+WHERE  act.act_name = 'MV'
+AND    usr.act_key  = act.act_key
+/
+
+PROMPT ********************************************************************
+PROMPT Creating comments for View 'igd_usr_mv'
+PROMPT ********************************************************************
+COMMENT ON TABLE igd_usr_mv IS 'Federal Police Office Participant Mecklenburg-Western Pomerania'
+/
+COMMENT ON COLUMN igd_usr_mv.id IS 'System Identifier'
+/
+COMMENT ON COLUMN igd_usr_mv.rowversion IS 'Rowversion of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.created_by IS 'Creator of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.created_on IS 'Creation Timestamp of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.updated_by IS 'Modifier of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.updated_on IS 'Modified Timestamp of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.name IS 'Public Name of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.user_principal_name IS 'User Principal Name of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.type IS 'Type of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.locked IS 'Lock status of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.locked_on IS 'Lock timestamp of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.disabled IS 'Activation status of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.status IS 'Account status of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.start_date IS 'Start date of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.end_date IS 'End date of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.initials IS 'Initials of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.title IS 'Titel of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.last_name IS 'Last name of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.first_name IS 'First name of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.middle_name IS 'Middle name of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.full_name IS 'Fullname of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.common_name IS 'Common Name of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.display_name IS 'Display Name of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.email IS 'e-Mail Address of of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.telephone_number IS 'Phone Number an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.facsimile_number IS 'Facsimile Number of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.mobile IS 'Mobile Number of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.pager IS 'Pager Number of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.participant IS 'Participant identifier of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.division IS 'Organization identifier of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.division IS 'Organizational Unit identifier of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.division IS 'Division identifier of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.department IS 'Department identifier of an identity'
+/
+COMMENT ON COLUMN igd_usr_mv.authpassword IS 'Password identifier of an identity'
+/

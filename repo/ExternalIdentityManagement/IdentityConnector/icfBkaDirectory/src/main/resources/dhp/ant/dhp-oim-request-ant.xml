@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Configuration DHP"
+         basedir="../"
+         default="all"
+         xmlns:fmw="http://oracle.hst.deployment/fusion"
+         xmlns:jps="http://oracle.hst.deployment/security"
+         xmlns:wsm="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:plugin="http://oracle.iam.identity/plugin"
+         xmlns:metadata="http://oracle.iam.identity/metadata"
+         xmlns:object="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job="http://oracle.iam.identity/job"
+         xmlns:sandbox="http://oracle.iam.identity/sandbox">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-request-ant.log"/>
+
+  <!-- Exports the actual CatalogAM.xml file-->
+  <target name="exportCatalog">
+    <metadata:exportVersion contextRef="jmx-context" location="${oim.server.name}" application="oracle.iam.console.identity.sysadmin.ear" version="V2.0" toArchive="/home/oidm/out.zip" documentPath="/persdef/oracle/iam/ui/catalog/model/am/CatalogAM.xml" maxVersions="1">
+    </metadata:exportVersion>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the BKA Directory Customizations.
+  **
+  ** Synopsis: The tasks deploys the sandboxes to customize the user interface
+  **           in BKA Directory connector. This includes:
+  **           o Application Instance
+  **           o Request Dataset
+  **           o Entity Publication
+  **           o Sandbox Metadata
+  ******************************************************************************
+  -->
+  <target name="request" description="Deploys the DHP System Access Request Customization">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="DHP Access Request Customization ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Deploying importable objects for environment ${fmw.env} on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/dhp/xml/target">
+        <object:importFile name="dhp-request-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Adjusting Access Request Configuration by modifying Entity Publication"/>
+    <operation:application contextref="oim-context" operation="modify">
+      <application name="DHPAccount" dataset="DHPRequest" entitlement="true">
+        <publication value="enable">
+          <recipient value="Organization" name="Top" hierarchy="true"/>
+        </publication>
+      </application>
+    </operation:application>
+<!--    <echo message="Generating customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>-->
+<!--    &lt;!&ndash; catalogPath must be a directory where the CatalogAM.xml.xml is presented &ndash;&gt;-->
+<!--    <sandbox:generate contextRef="oim-context" catalogPath="">-->
+<!--      <instance name="dhp-account-sysadmin"-->
+<!--                description="User Interface Customization's along with the DHP Account request and administration task flows."-->
+<!--                dataSet="DHPRequest"-->
+<!--                resource="DHP Account"-->
+<!--                endpoint="DHP.Endpoint"-->
+<!--                path="/tmp">-->
+<!--        <bundle class="bka.iam.identity.resource.CatalogBundle" scope="bkaBundle"/>-->
+<!--        <account name="UD_DHP_USR">-->
+<!--          <attribute name="UD_DHP_USR_SID" label="#{bkaBundle.BDS_USR_SID_LABEL}" hint="#{bkaBundle.BDS_USR_SID_HINT}" readonly="true"/>-->
+<!--          <attribute name="UD_DHP_USR_UID" label="#{bkaBundle.BDS_USR_UNIFIED_LABEL}" hint="#{bkaBundle.BDS_USR_UNIFIED_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_PID" label="#{bkaBundle.BDS_USR_ANONYMIZED_LABEL}" hint="#{bkaBundle.BDS_USR_ANONYMIZED_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_NAME" label="#{bkaBundle.BDS_USR_NAME_LABEL}" hint="#{bkaBundle.BDS_USR_NAME_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_SAM" label="#{bkaBundle.BDS_USR_SAM_LABEL}" hint="#{bkaBundle.BDS_USR_SAM_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_PWD" label="#{bkaBundle.BDS_USR_PASSWORD_LABEL}" hint="#{bkaBundle.BDS_USR_PASSWORD_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_UPN" label="#{bkaBundle.BDS_USR_PRINCIPAL_NAME_LABEL}" hint="#{bkaBundle.BDS_USR_PRINCIPAL_NAME_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_CN" label="#{bkaBundle.BDS_USR_COMMON_NAME_LABEL}" hint="#{bkaBundle.BDS_USR_COMMON_NAME_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_SN" label="#{bkaBundle.BDS_USR_LAST_NAME_LABEL}" hint="#{bkaBundle.BDS_USR_LAST_NAME_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_GIVEN_NAME" label="#{bkaBundle.BDS_USR_FIRST_NAME_LABEL}" hint="#{bkaBundle.BDS_USR_FIRST_NAME_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_EMAIL" label="#{bkaBundle.BDS_USR_EMAIL_LABEL}" hint="#{bkaBundle.BDS_USR_EMAIL_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_O" label="#{bkaBundle.BDS_USR_ORGANIZATION_LABEL}" hint="#{bkaBundle.BDS_USR_ORGANIZATION_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_OU" label="#{bkaBundle.BDS_USR_OU_LABEL}" hint="#{bkaBundle.BDS_USR_OU_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_DEPT" label="#{bkaBundle.BDS_USR_DEPARTMENT_LABEL}" hint="#{bkaBundle.BDS_USR_DEPARTMENT_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_INITIALS" label="#{bkaBundle.BDS_USR_INITIALS_LABEL}" hint="#{bkaBundle.BDS_USR_INITIALS_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_DISPLAY_NAME" label="#{bkaBundle.BDS_USR_DISPLAY_NAME_LABEL}" hint="#{bkaBundle.BDS_USR_DISPLAY_NAME_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_TITLE" label="#{bkaBundle.BDS_USR_TITLE_LABEL}" hint="#{bkaBundle.BDS_USR_TITLE_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_TYPE" label="#{bkaBundle.BDS_USR_TYPE_LABEL}" hint="#{bkaBundle.BDS_USR_TYPE_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_PHONE" label="#{bkaBundle.BDS_USR_PHONE_LABEL}" hint="#{bkaBundle.BDS_USR_PHONE_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_FAX" label="#{bkaBundle.BDS_USR_FAX_LABEL}" hint="#{bkaBundle.BDS_USR_FAX_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_MOBILE" label="#{bkaBundle.BDS_USR_MOBILE_LABEL}" hint="#{bkaBundle.BDS_USR_MOBILE_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_PAGER" label="#{bkaBundle.BDS_USR_PAGER_LABEL}" hint="#{bkaBundle.BDS_USR_PAGER_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_STATE" label="#{bkaBundle.BDS_USR_STATE_LABEL}" hint="#{bkaBundle.BDS_USR_STATE_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_POSTALCODE" label="#{bkaBundle.BDS_USR_POSTALCODE_LABEL}" hint="#{bkaBundle.BDS_USR_POSTALCODE_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_STREET" label="#{bkaBundle.BDS_USR_STREET_LABEL}" hint="#{bkaBundle.BDS_USR_STREET_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_LOCALITY" label="#{bkaBundle.BDS_USR_LOCALITY_LABEL}" hint="#{bkaBundle.BDS_USR_LOCALITY_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_POSTALADR" label="#{bkaBundle.BDS_USR_POSTALADR_LABEL}" hint="#{bkaBundle.BDS_USR_POSTALADR_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_POBOX" label="#{bkaBundle.BDS_USR_POBOX_LABEL}" hint="#{bkaBundle.BDS_USR_POBOX_HINT}"/>-->
+<!--          <attribute name="UD_DHP_USR_LANGUAGE" label="#{bkaBundle.BDS_USR_LANGUAGE_LABEL}" hint="#{bkaBundle.BDS_USR_LANGUAGE_HINT}" title="#{bkaBundle.BDS_USR_LANGUAGE_TITLE}"/>-->
+<!--          <attribute name="serviceaccount" label="#{bkaBundle.BDS_USR_SERVICE_ACCOUNT_LABEL}" hint="#{bkaBundle.BDS_USR_SERVICE_ACCOUNT_HINT}"/>-->
+<!--          <form name="UD_DHP_UGP" header="#{bkaBundle.BDS_UGP_HEADER_TEXT}" entitlement="true">-->
+<!--            <attribute name="UD_DHP_UGP_SID" label="#{bkaBundle.BDS_UGP_NAME_LABEL}" hint="#{bkaBundle.BDS_UGP_NAME_HINT}" title="#{bkaBundle.BDS_UGP_LOOKUP_TITLE}"/>-->
+<!--          </form>-->
+<!--        </account>-->
+<!--      </instance>-->
+<!--    </sandbox:generate>-->
+<!--    <echo message="Copying generated sandbox to the resource directory"/>-->
+<!--    <copy file="/tmp/dhp-account-sysadmin.zip" todir="${resource.dir}/dhp/mds/"/>-->
+    <echo message="Deploying customization sandboxes on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="${resource.dir}/dhp/mds/dhp-account-sysadmin.zip"/>
+    </sandbox:import>
+    <echo message="=================================================================="/>
+    <echo message="completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+
+  <target name="configure" description="Configure DHP.Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="Configure IT Resource DHP.Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+      <itresource type="BKA Directory Service" name="DHP.Endpoint">
+        <parameter name="Distinguished Name Relative" value="yes"/>
+        <parameter name="Locale Country" value="EN"/>
+        <parameter name="Locale Language" value="en"/>
+        <parameter name="Locale TimeZone" value="GMT+01:00"/>
+        <parameter name="Principal Name" value="__BKA_USER__"/>
+        <parameter name="Principal Password" value="__BKA_PASS__"/>
+        <parameter name="Root Context" value="ou=DHP,cn=Services,dc=bka,dc=bund,dc=de"/>
+        <parameter name="Secure Socket" value="__BKA_SSL__"/>
+        <parameter name="Server Feature" value="/metadata/bka-features-configuration/dhp/dhp-feature.xml"/>
+        <parameter name="Server Name" value="__BKA_HOST__"/>
+        <parameter name="Server Port" value="__BKA_PORT__"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Clear Identity Manager Caches.
+  **
+  ** Synopsis: The tasks prepares the Identity Manager Application Deployment.
+  **           This includes:
+  **           o Clearing several caches
+  ******************************************************************************
+  -->
+  <target name="9999" description="Clear Identity Manager Caches">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="============================================================="/>
+    <echo message="9999 Clear Caches"/>
+    <echo message="============================================================="/>
+    <echo message="Clear metadata cache on ${oim.server.name}:${oim.mbean.metadata}"/>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}"/>
+    <echo message="Clear object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context" category="all"/>
+    <echo message="============================================================="/>
+    <echo message="9999 completed"/>
+    <echo message="============================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance"/>
+</project>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter"
+         basedir         ="../"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-export-ant.log"/>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Identity Manager System Integration Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports the Connector Base Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/base/ajs-lookup-dm.xml"
+                        description="Atlassian Jira Server Lookup Configuration ${application.release}">
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/ajs-adapter-dm.xml"
+                        description="Atlassian Jira Server Adapter Configuration ${application.release}">
+        <object:category value="TaskAdapter"   name="adpAJSACCOUNTCREATE"/>
+        <object:category value="TaskAdapter"   name="adpAJSACCOUNTMODIFY"/>
+        <object:category value="TaskAdapter"   name="adpAJSACCOUNTMODIFYATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpAJSACCOUNTASSIGNATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpAJSACCOUNTREVOKEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpAJSACCOUNTREVOKE"/>
+        <object:category value="TaskAdapter"   name="adpAJSACCOUNTACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpAJSACCOUNTDEACTIVATE"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/ajs-scheduler-dm.xml"
+                        description="Atlassian Jira Server Scheduler Configuration ${application.release}">
+        <object:category value="scheduledTask" name="AJS Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="AJS Delete Reconciliation"/>
+        <object:category value="scheduledTask" name="AJS Account Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Atlassian Jira Server Connector Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Lookup Definition
+  **           o Resource Form
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Exports the Connector Target Configuration ${application.release}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the Lookup configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/ajs-lookup-dm.xml"
+                        description="Atlassian Jira Server Connector Configuration ${application.release}">
+        <object:category value="Lookup"       name="AJS.Group"/>
+        <object:category value="Lookup"       name="AJS.Role"/>
+        <object:category value="Lookup"       name="AJS.Project"/>
+      </object:exportSet>
+      <!-- export the IT Resource configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/ajs-resource-dm.xml"
+                        description="Atlassian Jira Server Connector Configuration ${application.release}">
+        <object:category value="ITResource"    name="AJS.Endpoint"/>
+      </object:exportSet>
+      <!-- export the User Defined Form configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/ajs-model-tt.xml"
+                        description="Atlassian Jira Server Connector Configuration ${application.release}">
+        <object:category value="Process Form" name="UD_AJS_PRJ"/>
+        <object:category value="Process Form" name="UD_AJS_GRP"/>
+        <object:category value="Process Form" name="UD_AJS_USR"/>
+      </object:exportSet>
+      <!-- export the Provisioning Process configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/ajs-process-dm.xml"
+                        description="Atlassian Jira Server Connector Configuration ${application.release}">
+        <object:category value="Resource"     name="AJS Account"/>
+        <object:category value="Process"      name="AJS Account"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/ajs-scheduler-dm.xml"
+                        description="Atlassian Jira Server Connector Configuration ${application.release}">
+        <object:category value="Job"          name="AJS Role Reconciliation"/>
+        <object:category value="Job"          name="AJS Project Reconciliation"/>
+        <object:category value="Job"          name="AJS Group Reconciliation"/>
+        <object:category value="Job"          name="AJS Account Reconciliation"/>
+        <object:category value="Job"          name="AJS Delete Reconciliation"/>
+      </object:exportSet>
+      <!-- export the Request Catalog configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/ajs-request-dm.xml"
+                        description="Atlassian Jira Server Connector Configuration ${application.release}">
+        <object:category value="RequestDataset"      name="AJSRequest"/>
+        <object:category value="ApplicationInstance" name="AJSAccount"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Exports the project artifacts from the target host and Identity Manager Instance"/>
+</project>

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="uid-search"
+         xml:lang="de"
+         version ="5.0">
+  <title>Abfrage on Unique Identifier'en</title>
+  <para>
+    <restapi role="search">/igs/uid/v1/uid</restapi>
+  </para>
+  <para>
+    Abfrage von on Unique Identifier'en basierend auf Abfragekriterien.
+  </para>
+  <section xml:id="uid-search-p">
+    <title>Anfrage</title>
+    <warning>
+      <title>Berechtigung</title>
+      <para>F&#252;r den Zugriff auf diesen Ressourcen-Endpunt sind keine erweiternde Berechtigungen erforderlich.</para>
+    </warning>
+    <bridgehead renderas="sect6">Beispiel</bridgehead>
+    <!--
+    Don't indent what's in the element below
+    -->
+    <programlisting language="bash">
+curl --request GET \
+     --location 'https://&lt;service-host&gt;:&lt;service-port&gt;/igs/uid/v1/uid' \
+     --header 'Accept: application/json' \
+     --header 'Content-Type: application/json' \
+     --header 'Authorization: Bearer &lt;your-token&gt;'
+    </programlisting>
+    <section xml:id="uid-search-h">
+      <title>Anfrage-Header</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Typ</entry>
+              <entry>Wert</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="uid-search-q">
+      <title>Abfrage Parameter</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Typ</entry>
+              <entry>Erforderlich</entry>
+              <entry>Beschreibung</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">filter</emphasis></entry>
+              <entry>string</entry>
+              <entry>nein</entry>
+              <entry>
+                <para>Der 1-basierte Index des ersten zur&#252;ckgegebenen Abfrageergebnisses.</para>
+                <para>Ein Wert kleiner als 1 wird als 1 interpretiert.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">startIndex</emphasis></entry>
+              <entry>integer</entry>
+              <entry>nein</entry>
+              <entry>
+                <para>Der 1-basierte Index des ersten zur&#252;ckgegebenen Abfrageergebnisses.</para>
+                <para>Ein Wert kleiner als 1 wird als 1 interpretiert.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">count</emphasis></entry>
+              <entry>integer</entry>
+              <entry>nein</entry>
+              <entry>
+                <para>Gibt die gew&#252;nschte maximale Anzahl von Abfrageergebnissen pro Batch an.</para>
+                <para>Ein negativer Wert wird als 0 interpretiert.</para>
+                <para>Der Wert 0 gibt an, dass keine Ressourcenergebnisse zurr&#252;ckgegeben werden sollen.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">sortBy</emphasis></entry>
+              <entry>string</entry>
+              <entry>nein</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">sortOrder</emphasis></entry>
+              <entry>string</entry>
+              <entry>nein</entry>
+              <entry></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">attributes</emphasis></entry>
+              <entry>string list</entry>
+              <entry>nein</entry>
+              <entry>Der Wert dieses Parameters ist eine durch Kommas getrennte Liste von Attributenamen der Ressource formuliert in der Standardnotation fr&#252;r Attribute (z.B. id, name).</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">excludedAttributes</emphasis></entry>
+              <entry>string list</entry>
+              <entry>nein</entry>
+              <entry>Der Wert dieses Parameters ist eine durch Kommas getrennte Liste von Attributenamen der Ressource formuliert in der Standardnotation fr&#252;r Attribute (z.B. id, name).</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="uid-search-r">
+    <title>Response</title>
+    <para>
+      Die Darstellung der durch die Abfrage gefundenen Unqiue Identifier enthalten die Attribute enthalten, deren R&#252;ckgabef?higkeit <emphasis>default</emphasis> ist.
+      Dies kann durch Angabe der Abfrageparameter <literal>attributes</literal> oder <literal>excludedAttributes</literal> &#252;berschrieben werden.
+    </para>
+    <para>
+      Bei Erfolg der Operation wird der Statuscode 200 zur&#252;ckgegeben.
+    </para>
+    <bridgehead renderas="sect6">Example</bridgehead>
+    <!--
+    Don't indent what's in the element below
+    -->
+    <programlisting language="json">
+{ "total": 1
+, "start": 1
+, "items": 1
+, "result": [
+    { "uid": "T-36-0-30-101-4123458"
+    , "state": 1
+    , "meta":
+      { "version": "01"
+      , "createdBy": "igssysadm"
+      , "createdOn": "2022-06-21T15:54:45"
+      , "updatedBy": "igssysadm"
+      , "updatedOn": "2022-06-21T15:54:45"
+      }
+    }
+  ]
+}
+    </programlisting>
+    <para>
+      Die Daten der generierten Ausgabe liegen in folgender Form vor:
+    </para>
+    <table colsep="0">
+      <tgroup cols="4">
+        <colspec colname="c1" colwidth="8em"/>
+        <colspec colname="c2" colwidth="7em"/>
+        <colspec colname="c3" colwidth="7em"/>
+        <colspec colname="c4" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Typ</entry>
+            <entry>Erforderlich</entry>
+            <entry>Beschreibung</entry>
+          </row>        
+        </thead>
+        <tbody>
+          <row>
+            <entry>total</entry>
+            <entry>integer</entry>
+            <entry>ja</entry>
+            <entry>Positive Zahl. Gibt die Gesamtanzahl der Ergebnisse an, die mit dan Kriterien der Abfrage &#252;bereinstimmen.</entry>
+          </row>
+          <row>
+            <entry>start</entry>
+            <entry>integer</entry>
+            <entry>ja</entry>
+            <entry>Der 1-basierte Index des ersten Ergebnisses im aktuellen Satz von Abfrageergebnissen.</entry>
+          </row>
+          <row>
+            <entry>items</entry>
+            <entry>integer</entry>
+            <entry>ja</entry>
+            <entry>Positive Zahl. Gibt die Anzahl der Abfrageergebnisse an, die auf einer Abfrage-Antwortseite zur&#252;ckgegeben werden.</entry>
+          </row>
+          <row>
+            <entry>result</entry>
+            <entry><link linkend='uid-search-r1'>Ressource</link>&#xA0;array</entry>
+            <entry>ja</entry>
+            <entry>Das Ressourcen-Array des aufgef&#252;llten Ergebnissatzes.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <section xml:id="uid-search-r1">
+      <title>Resource</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Typ</entry>
+              <entry>Erforderlich</entry>
+              <entry>Beschreibung</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>uid</entry>
+              <entry>string</entry>
+              <entry>ja</entry>
+              <entry>Die eindeutige generierte oder registrierte Unique Identifier.</entry>
+            </row>
+            <row>
+              <entry>state</entry>
+              <entry>integer</entry>
+              <entry>ja</entry>
+              <entry>The current state of the unique identifier.</entry>
+            </row>
+            <row>
+              <entry>meta</entry>
+              <entry><link linkend='uid-search-r2'>Metadata</link>&#xA0;object</entry>
+              <entry>yes</entry>
+              <entry>The audited metadata of the unique identifier.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+</section>

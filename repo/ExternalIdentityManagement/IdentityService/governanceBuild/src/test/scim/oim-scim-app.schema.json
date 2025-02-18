@@ -1,0 +1,119 @@
+{ "schemas" : [
+    "urn:ietf:params:scim:schemas:core:2.0:Schema"
+  ]
+, "id"   : "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:UserApplication"
+, "name" : "UserApplication"
+, "description" : "Schema extension for user application instances"
+, "meta" : {
+    "location"     : "http://oim.oracledemo.com:80/iam/governance/scim/v1/Schemas/urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:UserApplication"
+  , "resourceType" : "Schema"
+  }
+, "attributes" : {
+    "applications" : {
+      "type" : "complex"
+    , "multiValued" : true
+    , "description" : "User's associated application instances"
+    , "mutability" : "readWrite"
+    , "returned" : "default"
+    , "uniqueness" : "none"
+    , "required" : false
+    , "caseExact" : false
+    , "subAttributes" : [
+        { "name"        : "applicationName"
+        , "type"        : "string"
+        , "multiValued" : false
+        , "description" : "Name of the application instance"
+        , "mutability"  : "readWrite"
+        , "returned"    : "default"
+        , "uniqueness"  : "none"
+        , "required"    : false
+        , "caseExact"   : false
+        }
+      , { "name"        : "applicationAttributes"
+        , "type"        : "complex"
+        , "multiValued" : true
+        , "description" : "Attributes for the application instance account"
+        , "mutability"  : "readWrite"
+        , "returned"    : "default"
+        , "uniqueness"  : "none"
+        , "required"    : false
+        , "caseExact"   : false
+        , "subAttributes" : [
+            { "name"        : "name"
+            , "type"        : "string"
+            , "multiValued" : false
+            , "description" : "Attribute name (label from OIG)"
+            , "mutability"  : "readWrite"
+            , "returned"    : "default"
+            , "uniqueness"  : "none"
+            , "required"    : false
+            , "caseExact"   : false
+            }
+          , { "name"        : "value"
+            , "type"        : "string"
+            , "multiValued" : false
+            , "description" : "Attribute value"
+            , "mutability"  : "readWrite"
+            , "returned"    : "default"
+            , "uniqueness"  : "none"
+            , "required"    : false
+            , "caseExact"   : false
+            }
+          ]
+        }
+      , { "name" : "entitlements"
+        , "type" : "complex"
+        , "multiValued" : true
+        , "description" : "Entitlements associated with the application instance"
+        , "mutability"  : "readWrite"
+        , "returned"    : "default"
+        , "uniqueness"  : "none"
+        , "required"    : false
+        , "caseExact"   : false
+        , "subAttributes" : [
+            { "name"        : "namespace"
+            , "type"        : "String"
+            , "multiValued" : true
+            , "description" : "Namespace of the entitlement (e.g. UD_OUD)"
+            , "mutability"  : "readWrite"
+            , "returned"    : "default"
+            , "uniqueness"  : "none"
+            , "required"    : true
+            , "caseExact"   : false
+            }
+          , { "name"        : "entitlement"
+            , "type"        : "complex"
+            , "multiValued" : true
+            , "description" : "Attributes for the entitlement instance"
+            , "mutability"  : "readWrite"
+            , "returned"    : "default"
+            , "uniqueness"  : "none"
+            , "required"    : true
+            , "caseExact"   : false
+            , "subAttributes" : [
+                { "name"        : "name"
+                , "type"        : "string"
+                , "description" : "Name of the entitlement"
+                , "mutability"  : "readWrite"
+                , "returned"    : "default"
+                , "uniqueness"  : "none"
+                , "required"    : true
+                , "caseExact"   : false
+                }
+              , { "name"        : "value"
+                , "type"        : "string"
+                , "description" : "Value of the entitlement"
+                , "mutability"  : "readWrite"
+                , "returned"    : "default"
+                , "uniqueness"  : "none"
+                , "required"    : true
+                , "caseExact"   : false
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

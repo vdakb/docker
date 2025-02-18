@@ -1,0 +1,39 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityService/uniqueidBackend/src/main/resources/install/uid/obj/uit_cnt.con
+--
+--   Einfuehrung einer personenbezogenen ID im Progamm Polizei 2020
+--   Unique Identifier (UID)
+--   Version 1.2 | Stand 15.03.2022
+--
+--   Reference to Page 20 Table Row 2 Xpolizei-Katalogliste 208 (Staaten)
+--
+-- Generated for Oracle Database 12c on Sun Feb 11 08:55:42 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Constraints on 'uit_countries'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key 'uit_cnt_pk' on 'uit_countries'
+ALTER TABLE uit_countries
+  ADD (
+    CONSTRAINT uit_cnt_pk PRIMARY KEY (
+      id
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Unique Key 'uit_cnt_uk' on 'uit_countries'
+ALTER TABLE uit_countries
+  ADD (
+    CONSTRAINT uit_cnt_uk UNIQUE (
+      name
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Check Constraint 'uit_cnt_ck1' on 'uit_countries'
+ALTER TABLE uit_countries
+  ADD (
+    CONSTRAINT uit_cnt_ck1 CHECK (
+      active IN (0, 1)
+    )
+  )
+/

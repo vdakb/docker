@@ -1,0 +1,108 @@
+<!--
+  ! This software is the confidential and proprietary information of
+  ! Oracle Corporation. ("Confidential Information").  You shall not
+  ! disclose such Confidential Information and shall use it only in
+  ! accordance with the terms of the license agreement you entered
+  ! into with Oracle.
+  !
+  ! ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+  ! SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  ! IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ! PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+  ! SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+  ! THIS SOFTWARE OR ITS DERIVATIVES.
+  !
+  ! Copyright &#xA9; 2015. All Rights reserved
+  !
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="principles-iam"
+         xml:lang="en"
+         version ="5.0">
+  <title>Principles</title>
+  <section xml:id="principles-iam-01">
+    <title>Understanding Deployment Projects</title>
+    <para>
+      Configurations and customizations in Oracle Identity and Access Management products can be migrated from one deployment to another deployment.
+      For example, you might want to migrate the configurations and customizations from a test environment to a production environment. This is referred to as Test to Production (T2P).
+    </para>
+    <para>
+      The Deployment Projects is tooling with exporting and importing Oracle Identity and Access Management configurations.
+      Usually, you use the Deployment Project to migrate a configuration from one deployment to another, for example, from a test to a production deployment, or to create a backup of your system.
+    </para>
+    <para>
+      You can save some or all of the objects in your configuration.
+      This lets you develop and test your configurations in a test environment, and then import the tested objects into your production environment.
+    </para>
+    <section xml:id="principles-iam-01-01">
+      <title>Features of the Deployment Project</title>
+      <para>
+        The Deployment Project helps you to migrate Oracle Identity and Access Management deployments from one server environment to another, such as from a testing environment to a staging environment or from a staging environment to a production environment.
+      </para>
+    </section>
+    <section xml:id="principles-iam-01-02">
+      <title>Exporting Deployments</title>
+      <para>
+        You can export objects from your Oracle Identity and Access Management system and save them in an appropriate format.
+        The Deployment Project leveraging scripts that lets you create your export file.
+        Add objects by type, one type at a time, for example, roles, then forms, then processes, and so on.
+      </para>
+    </section>
+    <section xml:id="principles-iam-01-03">
+      <title>Importing Deployments</title>
+      <para>
+        Objects that were exported into an appropriate format by using the export functionality can be imported into Oracle Identity and Access Management system by using the Deployment Project.
+        You can import all or part of the files, and you can import multiple files at once.
+      </para>
+    </section>
+    <section xml:id="principles-iam-01-04">
+      <title>Best Practices Related to Using the Deployment Manager</title>
+      <section xml:id="principles-iam-01-04-01">
+        <title>Do Not Export System Objects</title>
+        <para>
+          You should export or import system objects, for example, <emphasis role="strong">Request</emphasis>, <emphasis role="strong">Xellerate User</emphasis>, and <emphasis role="strong">System Administrator</emphasis> in Oracle Identity Manager, only when it is necessary.
+          Exporting system objects from the testing and staging environments into production can cause problems.
+          If possible, exclude system objects when exporting or importing data.
+        </para>
+      </section>
+      <section xml:id="principles-iam-01-04-02">
+        <title>Exporting Related Groups of Objects</title>
+        <para>
+          Oracle recommends that you use the Deployment Projects to export sets of related objects.
+          A unit of export should be a collection of logical items that you want to group together.
+        </para>
+        <para>
+          Avoid exporting everything in the database in one operation, or exporting items one at a time.
+          For example, suppose that you manage an integration between Oracle Identity Manager and a target system that includes processes, resource objects, adapters, IT resource type definitions, IT resource definitions, scheduled tasks, and so on.
+          For this environment, you should create groups of related objects before exporting.
+        </para>
+        <para>
+          For example, if you use the same e-mail definitions in multiple integrations, you should export the e-mail definitions as one unit, and the integrations as a different unit.
+          This enables you to import changes to e-mail definitions independently of target system changes.
+          On the other hand, if multiple resources use the same IT resource type definition, you can export and import the type definition separately from other data.
+        </para>
+      </section>
+      <section xml:id="principles-iam-01-04-03">
+        <title>Exporting and Importing Data in Bulk</title>
+        <para>
+          The Deployment Projects are not tools for data movement or migration of large volumes of data.
+          Use your judgement while using the Deployment Project to export/import objects.
+          Entities, such as users, organizations, and roles, must be exported/imported by using other bulk tools, especially when the data volume is large.
+        </para>
+        <para>
+          In addition, ensure that users, roles, and organizations are always loaded and/or synchronized before moving of configuration objects, such as policies, rules, application instances, and connector configuration, to avoid exporting/importing them as dependencies.
+        </para>
+      </section>
+      <section xml:id="principles-iam-01-04-04">
+        <title>Importing Data When the System Is Quiet</title>
+        <para>
+          You cannot complete an import operation in a single transaction because it includes schema changes.
+          These changes affect currently running transactions on the system.
+          To limit the effect of an import operation, temporarily disable the Web application for general use and perform the operation when the system has the least activity, for example, overnight.
+        </para>
+      </section>
+    </section>
+  </section>
+</chapter>

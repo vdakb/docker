@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<oimplugins xmlns:xsi         ="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://www.oracle.com/schema/oim/plugin plugin.xsd">
+  <!--
+  =====================================================================
+  == Event abd Validation Handler
+  =====================================================================
+  -->
+  <plugins  pluginpoint="oracle.iam.platform.kernel.spi.EventHandler">
+    <plugin name       ="IdentityPreProcessor"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.usr.IdentityPreProcessor">
+    </plugin>
+    <plugin name       ="IdentityValidationHandler"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.usr.IdentityValidationHandler">
+    </plugin>
+    <plugin name       ="IdentityPasswordNotification"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.usr.PasswordNotification">
+    </plugin>
+    <plugin name       ="OrganizationAttributeValidationHandler"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.org.OrganizationAttributeValidationHandler">
+    </plugin>
+    <plugin name       ="OrganizationAttributePostProcessor"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.org.OrganizationAttributePostProcessor">
+    </plugin>
+  </plugins>
+  <!--
+  =====================================================================
+  == Request Data Validator
+  =====================================================================
+  -->
+  <plugins pluginpoint="oracle.iam.request.plugins.RequestDataValidator">
+    <plugin name       ="SingleAccountValidator"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.req.SingleAccountValidator">
+      <metadata name="DataValidator">
+        <value>IDSRequest</value>
+      </metadata>
+    </plugin>
+    <plugin name       ="eFBSCitrixAccountValidator"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.req.CTSValidator">
+      <metadata name="DataValidator">
+        <value>CTSRequest</value>
+      </metadata>
+    </plugin>
+    <plugin name       ="eFBSProductionAccountValidator"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.req.EFBSProductionValidator">
+      <metadata name="DataValidator">
+        <value>eFBSRequestProduction</value>
+      </metadata>
+    </plugin>
+    <plugin name       ="eFBSEducationAccountValidator"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.req.EFSBEducationValidator">
+      <metadata name="DataValidator">
+        <value>eFBSRequestEducation</value>
+      </metadata>
+    </plugin>
+  </plugins>
+  <!--
+  =====================================================================
+  == Notification Event Resolver
+  =====================================================================
+  -->
+  <plugins pluginpoint="oracle.iam.notification.impl.NotificationEventResolver">
+    <plugin name       ="RoleProvisioningResolver"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.ugp.NotificationResolver"/>
+    <plugin name       ="AccountProvisioningResolver"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.app.NotificationResolver"/>
+    <plugin name       ="EntitlementProvisioningResolver"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.ent.NotificationResolver"/>
+    <plugin name       ="AccessPolicyModifiedResolver"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.pol.NotificationResolver"/>
+    <plugin name       ="SystemHealthDigestResolver"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.sys.NotificationResolver"/>
+    <plugin name       ="ExternalPasswordResetResolver"
+            version    ="1.0.0.0"
+            pluginclass="bka.iam.identity.event.pwr.NotificationResolver"/>
+  </plugins>
+</oimplugins>

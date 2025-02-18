@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Directory Service Deployment Controller"
+         basedir     ="../../../deployment/fim"
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology"
+         xmlns:config="http://oracle.ods.deployment/config"
+         xmlns:entry ="http://oracle.ods.deployment/entry"
+         xmlns:object="http://oracle.ods.deployment/object">
+  <!--
+  ==============================================================================
+  == properties specific to the deployment environment
+  ==============================================================================
+  -->
+  <import file="../../ods-context.xml"/>
+  <import file="../../../DirectoryTransition/tpl/ant/fim-config.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <target name="001" description="Access Control Group and Extension Configuration">
+    <call-targets package="0100-00,0101-01,0101-02,0101-03"/>
+  </target>
+  <target name="002" description="Federated Identity Management Service Directory Proxy Configuration">
+    <call-targets package="0200-00,0200-AN,0200-BE,0200-BY,0200-HB,0200-MV,0200-NI,0200-NW,0200-RP,0200-SH,0200-SL,0200-SN,0200-TH,0200-ZF"/>
+  </target>
+</project>

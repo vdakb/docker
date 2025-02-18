@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="clientPageDef"
+                Package="bka.iam.identity.ui.oauth.pages">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="root" RangeSize="25" DataControl="IdentityDomainSessionFacade"
+              id="IdentityDomainSessionFacadeIterator"/>
+    <accessorIterator MasterBinding="IdentityDomainSessionFacadeIterator" Binds="clients" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.Client"
+                      id="clientsIterator"/>
+    <searchRegion Binds="clientsIterator" Criteria="" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="clientsQuery"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="clientsIterator" id="clients">
+      <nodeDefinition DefName="bka.iam.identity.ui.oauth.model.Client" Name="clients0">
+        <AttrNames>
+          <Item Value="id"/>
+          <Item Value="name"/>
+          <Item Value="description"/>
+          <Item Value="clientType"/>
+          <Item Value="defaultScope"/>
+          <Item Value="usePKCE"/>
+          <Item Value="issueTLSClientCertificateBoundAccessTokens"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <methodAction id="refreshClients" RequiresUpdateModel="true" Action="invokeMethod" MethodName="refreshClients"
+                  IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.refreshClients.dataControl.dataProvider"/>
+    <methodAction id="deleteClient" RequiresUpdateModel="true" Action="invokeMethod" MethodName="deleteClient"
+                  IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.deleteClient.dataControl.dataProvider"
+                  ReturnName="data.IdentityDomainSessionFacade.methodResults.deleteClient_deleteClient_dataControl_dataProvider_deleteClient_result">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+      <NamedData NDName="identityDomainName" NDType="java.lang.String"/>
+      <NamedData NDName="clientId" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="resetClientPassword" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="resetClientPassword" IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.resetClientPassword.dataControl.dataProvider">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+      <NamedData NDName="identityDomainName" NDType="java.lang.String"/>
+      <NamedData NDName="clientId" NDType="java.lang.String"/>
+      <NamedData NDName="newPassword" NDType="java.lang.String"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

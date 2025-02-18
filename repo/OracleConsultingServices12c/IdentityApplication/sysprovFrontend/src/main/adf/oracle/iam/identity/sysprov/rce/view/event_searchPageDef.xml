@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="event_searchPageDef"
+                Package="oracle.iam.identity.sysprov.rce.view">
+  <parameters/>
+  <executables>
+    <iterator     id="EventIterator" Binds="ReconciliationEventSearchVO" DataControl="ReconciliationEventAMDataControl" RangeSize="20"/>
+    <searchRegion id="EventCriteria" Binds="EventIterator" Criteria="ReconciliationEventVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="objectName"/>
+  </executables>
+  <bindings>
+    <tree id="Event" IterBinding="EventIterator">
+      <nodeDefinition Name="EventNode" DefName="oracle.iam.identity.sysprov.model.view.ReconciliationEventVO">
+        <AttrNames>
+          <Item Value="eventKey"/>
+          <Item Value="jobKey"/>
+          <Item Value="batchKey"/>
+          <Item Value="objectKey"/>
+          <Item Value="objectName"/>
+          <Item Value="entityType"/>
+          <Item Value="changeType"/>
+          <Item Value="status"/>
+          <Item Value="actionDate"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Rollback" DataControl="ReconciliationEventAMDataControl" RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

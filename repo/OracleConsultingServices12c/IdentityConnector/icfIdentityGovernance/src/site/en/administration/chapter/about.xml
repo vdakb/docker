@@ -1,0 +1,677 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="about"
+         xml:lang="en"
+         version ="5.0">
+  <title>About the Identity Governance Provisioning Connector</title>
+  <para>
+    Oracle&#174; Identity Governance is a centralized identity management solution that provides self service, compliance, provisioning and password management services for applications residing on-premises or on the Cloud.
+    Oracle&#174; Identity Governance connectors are used to integrate Oracle&#174; Identity Governance with the external identity-aware applications.
+  </para>
+  <para>
+    The Oracle&#174; Identity Manager Connectors lets you create and onboard Oracle&#174; Identity Governance itself as an applications in Oracle&#174; Identity Governance.
+  </para>
+  <note>
+    <para>
+      In this guide, the connector that is deployed using the <emphasis role="strong">Applications</emphasis> option on the <emphasis role="strong">Applications Manage</emphasis> tab of Identity Self Service is referred to as an <emphasis role="strong">AOB application</emphasis>.
+      The connector that is deployed using the <emphasis role="strong">Manage Connector</emphasis> option in Identity System Administration is referred to as a <emphasis role="strong">CI-based connector</emphasis> (Connector Installer-based connector).
+    </para>
+  </note>
+  <para>
+    From Oracle&#174; Identity Governance release 12.2.1.3.0 onward, connector deployment is handled using the application onboarding capability of Identity Self Service.
+    This capability lets business users to onboard applications with minimum details and effort.
+    The connector installation package includes a collection of predefined templates (XML files) that contain all the information required for provisioning and reconciling data from a given application or target system.
+    These templates also include basic connectivity and configuration details specific to your target system.
+    The connector uses information from these predefined templates allowing you to onboard your applications quickly and easily using only a single and simplified UI.
+  </para>
+  <para>
+    <emphasis role="strong">Application onboarding</emphasis> is the process of registering or associating an application with Identity Governance and making that application available for provisioning and reconciliation of user information.
+  </para>
+  <para>
+    The following sections provide a high-level overview of the connector:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <link linkend="about-cmp">Required Components</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="about-use">Usage Recommendation</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="about-nls">Supported Languages</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="about-arc">Connector Architecture</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="about-ops">Supported Connector Operations</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="about-ftr">Connector Features</link>
+      <para/>
+    </listitem>
+  </itemizedlist>
+  <note>
+    At some places in this guide, Identity Governance Service are referred to as the <emphasis role="strong">target system</emphasis>.
+  </note>
+  <section xml:id="about-cmp">
+    <title>Required Components</title>
+    <para>
+      The platform-specific hardware and software requirements listed in this document are valid as of the date this document was created.
+      Since new platforms and operating systems may be certified after this document is published, it is recommended to consult the certification matrix on Oracle Technology Network.
+      The current statements about certified platforms and operating systems can be found there.
+    </para>
+    <para>
+      The respective certification matrix for Oracle Identity and Access Management Suite products are available at the following URLs:
+    </para>
+    <itemizedlist mark="bullet">
+      <listitem>
+        <link xl:show="new" xl:href="ttps://www.oracle.com/docs/tech/middleware/fmw-122140-certmatrix.xlsx" xl:role="http://docbook.org/xlink/role/olink">
+          <citetitle>Oracle&#174; Fusion Middleware 12c (12.2.1.4.0)</citetitle>
+        </link>
+      <para/>
+      </listitem>
+      <listitem>
+        <link xl:show="new" xl:href="https://www.oracle.com/technetwork/middleware/fmw-122130-certmatrix-3867828.xlsx" xl:role="http://docbook.org/xlink/role/olink">
+          <citetitle>Oracle&#174; Fusion Middleware 12c (12.2.1.3.0)</citetitle>
+        </link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="about-cmp-req">
+      <title>Required Versions</title>
+      <para>
+        These are the software components and their versions required for installing and using the connector.
+      </para>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="15em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Component</entry>
+              <entry>Version</entry>
+            </row>
+          </thead>
+            <tbody>
+              <row>
+                <entry>Oracle&#174; Java Development Kit</entry>
+                <entry>JDK 1.8.0_131 or higher</entry>
+              </row>
+              <row>
+                <entry>Oracle&#174; Infrastruktur</entry>
+                <entry>Oracle&#174; WebLogic 12c (12.2.1.3.0)</entry>
+              </row>
+              <row>
+                <entry>Oracle&#174; Database</entry>
+                <entry>Oracle&#174; RDBMS 12c (12.2.0.1.0) or higher</entry>
+              </row>
+              <row>
+                <entry>Oracle&#174; Identity Governance</entry>
+                <entry>Oracle&#174; Identity Governance 12c Release 12.2.1.3.0</entry>
+              </row>
+              <row>
+                <entry>Connector Server</entry>
+                <entry>Identity Connectore Server Release 12.2.1.3.0</entry>
+              </row>
+              <row>
+                <entry>Target System</entry>
+                <entry>Identity Governance Provisioning Release 1.0.0.0</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+      <section xml:id="about-cmp-upg">
+        <title>Required Patches</title>
+        <para>
+           These are the software components and their versions required for installing and using the connector.
+        </para>
+        <table colsep="0">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="15em"/>
+            <colspec colname="c2" colwidth="*"/>
+            <thead>
+              <row>
+                <entry>Component</entry>
+                <entry>Version</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Oracle&#174; Identity Governance</entry>
+                <entry>Patch 30735905 Oracle&#174; Identity Governance Bundle Patch ID:200108.2108)</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+    </section>
+    <section xml:id="about-use">
+      <title>Usage Recommendation</title>
+      <para>
+        These are the recommendations for the Identity Governance Provisioning Connector versions that you can deploy and use depending Oracle Identity Governance version that you are using.
+      </para>
+      <note>
+        <para>
+          Oracle&#174; Identity Governance release 11.1.x, is not supported by this connector.
+        </para>
+      </note>
+      <para>
+        If you are using Identity Governance 12c (12.2.1.4.0) and want to integrate it the target system, then use the latest 12.2.1.x version of this connector and deploy it using either the <emphasis role="strong">Applications</emphasis> option on the <emphasis role="strong">Manage</emphasis> tab of Identity Self Service or the <emphasis role="strong">Manage Connector</emphasis> option in Oracle&#174; Identity System Administration.
+      </para>
+      <para>
+        If you are using Identity Governance 12c (12.2.1.3.0) and want to integrate it the target system, then use the latest 12.2.1.x version of this connector and deploy it using either the <emphasis role="strong">Applications</emphasis> option on the <emphasis role="strong">Manage</emphasis> tab of Identity Self Service or the <emphasis role="strong">Manage Connector</emphasis> option in Oracle&#174; Identity System Administration.
+      </para>
+      <para>
+        Below provides the list of features supported by the <emphasis>AOB</emphasis> application and <emphasis>CI</emphasis>-based connector.
+      </para>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="*"/>
+          <colspec colname="c2" colwidth="6em"/>
+          <colspec colname="c3" colwidth="6em"/>
+          <thead>
+            <row>
+              <entry>Feature</entry>
+              <entry>AOB</entry>
+              <entry>CI</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Account Full Reconciliation</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Account Incremental Reconciliation</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Account Limited Reconciliation</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Account Delete Reconciliation</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Role Reconciliation</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Tenant Reconciliation</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Secure Communication</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Test connection</entry>
+              <entry>Yes</entry>
+              <entry>No</entry>
+            </row>
+            <row>
+              <entry>Connector Server</entry>
+              <entry>Yes</entry>
+              <entry>Yes</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="about-nls">
+      <title>Supported Languages</title>
+      <para>
+        The connector supports the following languages:
+      </para>
+      <itemizedlist>
+        <listitem>
+          <para>English</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>French</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>German</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+    <section xml:id="about-arc">
+      <title>Connector Architecture</title>
+      <para>
+        With the connector you can manage user accounts on the target system.
+        Account management is also known as target resource management.
+      </para>
+      <figure>
+        <title>Connector Architecture</title>
+        <mediaobject>
+          <alt>Connector Architecture</alt>
+          <imageobject>
+            <!--
+             | The location of the image path must be relative to the basedir of
+             | the ANT script
+             -->
+            <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/en/administration/images/ICF.OIG Connector Architecture.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>
+        As shown in this figure, the backend of Identity Governance Service is configured as a target resource by Oracle&#174; Identity Governance.
+        Provisioning, performed in Oracle Identity Governance, creates and updates accounts for identities on the target system.
+        Through the reconciliation, account data that is created and updated directly on the target system is fetched in Oracle&#174; Identity Governance and saved against the corresponding identities.
+      </para>
+      <para>
+        The Identity Governance Provisioning Connector is implemented by using the Identity Connector Framework (ICF).
+        ICF is a component that is required to use Identity Connectors and provides basic reconciliation and provisioning operations that are common to all Identity Governance connectors.
+        In addition, ICF offers general functions that developers would otherwise have to implement themselves, e.g. connection pooling, buffering, timeouts and filtering.
+        The ICF is shipped along with Identity Governance.
+        Therefore, you need not configure or modify the ICF.
+      </para>
+      <para>
+        The Identity Governance Provisioning Connector uses RMI to access the target system.
+      </para>
+      <para>
+        This connector supports Account Management only.
+        This mode of the connector enables the following operations:
+      </para>
+      <section xml:id="about-arc-prv">
+        <title>Provisioning</title>
+        <para>
+          Provisioning involves creating, updating, or deleting users on the target system through Oracle&#174; Identity Governance.
+          When you allocate (or provision) a target system resource to an identity, the operation results in the creation of an account on the target system for that identity.
+          In the Oracle&#174; Identity Governance context, the term "provisioning" is also used to mean updates (for example enabling or disabling) made to the target system account through Oracle&#174; Identity Governance.
+        </para>
+        <para>
+          Before you can provision users to the required groups or tenants on the target system, you must fetch into Oracle&#174; Identity Governance the list of all groups and tenants used on the target system.
+          This is achieved by using the IGS Role Lookup Reconciliation and IGS Tenant Lookup Reconciliation scheduled jobs for lookup synchronization.
+        </para>
+      </section>
+      <section xml:id="about-arc-rec">
+        <title>Reconciliation</title>
+        <para>
+          During the target resource reconciliation, data on newly created and changed user accounts in the target system are compared and linked to existing identities and provisioned resources.
+          To perform target resource reconciliation, scheduled jobs are used.
+          The connector applies filters to locate users to be reconciled from the target system and then fetches the attribute values of these users.
+        </para>
+      </section>
+    </section>
+    <section xml:id="about-ops">
+      <title>Supported Connector Operations</title>
+      <para>
+        These are the operations that the connector supports for your target system:
+      </para>
+      <section xml:id="about-ops-usr">
+        <title>User Management</title>
+        <table colsep="0">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="*"/>
+            <colspec colname="c2" colwidth="6em"/>
+            <thead>
+              <row>
+                <entry>Operation</entry>
+                <entry>Supported?</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Create Account</entry>
+                <entry>Yes</entry>
+              </row>
+              <row>
+                <entry>Modify Account</entry>
+                <entry>No</entry>
+              </row>
+              <row>
+                <entry>Delete Account</entry>
+                <entry>Yes</entry>
+              </row>
+              <row>
+                <entry>Enable Account</entry>
+                <entry>No</entry>
+              </row>
+              <row>
+                <entry>Disable Account</entry>
+                <entry>No</entry>
+              </row>
+              <row>
+                <entry>Reset Password</entry>
+                <entry>No</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+      <section xml:id="about-ops-rol">
+        <title>Role Management</title>
+        <table colsep="0">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="*"/>
+            <colspec colname="c2" colwidth="6em"/>
+            <thead>
+              <row>
+                <entry>Operation</entry>
+                <entry>Supported?</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Create Role</entry>
+                <entry>No</entry>
+              </row>
+              <row>
+                <entry>Modify Role</entry>
+                <entry>No</entry>
+             </row>
+              <row>
+                <entry>Delete Role</entry>
+                <entry>No</entry>
+            </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </section>
+      <section xml:id="about-ops-tnt">
+        <title>Organization Management</title>
+        <table colsep="0">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="*"/>
+            <colspec colname="c2" colwidth="6em"/>
+            <thead>
+              <row>
+                <entry>Operation</entry>
+                <entry>Supported?</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Create Organization</entry>
+                <entry>No</entry>
+              </row>
+              <row>
+                <entry>Modify Organization</entry>
+                <entry>No</entry>
+             </row>
+              <row>
+                <entry>Delete Organization</entry>
+                <entry>No</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+      <section xml:id="about-ops-adm">
+        <title>AdminRole Management</title>
+        <table colsep="0">
+          <tgroup cols="2">
+            <colspec colname="c1" colwidth="*"/>
+            <colspec colname="c2" colwidth="6em"/>
+            <thead>
+              <row>
+                <entry>Operation</entry>
+                <entry>Supported?</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>Create AdminRole</entry>
+                <entry>No</entry>
+              </row>
+              <row>
+                <entry>Modify AdminRole</entry>
+                <entry>No</entry>
+             </row>
+              <row>
+                <entry>Delete AdminRole</entry>
+                <entry>No</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="about-ops-grt">
+      <title>Entitlement Grant Management</title>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="*"/>
+          <colspec colname="c2" colwidth="6em"/>
+          <thead>
+            <row>
+            <entry>Operation</entry>
+            <entry>Supported?</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Assign To Role</entry>
+              <entry>Yes</entry>
+             </row>
+            <row>
+              <entry>Revoke From Role</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Assign To AdminRole</entry>
+              <entry>Yes</entry>
+            </row>
+            <row>
+              <entry>Revoke AdminRole</entry>
+              <entry>Yes</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="about-ftr">
+    <title>Features of the Connector</title>
+    <para>
+      The features of the connector include support for connector server, support for high-availability configuration of the target system, connection pooling, reconciliation of deleted user records, support for groovy scripts, and so on.
+    </para>
+    <itemizedlist>
+      <listitem>
+        <link linkend="about-ftr-full">Full and Incremental Reconciliation</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="about-ftr-ltd">Limited Reconciliation</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="about-ftr-del">Reconciliation of Deleted User Records</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="about-ftr-lku">Lookup Fields Synchronized with the Target System</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="about-ftr-jcs">Support for the Connector Server</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="about-ftr-scp">Support for Running Pre and Post Action Scripts</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="about-ftr-trf">Transformation of Account Data</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="about-ftr-sec">Secure Communication to the Target System</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="about-ftr-pol">Connection Pooling</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend="about-ftr-hav">Support for High-Availability Configuration of the Target System</link>
+        <para/>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="about-ftr-full">
+      <title>Full and Incremental Reconciliation</title>
+      <para>
+        Full reconciliation involves reconciling all existing user records from the target system into Oracle&#174; Identity Governance.
+        In incremental reconciliation, only records that are added or modified after the last reconciliation run are fetched into Oracle&#174; Identity Governance.
+      </para>
+      <para>
+        After you create the application, you can perform full reconciliation to bring all existing user data from the target system to Oracle&#174; Identity Governance.
+        After the first full reconciliation run, incremental reconciliation is automatically enabled.
+        In incremental reconciliation, user accounts that have been added or modified since the last reconciliation run are fetched into Oracle&#174; Identity Governance.
+      </para>
+      <para>
+        After you create the application, you can first perform full reconciliation.
+        After the first full reconciliation run, incremental reconciliation is automatically enabled.
+      </para>
+    </section>
+    <section xml:id="about-ftr-ltd">
+      <title>Limited Reconciliation</title>
+      <para>
+        You can set a reconciliation filter as the value of the Filter attribute of a reconciliation scheduled job.
+        This filter specifies the subset of added and modified target system records that must be reconciled.
+      </para>
+    </section>
+    <section xml:id="about-ftr-del">
+      <title>Reconciliation of Deleted User Records</title>
+      <para>
+        You can use the connector to reconcile user records that are deleted on the target system into Oracle&#174; Identity Governance.
+      </para>
+      <para>
+        For more information about the reconciliation job used for reconciling these deleted records, see one of the following sections:
+        <link linkend="notyet">insert link</link>
+      </para>
+    </section>
+    <section xml:id="about-ftr-lku">
+      <title>Lookup Fields Synchronized with the Target System</title>
+      <para>
+        During a provisioning operation, you use a lookup field on the process form to specify a single value from a set of values.
+        For example, you use the Country lookup field to select a country from the list of countries in the lookup field.
+      </para>
+      <para>
+        When you deploy the connector, lookup definitions corresponding to the lookup fields on the target system are created in Oracle&#174; Identity Governance.
+        Lookup field synchronization involves copying additions or changes made to the target system lookup fields into the lookup definitions in Oracle&#174; Identity Governance.
+      </para>
+      <para>
+        For more information about the reconciliation job used for reconciling lookup definitions, see one of the following sections:
+        <link linkend="notyet">insert link</link>
+      </para>
+    </section>
+    <section xml:id="about-ftr-jcs">
+      <title>Support for the Connector Server</title>
+      <para>
+        Connector Server is one of the features provided by ICF.
+        By using one or more connector servers, the connector architecture permits your application to communicate with externally deployed bundles.
+      </para>
+      <para>
+        A Java connector server is useful when you do not wish to execute a Java connector bundle in the same VM as your application.
+        It can be beneficial to run a Java connector on a different host for performance improvements.
+      </para>
+      <para>
+        For information about installing, configuring, and running the Connector Server, and then installing the connector in a Connector Server, see <link xl:show="new" xl:href="https://docs.oracle.com/en/middleware/idm/identity-governance/12.2.1.3/omdev/understanding-identity-connector-framework.html#GUID-3456CEE2-CAFC-4B11-93AE-BE3234EB41DC" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Using an Identity Connector Server</citetitle></link> in <emphasis>Oracle Fusion Middleware Developing and Customizing Applications for Oracle Identity Governance</emphasis>.
+      </para>
+    </section>
+    <section xml:id="about-ftr-scp">
+      <title>Support for Running Pre and Post Action Scripts</title>
+      <para>
+        You can run pre and post action scripts on a computer where the
+        connector is deployed. These scripts can be of type SQL/StoredProc/Groovy.
+        You can configure the scripts to run before or after the create, update, or delete an account provisioning operations.
+      </para>
+      <para>
+        For more information, see <link xl:show="new" xl:href="https://docs.oracle.com/en/middleware/idm/identity-governance/12.2.1.3/omusg/managing-application-onboarding.html#GUID-C34B1E37-2B3C-4379-8032-94F370DC9708" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Updating the Provisioning Configuration</citetitle></link> in <emphasis>Oracle Fusion Middleware Performing Self Service Tasks with Oracle Identity Governance</emphasis>.
+      </para>
+    </section>
+    <section xml:id="about-ftr-trf">
+      <title>Transformation of Account Data</title>
+      <para>
+        You can configure transformation of account data that is brought into or sent from Oracle&#174; Identity Governance during reconciliation and provisioning operations by writing Groovy scripts while creating your application.
+      </para>
+      <para>
+        For more information, see <link xl:show="new" xl:href="https://docs.oracle.com/en/middleware/idm/identity-governance/12.2.1.3/omusg/managing-application-onboarding.html#GUID-E3D51F24-B419-4676-80D3-EFA56133DD56" xl:role="http://docbook.org/xlink/role/olink"><citetitle>Validation and Transformation of Provisioning and Reconciliation Attributes</citetitle></link> in <emphasis>Oracle Fusion Middleware Performing Self Service Tasks with Oracle Identity Governance</emphasis>.
+      </para>
+    </section>
+    <section xml:id="about-ftr-sec">
+      <title>Secure Communication to the Target System</title>
+      <para>
+        To provide secure communication to the target system, TLS/SSL is required.
+        You can configure TLS/SSL between Oracle&#174; Identity Governance and the Connector Server and between the Connector Server and the target system.
+      </para>
+      <para>
+        If you do not configure TLS/SSL, passwords can be transmitted over the network in clear text.
+        For example, this problem can occur when you are creating a user or modifying a user's password.
+      </para>
+      <para>
+        For more information, see <link linkend="notyet">insert link</link>.
+      </para>
+    </section>
+    <section xml:id="about-ftr-pol">
+      <title>Connection Pooling</title>
+      <para>
+        A connection pool is a cache of objects that represent physical connections to the target.
+        Oracle Identity Governance connectors can use these connections to communicate with target systems.
+      </para>
+      <para>
+        At run time, the application requests a connection from the pool.
+        If a connection is available, then the connector uses it and then returns it to the pool.
+        A connection returned to the pool can again be requested for and used by the connector for another operation.
+        By enabling the reuse of connections, the connection pool helps reduce connection creation overheads like network latency, memory allocation, and authentication.
+      </para>
+      <para>
+        One connection pool is created for each set of basic configuration parameters that you provide while creating an application.
+        For example, if you have three applications for three installations of the target system, then three connection pools will be created, one for each target system installation.
+      </para>
+      <para>
+        For more information about the parameters that you can configure for connection pooling, see:
+        <link linkend="notyet">insert link</link>
+      </para>
+    </section>
+    <section xml:id="about-ftr-hav">
+      <title>Support for High-Availability Configuration of the Target System</title>
+      <para>
+        You can configure the connector for compatibility with high-availability target system environments.
+      </para>
+      <para>
+        The connector can read information about backup target system hosts from the failover parameter of the Basic Configuration section and apply this information when it is unable to connect to the primary host
+      </para>
+      <para>
+        For more information about the Failover parameter, see <link linkend="notyet">insert link</link>.
+      </para>
+    </section>
+  </section>
+</chapter>

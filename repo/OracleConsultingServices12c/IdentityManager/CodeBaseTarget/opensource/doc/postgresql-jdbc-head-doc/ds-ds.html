@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" dir="ltr">
+<head>
+	<title>Applications DataSource</title>
+	<meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8" />
+	<meta name="description" content="The official site for the PostgreSQL JDBC Driver" />
+	<meta name="copyright" content="The PostgreSQL Global Development Group" />
+
+	<style type="text/css" media="screen" title="Normal Text">@import url("media/css/docs.css");</style>
+
+	<link rel="shortcut icon" href="media/favicon.ico" />
+</head>
+
+<body>
+	<div id="docHeader">
+		<div id="docHeaderLogo">
+			<a href="http://www.postgresql.org/" title="PostgreSQL"><img src="media/img/layout/hdr_left3a.png" alt="PostgreSQL" height="80" width="390" /></a>
+		</div>
+	</div>
+
+	<div id="docContainerWrap">
+		<div id="docContainer">
+			<div id="docContent">
+
+				<div class="NAVHEADER">
+					<table summary="Header navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+						<tbody>
+						<tr>
+							<th colspan="3" valign="bottom" align="center">
+								<h2 class="TITLE">Chapter 11. Connection Pools and Data Sources</h2>
+							</th>
+						</tr>
+						<tr>
+							<td valign="top" width="20%" align="left">
+								<a title="Application Servers ConnectionPoolDataSource" href="ds-cpds.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="bottom" width="60%" align="center">&nbsp;</td>
+							<td valign="top" width="20%" align="right">
+								<a title="Tomcat setup" href="tomcat.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+  					</tbody>
+					</table>
+					<hr class="c1" width="100%" />
+				</div> <!-- NAVHEADER -->
+
+				<div class="CHAPTER">
+  					<h1>Applications DataSource</h1>
+					
+					<p>PostgreSQL™ includes two implementations of <code>DataSource</code>, as shown in <a href="ds-ds.html#ds-ds-imp">Table 11.2, “<code>DataSource</code> Implementations”</a>.
+One that does pooling and the other that does not. The pooling implementation
+does not actually close connections when the client calls the <code>close</code> method,
+but instead returns the connections to a pool of available connections for other
+clients to use.  This avoids any overhead of repeatedly opening and closing
+connections, and allows a large number of clients to share a small number of
+database connections.</p>
+
+<p>The pooling data-source implementation provided here is not the most feature-rich
+in the world. Among other things, connections are never closed until the pool
+itself is closed; there is no way to shrink the pool.  As well, connections
+requested for users other than the default configured user are not pooled. Its
+error handling sometimes cannot remove a broken connection from the pool. In
+general it is not recommended to use the PostgreSQL™ provided connection pool.
+Check your application server or check out the excellent <a href="http://jakarta.apache.org/commons/dbcp/">jakarta commons DBCP</a>
+project.</p>
+
+<p><a name="ds-ds-imp"></a>
+<strong>Table 11.2. <code>DataSource</code> Implementations</strong></p>
+
+<table summary="DataSource Implementations" border="1">
+  <tr>
+    <th>Pooling</th>
+    <th>Implementation Class</th>
+  </tr>
+  <tbody>
+    <tr>
+      <td>No</td>
+      <td>`org.postgresql.ds.PGSimpleDataSource</td>
+    </tr>
+    <tr>
+      <td>Yes</td>
+      <td>`org.postgresql.ds.PGPoolingDataSource</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Both implementations use the same configuration scheme. JDBC requires that a
+<code>DataSource</code> be configured via JavaBean properties, shown in <a href="ds-ds.html#ds-ds-props">Table 11.3, “<code>DataSource</code> Configuration Properties”</a>,
+so there are get and set methods for each of these properties.</p>
+
+<p><a name="ds-ds-props"></a>
+<strong>Table 11.3. <code>DataSource</code> Configuration Properties</strong></p>
+
+<table summary="DataSource Configuration Properties" border="1">
+  <tr>
+    <th>Property</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tbody>
+    <tr>
+      <td>serverName</td>
+      <td>STRING</td>
+      <td>PostgreSQL™ database server host name</td>
+    </tr>
+    <tr>
+      <td>databaseName</td>
+      <td>STRING</td>
+      <td>PostgreSQL™ database name</td>
+    </tr>
+    <tr>
+      <td>portNumber</td>
+      <td>INT</td>
+      <td>TCP port which the PostgreSQL™
+database server is listening on (or 0 to use the default port)</td>
+    </tr>
+    <tr>
+      <td>user</td>
+      <td>STRING</td>
+      <td>User used to make database connections</td>
+    </tr>
+    <tr>
+      <td>password</td>
+      <td>STRING</td>
+      <td>Password used to make database connections</td>
+    </tr>
+    <tr>
+      <td>ssl</td>
+      <td>BOOLEAN</td>
+      <td> If true, use SSL encrypted
+connections (default false) </td>
+    </tr>
+    <tr>
+      <td>sslfactory</td>
+      <td>STRING</td>
+      <td> Custom javax.net.ssl.SSLSocketFactory
+class name (see the section called [“Custom
+SSLSocketFactory”](ssl-factory.html))</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The pooling implementation requires some additional configuration properties,
+which are shown in <a href="ds-ds.html#ds-ds-xprops">Table 11.4, “Additional Pooling <code>DataSource</code> Configuration Properties</a>.</p>
+
+<p><a name="ds-ds-xprops"></a>
+<strong>Table 11.4. Additional Pooling <code>DataSource</code> Configuration Properties</strong></p>
+
+<table summary="Additional Pooling DataSource Configuration Properties" border="1">
+  <tr>
+    <th>Property</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tbody>
+    <tr>
+      <td>dataSourceName</td>
+      <td>STRING</td>
+      <td>Every pooling DataSource must
+have a unique name.</td>
+    </tr>
+    <tr>
+      <td>initialConnections</td>
+      <td>INT</td>
+      <td>The number of database connections to be created when the
+pool is initialized.</td>
+    </tr>
+    <tr>
+      <td>maxConnections</td>
+      <td>INT</td>
+      <td>The maximum number of open database connections to allow.
+When more connections are requested, the caller will hang until a
+connection is returned to the pool.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a href="ds-ds.html#ds-example">Example 11.1, “<code>DataSource</code> Code Example”</a> shows an example
+of typical application code using a pooling <code>DataSource</code>.</p>
+
+<p><a name="ds-example"></a>
+<strong>Example 11.1. <code>DataSource</code> Code Example</strong></p>
+
+<p>Code to initialize a pooling <code>DataSource</code> might look like this:</p>
+
+<p><code>PGPoolingDataSource source = new PGPoolingDataSource();</code><br>
+<code>source.setDataSourceName(&quot;A Data Source&quot;);</code><br>
+<code>source.setServerName(&quot;localhost&quot;);</code><br>
+<code>source.setDatabaseName(&quot;test&quot;);</code><br>
+<code>source.setUser(&quot;testuser&quot;);</code><br>
+<code>source.setPassword(&quot;testpassword&quot;);</code><br>
+<code>source.setMaxConnections(10);</code></p>
+
+<p>Then code to use a connection from the pool might look like this. Note that it
+is critical that the connections are eventually closed.  Else the pool will
+“leak” connections and will eventually lock all the clients out.</p>
+
+<pre><code>
+Connection conn = null;
+try
+{
+    conn = source.getConnection();
+    // use connection
+}
+catch (SQLException e)
+{
+    // log error
+}
+finally
+{
+    if (con != null)
+    {
+        try { conn.close(); } catch (SQLException e) {}
+    }
+}
+</code></pre>
+
+				</div>
+
+				<div class="NAVFOOTER">
+					<hr class="c1" width="100%" />
+					<table summary="Footer navigation table" width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td valign="top" width="33%" align="left">
+								<a href="ds-cpds.html" accesskey="P">Prev</a>
+							</td>
+							<td valign="top" width="34%" align="center">
+								<a href="index.html" accesskey="H">Home</a>
+							</td>
+							<td valign="top" width="33%" align="right">
+								<a href="tomcat.html" accesskey="N">Next</a>
+							</td>
+    						</tr>
+						<tr>
+							<td valign="top" width="33%" align="left">Application Servers ConnectionPoolDataSource</td>
+							<td valign="top" width="34%" align="center">&nbsp;</td>
+							<td valign="top" width="33%" align="right">Tomcat setup</td>
+						</tr>
+					</tbody>
+					</table>
+				</div> <!-- NAVFOOTER -->
+
+
+			</div> <!-- docContent -->
+			
+			<div id="docComments"></div>
+
+			<div id="docFooter">
+				<a class="navFooter" href="http://www.postgresql.org/about/privacypolicy">Privacy Policy</a> |
+				<a class="navFooter" href="http://www.postgresql.org/about/">About PostgreSQL</a><br/>
+				Copyright &copy; 1996-2013 The PostgreSQL Global Development Group
+			</div> <!-- pgFooter -->
+		</div> <!-- docContainer -->
+	</div> <!-- docContainer -->
+</body>
+</html>

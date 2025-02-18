@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="logging"
+         xml:lang="en"
+         version ="5.0">
+  <title>Managing Logging</title>
+  <para>
+    The following topics provide detailed information about logging:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <xref linkend="logging-lev" xrefstyle="select:title"/>
+    </listitem>
+    <listitem>
+      <xref linkend="logging-ena" xrefstyle="select:title"/>
+    </listitem>
+  </itemizedlist>
+  <section xml:id="logging-lev">
+    <title>Understanding Log Levels</title>
+    <para>
+      This section describes Log Levels for the connector, by:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <xref linkend="logging-odl-lev" xrefstyle="select:title"/>
+       <para/>
+      </listitem>
+      <listitem>
+        <xref linkend="logging-jcs-lev" xrefstyle="select:title"/>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="logging-odl-lev">
+      <title>Diagnostic Logging Log Levels</title>
+      <para>
+        Oracle&#174; Identity Governance uses Oracle&#174; Diagnostic Logging (ODL) logging service for recording all types of events pertaining to the connector.
+      </para>
+      <para>
+        When you enable logging, Oracle&#174; Identity Governance automatically stores in a log file information about events that occur during the course of provisioning and reconciliation operations.
+      </para>
+      <para>
+        ODL is the principle logging service used by Oracle&#174; Identity Governance and is based on <literal>java.util.Logger</literal>.
+        To specify the type of event for which you want logging to take place, you can set the log level to one of the following:
+      </para>
+      <table xml:id="odl-log-level" colsep="0" xreflabel="Table: Oracle Diagnostic Log Levels">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="14em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Level</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>SEVERE.intValue()+100</entry>
+              <entry>This level enables logging of information about fatal errors.</entry>
+            </row>
+            <row>
+              <entry>SEVERE</entry>
+              <entry>This level enables logging of information about errors that might allow Oracle&#174; Identity Governance to continue running.</entry>
+            </row>
+            <row>
+              <entry>WARNING</entry>
+              <entry>This level enables logging of information about potentially harmful situations.</entry>
+            </row>
+            <row>
+              <entry>INFO</entry>
+              <entry>This level enables logging of messages that highlight the progress of the application.</entry>
+            </row>
+            <row>
+              <entry>CONFIG</entry>
+              <entry>This level enables logging of information about fine-grained events that are useful for debugging.</entry>
+            </row>
+            <row>
+              <entry>FINE, FINER, FINEST</entry>
+              <entry>These levels enable logging of information about fine-grained events, where FINEST logs information about all events.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+        These message types are mapped to ODL message type and level combinations as shown in <xref linkend="jcs-odl-mapping"/>.
+      </para>
+      <table xml:id="jcs-odl-mapping" colsep="0" xreflabel="Table Java Log Levels To Oracle Diagnostic Log Levels">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="14em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Java Level</entry>
+              <entry>ODL Message Type:Level</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>SEVERE.intValue()+100</entry>
+              <entry>INCIDENT_ERROR:1</entry>
+            </row>
+            <row>
+              <entry>SEVERE</entry>
+              <entry>ERROR:1</entry>
+            </row>
+            <row>
+              <entry>WARNING</entry>
+              <entry>WARNING:1</entry>
+            </row>
+            <row>
+              <entry>INFO</entry>
+              <entry>NOTIFICATION:1 </entry>
+            </row>
+            <row>
+              <entry>CONFIG</entry>
+              <entry>NOTIFICATION:16</entry>
+            </row>
+            <row>
+              <entry>FINE</entry>
+              <entry>TRACE1</entry>
+            </row>
+            <row>
+              <entry>FINER</entry>
+              <entry>TRACE16</entry>
+            </row>
+            <row>
+              <entry>FINEST</entry>
+              <entry>TRACE32</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+        The configuration file for ODL is <literal>logging.xml</literal> is located at the following path:
+      </para>
+      <para>
+        <emphasis>DOMAIN_HOME</emphasis><literal>/config/fmwconfig/servers/</literal><emphasis>OIM_SERVER</emphasis><literal>/logging.xml</literal>.
+       </para>
+      <para>
+        Here, <emphasis>DOMAIN_HOME</emphasis> and <emphasis>OIM_SEVER</emphasis> are the domain and server names specified during the installation of Oracle Identity Governance.
+      </para>
+    </section>
+    <section xml:id="logging-jcs-lev">
+      <title>Connector Server Log Levels</title>
+      <para>
+        The <literal>conf</literal> directory contains the <literal>logging.properties</literal> file, which you can edit to meet your requirements.
+      </para>
+      <para>
+        The following topics provide detailed information about logging:
+      </para>
+      <para>
+        When you enable logging, the connector server stores in a log file information about events that occur during the course of provisioning and reconciliation operations for different statuses.
+        By default, the connector server logs are set at <literal>INFO</literal> level and you can change this level to any one of these.
+      </para>
+      <table xml:id="jcs-log-level" colsep="0" xreflabel="Table: Connector Server Log Levels">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Level</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>Error</entry>
+              <entry>This level enables logging of information about errors that might allow connector server to continue running.</entry>
+            </row>
+            <row>
+              <entry>WARNING</entry>
+              <entry>This level enables logging of information about potentially harmful situations.</entry>
+            </row>
+            <row>
+              <entry>INFO</entry>
+              <entry>This level enables logging of messages that highlight the progress of the operation.</entry>
+            </row>
+            <row>
+              <entry>FINE, FINER, FINEST</entry>
+              <entry>These levels enable logging of information about fine-grained events, where FINEST logs information about all events.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="logging-ena">
+    <title>Enabling Logging</title>
+    <para>
+      This section describes how to enable logging for the connector, by:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <xref linkend="logging-ena-wls" xrefstyle="select:title"/>
+        <para/>
+      </listitem>
+      <listitem>
+        <xref linkend="logging-ena-jcs" xrefstyle="select:title"/>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="logging-ena-wls">
+      <title>Enabling Logging on Oracle&#174; WebLogic Server</title>
+      <para>
+        To enable logging on Oracle&#174; WebLogic Server:
+      </para>
+      <orderedlist>
+        <listitem>
+          <para>
+            Edit the <emphasis>DOMAIN_HOME</emphasis><literal>/config/fmwconfig/servers/</literal><emphasis>OIM_SERVER</emphasis><literal>/logging.xml</literal> file as follows:
+          </para>
+          <orderedlist>
+            <listitem>
+              <para>
+                Add the following blocks in the file:
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                Replace both occurrences of <emphasis role="strong">[LOG-LEVEL]</emphasis> with the ODL message type and level combination that you require.
+                <xref linkend="odl-log-level"/> lists the supported message type and level combinations.
+              </para>
+              <para>
+                Similarly, replace <emphasis role="strong">[PATH-TO-LOG-ROOT]</emphasis> and <emphasis role="strong">[WEBLOGIC-DOMAIN]</emphasis> with the full path and name of the log file in which you want log messages to be recorded.
+              </para>
+              <para>
+                The following blocks show sample values for <emphasis role="strong">[LOG-LEVEL]</emphasis> and <emphasis role="strong">[FILE_NAME]</emphasis>:
+              </para>
+              <programlisting xml:id="oig-log-handler" language="xml"><xi:include parse="text" href="../../source/oig-log-handler.xml"/></programlisting>
+              <programlisting xml:id="oig-log-logger"  language="xml"><xi:include parse="text" href="../../source/oig-log-logger.xml"/></programlisting>
+              <para>
+                With these sample values, when you use Oracle&#174; Identity Governance, all messages generated for this connector that are of a log level equal to or higher than the <literal>NOTIFICATION:1</literal> level are recorded in the specified file.
+              </para>
+            </listitem>
+          </orderedlist>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Save and close the file.
+          </para>
+        </listitem>
+        <listitem>
+          <para>
+            Set the following environment variable to redirect the server logs to a file:
+          </para>
+          <variablelist>
+            <varlistentry>
+              <term><emphasis role="strong">For Microsoft Windows</emphasis>:</term>
+              <listitem>
+                <programlisting xml:id="oig-log-redirect-msft" language="bash"><xi:include parse="text" href="../../source/oig-log-redirect-msft.sh"/></programlisting>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><emphasis role="strong">For UNIX</emphasis>:</term>
+              <listitem>
+                <programlisting xml:id="oig-log-redirect-unix" language="bash"><xi:include parse="text" href="../../source/oig-log-redirect-unix.sh"/></programlisting>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+          <para>
+            Replace <emphasis role="strong">FILENAME</emphasis> with the location and name of the file to which you want to redirect the output.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Restart the application server.
+          </para>
+        </listitem>
+      </orderedlist>
+    </section>
+    <section xml:id="logging-ena-jcs">
+      <title>Enabling Logging on the remote Connector Server</title>
+      <para>
+        Edit the <literal>logging.properties</literal> file located in the <emphasis>CONNECTOR_SERVER_HOME</emphasis><literal>/conf</literal> directory to enable logging.
+      </para>
+      <para>
+        To do so:
+      </para>
+      <orderedlist>
+        <listitem>
+          <para>
+            Navigate to the <emphasis>CONNECTOR_SERVER_HOME</emphasis><literal>/conf</literal> directory.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Open the <literal>logging.properties</literal> file in a text editor.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+           <para>
+             Replace both occurrences of <emphasis role="strong">[LOG-LEVEL]</emphasis> with the level combination that you require.
+             <xref linkend="jcs-log-level"/> lists the supported message type and level combinations.
+           </para>
+          <para>
+            Edit the following entry by replacing <literal>INFO</literal> with the required level of logging:
+          </para>
+          <para>
+            <literal>.level=INFO</literal>
+          </para>
+          <programlisting xml:id="jcs-log-handler" language="xml"><xi:include parse="text" href="../../source/jcs-log-handler.properties"/></programlisting>
+          <programlisting xml:id="jcs-log-logger"  language="xml"><xi:include parse="text" href="../../source/jcs-log-logger.properties"/></programlisting>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Save and close the file.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Restart the connector server.
+          </para>
+          <para/>
+        </listitem>
+      </orderedlist>
+    </section>
+  </section>
+</chapter>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project basedir="#{ant.basedir}" name="#{ant.project}" default="deploy">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description" value="#{oam.description}"/>
+  <property name="application" value="#{oam.application}"/>
+  <property name="packagepath" value="#{oam.packagepath.module}"/>
+
+  <property name="destination" value="#{oam.destination}"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="#{oam.target}"/>
+  <!--
+  =====================================================================
+  == declare the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath"/>
+  <!--
+  =====================================================================
+  == ANT target to assemble the web application to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="clean,init,copy,compile,manifest">
+    <oam-war-make directory="${basedir}" description="${description}" module="${application}" package="${packagepath}"/>
+    <echo message="Copying archive from path ${deploy.dir} to @{destination}"/>
+    <copy todir="@{destination}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+      <fileset dir="${deploy.dir}">
+        <include  name="@{application}.war"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application on the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploy the project artifacts" depends="make">
+    <oam-war-deploy directory="${deploy.dir}" application="${application}" member="${oam.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="redeploy" description="Redeploy the project artifacts" depends="make">
+    <oam-war-redeploy directory="${basedir}/${deploy.dir}" application="${application}" member="${oam.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="undeploy" description="Undeploy the project artifacts">
+    <oam-war-undeploy application="${application}"/>
+  </target>
+</project>

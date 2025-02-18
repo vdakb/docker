@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Oracle Consulting Services Identity Manager Deployment Importer"
+         basedir        =".."
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.iam.identity/server"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Offline Target Service
+  **           Metadata Configuration.
+  **
+  ** Synopsis: The tasks deploys the metadata definitions for Generic Directory
+  **           Foundation Configuration. This includes:
+  **           o IT Resource Definitions
+  **           o Task Adapter
+  **           o Scheduled Tasks
+  ******************************************************************************
+  -->
+  <target name="base" description="Deploys the Offline Target Service Foundation Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Offline Target Service Foundation Configuration ${application.release}"/>
+    <library-deploy dir="${deploy.dir}" file="ots-common.jar"     location="${oim.remote.thirdparty}"/>
+    <library-deploy dir="${deploy.dir}" file="ots-adapter.jar"    location="${oim.remote.adapter}"/>
+    <library-deploy dir="${deploy.dir}" file="ots-scheduler.jar"  location="${oim.remote.scheduler}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/base">
+        <object:importFile name="ots-resource-dm.xml"/>
+        <object:importFile name="ots-adapter-dm.xml"/>
+        <object:importFile name="ots-scheduler-dm.xml"/>
+        <object:importFile name="arc-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <!-- purge the cache to ensure that the latest version will be used -->
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="SchedulerTaskDefinition"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Offline Target Service
+  **           Target Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Service Target Configuration. This includes:
+  **           o IT Resource Definition
+  **           o Lookup Definition
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  **           o User Defined Forms
+  **           o Resource Object Definition
+  **           o Provisioning Processes
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="catalog" description="Deploys the Catalog Service Snychronization Configuration" depends="catalog-metadata">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Offline Catalog Service Snychronization Configuration ${application.release}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/catalog">
+        <object:importFile name="arc-resource-dm.xml"/>
+        <object:importFile name="arc-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Configuring IT Resource Identity Analytics Service"/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+      <itresource type="Identity Analytics Service" name="Identity Analytics Service">
+        <parameter name="Server Name"        value="${oia.service.host}"/>
+        <parameter name="Server Port"        value="${oia.service.port}"/>
+        <parameter name="Server Feature"     value="${oia.service.feature}"/>
+        <parameter name="Root Context"       value="${oia.service.uri}"/>
+        <parameter name="Secure Socket"      value="${oia.service.ssl}"/>
+        <parameter name="Principal Name"     value="${oia.service.username}"/>
+        <parameter name="Principal Password" value="${oia.service.password}"/>
+      </itresource>
+    </operation:itresource>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Offline Target Service
+  **           Target Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Service Target Configuration. This includes:
+  **           o IT Resource Definition
+  **           o Lookup Definition
+  **           o Pre-Populate Adapter
+  **           o Task Adapter
+  **           o User Defined Forms
+  **           o Resource Object Definition
+  **           o Provisioning Processes
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="target" description="Deploys the Offline Target Service Target Configuration" depends="target-metadata">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Offline Target Service Target Configuration ${application.release}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/target">
+        <object:importFile name="ots-lookup-dm.xml"/>
+        <object:importFile name="ots-resource-dm.xml"/>
+        <object:importFile name="ots-model-dm.xml"/>
+        <object:importFile name="ots-process-dm.xml"/>
+        <object:importFile name="ots-request-dm.xml"/>
+        <object:importFile name="ots-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <echo message="Deploying sandbox customizations on ${mds.server.host}:${mds.server.port}/${mds.server.service}"/>
+    <sandbox:import contextRef="sdb-mds">
+      <sandbox:importfile publish="true" archive="./customization/ots-account-sysadmin.zip"/>
+    </sandbox:import>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager the Offline Target Service
+  **           Trusted Configuration.
+  **
+  ** Synopsis: The tasks deploys the object definitions for Generic Directory
+  **           Service Trusted Configuration. This includes:
+  **           o Resource Object Definition
+  **           o Provisioning Processes
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="trusted" description="Deploys the Offline Target Service Tusted Configuration" depends="trusted-metadata">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploys the Offline Target Service Target Configuration ${application.release}"/>
+    <echo message="Deploying importable objects on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="${resource.dir}/xml/trusted">
+        <object:importFile name="org-process-dm.xml"/>
+        <object:importFile name="org-scheduler-dm.xml"/>
+        <object:importFile name="usr-process-dm.xml"/>
+        <object:importFile name="usr-scheduler-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Offline Target Service
+  **           Metadata Configuration.
+  ******************************************************************************
+  -->
+  <target name="target-metadata" description="Deploys the Offline Target Service Target Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy the Offline Target Service Configuration ${application.release}"/>
+    <echo message="Deploying files to ${mds.server.host}@${mds.server.service} on partition ${oim.metadata.partition}"/>
+    <!-- Register the Configuration -->
+    <metadata:upload contextRef="oim-mds" forceOverride="true">
+      <namespace path="/metadata">
+        <importSet dir="metadata/" path="ocs-features-configuration/ots">
+          <importFile name="feature.xml"/>
+          <importFile name="account-reconciliation.xml"/>
+        </importSet>
+      </namespace>
+    </metadata:upload>
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="MetaData"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Offline Target Service
+  **           Metadata Configuration.
+  ******************************************************************************
+  -->
+  <target name="trusted-metadata" description="Deploys the Offline Target Service Trusted Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy the Offline Target Service Configuration ${application.release}"/>
+    <echo message="Deploying files to ${mds.server.host}@${mds.server.service} on partition ${oim.metadata.partition}"/>
+    <!-- Register the Configuration -->
+    <metadata:upload contextRef="oim-mds" forceOverride="true">
+      <namespace path="/metadata">
+        <importSet dir="metadata/" path="ocs-features-configuration/ots">
+          <importFile name="feature.xml"/>
+          <importFile name="organization-trusted-reconciliation.xml"/>
+          <importFile name="identity-reconciliation.xml"/>
+        </importSet>
+      </namespace>
+    </metadata:upload>
+    <metadata:clearcache contextRef="jee-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="MetaData"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Identity Manager Offline Catalog Service
+  **           Metadata Configuration.
+  ******************************************************************************
+  -->
+  <target name="catalog-metadata" description="Deploys the Catalog Synchronization Configuration">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <echo message="Deploy the Catalog Synchronization Configuration ${application.release}"/>
+    <echo message="Deleting previously deployed metadata descriptors on ${oim.server.host}:${oim.server.port}"/>
+    <metadata:delete contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}" failonerror="false">
+      <metadata:path path="/metadata/ocs-features-configuration/arc/export.xml"/>
+      <metadata:path path="/metadata/ocs-features-configuration/arc/import.xml"/>
+      <metadata:path path="/metadata/ocs-features-configuration/arc/feature.xml"/>
+      <metadata:path path="/metadata/ocs-features-configuration/arc/businessrole.xml"/>
+    </metadata:delete>
+    <echo message="Deploying metadata descriptors on ${oim.server.host}:${oim.server.port}"/>
+    <object:import contextRef="oim-context">
+      <object:importSet dir="metadata/ocs-features-configuration">
+        <object:importFile name="oia-service-dm.xml"/>
+        <object:importFile name="arc-export-dm.xml"/>
+        <object:importFile name="arc-import-dm.xml"/>
+        <object:importFile name="arc-harvester-dm.xml"/>
+      </object:importSet>
+    </object:import>
+    <metadata:clearcache contextRef="jmx-context" location="${oim.server.name}" application="${oim.mbean.metadata}" version="${oim.mbean.version}"/>
+    <echo message="Purging object cache on ${oim.server.host}:${oim.server.port}"/>
+    <object:purgecache contextRef="oim-context">
+      <category value="MetaData"/>
+    </object:purgecache>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reconciliation of Lookup Definitions.
+  **
+  ** Synopsis: The tasks reconciles required Lookup Definition from the Target
+  **           System by executing the appropriate Scheduled Jobs. This
+  **           includes:
+  **           o OTS Group Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-role-lookup" description="Reconciles required Lookup Definition from the Offline File">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OTS Role Lookup Reconciliation" status="true" task="OTS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reconciliation of Lookup Definitions.
+  **
+  ** Synopsis: The tasks reconciles required Lookup Definition from the Target
+  **           System by executing the appropriate Scheduled Jobs. This
+  **           includes:
+  **           o OTS Group Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-group-lookup" description="Reconciles required Lookup Definition from the Offline File">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OTS Group Lookup Reconciliation" status="true" task="OTS Lookup Reconciliation">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reconciliation of Lookup Definitions.
+  **
+  ** Synopsis: The tasks reconciles required Lookup Definition from the Target
+  **           System by executing the appropriate Scheduled Jobs. This
+  **           includes:
+  **           o OTS Group Lookup Reconciliation
+  **           o OTS Role Lookup Reconciliation
+  ******************************************************************************
+  -->
+  <target name="reconcile-lookup" description="Reconciles required Lookup Definition from the Offline File" depends="reconcile-role-lookup,reconcile-group-lookup"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reconciliation of Organization Profiles.
+  **
+  ** Synopsis: The tasks reconciles Organizations from the Trusted System by
+  **           executing the appropriate Scheduled Jobs. This includes:
+  **           o Organizations
+  ******************************************************************************
+  -->
+  <target name="trusted-organization" description="Reconciles Organization Profiles from the Offline File">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OTS Organization Trusted Reconciliation" status="true" task="OTS Organization Trusted Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reconciliation of Identity Profiles.
+  **
+  ** Synopsis: The tasks reconciles Identities from the Trusted System by
+  **           executing the appropriate Scheduled Jobs. This includes:
+  **           o Identities
+  ******************************************************************************
+  -->
+  <target name="trusted-identity" description="Reconciles Identity Profiles from the Offline File">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OTS Identity Trusted Reconciliation" status="true" task="OTS Identity Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reconciliation of Account Profiles.
+  **
+  ** Synopsis: The tasks reconciles Identities from the Target System by
+  **           executing the appropriate Scheduled Jobs. This includes:
+  **           o Accounts
+  ******************************************************************************
+  -->
+  <target name="target-account" description="Reconciles Account Profiles from the Offline File">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OTS Account Target Reconciliation" status="true" task="OTS Account Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Capture Catalog Offline Definition.
+  **
+  ** Synopsis: Synchronize the catalog items defined by an XML file.
+  ******************************************************************************
+  -->
+  <target name="harvest-catalog" description="Capture of Offline Catalog Data">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="Access Request Catalog Import" status="true" task="Access Request Catalog Import">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Capture Available Entitlements.
+  **
+  ** Synopsis: Synchronize the entitlements from LKV to ENT_LIST. This job will
+  **           also kick off Catalog Synchronization job to synchronize the
+  **           entitlements to Catalog. An entitlement is available when it can
+  **           be found in Catalog.
+  ******************************************************************************
+  -->
+  <target name="capture-entitlement" description="Capture of Data About Available Entitlements">
+    <record name="../log/oim-import-ant.log" action="start" append="true" loglevel="verbose"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="Entitlement List" status="true" task="Entitlement List">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="Entitlement Assignments" status="true" task="Entitlement Assignments">
+        <start/>
+      </job>
+    </operation:scheduler>
+    <record name="../log/oim-import-ant.log" action="stop"/>
+  </target>
+<!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Identity Manager Instance"/>
+</project>

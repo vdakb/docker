@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+        Name                  ="ReportParameterEO"
+        AliasName             ="ReportParameterEO"
+        DBObjectType          ="table"
+        DBObjectName          ="RPP"
+        BindingStyle          ="OracleName"
+        InheritPersonalization="merge"
+        RowClass              ="oracle.iam.identity.sysauthz.model.entity.ReportParameterEOImpl">
+  <DesignTime>
+    <Attr      Name="_isCodegen"   Value="true"/>
+    <Attr      Name="_diagramName" Value="Report Parameter Entity"/>
+    <Attr      Name="_superClass"  Value="oracle.iam.ui.platform.model.common.OIMProgrammaticEO"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute Name="path" ColumnName="PATH" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="1024" PrimaryKey="true" IsUpdateable="while_insert">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="rpp.path.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="name" ColumnName="NAME" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="54" IsNotNull="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="rpp.name.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="label" ColumnName="LABEL" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="30" IsNotNull="true">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="rpp.label.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="dataType" ColumnName="DATATYPE" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="rpp.datatype.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="defaultValue" ColumnName="DEFAULTVALUE" Type="java.lang.String" ColumnType="VARCHAR2" SQLType="VARCHAR">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="rpp.defaultvalue.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <AccessorAttribute Name               ="ReportEO"
+                     Type               ="oracle.iam.identity.sysauthz.model.entity.ReportEOImpl"
+                     Association        ="oracle.iam.identity.sysauthz.model.entity.association.ReportEOReportParameterEO"
+                     AssociationEnd     ="oracle.iam.identity.sysauthz.model.entity.association.ReportEOReportParameterEO.ReportEO"
+                     AssociationOtherEnd="oracle.iam.identity.sysauthz.model.entity.association.ReportEOReportParameterEO.ReportParameterEO"
+                     IsUpdateable       ="true"/>
+  <Key Name="ReportParameterPK" PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="REPORTPARAMETERPK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="oracle.iam.identity.sysauthz.model.entity.ReportParameterEO.path"/>
+      <Item Value="oracle.iam.identity.sysauthz.model.entity.ReportParameterEO.name"/>
+    </AttrArray>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysauthz.bundle.Backend"/>
+  </ResourceBundle>
+  <Properties>
+    <CustomProperties>
+      <Property Name="USE_ALLOCATION_MANAGER" Value="false"/>
+    </CustomProperties>
+  </Properties>
+</Entity>

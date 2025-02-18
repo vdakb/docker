@@ -1,0 +1,53 @@
+<u:composition xmlns="http://www.w3.org/1999/xhtml"
+               xmlns:jsf="http://xmlns.jcp.org/jsf"
+               xmlns:f="http://xmlns.jcp.org/jsf/core"
+               xmlns:h="http://xmlns.jcp.org/jsf/html"
+               xmlns:u="http://java.sun.com/jsf/facelets">
+    <div class="col-md-auto col-sm-auto">
+        <form jsf:id="forgot-form" class="form-canvas needs-validation" method="post" jsf:action="#{forgot.send}">
+            <div class="d-flex justify-content-between">
+                <h3 class="mt-auto text-dark">#{app$bundle['forgot.title']}</h3>
+                <img src="#{forgot.model.symbol}" alt="#{forgot.model.requestIp}" title="#{forgot.model.requestIp}" data-toggle="tooltip" data-placement="top" class="align-baseline image-avatar"/>
+            </div>
+            <hr class="hr-dark mb-3 mt-4"/>
+            <p>#{app$bundle['forgot.instruction']}</p>
+            <div class="md-form">
+                <i class="zir zi-envelope prefix text-dark active"></i>
+                <i class="zir zi-question help-sign" data-hint="email-hint"></i>
+                <input id="email" name="email" type="email" jsf:value="#{forgot.model.email}" class="form-control text-dark mandatory"/>
+                <label for="email" class="active">#{app$bundle['forgot.email.label']}</label>
+                <div id="emailaddress-feedback" class="invalid-feedback">#{app$bundle['forgot.email.required']}</div>
+            </div>
+            <div class="md-form">
+                <div class="image-captcha-wrapper captcha-container">
+                    <img id="image-captcha" src="#{request.contextPath}/captcha" alt="#{app$bundle['forgot.captcha.tooltip']}" title="#{app$bundle['forgot.captcha.tooltip']}" data-toggle="tooltip" data-placement="top" class="captcha"/>
+                    <button type="button" onclick="reloadImage('#{request.contextPath}')">
+                        <i class="zir zi-reload"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="md-form">
+                <i class="zir zi-key prefix text-dark active"></i>
+                <i class="zir zi-question help-sign" data-hint="captcha-hint"></i>
+                <input id="captcha" name="captcha" type="text" jsf:value="#{forgot.model.captcha}" class="form-control text-dark mandatory"/>
+                <label for="captcha" class="active">#{app$bundle['forgot.captcha.label']}</label>
+                <div id="captcha-feedback" class="invalid-feedback">#{app$bundle['forgot.captcha.required']}</div>
+            </div>
+            <div class="d-flex justify-content-between flex-row-reverse">
+                <button type="submit" jsf:action="#{forgot.send}" class="btn btn-info">#{app$bundle['forgot.submit.label']}</button>
+            </div>
+        </form>
+    </div>
+    <div id="email-hint" class="tooltip bs-tooltip-top fade show tooltip-wrapper" role="tooltip" x-placement="top">
+        <div class="arrow"></div>
+        <div class="tooltip-content fixed">
+            <h:outputText value="#{app$bundle['forgot.email.hint']}"/>
+        </div>
+    </div>
+    <div id="captcha-hint" class="tooltip bs-tooltip-top fade show tooltip-wrapper" role="tooltip" x-placement="top">
+        <div class="arrow"></div>
+        <div class="tooltip-content fixed">
+            <h:outputText value="#{app$bundle['forgot.captcha.hint']}"/>
+        </div>
+    </div>
+</u:composition>

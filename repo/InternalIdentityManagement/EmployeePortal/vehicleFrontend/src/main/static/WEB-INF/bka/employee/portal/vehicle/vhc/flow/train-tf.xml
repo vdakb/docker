@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="train-tf">
+    <template-reference>
+      <document id="__02">/WEB-INF/oracle/iam/ui/common/tfs/error-handler-flow-tf-template.xml</document>
+      <id id="__03">error-handler-flow-tf-template</id>
+    </template-reference>
+    <default-activity>router</default-activity>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__10">
+      <name id="__11">uiShell</name>
+      <value id="__12">#{pageFlowScope.uiShell}</value>
+      <class id="__13">oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__15">taskFlowId</name>
+      <value id="__16">#{pageFlowScope.taskFlowId}</value>
+      <class id="__17">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__18">
+      <name id="__19">mode</name>
+      <value id="__20">#{pageFlowScope.mode}</value>
+      <class id="__21">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__49">
+      <name id="__50">colorId</name>
+      <value id="__51">#{pageFlowScope.colorID}</value>
+      <class id="__52">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__9">
+      <name>colorName</name>
+      <value>#{pageFlowScope.colorName}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__1">
+      <managed-bean-name>colorTrain</managed-bean-name>
+      <managed-bean-class>bka.employee.portal.vehicle.vhc.state.Train</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__2">
+      <managed-bean-name>colorAttribute</managed-bean-name>
+      <managed-bean-class>bka.employee.portal.vehicle.vhc.backing.AttributeState</managed-bean-class>
+      <managed-bean-scope>backingBean</managed-bean-scope>
+      <managed-property id="__3">
+        <property-name>train</property-name>
+        <property-class>bka.employee.portal.vehicle.vhc.state.Train</property-class>
+        <value>#{pageFlowScope.colorTrain}</value>
+      </managed-property>
+    </managed-bean>
+    <view id="step-attributes">
+      <page>/bka/employee/portal/vehicle/vhc/view/attributes.jsff</page>
+      <train-stop>
+        <display-name id="__93">#{adfBundle['bka.employee.portal.vehicle.Frontend']['VHC_ATTRIBUTE']}</display-name>
+        <sequential id="__94">false</sequential>
+        <ignore id="__95">#{pageFlowScope.mode == 'request'}</ignore>
+      </train-stop>
+    </view>
+    <router id="router">
+      <case id="__6">
+        <expression>#{pageFlowScope.mode == "edit" or pageFlowScope.mode == "view"}</expression>
+        <outcome>edit</outcome>
+      </case>
+      <default-outcome>edit</default-outcome>
+    </router>
+    <method-call id="color-fetch">
+      <method>#{pageFlowScope.colorTrain.fetch}</method>
+      <outcome>
+        <fixed-outcome>fetched</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-return id="train-commit">
+      <outcome>
+        <name>train-commit</name>
+      </outcome>
+    </task-flow-return>
+    <train/>
+    <control-flow-rule id="__4">
+      <from-activity-id>router</from-activity-id>
+      <control-flow-case id="__5">
+        <from-outcome>edit</from-outcome>
+        <to-activity-id>color-fetch</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__7">
+      <from-activity-id>color-fetch</from-activity-id>
+      <control-flow-case id="__8">
+        <from-outcome>fetched</from-outcome>
+        <to-activity-id>step-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__22">
+      <from-activity-id>step-attributes</from-activity-id>
+      <control-flow-case id="__23">
+        <from-outcome>success</from-outcome>
+        <to-activity-id>train-commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

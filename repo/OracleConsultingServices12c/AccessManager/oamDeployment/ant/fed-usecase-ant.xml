@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name     ="Access Manager Federation Use Case"
+         basedir  ="../"
+         xmlns:fmw="http://oracle.hst.deployment/fusion"
+         xmlns:jps="http://oracle.hst.deployment/security"
+         xmlns:wsm="http://oracle.hst.deployment/webservice"
+         xmlns:wls="http://oracle.hst.deployment/topology"
+         xmlns:fed="http://oracle.iam.access/partnerconfig">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../oam-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name"      value="../log/fed-usecase-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deploys the Access Manager Federation Partner Configuration
+  **
+  ** Synopsis: The tasks deploys the Federation Partner
+  **           This includes:
+  **           o Identity Provider
+  ******************************************************************************
+  -->
+  <target name="0201" description="Creating Identity Providers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0201 Create Identity Provider Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <fed:create contextRef="jmx-context">
+    </fed:create>
+    <echo message="=================================================================="/>
+    <echo message="0201 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Modifies the Access Manager Identity Provider Configuration
+  **
+  ** Synopsis: The tasks deploys the Identity Domain
+  **           This includes:
+  **           o Identity Provider
+  ******************************************************************************
+  -->
+  <target name="0202" description="Modifying Identity Providers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0202 Modify Identity Provider Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <fed:modify contextRef="jmx-context">
+    </fed:modify>
+    <echo message="=================================================================="/>
+    <echo message="0202 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Deletes the Access Manager Identity Provider Configuration
+  **
+  ** Synopsis: The tasks deploys the Identity Domain
+  **           This includes:
+  **           o Identity Provider
+  ******************************************************************************
+  -->
+  <target name="0203" description="Deleting Identity Providers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0203 Delete Identity Provider Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <fed:delete contextRef="jmx-context">
+    </fed:delete>
+    <echo message="=================================================================="/>
+    <echo message="0203 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Identity Provider Configuration
+  **
+  ** Synopsis: The tasks reports the Identity Provider configuration
+  **           This includes:
+  **           o Identity Provider
+  ******************************************************************************
+  -->
+  <target name="0204" description="Report Identity Providers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0204 Report Identity Provider Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <fed:print contextRef="jmx-context" failonerror="false">
+    </fed:print>
+    <echo message="=================================================================="/>
+    <echo message="0204 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Lists the Access Manager Identity Provider Configuration
+  **
+  ** Synopsis: The tasks list the Identity Provider by name
+  **           This includes:
+  **           o Identity Provider
+  ******************************************************************************
+  -->
+  <target name="0205" description="List Identity Providers in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0205 List Identity Provider Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <fed:status contextRef="jmx-context" failonerror="false">
+      <type value="federation-identity-provider"/>
+      <type value="federation-service-provider"/>
+    </fed:status>
+    <echo message="=================================================================="/>
+    <echo message="0205 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

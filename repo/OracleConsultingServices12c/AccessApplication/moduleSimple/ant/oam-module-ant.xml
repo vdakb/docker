@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project basedir=".." default="make" name="Access Credential Collector Simple">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description" value="Access Credential Collector Simple"/>
+  <property name="application" value="oracle.iam.access.simple"/>
+  <property name="package"     value="oracle/**/*.*"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import   file="../../oam-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath"/>
+  <!--
+  =====================================================================
+  == ANT target to assemble the web application to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="clean,init,copy,compile,manifest">
+    <oam-war-module description="${description}" module="${application}" package="${package}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application on the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploy the project artifacts" depends="make">
+    <oam-war-deploy application="${application}" target="${oam.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="redeploy" description="Redeploy the project artifacts" depends="make">
+    <oam-war-redeploy application="${application}" target="${oam.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="undeploy" description="Undeploy the project artifacts">
+    <oam-war-undeploy application="${application}"/>
+  </target>
+</project>

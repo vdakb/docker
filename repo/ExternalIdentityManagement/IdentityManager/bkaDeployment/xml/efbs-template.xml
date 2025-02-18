@@ -1,0 +1,185 @@
+<configuration xmlns="http://schemas.bka.bund.de/account/request/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schemas.bka.bund.de/account/request/config Configuration.xsd" bulk="true">
+  <environment id="edu" label="#{catalog$bundle.FBS_REQ_EDU_LABEL}">
+    <template id="gsu" label="#{catalog$bundle.FBS_REQ_GSU_LABEL}">
+      <predecessor id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSE_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}</attribute>
+      </predecessor>
+      <application id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSE_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}gsu</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSE_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">#{bindings.beneficiaryOrganization.inputValue}</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}gsu</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}gsu</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}gsu@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_I_rsAdmin</attribute>
+        </entitlement>
+      </application>
+    </template>
+    <template id="su" label="#{catalog$bundle.FBS_REQ_SU_LABEL}">
+      <predecessor type="String" id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSE_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}</attribute>
+      </predecessor>
+      <application id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSE_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}su</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSE_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">#{bindings.beneficiaryOrganization.inputValue}</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}su</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}su</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}su@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_I_rsAdmin</attribute>
+        </entitlement>
+      </application>
+    </template>
+    <template id="gfa" label="#{catalog$bundle.FBS_REQ_GFA_LABEL}">
+      <predecessor type="String" id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSE_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}</attribute>
+      </predecessor>
+      <application id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSE_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}gfa</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSE_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">#{bindings.beneficiaryOrganization.inputValue}</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}gfa</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}gfa</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}gfa@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_#{bindings.beneficiaryOrganization.inputValue}_rsAdmin</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_#{bindings.beneficiaryOrganization.inputValue}_rsLayoutEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_#{bindings.beneficiaryOrganization.inputValue}_rsCatalogEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_#{bindings.beneficiaryOrganization.inputValue}_rsMigrationsEditor</attribute>
+        </entitlement>
+      </application>
+    </template>
+    <template id="fa" label="#{catalog$bundle.FBS_REQ_FA_LABEL}">
+      <predecessor id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSE_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}</attribute>
+      </predecessor>
+      <application id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSE_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}fa</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSE_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">#{bindings.beneficiaryOrganization.inputValue}</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}fa</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}fa</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}fa@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_#{bindings.beneficiaryOrganization.inputValue}_rsEnityEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_#{bindings.beneficiaryOrganization.inputValue}_rsLayoutEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_#{bindings.beneficiaryOrganization.inputValue}_rsCatalogEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_#{bindings.beneficiaryOrganization.inputValue}_rsMigrationsEditor</attribute>
+        </entitlement>
+      </application>
+    </template>
+    <template id="ged" label="#{catalog$bundle.FBS_REQ_GED_LABEL}">
+      <application id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSE_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">GED#{bindings.beneficiaryLogin.inputValue}</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSE_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">BK</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">GED#{bindings.beneficiaryLogin.inputValue}</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">GED#{bindings.beneficiaryLogin.inputValue}</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">GED#{bindings.beneficiaryLogin.inputValue}@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_BKA_rsClient</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~EDU_BKA_rsClient32</attribute>
+        </entitlement>
+      </application>
+    </template>
+  </environment>
+  <environment id="prd" label="#{catalog$bundle.FBS_REQ_PRD_LABEL}">
+    <template id="gsu" label="#{catalog$bundle.FBS_REQ_GSU_LABEL}">
+      <predecessor id="eFBSAccountProduction">
+        <attribute type="String" id="userName" mapping="UD_EFBSP_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}</attribute>
+      </predecessor>
+      <application id="eFBSAccountProduction">
+        <attribute type="String" id="userName" mapping="UD_EFBSP_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}gsu</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSP_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">#{bindings.beneficiaryOrganization.inputValue}</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}gsu</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}gsu</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}gsu@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_I_rsAdmin</attribute>
+        </entitlement>
+      </application>
+    </template>
+    <template id="su" label="#{catalog$bundle.FBS_REQ_SU_LABEL}">
+      <predecessor id="eFBSAccountProduction">
+        <attribute type="String" id="userName" mapping="UD_EFBSP_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}</attribute>
+      </predecessor>
+      <application id="eFBSAccountProduction">
+        <attribute type="String" id="userName" mapping="UD_EFBSP_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}su</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSP_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">#{bindings.beneficiaryOrganization.inputValue}</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}su</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}su</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}su@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_I_rsAdmin</attribute>
+        </entitlement>
+      </application>
+    </template>
+    <template id="gfa" label="#{catalog$bundle.FBS_REQ_GFA_LABEL}">
+      <predecessor id="eFBSAccountProduction">
+        <attribute type="String" id="userName" mapping="UD_EFBSP_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}</attribute>
+      </predecessor>
+      <application id="eFBSAccountProduction">
+        <attribute type="String" id="userName" mapping="UD_EFBSP_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}gfa</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSP_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">#{bindings.beneficiaryOrganization.inputValue}</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}gfa</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}gfa</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}gfa@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_#{bindings.beneficiaryOrganization.inputValue}_rsAdmin</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_#{bindings.beneficiaryOrganization.inputValue}_rsEnityEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_#{bindings.beneficiaryOrganization.inputValue}_rsLayoutEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_#{bindings.beneficiaryOrganization.inputValue}_rsCatalogEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_#{bindings.beneficiaryOrganization.inputValue}_rsMigrationsEditor</attribute>
+        </entitlement>
+      </application>
+    </template>
+    <template id="fa" label="#{catalog$bundle.FBS_REQ_FA_LABEL}">
+      <predecessor id="eFBSAccountProduction">
+        <attribute type="String" id="userName" mapping="UD_EFBSP_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}</attribute>
+      </predecessor>
+      <application id="eFBSAccountProduction">
+        <attribute type="String" id="userName" mapping="UD_EFBSP_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}fa</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSP_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">#{bindings.beneficiaryOrganization.inputValue}</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">#{bindings.beneficiaryLogin.inputValue}fa</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}fa</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">#{bindings.beneficiaryLogin.inputValue}fa@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_#{bindings.beneficiaryOrganization.inputValue}_rsEnityEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_#{bindings.beneficiaryOrganization.inputValue}_rsLayoutEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_#{bindings.beneficiaryOrganization.inputValue}_rsCatalogEditor</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_#{bindings.beneficiaryOrganization.inputValue}_rsMigrationsEditor</attribute>
+        </entitlement>
+      </application>
+    </template>
+    <template id="ged" label="#{catalog$bundle.FBS_REQ_GED_LABEL}">
+      <application id="eFBSAccountEducation">
+        <attribute type="String" id="userName" mapping="UD_EFBSP_USERNAME" label="#{catalog$bundle.FBS_USR_UID_LABEL}">GED#{bindings.beneficiaryLogin.inputValue}</attribute>
+        <attribute type="String" id="organization" mapping="UD_EFBSP_ORGANIZATION" label="#{catalog$bundle.FBS_USR_ORGANIZATION_LABEL}">BK</attribute>
+      </application>
+      <application id="CTSAccount">
+        <attribute type="String" id="User Id" mapping="UD_CTS_USR_UID" label="#{catalog$bundle.ODS_USR_UID_LABEL}">GED#{bindings.beneficiaryLogin.inputValue}</attribute>
+        <attribute type="String" id="Common Name" mapping="UD_CTS_USR_COMMONNAME" label="#{catalog$bundle.ODS_USR_COMMON_NAME_LABEL}">GED#{bindings.beneficiaryLogin.inputValue}</attribute>
+        <attribute type="String" id="User Principal Name" mapping="UD_CTS_USR_USERPRINCIPALNAME" label="#{catalog$bundle.ODS_USR_PRINCIPAL_NAME_LABEL}">GED#{bindings.beneficiaryLogin.inputValue}@app.bka.bund.de</attribute>
+        <entitlement id="UD_CTS_UGP" label="#{catalog$bundle.ODS_UGP_HEADER_TEXT}">
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_BKA_rsClient</attribute>
+          <attribute type="String" id="Group Name" mapping="UD_CTS_UGP_NAME" label="#{catalog$bundle.ODS_UGP_NAME_LABEL}">TS.ADS Endpoint~PRO_BKA_rsClient32</attribute>
+        </entitlement>
+      </application>
+    </template>
+  </environment>
+</configuration>

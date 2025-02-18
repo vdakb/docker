@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="identity_domain_detailsPageDef"
+                Package="bka.iam.identity.ui.oauth.pages">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    
+    <taskFlow id="applicationtf1" taskFlowId="/WEB-INF/bka/iam/identity/ui/oauth/tfs/application-tf.xml#application-tf"
+              activation="conditional" xmlns="http://xmlns.oracle.com/adf/controller/binding"
+              active="#{!(pageFlowScope.mode eq 'CREATE')}">
+      <parameters>
+        <parameter id="oam_connection_name"  value="#{pageFlowScope.oam_connection_name}"/>
+        <parameter id="identity_domain_name" value="#{pageFlowScope.identity_domain_name}"/>
+      </parameters>
+    </taskFlow>
+    
+    <taskFlow id="clienttf1" taskFlowId="/WEB-INF/bka/iam/identity/ui/oauth/tfs/client-tf.xml#client-tf"
+              activation="conditional" xmlns="http://xmlns.oracle.com/adf/controller/binding"
+              active="#{!(pageFlowScope.mode eq 'CREATE')}">
+      <parameters>
+        <parameter id="oam_connection_name"  value="#{pageFlowScope.oam_connection_name}"/>
+        <parameter id="identity_domain_name" value="#{pageFlowScope.identity_domain_name}"/>
+      </parameters>
+    </taskFlow>
+    
+    <iterator Binds="root" RangeSize="25" DataControl="IdentityDomainSessionFacade"
+              id="IdentityDomainSessionFacadeIterator"/>
+    <accessorIterator MasterBinding="IdentityDomainSessionFacadeIterator" Binds="identityDomain" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade"
+                      BeanClass="bka.iam.identity.ui.oauth.model.IdentityDomain" id="identityDomainIterator"/>    
+                      
+    <accessorIterator MasterBinding="identityDomainIterator" Binds="tokenSettings" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.TokenSetting"
+                      id="tokenSettingsIterator"/>
+    <searchRegion Binds="tokenSettingsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="tokenSettingsQuery"/>
+    
+    <accessorIterator MasterBinding="identityDomainIterator" Binds="customAttrs" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="java.lang.String" id="customAttrsIterator"/>
+    <searchRegion Binds="customAttrsIterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" id="customAttrsQuery"/>
+  </executables>
+  
+  <bindings>
+
+    <attributeValues IterBinding="identityDomainIterator" id="name">
+      <AttrNames>
+        <Item Value="name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="identityDomainIterator" id="description">
+      <AttrNames>
+        <Item Value="description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="identityDomainIterator" id="consentPageURL">
+      <AttrNames>
+        <Item Value="consentPageURL"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="identityDomainIterator" id="errorPageURL">
+      <AttrNames>
+        <Item Value="errorPageURL"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="identityDomainIterator" id="identityProvider">
+      <AttrNames>
+        <Item Value="identityProvider"/>
+      </AttrNames>
+    </attributeValues>
+    
+    
+     <tree IterBinding="tokenSettingsIterator" id="tokenSettings">
+      <nodeDefinition DefName="bka.iam.identity.ui.oauth.model.TokenSetting" Name="tokenSettings0">
+        <AttrNames>
+          <Item Value="tokenType"/>
+          <Item Value="tokenExpiry"/>
+          <Item Value="lifeCycleEnabled"/>
+          <Item Value="refreshTokenEnabled"/>
+          <Item Value="refreshTokenExpiry"/>
+          <Item Value="refreshTokenLifeCycleEnabled"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    
+     <tree IterBinding="customAttrsIterator" id="customAttrs">
+      <nodeDefinition DefName="bka.iam.identity.ui.oauth.model.Attribute" Name="customAttrs0">
+        <AttrNames>
+          <Item Value="key"/>
+          <Item Value="value"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    
+    <action IterBinding="tokenSettingsIterator" id="addTokenSettings"
+            InstanceName="bka.iam.identity.ui.oauth.model.IdentityDomain.tokenSettings"
+            DataControl="IdentityDomainSessionFacade" RequiresUpdateModel="true" Action="createRow"/>
+    <action IterBinding="customAttrsIterator" id="addCustomAttrs"
+            InstanceName="bka.iam.identity.ui.oauth.model.IdentityDomain.customAttrs"
+            DataControl="IdentityDomainSessionFacade" RequiresUpdateModel="true" Action="createRow"/>
+
+    <action IterBinding="tokenSettingsIterator" id="removeTokenSettings"
+            InstanceName="bka.iam.identity.ui.oauth.model.IdentityDomain.tokenSettings"
+            DataControl="IdentityDomainSessionFacade" RequiresUpdateModel="false" Action="removeRowWithKey">
+      <NamedData NDName="rowKey" NDValue="#{bindings.tokenSettingsIterator.currentRowKeyString}" NDType="java.lang.String"/>
+    </action>            
+    <action IterBinding="customAttrsIterator" id="removeCustomAttrs"
+            InstanceName="bka.iam.identity.ui.oauth.model.IdentityDomain.customAttrs"
+            DataControl="IdentityDomainSessionFacade" RequiresUpdateModel="false" Action="removeRowWithKey">
+      <NamedData NDName="rowKey" NDValue="#{bindings.customAttrsIterator.currentRowKeyString}" NDType="java.lang.String"/>
+    </action>
+    
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <methodAction id="createIdentityDomain" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="createIdentityDomain" IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.createIdentityDomain.dataControl.dataProvider">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+      <NamedData NDName="identityDomain" NDType="bka.iam.identity.ui.oauth.model.IdentityDomain"/>
+    </methodAction>
+    <methodAction id="updateIdentityDomain" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="updateIdentityDomain" IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.updateIdentityDomain.dataControl.dataProvider">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+      <NamedData NDName="identityDomain" NDType="bka.iam.identity.ui.oauth.model.IdentityDomain"/>
+    </methodAction>
+  </bindings>
+</pageDefinition>

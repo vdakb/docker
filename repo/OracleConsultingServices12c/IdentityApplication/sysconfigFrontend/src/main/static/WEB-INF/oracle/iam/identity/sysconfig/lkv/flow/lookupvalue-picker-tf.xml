@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="value-tf">
+    <default-activity>fetch-picker</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+    <input-parameter-definition id="__10">
+      <name id="__11">uiShell</name>
+      <value id="__12">#{pageFlowScope.uiShell}</value>
+      <class id="__13">oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__15">eventDistinguisher</name>
+      <value id="__16">#{pageFlowScope.eventDistinguisher}</value>
+      <class id="__17">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__18">
+      <name id="__19">schema</name>
+      <value id="__20">#{pageFlowScope.schema}</value>
+      <class id="__21">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__22">
+      <name id="__23">attribute</name>
+      <value id="__24">#{pageFlowScope.attribute}</value>
+      <class id="__25">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__26">
+      <name id="__27">lookupName</name>
+      <value id="__28">#{pageFlowScope.lookupName}</value>
+      <class id="__29">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__30">
+      <name id="__31">selectionType</name>
+      <value id="__32">#{pageFlowScope.selectionType}</value>
+      <class id="__33">java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__40">
+      <managed-bean-name>lookupPicker</managed-bean-name>
+      <managed-bean-class>oracle.iam.identity.sysconfig.lkv.state.LookupValuePicker</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="value-picker">
+      <page>/oracle/iam/identity/sysconfig/lkv/view/lookupvalue-picker.jsff</page>
+    </view>
+    <method-call id="fetch-picker">
+      <method id="__51">#{pageFlowScope.picker.fetch}</method>
+      <outcome id="__52">
+        <fixed-outcome id="__53">initialized</fixed-outcome>
+      </outcome>
+    </method-call>
+    <task-flow-return id="return">
+      <outcome>
+        <name>return</name>
+      </outcome>
+    </task-flow-return>
+    <control-flow-rule id="__101">
+      <from-activity-id>fetch-picker</from-activity-id>
+      <control-flow-case id="__102">
+        <from-outcome>initialized</from-outcome>
+        <to-activity-id>value-picker</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__103">
+      <from-activity-id>value-picker</from-activity-id>
+      <control-flow-case id="__104">
+        <from-outcome>success</from-outcome>
+        <to-activity-id>return</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__105">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>return</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

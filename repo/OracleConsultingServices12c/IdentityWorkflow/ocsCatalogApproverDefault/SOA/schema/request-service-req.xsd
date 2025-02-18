@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:jaxb          ="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc"
+        xmlns:xjc           ="http://java.sun.com/xml/ns/jaxb/xjc"
+        xmlns:tns           ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RequestData"
+        targetNamespace     ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RequestData"
+        elementFormDefault  ="qualified"
+        attributeFormDefault="unqualified">
+
+  <annotation>
+    <appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="oracle.iam.requestdataws.webservicestubs.types"/>
+      </jaxb:schemaBindings>
+    </appinfo>
+  </annotation>
+
+  <element name="RequestId"   type="string"/>
+  <element name="RequestData" type="tns:RequestDataType"/>
+
+  <complexType name="RequestDataType">
+    <sequence>
+      <element name="RequestId"         type="string"                   nillable="true"/>
+      <element name="RequestType"       type="string"                   nillable="true"/>
+      <element name="RequesterId"       type="string"                   nillable="true"/>
+      <element name="RequestStatus"     type="string"                   nillable="true"/>
+      <element name="Justification"     type="string"                   nillable="true"/>
+      <element name="EffectiveDate"     type="dateTime"                 nillable="true"/>
+      <element name="CreationDate"      type="dateTime"                 nillable="true"/>
+      <element name="EndDate"           type="dateTime"                 nillable="true"/>
+      <element name="BeneficiaryExists" type="boolean"                  nillable="true"/>
+      <element name="BeneficiaryData"   type="tns:BeneficiaryDataType"  nillable="true"/>
+      <element name="TargetEntityData"  type="tns:TargetEntityDataType" nillable="true"/>
+      <element name="AdditionalData"    type="tns:AdditionalDataType"   nillable="true"/>
+      <element name="BulkRequest"       type="boolean"                  nillable="true"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="BeneficiaryDataType">
+    <sequence>
+      <element name="Beneficiary" type="tns:BeneficiaryType" maxOccurs="unbounded" nillable="true"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="BeneficiaryType">
+    <sequence maxOccurs="unbounded">
+      <element name="Entity" type="tns:EntityType" nillable="true"/>
+    </sequence>
+    <attribute name="Id"   type="string"/>
+    <attribute name="Type" type="string"/>
+  </complexType>
+
+  <complexType name="AdditionalDataType">
+    <sequence maxOccurs="unbounded">
+      <element name="DataAttribute" type="tns:DataAttributeType" nillable="true"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="EntityType">
+    <sequence maxOccurs="unbounded">
+      <element name="DataAttribute" type="tns:DataAttributeType" nillable="true"/>
+    </sequence>
+    <attribute name="Id"   type="string"/>
+    <attribute name="Type" type="string"/>
+    <attribute name="Name" type="string"/>
+  </complexType>
+
+  <complexType name="DataAttributeType">
+    <sequence maxOccurs="unbounded">
+      <element name="ChildRow" type="tns:RowType" nillable="true"/>
+    </sequence>
+    <attribute name="Name"  type="string"/>
+    <attribute name="Type"  type="string"/>
+    <attribute name="Value" type="string"/>
+  </complexType>
+
+  <complexType name="RowType">
+    <sequence maxOccurs="unbounded">
+      <element name="ChildDataAttribute" type="tns:ChildDataAttributeType" nillable="true"/>
+    </sequence>
+  </complexType>
+
+  <complexType name="ChildDataAttributeType">
+    <attribute name="Name"   type="string"/>
+    <attribute name="Type"   type="string"/>
+    <attribute name="Value"  type="string"/>
+    <attribute name="Action" type="string"/>
+  </complexType>
+
+  <complexType name="TargetEntityDataType">
+    <sequence maxOccurs="unbounded">
+      <element name="TargetEntity" type="tns:EntityType" nillable="true"/>
+    </sequence>
+  </complexType>
+</schema>

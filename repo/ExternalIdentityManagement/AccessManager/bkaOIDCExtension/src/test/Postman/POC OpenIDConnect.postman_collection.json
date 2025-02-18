@@ -1,0 +1,1717 @@
+{
+	"info": {
+		"_postman_id": "3de88b3c-b4d8-4dd5-86db-c51078855b98",
+		"name": "POC OpenIDConnect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "IdentityDomain",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?name=OIDCFederationDomain",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"oam",
+								"services",
+								"rest",
+								"ssa",
+								"api",
+								"v1",
+								"oauthpolicyadmin",
+								"oauthidentitydomain"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "OIDCFederationDomain"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"OIDCFederationDomain\",\n    \"identityProvider\": \"FederationIdentityStore\",\n    \"description\": \"OAuth Domain\",\n    \"tokenSettings\": [\n        {\n            \"tokenType\": \"ACCESS_TOKEN\",\n            \"tokenExpiry\": 3600,\n            \"lifeCycleEnabled\": false,\n            \"refreshTokenEnabled\": true,\n            \"refreshTokenExpiry\": 86400,\n            \"refreshTokenLifeCycleEnabled\": false\n        },\n        {\n            \"tokenType\": \"AUTHZ_CODE\",\n            \"tokenExpiry\": 3600,\n            \"lifeCycleEnabled\": false,\n            \"refreshTokenEnabled\": true,\n            \"refreshTokenExpiry\": 86400,\n            \"refreshTokenLifeCycleEnabled\": false\n        },\n        {\n            \"tokenType\": \"SSO_LINK_TOKEN\",\n            \"tokenExpiry\": 86400,\n            \"lifeCycleEnabled\": false,\n            \"refreshTokenEnabled\": true,\n            \"refreshTokenExpiry\": 86400,\n            \"refreshTokenLifeCycleEnabled\": false\n        }\n    ],\n    \"customAttrs\": \"{\\\"usePKCE\\\":\\\"ALL_CLIENTS_TYPES\\\"}\",\n    \"errorPageURL\": \"https://iam.stage.iaas.psp.extrapol.de/oam/pages/error.jsp\",\n    \"consentPageURL\": \"https://iam.stage.iaas.psp.extrapol.de/oam/pages/consent.jsp\"\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"oam",
+								"services",
+								"rest",
+								"ssa",
+								"api",
+								"v1",
+								"oauthpolicyadmin",
+								"oauthidentitydomain"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"OIDCFederationDomain\",\n    \"errorPageURL\": \"http://vwase051.bka.extrapol.de:7807/oam/pages/error.jsp\",\n    \"consentPageURL\": \"http://vwase051.bka.extrapol.de:7807/oamcontext/pages/CustomConsent.jsp\"\n}"
+						},
+						"url": {
+							"raw": "{{baseURL}}:7807/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain",
+							"host": [
+								"{{baseURL}}"
+							],
+							"port": "7807",
+							"path": [
+								"oam",
+								"services",
+								"rest",
+								"ssa",
+								"api",
+								"v1",
+								"oauthpolicyadmin",
+								"oauthidentitydomain"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain?name=OIDCFederationDomain",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"oam",
+								"services",
+								"rest",
+								"ssa",
+								"api",
+								"v1",
+								"oauthpolicyadmin",
+								"oauthidentitydomain"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "OIDCFederationDomain"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ResourceServer",
+			"item": [
+				{
+					"name": "OAM Client",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"OAMClient\",\n    \"description\": \"OAM Client Resource\",\n    \"scopes\": [\n        {\n            \"scopeName\": \"profile\",\n            \"description\": \"profile\"\n        },\n        {\n            \"scopeName\": \"openid\",\n            \"description\": \"openid\"\n        },\n        {\n            \"scopeName\": \"email\",\n            \"description\": \"email\"\n        }\n        ,\n        {\n            \"scopeName\": \"Groups\",\n            \"description\": \"email\"\n        }\n    ],\n    \"tokenAttributes\": [\n        {\n            \"attrName\": \"sessionId\",\n            \"attrValue\": \"$session.id\"\n        },\n        {\n            \"attrName\": \"groups\",\n            \"attrValue\": \"$user.groups\"\n        }\n    ],\n    \"idDomain\": \"OIDCFederationDomain\"\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"application"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=OIDCFederationDomain&name=OAMClient",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"application"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "OIDCFederationDomain"
+										},
+										{
+											"key": "name",
+											"value": "OAMClient"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "OidcDemoWebanwendung",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"idDomain\": \"OIDCFederationDomain\",\n\t\"name\": \"OidcDemoWebanwendung\",\n    \"description\": \"OidcDemoWebanwendung\",\n\t\"resServerType\": \"CUSTOM_RESOURCE_SERVER\",\n    \"resourceServerNameSpacePrefix\": \"OidcDemoWebanwendung.\",\n    \"audienceClaim\": null,\n    \"tokenAttributes\": [\n        {\n            \"attrName\": \"p20_uid\",\n            \"attrValue\": \"$user.attr.policeidentifiername\",\n            \"attrType\": \"STATIC\"\n        },\n        {\n            \"attrName\": \"groups\",\n            \"attrValue\": \"$user.groups\",\n            \"attrType\": \"STATIC\"\n        },\n        {\n            \"attrName\": \"given_name\",\n            \"attrValue\": \"$user.attr.givenname\",\n            \"attrType\": \"STATIC\"\n        },\n        {\n            \"attrName\": \"family_name\",\n            \"attrValue\": \"$user.attr.sn\",\n            \"attrType\": \"STATIC\"\n        },\n        {\n            \"attrName\": \"email\",\n            \"attrValue\": \"$user.attr.mail\",\n            \"attrType\": \"STATIC\"\n        },\n        {\n            \"attrName\": \"phone_number\",\n            \"attrValue\": \"$user.attr.telephonenumber\",\n            \"attrType\": \"STATIC\"\n        },\n        {\n            \"attrName\": \"poid\",\n            \"attrValue\": \"$user.attr.departmentnumber\",\n            \"attrType\": \"STATIC\"\n        }\n    ],\n    \"scopes\": [\n        {\n            \"scopeName\": \"Main\",\n            \"description\": \"Main Scope\"\n        },\n        {\n            \"scopeName\": \"DefaultScope\",\n            \"description\": \"DefaultScope\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"application"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=OIDCFederationDomain&name=OidcDemoWebanwendung",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"application"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "OIDCFederationDomain"
+										},
+										{
+											"key": "name",
+											"value": "OidcDemoWebanwendung"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Resource Server Token Exchange",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"idDomain\": \"OIDCFederationDomainTestTokenExchange\",\n    \"name\": \"ResourceServerTokenExchange\",\n    \"description\": \"Resource Server with Token Exchange\",\n    \"scopes\": [\n        {\n            \"scopeName\": \"publish\",\n            \"description\": \"Publish the user profile\"\n        },\n        {\n            \"scopeName\": \"backup\",\n            \"description\": \"Backup the user profile\"\n        },\n        {\n            \"scopeName\": \"openid\",\n            \"description\": \"openid\"\n        }\n    ],\n    \"tokenAttributes\": [\n        {\n        \t\"attrName\": \"TokenExchange_AllowedClientsForDelegation\",\n        \t\"attrValue\": \"test_client_exchange\",\n    \t\t\"attrType\": \"static\"\n    \t},\n    \t{\n        \t\"attrName\": \"TokenExchange_AllowedClientsForImpersonation\",\n        \t\"attrValue\": \"test_client_exchange\",\n    \t\t\"attrType\": \"static\"\n    \t}\n    ]\n    \n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"application"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=OIDCFederationDomainTestTokenExchange&name=ResourceServerTokenExchange",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"application"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "OIDCFederationDomainTestTokenExchange"
+										},
+										{
+											"key": "name",
+											"value": "ResourceServerTokenExchange"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=OIDCFederationDomain",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"oam",
+								"services",
+								"rest",
+								"ssa",
+								"api",
+								"v1",
+								"oauthpolicyadmin",
+								"application"
+							],
+							"query": [
+								{
+									"key": "identityDomainName",
+									"value": "OIDCFederationDomain"
+								},
+								{
+									"key": "name",
+									"value": "OidcDemoWebanwendung",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "OAM Client",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"oam_client\",\n    \"id\": \"oam_client\",\n    \"secret\": \"Welcome1\",\n    \"idDomain\": \"OIDCFederationDomain\",\n    \"clientType\": \"CONFIDENTIAL_CLIENT\",\n    \"description\": \"OAM client\",\n    \"scopes\": [\n        \"OAMClient.profile\",\n        \"OAMClient.openid\",\n        \"OAMClient.email\"\n    ],\n    \"defaultScope\": \"OAMClient.openid\",\n    \"grantTypes\": [\n        \"PASSWORD\",\n        \"CLIENT_CREDENTIALS\",\n        \"JWT_BEARER\",\n        \"REFRESH_TOKEN\",\n        \"AUTHORIZATION_CODE\"\n    ],\n    \"redirectURIs\": [\n        {\n            \"url\": \"https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit\",\n            \"isHttps\": false\n        }\n    ],\n    \"attributes\": [\n        {\n            \"attrName\": \"customeAttr1\",\n            \"attrValue\": \"CustomValue\",\n            \"attrType\": \"static\"\n        },\n        {\n            \"attrName\": \"groups\",\n            \"attrValue\": \"$user.groups\",\n            \"attrType\": \"DYNAMIC\"\n        }\n    ],\n    \"accessTokenCustomClaims\" : [\"groups\"],\n    \"userInfoCustomClaims\" : [\"groups\"]\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"name\":\"oam_client\",\n   \"scopes\":[\n   ]\n      \n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=OIDCDefaultDomain",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "OIDCDefaultDomain"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=OIDCFederationDomain&name=oam_client",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "OIDCFederationDomain"
+										},
+										{
+											"key": "name",
+											"value": "oam_client"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "OidcDemoWebanwendung",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"idDomain\": \"OIDCFederationDomain\",\n    \"id\": \"OidcDemoWebanwendung\",\n    \"name\": \"OidcDemoWebanwendung\",\n    \"secret\": \"Welcome1\",\n    \"clientType\": \"CONFIDENTIAL_CLIENT\",\n    \"attributes\": [],\n    \"idTokenCustomClaims\": [],\n    \"accessTokenCustomClaims\": [],\n    \"userInfoCustomClaims\": [],\n    \"issueTLSClientCertificateBoundAccessTokens\": false,\n    \"description\": \"OidcDemoWebanwendung\",\n    \n    \"redirectURIs\": [\n        {\n            \"url\": \"http://localhost:8080/oidc-demo-webanwendung/\",\n            \"isHttps\": true\n        }\n    ],\n    \n    \"grantTypes\": [\n        \"PASSWORD\",\n        \"CLIENT_CREDENTIALS\",\n        \"JWT_BEARER\",\n        \"REFRESH_TOKEN\",\n        \"AUTHORIZATION_CODE\",\n        \"TOKEN_EXCHANGE\"\n    ],\n    \n    \"scopes\": [\n        \"openid\",\n        \"profile\",\n        \"OidcDemoWebanwendung.Main\"\n    ],\n    \"defaultScope\": \"openid\"\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=OIDCFederationDomain&name=OidcDemoWebanwendung",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "OIDCFederationDomain"
+										},
+										{
+											"key": "name",
+											"value": "OidcDemoWebanwendung"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Exchange Client1",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"test_client_exchange\",\n    \"id\": \"test_client_exchange\",\n    \"secret\": \"Welcome1\",\n    \"idDomain\": \"OIDCFederationDomainTestTokenExchange\",\n    \"clientType\": \"CONFIDENTIAL_CLIENT\",\n    \"description\": \"Test client with token exchange\",\n    \"scopes\": [\n        \"ResourceServerTokenExchange.publish\",\n        \"ResourceServerTokenExchange.openid\"\n    ],\n    \"defaultScope\": \"ResourceServerTokenExchange.openid\",\n    \"grantTypes\": [\n        \"PASSWORD\",\n        \"CLIENT_CREDENTIALS\",\n        \"JWT_BEARER\",\n        \"REFRESH_TOKEN\",\n        \"AUTHORIZATION_CODE\",\n        \"TOKEN_EXCHANGE\"\n    ],\n    \"redirectURIs\": [\n        {\n            \"url\": \"https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit\",\n            \"isHttps\": false\n        }\n    ],\n    \"attributes\": [\n        \n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?name=test_client_exchange&identityDomainName=OIDCFederationDomainTestTokenExchange",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "test_client_exchange"
+										},
+										{
+											"key": "identityDomainName",
+											"value": "OIDCFederationDomainTestTokenExchange"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Exchange Client2",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"test_client2_exchange\",\n    \"id\": \"test_client2_exchange\",\n    \"secret\": \"Welcome1\",\n    \"idDomain\": \"OIDCFederationDomainTestTokenExchange\",\n    \"clientType\": \"CONFIDENTIAL_CLIENT\",\n    \"description\": \"Test client 2 with token exchange\",\n    \"scopes\": [\n        \"ResourceServerTokenExchange.publish\",\n        \"ResourceServerTokenExchange.openid\"\n    ],\n    \"defaultScope\": \"ResourceServerTokenExchange.openid\",\n    \"grantTypes\": [\n        \"CLIENT_CREDENTIALS\",\n        \"JWT_BEARER\"\n    ],\n    \"redirectURIs\": [\n        {\n            \"url\": \"https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit\",\n            \"isHttps\": false\n        }\n    ],\n    \"attributes\": [\n        \n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?name=test_client2_exchange&identityDomainName=OIDCFederationDomainTestTokenExchange",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "test_client2_exchange"
+										},
+										{
+											"key": "identityDomainName",
+											"value": "OIDCFederationDomainTestTokenExchange"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1e8dd54c-4400-4bc5-99be-4425f2c51cf6",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=OIDCFederationDomain",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"oam",
+								"services",
+								"rest",
+								"ssa",
+								"api",
+								"v1",
+								"oauthpolicyadmin",
+								"client"
+							],
+							"query": [
+								{
+									"key": "identityDomainName",
+									"value": "OIDCFederationDomain"
+								},
+								{
+									"key": "name",
+									"value": "OidcDemoWebanwendung",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Simulation",
+			"item": [
+				{
+					"name": "OidcDummyWebanwendung",
+					"item": [
+						{
+							"name": "Initiate the flow",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://iad.iaas.psp.extrapol.de/oidc?scope=openid+OidcDummyWebanwendung.Main&response_type=code&client_id=OidcDummyWebanwendung&redirect_uri=http://localhost:8080/oidc-config-test/redirect&code_challenge_method=S256&code_challenge=A5c1gPqiTupRCky9NwjxrIXJsV1IC8W0AINZuWxB8zA&state=&domain=OIDCFederationDomain",
+									"protocol": "https",
+									"host": [
+										"iad",
+										"iaas",
+										"psp",
+										"extrapol",
+										"de"
+									],
+									"path": [
+										"oidc"
+									],
+									"query": [
+										{
+											"key": "scope",
+											"value": "openid+OidcDummyWebanwendung.Main"
+										},
+										{
+											"key": "response_type",
+											"value": "code"
+										},
+										{
+											"key": "client_id",
+											"value": "OidcDummyWebanwendung"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "http://localhost:8080/oidc-config-test/redirect"
+										},
+										{
+											"key": "code_challenge_method",
+											"value": "S256"
+										},
+										{
+											"key": "code_challenge",
+											"value": "A5c1gPqiTupRCky9NwjxrIXJsV1IC8W0AINZuWxB8zA"
+										},
+										{
+											"key": "state",
+											"value": ""
+										},
+										{
+											"key": "domain",
+											"value": "OIDCFederationDomain"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Token request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "OidcDummyWebanwendung",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "OIDCFederationDomain"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "redirect_uri",
+											"value": "http://localhost:8080/oidc-config-test/redirect",
+											"sessionValue": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "AUTHORIZATION_CODE",
+											"sessionValue": "AUTHORIZATION_CODE",
+											"type": "text"
+										},
+										{
+											"key": "code",
+											"value": "MzMzRGNrdVpuZS9KZzNqNThWWFNrdz09fmdKZ1RyMys5R05jTWFBVVNzYmRIdit5YWtUSEY0bG80b3dTK2RkcHhwQ3NteGFqLzJ1V2lONWdHcGZTc0tDeGZBZVoyL3hOa0FLNUpSemlnb1I4QVB2TFlOTFhYVjhoWWgxTjJpVjMwR1RoZ1Z2cnlSOEJjY1UxMmNDYXZuK1FiWEFlRlZLV1hNR0lhMWdsU3JsQi8xZk5hVU00K0hOWUMzUVh0TTNPRTVGSkFMMVpJM3NsSWVyUlV0UU92TGR4YVljYnpkNDIwakt1UU5BeG1pcVlvRjNzNVVUK1ZoaUs1S0hsNnZwd2tuRG8vTklNU0JpOTZlT2UxUTBzZmxMczlCZFd5S042bzVnQnIyZ0s0UjlxbXJTT01tL0VyZlF5SkZzR1ZvajljVEg5a2pRN2U5NDY0Mk1qbzlXa0RqMXBrREhqangwYkdFOXRwREFQTzVpMWVzRGQ5akhaQkptOUJNZ1VDVkVWMkhSbkNBendIYVJ5UDRtQ0kwTy9oUDhQV21oM0kyVmdnSC8xa3d3Wnk5dlBWZ1c2QThoSWhBMXFUQUFRTXpobEN1SjViZFVNVzEvWVVxUWdVVnRQY0QrTC84SG9DYnh4enZlUDNhY3k3Sm1YOEFabUduQ1YrcUFjSmRaOTk3NjlKR01kengxM29XZUs1NWhxV0pMbUhSd0EvcTlUL3NhRXlXeDk4TGFubkRpOGV2NXd5Z1RMTHNnaUZwMnlrZDdYRm43cmd3NmlmeFA4bW1rdkt6a0RpUFlVbGI5OXVSN09Mcjd5Mm5UY0o3enlIT0lyand0cE5RcmdQL05Jb25IQmVSWFNLdC84WTZOeFlvVUNQdGx3QmphT3JCcFJFcDZxU2hqdUlzQTlRdXpuNXNFdzNCTTFpZGNHeHNBYm1ha3hvNVNjdW5mMkRNK291V3U4bHR2aEY4c2JlNld1MEl0ZlgxQnFtMm1kWWdScmE4VEpiZllTYnFaZStXNXFvZHl0MU9YVkl6QmJYVVNwU253WVh2dk9JS3ZlbHJCYkpEZVg4VDRJOU15WkxWZWpyWnMyQmhYMkppQ2NhbmlOS3NxV2Z0SEU9",
+											"sessionValue": "UmRnYTErZzRnM0lkK0pSanlwMnlDdz09fm41QURCM2NScjdrU1Bsb1F2WWt3anFmNUdrKzB1RkhYRDl0MkFZQkQxMGQ2ckFMNFViSmZMMVZZQ1o3R3NJNUlZaUZrT1UxOUo2TklQY0VHMnZ5Zm5iWjUwYWRzVGwzdE5vdWc5RWQxMUh5WTdhY095RmJCZ2tPWWpEUU1nUUhkMjQvbGcxZk4yaGltL3p3Z1VUMStHeUlGU1VCUnRZR0RNTW43UmZRai9aNGgyWXRGazFhMmdMd001NkhRYm5CQmwydk9WY1R0SzlnK1g1Mjh5dlNXKzNHZHM3TERrdDlUUko1bS9wNUlnMUdzQjhhWWRZWFM3aktPdkc3UDdUSG56YkhKdVpMRE9kWXp3bXpuWlE3VEl4SnlNak9jZGJMZ3FPYnlVUm5XK0NDcDVFUWVIVVlzeGRJTFV3NDFneTVNdVVISW9hT2MxQ3RwcWZBazJheitlYzI3YTl0RVlXUXVvTlJTVWs0ZjIwdkZUS2swYlI2cGhveW43dGFEeGFXUHdJUWxxQmk1U2xzcUV4RmFWRnFPa3k1K3c4c3JWTnRnUmJFN280NXJQM2c1YVMwNVE3UzROK0Z6UEYyU0J6ZU8zcGhtbC93dUlOVUlXK1BLSnJjN2ZGc2ZNaGZyMzlWTWkyYmo4cjNSTkJhVURRWVVKVlY1TzZwQXUvVFRpYUM0eUVYS2pYTU5qaXFrUWprRUJGdWtadDhpWlgwMi8zTnd5d3I4QjhNTzJQeWNoRElRTzMrL01xQktRZm5zL0tZQ2gwL0dKODRNN1MrNUdmeURJbkEybGt4c05HVmZSUjRlK3VJWTJzUndnRmZYeUJ3ak5WQWUrbi9VMDRITkZHQ29WRXY5WlNiUHhjZkVWbFUrYVNYWnZhbEc5M25FcmE2Vi90YzFyVElUV09jdmJyc2QvRmFQZzgvTDlZbm9QcndHM284cVNEUDhkVkQxNVlZRXRjQ2dOb1FjZ3UzbVJ3anhDTFNkRE1OQTBaWnZyOUdIY1gzaGQ5STdZNVh5cDhVSA",
+											"type": "text"
+										},
+										{
+											"key": "code_verifier",
+											"value": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+											"sessionValue": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/oauth2/rest/token",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Token Info",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "OidcDummyWebanwendung",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "OIDCFederationDomain"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "access_token",
+											"value": "eyJ4NXQiOiJoMTBlaTBKTzVic1pYb05HY2ZDUEtvczhCV0kiLCJraWQiOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJiazA1MTc2NiIsInAyMF91aWQiOiJULTM2LTAtMjAtMTAxLWRzdGVkaW5nIiwiaXNzIjoiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiIsImNvZGVfY2hhbGxlbmdlX21ldGhvZCI6IlMyNTYiLCJnaXZlbl9uYW1lIjoiRGlldGVyIiwiZGVwYXJ0bWVudF9udW1iZXIiOiJOT1RfRk9VTkQiLCJhdWQiOlsiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiJdLCJpZHAiOiJOT1RfRk9VTkQiLCJzY29wZSI6WyJvcGVuaWQiLCJPaWRjRHVtbXlXZWJhbndlbmR1bmcuTWFpbiJdLCJkb21haW4iOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImNsaWVudCI6Ik9pZGNEdW1teVdlYmFud2VuZHVuZyIsInBob25lX251bWJlciI6Ik5PVF9GT1VORCIsImV4cCI6MTY5MzQxMDMxNSwiZ3JhbnQiOiJBVVRIT1JJWkFUSU9OX0NPREUiLCJpYXQiOjE2OTM0MDY3MTUsImZhbWlseV9uYW1lIjoiU3RlZGluZyIsImp0aSI6ImZBU25KaFJSRGkwejhSZkZnWnd4RHciLCJjb2RlX2NoYWxsZW5nZSI6IkE1YzFnUHFpVHVwUkNreTlOd2p4cklYSnNWMUlDOFcwQUlOWnVXeEI4ekEiLCJlbWFpbCI6ImRpZXRlci5zdGVkaW5nQHZtLm9yYWNsZS5jb20ifQ.IGd0bB_AeCvyzMyhUYoEyC82CdfrWfopjjAuO1yJtLk4FUAXxNvUtDdwCl8XBrJhfxiGTSFNQKh4yrh2H38zeInhYQU2mbFEH7rvGPPS-dQSGv-IoH69DBtqUS5WJCeUABYc1V7eDS2eV7Uuyw6PXCLNriJKeG6F96qYhjTmK4hc5o7YWy3j_qq_8gYSOAIDkyoEeQzf6mmjGMJIDlLGYEOP_odYqjyECJce0Wn0U0MTVYgNWn23IGOX0PTUc9zwksWIGp-1K3Cei5dXYlzs_1jKcgdQl3Aa9g8M3FNbpxsH3IQ6FatrwTK-OrBUqXJsmLNA1TL5hVvw3ka8AltNfw",
+											"sessionValue": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/oauth2/rest/token/info",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token",
+										"info"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "introspectToken",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "OidcDummyWebanwendung",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "OIDCFederationDomain"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "eyJ4NXQiOiJoMTBlaTBKTzVic1pYb05HY2ZDUEtvczhCV0kiLCJraWQiOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJiazA1MTc2NiIsInAyMF91aWQiOiJULTM2LTAtMjAtMTAxLWRzdGVkaW5nIiwiaXNzIjoiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiIsImNvZGVfY2hhbGxlbmdlX21ldGhvZCI6IlMyNTYiLCJnaXZlbl9uYW1lIjoiRGlldGVyIiwiZGVwYXJ0bWVudF9udW1iZXIiOiJOT1RfRk9VTkQiLCJhdWQiOlsiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiJdLCJpZHAiOiJOT1RfRk9VTkQiLCJzY29wZSI6WyJvcGVuaWQiLCJPaWRjRHVtbXlXZWJhbndlbmR1bmcuTWFpbiJdLCJkb21haW4iOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImNsaWVudCI6Ik9pZGNEdW1teVdlYmFud2VuZHVuZyIsInBob25lX251bWJlciI6Ik5PVF9GT1VORCIsImV4cCI6MTY5MzQwNjc4MywiZ3JhbnQiOiJBVVRIT1JJWkFUSU9OX0NPREUiLCJpYXQiOjE2OTM0MDMxODMsImZhbWlseV9uYW1lIjoiU3RlZGluZyIsImp0aSI6Ik9TaVNKUkQ0MHFjb0plcUhNUWxNV3ciLCJjb2RlX2NoYWxsZW5nZSI6IkE1YzFnUHFpVHVwUkNreTlOd2p4cklYSnNWMUlDOFcwQUlOWnVXeEI4ekEiLCJlbWFpbCI6ImRpZXRlci5zdGVkaW5nQHZtLm9yYWNsZS5jb20ifQ.ZSyRAAxrquvi4EIrGd0gKm7mNO-ui6dk5Rq9EUmwKYBYjoMBK4zoQFd8nxLYFIIZg6tsxxf5A4xq4X6TxU7RhkZTz3qHK3FIZpESbB9fL67__ov474QCdHWt57vswQcgRjL3MHrHDYXIttLmgNdsyUVL9tKfqyhATW7UHREOk19fCjbpqUsIqFidZNnHEc5mRVTZ_34yTAztsGwnufTUHeazZZ72s584PUANLdmiqlyXC3t0vLQGTwgHpcVTI6eHK_IHp36l75C7bY3QwhX_efLPRBnMVJPB28nbQsCOoVO_EoedvyJyVRwWhqf31ZrTMZ9sNVT1uS73QRCLKvvJSQ",
+											"sessionValue": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/oauth2/rest/token/introspect",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token",
+										"introspect"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Info",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ4NXQiOiJoMTBlaTBKTzVic1pYb05HY2ZDUEtvczhCV0kiLCJraWQiOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJiazA1MTc2NiIsInAyMF91aWQiOiJULTM2LTAtMjAtMTAxLWRzdGVkaW5nIiwiaXNzIjoiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiIsImNvZGVfY2hhbGxlbmdlX21ldGhvZCI6IlMyNTYiLCJnaXZlbl9uYW1lIjoiRGlldGVyIiwiZGVwYXJ0bWVudF9udW1iZXIiOiJOT1RfRk9VTkQiLCJhdWQiOlsiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiJdLCJpZHAiOiJOT1RfRk9VTkQiLCJzY29wZSI6WyJvcGVuaWQiLCJPaWRjRHVtbXlXZWJhbndlbmR1bmcuTWFpbiJdLCJkb21haW4iOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImNsaWVudCI6Ik9pZGNEdW1teVdlYmFud2VuZHVuZyIsInBob25lX251bWJlciI6Ik5PVF9GT1VORCIsImV4cCI6MTY5MzQxMDMxNSwiZ3JhbnQiOiJBVVRIT1JJWkFUSU9OX0NPREUiLCJpYXQiOjE2OTM0MDY3MTUsImZhbWlseV9uYW1lIjoiU3RlZGluZyIsImp0aSI6ImZBU25KaFJSRGkwejhSZkZnWnd4RHciLCJjb2RlX2NoYWxsZW5nZSI6IkE1YzFnUHFpVHVwUkNreTlOd2p4cklYSnNWMUlDOFcwQUlOWnVXeEI4ekEiLCJlbWFpbCI6ImRpZXRlci5zdGVkaW5nQHZtLm9yYWNsZS5jb20ifQ.IGd0bB_AeCvyzMyhUYoEyC82CdfrWfopjjAuO1yJtLk4FUAXxNvUtDdwCl8XBrJhfxiGTSFNQKh4yrh2H38zeInhYQU2mbFEH7rvGPPS-dQSGv-IoH69DBtqUS5WJCeUABYc1V7eDS2eV7Uuyw6PXCLNriJKeG6F96qYhjTmK4hc5o7YWy3j_qq_8gYSOAIDkyoEeQzf6mmjGMJIDlLGYEOP_odYqjyECJce0Wn0U0MTVYgNWn23IGOX0PTUc9zwksWIGp-1K3Cei5dXYlzs_1jKcgdQl3Aa9g8M3FNbpxsH3IQ6FatrwTK-OrBUqXJsmLNA1TL5hVvw3ka8AltNfw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "OIDCFederationDomainTestTokenExchange"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseURL}}/oauth2/rest/userinfo",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"userinfo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJraWQiOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsIng1dCI6ImgxMGVpMEpPNWJzWlhvTkdjZkNQS29zOEJXSSIsImFsZyI6IlJTMjU2In0.eyJpc3MiOiJodHRwczovL2lhZC5pYWFzLnBzcC5leHRyYXBvbC5kZTo0NDMvb2F1dGgyIiwiYXVkIjpbIkp3dEV4Y2hhbmdpbmdXZWJzZXJ2aWNlIiwiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiJdLCJleHAiOjE2OTM0MTE4ODYsImp0aSI6InBoZWVMZkFJVXE5NHF6a3d1c0MxWWciLCJpYXQiOjE2OTM0MDgyODYsInN1YiI6ImJrMDUxNzY2IiwiY2xpZW50IjoiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwic2NvcGUiOlsiSnd0RXhjaGFuZ2luZ1dlYnNlcnZpY2UuTWFpbiJdLCJkb21haW4iOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImNsaWVudF9pZCI6Ik9pZGNEdW1teVdlYmFud2VuZHVuZyIsInAyMF91aWQiOiJULTM2LTAtMjAtMTAxLWRzdGVkaW5nIiwiYWN0Ijp7InN1YiI6ImJrMDUxNzY2In0sInBob25lX251bWJlciI6Ik5PVF9GT1VORCIsImdpdmVuX25hbWUiOiJEaWV0ZXIiLCJmYW1pbHlfbmFtZSI6IlN0ZWRpbmciLCJlbWFpbCI6ImRpZXRlci5zdGVkaW5nQHZtLm9yYWNsZS5jb20ifQ.TS8MbdIsaO3gAHd2Z1i6W9FCZeYJC8u8XySy6Mf9ZTCXLi8v5nOX0l234Iiv38v3CWmdz6ErXi2jqhbnQtwWFHetepntjyQRz6SOi-VhlWTIZ_9PBZOQGDBpNTgNHhdjGYEhizznKZjRIfAFiTdgMvDS1Dj7f99WEmwj07027ppatpux9867EN6ZnVI2xdkvvWmY6xDOUtrQ57zhFXXacWzUeBuhorptXOVpvP5iVMujkagz63uAhEw_XdZDpR9BbUUUQdWI2fiRPnyiUFjusvfhOH8tCYA_zZ5R7y_wCPYJT2S5MzvSIUfj2-SY2jrC9AUhKF9hRZlr8IPvEMZv8g",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"disabled": true
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "OIDCFederationDomain"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "eyJ4NXQiOiJoMTBlaTBKTzVic1pYb05HY2ZDUEtvczhCV0kiLCJraWQiOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJia3ppbXB0ZXN0bnV0emVyMSIsInAyMF91aWQiOiJULTM2LTAtMTgtMTAxLXhhZGZxODQ4MSIsImlzcyI6Imh0dHBzOi8vaWFkLmlhYXMucHNwLmV4dHJhcG9sLmRlOjQ0My9vYXV0aDIiLCJjb2RlX2NoYWxsZW5nZV9tZXRob2QiOiJTMjU2IiwiZ2l2ZW5fbmFtZSI6IlpJTVAiLCJkZXBhcnRtZW50X251bWJlciI6IkJLLTEyMzQiLCJhdWQiOlsiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiJdLCJpZHAiOiJCSyIsInNjb3BlIjpbIm9wZW5pZCIsIk9pZGNEdW1teVdlYmFud2VuZHVuZy5NYWluIl0sImRvbWFpbiI6Ik9JRENGZWRlcmF0aW9uRG9tYWluIiwiY2xpZW50IjoiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwicGhvbmVfbnVtYmVyIjoiMDEyMzQ1Njc4OSIsImV4cCI6MTY5Mjc5MjUzOCwiZ3JhbnQiOiJBVVRIT1JJWkFUSU9OX0NPREUiLCJpYXQiOjE2OTI3ODg5MzgsImZhbWlseV9uYW1lIjoiVGVzdG51dHplcjEiLCJqdGkiOiJEdmpHdXZFUGFxTUJQWFcyRTJvRTFRIiwiY29kZV9jaGFsbGVuZ2UiOiJBNWMxZ1BxaVR1cFJDa3k5TndqeHJJWEpzVjFJQzhXMEFJTlp1V3hCOHpBIiwiZW1haWwiOiJ6aW1wLnRlc3RudXR6ZXIxQGR1bW15LmRlIn0.WMz18Bpp6tLJZUMpubhR6Fsa64CDbRIMM8TK_zEbs9Tn1cdhDrl8Quk7ma3SYLIKqHTBQorcfQMzCKrVTOIsNwFiurT7uVTVA8biv2wh5Q4vVhKVnScRxzKExeIr4N35pQqyUEhoVPpfJcrsMN5-vtm-roegm7GPn_8wVPOpiZrcs8xwFUx2pX2bYt7P-5wgm3E24ByHWKLD0ANhubtarS-vFNBZt4_TOaqx7pU8dWCILCiSByrrtzf2BdwnKDZkfA4NhszihrsZ53MKpnybUa-8XQrV38td5cHLrwVoxyyj5f_Rp-vrmE5OXKn9N7ASUae8r5lZBB17u62J41V8zg",
+											"sessionValue": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/oauth2/rest/userprofile",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"userprofile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delegate Request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "OidcDummyWebanwendung",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "OIDCFederationDomain"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "TOKEN_EXCHANGE",
+											"type": "default"
+										},
+										{
+											"key": "subject_token_type",
+											"value": "urn:ietf:params:oauth:token-type:jwt",
+											"type": "default"
+										},
+										{
+											"key": "subject_token",
+											"value": "eyJ4NXQiOiJoMTBlaTBKTzVic1pYb05HY2ZDUEtvczhCV0kiLCJraWQiOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJiazA1MTc2NiIsInAyMF91aWQiOiJULTM2LTAtMjAtMTAxLWRzdGVkaW5nIiwiaXNzIjoiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiIsImNvZGVfY2hhbGxlbmdlX21ldGhvZCI6IlMyNTYiLCJnaXZlbl9uYW1lIjoiRGlldGVyIiwiZGVwYXJ0bWVudF9udW1iZXIiOiJOT1RfRk9VTkQiLCJhdWQiOlsiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiJdLCJpZHAiOiJOT1RfRk9VTkQiLCJzY29wZSI6WyJvcGVuaWQiLCJPaWRjRHVtbXlXZWJhbndlbmR1bmcuTWFpbiJdLCJkb21haW4iOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImNsaWVudCI6Ik9pZGNEdW1teVdlYmFud2VuZHVuZyIsInBob25lX251bWJlciI6Ik5PVF9GT1VORCIsImV4cCI6MTY5MzQxMDMxNSwiZ3JhbnQiOiJBVVRIT1JJWkFUSU9OX0NPREUiLCJpYXQiOjE2OTM0MDY3MTUsImZhbWlseV9uYW1lIjoiU3RlZGluZyIsImp0aSI6ImZBU25KaFJSRGkwejhSZkZnWnd4RHciLCJjb2RlX2NoYWxsZW5nZSI6IkE1YzFnUHFpVHVwUkNreTlOd2p4cklYSnNWMUlDOFcwQUlOWnVXeEI4ekEiLCJlbWFpbCI6ImRpZXRlci5zdGVkaW5nQHZtLm9yYWNsZS5jb20ifQ.IGd0bB_AeCvyzMyhUYoEyC82CdfrWfopjjAuO1yJtLk4FUAXxNvUtDdwCl8XBrJhfxiGTSFNQKh4yrh2H38zeInhYQU2mbFEH7rvGPPS-dQSGv-IoH69DBtqUS5WJCeUABYc1V7eDS2eV7Uuyw6PXCLNriJKeG6F96qYhjTmK4hc5o7YWy3j_qq_8gYSOAIDkyoEeQzf6mmjGMJIDlLGYEOP_odYqjyECJce0Wn0U0MTVYgNWn23IGOX0PTUc9zwksWIGp-1K3Cei5dXYlzs_1jKcgdQl3Aa9g8M3FNbpxsH3IQ6FatrwTK-OrBUqXJsmLNA1TL5hVvw3ka8AltNfw",
+											"type": "default"
+										},
+										{
+											"key": "actor_token_type",
+											"value": "urn:ietf:params:oauth:token-type:jwt",
+											"type": "default"
+										},
+										{
+											"key": "actor_token",
+											"value": "eyJ4NXQiOiJoMTBlaTBKTzVic1pYb05HY2ZDUEtvczhCV0kiLCJraWQiOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJiazA1MTc2NiIsInAyMF91aWQiOiJULTM2LTAtMjAtMTAxLWRzdGVkaW5nIiwiaXNzIjoiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiIsImNvZGVfY2hhbGxlbmdlX21ldGhvZCI6IlMyNTYiLCJnaXZlbl9uYW1lIjoiRGlldGVyIiwiZGVwYXJ0bWVudF9udW1iZXIiOiJOT1RfRk9VTkQiLCJhdWQiOlsiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiJdLCJpZHAiOiJOT1RfRk9VTkQiLCJzY29wZSI6WyJvcGVuaWQiLCJPaWRjRHVtbXlXZWJhbndlbmR1bmcuTWFpbiJdLCJkb21haW4iOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImNsaWVudCI6Ik9pZGNEdW1teVdlYmFud2VuZHVuZyIsInBob25lX251bWJlciI6Ik5PVF9GT1VORCIsImV4cCI6MTY5MzQxMDMxNSwiZ3JhbnQiOiJBVVRIT1JJWkFUSU9OX0NPREUiLCJpYXQiOjE2OTM0MDY3MTUsImZhbWlseV9uYW1lIjoiU3RlZGluZyIsImp0aSI6ImZBU25KaFJSRGkwejhSZkZnWnd4RHciLCJjb2RlX2NoYWxsZW5nZSI6IkE1YzFnUHFpVHVwUkNreTlOd2p4cklYSnNWMUlDOFcwQUlOWnVXeEI4ekEiLCJlbWFpbCI6ImRpZXRlci5zdGVkaW5nQHZtLm9yYWNsZS5jb20ifQ.IGd0bB_AeCvyzMyhUYoEyC82CdfrWfopjjAuO1yJtLk4FUAXxNvUtDdwCl8XBrJhfxiGTSFNQKh4yrh2H38zeInhYQU2mbFEH7rvGPPS-dQSGv-IoH69DBtqUS5WJCeUABYc1V7eDS2eV7Uuyw6PXCLNriJKeG6F96qYhjTmK4hc5o7YWy3j_qq_8gYSOAIDkyoEeQzf6mmjGMJIDlLGYEOP_odYqjyECJce0Wn0U0MTVYgNWn23IGOX0PTUc9zwksWIGp-1K3Cei5dXYlzs_1jKcgdQl3Aa9g8M3FNbpxsH3IQ6FatrwTK-OrBUqXJsmLNA1TL5hVvw3ka8AltNfw",
+											"type": "default"
+										},
+										{
+											"key": "scope",
+											"value": "JwtExchangingWebservice.Main",
+											"type": "default"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/oauth2/rest/token/exchange",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token",
+										"exchange"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Impersonation Request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "Welcome1",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "OidcDummyWebanwendung",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "OIDCFederationDomain"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "TOKEN_EXCHANGE",
+											"sessionValue": "TOKEN_EXCHANGE",
+											"type": "text"
+										},
+										{
+											"key": "subject_token_type",
+											"value": "eyJ4NXQiOiJoMTBlaTBKTzVic1pYb05HY2ZDUEtvczhCV0kiLCJraWQiOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJia3ppbXB0ZXN0bnV0emVyMSIsInAyMF91aWQiOiJULTM2LTAtMTgtMTAxLXhhZGZxODQ4MSIsImlzcyI6Imh0dHBzOi8vaWFkLmlhYXMucHNwLmV4dHJhcG9sLmRlOjQ0My9vYXV0aDIiLCJjb2RlX2NoYWxsZW5nZV9tZXRob2QiOiJTMjU2IiwiZ2l2ZW5fbmFtZSI6IlpJTVAiLCJkZXBhcnRtZW50X251bWJlciI6IkJLLTEyMzQiLCJhdWQiOlsiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiJdLCJpZHAiOiJCSyIsInNjb3BlIjpbIm9wZW5pZCIsIk9pZGNEdW1teVdlYmFud2VuZHVuZy5NYWluIl0sImRvbWFpbiI6Ik9JRENGZWRlcmF0aW9uRG9tYWluIiwiY2xpZW50IjoiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwicGhvbmVfbnVtYmVyIjoiMDEyMzQ1Njc4OSIsImV4cCI6MTY5MzQwMDM4NCwiZ3JhbnQiOiJBVVRIT1JJWkFUSU9OX0NPREUiLCJpYXQiOjE2OTMzOTY3ODQsImZhbWlseV9uYW1lIjoiVGVzdG51dHplcjEiLCJqdGkiOiJRdXZsMXBmNG1TeXVfamtPUmt3MjN3IiwiY29kZV9jaGFsbGVuZ2UiOiJBNWMxZ1BxaVR1cFJDa3k5TndqeHJJWEpzVjFJQzhXMEFJTlp1V3hCOHpBIiwiZW1haWwiOiJ6aW1wLnRlc3RudXR6ZXIxQGR1bW15LmRlIn0.UOithWpijApJL3nAjvC8rOjPnYx7X59DF6ghLciuvkYNsHNzubQt7VLIVhCTa5orNEdrd2jILDV4aVYCZxQHhf90ai03u3O4crz-t33nKehqzzTO9levTcAVxJLWh-OHlAOMSqPIlXFXFWxJbZYPmwznBWwuoUvM__gNkh2Wj2lyN54wQ34l1fruZD2EQLO4sffIhKYdBkdSe7CmdEofxN3VA7kia9E73CF-o4yjEKv8O2a4OauJAyyOritGg4ULT3xlTAFfHW2cntMQdp76-hh5-fOCSPkfi7gwLhah8pRLAtEV0VhPJO2MLR4oyX7SCO5-B4yVfLEmBOP0p_o1jA",
+											"sessionValue": "eyJ4NXQiOiJoMTBlaTBKTzVic1pYb05HY2ZDUEtvczhCV0kiLCJraWQiOiJPSURDRmVkZXJhdGlvbkRvbWFpbiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJia3ppbXB0ZXN0bnV0emVyMSIsInAyMF91aWQiOiJULTM2LTAtMTgtMTAxLXhhZGZxODQ4MSIsImlzcyI6Imh0dHBzOi8vaWFkLmlhYXMucHNwLmV4dHJhcG9sLmRlOjQ0My9vYXV0aDIiLCJjb2RlX2NoYWxsZW5nZV9tZXRob2QiOiJTMjU2IiwiZ2l2ZW5fbmFtZSI6IlpJTVAiLCJkZXBhcnRtZW50X251bWJlciI6IkJLLTEyMzQiLCJhdWQiOlsiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwiaHR0cHM6Ly9pYWQuaWFhcy5wc3AuZXh0cmFwb2wuZGU6NDQzL29hdXRoMiJdLCJpZHAiOiJCSyIsInNjb3BlIjpbIm9wZW5pZCIsIk9pZGNEdW1teVdlYmFud2VuZHVuZy5NYWluIl0sImRvbWFpbiI6Ik9JRENGZWRlcmF0aW9uRG9tYWluIiwiY2xpZW50IjoiT2lkY0R1bW15V2ViYW53ZW5kdW5nIiwicGhvbmVfbnVtYmVyIjoiMDEyMzQ1Njc4OSIsImV4cCI6MTY5MzQwMDM4NCwiZ3JhbnQiOiJBVVRIT1JJWkFUSU9OX0NPREUiLCJpYXQiOjE2OTMzOTY3ODQsImZhbWlseV9uYW1lIjoiVGVzdG51dHplcjEiLCJqdGkiOiJRdXZsMXBmNG1TeXVfamtPUmt3MjN3IiwiY29kZV9jaGFsbGVuZ2UiOiJBNWMxZ1BxaVR1cFJDa3k5TndqeHJJWEpzVjFJQzhXMEFJTlp1V3hCOHpBIiwiZW1haWwiOiJ6aW1wLnRlc3RudXR6ZXIxQGR1bW15LmRlIn0.UOithWpijApJL3nAjvC8rOjPnYx7X59DF6ghLciuvkYNsHNzubQt7VLIVhCTa5orNEdrd2jILDV4aVYCZxQHhf90ai03u3O4crz-t33nKehqzzTO9levTcAVxJLWh-OHlAOMSqPIlXFXFWxJbZYPmwznBWwuoUvM__gNkh2Wj2lyN54wQ34l1fruZD2EQLO4sffIhKYdBkdSe7CmdEofxN3VA7kia9E73CF-o4yjEKv8O2a4OauJAyyOritGg4ULT3xlTAFfHW2cntMQdp76-hh5-fOCSPkfi7gwLhah8pRLAtEV0VhPJO2MLR4oyX7SCO5-B4yVfLEmBOP0p_o1jA",
+											"type": "text"
+										},
+										{
+											"key": "scope",
+											"value": "JwtExchangingWebservice.Main",
+											"sessionValue": "ZIMP.Main",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/oauth2/rest/token/exchange",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oauth2",
+										"rest",
+										"token",
+										"exchange"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "Templates",
+			"item": [
+				{
+					"name": "ZIMP",
+					"item": [
+						{
+							"name": "Get Template - ZIMP",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "redirect_uri",
+											"value": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+											"sessionValue": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "AUTHORIZATION_CODE",
+											"sessionValue": "AUTHORIZATION_CODE",
+											"type": "text"
+										},
+										{
+											"key": "code",
+											"value": "TW1EN1QzUzdIUnQwTEMyczExcVMrUT09fk43TnNNWU5hSGxnR0FUMEQvaDNIZld2Sk9IaGo4MXY4dkRxd0QxZ2NlUUNNRDkxRTMxVXQvZ1lkTURYZ0I0RnJDaDVRV0YwK29DNHNCaUp6UDZkREhMMEw1Sk1LVEFlSHlkVlRrZmhpemlXRHA2cnNDSHpmN0tzYmYzcDBiNzU5YWIwNURXZnZIdlIwOExTNGNnYlY0dmlFbW1Xc0hyVWhadWZMMU9GYVQzTGpKRFBNZ0ljcE5jTkhJNHVqaVFJclR0VG5xRzdxdnZkcmhVU0Q2OVJaaUY3bDJlL1U2dHBnTzRua1RaUDZkS2plcW1sVGhLQkduQTZrTmg3aFQybmZYVTljOHAxRld5dVg4WHhsazdBY3JDUW5aMnpRS3d0V2s2ak4ybDFoTUtQdUxrdjFlb3dmTktYaVAvTlNtUVEvVWMwSXJVL1o3V1hmQ3N5eDgvWG1kQmhPZ281Tm4xR3lnSjlJNzNWVmQybW15WGx2bk9wcmxjWGRxUGozeGI4S2MwdnVKL1I5Y3lGdklJZjhXd2V1ZktBSDVkc2ZYU1N2NVBiN2oxaThPcUdVTnRNVWpPa2pUUUI2eU9nV2NBYkJ5WVZkdUM0ZXg4RjZTckkyUFRUVFBTUzN0ZG8zOUNkcUVoWVVYdjJJQVhMTkR0TGQ4NVlZeEtBRThOOWV2TTFYUzBKdTl2TXl3N1VqcVMvTk1HTTVGYjJNUC9RbVhnc081a3dXVHVJQVRTSzZkaGZGR1BzWlFIY0NVQWpUMWZLK21OaUcyeU5hWFBEZTdJMmVnRXN2aWhzWXArdXlvbFdsUVY4T3l3Vkw4QTVzaGNCMzJXWFB1NVQyaWNuLzNYaHUvUGZGTWFmR20vNld3VXVCSEQxVXBVVlVWaW4vay96c2JLUTF4OThZeWczN20yaUFBWGkzSFpIV2lQVTNyOVFiL0V3QWdpeSt1WFNkeFV1VUlQZ0JsOGs4RHhmaENjV2ZCb09HczhJZ0VBbkkvTTBDNjI1UTFqemRvV1JhbDdwUUdGcWREOTFUMXIzYm9IWlRlVTQvdjRTM2R6a3pPUzFkc0lJUGhUWUxDYkk9",
+											"sessionValue": "UmRnYTErZzRnM0lkK0pSanlwMnlDdz09fm41QURCM2NScjdrU1Bsb1F2WWt3anFmNUdrKzB1RkhYRDl0MkFZQkQxMGQ2ckFMNFViSmZMMVZZQ1o3R3NJNUlZaUZrT1UxOUo2TklQY0VHMnZ5Zm5iWjUwYWRzVGwzdE5vdWc5RWQxMUh5WTdhY095RmJCZ2tPWWpEUU1nUUhkMjQvbGcxZk4yaGltL3p3Z1VUMStHeUlGU1VCUnRZR0RNTW43UmZRai9aNGgyWXRGazFhMmdMd001NkhRYm5CQmwydk9WY1R0SzlnK1g1Mjh5dlNXKzNHZHM3TERrdDlUUko1bS9wNUlnMUdzQjhhWWRZWFM3aktPdkc3UDdUSG56YkhKdVpMRE9kWXp3bXpuWlE3VEl4SnlNak9jZGJMZ3FPYnlVUm5XK0NDcDVFUWVIVVlzeGRJTFV3NDFneTVNdVVISW9hT2MxQ3RwcWZBazJheitlYzI3YTl0RVlXUXVvTlJTVWs0ZjIwdkZUS2swYlI2cGhveW43dGFEeGFXUHdJUWxxQmk1U2xzcUV4RmFWRnFPa3k1K3c4c3JWTnRnUmJFN280NXJQM2c1YVMwNVE3UzROK0Z6UEYyU0J6ZU8zcGhtbC93dUlOVUlXK1BLSnJjN2ZGc2ZNaGZyMzlWTWkyYmo4cjNSTkJhVURRWVVKVlY1TzZwQXUvVFRpYUM0eUVYS2pYTU5qaXFrUWprRUJGdWtadDhpWlgwMi8zTnd5d3I4QjhNTzJQeWNoRElRTzMrL01xQktRZm5zL0tZQ2gwL0dKODRNN1MrNUdmeURJbkEybGt4c05HVmZSUjRlK3VJWTJzUndnRmZYeUJ3ak5WQWUrbi9VMDRITkZHQ29WRXY5WlNiUHhjZkVWbFUrYVNYWnZhbEc5M25FcmE2Vi90YzFyVElUV09jdmJyc2QvRmFQZzgvTDlZbm9QcndHM284cVNEUDhkVkQxNVlZRXRjQ2dOb1FjZ3UzbVJ3anhDTFNkRE1OQTBaWnZyOUdIY1gzaGQ5STdZNVh5cDhVSA",
+											"type": "text"
+										},
+										{
+											"key": "code_verifier",
+											"value": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+											"sessionValue": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/template/OidcDemoWebanwendung",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"template",
+										"OidcDemoWebanwendung"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Template - ZIMP",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"valueMapping\": \"name:given_name\",\n\t\"transformFirst\": true\n}\n"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/template/ZIMP",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"template",
+										"ZIMP"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Template - ZIMP",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"valueMapping\": \"name:given_name\",\n\t\"transformFirst\": true\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/template/ZIMP",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"template",
+										"ZIMP"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Template - ZIMP",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "OIDCFederationDomain",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"valueMapping\": \"name:given_name\",\n\t\"transformFirst\": false\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/template/ZIMP",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"template",
+										"ZIMP"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "OidcDemoWebanwendung",
+					"item": [
+						{
+							"name": "Get Template",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "redirect_uri",
+											"value": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+											"sessionValue": "https://iad.iaas.psp.extrapol.de:443/oam/server/auth_cred_submit",
+											"type": "text"
+										},
+										{
+											"key": "grant_type",
+											"value": "AUTHORIZATION_CODE",
+											"sessionValue": "AUTHORIZATION_CODE",
+											"type": "text"
+										},
+										{
+											"key": "code",
+											"value": "TW1EN1QzUzdIUnQwTEMyczExcVMrUT09fk43TnNNWU5hSGxnR0FUMEQvaDNIZld2Sk9IaGo4MXY4dkRxd0QxZ2NlUUNNRDkxRTMxVXQvZ1lkTURYZ0I0RnJDaDVRV0YwK29DNHNCaUp6UDZkREhMMEw1Sk1LVEFlSHlkVlRrZmhpemlXRHA2cnNDSHpmN0tzYmYzcDBiNzU5YWIwNURXZnZIdlIwOExTNGNnYlY0dmlFbW1Xc0hyVWhadWZMMU9GYVQzTGpKRFBNZ0ljcE5jTkhJNHVqaVFJclR0VG5xRzdxdnZkcmhVU0Q2OVJaaUY3bDJlL1U2dHBnTzRua1RaUDZkS2plcW1sVGhLQkduQTZrTmg3aFQybmZYVTljOHAxRld5dVg4WHhsazdBY3JDUW5aMnpRS3d0V2s2ak4ybDFoTUtQdUxrdjFlb3dmTktYaVAvTlNtUVEvVWMwSXJVL1o3V1hmQ3N5eDgvWG1kQmhPZ281Tm4xR3lnSjlJNzNWVmQybW15WGx2bk9wcmxjWGRxUGozeGI4S2MwdnVKL1I5Y3lGdklJZjhXd2V1ZktBSDVkc2ZYU1N2NVBiN2oxaThPcUdVTnRNVWpPa2pUUUI2eU9nV2NBYkJ5WVZkdUM0ZXg4RjZTckkyUFRUVFBTUzN0ZG8zOUNkcUVoWVVYdjJJQVhMTkR0TGQ4NVlZeEtBRThOOWV2TTFYUzBKdTl2TXl3N1VqcVMvTk1HTTVGYjJNUC9RbVhnc081a3dXVHVJQVRTSzZkaGZGR1BzWlFIY0NVQWpUMWZLK21OaUcyeU5hWFBEZTdJMmVnRXN2aWhzWXArdXlvbFdsUVY4T3l3Vkw4QTVzaGNCMzJXWFB1NVQyaWNuLzNYaHUvUGZGTWFmR20vNld3VXVCSEQxVXBVVlVWaW4vay96c2JLUTF4OThZeWczN20yaUFBWGkzSFpIV2lQVTNyOVFiL0V3QWdpeSt1WFNkeFV1VUlQZ0JsOGs4RHhmaENjV2ZCb09HczhJZ0VBbkkvTTBDNjI1UTFqemRvV1JhbDdwUUdGcWREOTFUMXIzYm9IWlRlVTQvdjRTM2R6a3pPUzFkc0lJUGhUWUxDYkk9",
+											"sessionValue": "UmRnYTErZzRnM0lkK0pSanlwMnlDdz09fm41QURCM2NScjdrU1Bsb1F2WWt3anFmNUdrKzB1RkhYRDl0MkFZQkQxMGQ2ckFMNFViSmZMMVZZQ1o3R3NJNUlZaUZrT1UxOUo2TklQY0VHMnZ5Zm5iWjUwYWRzVGwzdE5vdWc5RWQxMUh5WTdhY095RmJCZ2tPWWpEUU1nUUhkMjQvbGcxZk4yaGltL3p3Z1VUMStHeUlGU1VCUnRZR0RNTW43UmZRai9aNGgyWXRGazFhMmdMd001NkhRYm5CQmwydk9WY1R0SzlnK1g1Mjh5dlNXKzNHZHM3TERrdDlUUko1bS9wNUlnMUdzQjhhWWRZWFM3aktPdkc3UDdUSG56YkhKdVpMRE9kWXp3bXpuWlE3VEl4SnlNak9jZGJMZ3FPYnlVUm5XK0NDcDVFUWVIVVlzeGRJTFV3NDFneTVNdVVISW9hT2MxQ3RwcWZBazJheitlYzI3YTl0RVlXUXVvTlJTVWs0ZjIwdkZUS2swYlI2cGhveW43dGFEeGFXUHdJUWxxQmk1U2xzcUV4RmFWRnFPa3k1K3c4c3JWTnRnUmJFN280NXJQM2c1YVMwNVE3UzROK0Z6UEYyU0J6ZU8zcGhtbC93dUlOVUlXK1BLSnJjN2ZGc2ZNaGZyMzlWTWkyYmo4cjNSTkJhVURRWVVKVlY1TzZwQXUvVFRpYUM0eUVYS2pYTU5qaXFrUWprRUJGdWtadDhpWlgwMi8zTnd5d3I4QjhNTzJQeWNoRElRTzMrL01xQktRZm5zL0tZQ2gwL0dKODRNN1MrNUdmeURJbkEybGt4c05HVmZSUjRlK3VJWTJzUndnRmZYeUJ3ak5WQWUrbi9VMDRITkZHQ29WRXY5WlNiUHhjZkVWbFUrYVNYWnZhbEc5M25FcmE2Vi90YzFyVElUV09jdmJyc2QvRmFQZzgvTDlZbm9QcndHM284cVNEUDhkVkQxNVlZRXRjQ2dOb1FjZ3UzbVJ3anhDTFNkRE1OQTBaWnZyOUdIY1gzaGQ5STdZNVh5cDhVSA",
+											"type": "text"
+										},
+										{
+											"key": "code_verifier",
+											"value": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+											"sessionValue": "yZmfJbgPjIvK7b9AYUJ2pnsvSM5PRT1EydkoBC3SalQ",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/template/OidcDemoWebanwendung",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"template",
+										"OidcDemoWebanwendung"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Template",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"valueMapping\": \"given_name:groups\",\n\t\"transformFirst\": true\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/template/OidcDemoWebanwendung",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"template",
+										"OidcDemoWebanwendung"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Template",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"valueMapping\": \"name\",\n\t\"transformFirst\": true\n}\n"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/template/OidcDemoWebanwendung",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"template",
+										"OidcDemoWebanwendung"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Template",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"disabled": true
+									},
+									{
+										"key": "x-oauth-identity-domain-name",
+										"value": "OIDCFederationDomain",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"valueMapping\": \"name:given_name\",\n\t\"transformFirst\": false\n}"
+								},
+								"url": {
+									"raw": "{{baseURL}}/oam/services/rest/ssa/api/v1/template/OidcDemoWebanwendung",
+									"host": [
+										"{{baseURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"template",
+										"OidcDemoWebanwendung"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "wmkah1mdkh",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "weblogic",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "e1209361-5d1c-45b4-880c-bb3bf61a3b42",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0d82f7ab-0101-4362-b50c-d8d52bc0e896",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "a83f19f1-f37a-49a7-9bac-0f0925f40eea",
+			"key": "baseURL",
+			"value": "http://iam.stage.iaas.psp.extrapol.de",
+			"type": "string"
+		},
+		{
+			"id": "e843771e-24bd-4e79-af9c-1a9e190c26c2",
+			"key": "idPURL",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Oracle Consultings Services 12c Sandbox" default="make" basedir=".">
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="invoke">
+    <attribute name="project"/>
+    <attribute name="target"/>
+    <attribute name="path"/>
+    <sequential>
+      <subant target="@{target}" buildpath="@{project}/ant" antfile="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to cleaning up the entire workspace
+  =====================================================================
+  -->
+  <target name="cleanup" description="Cleanup all workspaces">
+    <invoke target="cleanup" path="oim-framework-ant.xml" project="IdentityManager/bkaSandbox"/>
+    <invoke target="cleanup" path="adf-library-ant.xml"   project="IdentitySkinning/IdentityAssembly"/>
+    <invoke target="cleanup" path="adf-console-ant.xml"   project="EmployeePortal/portalApplication"/>
+    <echo message="============================================================="/>
+    <echo message="Cleanup JDeveloper Runtime Artifacts"/>
+    <echo message="============================================================="/>
+    <delete includeEmptyDirs="true">
+      <fileset dir="${basedir}" includes="**/.data/"/>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to clean the build deliverables
+  ==
+  == There is no need to make this task dependend on cleanup due to the
+  == called project itself takes care about this dependency
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables">
+    <invoke target="clean" path="oim-framework-ant.xml" project="IdentityManager/bkaSandbox"/>
+    <invoke target="clean" path="adf-library-ant.xml"   project="IdentitySkinning/IdentityAssembly"/>
+    <invoke target="clean" path="adf-console-ant.xml"   project="EmployeePortal/portalApplication"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to make the entire workspace
+  =====================================================================
+  -->
+  <target name="make" description="Package all framework artifacts to the appropriate java archive">
+    <invoke target="make" path="oim-framework-ant.xml" project="IdentityManager/bkaSandbox"/>
+    <invoke target="make" path="adf-library-ant.xml"   project="IdentitySkinning/IdentityAssembly"/>
+    <invoke target="make" path="adf-console-ant.xml"   project="EmployeePortal/portalApplication"/>
+  </target>
+</project>

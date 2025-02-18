@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter"
+         basedir         ="../"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../icf-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-export-ant.log"/>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Identity Manager System Integration Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="base" description="Exports the Connector Base Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="debug"/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gws-resource-dm.xml"
+                        description="Google Drupal Portal IT Resource Type Configuration ${version.number}">
+        <object:category value="ITResourceDef" name="Generic WebService Endpoint"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gdp-lookup-dm.xml"
+                        description="Google Drupal Portal Lookup Configuration ${version.number}">
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gdp-adapter-dm.xml"
+                        description="Google Drupal Portal Adapter Configuration ${version.number}">
+        <object:category value="TaskAdapter"   name="adpGDPACCOUNTCREATE"/>
+        <object:category value="TaskAdapter"   name="adpGDPACCOUNTMODIFY"/>
+        <object:category value="TaskAdapter"   name="adpGDPACCOUNTMODIFYATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDPACCOUNTASSIGNATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDPACCOUNTUPDATEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDPACCOUNTREVOKEATTRIBUTE"/>
+        <object:category value="TaskAdapter"   name="adpGDPACCOUNTREVOKE"/>
+        <object:category value="TaskAdapter"   name="adpGDPACCOUNTACTIVATE"/>
+        <object:category value="TaskAdapter"   name="adpGDPACCOUNTDEACTIVATE"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="${resource.dir}/xml/base/gdp-scheduler-dm.xml"
+                        description="Google Drupal Portal Scheduler Configuration ${version.number}">
+        <object:category value="scheduledTask" name="GDP Lookup Reconciliation"/>
+        <object:category value="scheduledTask" name="GDP Delete Reconciliation"/>
+        <object:category value="scheduledTask" name="GDP Account Reconciliation"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Google Drupal Portal Provider Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Lookup Definition
+  **           o Resource Form
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="target" description="Exports the Connector Target Configuration ${version.number}">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="Exporting objects from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <!-- export the Lookup configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gdp-lookup-dm.xml"
+                        description="Google Drupal Portal Configuration ${version.number}">
+        <object:category value="Lookup"       name="GDPD.SZ1.Role"/>
+        <object:category value="Lookup"       name="GDPD.SZ2.Role"/>
+        <object:category value="Lookup"       name="GDPD.SZ3.Role"/>
+        <object:category value="Lookup"       name="GDPD.SZ4.Role"/>
+      </object:exportSet>
+      <!-- export the IT Resource configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gdp-resource-dm.xml"
+                        description="Google Drupal Portal Configuration ${version.number}">
+        <object:category value="ITResource"    name="GDPD SZ2 Endpoint"/>
+      </object:exportSet>
+      <!-- export the User Defined Form configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gdp-model-dm.xml"
+                        description="Google Drupal Portal Connector Configuration ${version.number}">
+        <object:category value="Process Form" name="UD_GDD2_ROL"/>
+        <object:category value="Process Form" name="UD_GDD2_USR"/>
+      </object:exportSet>
+      <!-- export the Provisioning Process configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gdp-process-dm.xml"
+                        description="Google Drupal Portal Connector Configuration ${version.number}">
+        <object:category value="Resource"     name="GDPD SZ2 Account"/>
+        <object:category value="Process"      name="GDPD SZ2 Account"/>
+      </object:exportSet>
+      <!-- export the scheduler configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gdp-scheduler-dm.xml"
+                        description="Google Drupal Portal Configuration ${version.number}">
+        <object:category value="Job"          name="GDP DEV SZ2 Lookup Reconciliation"/>
+        <object:category value="Job"          name="GDP Delete Reconciliation"/>
+        <object:category value="Job"          name="GDP DEV SZ2 Account Reconciliation"/>
+      </object:exportSet>
+      <!-- export the Request Catalog configuration -->
+      <object:exportSet exportFile ="${resource.dir}/xml/target/gdp-request-dm.xml"
+                        description="Google Drupal Portal Connector Configuration ${version.number}">
+        <object:category value="RequestDataset"      name="GDPDSZ2Request"/>
+        <object:category value="ApplicationInstance" name="GDPDSZ2Account"/>
+      </object:exportSet>
+    </object:export>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Exports the project artifacts from the target host and Identity Manager Instance"/>
+</project>

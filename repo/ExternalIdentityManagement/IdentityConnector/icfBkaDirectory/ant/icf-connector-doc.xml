@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Oracle Consulting Services DocBook Definitions"
+         basedir     ="../">
+  <!--
+  ==============================================================================
+  == properties specific to the runtime environment
+  ==============================================================================
+  -->
+  <import file="../../doc-targets.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${sitetmp.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the generation process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${sitetmp.dir}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT to generate product deliverables
+  =====================================================================
+  -->
+  <!--
+  =====================================================================
+  == ANT to generate product deliverables
+  =====================================================================
+  -->
+  <target name="de" depends="init">
+    <docbook.fop input ="ICF.BDS Connector Administration-de" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.BDS Connector Administration-de"/>
+  </target>
+  <target name="en" depends="init">
+    <docbook.fop input ="ICF.BDS Connector Administration-en" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.BDS Connector Administration-en"/>
+  </target>
+  <target name="fr" depends="init">
+    <docbook.fop input ="ICF.BDS Connector Administration-fr" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.BDS Connector Administration-fr"/>
+  </target>
+</project>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="picker-tf">
+    <default-activity>brand-picker</default-activity>
+    <data-control-scope>
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__3">
+      <name>uiShell</name>
+      <value>#{pageFlowScope.uiShell}</value>
+      <class>oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__4">
+      <name>eventDistinguisher</name>
+      <value>#{pageFlowScope.eventDistinguisher}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__5">
+      <name>eventReason</name>
+      <value>#{pageFlowScope.eventReason}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__7">
+      <managed-bean-name>brandPicker</managed-bean-name>
+      <managed-bean-class>bka.employee.portal.vehicle.vmb.state.Picker</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="brand-picker">
+      <page>/bka/employee/portal/vehicle/vmb/view/picker.jsff</page>
+    </view>
+    <task-flow-return id="return">
+      <outcome>
+        <name>return</name>
+      </outcome>
+    </task-flow-return>
+    <control-flow-rule id="__1">
+      <from-activity-id>brand-picker</from-activity-id>
+      <control-flow-case id="__2">
+        <from-outcome>success</from-outcome>
+        <to-activity-id>return</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__8">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>return</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

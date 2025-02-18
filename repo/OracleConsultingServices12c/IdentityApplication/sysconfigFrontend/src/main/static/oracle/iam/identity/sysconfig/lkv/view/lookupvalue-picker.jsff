@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"   value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysconfig$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Configuration']}"/>
+  <af:panelGridLayout id="pg01" inlineStyle="width:850.0px;">
+    <af:gridRow id="gr10" height="auto" marginTop="5px">
+      <af:gridCell id="gc11" width="100%" marginStart="5px" marginEnd="5px">
+        <af:quickQuery id           ="qq11"
+                       label        ="#{sysbase$bundle.SEARCH}"
+                       searchDesc   ="#{sysbase$bundle.SEARCH}"
+                       value        ="#{bindings.LookupPickerVC.quickQueryDescriptor}"
+                       model        ="#{bindings.LookupPickerVC.queryModel}"
+                       queryListener="#{bindings.LookupPickerVC.processQuery}">
+          <f:facet name="end">
+            <af:outputText id="ot11" value="#{pageFlowScope.selectionType eq 'multiple' ? sysconfig$bundle.LKV_SEARCH : ''}"/>
+          </f:facet>
+        </af:quickQuery>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr20" height="auto" marginTop="5px">
+      <af:gridCell id="gc21" width="100%" marginStart="5px" marginEnd="5px">
+        <af:outputText id="ot21" value="#{sysconfig$bundle.LKV_RESULT}" styleClass="AFLabelText" inlineStyle="font-weight:bolder; color:Black;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr30" height="auto" marginTop="5px">
+      <af:gridCell id="gc31" width="100%" marginStart="5px" marginEnd="5px" halign="stretch">
+        <af:panelCollection id="pc31" featuresOff="detach statusBar" styleClass="AFStretchWidth">
+          <af:table id                   ="lkv31" var="row" varStatus="vs"
+                    binding              ="#{pageFlowScope.picker.searchTable}"
+                    value                ="#{bindings.LookupPickerVO.collectionModel}"
+                    rows                 ="#{pageFlowScope.selectionType eq 'multiple' ? 8 : bindings.LookupPickerVO.rangeSize}"
+                    fetchSize            ="#{pageFlowScope.selectionType eq 'multiple' ? 8 : bindings.LookupPickerVO.rangeSize}"
+                    selectionListener    ="#{pageFlowScope.picker.selectionListener}"
+                    columnStretching     ="last"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    rowSelection         ="#{pageFlowScope.selectionType}"
+                    autoHeightRows       ="0"
+                    scrollPolicy         ="page"
+                    emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}"
+                    partialTriggers      =":::qq11">
+            <af:column id="c30" rowHeader="true" headerText=" " width="20"/>
+            <af:column id="c31" headerText="#{bindings.LookupPickerVO.hints.encoded.label}">
+              <af:outputText id="ot31" value="#{row.encoded}"/>
+            </af:column>
+            <af:column id="c32" headerText="#{bindings.LookupPickerVO.hints.decoded.label}">
+              <af:outputText id="ot32" value="#{row.decoded}"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr40" height="auto" marginTop="5px" rendered="#{pageFlowScope.selectionType == 'multiple'}">
+      <af:gridCell id="gc41" width="100%" marginStart="5px" marginEnd="5px" halign="center">
+        <af:toolbar id="tb41">
+          <af:button id             ="ctb41"
+                     text           ="#{sysbase$bundle.GENERIC_ADD_SELECTED}"
+                     binding        ="#{pageFlowScope.picker.addSelectedButton}"
+                     icon           ="/images/shuttle_down_ena.png"
+                     hoverIcon      ="/images/shuttle_down_ena.png"
+                     depressedIcon  ="/images/shuttle_down_ena.png"
+                     disabledIcon   ="/images/shuttle_down_dis.png"
+                     disabled       ="#{pageFlowScope.picker.addSelectedDisabled}"
+                     actionListener ="#{pageFlowScope.picker.addSelectedActionListener}"
+                     partialSubmit  ="true"
+                     partialTriggers="qq11"/>
+          <af:button id             ="ctb42"
+                     text           ="#{sysbase$bundle.GENERIC_ADD_ALL}"
+                     binding        ="#{pageFlowScope.picker.addAllButton}"
+                     icon           ="/images/shuttle_down_all_ena.png"
+                     hoverIcon      ="/images/shuttle_down_all_ena.png"
+                     depressedIcon  ="/images/shuttle_down_all_ena.png"
+                     disabledIcon   ="/images/shuttle_down_all_dis.png"
+                     disabled       ="#{pageFlowScope.picker.addAllDisabled}"
+                     actionListener ="#{pageFlowScope.picker.addAllActionListener}"
+                     partialSubmit  ="true"
+                     partialTriggers="qq11"/>
+          <af:button id             ="ctb43"
+                     binding        ="#{pageFlowScope.picker.removeSelectedButton}"
+                     text           ="#{sysbase$bundle.GENERIC_REMOVE_SELECTED}"
+                     icon           ="/images/shuttle_up_ena.png"
+                     disabledIcon   ="/images/shuttle_up_dis.png"
+                     hoverIcon      ="/images/shuttle_up_ena.png"
+                     depressedIcon  ="/images/shuttle_up_ena.png"
+                     disabled       ="#{pageFlowScope.picker.selectionEmpty}"
+                     actionListener ="#{pageFlowScope.picker.removeSelectedActionListener}"/>
+          <af:button id             ="ctb44"
+                     binding        ="#{pageFlowScope.picker.removeAllButton}"
+                     text           ="#{sysbase$bundle.GENERIC_REMOVE_ALL}"
+                     icon           ="/images/shuttle_up_all_ena.png"
+                     hoverIcon      ="/images/shuttle_up_all_ena.png"
+                     depressedIcon  ="/images/shuttle_up_all_ena.png"
+                     disabledIcon   ="/images/shuttle_up_all_dis.png"
+                     disabled       ="#{pageFlowScope.picker.selectionEmpty}"
+                     actionListener ="#{pageFlowScope.picker.removeAllActionListener}"/>
+        </af:toolbar>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr50" height="auto" marginTop="5px">
+      <af:gridCell id="gc51" width="100%" marginStart="5px" marginEnd="5px">
+        <af:outputText id="ot51" value="#{requestScope.overThousandResultsPicker}" partialTriggers="ctb41 ctb42 ctb43 ctb44 qq11" inlineStyle="font-size:small;padding-top:20px;padding-bottom:20px;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr60" marginTop="5px" height="auto" rendered="#{pageFlowScope.selectionType == 'multiple'}">
+      <af:gridCell id="gc61" width="100%" marginStart="5px" marginEnd="5px">
+        <af:outputText id="ot61" value="#{sysconfig$bundle.LKV_SELECT}" inlineStyle="font-weight:bold;"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr70" height="auto" marginTop="5px" rendered="#{pageFlowScope.selectionType == 'multiple'}">
+      <af:gridCell id="gc71" width="100%" marginStart="5px" marginEnd="5px" halign="stretch">
+        <af:panelCollection id="pc71" featuresOff="detach statusBar" styleClass="AFStretchWidth">
+          <af:table id                   ="lkv71" var="row"
+                    value                ="#{pageFlowScope.picker.selectedItems}"
+                    binding              ="#{pageFlowScope.picker.selectionTable}"
+                    rows                 ="#{pageFlowScope.selectionType eq 'multiple' ? 8 : bindings.LookupPickerVO.rangeSize}"
+                    fetchSize            ="#{pageFlowScope.selectionType eq 'multiple' ? 8 : bindings.LookupPickerVO.rangeSize}"
+                    selectionListener    ="#{pageFlowScope.picker.selectedRowsSelectListener}"
+                    columnStretching     ="last"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    rowSelection         ="multiple"
+                    autoHeightRows       ="0"
+                    scrollPolicy         ="page"
+                    emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+            <af:column id="c70" rowHeader="true" headerText=" " width="20"/>
+            <af:column id="c71" headerText="#{bindings.LookupPickerVO.hints.decoded.label}" filterable="false" sortable="false">
+              <af:outputText id="ot71" value="#{row.decoded}"/>
+            </af:column>
+          </af:table>
+        </af:panelCollection>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr80" height="auto" marginTop="5px">
+      <af:gridCell id="gc81" width="100%" marginStart="5px" marginEnd="5px" halign="end">
+        <af:button id            ="cb81"
+                   text          ="#{sysbase$bundle.GENERIC_SELECT}"
+                   binding       ="#{pageFlowScope.picker.addButton}"
+                   action        ="#{pageFlowScope.picker.addSelectedRows}"
+                   disabled      ="#{pageFlowScope.picker.selectionEmpty}"
+                   actionListener="#{pageFlowScope.picker.addSelectedRows}"/>
+        <af:spacer  id="sp81" width="5"/>
+        <af:button id    ="cb82"
+                   text  ="#{sysbase$bundle.GENERIC_CANCEL}"
+                   action="cancel"/>
+      </af:gridCell>
+    </af:gridRow>
+  </af:panelGridLayout>
+</jsp:root>

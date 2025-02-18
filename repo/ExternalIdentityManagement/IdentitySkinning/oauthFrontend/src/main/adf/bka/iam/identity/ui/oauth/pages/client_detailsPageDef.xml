@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48" id="client_detailsPageDef"
+                Package="bka.iam.identity.ui.oauth.pages">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="root" RangeSize="25" DataControl="IdentityDomainSessionFacade"
+              id="IdentityDomainSessionFacadeIterator"/>
+    <accessorIterator MasterBinding="IdentityDomainSessionFacadeIterator" Binds="client" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.Client"
+                      id="clientIterator"/>
+    <accessorIterator MasterBinding="clientIterator" Binds="scopes" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.SingleAttribute" 
+                      id="scopesIterator"/>
+    <accessorIterator MasterBinding="clientIterator" Binds="redirectURIs" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.RedirectURI"
+                      id="redirectURIsIterator"/>
+    <accessorIterator MasterBinding="clientIterator" Binds="grantTypes" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.SingleAttribute" 
+                      id="grantTypesIterator"/>
+    <accessorIterator MasterBinding="clientIterator" Binds="attributes" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.TokenAttribute" 
+                      id="attributesIterator"/>
+    <accessorIterator MasterBinding="clientIterator" Binds="accessTokenCustomClaims" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.SingleAttribute"
+                      id="accessTokenCustomClaimsIterator"/>
+    <accessorIterator MasterBinding="clientIterator" Binds="idTokenCustomClaims" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.SingleAttribute"
+                      id="idTokenCustomClaimsIterator"/>
+    <accessorIterator MasterBinding="clientIterator" Binds="userInfoCustomClaims" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.SingleAttribute"
+                      id="userInfoCustomClaimsIterator"/>
+    <accessorIterator MasterBinding="IdentityDomainSessionFacadeIterator" Binds="identityDomain" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade"
+                      BeanClass="bka.iam.identity.ui.oauth.model.IdentityDomain" id="identityDomainIterator"/>
+    <accessorIterator MasterBinding="identityDomainIterator" Binds="customAttrs" RangeSize="10"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.Attribute"
+                      id="customAttrsIterator"/>
+    <accessorIterator MasterBinding="clientIterator" Binds="allScopes" RangeSize="25"
+                      DataControl="IdentityDomainSessionFacade" BeanClass="bka.iam.identity.ui.oauth.model.Scope"
+                      id="allScopesIterator"/>
+  </executables>
+  <bindings>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+    <attributeValues IterBinding="clientIterator" id="id">
+      <AttrNames>
+        <Item Value="id"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="name">
+      <AttrNames>
+        <Item Value="name"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="description">
+      <AttrNames>
+        <Item Value="description"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="secret">
+      <AttrNames>
+        <Item Value="secret"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="idDomain">
+      <AttrNames>
+        <Item Value="idDomain"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="clientType">
+      <AttrNames>
+        <Item Value="clientType"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="defaultScope">
+      <AttrNames>
+        <Item Value="defaultScope"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="tokenEndpointAuthMethod">
+      <AttrNames>
+        <Item Value="tokenEndpointAuthMethod"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="usePKCE">
+      <AttrNames>
+        <Item Value="usePKCE"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="issueTLSClientCertificateBoundAccessTokens">
+      <AttrNames>
+        <Item Value="issueTLSClientCertificateBoundAccessTokens"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="tlsClientAuthSANDNS">
+      <AttrNames>
+        <Item Value="tlsClientAuthSANDNS"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="tlsClientAuthSANEmail">
+      <AttrNames>
+        <Item Value="tlsClientAuthSANEmail"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="tlsClientAuthSANIP">
+      <AttrNames>
+        <Item Value="tlsClientAuthSANIP"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="tlsClientAuthSANURI">
+      <AttrNames>
+        <Item Value="tlsClientAuthSANURI"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="clientIterator" id="tlsClientAuthSubjectDN">
+      <AttrNames>
+        <Item Value="tlsClientAuthSubjectDN"/>
+      </AttrNames>
+    </attributeValues>
+    <tree IterBinding="scopesIterator" id="scopes">
+      <nodeDefinition Name="bka.iam.identity.ui.oauth.model.SingleAttribute">
+        <AttrNames>
+          <Item Value="value"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="redirectURIsIterator" id="redirectURIs">
+      <nodeDefinition DefName="bka.iam.identity.ui.oauth.model.RedirectURI" Name="redirectURIs0">
+        <AttrNames>
+          <Item Value="url"/>
+          <Item Value="isHttps"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>   
+    <tree IterBinding="grantTypesIterator" id="grantTypes">
+      <nodeDefinition Name="bka.iam.identity.ui.oauth.model.SingleAttribute">
+        <AttrNames>
+          <Item Value="value"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="attributesIterator" id="attributes">
+      <nodeDefinition DefName="bka.iam.identity.ui.oauth.model.TokenAttribute" Name="attributes0">
+        <AttrNames>
+          <Item Value="attrName"/>
+          <Item Value="attrValue"/>
+          <Item Value="attrType"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="accessTokenCustomClaimsIterator" id="accessTokenCustomClaims">
+      <nodeDefinition Name="bka.iam.identity.ui.oauth.model.SingleAttribute">
+        <AttrNames>
+          <Item Value="value"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="idTokenCustomClaimsIterator" id="idTokenCustomClaims">
+      <nodeDefinition Name="bka.iam.identity.ui.oauth.model.SingleAttribute">
+        <AttrNames>
+          <Item Value="value"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <tree IterBinding="userInfoCustomClaimsIterator" id="userInfoCustomClaims">
+      <nodeDefinition Name="bka.iam.identity.ui.oauth.model.SingleAttribute">
+        <AttrNames>
+          <Item Value="value"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    
+    <!-- Add lines to the table-->
+    <action IterBinding="scopesIterator"                  id="addScope"                  RequiresUpdateModel="true" Action="createRow"/>
+    <action IterBinding="redirectURIsIterator"            id="addRedirectURI"            RequiresUpdateModel="true" Action="createRow"/>
+    <action IterBinding="attributesIterator"              id="addAttribute"              RequiresUpdateModel="true" Action="createRow"/>
+    <action IterBinding="grantTypesIterator"              id="addGrantType"              RequiresUpdateModel="true" Action="createRow"/>
+    <action IterBinding="accessTokenCustomClaimsIterator" id="addAccessTokenCustomClaim" RequiresUpdateModel="true" Action="createRow"/>
+    <action IterBinding="idTokenCustomClaimsIterator"     id="addIdTokenCustomClaim"     RequiresUpdateModel="true" Action="createRow"/>
+    <action IterBinding="userInfoCustomClaimsIterator"    id="addUserInfoCustomClaim"    RequiresUpdateModel="true" Action="createRow"/>
+    
+    <!-- Delete lines from the table-->
+    <action IterBinding="scopesIterator"                  id="removeScope"                     RequiresUpdateModel="false" Action="removeRowWithKey">
+      <NamedData NDName="rowKey"  NDType="java.lang.String"  NDValue="#{bindings.scopesIterator.currentRowKeyString}"/>
+    </action>
+    <action IterBinding="redirectURIsIterator"            id="removeRedirectURI"               RequiresUpdateModel="false" Action="removeRowWithKey">
+      <NamedData NDName="rowKey"  NDType="java.lang.String"  NDValue="#{bindings.redirectURIsIterator.currentRowKeyString}"/>
+    </action>
+    <action IterBinding="attributesIterator"              id="removeAttribute"                 RequiresUpdateModel="false" Action="removeRowWithKey">
+      <NamedData NDName="rowKey"  NDType="java.lang.String"  NDValue="#{bindings.attributesIterator.currentRowKeyString}"/>
+    </action>
+    <action IterBinding="grantTypesIterator"                 id="removeGrantType"              RequiresUpdateModel="false" Action="removeRowWithKey">
+      <NamedData NDName="rowKey"  NDType="java.lang.String"  NDValue="#{bindings.grantTypesIterator.currentRowKeyString}"/>
+    </action>
+    <action IterBinding="accessTokenCustomClaimsIterator"    id="removeAccessTokenCustomClaim" RequiresUpdateModel="false" Action="removeRowWithKey">
+      <NamedData NDName="rowKey"  NDType="java.lang.String"  NDValue="#{bindings.accessTokenCustomClaimsIterator.currentRowKeyString}"/>
+    </action>
+    <action IterBinding="idTokenCustomClaimsIterator"        id="removeIdTokenCustomClaim"     RequiresUpdateModel="false" Action="removeRowWithKey">
+      <NamedData NDName="rowKey"  NDType="java.lang.String"  NDValue="#{bindings.idTokenCustomClaimsIterator.currentRowKeyString}"/>
+    </action>
+    <action IterBinding="userInfoCustomClaimsIterator"       id="removeUserInfoCustomClaim"          RequiresUpdateModel="false" Action="removeRowWithKey">
+      <NamedData NDName="rowKey"  NDType="java.lang.String"  NDValue="#{bindings.userInfoCustomClaimsIterator.currentRowKeyString}"/>
+    </action>
+    <methodAction id="updateClient" RequiresUpdateModel="true" Action="invokeMethod" MethodName="updateClient"
+                  IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.updateClient.dataControl.dataProvider">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+      <NamedData NDName="identityDomainName" NDType="java.lang.String"/>
+      <NamedData NDName="client" NDType="bka.iam.identity.ui.oauth.model.Client"/>
+    </methodAction>
+    <methodAction id="createClient" RequiresUpdateModel="true" Action="invokeMethod" MethodName="createClient"
+                  IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.createClient.dataControl.dataProvider"
+                  ReturnName="data.IdentityDomainSessionFacade.methodResults.createClient_createClient_dataControl_dataProvider_createClient_result">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+      <NamedData NDName="identityDomainName" NDType="java.lang.String"/>
+      <NamedData NDName="client" NDType="bka.iam.identity.ui.oauth.model.Client"/>
+    </methodAction>
+    
+     <list IterBinding="allScopesIterator" ListOperMode="navigation" ListIter="allScopesIterator" id="allScopes"
+          DTSupportsMRU="true" SelectItemValueMode="ListObject">
+      <AttrNames>
+        <Item Value="scopeName"/>
+      </AttrNames>
+    </list>
+    <methodAction id="handleSelectTargets" RequiresUpdateModel="true" Action="invokeMethod"
+                  MethodName="handleSelectTargets" IsViewObjectMethod="false" DataControl="OAuthEventHandler"
+                  InstanceName="bindings.handleSelectTargets.dataControl.dataProvider">
+      <NamedData NDName="targetSelectionEvent" NDType="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+    </methodAction>
+    <methodAction id="loadClient" RequiresUpdateModel="true" Action="invokeMethod" MethodName="loadClient"
+                  IsViewObjectMethod="false" DataControl="IdentityDomainSessionFacade"
+                  InstanceName="bindings.loadClient.dataControl.dataProvider">
+      <NamedData NDName="oamConnectionName" NDType="java.lang.String"/>
+      <NamedData NDName="identityDomainName" NDType="java.lang.String"/>
+      <NamedData NDName="clietId" NDType="java.lang.String"/>
+    </methodAction>
+    <action id="Rollback" DataControl="IdentityDomainSessionFacade" RequiresUpdateModel="false"
+            Action="rollbackTransaction"/>
+  </bindings>
+  <eventMap xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+    <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent">
+      <producer region="*">
+        <consumer region="" handler="handleSelectTargets">
+          <parameters>
+            <parameter name="targetSelectionEvent" value="${payLoad}"/>
+          </parameters>
+        </consumer>
+      </producer>
+    </event>
+  </eventMap>
+</pageDefinition>

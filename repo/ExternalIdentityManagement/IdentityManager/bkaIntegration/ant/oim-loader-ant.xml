@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name            ="Oracle Consulting Services Identity Manager Deployment Importer"
+         basedir         ="../../../deployment"
+         default         ="all"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="prompt.version"         value="${application.release}"/>
+  <property name="oim.recorder.name"      value="../log/oim-loader-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="pid-migration" description="Migrate Oracle Identity Governance Accounts">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="pid-migration Migrate Oracle Identity Governance Accounts ${prompt.version}"/>
+    <echo message="=================================================================="/>
+    <echo message="Triggering Attribute Propagation in Oracle Identity Governance for ${system.fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PID Migration">
+        <start blocking="true" interval="500"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="pid-migration completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="pwd-reset" description="Reset User Passwords in Oracle Identity Governance">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="pwd-reset Reset User Passwords in Oracle Identity Governance ${prompt.version}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reset User Passwords in Oracle Identity Governance for ${system.fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PWD Reset">
+        <start blocking="true" interval="500"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="pwd-reset completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="pol-eval" description="Access Policy Evaluate in Oracle Identity Governance">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="pol-evalAccess Policy Evaluate in Oracle Identity Governance ${prompt.version}"/>
+    <echo message="=================================================================="/>
+    <echo message="Access Policy Evaluate in Oracle Identity Governance for ${system.fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="Access Policy Evaluate">
+        <start blocking="true" interval="500"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="pwd-reset completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

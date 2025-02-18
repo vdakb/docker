@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="issues"
+         xml:lang="de"
+         version ="5.0">
+  <title>Probleme und deren Umgehungen</title>
+  <para>
+    These ...
+  </para>
+  <section xml:id="issue-admin">
+    <title>Administratoren</title>
+    <section>
+      <title>Problem</title>
+      <para>
+        Wird ein zuvor als Administrator markiert Benutzerkonto im Server-UI gel&#246;scht wird, verbleibt dieses Konto als markiert Administrator in der Tabelle der Systemeigenschaften (ofProperty), sofern diese Berechtigung nicht zuvor entzogen und gespeichert wurde.
+      </para>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        Zur Zeit kein Workaround vorhanden.
+      </para>
+    </section>
+  </section>
+  <section xml:id="issue-cipher">
+    <title>Kennwortverschl&#252;sselung</title>
+    <section>
+      <title>Problem</title>
+      <para>
+        Kennw&#246;rter werden mit dem Blowfish Block Cipher verschl&#252;sselt.
+      </para>
+      <para>
+        Die Initialisierung eines solchen Ciphers ist eine kostspielige Operation.
+        Um den Block Cipher zu initialisieren, ist ein vereinbartes Geheimnis (Key Material) notwendig, welches zu diesem Zweck aus der Datenbank geladen werden muss.
+      </para>
+      <para>
+        Um zu diesen Vorgang nicht jedesmal, wenn ein neues Benutzerkonto erzeugt oder f&#252;r ein bestehendes Benutzerkonto eine &#196;nderung des Kennworts vorgenommen wird, durchf&#252;hren zu m&#252;ssen, ist der gesamte Ciper nach seiner Initialisierung gecachet.
+        Allerdings ist dabei zu beachten, dass wenn sich der Wert in der Datenbank &#228;ndert, der Cipher des Server und der im Cache des Konnektors befindliche Cipher ab diesem Zeitpunkt verschiedenen Werte f&#252;r die Verschl&#252;sselung verwenden.
+        Dies ist aber ein generelles Problem des Servers, da die vorhandenen Kennw&#246;rter nach der &#196;nderung nicht automatisch neu berechnet werden und sich somit kein Benutzerkonto mehr am Server anmelden kann.
+      </para>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        Ein Workaround ist, dass Identity Governance durchgestartet wird, und danach somit den ge&#228;nderten Wert f&#252;r die Kennwortverschl&#252;sselung verwendet.
+        Damit kann erreicht werden, dass sich neu angelegte Benutzerkonten und die Benutzerkonten, f&#252;r die nach diesem Neustart das Kennwort zur&#252;ckgesetzt wurde, wieder am Server anmelden k&#246;nnen.
+      </para>
+      <para>
+        Wenn zu bef&#252;rchten ist, dass dieses Verfahren zu gro&#223;e Auswirkungen auf die Benutzer von Identity Governance hat, sollte der Connector auf einem externen Connector-Server bereitgestellt werden.
+        In dieser Architektur, muss lediglich der Connector Server neu gestartet werden.
+      </para>
+    </section>
+  </section>
+  <section xml:id="issue-status">
+    <title>Status eine Benutzerkontos</title>
+    <section>
+      <title>Problem</title>
+      <para>
+        Der Status eines Benutzerkontos in openfire&#8482; wird als Flag mit einer G&#252;ltigkeitsdauer definiert.
+        Identity Governance betrachtet andererseits den Status eines Benutzerkontos wiederum als globale Eigenschaft.
+      </para>
+      <note>
+        <para>
+          Es gibt zu einem gewissen Zeitpunkt immer nur genau eine oder keine Statusinformation in openfire&#8482; zu einem bestimmten Benutzerkonto.
+        </para>
+      </note>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        Als Workaround wird der Status eines Benutzerkontos bei Deaktivierung des Kontos mit dem aktuellem Datum als Startzeitpunkt der Deaktivierung gesetzt.
+        Das Ablaufdatum der Deaktivierung wird auf unbestimmte Dauer gesetzt.
+        Die Aktivierung des betreffenden Benutzerkontos l&#246;scht die Status Informationen.
+      </para>
+    </section>
+  </section>
+  <section xml:id="issue-locked">
+    <title>Gesperrte Benutzerkonten</title>
+    <section>
+      <title>Problem</title>
+      <para>
+        Wird ein Benutzerkonto geperrt ist eine Anmeldung in openfire&#8482; Admin Console und das Er&#246;ffnen einer XMPP Session nicht mehr m&#246;glich.
+        Diese Verhalten ist so gewollt.
+      </para>
+      Wenn das Benutzerkonto nun durch den Konnector entsperrt, ist ein Login in openfire&#8482; Admin Console oder das &#214;ffnen einer XMPP-Sitzung weiterhin nicht m&#246;glich.
+      <para>
+      </para>
+    </section>
+    <section>
+      <title>Ursache</title>
+      <para>
+        openfire&#8482; setzt sehr stark auf Caching.
+        Da der Connector direkt auf der Datenbank arbeitet, bleiben die Caches in der Middleware unber&#252;hrt und k&#246;nnen somit einen anderen Status f&#252;r ein Benutzerkonto anzeigen (Split Brain).
+      </para>
+      <para>
+        Ein gerade entsperrter Benutzer muss warten, bis diese maximale Lebensdauer abgelaufen ist, bevor er sich erneut anmelden kann.
+      </para>
+    </section>
+    <section>
+      <title>Workaround</title>
+      <para>
+        Ein Adminstrator setzt folgende Caches manuell zur&#252;ck.
+        <itemizedlist>
+          <listitem>
+            <para>
+              Locked Out Accounts
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              User
+            </para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </section>
+  </section>
+</chapter>

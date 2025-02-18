@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns:xsd          = "http://www.w3.org/2001/XMLSchema"
+            xmlns              = "http://www.oracle.com/schema/oim/request"
+            targetNamespace    = "http://www.oracle.com/schema/oim/request"
+            elementFormDefault = "qualified">
+
+  <xsd:element name="request-data-set">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="DataSetValidator"   type="data-set-validator"  minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="AttributeReference" type="attribute-reference" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="Attribute"          type="attribute"           minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="name"               type="xsd:string" use="required"/>
+      <xsd:attribute name="entity"             type="xsd:string"/>
+      <xsd:attribute name="operation"          type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="attribute-reference">
+    <xsd:sequence>
+      <xsd:element name="AttributeReference"   type="attribute-reference" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="PrePopulationAdapter" type="pre-pop-adapter"     minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="lookupValues"         type="lookup-values"       minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="lookupQuery"          type="lookup-query"        minOccurs="0" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute name="name"                 type="xsd:string"  use="required"/>
+    <xsd:attribute name="attr-ref"             type="xsd:string"  use="required"/>
+    <xsd:attribute name="type"                 type="xsd:string"  use="required"/>
+    <xsd:attribute name="entity-type"          type="xsd:string"/>
+    <xsd:attribute name="system-type"          type="xsd:boolean"/>
+    <xsd:attribute name="length"               type="xsd:integer" use="required"/>
+    <xsd:attribute name="entitlement"          type="xsd:boolean"/>
+    <xsd:attribute name="available-in-bulk"    type="xsd:boolean" use="required"/>
+    <xsd:attribute name="required"             type="xsd:boolean"/>
+    <xsd:attribute name="read-only"            type="xsd:boolean"/>
+    <xsd:attribute name="masked"               type="xsd:boolean"/>
+    <xsd:attribute name="hidden"               type="xsd:boolean"/>
+    <xsd:attribute name="approver-only"        type="xsd:boolean"/>
+    <xsd:attribute name="mls"                  type="xsd:boolean"/>
+    <xsd:attribute name="primary"              type="xsd:boolean" default="false"/>
+    <xsd:attribute name="widget"               type="xsd:string"  use="required"/>
+    <xsd:attribute name="lookup-code"          type="xsd:string"/>
+    <xsd:attribute name="itresource-type"      type="xsd:string"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="attribute">
+    <xsd:sequence>
+      <xsd:element name="Attribute"            type="attribute"       minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="PrePopulationAdapter" type="pre-pop-adapter" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="lookupValues"         type="lookup-values"   minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="name"                 type="xsd:string"  use="required"/>
+    <xsd:attribute name="type"                 type="xsd:string"  use="required"/>
+    <xsd:attribute name="entity-type"          type="xsd:string"/>
+    <xsd:attribute name="length"               type="xsd:integer" use="required"/>
+    <xsd:attribute name="available-in-bulk"    type="xsd:boolean" use="required"/>
+    <xsd:attribute name="required"             type="xsd:boolean"/>
+    <xsd:attribute name="read-only"            type="xsd:boolean"/>
+    <xsd:attribute name="masked"               type="xsd:boolean"/>
+    <xsd:attribute name="hidden"               type="xsd:boolean"/>
+    <xsd:attribute name="approver-only"        type="xsd:boolean"/>
+    <xsd:attribute name="widget"               type="xsd:string"  use="required"/>
+    <xsd:attribute name="lookup-code"          type="xsd:string"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="lookup-values">
+    <xsd:attribute name="encoded-value"        type="xsd:string"/>
+    <xsd:attribute name="decoded-value"        type="xsd:string"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="lookup-query">
+    <xsd:attribute name="lookup-query"         type="xsd:string" use="required"/>
+    <xsd:attribute name="display-field"        type="xsd:string" use="required"/>
+    <xsd:attribute name="save-field"           type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="pre-pop-adapter">
+    <xsd:attribute name="name"                 type="xsd:string"/>
+    <xsd:attribute name="classname"            type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="data-set-validator">
+    <xsd:attribute name="name"                 type="xsd:string"/>
+    <xsd:attribute name="classname"            type="xsd:string" use="required"/>
+  </xsd:complexType>
+</xsd:schema>

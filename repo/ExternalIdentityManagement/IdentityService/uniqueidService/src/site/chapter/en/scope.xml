@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland BV & Co. KG
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#xA9; 2022. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="uid-scope"
+         xml:lang="en"
+         version ="5.0">
+  <title>Overview of the Resources</title>
+  <para>
+    This chapter will help you familiarize with UID Generator REST resources.
+    This will enable you to quickly find the information you need and complete the required tasks easily.
+  </para>
+  <para>
+    The UID Generator REST resources provide functionality for the majority of management tasks.
+    The UID Generator REST resources are accesible after autentication only (See <link linkend='uid-arch-token'>Authentication for the REST API</link>).
+  </para>
+  <para>
+    As far as REST API design is concerned:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <para>HTTP has verbs (actions or methods): GET, POST, PUT, PATCH and DELETE are most common.</para>
+      <para/>
+    </listitem>
+    <listitem>
+      <para>REST is <emphasis role="strong">resource-oriented</emphasis> and a resource is represented by an <emphasis role="strong">URI</emphasis>.</para>
+      <para/>
+    </listitem>
+    <listitem>
+      <para>An <emphasis role="strong">endpoint</emphasis> is the combination of a verb and an URI.</para>
+    </listitem>
+  </itemizedlist>
+  <section xml:id="uid-scope-verb">
+    <title>HTTP Verbs</title>
+    <para>
+      As a summary, these are the verbs a REST compliant server implementation (like UID Generator) has:
+    </para>
+    <table colsep="0">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="8em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>HTTP Method</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>GET</entry>
+            <entry>Retrieves one or more resources (e.g. UID's/Participants).</entry>
+          </row>
+          <row>
+            <entry>POST</entry>
+            <entry>Creates new resources, executes searches.</entry>
+          </row>
+          <row>
+            <entry>PUT</entry>
+            <entry>Modifies resources by adding and replacing attributes.</entry>
+          </row>
+          <row>
+            <entry>DELETE</entry>
+            <entry>Deletes a resource</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <section xml:id="uid-scope-res">
+      <title>REST Resources</title>
+      <para>
+        The following table summarizes the available resources in UID Generator:
+      </para>
+      <table colsep="0">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Resource</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><link linkend='uid-content'>Unique Identifier</link></entry>
+              <entry>The unique identifier resource includes generating, registering and deleting unique identifiers.</entry>
+            </row>
+            <row>
+              <entry><link linkend='ptt-content'>Participant Type</link></entry>
+              <entry>The participant type management resource includes searching, creating, updating and deleting of participant types.</entry>
+            </row>
+            <row>
+              <entry><link linkend='cnt-content'>Country Mapping</link></entry>
+              <entry>The resource for managing country mappings within the UID generator includes finding, creating, updating, and deleting countries.</entry>
+            </row>
+            <row>
+              <entry><link linkend='sta-content'>State</link></entry>
+              <entry>The state management resource includes searching, creating, updating and deleting of states.</entry>
+            </row>
+            <row>
+              <entry><link linkend='pts-content'>Participant</link></entry>
+              <entry>The participant management resource includes searching, creating, updating and deleting of participants.</entry>
+            </row>
+            <row>
+              <entry><link linkend='typ-content'>Account Type</link></entry>
+              <entry>The account type management resource includes searching, creating, updating and deleting of account types.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="uid-scope-rest">
+      <title>REST Endpoints</title>
+      <para>
+        The following table summarizes the available endpoints UID Generator provides:
+      </para>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>URI</entry>
+              <entry>Resource</entry>
+              <entry>HTTP Verbs</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><link linkend='uid-content'>/uid</link></entry>
+              <entry>Unique Identifier</entry>
+              <entry>GET, POST, PUT, DELETE</entry>
+              <entry>Search, generate, register and delete unique identifiers.</entry>
+            </row>
+            <row>
+              <entry><link linkend='ptt-content'>/participantTyp</link></entry>
+              <link linkend='ptt-content'>/participantTyp</link>
+              <entry>Participant Type</entry>
+              <entry>GET, POST, PUT, DELETE</entry>
+              <entry>Search, add, modify and delete participant types.</entry>
+            </row>
+            <row>
+              <entry><link linkend='cnt-content'>/country</link></entry>
+              <entry>Country Mapping</entry>
+              <entry>GET, POST, PUT, DELETE</entry>
+              <entry>Search, add, modify and delete countries.</entry>
+            </row>
+            <row>
+              <entry><link linkend='sta-content'>/state</link></entry>
+              <entry>State</entry>
+              <entry>GET, POST, PUT, DELETE</entry>
+              <entry>Retrieve, add, modify and delete states.</entry>
+            </row>
+            <row>
+              <entry><link linkend='pts-content'>/participant</link></entry>
+              <entry>Participant</entry>
+              <entry>GET, POST, PUT, DELETE</entry>
+              <entry>Retrieve, add, modify and delete participants.</entry>
+            </row>
+            <row>
+              <entry><link linkend='typ-content'>/type</link></entry>
+              <entry>Account Type</entry>
+              <entry>GET, POST, PUT, DELETE</entry>
+              <entry>Retrieve, add, modify and delete account types.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <note>
+        <title>Note</title>
+        <para>
+          Actual resource URIs are prefixed accordingly with the root URL of REST API.
+          As an example, the country's resource URI to use in your applications should be:
+        </para>
+        <para>
+          <literal>https://&lt;service-host&gt;:&lt;service-port&gt;/igs/uid/v1/country</literal>
+        </para>
+      </note>
+      <important>
+        <title>Important</title>
+        <para>
+          All payloads sent to resources using POST or PUT should be supplied using <literal>Content Type: application/json</literal>, , and using UTF-8 encoding.
+          Likewise, output is sent from server in UTF-8.
+        </para>
+      </important>
+    </section>
+  </section>
+  <para>
+    The UID Generator REST Endpoints doesn't support bulk updates.
+    You can work on only one object per request.
+  </para>
+  <para>
+    With the UID Generator REST Endpoints you can additionally sort, filter, select specific attributes, limit the number of items, and represent resources in JSON format.
+  </para>
+  <para>
+    These features are covered in the following sub-topics:
+  </para>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      <link linkend='use-codes'>HTTP Codes</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend='use-error'>Error Format</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend='use-data'>Data Format</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend='use-sorting'>Sorting</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend='use-paging'>Pagination</link>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend='use-filter'>Filtering</link>
+    </listitem>
+    <listitem>
+      <link linkend='use-path'>Path Parameter</link>
+    </listitem>
+  </itemizedlist>
+  <xi:include href="use/codes.xml"/>
+  <xi:include href="use/date.xml"/>
+  <xi:include href="use/error.xml"/>
+  <xi:include href="use/data.xml"/>
+  <xi:include href="use/sorting.xml"/>
+  <xi:include href="use/paging.xml"/>
+  <xi:include href="use/filter.xml"/>
+  <xi:include href="use/path.xml"/>
+</chapter>

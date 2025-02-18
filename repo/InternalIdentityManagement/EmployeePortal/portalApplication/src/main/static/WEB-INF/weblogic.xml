@@ -1,0 +1,114 @@
+<?xml version = '1.0' encoding = 'windows-1252'?>
+<weblogic-web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.bea.com/ns/weblogic/weblogic-web-app http://www.bea.com/ns/weblogic/weblogic-web-app/1.0/weblogic-web-app.xsd" xmlns="http://www.bea.com/ns/weblogic/weblogic-web-app">
+  <session-descriptor>
+    <persistent-store-type>replicated_if_clustered</persistent-store-type>
+    <cookie-name>oimjsessionid</cookie-name>
+    <url-rewriting-enabled>false</url-rewriting-enabled>
+  </session-descriptor>
+  <context-root>epp</context-root>
+  <security-role-assignment>
+    <role-name>valid-users</role-name>
+    <principal-name>users</principal-name>
+  </security-role-assignment>
+  <ejb-reference-description>
+    <ejb-ref-name>ejb/bpel/services/workflow/TaskServiceBean</ejb-ref-name>
+    <jndi-name>ejb/bpel/services/workflow/TaskServiceBean</jndi-name>
+  </ejb-reference-description>
+  <ejb-reference-description>
+    <ejb-ref-name>ejb/bpel/services/workflow/TaskMetadataServiceBean</ejb-ref-name>
+    <jndi-name>ejb/bpel/services/workflow/TaskMetadataServiceBean</jndi-name>
+  </ejb-reference-description>
+  <ejb-reference-description>
+    <ejb-ref-name>TaskReportServiceBean</ejb-ref-name>
+    <jndi-name>TaskReportServiceBean</jndi-name>
+  </ejb-reference-description>
+  <ejb-reference-description>
+    <ejb-ref-name>TaskEvidenceServiceBean</ejb-ref-name>
+    <jndi-name>TaskEvidenceServiceBean</jndi-name>
+  </ejb-reference-description>
+  <ejb-reference-description>
+    <ejb-ref-name>TaskQueryService</ejb-ref-name>
+    <jndi-name>TaskQueryService</jndi-name>
+  </ejb-reference-description>
+  <ejb-reference-description>
+    <ejb-ref-name>RuntimeConfigService</ejb-ref-name>
+    <jndi-name>RuntimeConfigService</jndi-name>
+  </ejb-reference-description>
+  <ejb-reference-description>
+    <ejb-ref-name>UserMetadataService</ejb-ref-name>
+    <jndi-name>UserMetadataService</jndi-name>
+  </ejb-reference-description>
+  <!--
+  libraries below are required to be included due to oracle.idm.uishell
+  referencing them somewhere
+  -->
+  <library-ref>
+    <library-name>oracle.idm.uishell</library-name>
+  </library-ref>
+  <library-ref>
+    <library-name>oracle.webcenter.composer</library-name>
+  </library-ref>
+  <library-ref>
+    <library-name>adf.oracle.businesseditor</library-name>
+  </library-ref>
+  <!--
+  libraries below are required to be included due to oracle.iam.ui.view
+  referencing them somewhere
+  -->
+  <library-ref>
+    <library-name>oracle.iam.ui.view</library-name>
+  </library-ref>
+  <library-ref>
+    <library-name>oracle.iam.ui.oia-view</library-name>
+  </library-ref>
+  <library-ref>
+    <library-name>oracle.iam.ui.custom</library-name>
+  </library-ref>
+  <!--
+  libraries below are required by a default ADF Web Application
+  -->
+  <library-ref>
+    <library-name>adf.oracle.domain.webapp</library-name>
+  </library-ref>
+  <!--
+  libraries below are required by Oracle Help Web OHW
+  -->
+  <library-ref>
+    <library-name>ohw-rcf</library-name>
+  </library-ref>
+  <!--
+  libraries below are required by a default JSF Web Application
+  -->
+  <library-ref>
+    <library-name>jstl</library-name>
+    <specification-version>1.2</specification-version>
+  </library-ref>
+  <library-ref>
+    <library-name>jsf</library-name>
+    <specification-version>2.0</specification-version>
+  </library-ref>
+  <!--
+  libraries below are required by SOA integration
+  -->
+  <library-ref>
+    <library-name>oracle.soa.worklist.webapp</library-name>
+    <specification-version>11.1.1</specification-version>
+  </library-ref>
+  <library-ref>
+    <library-name>oracle.soa.rules_dict_dc.webapp</library-name>
+  </library-ref>
+  <!--
+  libraries below are required to consum standard taskflows
+  Note: do not move before ohw-rcf
+  -->
+  <library-ref>
+    <library-name>oracle.idm.ids.config.ui</library-name>
+  </library-ref>
+  <!--
+  libraries below are required by a default ADF Desktop Integration
+  -->
+  <library-ref>
+    <library-name>oracle.adf.desktopintegration</library-name>
+  </library-ref>
+  <wl-dispatch-policy>EPPWorkManager</wl-dispatch-policy>
+</weblogic-web-app>

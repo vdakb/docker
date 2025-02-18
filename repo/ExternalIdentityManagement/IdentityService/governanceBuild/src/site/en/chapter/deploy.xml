@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2015. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="pid-deploy"
+         version ="5.0">
+  <title>Deployment of the Service</title>
+  <para>
+    The service is deployed on a Java EE 8 complient application server.
+    For a successful provision of the service in such an application server, it must be prepared accordingly in advance.
+  </para>
+  <para>
+    This chapter describes the procedures for preparing the application server and covers:
+  </para>
+  <para>
+    This chapter contains the following sections:
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend='pid-deploy-domain'>Create Domain</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend='pid-deploy-optional'>Optional Package</link>
+        <para/>
+      </listitem>
+      <listitem>
+        <link linkend='pid-deploy-datasource'>Configure JDBC DataSource</link>
+      </listitem>
+    </itemizedlist>
+  </para>
+  <section xml:id="pid-deploy-domain">
+    <para>
+      The configuration of production domain has been made with production in mind, so there are a number of differences when compared to the default domain which are listed below.
+      Not all of these will be wanted for development environments, but all are good practice for production domains.
+    </para>
+    <section xml:id="pid-deploy-domain-default">
+      <title>Differences in Server Configuration</title>
+      <orderedlist>
+        <listitem>
+          <para>
+            Autodeployment has been disabled.
+          </para>
+          <para>
+            Payara Server comes with a deployment scanner.
+            This is a security risk for production, so it is disabled by default in the domain.xml.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Dynamic application reloading is disabled.
+          </para>
+          <para>
+            For the same reason as above, this is disabled by default in the domain.xml.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Dynamic reloading of JSP pages in <literal>default-web.xml</literal> is disabled.
+          </para>
+          <para>
+            The <literal>&lt;init-param&gt;</literal> setting reload-interval in the <literal>default-web.xml</literal> has been set to a value of <literal>-1</literal> so that it is disabled. 
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            The EJB container <literal>max-pool-size</literal> has been set to <literal>128</literal>.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            The <literal>max-thread-pool-size</literal> setting for <literal>thread-pool-1</literal> has been increased to <literal>250</literal>.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            File caching has been enabled for both default HTTP listeners (<literal>http-listener-1</literal> and <literal>http-listener-2</literal>).
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Isolated classloading has been enabled by default at the server level.
+          </para>
+          <para>
+            The property <literal>fish.payara.classloading.delegate</literal> has been set to <literal>false</literal>.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            A default transaction timeout of 300 seconds has been added for xa and non-xa transactions.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            Default group-to-role mapping is enabled.
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            The maximum size for the thread pool <literal>http-thread-pool</literal> has been increased from <literal>5</literal> to <literal>50</literal>.
+          </para>
+          <para/>
+        </listitem>
+      </orderedlist>
+    </section>
+    <section xml:id="pid-deploy-domain-jvm">
+      <title>Differences in JVM Options</title>
+      <para>
+        With the aim of production domain being to target production, the production domain has JVM options specifically configured for usage on JDK 8.
+        Since JDK 7 has reached its end-of-life, it is therefore a security risk to run a JVM lower than version 8 in production.
+        However, production domain can be configured to run on JDK 7 if necessary by editing the JVM options.
+      </para>
+      <para>
+        The following JVM options only appear in production domain:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>-server</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Xmx2g</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Xms2g</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-XX:+UseG1GC</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-XX:+UseStringDeduplication</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-XX:MaxGCPauseMillis=500</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-XX:MaxMetaspaceSize=2g</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-XX:+IgnoreUnrecognizedVMOptions</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djdk.tls.rejectClientInitiatedRenegotiation=true</para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        The following JVM options only appear in the default domain:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>-client</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djavax.management.builder.initial=com.sun.enterprise.v3.admin.AppServerMBeanServerBuilder</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Xmx512m</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-XX:NewRatio=2</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dcom.sun.enterprise.security.httpsOutboundKeyAlias=s1as</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dorg.glassfish.additionalOSGiBundlesToStart=org.apache.felix.shell,org.apache.felix.gogo.runtime,org.apache.felix.gogo.shell,org.apache.felix.gogo.command,org.apache.felix.shell.remote,org.apache.felix.fileinstall</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dosgi.shell.telnet.port=6666</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dosgi.shell.telnet.maxconn=1</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dosgi.shell.telnet.ip=127.0.0.1</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dgosh.args=--nointeractive</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dfelix.fileinstall.dir=${com.sun.aas.installRoot}/modules/autostart/</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dfelix.fileinstall.poll=5000</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dfelix.fileinstall.log.level=2</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dfelix.fileinstall.bundles.new.start=true</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dfelix.fileinstall.bundles.startTransient=true</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dfelix.fileinstall.disableConfigSave=false</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dcom.ctc.wstx.returnNullForDefaultNamespace=true</para>
+        </listitem>
+      </itemizedlist>
+      <para>
+        The following JVM options appear in both domain and production domain:
+      </para>
+      <itemizedlist mark='bullet'>
+        <listitem>
+          <para>-Xbootclasspath/p:${com.sun.aas.installRoot}/lib/grizzly-npn-bootstrap.jar</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djava.awt.headless=true</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djdk.corba.allowOutputStreamSubclass=true</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djavax.xml.accessExternalSchema=all</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-XX:+UnlockDiagnosticVMOptions</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djava.security.policy=${com.sun.aas.instanceRoot}/config/server.policy</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djava.security.auth.login.config=${com.sun.aas.instanceRoot}/config/login.conf</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djavax.net.ssl.keyStore=${com.sun.aas.instanceRoot}/config/keystore.jks</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djavax.net.ssl.trustStore=${com.sun.aas.instanceRoot}/config/cacerts.jks</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djdbc.drivers=org.apache.derby.jdbc.ClientDriver</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-DANTLR_USE_DIRECT_CLASS_LOADING=true</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dcom.sun.enterprise.config.config_environment_factory_class=com.sun.enterprise.config.serverbeans.AppserverConfigEnvironmentFactory</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Djdk.tls.rejectClientInitiatedRenegotiation=true</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dorg.jboss.weld.serialization.beanIdentifierIndexOptimization=false</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dorg.jboss.weld.serialization.beanIdentifierIndexOptimization=false</para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>-Dorg.glassfish.grizzly.DEFAULT_MEMORY_MANAGER=org.glassfish.grizzly.memory.HeapMemoryManager</para>
+          <para/>
+        </listitem>
+      </itemizedlist>
+      <para>
+        Support for the <literal>java.endorsed.dirs</literal> and <literal>java.ext.dirs</literal> options are removed from version 5.192 onwards (these were deprecated since 5.191).
+        The concept of endorsed and ext directories are no longer supported with Java 9+.
+      </para>
+    </section>
+    <title>Create Domain</title>
+    <para>
+      The service is deployed in a sce
+    </para>
+  </section>
+  <section xml:id="pid-deploy-optional">
+    <title>Optional Package</title>
+    <para>
+      The service relies on the Java optional package mechanism.
+    </para>
+    <para>
+      Optional packages are packages of Java classes and associated native code that application developers can use to extend the functionality of the core platform.
+    </para>
+    <para>
+      To ensure the Java optional package mechanism, copy the JAR files into the <emphasis>domain-dir</emphasis><literal>/lib</literal> directory, or use the <literal>asadmin add-library</literal> command with the <literal>--type ext</literal> option, then restart the server.
+      For more information about the <literal>asadmin add-library</literal> command, see the <emphasis>GlassFish Server Open Source Edition Reference Manual</emphasis>.
+    </para>
+    <para>
+      Following packages needs to be copied:
+    </para>
+    <table>
+      <thead>
+        <tr>
+          <td>Package</td>
+          <td>Directory</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>ocs-hst-core.jar</td>
+          <td>&lt;domain-home&gt;/lib</td>
+        </tr>
+        <tr>
+          <td>ocs-hst-jps.jar</td>
+          <td>&lt;domain-home&gt;/lib</td>
+        </tr>
+        <tr>
+          <td>ocs-hst-json.jar</td>
+          <td>&lt;domain-home&gt;/lib</td>
+        </tr>
+        <tr>
+          <td>ocs-hst-rest.jar</td>
+          <td>&lt;domain-home&gt;/lib</td>
+        </tr>
+        <tr>
+          <td>ocs-iad-saml.jar</td>
+          <td>&lt;domain-home&gt;/lib</td>
+        </tr>
+        <tr>
+          <td>ocs-igd-scim.jar</td>
+          <td>&lt;domain-home&gt;/lib</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</chapter>

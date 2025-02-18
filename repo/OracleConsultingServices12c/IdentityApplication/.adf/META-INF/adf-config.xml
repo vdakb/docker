@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<adf-config xmlns       ="http://xmlns.oracle.com/adf/config"
+            xmlns:adf   ="http://xmlns.oracle.com/adf/config/properties"
+            xmlns:config="http://xmlns.oracle.com/bc4j/configuration">
+  <adf-security-child xmlns="http://xmlns.oracle.com/adf/security/config">
+    <CredentialStoreContext credentialStoreClass   ="oracle.adf.share.security.providers.jps.CSFCredentialStore"
+                            credentialStoreLocation="../../src/META-INF/jps-config.xml"/>
+  </adf-security-child>
+  <adf-adfm-config xmlns="http://xmlns.oracle.com/adfm/config">
+    <defaults useBindVarsForViewCriteriaLiterals="true" joinNewFrameTransaction="true" changeEventPolicy="ppr" useBindValuesInFindByKey="true" iteratorRowValidationFlag="false"/>
+    <startup>
+      <amconfig-overrides>
+        <config:Database jbo.locking.mode="optimistic"/>
+      </amconfig-overrides>
+    </startup>
+  </adf-adfm-config>
+  <adf:adf-properties-child xmlns="http://xmlns.oracle.com/adf/config/properties">
+    <adf-property name="adfAppUID" value="Authorization.oracle.iam.ui"/>
+  </adf:adf-properties-child>
+  <adf-resourcebundle-config xmlns="http://xmlns.oracle.com/adf/resourcebundle/config">
+    <applicationBundleName>xliffBundles/oracle/iam/ui/runtime/BizEditorBundle</applicationBundleName>
+    <bundleList>
+      <bundleId override="true">oracle.adf.businesseditor.model.util.BaseRuntimeResourceBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.OIMUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.platform.view.PlatformUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.view.UIComponentsBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.common.model.CommonModelBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.certification.CertificationUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.itresource.ITResourceUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.userroles.UserRolesUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.userprofile.UserProfileUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.advanced.AdvancedUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.role.view.RoleUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.formservice.FormServiceUIBundle</bundleId>
+      <bundleId override="true">taskdetailsui.TaskDetailsUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.homepage.HomepageUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.unauthenticated.UnauthenticatedUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.view.rolecategory.RoleCategoryUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.AuthenticatedServicesUIBundle</bundleId>
+      <bundleId override="true">oracle.iam.ui.ida.view.IdentityAuditUIBundle</bundleId>
+    </bundleList>
+  </adf-resourcebundle-config>
+  <adf-mds-config xmlns="http://xmlns.oracle.com/adf/mds/config">
+    <mds-config version="11.1.1.000" xmlns="http://xmlns.oracle.com/mds/config">
+      <persistence-config>
+        <metadata-namespaces>
+          <namespace path="/oracle/adf/share/prefs"     metadata-store-usage="sdpRepos"/>
+          <namespace path="/sessiondef"                 metadata-store-usage="sdpRepos"/>
+          <namespace path="/persdef"                    metadata-store-usage="sdpRepos"/>
+          <namespace path="/xliffBundles"               metadata-store-usage="sdpRepos"/>
+          <namespace path="/oracle/adf/share/prefs"     metadata-store-usage="sdpRepos"/>
+          <namespace path="/oracle/webcenter/lifecycle" metadata-store-usage="sdpRepos"/>
+          <namespace path="/oracle/webcenter/lock"      metadata-store-usage="sdpRepos"/>
+          <namespace path="/oracle/webcenter/rc"        metadata-store-usage="sdpRepos"/>
+          <namespace path="/pageDefs"                   metadata-store-usage="sdpRepos"/>
+          <namespace path="/oracle/iam/ui/runtime/"     metadata-store-usage="sdpRepos"/>
+          <namespace path="/db"                         metadata-store-usage="oimRepos" />
+          <namespace path="/custom/metadata"            metadata-store-usage="oimRepos"/>
+          <namespace path="/oracle/rules"               metadata-store-usage="oimRepos"/>
+          <namespace path="/oracle/iam/ui/common/model" metadata-store-usage="sdpRepos">
+            <namespace-restriction type="CUSTOMIZATIONS"/>
+          </namespace>
+        </metadata-namespaces>
+        <metadata-store-usages>
+          <metadata-store-usage id="sdpRepos" deploy-target="true" default-cust-store="true">
+            <metadata-store class-name="oracle.mds.persistence.stores.db.DBMetadataStore">
+              <property name="partition-name"  value="oim-ui"/>
+              <property name="jndi-datasource" value="jdbc/mds/MDS_REPOS"/>
+              <property name="repository-name" value="mds"/>
+            </metadata-store>
+          </metadata-store-usage>
+          <metadata-store-usage id="oimRepos">
+            <metadata-store class-name="oracle.mds.persistence.stores.db.DBMetadataStore">
+              <property name="partition-name"  value="oim"/>
+              <property name="jndi-datasource" value="jdbc/mds/MDS_REPOS"/>
+              <property name="repository-name" value="mds"/>
+            </metadata-store>
+          </metadata-store-usage>
+        </metadata-store-usages>
+        <content-config>
+          <match path="/db/" file-extension="xsd">
+            <content-options isStreamed="true"/>
+          </match>
+        </content-config>
+        <auto-purge seconds-to-live="3600"/>
+      </persistence-config>
+      <cust-config>
+        <match path="/">
+          <customization-class name="oracle.iam.ui.customization.cc.OIMSiteCC"/>
+          <customization-class name="oracle.iam.ui.customization.cc.EditionCC"/>
+          <customization-class name="oracle.iam.ui.customization.cc.SiteCC"/>
+          <customization-class name="oracle.iam.ui.customization.cc.UserCC"/>
+        </match>
+      </cust-config>
+      <cache-config>
+        <max-size-kb>102400</max-size-kb>
+      </cache-config>
+    </mds-config>
+  </adf-mds-config>
+  <!-- Multiple Resource Catalog configuration -->
+  <rcv-config xmlns="http://xmlns.oracle.com/adf/rcs/viewer/adf-config">
+    <catalog-selector class-name="oracle.iam.ui.mds.CatalogSelector"/>
+    <default-catalog catalog-name="default-catalog"/>
+  </rcv-config>
+  <adf-controller-config xmlns="http://xmlns.oracle.com/adf/controller/config">
+    <adf-scope-ha-support>true</adf-scope-ha-support>
+    <max-root-view-ports>-1</max-root-view-ports>
+  </adf-controller-config>
+  <adf-desktopintegration-servlet-config xmlns="http://xmlns.oracle.com/adf/desktopintegration/servlet/config">
+    <controller-state-manager-class>
+      oracle.adf.desktopintegration.controller.impl.ADFcControllerStateManager
+    </controller-state-manager-class>
+  </adf-desktopintegration-servlet-config>
+</adf-config>

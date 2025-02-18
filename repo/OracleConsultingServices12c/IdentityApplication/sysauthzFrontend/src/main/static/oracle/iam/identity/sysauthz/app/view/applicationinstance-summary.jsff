@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysauth$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Authorization']}"/>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysauth$bundle.APP_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysauth$bundle.APP_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysauth$bundle.APP_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysauth$bundle.APP_SUMMARY}"/>
+    <f:attribute name="bodyHeaderInstruction"           value="#{sysauth$bundle.APP_SUMMARY_INSTRUCTION}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysauth$bundle.APP_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysauth$bundle.APP_CREATE_TITLE : pageFlowScope.displayName}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysauth$bundle.APP_ICON}"/>
+    <f:attribute name="tabHeaderInstruction"            value=""/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:attribute name="hideSubTabTopPane"               value="#{pageFlowScope.mode == 'request' ? 'true' : 'false'}"/>
+    <f:attribute name="hideSubTabBorder"                value="#{pageFlowScope.mode == 'request' ? 'true' : 'false'}"/>
+    <f:facet name="subtabsButtonBar"/>
+    <f:facet name="body">
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

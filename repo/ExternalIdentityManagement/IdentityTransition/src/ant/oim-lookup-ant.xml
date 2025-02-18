@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Controller" basedir="../../deployment/oim">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../tpl/oim-context.xml"/>
+  <import file="../../tpl/ant/oim-lookup.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to on-board the entitlements and multi-valued
+  == attributes from scratch
+  =====================================================================
+  -->
+  <target name       ="all"
+          description="Executes the task in order to synchronize internal entities in Oracle Identity Manager"
+          depends    ="003,004,006,007,008,009,010,011,012,013,014,015,021,991"/>
+  <!--
+  =====================================================================
+  == ANT targets to executes the scheduled jobs to reconcile
+  == entitlements and multi-valued attributes.
+  =====================================================================
+  -->
+  <target name       ="003"
+          description="IDS Lookup and Entitlements"
+          depends    ="0301"/>
+  <target name       ="004"
+          description="CTS Lookup and Entitlements"
+          depends    ="0401"/>
+  <target name       ="006"
+          description="PSC Lookup and Entitlements"
+          depends    ="0601"/>
+  <target name       ="007"
+          description="PCF Lookup and Entitlements"
+          depends    ="0701-01,0701-02"/>
+  <target name       ="008"
+          description="PIAV Lookup and Entitlements"
+          depends    ="0801"/>
+  <target name       ="009"
+          description="PAP/SZ4 Lookup and Entitlements"
+          depends    ="0901,0902"/>
+  <target name       ="010"
+          description="AJS Lookup and Entitlements"
+          depends    ="1001"/>
+  <target name       ="011"
+          description="GAE Lookup and Entitlements"
+          depends    ="1101-01,1101-02,1101-03,1101-04,1101-05,1101-06,1101-07,1101-08"/>
+  <target name       ="012"
+          description="PCF Lookup and Entitlements"
+          depends    ="1201-01,1201-02"/>
+  <target name       ="013"
+          description="ADH Lookup and Entitlements"
+          depends    ="1301"/>
+  <target name       ="014"
+          description="OFS Lookup and Entitlements"
+          depends    ="1401-PG,1401-AN,1401-BB,1401-BE,1401-BK,1401-BP,1401-BW,1401-BY,1401-HB,1401-HE,1401-HH,1401-MV,1401-NI,1401-NW,1401-RP,1401-SH,1401-SL,1401-SN,1401-TH,1401-ZF"/>
+  <target name       ="015"
+          description="PHX Lookup and Entitlements"
+          depends    ="1501-01,1501-02,1501-03,1501-04"/>
+  <target name       ="020"
+          description="LDAP APPs Lookup and Entitlements"
+          depends    ="2001-01,2001-02,2001-03,2001-04,2001-05,2001-06,2001-07,2001-08,2001-09,2001-10"/>
+  <target name       ="021"
+          description="RKC Lookup and Entitlements"
+          depends    ="2101"/>
+  <target name       ="991"
+          description="Executes the task in order to synchronize internal entities in Oracle Identity Manager"
+          depends    ="9901"/>
+</project>

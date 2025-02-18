@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Oracle Consulting Services DocBook Definitions"
+         basedir     ="../">
+  <!--
+  ==============================================================================
+  == properties specific to the runtime environment
+  ==============================================================================
+  -->
+  <import file="../../doc-targets.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${sitetmp.dir}" includes="**/*"/>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the generation process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${sitetmp.dir}"/>
+  </target>
+  <target name="all" depends="deployment, administration, development">
+  </target>
+  <!--
+  =====================================================================
+  == ANT to generate product deliverables
+  =====================================================================
+  -->
+  <target name="administration" depends="administration-de, administration-en"/>
+  <target name="deployment"     depends="deployment-de, deployment-en"/>
+  <target name="development"    depends="development-de, development-en"/>
+  <!--
+  =====================================================================
+  == ANT to generate product deliverables
+  =====================================================================
+  -->
+  <target name="administration-de" depends="init">
+    <docbook.fop input ="de/administration/ICF.OIG Connector Administration" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.OIG Connector Administration-de"/>
+  </target>
+  <target name="administration-en" depends="init">
+    <docbook.fop input ="en/administration/ICF.OIG Connector Administration" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.OIG Connector Administration-en"/>
+  </target>
+  <target name="administration-fr" depends="init">
+    <docbook.fop input ="fr/administration/ICF.OIG Connector Administration" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.OIG Connector Administration-fr"/>
+  </target>
+  <target name="deployment-de" depends="init">
+    <docbook.fop input ="de/deployment/ICF.OIG Connector Deployment" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.OIG Connector Deployment-de"/>
+  </target>
+  <target name="deployment-en" depends="init">
+    <docbook.fop input ="en/deployment/ICF.OIG Connector Deployment" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.OIG Connector Deployment-en"/>
+  </target>
+  <target name="deployment-fr" depends="init">
+    <docbook.fop input ="fr/deployment/ICF.OIG Connector Deployment" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.OIG Connector Deployment-fr"/>
+  </target>
+  <target name="development-de" depends="init">
+    <docbook.fop input ="de/development/ICF.OIG Connector Development" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.OIG Connector Development-de"/>
+  </target>
+  <target name="development-en" depends="init">
+    <docbook.fop input ="en/development/ICF.OIG Connector Development" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.OIG Connector Development-en"/>
+  </target>
+  <target name="development-fr" depends="init">
+    <docbook.fop input ="fr/development/ICF.OIG Connector Deployment" style="oracle/2.0"/>
+    <docbook.pdf output="ICF.OIG Connector Development-fr"/>
+  </target>
+</project>

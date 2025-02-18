@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Google Developer Portal Connector" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"            value="Identity Manager Google Developer Portal Connector"/>
+
+  <property name="application"            value="gdp.identity.connector"/>
+  <property name="bundle"                 value="gdp.identity.connector.bundle"/>
+  <property name="adapter"                value="gdp.identity.connector.adapter"/>
+  <property name="scheduler"              value="gdp.identity.connector.scheduler"/>
+  <property name="thirdparty"             value="gdp.identity.connector.common"/>
+  <!--
+  <property name="destination.base"       value="../../deployment/oim/0102 systemIntegration"/>
+  <property name="destination.target"     value="../../deployment/oim/0305 systemConnector APIGEE"/>
+  -->
+  <property name="destination.base"       value="../../deployment/oim/0102 systemIntegration,../../../Bundeskriminalamt12c/ExternalIdentityManagement/deployment/oim/0102 systemIntegration"/>
+  <property name="destination.bundle"     value="../../deployment/oim/0102 systemIntegration/ics,../../../Bundeskriminalamt12c/ExternalIdentityManagement/deployment/oim/0102 systemIntegration/lib"/>
+  <property name="destination.target"     value="../../deployment/oim/0308 systemConnector API"/>
+
+  <property name="packagepath.bundle"     value="oracle/iam/identity/icf/**/*.class oracle/iam/identity/icf/**/*.properties"/>
+  <property name="packagepath.adapter"    value="oracle/iam/identity/gws/service/provisioning/**/*.class"/>
+  <property name="packagepath.scheduler"  value="oracle/iam/identity/gws/service/reconciliation/**/*.class"/>
+  <property name="packagepath.diagnostic" value="oracle/iam/identity/gws/service/diagnostic/**/*.class"/>
+  <!--
+  <property name="configuration.base"     value="true"/>
+  <property name="configuration.target"   value="true"/>
+  <property name="configuration.trusted"  value="true"/>
+  -->
+
+  <patternset id="descriptor.pattern.base">
+    <include name="base/api-resource-dm.xml"/>
+    <include name="base/api-adapter-dm.xml"/>
+    <include name="base/api-scheduler-dm.xml"/>
+  </patternset>
+
+  <patternset id="descriptor.pattern.target">
+  </patternset>
+
+  <patternset id="descriptor.pattern.trusted">
+  </patternset>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../icf-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish a possible plugin runtime path
+  =====================================================================
+  -->
+  <path id="oracle.ocs.iam.icf.runtime">
+    <path refid="oracle.ocs.iam.icf.foundation"/>
+    <path refid="oracle.ocs.iam.icf.rest"/>
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.mds"/>
+    <path refid="oracle.fmw.jax.jersey.core"/>
+    <path refid="oracle.fmw.jax.jackson"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.iam.connector"/>
+    <path refid="oracle.fmw.iam.oim.adapter"/>
+    <path refid="oracle.fmw.iam.oim.scheduler"/>
+    <path refid="oracle.ocs.iam.hst.foundation"/>
+    <path refid="oracle.ocs.iam.oim.foundation"/>
+    <path refid="oracle.ocs.iam.icf.integration"/>
+    <path refid="oracle.ocs.iam.icf.runtime"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT target to compile all Java Source files
+  =====================================================================
+  -->
+  <target name="setup" description="Setup Connector Server">
+    <copy todir="${icf.server.home}/lib/endorsed" flatten="true">
+      <path refid="oracle.fmw.jax.json"/>
+      <path refid="oracle.fmw.jax.jersey.core"/>
+      <path refid="oracle.fmw.jax.jackson"/>
+    </copy>
+  </target>
+</project>

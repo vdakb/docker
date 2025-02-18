@@ -1,0 +1,387 @@
+{
+	"info": {
+		"_postman_id": "37a135a1-7ff0-4953-a53c-e2e43734091c",
+		"name": "P20 ZeRo Configurator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12777809"
+	},
+	"item": [
+		{
+			"name": "Application",
+			"item": [
+				{
+					"name": "account-create-single",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true,
+							"accept": true,
+							"content-type": true,
+							"accept-encoding": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"application\": \"CTSAccount\"\n, \"accounts\" : [\n    { \"id\"         : \"azitterbacke\"\n    , \"action\"     : \"create\"\n    , \"attributes\" : [\n        { \"id\"     : \"firstName\"\n        , \"value\"  : \"Alfons\"\n        }\n      , { \"id\"     : \"lastName\"\n        , \"value\"  : \"Zitterbacke\"\n        }\n      ]\n    , \"entitlements\"       : [\n        { \"namespace\"      : \"group\"\n        , \"actions\"        : [\n            { \"action\"     : \"revoke\"\n            , \"risk\"       : \"low\"\n            , \"attributes\" : [\n                { \"id\"     : \"name\"\n                , \"value\"  : \"cn=Dude,dc=example,dc=com\"\n                }\n              ]\n            }\n          , { \"action\"     : \"assign\"\n            , \"risk\"       : \"low\"\n            , \"attributes\" : [\n                { \"id\"     : \"name\"\n                , \"value\"  : \"cn=Other Dude,dc=example,dc=com\"\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/zero/v1/request",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"zero",
+								"v1",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account-delete-single",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"application\": \"CTSAccount\"\n, \"accounts\"   : [\n    { \"id\"     : \"azitterbacke\"\n    , \"action\" : \"delete\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/zero/v1/request",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"zero",
+								"v1",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "account-mixed-multiple",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"application\": \"CTSAccount\"\n, \"accounts\" : [\n    { \"id\"         : \"azitterbacke\"\n    , \"action\"     : \"create\"\n    , \"attributes\" : [\n        { \"id\"     : \"firstName\"\n        , \"value\"  : \"Alfons\"\n        }\n      , { \"id\"     : \"lastName\"\n        , \"value\"  : \"Zitterbacke\"\n        }\n      ]\n    , \"entitlements\"       : [\n        { \"namespace\"      : \"group\"\n        , \"actions\"        : [\n            { \"action\"     : \"revoke\"\n            , \"risk\"       : \"low\"\n            , \"attributes\" : [\n                { \"id\"     : \"name\"\n                , \"value\"  : \"cn=Dude,dc=example,dc=com\"\n                }\n              ]\n            }\n          , { \"action\"     : \"assign\"\n            , \"risk\"       : \"low\"\n            , \"attributes\" : [\n                { \"id\"     : \"name\"\n                , \"value\"  : \"cn=Other Dude,dc=example,dc=com\"\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  , { \"id\"         : \"mmustermann\"\n    , \"action\"     : \"modify\"\n    , \"attributes\" : [\n        { \"id\"     : \"firstName\"\n        , \"value\"  : \"Max\"\n        }\n      , { \"id\"     : \"lastName\"\n        , \"value\"  : \"Mustermann\"\n        }\n      ]\n    }\n  , { \"id\"         : \"amusterfrau\"\n    , \"action\"     : \"delete\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/zero/v1/request",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"zero",
+								"v1",
+								"request"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "known-application-delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Length",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/zero/v1/request/CTSAccountYYY/green",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"zero",
+								"v1",
+								"request",
+								"CTSAccountYYY",
+								"green"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "known-appication-create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\"         : \"azitterbacke\"\n, \"action\"     : \"create\"\n, \"attributes\" : [\n    { \"id\"     : \"firstName\"\n    , \"value\"  : \"Alfons\"\n    }\n  , { \"id\"     : \"lastName\"\n    , \"value\"  : \"Zitterbacke\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/zero/v1/request/CTSAccount",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"zero",
+								"v1",
+								"request",
+								"CTSAccount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/zero/v1/request/CTSAccount/green",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"zero",
+								"v1",
+								"request",
+								"CTSAccount",
+								"green"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Catalog",
+			"item": [
+				{
+					"name": "list-application",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/zero/v1/catalog/application/Z",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"zero",
+								"v1",
+								"catalog",
+								"application",
+								"Z"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list-role",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{igs-endpoint}}/igs/zero/v1/catalog/role/Z",
+							"host": [
+								"{{igs-endpoint}}"
+							],
+							"path": [
+								"igs",
+								"zero",
+								"v1",
+								"catalog",
+								"role",
+								"Z"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "igs-endpoint",
+			"value": "http://buster.cinnaminstar.net:8005",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<adfc-config id="__01" xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="train-tf">
+    <default-activity id="__02">catalogitem-fetch</default-activity>
+    <data-control-scope id="__03">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__10">
+      <name id="__11">uiShell</name>
+      <value id="__12">#{pageFlowScope.uiShell}</value>
+      <class id="__13">oracle.idm.shell.context.Shell</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__14">
+      <name id="__15">taskFlowId</name>
+      <value id="__16">#{pageFlowScope.taskFlowId}</value>
+      <class id="__17">java.lang.String</class>
+    </input-parameter-definition>
+    <input-parameter-definition id="__18">
+      <name id="__19">mode</name>
+      <value id="__20">#{pageFlowScope.mode}</value>
+      <class id="__21">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__22">
+      <name id="__23">catalogId</name>
+      <value id="__24">#{pageFlowScope.catalogId}</value>
+      <class id="__25">java.lang.Long</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__26">
+      <name id="__27">itemName</name>
+      <value id="__28">#{pageFlowScope.itemName}</value>
+      <class id="__29">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <managed-bean id="__61">
+      <managed-bean-name id="__62">catalogitemTrain</managed-bean-name>
+      <managed-bean-class id="__63">oracle.iam.identity.sysauthz.cat.state.Train</managed-bean-class>
+      <managed-bean-scope id="__64">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__65">
+      <managed-bean-name id="__66">catalogitemAttribute</managed-bean-name>
+      <managed-bean-class id="__67">oracle.iam.identity.sysauthz.cat.backing.AttributeState</managed-bean-class>
+      <managed-bean-scope id="__68">backingBean</managed-bean-scope>
+    </managed-bean>
+    <view id="step-attributes">
+      <page id="__101">/oracle/iam/identity/sysauthz/cat/view/catalogitem-attributes.jsff</page>
+      <train-stop id="__102">
+        <display-name id="__103">#{adfBundle['oracle.iam.identity.bundle.Authorization']['CAT_ATTRIBUTE']}</display-name>
+        <sequential id="__104">false</sequential>
+        <ignore id="__105">#{pageFlowScope.mode == 'request'}</ignore>
+      </train-stop>
+    </view>
+    <view id="step-summary">
+      <page id="__121">/oracle/iam/identity/sysauthz/cat/view/catalogitem-summary.jsff</page>
+      <train-stop id="__122">
+        <display-name id="__123">#{adfBundle['oracle.iam.identity.bundle.Authorization']['APP_SUMMARY']}</display-name>
+        <sequential id="__124">false</sequential>
+        <ignore id="__125">#{pageFlowScope.mode == 'request' or pageFlowScope.mode == 'edit' or pageFlowScope.mode == 'view'}</ignore>
+      </train-stop>
+    </view>
+    <task-flow-return id="train-commit">
+      <outcome id="__131">
+        <name id="__132">train-commit</name>
+      </outcome>
+    </task-flow-return>
+    <task-flow-return id="train-cancel">
+      <outcome id="__133">
+        <name id="__134">train-cancel</name>
+      </outcome>
+    </task-flow-return>
+    <method-call id="catalogitem-fetch">
+      <method id="__164">#{pageFlowScope.catalogitemTrain.fetch}</method>
+      <outcome id="__165">
+        <fixed-outcome id="__166">fetched</fixed-outcome>
+      </outcome>
+    </method-call>
+    <train/>
+    <control-flow-rule id="__180">
+      <from-activity-id id="__181">*</from-activity-id>
+      <control-flow-case id="__182">
+        <from-outcome id="__183">cancel</from-outcome>
+        <to-activity-id id="__184">train-cancel</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__198">
+      <from-activity-id id="__199">catalogitem-fetch</from-activity-id>
+      <control-flow-case id="__200">
+        <from-outcome id="__201">fetched</from-outcome>
+        <to-activity-id id="__202">step-attributes</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__203">
+      <from-activity-id id="__204">step-summary</from-activity-id>
+      <control-flow-case id="__205">
+        <from-outcome id="__206">cancel</from-outcome>
+        <to-activity-id id="__207">train-cancel</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__208">
+        <from-outcome id="__209">commit</from-outcome>
+        <to-activity-id id="__210">train-commit</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

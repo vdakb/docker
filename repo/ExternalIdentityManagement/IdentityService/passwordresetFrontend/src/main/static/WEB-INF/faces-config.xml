@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<faces-config xmlns             ="http://xmlns.jcp.org/ns/javaee" version="2.2"
+              xmlns:xsi         ="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/ns/javaee http://xmlns.jcp.org/ns/javaee/web-facesconfig_2_2.xsd">
+  <application>
+    <locale-config>
+      <default-locale>en</default-locale>
+      <supported-locale>de</supported-locale>
+      <supported-locale>en</supported-locale>
+    </locale-config>
+    <resource-bundle>
+      <description>The application main resource bundle.</description>
+      <display-name>Application Resource Bundle</display-name>
+      <base-name>bka.iam.identity.resources.Bundle</base-name>
+      <var>app$bundle</var>
+    </resource-bundle>
+    <resource-bundle>
+      <description>The resource bundle dedicated for the external password reset feature.</description>
+      <display-name>External Password Reset Resource Bundle</display-name>
+      <base-name>bka.iam.identity.pwr.resources.Bundle</base-name>
+      <var>pwr$bundle</var>
+    </resource-bundle>
+    <el-resolver>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver</el-resolver>
+  </application>
+  <lifecycle>
+    <phase-listener>org.primefaces.component.lifecycle.LifecyclePhaseListener</phase-listener>
+  </lifecycle>
+  <factory>
+    <!--
+     | JSF generates all script tags with 'type="text/javascript"' which throws
+     | HTML5 validation warnings.
+    <faces-context-factory>org.primefaces.application.factory.Html5FacesContextFactory</faces-context-factory>
+    -->
+    <exception-handler-factory>org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory</exception-handler-factory>
+    <lifecycle-factory>org.primefaces.clientwindow.PrimeClientWindowLifecycleFactory</lifecycle-factory>
+  </factory>
+  <managed-bean>
+    <managed-bean-name>sessionState</managed-bean-name>
+    <managed-bean-class>bka.iam.identity.pwr.state.Session</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+</faces-config>

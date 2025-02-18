@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Oracle Headstart Foundation Framework 12c Sandbox" default="make" basedir="..">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../../../iam-12c-preferences.xml"/>
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="subant-library">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../@{subproject}/ant" antfile="hst-library-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to cleanup a project
+  =====================================================================
+  -->
+  <macrodef name="cleanup-project">
+    <attribute name="path"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Project in @{path}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <exec executable="${svn.executable}">
+        <arg value="cleanup"/>
+        <arg value="--remove-unversioned"/>
+        <arg value="../@{path}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to make a project
+  =====================================================================
+  -->
+  <macrodef name="make-project">
+    <attribute name="path"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Project in @{path}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-library subtarget="clean"   subproject="@{path}"/>
+      <subant-library subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to deploy a project
+  =====================================================================
+  -->
+  <macrodef name="deploy-project">
+    <attribute name="path"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Project in @{path}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-library subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to remove particular unversioned files
+  =====================================================================
+  -->
+  <target name="cleanup" description="Remove particular unversioned filess">
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Oracle Headstart Foundation"/>
+    <echo message="============================================================="/>
+    <cleanup-project path="hstFoundation"/>
+    <cleanup-project path="hstSecurity"/>
+    <cleanup-project path="hstFaces"/>
+    <cleanup-project path="hstDeployment"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to make the entire workspace
+  =====================================================================
+  -->
+  <target name="make" description="Package all foundation artifacts to the appropriate java archive">
+    <record name="./hst-framework-ant.log" action="start"/>
+    <echo message="============================================================="/>
+    <echo message="Build of Oracle Headstart Foundation"/>
+    <echo message="============================================================="/>
+    <make-project path="hstFoundation"/>
+    <make-project path="hstSecurity"/>
+    <make-project path="hstFaces"/>
+    <make-project path="hstDeployment"/>
+    <record name="./hst-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to package the entire workspace
+  ==
+  == There is no need to create a dependency on the make target because
+  == any deployment task on the ANT subproject has such dependency
+  == already
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploys all foundation artifacts to the appropriate destintaion on server">
+    <record name="./hst-framework-ant.log" action="start" append="true"/>
+    <echo message="========================================================"/>
+    <echo message="Deployment of Oracle Headstart Foundation"/>
+    <echo message="========================================================"/>
+    <deploy-project path="hstFoundation"/>
+    <deploy-project path="hstSecurity"/>
+    <record name="./hst-framework-ant.log" action="stop"/>
+  </target>
+</project>

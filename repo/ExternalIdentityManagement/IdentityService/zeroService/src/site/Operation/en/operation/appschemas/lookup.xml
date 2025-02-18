@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="api-apps-lookup"
+         xml:lang="en"
+         version ="5.0">
+  <title>Lookup Application Schema</title>
+  <para>
+    This endpoint provides the ability to lookup existing application instance identified by a key.
+    Request does not support pagination and filtering.
+  </para>
+  <section xml:id="api-apps-lookup-req">
+    <title>Request</title>
+    <warning>
+      <title>Permission</title>
+      <para>There are no elevated permission required to access this resource method.</para>
+    </warning>
+    <para>
+      <restapi role="search">/appschema/{name}</restapi>
+    </para>
+    <section xml:id="api-apps-lookup-req-h">
+      <title>Request Header</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/json</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-apps-lookup-req-q">
+      <title>Query Parameters</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>none</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>    
+  </section>
+  <section xml:id="api-apps-lookup-res">
+    <title>Response</title>
+    <para>
+      The representation of the schema for application instance with the given <emphasis role="strong">name</emphasis>.
+    </para>
+    <bridgehead renderas="sect6">Example</bridgehead>
+    <para>
+      <restapi role="search">/appschemas/CTSAccount</restapi>
+    </para>
+    <programlisting>
+[
+    {
+        "name": "UD_CTS_USR_SERVER",
+        "label": "AD Server",
+        "required": true,
+        "type": "ITResourceLookupField",
+        "variantType": "long",
+        "length": 0
+    },
+...
+    {
+        "name": "UD_CTS_USR_UID",
+        "label": "User Id",
+        "required": true,
+        "type": "TextField",
+        "variantType": "String",
+        "length": 150
+    },
+...
+    {
+        "name": "UD_CTS_USR_FNAME",
+        "label": "First Name",
+        "type": "TextField",
+        "variantType": "String",
+        "length": 64
+    },
+...
+    {
+        "name": "UD_CTS_USR_COUNTRY",
+        "label": "Country",
+        "type": "LookupField",
+        "variantType": "String",
+        "length": 128,
+        "lookupName": "Lookup.CTS.Country",
+        "lookupValues": [
+            {
+                "decode": "Germany",
+                "key": "DE"
+            }
+        ]
+    },
+...
+    {
+        "name": "UD_CTS_UGP",
+        "attributeReference": [
+            {
+                "name": "UD_CTS_UGP_GROUPNAME",
+                "label": "Group Name",
+                "entitlement": true,
+                "type": "LookupField",
+                "variantType": "String",
+                "length": 400,
+                "lookupName": "Lookup.CTS.Group"
+            }
+        ]
+    }
+]
+      </programlisting>
+    <para>
+      Output data is in form of:
+    </para>
+    <section xml:id="api-apps-lookup-res-r0">
+      <title>Application Instance Schema</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">name</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Technical name of the schema attribute as it needs to be supplied during provisioning.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">label</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The human readable name for this application instance suitable for GUI displaying purpose.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">type</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Schema attribute content type suitable for GUI displaying purpose.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">variantType</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Technical schema attribute content type (e.g. for syntax checking).</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">length</emphasis></entry>
+              <entry>integer</entry>
+              <entry>yes</entry>
+              <entry>Maximum content length for string variants (or "0" for number type or "1" for boolean type)</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">required</emphasis></entry>
+              <entry>boolean</entry>
+              <entry>no</entry>
+              <entry>Boolean flag indicating whether this is a required schema attribute for provisioning.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">entitlement</emphasis></entry>
+              <entry>boolean</entry>
+              <entry>no</entry>
+              <entry>Boolean flag indicating whether this schema attribute represents an entitlement.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">lookupName</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>If schema attribute is a list-of-values (exactly one value from a fixed list) this is the reference to appropriate lookup.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">lookupValues</emphasis></entry>
+              <entry>boolean</entry>
+              <entry>no</entry>
+              <entry><link linkend='api-apps-search-res-r1'>Lookup Values</link> array</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-apps-search-res-r1">
+      <title>Lookup Values</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">key</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The code for this lookup value as it needs to be supplied during provisioning.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">decode</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The human readable key name suitable for GUI displaying purpose.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-apps-lookup-err">
+      <title>Possible Errors</title>
+      <table>
+        <thead>
+          <tr>
+            <td>Error</td>
+            <td>Condition</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><emphasis role="strong">401 Unauthorized</emphasis></td>
+            <td>No or invalid authentication was provided.</td>
+          </tr>
+          <tr>
+            <td><emphasis role="strong">403 Forbidden</emphasis></td>
+            <td>Request was authenticated but authorization was not passed (authenticated user lacks role required to acces the resource).</td>
+          </tr>
+          <tr>
+            <td><emphasis role="strong">404 Not Found</emphasis></td>
+            <td>Requested application instance was not found.</td>
+          </tr>
+          <tr>
+            <td><emphasis role="strong">503 Service Unavailable</emphasis></td>
+            <td>Other processing error occured. Response <literal>description</literal> attribute contains more details.</td>
+          </tr>
+        </tbody>
+      </table>
+      <para>
+        If <emphasis role="strong">lookupName</emphasis> is provided but the <emphasis role="strong">lookupValues</emphasis> is not this means the appropriate schema attribute is an <emphasis role="strong">entitlement</emphasis> (also indicated by the <emphasis role="strong">"entitlement" : true</emphasis> attribute) and the appropriate values need to be retrieved using <emphasis role="strong">/entitlements</emphasis> endpoint.
+      </para>
+      <para>
+        Also, entitlements are always references to <emphasis role="strong">lookupNames</emphasis> and are nested (schema attribute referencing to another schema attribute).
+      </para>
+    </section>
+  </section>
+</section>
+
+

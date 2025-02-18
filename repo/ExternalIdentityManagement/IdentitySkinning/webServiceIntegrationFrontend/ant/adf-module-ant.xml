@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Frontend Preferences" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description" value="Identity Web Service Integration Frontend Module"/>
+  <property name="library"     value="bka.iam.webservice.frontend"/>
+  <property name="package"     value="bka/**/*.*"/>
+
+  <property name="packagepath" value="bka/iam/identity/ui/**/*.class"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../adf-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish a possible customization runtime path
+  =====================================================================
+  -->
+  <path id="oracle.adf.iam.oim.runtime">
+    <path refid="oracle.adf.model"/>
+    <path refid="oracle.ocs.hst.core"/>
+    <path refid="oracle.ocs.hst.foundation"/>
+    <path refid="oracle.ocs.hst.faces"/>
+    <path refid="oracle.ocs.hst.rest"/>
+    <path refid="oracle.ocs.oim.foundation"/>
+    <path refid="oracle.ocs.adf.foundation"/>
+    <path refid="bka.identity.resource"/>
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.jax.jersey.core"/>
+    <path refid="oracle.fmw.json"/>
+    <path refid="oracle.fmw.mds"/>
+    <path refid="oracle.fmw.jsf"/>
+    <path refid="oracle.fmw.jax.jersey.core"/>
+    <path refid="oracle.fmw.jax.jersey.client"/>
+    <path refid="oracle.fmw.adf.view"/>
+    <path refid="oracle.fmw.adf.model"/>
+    <path refid="oracle.fmw.adf.platform"/>
+    <path refid="oracle.fmw.adf.controller"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.oim.frontend"/>
+    <path refid="oracle.fmw.oim.backend"/>
+    <path refid="oracle.fmw.oim.client"/>
+    <path refid="oracle.adf.iam.oim.runtime"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT target to build and the project artifacts from scratch
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="init,compile,manifest">
+    <adf-jar-frontend module="${library}" package="${package}"/>
+  </target>
+</project>

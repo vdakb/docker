@@ -1,0 +1,26 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityService/identifierBackend/src/main/resources/install/pid/api/pit_aid.con
+--
+--   Anonymous Identifier (AID)
+--
+-- Generated for Oracle Database 12c on Sun Feb 11 08:55:42 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Constraints on 'pit_identifiers'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key 'pit_aid_pk' on 'pit_identifiers'
+ALTER TABLE pit_identifiers
+  ADD (
+    CONSTRAINT pit_aid_pk PRIMARY KEY (
+      id
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Check Constraint 'pit_aid_ck1' on 'pit_identifiers'
+ALTER TABLE pit_identifiers
+  ADD (
+    CONSTRAINT pit_aid_ck1 CHECK (
+      active IN (0, 1)
+    )
+  )
+/

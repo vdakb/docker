@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"  value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysadmin$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Administration']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{pageFlowScope.mode == 'view'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysadmin$bundle.TSK_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysadmin$bundle.TSK_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysadmin$bundle.TSK_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysadmin$bundle.TSK_ATTRIBUTE}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysadmin$bundle.TSK_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysadmin$bundle.TSK_CREATE_TITLE : af:formatString(sysadmin$bundle.TSK_DETAIL, pageFlowScope.name)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysadmin$bundle.TSK_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id            ="btn15"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysadmin$bundle.TSK_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.taskTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.taskAttribute.submit}"
+                   action        ="#{pageFlowScope.taskTrain.submit}"
+                   styleClass    ="whiteTextButton"
+                   inlineStyle   ="#{pageFlowScope.taskTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+        <af:button id            ="btn16"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysadmin$bundle.TSK_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.taskTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.taskAttribute.revert}"
+                   actionListener="#{pageFlowScope.taskTrain.revert}"
+                   immediate     ="true">
+          <af:clientAttribute name="attribute" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical" inlineStyle="width:550px;">
+            <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="33%" fieldWidth="67%" binding="#{pageFlowScope.taskTrain.formLayout}">
+              <af:spacer  id="sp111" width="0" height="15"/>
+              <af:inputText id                 ="it111"
+                            value              ="#{bindings.name.inputValue}"
+                            label              ="#{bindings.name.hints.label}"
+                            disabled           ="#{pageFlowScope.mode != 'create'}"
+                            required           ="#{bindings.name.hints.mandatory}"
+                            columns            ="#{bindings.name.hints.displayWidth}"
+                            maximumLength      ="#{bindings.name.hints.precision}"
+                            shortDesc          ="#{bindings.name.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.taskAttribute.changed}"
+                            autoSubmit         ="true">
+                  <f:validator binding="#{bindings.name.validator}"/>
+              </af:inputText>
+              <af:inputText id                 ="it112"
+                            value              ="#{bindings.className.inputValue}"
+                            label              ="#{bindings.className.hints.label}"
+                            disabled           ="#{pageFlowScope.mode != 'create'}"
+                            required           ="#{bindings.className.hints.mandatory}"
+                            columns            ="#{bindings.className.hints.displayWidth}"
+                            maximumLength      ="#{bindings.className.hints.precision}"
+                            shortDesc          ="#{bindings.className.hints.tooltip}">
+                <f:validator binding="#{bindings.className.validator}"/>
+              </af:inputText>
+              <af:inputText id                 ="it113"
+                            value              ="#{bindings.description.inputValue}"
+                            label              ="#{bindings.description.hints.label}"
+                            disabled           ="#{pageFlowScope.mode == 'view'}"
+                            required           ="#{bindings.description.hints.mandatory}"
+                            columns            ="#{bindings.description.hints.displayWidth}"
+                            maximumLength      ="#{bindings.description.hints.precision}"
+                            shortDesc          ="#{bindings.description.hints.tooltip}">
+                <f:validator binding="#{bindings.description.validator}"/>
+              </af:inputText>
+              <af:inputText id                 ="it114"
+                            value              ="#{bindings.retryCount.inputValue}"
+                            label              ="#{bindings.retryCount.hints.label}"
+                            disabled           ="#{pageFlowScope.mode == 'view'}"
+                            required           ="#{bindings.retryCount.hints.mandatory}"
+                            columns            ="#{bindings.retryCount.hints.displayWidth}"
+                            maximumLength      ="#{bindings.retryCount.hints.precision}"
+                            shortDesc          ="#{bindings.retryCount.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.taskAttribute.changed}"
+                            autoSubmit         ="true">
+                <af:convertNumber type="number" groupingUsed="false"/>
+                <f:validator binding="#{bindings.retryCount.validator}"/>
+              </af:inputText>
+            </af:panelFormLayout>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

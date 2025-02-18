@@ -1,0 +1,60 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="Identifier"
+            uniqueName    ="User Name"
+            status        ="Status"
+            transformation="false"
+            natively      ="false">
+  <attribute type="string" name="Identifier"        source="__UID__">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string"  name="Status"           source="__ENABLE__"/>
+  <attribute type="string"  name="User Name"        source="__NAME__">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string"  name="Last Name"         source="lastName"/>
+  <attribute type="string"  name="First Name"        source="firstName"/>
+  <attribute type="string"  name="Participant"       source="attribute.participant"/>
+  <attribute type="string"  name="Organization"      source="attribute.organization"/>
+  <attribute type="string"  name="Division"          source="attribute.division"/>
+  <attribute type="string"  name="Organization Unit" source="attribute.organizationalUnit"/>
+  <attribute type="string"  name="e-Mail"            source="email"/>
+  <attribute type="boolean" name="verified"          source="verified"/>
+  <attribute type="boolean" name="oneTimePassword"   source="oneTimePassword"/>
+  <attribute type="long"    name="notBefore"         source="notBefore"/>
+  <attribute type="boolean" name="Delete Account"    source="action.deleteAccount"/>
+  <attribute type="boolean" name="Verify e-Mail"     source="action.emailVerify"/>
+  <attribute type="boolean" name="Verify Profile"    source="action.profileVerify"/>
+  <attribute type="boolean" name="Update Profile"    source="action.profileUpdate"/>
+  <attribute type="boolean" name="Update Password"   source="action.passwordUpdate"/>
+  <attribute type="boolean" name="Update Locale"     source="action.localeUpdate"/>
+  <attribute type="boolean" name="Configure OTP"     source="action.configureOTP"/>
+  <attribute type="boolean" name="Terms and Cond"    source="action.termsAndCondition"/>
+  <attribute type="boolean" name="Authn Register"    source="action.webauthnRegister"/>
+  <attribute type="boolean" name="Authn Password"    source="action.webauthnPassword"/>
+  <attribute type="boolean" name="Disable Password"  source="disabled.password"/>
+  <attribute type="boolean" name="Disable Kerberos"  source="disabled.kerberos"/>
+  <attribute type="boolean" name="Disable Secret"    source="disabled.secret"/>
+  <attribute type="boolean" name="Disable TOTP"      source="disabled.totp"/>
+  <attribute type="boolean" name="Disable HOTP"      source="disabled.hotp"/>
+  <multivalue name="Role" source="__ROLE__">
+    <attribute type="string"   name="Name"           source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <multivalue name="Group" source="__GROUP__">
+    <attribute type="string"   name="Name"           source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+  </multivalue>
+  <multivalue name="Access" source="__ACCESS__">
+    <attribute type="string"  name="Permission"      source="__UID__">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="boolean" name="Enabled"         source="enabled">
+      <flag>required</flag>
+    </attribute>
+  </multivalue>
+</descriptor>

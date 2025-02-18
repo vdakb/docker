@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- Copyright (c) 2008, 2015, Oracle and/or its affiliates.
+All rights reserved.-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <jsp:directive.page contentType="text/html;charset=utf-8"/>
+  <f:view>
+    <af:document id="d1" title="#{ohw.view.localizedLoadingString}" maximized="true">
+      <f:facet name="metaContainer">
+        <af:group id="g01">
+          <af:resource type="css"        source="helppages.resource?name=richohwmain.css"/>
+          <af:resource type="javascript" source="helppages.resource?name=ohw_core.js"/>
+        </af:group>
+      </f:facet>
+      <af:clientListener type="load" method="RichOHWContextPeer.setReloadPageTimer"/>
+      <af:clientListener type="load" method="RichOHWContextPeer.onLoad"/>
+      <af:form id="richOHWForm">
+        <af:spacer height="225px" id="s2"/>
+        <af:panelGroupLayout id="pgl1" layout="horizontal" halign="center">
+          <af:outputText id="ot1" value="#{ohw.view.localizedLoadingString}" styleClass="ProgressPageLoadingOutputText"/>
+        </af:panelGroupLayout>
+        <af:spacer height="40px" id="s3"/>
+        <af:panelGroupLayout id="pgl2" layout="horizontal" halign="center">
+          <af:image id="i1" source="helppages.resource?name=progress.gif"/>
+        </af:panelGroupLayout>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

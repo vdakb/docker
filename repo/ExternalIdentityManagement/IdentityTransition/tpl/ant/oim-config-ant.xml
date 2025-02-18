@@ -1,0 +1,907 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Importer"
+         basedir        ="../../../deployment/oim"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../../tpl/oim-context.xml"/>
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-config-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####   #####
+  **              #    #     # #     #
+  **              #    #       #
+  **              #    #        #####
+  **              #    #             #
+  **              #    #     # #     #
+  **            #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Identity Connector
+  **           Server ADS Provisioning
+  ******************************************************************************
+  -->
+  <target name="0102-01" description="Configure TS.ICS Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0102-01 Configure IT Resource TS.ICS Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Connector Server" name="TS.ICS Endpoint">
+        <parameter name="Host"                  value="__ICS_HOST_BK__"/>
+        <parameter name="Port"                  value="__ICS_PORT_BK__"/>
+        <parameter name="Key"                   value="__ICS_PASS_BK__"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0102-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resources for BB Targets and Sources
+  ******************************************************************************
+  -->
+    <target name="0200-BB" description="Configure IT Resources AD LDS of BB">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BB Configure IT Resources AD LDS ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="LDAP" name="BB.LDS Endpoint">
+        <parameter name="host"                 value="__LDS_HOST_BB__"/>
+        <parameter name="port"                 value="__LDS_PORT_BB__"/>
+        <parameter name="ssl"                  value="__LDS_TLS1_BB__"/>
+        <parameter name="baseContexts"         value="__LDS_BASE_BB__"/>
+        <parameter name="principal"            value="__LDS_USER_BB__"/>
+        <parameter name="credentials"          value="__LDS_PASS_BB__"/>
+        <parameter name="Configuration Lookup" value="BB.LDS.Configuration.Trusted.UM.Main"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0200-BB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #
+  **           #     # #   #
+  **           #     # #  #
+  **           ######  ###
+  **           #     # #  #
+  **           #     # #   #
+  **           ######  #    #
+  **
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resources for BK Targets and Sources
+  ******************************************************************************
+  -->
+  <target name="0200-BK" description="Configure IT Resources AD LDS of BK">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BK Configure IT Resources AD LDS ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+      <itresource type="LDAP" name="BK.LDS Endpoint">
+        <parameter name="host"                 value="__LDS_HOST_BK__"/>
+        <parameter name="port"                 value="__LDS_PORT_BK__"/>
+        <parameter name="ssl"                  value="__LDS_TLS1_BK__"/>
+        <parameter name="baseContexts"         value="__LDS_BASE_BK__"/>
+        <parameter name="principal"            value="__LDS_USER_BK__"/>
+        <parameter name="credentials"          value="__LDS_PASS_BK__"/>
+        <parameter name="Configuration Lookup" value="BK.LDS.Configuration.Trusted.UM.Main"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0200-BK completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **           #     # #
+  **           #     # #
+  **           ######  #
+  **
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resources for BP Targets and Sources
+  ******************************************************************************
+  -->
+  <target name="0200-BP" description="Configure IT Resources AD LDS of BP">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BP Configure IT Resources AD LDS ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+      <itresource type="LDAP" name="BP.LDS Endpoint">
+        <parameter name="host"                 value="__LDS_HOST_BP__"/>
+        <parameter name="port"                 value="__LDS_PORT_BP__"/>
+        <parameter name="ssl"                  value="__LDS_TLS1_BP__"/>
+        <parameter name="baseContexts"         value="__LDS_BASE_BP__"/>
+        <parameter name="principal"            value="__LDS_USER_BP__"/>
+        <parameter name="credentials"          value="__LDS_PASS_BP__"/>
+        <parameter name="Configuration Lookup" value="BP.LDS.Configuration.Trusted.UM.Main"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0200-BP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     #
+  **           #     # #  #  #
+  **           #     # #  #  #
+  **           ######  #  #  #
+  **           #     # #  #  #
+  **           #     # #  #  #
+  **           ######   ## ##
+  **
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resources for BW Targets and Sources
+  ******************************************************************************
+  -->
+  <target name="0200-BW" description="Configure IT Resources AD LDS of BW">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-BW Configure IT Resources AD LDS ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="LDAP" name="BW.LDS Endpoint">
+        <parameter name="host"                 value="__LDS_HOST_BW__"/>
+        <parameter name="port"                 value="__LDS_PORT_BW__"/>
+        <parameter name="ssl"                  value="__LDS_TLS1_BW__"/>
+        <parameter name="baseContexts"         value="__LDS_BASE_BW__"/>
+        <parameter name="principal"            value="__LDS_USER_BW__"/>
+        <parameter name="credentials"          value="__LDS_PASS_BW__"/>
+        <parameter name="Configuration Lookup" value="BW.LDS.Configuration.Trusted.UM.Main"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0200-BW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # #######
+  **           #     # #
+  **           #     # #
+  **           ####### #####
+  **           #     # #
+  **           #     # #
+  **           #     # #######
+  **
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resources for HE Targets and Sources
+  ******************************************************************************
+  -->
+    <target name="0200-HE" description="Configure IT Resources AD LDS of HE">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-HE Configure IT Resources AD LDS ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="LDAP" name="HE.LDS Endpoint">
+        <parameter name="host"                 value="__LDS_HOST_HE__"/>
+        <parameter name="port"                 value="__LDS_PORT_HE__"/>
+        <parameter name="ssl"                  value="__LDS_TLS1_HE__"/>
+        <parameter name="baseContexts"         value="__LDS_BASE_HE__"/>
+        <parameter name="principal"            value="__LDS_USER_HE__"/>
+        <parameter name="credentials"          value="__LDS_PASS_HE__"/>
+        <parameter name="Configuration Lookup" value="HE.LDS.Configuration.Trusted.UM.Main"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0200-HE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # #     #
+  **           #     # #     #
+  **           #     # #     #
+  **           ####### #######
+  **           #     # #     #
+  **           #     # #     #
+  **           #     # #     #
+  **
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resources for HH Targets and Sources
+  ******************************************************************************
+  -->
+  <target name="0200-HH" description="Configure IT Resources AD LDS of HH">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-HH Configure IT Resources AD LDS ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="LDAP" name="HH.LDS Endpoint">
+        <parameter name="host"                 value="__LDS_HOST_HH__"/>
+        <parameter name="port"                 value="__LDS_PORT_HH__"/>
+        <parameter name="ssl"                  value="__LDS_TLS1_HH__"/>
+        <parameter name="baseContexts"         value="__LDS_BASE_HH__"/>
+        <parameter name="principal"            value="__LDS_USER_HH__"/>
+        <parameter name="credentials"          value="__LDS_PASS_HH__"/>
+        <parameter name="Configuration Lookup" value="HH.LDS.Configuration.Trusted.UM.Main"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0200-HH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ######   #####
+  **              #    #     # #     #
+  **              #    #     # #
+  **              #    #     #  #####
+  **              #    #     #       #
+  **              #    #     # #     #
+  **            #####  ######   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Access Manager Identity
+  **           Store Provisioning
+  ******************************************************************************
+  -->
+  <target name="0301-00" description="Configure AM.IDS Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0301-00 Configure IT Resource AM.IDS Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="LDAP" name="AM.IDS Endpoint">
+        <parameter name="host"                 value="__IDS_HOST_BK__"/>
+        <parameter name="port"                 value="__IDS_PORT_BK__"/>
+        <parameter name="ssl"                  value="__IDS_TLS1_BK__"/>
+        <parameter name="baseContexts"         value="__IDS_BASE_BK__"/>
+        <parameter name="principal"            value="__IDS_USER_BK__"/>
+        <parameter name="credentials"          value="__IDS_PASS_BK__"/>
+        <parameter name="Configuration Lookup" value="IDS.Configuration"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0301-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####
+  **           #     #    #    #     #
+  **           #          #    #
+  **           #          #     #####
+  **           #          #          #
+  **           #     #    #    #     #
+  **            #####     #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for ADS Citrix Terminal
+  **           Services Provisioning
+  ******************************************************************************
+  -->
+  <target name="0401-00" description="Configure Citrix Terminal Server ADS IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0401-00 Configure IT Resource Citrix Terminal Server ADS ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Active Directory" name="TS.ADS Endpoint">
+        <parameter name="Connector Server Name"   value="TS.ICS Endpoint"/>
+        <parameter name="LDAPHostName"            value="__ADS_HOST_BK__"/>
+        <parameter name="SyncDomainController"    value="__ADS_HOST_BK__"/>
+        <parameter name="SyncGlobalCatalogServer" value="__ADS_HOST_BK__"/>
+        <parameter name="DomainName"              value="__ADS_ROOT_BK__"/>
+        <parameter name="DirectoryAdminName"      value="__ADS_USER_BK__"/>
+        <parameter name="DirectoryAdminPassword"  value="__ADS_PASS_BK__"/>
+        <parameter name="Container"               value="__ADS_BASE_BK__"/>
+        <parameter name="UserContainer"           value="__ADS_CONT_BK__"/>
+        <parameter name="Configuration Lookup"    value="CTS.Configuration"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0401-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **                   ####### ######   #####      ######
+  **                   #       #     # #     #     #     #
+  **            #####  #       #     # #           #     #
+  **           #     # ######  ######   #####      ######
+  **           # ####  #       #     #       #     #
+  **           #       #       #     # #     #     #
+  **            #####  #       ######   #####      #
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for eFBS SCIM Service
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="0501-00" description="Configure eFBS.Endpoint.Production IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501-00 Configure IT Resource eFBS.Endpoint.Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="SCIM Endpoint" name="eFBS.Endpoint.Production">
+        <parameter name="host"                  value="__FBSP_HOST_BK__"/>
+        <parameter name="port"                  value="__FBSP_PORT_BK__"/>
+        <parameter name="baseURI"               value="__FBSP_BASE_BK__"/>
+        <parameter name="username"              value="__FBSP_USER_BK__"/>
+        <parameter name="password"              value="__FBSP_PASS_BK__"/>
+        <parameter name="dateAttributes"        value="Users=validFrom,validTo"/>
+        <parameter name="dateFormat"            value="yyyy-MM-dd'T'HH:mm:ss'Z'"/>
+        <parameter name="Configuration Lookup"  value="eFBS.Configuration.Production"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0501-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **                   ####### ######   #####      #######
+  **                   #       #     # #     #     #
+  **            #####  #       #     # #           #
+  **           #     # ######  ######   #####      ######
+  **           # ####  #       #     #       #     #
+  **           #       #       #     # #     #     #
+  **            #####  #       ######   #####      #######
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for eFBS SCIM Service
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="0501-01" description="Configure eFBS.Endpoint.Education IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0501-01 Configure IT Resource eFBS.Endpoint.Education ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="SCIM Endpoint" name="eFBS.Endpoint.Education">
+        <parameter name="host"                  value="__FBSE_HOST_BK__"/>
+        <parameter name="port"                  value="__FBSE_PORT_BK__"/>
+        <parameter name="baseURI"               value="__FBSE_BASE_BK__"/>
+        <parameter name="username"              value="__FBSE_USER_BK__"/>
+        <parameter name="password"              value="__FBSE_PASS_BK__"/>
+        <parameter name="dateAttributes"        value="Users=validFrom,validTo"/>
+        <parameter name="dateFormat"            value="yyyy-MM-dd'T'HH:mm:ss'Z'"/>
+        <parameter name="Configuration Lookup"  value="eFBS.Configuration.Education"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0501-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####   #####
+  **           #     # #     # #     #
+  **           #     # #       #
+  **           ######   #####  #
+  **           #             # #
+  **           #       #     # #     #
+  **           #        #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Platform Service
+  **           Controller Provisioning
+  ******************************************************************************
+  -->
+  <target name="0601-00" description="Configure Platform Service Controller ADS IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0601-00 Configure IT Resource PSC.ADS Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Active Directory" name="PSC.ADS Endpoint">
+        <parameter name="Connector Server Name"   value="PSC.ICS Endpoint"/>
+        <parameter name="LDAPHostName"            value="__PSC_HOST_BK__"/>
+        <parameter name="SyncDomainController"    value="__PSC_HOST_BK__"/>
+        <parameter name="SyncGlobalCatalogServer" value="__PSC_HOST_BK__"/>
+        <parameter name="DomainName"              value="__PSC_ROOT_BK__"/>
+        <parameter name="DirectoryAdminName"      value="__PSC_USER_BK__"/>
+        <parameter name="DirectoryAdminPassword"  value="__PSC_PASS_BK__"/>
+        <parameter name="Container"               value="__PSC_BASE_BK__"/>
+        <parameter name="UserContainer"           value="__PSC_CONT_BK__"/>
+        <parameter name="Configuration Lookup"    value="PSC.Configuration"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0601-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      ######
+  **           #       #       #           #
+  **           #       #     # #           #
+  **           #        #####  #           #
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Pivotal Cloud Foundry
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="0701-01" description="Configure PCF.Endpoint.Production IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 Configure IT Resource PCF.Endpoint.Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Pivotal Cloud Foundry" name="PCF.Endpoint.Production">
+        <parameter name="Service Domain"        value="__PCFP_SVCD_BK__"/>
+        <parameter name="Principal Name"        value="__PCFP_USER_BK__"/>
+        <parameter name="Principal Password"    value="__PCFP_PASS_BK__"/>
+        <parameter name="Server Feature"        value="/metadata/bka-features-configuration/gws/pcf-p-feature.xml"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      #     #
+  **           #       #       #           #     #
+  **           #       #     # #           #     #
+  **           #        #####  #           ######
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Pivotal Cloud Foundry
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="0701-02" description="Configure PCF.Endpoint.Development IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 Configure IT Resource PCF.Endpoint.Development ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Pivotal Cloud Foundry" name="PCF.Endpoint.Development">
+        <parameter name="Service Domain"        value="__PCFD_SVCD_BK__"/>
+        <parameter name="Principal Name"        value="__PCFD_USER_BK__"/>
+        <parameter name="Principal Password"    value="__PCFD_PASS_BK__"/>
+        <parameter name="Server Feature"        value="/metadata/bka-features-configuration/gws/pcf-d-feature.xml"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####     #     #     #
+  **           #     #    #      # #    #     #
+  **           #     #    #     #   #   #     #
+  **           ######     #    #     #  #     #
+  **           #          #    #######   #   #
+  **           #          #    #     #    # #
+  **           #        #####  #     #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Access Manager Identity
+  **           Store Provisioning
+  ******************************************************************************
+  -->
+  <target name="0801-00" description="Configure IM.PIAV Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0801-00 Configure IT Resource IM.PIAV Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="LDAP" name="IM.PIAV Endpoint">
+        <parameter name="host"                 value="__PIAV_HOST_BK__"/>
+        <parameter name="port"                 value="__PIAV_PORT_BK__"/>
+        <parameter name="ssl"                  value="__PIAV_TLS1_BK__"/>
+        <parameter name="baseContexts"         value="__PIAV_BASE_BK__"/>
+        <parameter name="principal"            value="__PIAV_USER_BK__"/>
+        <parameter name="credentials"          value="__PIAV_PASS_BK__"/>
+        <parameter name="Configuration Lookup" value="PIAV.Configuration"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0801-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######     #    ######
+  **           #     #   # #   #     #
+  **           #     #  #   #  #     #
+  **           ######  #     # ######
+  **           #       ####### #
+  **           #       #     # #
+  **           #       #     # #
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for PSP Actice Directory
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="0901-00" description="Configure PSP Actice Directory IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0901-00 Configure IT Resource PAP.ADS Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Active Directory" name="PAP.ADS Endpoint">
+        <parameter name="Connector Server Name"   value="PAP.ICS Endpoint"/>
+        <parameter name="LDAPHostName"            value="__PAP_HOST_BK__"/>
+        <parameter name="SyncDomainController"    value="__PAP_HOST_BK__"/>
+        <parameter name="SyncGlobalCatalogServer" value="__PAP_HOST_BK__"/>
+        <parameter name="DomainName"              value="__PAP_ROOT_BK__"/>
+        <parameter name="DirectoryAdminName"      value="__PAP_USER_BK__"/>
+        <parameter name="DirectoryAdminPassword"  value="__PAP_PASS_BK__"/>
+        <parameter name="Container"               value="__PAP_BASE_BK__"/>
+        <parameter name="UserContainer"           value="__PAP_CONT_BK__"/>
+        <parameter name="Configuration Lookup"    value="PAP.Configuration"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="0901-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **               #    #######  #####
+  **              # #         # #     #
+  **             #   #        # #
+  **            #     #       #  #####
+  **            #######       #       #
+  **            #     # #     # #     #
+  **            #     #  #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Atlasisn Jira Server
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="1001-00" description="Configure AJS Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1001-00 Configure IT Resource AJS Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Generic WebService Endpoint" name="AJS Endpoint">
+        <parameter name="Server Name"           value="__AJS_HOST_BK__"/>
+        <parameter name="Server Port"           value="__AJS_PORT_BK__"/>
+        <parameter name="Root Context"          value="/v1"/>
+        <parameter name="Secure Socket"         value="__AJS_TLS1_BK__"/>
+        <parameter name="Content Type"          value="application/json"/>
+        <parameter name="Accept Type"           value="application/json"/>
+        <parameter name="Authentication Scheme" value="basic-preemptive"/>
+        <parameter name="Principal Name"        value="__AJS_USER_BK__"/>
+        <parameter name="Principal Password"    value="__AJS_PASS_BK__"/>
+        <parameter name="Server Feature"        value="/metadata/bka-features-configuration/gws/ajs-feature.xml"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="1001-00 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######
+  **            #     #   # #   #          #     #
+  **            #        #   #  #          #     #
+  **            # ##### #     # #####      ######
+  **            #     # ####### #          #
+  **            #     # #     # #          #
+  **             #####  #     # #######    #
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Google Apigee Edge
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="1101-01" description="Configure GAEP Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 Configure IT Resource GAEP Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Generic WebService Endpoint" name="GAEP Endpoint">
+        <parameter name="Server Name"           value="__GAEP_HOST_BK__"/>
+        <parameter name="Server Port"           value="__GAEP_PORT_BK__"/>
+        <parameter name="Root Context"          value="/v1"/>
+        <parameter name="Secure Socket"         value="__GAEP_TLS1_BK__"/>
+        <parameter name="Content Type"          value="application/json"/>
+        <parameter name="Accept Type"           value="application/json"/>
+        <parameter name="Authentication Scheme" value="basic-preemptive"/>
+        <parameter name="Principal Name"        value="__GAEP_USER_BK__"/>
+        <parameter name="Principal Password"    value="__GAEP_PASS_BK__"/>
+        <parameter name="Server Feature"        value="/metadata/bka-features-configuration/gws/gae-p-feature.xml"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######
+  **            #     #   # #   #             #
+  **            #        #   #  #             #
+  **            # ##### #     # #####         #
+  **            #     # ####### #             #
+  **            #     # #     # #             #
+  **             #####  #     # #######       #
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Google Apigee Edge
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="1101-02" description="Configure GAET Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 Configure IT Resource GAET Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+     <itresource type="Generic WebService Endpoint" name="GAET Endpoint">
+        <parameter name="Server Name"           value="__GAET_HOST_BK__"/>
+        <parameter name="Server Port"           value="__GAET_PORT_BK__"/>
+        <parameter name="Root Context"          value="/v1"/>
+        <parameter name="Secure Socket"         value="__GAET_TLS1_BK__"/>
+        <parameter name="Content Type"          value="application/json"/>
+        <parameter name="Accept Type"           value="application/json"/>
+        <parameter name="Authentication Scheme" value="basic-preemptive"/>
+        <parameter name="Principal Name"        value="__GAET_USER_BK__"/>
+        <parameter name="Principal Password"    value="__GAET_PASS_BK__"/>
+        <parameter name="Server Feature"        value="/metadata/bka-features-configuration/gws/gae-t-feature.xml"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **    ZIMP
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for Google Apigee Edge
+  **           Provisioning
+  ******************************************************************************
+  -->
+  <target name="2001" description="Configure ZIMP Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001 Configure IT Resource ZIMP Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+      <itresource type="BKA Directory Service" name="ZIMP.Endpoint">
+        <parameter name="Distinguished Name Relative" value="yes"/>
+        <parameter name="Locale Country"              value="EN"/>
+        <parameter name="Locale Language"             value="en"/>
+        <parameter name="Locale TimeZone"             value="GMT+01:00"/>
+        <parameter name="Principal Name"              value="cn=Directory Manager"/>
+        <parameter name="Principal Password"          value="__ZIMP_PW__"/>
+        <parameter name="Root Context"                value="ou=ZIMP,cn=Services,dc=bka,dc=bund,dc=de"/>
+        <parameter name="Secure Socket"               value="__SSL__"/>
+        <parameter name="Server Feature"              value="/metadata/bka-features-configuration/zimp/zimp-feature.xml"/>
+        <parameter name="Server Name"                 value="__ZIMP_HOST__"/>
+        <parameter name="Server Port"                 value="__ZIMP_PORT__"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="2001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####     ######  #     #
+  **           #     # #   #  #     #    #     # #     #
+  **           #     # #  #   #          #     # #     #
+  **           ######  ###    #          #     # #######
+  **           #   #   #  #   #          #     # #     #
+  **           #    #  #   #  #     #    #     # #     #
+  **           #     # #    #  #####     ######  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Prepares the environment to work by creating and/or configuring
+  **           necessary objects
+  **
+  ** Synopsis: The tasks configures the IT Resource for RKC Provisioning
+  ******************************************************************************
+  -->
+  <target name="2101" description="Configure RKC Endpoint IT Resource">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101 Configure IT Resource RKC Endpoint ${application.release}"/>
+    <echo message="=================================================================="/>
+    <operation:itresource contextRef="oim-context" operation="modify">
+      <itresource type="RKC Endpoint" name="RKC.Endpoint">
+        <parameter name="Accept Type"           value="application/json"/>
+        <parameter name="Authentication Scheme" value="oauth-credential"/>
+        <parameter name="Authorization Server"  value="__RKDH_AUTH_SERVER__"/>
+        <parameter name="Client Identifier"     value="__RKDH_CLIENT_ID__"/>
+        <parameter name="Client Secret"         value="__RKDH_SECRET__"/>
+        <parameter name="Connection Timeout"    value="1000"/>
+        <parameter name="Content Type"          value="application/json"/>
+        <parameter name="Locale Country"        value="US"/>
+        <parameter name="Locale Language"       value="en"/>
+        <parameter name="Root Context"          value="__RKDH_REALM__"/>
+        <parameter name="Secure Socket"         value="__RKDH_SECURE_SOCKET__"/>
+        <parameter name="Server Feature"        value="/metadata/bka-features-configuration/rkc/rkc-dh-feature.xml"/>
+        <parameter name="Server Name"           value="__RKDH_HOST__"/>
+        <parameter name="Server Port"           value="__RKDH_PORT__"/>
+      </itresource>
+    </operation:itresource>
+    <echo message="=================================================================="/>
+    <echo message="2101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <target name       ="001"
+          description="Participant Trusted Source Reconciliation"
+          depends    ="0102-01"/>
+  <target name       ="002"
+          description="Participant Trusted Source Reconciliation"
+          depends    ="0200-BB,0200-BK,0200-BP,0200-BW,0200-HE,0200-HH"/>
+  <target name       ="003"
+          description="OAM Identity Store Provisioning"
+          depends    ="0301-00"/>
+  <target name       ="004"
+          description="Active Directory Terminal Server Provisioning"
+          depends    ="0401-00"/>
+  <target name       ="005"
+          description="eFBS SCIM Service Provisioning"
+          depends    ="0501-00,0501-01"/>
+  <target name       ="006"
+          description="Platform Service Controller Provisioning"
+          depends    ="0601-00"/>
+  <target name       ="007"
+          description="Pivotal Cloud Foundry Provisioning"
+          depends    ="0701-01,0701-02"/>
+  <target name       ="008"
+          description="PIAV Provisioning"
+          depends    ="0801-00"/>
+  <target name       ="009"
+          description="Google Apigee Edge Provisioning"
+          depends    ="1101-01,1101-02"/>
+  <target name       ="010"
+          description="ZIMP Provisioning"
+          depends    ="2001"/>
+  <target name       ="011"
+          description="Redhat Keycloak Provisioning"
+          depends    ="2101"/>
+</project>

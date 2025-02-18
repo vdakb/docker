@@ -1,0 +1,56 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityReports/identityBackend/src/main/resources/igd/obj/ugp.vws
+--
+--   Identity Governance Domain (IGD)
+--
+-- Generated for Oracle Database 12c on Sun Feb 11 08:55:42 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating View 'igd$ugp'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CREATE OR REPLACE VIEW igd$ugp (
+  id
+, rowversion
+, created_by
+, created_on
+, updated_by
+, updated_on
+, name
+, display_name
+, category_id
+, category_name
+)
+AS SELECT
+  upg.ugp_key
+, upg.ugp_rowver
+, upg.ugp_createby
+, upg.ugp_create
+, upg.ugp_updateby
+, upg.ugp_update
+, upg.ugp_name
+, upg.ugp_display_name
+, upg.ugp_role_category_key
+, cat.role_category_name
+FROM   igd_oim.ugp           upg
+,      igd_oim.role_category cat
+WHERE  upg.ugp_role_category_key = cat.role_category_key
+/
+COMMENT ON COLUMN igd$ugp.id IS 'System Identifier'
+/
+COMMENT ON COLUMN igd$ugp.rowversion IS 'Rowversion of data record'
+/
+COMMENT ON COLUMN igd$ugp.created_by IS 'Creator of the data record'
+/
+COMMENT ON COLUMN igd$ugp.created_on IS 'Creation Timestamp of data record'
+/
+COMMENT ON COLUMN igd$ugp.updated_by IS 'Modifier of the data record'
+/
+COMMENT ON COLUMN igd$ugp.updated_on IS 'Modified Timestamp of data record'
+/
+COMMENT ON COLUMN igd$ugp.name IS 'Name of the role'
+/
+COMMENT ON COLUMN igd$ugp.display_name IS 'Display Name of the role'
+/
+COMMENT ON COLUMN igd$ugp.category_id IS 'System Identifier of role category'
+/
+COMMENT ON COLUMN igd$ugp.category_name IS 'Public Identifier of role category'
+/

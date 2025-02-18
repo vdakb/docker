@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name          ="Oracle Consulting Services Identity Manager Deployment Exporter"
+         default       ="iam-instance-status"
+         basedir       =".."
+         xmlns:fmw     ="http://oracle.hst.deployment/fusion"
+         xmlns:jps     ="http://oracle.hst.deployment/security"
+         xmlns:wsm     ="http://oracle.hst.deployment/webservice"
+         xmlns:server  ="http://oracle.iam.identity/server"
+         xmlns:plugin  ="http://oracle.iam.identity/plugin"
+         xmlns:metadata="http://oracle.iam.identity/metadata"
+         xmlns:object  ="http://oracle.iam.identity/object">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-server.xml"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Phone Number Target Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o Process Form
+  **           o Resource Object
+  **           o Process Definition
+  ******************************************************************************
+  -->
+  <target name="phone" description="Exports the Phone Number Target Configuration Revision 1.0.0.0">
+    <echo message="Exporting exportable objects from ${oim.remote.host}:${oim.remote.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="./xml/target/ocs-phone-dm.xml" description="Phone Number Configuration Revision 1.0.0.0">
+        <object:category value="Process Form"    name="UD_PHONE"/>
+        <object:category value="RequestTemplate" name="Employee Phone Number Request"/>
+        <object:category value="RequestDataset"  name="ProvisionResourcePhone Number"/>
+        <object:category value="Resource"        name="Phone Number"/>
+        <object:category value="Process"         name="Phone Number Provisioning"/>
+      </object:exportSet>
+    </object:export>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Exports the project artifacts from the target host and Identity Manager Instance" depends="phone"/>
+</project>

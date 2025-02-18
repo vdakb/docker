@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Access Manager Deployment Context Definitions"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../.env/iad/${fmw.env}/scp-server.xml"/>
+  <import file="../.env/iad/${fmw.env}/jee-server.xml"/>
+  <import file="../.env/iad/${fmw.env}/oam-server.xml"/>
+  <import file="../.env/iad/${fmw.env}/ods-server.xml"/>
+  <!--
+  =====================================================================
+  == Import custom type and task definitions
+  =====================================================================
+  -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  <taskdef resource="oracle/hst/deployment/ant-fusion-lib.xml"     uri="http://oracle.hst.deployment/fusion"/>
+  <taskdef resource="oracle/hst/deployment/ant-security-lib.xml"   uri="http://oracle.hst.deployment/security"/>
+  <taskdef resource="oracle/hst/deployment/ant-webservice-lib.xml" uri="http://oracle.hst.deployment/webservice"/>
+  <taskdef resource="oracle/hst/deployment/ant-topology-lib.xml"   uri="http://oracle.hst.deployment/topology"/>
+  <taskdef resource="oracle/iam/access/ant-identitystore-lib.xml"  uri="http://oracle.iam.access/identitystore"/>
+  <taskdef resource="oracle/iam/access/ant-accessservice-lib.xml"  uri="http://oracle.iam.access/accessservice"/>
+  <taskdef resource="oracle/iam/access/ant-accessserver-lib.xml"   uri="http://oracle.iam.access/accessserver"/>
+  <taskdef resource="oracle/iam/access/ant-accessagent-lib.xml"    uri="http://oracle.iam.access/accessagent"/>
+  <taskdef resource="oracle/iam/access/ant-accesspolicy-lib.xml"   uri="http://oracle.iam.access/accesspolicy"/>
+  <taskdef resource="oracle/iam/oauth/ant-client-lib.xml"          uri="http://oracle.iam.oauth/client"/>
+  <taskdef resource="oracle/iam/oauth/ant-domain-lib.xml"          uri="http://oracle.iam.oauth/domain"/>
+  <taskdef resource="oracle/iam/oauth/ant-resource-lib.xml"        uri="http://oracle.iam.oauth/resource"/>
+  <!--
+  ==============================================================================
+  == Import custom type and task definitions
+  ==============================================================================
+  -->
+  <import file="oam-preferences.xml"/>
+  <!--
+  ==============================================================================
+  == Declaring the container specifiying connectivity to the remote systems
+  ==============================================================================
+  -->
+  <server:principal id="jee-principal" username="${jee.server.username}" password="${jee.server.password}"/>
+  <server:principal id="oam-principal" username="${oam.server.username}" password="${oam.server.password}"/>
+
+  <server:www-context id="www-context" type="${jee.server.type}" protocol="http" host="${jee.server.host}" port="${jee.server.port}" principalRef="jee-principal" path="rreg"/>
+  <!--server:api-context id="api-context" type="${api.server.type}" protocol="${api.server.protocol}" host="${api.server.host}" port="${api.server.port}" principalRef="jee-principal"/-->
+  <server:jmx-context id="jmx-context" type="${jee.server.type}" protocol="${jee.server.protocol}" host="${jee.server.host}" port="${jee.server.port}" principalRef="jee-principal"/>
+  <server:rmi-context id="oam-context" type="${oam.server.type}" contextFactory="weblogic.jndi.WLInitialContextFactory" contextURL="${oam.server.protocol}://${oam.server.host}:${oam.server.port}" principalRef="oam-principal"/>
+  <!--
+  =====================================================================
+  == These properties specifies  the runtime environment of the local
+  == process
+  =====================================================================
+  -->
+  <property environment="system"/>
+  <!--
+  Windows machines use the COMPUTERNAME environment variable while 'nix
+  platforms use HOSTNAME. The system.COMPUTERNAME property condition is an
+  interesting tweak to get the host name of the machine running the build in a
+  cross-platform manner.
+  -->
+  <condition  property="system.HOSTNAME" value="${system.COMPUTERNAME}">
+    <not>
+      <isset property="system.HOSTNAME"/>
+    </not>
+  </condition>
+  <!--
+  =====================================================================
+  == These properties specifies where the kernel runtime environment of
+  == Oracle Identity Manager are located
+  =====================================================================
+  -->
+  <condition property="oam.server.simple" value="true" else="false">
+    <equals arg1="${system.HOSTNAME}" arg2="${oam.server.host}" casesensitive="false"/>
+  </condition>
+  <!--
+  =====================================================================
+  == ANT target to execute a remote command
+  =====================================================================
+  -->
+  <macrodef name="ssh-shell">
+    <attribute name="command"/>
+    <sequential>
+      <sshexec command="@{command}" keyfile="${scp.server.certificate}" host="${scp.server.host}" username="${scp.server.username}" password="${scp.server.password}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to copy library artifacts
+  =====================================================================
+  -->
+  <macrodef name="ssh-file">
+    <attribute name="file"/>
+    <attribute name="dir"/>
+    <attribute name="location"/>
+    <sequential>
+      <if>
+        <istrue value="${oam.server.simple}"/>
+          <then>
+            <echo message="Copying @{file} from @{dir} to @{location}"/>
+            <copy todir="@{location}">
+              <fileset dir="@{dir}" includes="@{file}"/>
+            </copy>
+          </then>
+          <else>
+            <echo message="Transfering @{file} from @{dir} to @{location} on ${scp.server.host}:${scp.server.port}"/>
+            <scp verbose="false" todir="${scp.server.destination}:@{location}" port="${scp.server.port}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+              <fileset dir="@{dir}">
+                <include name="@{file}"/>
+              </fileset>
+            </scp>
+          </else>
+        </if>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to deploy a list of packages
+  =====================================================================
+  -->
+  <macrodef name="call-targets">
+    <attribute name="package"/>
+    <sequential>
+      <for param="task" list="@{package}">
+        <sequential>
+          <antcall target="@{task}"/>
+        </sequential>
+      </for>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == These properties specifies where the kernel runtime environment of
+  == Access Manager are located
+  =====================================================================
+  -->
+  <property name="oam.remote.agents"      value="${oam.server.home}/agent/apps"/>                                                                                                         
+  <property name="oam.remote.application" value="${oam.server.home}/server/apps"/>
+</project>

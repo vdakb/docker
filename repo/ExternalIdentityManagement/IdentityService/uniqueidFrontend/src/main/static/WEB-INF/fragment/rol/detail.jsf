@@ -1,0 +1,139 @@
+<u:composition xmlns   ="http://www.w3.org/1999/xhtml"
+               xmlns:f ="http://xmlns.jcp.org/jsf/core"
+               xmlns:h ="http://xmlns.jcp.org/jsf/html"
+               xmlns:p ="http://primefaces.org/ui"
+               xmlns:e ="http://primefaces.org/ui/extensions"
+               xmlns:u ="http://java.sun.com/jsf/facelets">
+  <h:form id="f02">
+    <p:outputPanel layout="block" class="form-group row">
+      <p:outputLabel id="ol21" styleClass="col-sm-1 col-form-label" value="#{uid$bundle['item.id.label']} *" for="@next"/>
+      <p:inputText   id="it21" styleClass="col-sm-2"                value="#{role.selected.id}" required="true" disabled="#{role.modify}">
+        <p:ajax event="change" update="cb31 cb32 cb33" listener="#{role.changed}"/>
+      </p:inputText>
+      <p:selectBooleanCheckbox id="ck21" styleClass="col-sm-1 form-control" value="#{role.selected.active}" itemLabel="#{uid$bundle['item.active.label']}" label="#{uid$bundle['item.active.label']}">
+        <p:ajax event="change" update="cb31 cb32 cb33" listener="#{role.changed}"/>
+      </p:selectBooleanCheckbox>
+    </p:outputPanel>
+    <p:message id="ms21" for="it21" styleClass="col-sm-4"/>
+    <p:outputPanel layout="block" class="form-group row">
+      <p:outputLabel id="ol22" styleClass="col-sm-1 col-form-label" value="#{uid$bundle['rol.displayname.label']} *" for="@next"/>
+      <p:inputText   id="it22" styleClass="col-sm-3"                value="#{role.selected.displayName}" required="true">
+        <p:ajax event="change" update="cb31 cb32 cb33" listener="#{role.changed}"/>
+      </p:inputText>
+    </p:outputPanel>
+    <p:message id="ms22" for="@previous" styleClass="col-sm-4"/>
+    <p:outputPanel layout="block" class="form-group row">
+      <p:outputLabel   id="ol23" styleClass="col-sm-1 col-form-label" value="#{uid$bundle['item.description.label']}" for="@next"/>
+      <p:inputTextarea id="it23" styleClass="col-sm-3"                value="#{role.selected.description}" valueChangeListener="#{role.changed}">
+        <p:ajax event="change" update="cb31 cb32 cb33" listener="#{role.changed}"/>
+      </p:inputTextarea>
+    </p:outputPanel>
+    <p:outputPanel layout="block" class="mt-4 ml-3 mr-3">
+      <p:outputPanel layout="block" class="page-section">#{uid$bundle['usr.title']}</p:outputPanel>
+      <p>#{uid$bundle['usr.instruction']}</p>
+      <p:divider styleClass="mb-2"/>
+      <p:dataTable id                       ="t02"
+                   var                      ="row"
+                   size                     ="small"
+                   liveResize               ="true"
+                   stripedRows              ="true"
+                   resizableColumns         ="true"
+                   value                    ="#{role.member}"
+                   rows                     ="#{role.member.pageSize}"
+                   selection                ="#{role.member.selected}"
+                   selectionMode            ="single"
+                   sortMode                 ="multiple"
+                   allowUnsorting           ="true"
+                   paginator                ="true"
+                   paginatorPosition        ="top"
+                   paginatorTemplate        ="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {CurrentPageReport}"
+                   currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                   paginatorAlwaysVisible   ="true"
+                   rowsPerPageTemplate      ="5,10,15"
+                   widgetVar                ="member">
+        <p:ajax event="rowSelect"   update=":f02:t02:cb22"/>
+        <p:ajax event="rowUnselect" update=":f02:t02:cb22"/>
+        <p:column id="c20" width="1px" sortable="false" draggable="false" resizable="false" selectRow="true" filterable="false" toggleable="true"/>
+        <p:column id="c21" headerText="#{uid$bundle['usr.username.label']}" width="14rem">
+          <h:outputText value="#{row.user.userName}"/>
+        </p:column>
+        <p:column id="c22" headerText="#{uid$bundle['usr.lastname.label']}" width="20rem">
+          <h:outputText value="#{row.user.lastName}"/>
+        </p:column>
+        <p:column id="c23" headerText="#{uid$bundle['usr.firstname.label']}">
+          <h:outputText value="#{row.user.firstName}"/>
+        </p:column>
+        <f:facet name="header">
+          <p:toolbar id="tb21" styleClass="ml-3">
+            <p:toolbarGroup id="tg21" align="left" styleClass="mr-4">
+              <p:commandButton id        ="cb21"
+                               icon      ="fa fa-plus"
+                               title     ="#{app$bundle['action.assign.hint']}"
+                               action    ="#{role.onUserPick}"
+                               immediate ="true"
+                               styleClass="ui-button-success mr-2">
+                <p:ajax event="dialogReturn" listener="#{role.onUserReturn}" update=":f02:t02 :f02:cb31 :f02:cb32 :f02:cb33"/>
+              </p:commandButton>
+              <p:commandButton id        ="cb22"
+                               icon      ="fa fa-minus"
+                               title     ="#{app$bundle['action.revoke.hint']}"
+                               action    ="#{role.member.revoke}"
+                               update    =":f02:t02 :f02:cb31 :f02:cb32 :f02:cb33"
+                               disabled  ="#{role.member.selected == null}"
+                               immediate ="true"
+                               styleClass="ui-button-danger">
+                <p:confirm header="#{app$bundle['dialog.title.confirm']}" message="#{uid$bundle['usr.revoke.confirm']}" icon="pi pi-exclamation-triangle"/>
+              </p:commandButton>
+              <p:divider layout="vertical"/>
+              <p:commandButton id        ="cb23"
+                               icon      ="fa fa-undo"
+                               title     ="#{app$bundle['action.discard.hint']}"
+                               action    ="#{role.member.discard}"
+                               update    =":f02:t02 :f02:cb31 :f02:cb32 :f02:cb33"
+                               immediate ="true"/>
+              <p:divider layout="vertical"/>
+              <p:commandButton id        ="cb24"
+                               icon      ="fa fa-refresh"
+                               title     ="#{app$bundle['action.refresh.hint']}"
+                               action    ="#{role.member.refresh}"
+                               update    =":f02:t02 :f02:cb31 :f02:cb32 :f02:cb33"
+                               immediate ="true"/>
+            </p:toolbarGroup>
+          </p:toolbar>
+        </f:facet>
+      </p:dataTable>
+    </p:outputPanel>
+    <p:toolbar id="tb31" styleClass="mt-4 mb-4">
+      <p:toolbarGroup id="tg31" align="right" styleClass="mr-4">
+        <p:commandButton id            ="cb31"
+                         icon          ="fa fa-check"
+                         value         ="#{app$bundle['action.save.label']}"
+                         styleClass    ="mr-2 ui-button-primary"
+                         disabled      ="#{!role.changed}"
+                         actionListener="#{role.save}"
+                         update        =":msg :md :f01:t01"/>
+        <p:commandButton id            ="cb32"
+                         icon          ="fa fa-undo"
+                         action        ="#{role.discard}"
+                         process       ="@this"
+                         value         ="#{app$bundle['action.discard.label']}"
+                         styleClass    ="mr-4 ui-button-secondary ui-button-outlined"
+                         disabled      ="#{!role.changed}"
+                         immediate     ="true"
+                         update        ="f02">
+          <p:resetInput target="f02" clearModel="true"/>
+        </p:commandButton>
+        <p:commandButton id            ="cb33"
+                         icon          ="fa fa-times"
+                         action        ="#{role.abort}"
+                         process       ="@this"
+                         value         ="#{app$bundle['action.cancel.label']}"
+                         styleClass    ="ui-button-secondary ui-button-outlined"
+                         immediate     ="true">
+          <p:confirm header="#{app$bundle['dialog.title.confirm']}" message="#{app$bundle['dialog.leave.confirm']}" icon="pi pi-exclamation-triangle" disabled="#{!role.changed}"/>
+          <e:selectDetailLevel level="1"/>
+        </p:commandButton>
+      </p:toolbarGroup>
+    </p:toolbar>
+  </h:form>
+</u:composition>

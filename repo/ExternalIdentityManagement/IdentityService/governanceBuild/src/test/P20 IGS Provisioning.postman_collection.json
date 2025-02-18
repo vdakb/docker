@@ -1,0 +1,1794 @@
+{
+	"info": {
+		"_postman_id": "588aa757-10f3-43cb-bb36-78445db119a9",
+		"name": "P20 IGS Provisioning",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12777809"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "igs-token-request",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "igsservice",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-oauth-identity-domain-name",
+								"value": "SecureDomain2",
+								"type": "text",
+								"description": "Identity Domain under which the token is being requested.",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"description": "Grant Type for the Access Token Request",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "igssysadm",
+									"description": "Username of resource owner",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"description": "Password of resource owner",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://sso.cinnamonstar.oam/oauth2/rest/token",
+							"protocol": "https",
+							"host": [
+								"sso",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"oauth2",
+								"rest",
+								"token"
+							]
+						},
+						"description": "The Password grant is used when the application exchanges the user’s username and password for an access token.\n\nThis is exactly the thing OAuth was created to prevent in the first place, so you should never allow third-party apps to use this grant."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "list (01-10)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Users?startIndex=1&count=10",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Users"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								},
+								{
+									"key": "count",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list (11-10)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Users?startIndex=11&count=10",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Users"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "11"
+								},
+								{
+									"key": "count",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Users?filter=(id eq -1 or username eq \"igssysadm\") or userName ne \"bk4711124\"",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Users"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "(id eq -1 or username eq \"igssysadm\") or userName ne \"bk4711124\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find-bk4711127",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Users?filter=uSERname sw \"bk4711127\"",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Users"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "uSERname sw \"bk4711127\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Users/41",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Users",
+								"41"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"  : [\n    \"urn:ietf:params:scim:schemas:core:2.0:User\"\n  ]\n, \"userName\" : \"bk4711127\"\n, \"password\" : \"changeit\"\n, \"name\": {\n    \"formatted\"  : \"Dieter Steding\"\n  , \"familyName\" : \"Steding\"\n  , \"givenName\"  : \"Dieter\"\n  }\n, \"preferredLanguage\" : \"de\" \n, \"emails\":[\n    { \"primary\" : true\n    , \"type\"    : \"work\"\n    , \"value\"   : \"dieter.steding@cinnaminstar.net\"\n    }\n  ]\n, \"phoneNumbers\":[\n    { \"primary\" : true\n    , \"type\"    : \"work\"\n    , \"value\"   : \"+49 177 5948 437\"\n    }\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Users",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "replace",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true,
+							"accept-encoding": true,
+							"accept": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\" : 41\n, \"displayName\" : \"Baba\"\n, \"name\"        : {\n    \"givenName\" : \"Babara\"\n  }\n, \"emails\":[\n    { \"primary\" : true\n    , \"type\"    : \"work\"\n    , \"value\"   : \"bjensen@example.com\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Users/41",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Users",
+								"41"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept-encoding": true,
+							"connection": true,
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"    : [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]\n, \"Operations\" : [\n    { \"op\"     : \"replace\"\n    , \"path\"   : \"name.givenName\"\n    , \"value\"  : \"xxxxxxxx\"\n    }\n  , { \"op\"     : \"replace\"\n    , \"path\"   : \"emails[type eq \\\"work\\\"].value\"\n    , \"value\"  : \"xxxxxxxx\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Users/41",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Users",
+								"41"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Users/41",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Users",
+								"41"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Group",
+			"item": [
+				{
+					"name": "list (01-10)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups?startIndex=1&count=10",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								},
+								{
+									"key": "count",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list (11-10)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups?startIndex=11&count=10",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "11"
+								},
+								{
+									"key": "count",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups?filter=(id eq \"igs.admin\") or id ne \"uid.admin\"",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "(id eq \"igs.admin\") or id ne \"uid.admin\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find-uid.admin",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups?filter=id eq \"uid.admin\"",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "id eq \"uid.admin\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find-uid.generate",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups?filter=id eq \"uid.generate\"",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "id eq \"uid.generate\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup-uid.generate",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://igs.cinnamonstar.oam/igs/scim/v2/Groups/uid.generate",
+							"protocol": "http",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups",
+								"uid.generate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup-uid.register",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://igs.cinnamonstar.oam/igs/scim/v2/Groups/uid.register",
+							"protocol": "http",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups",
+								"uid.register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"     : [\n    \"urn:ietf:params:scim:schemas:core:2.0:Group\"\n  ]\n, \"displayName\" : \"myGroup\"\n, \"members\": [\n    { \"value\"   : \"11\"\n    , \"display\" : \"myUser1\"\n    , \"$ref\"    : \"http://igs.cinnamonstar.oam/igs/scim/v2/Users/1\"\n    }\n  , { \"value\"   : \"12\"\n    , \"display\" : \"myUser2\"\n    , \"$ref\"    : \"http://igs.cinnamonstar.oam/igs/scim/v2/Users/2\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "replace",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true,
+							"accept-encoding": true,
+							"accept": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\" : \"uid.generate\"\n, \"displayName\" : \"Unique Identifier Generation\"\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups/uid.generate",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups",
+								"uid.generate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"     : [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]\n, \"Operations\"  : [\n    { \"op\"      : \"add\"\n    , \"path\"    : \"members\"\n    , \"value\"   : [ \n        { \"value\" : 5\n        }\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups/uid.generate",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups",
+								"uid.generate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"    : [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]\n, \"Operations\" : [\n    { \"op\"     : \"replace\"\n    , \"path\"   : \"displayName\"\n    , \"value\"  : \"xxxxxxxx\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups/uid.generate",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups",
+								"uid.generate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revoke",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"    : [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]\n, \"Operations\" : [\n    { \"op\"     : \"remove\"\n    , \"path\"   : \"members[value eq 5]\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Groups/uid.generate",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Groups",
+								"uid.generate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tenant",
+			"item": [
+				{
+					"name": "list (01-10)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Tenants?startIndex=1&count=10",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								},
+								{
+									"key": "count",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list (11-10)",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Tenants?startIndex=11&count=10",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "11"
+								},
+								{
+									"key": "count",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find-T-36-0-20",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Tenants?filter=id eq \"T-36-0-99\"",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "id eq \"T-36-0-99\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find-delta",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Tenants?filter=(meta.created gt \"2023-04-01T17:00:46Z\" or meta.lastModified gt \"2023-04-01T17:00:46Z\")",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "(meta.created gt \"2023-04-01T17:00:46Z\" or meta.lastModified gt \"2023-04-01T17:00:46Z\")"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Tenants/T-36-0-99",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants",
+								"T-36-0-99"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"     : [\"urn:ietf:params:scim:schemas:extension:p20:1.0:Tenant\"]\n, \"id\"          : \"T-36-0-99\"\n, \"displayName\" : \"irgendwas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://dieters-macbook-pro.fritz.box:8081/igs/scim/v2/Tenants",
+							"protocol": "http",
+							"host": [
+								"dieters-macbook-pro",
+								"fritz",
+								"box"
+							],
+							"port": "8081",
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://dieters-macbook-pro.fritz.box:8081/igs/scim/v2/Tenants/T-36-0-99",
+							"protocol": "http",
+							"host": [
+								"dieters-macbook-pro",
+								"fritz",
+								"box"
+							],
+							"port": "8081",
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants",
+								"T-36-0-99"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"     : [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]\n, \"Operations\"  : [\n    { \"op\"      : \"add\"\n    , \"path\"    : \"roles\"\n    , \"value\"   : [ \n        { \"type\"  : \"User\"\n        , \"value\" : 5\n        , \"scope\" : \"uid.generate\"\n        }\n      , { \"type\"  : \"User\"\n        , \"value\" : 5\n        , \"scope\" : \"uid.register\"\n        }\n      ]\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Tenants/T-36-0-99",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants",
+								"T-36-0-99"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"    : [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]\n, \"Operations\" : [\n    { \"op\"     : \"replace\"\n    , \"path\"   : \"displayName\"\n    , \"value\"  : \"nochmal\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Tenants/T-36-0-99",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants",
+								"T-36-0-99"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "revoke",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/scim+json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/scim+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"schemas\"    : [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]\n, \"Operations\" : [\n    { \"op\"     : \"remove\"\n    , \"path\"   : \"roles[value eq 5 and scopes eq \\\"uid.generate\\\"]\"\n    }\n  , { \"op\"     : \"remove\"\n    , \"path\"   : \"roles[value eq 5 and scopes eq \\\"uid.register\\\"]\"\n    }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Tenants/T-36-0-99",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"scim",
+								"v2",
+								"Tenants",
+								"T-36-0-99"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ServiceProviderConfig",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/scim+json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/scim+json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/ServiceProviderConfig",
+					"protocol": "https",
+					"host": [
+						"igs",
+						"cinnamonstar",
+						"oam"
+					],
+					"path": [
+						"igs",
+						"scim",
+						"v2",
+						"ServiceProviderConfig"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ResourceTypes",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/scim+json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/scim+json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/ResourceTypes",
+					"protocol": "https",
+					"host": [
+						"igs",
+						"cinnamonstar",
+						"oam"
+					],
+					"path": [
+						"igs",
+						"scim",
+						"v2",
+						"ResourceTypes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schema",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true,
+					"user-agent": true,
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/scim+json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/scim+json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://igs.cinnamonstar.oam/igs/scim/v2/Schemas/urn:ietf:params:scim:schemas:core:2.0:User",
+					"protocol": "https",
+					"host": [
+						"igs",
+						"cinnamonstar",
+						"oam"
+					],
+					"path": [
+						"igs",
+						"scim",
+						"v2",
+						"Schemas",
+						"urn:ietf:params:scim:schemas:core:2.0:User"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "username",
+				"value": "igssysadm",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "igsservice",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "igs.services",
+				"type": "string"
+			},
+			{
+				"key": "refreshRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "tokenRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "authRequestParams",
+				"value": [],
+				"type": "any"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "Welcome1",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "password_credentials",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "Welcome1",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "body",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://sso.cinnamonstar.oam/oauth2/rest/token",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "identityDomain",
+			"value": "SecureDomain2",
+			"type": "string"
+		},
+		{
+			"key": "sso-endpoint",
+			"value": "https://sso.cinnamonstar.oam",
+			"type": "string"
+		},
+		{
+			"key": "igs-endpoint",
+			"value": "https://igs.cinnamonstar.oam",
+			"type": "string"
+		}
+	]
+}

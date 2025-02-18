@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name   ="Identity Governance Library Documentation Targets"
+         basedir="..">
+  <!--
+  ==============================================================================
+  == properties globaly defined
+  ==============================================================================
+  -->
+  <import file="./doc-context.xml"/>
+  <!--
+  =====================================================================
+  == ANT macro embedd the Format Object Processor (FOP)
+  =====================================================================
+  -->
+  <macrodef name="generate">
+    <attribute name="document"/>
+    <attribute name="language" default="en"/>
+    <sequential>
+      <docbook.fop input="@{document}-@{language}"/>
+      <docbook.pdf output="@{document}-@{language}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro embedd the Format Object Processor (FOP)
+  =====================================================================
+  -->
+  <macrodef name="docbook.fop">
+    <attribute name="input"/>
+    <attribute name="style" default="oracle/2.0"/>
+    <sequential>
+      <!--
+      copy the template to the working directory by applying the filter to set
+      the correct file path
+      -->
+      <copy file="${docbook.styles}/fop.xsl" tofile="${sitetmp.dir}/fop.xsl" overwrite="true" verbose="no">
+        <filterset>
+          <filter token="docbook.base"  value="${ocs.base.doc}"/>
+          <filter token="docbook.style" value="@{style}"/>
+        </filterset>
+      </copy>
+      <echo message="ocs.base.doc: ${ocs.base.doc}"/>
+      <echo message="ocs.base.fop: ${ocs.base.fop}"/>
+      <xslt in          ="${sitesrc.dir}/@{input}.xml"
+            out         ="${sitetmp.dir}/fop.xml"
+            style       ="${sitetmp.dir}/fop.xsl"
+            processor   ="trax">
+        <factory name="net.sf.saxon.TransformerFactoryImpl">
+          <!--
+          This is set to true to cause basic timing and tracing information to
+          be output to the standard error output stream.
+
+          The name of the feature is poorly chosen, since much of the
+          information that is output has nothing to do with timing, for example
+          the names of output files for xsl:result-document are traced, as are
+          the names of schema documents loaded.
+          <attribute name="http://saxon.sf.net/feature/timing"         value="true"/>
+          -->
+          <!--
+          Indicates whether source documents should have any XInclude directives
+          expanded.
+
+          The default is false.
+
+          The option applies to all input XML documents, including stylesheets
+          and schema documents. It can be overridden for individual documents
+          using the ParseOptions class.
+
+          This option relies on support in the underlying XML parser. If the XML
+          parser does not support XInclude processing, the option is ignored.
+          -->
+          <attribute name="http://saxon.sf.net/feature/xinclude-aware" value="true"/>
+        </factory>
+      </xslt>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to generate a PDF document
+  =====================================================================
+  -->
+  <macrodef name="docbook.pdf">
+    <attribute name="output"/>
+    <sequential>
+      <fop  format      ="application/pdf"
+            fofile      ="${sitetmp.dir}/fop.xml"
+            outfile     ="${deploy.doc}/@{output}.pdf"
+            messagelevel="error"
+            force       ="true"
+            userconfig  ="${ocs.base.fop}/conf/fop.xconf"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the build deliverables
+  =====================================================================
+  -->
+  <target name="clean">
+    <delete dir="${sitetmp.dir}" includeemptydirs="true" quiet="true"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the generation process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${sitetmp.dir}"/>
+  </target>
+</project>

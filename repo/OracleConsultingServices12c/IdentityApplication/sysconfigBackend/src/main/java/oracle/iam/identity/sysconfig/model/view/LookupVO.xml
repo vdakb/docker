@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+            Name                  ="LookupVO"
+            UseGlueCode           ="false"
+            BindingStyle          ="OracleName"
+            FetchMode             ="FETCH_AS_NEEDED"
+            RangeSize             ="25"
+            CustomQuery           ="false"
+            FromList              ="LKU LookupEO"
+            PageIterMode          ="Full"
+            ComponentClass        ="oracle.iam.identity.sysconfig.model.view.LookupVOImpl"
+            RowClass              ="oracle.iam.identity.sysconfig.model.view.LookupVORowImpl"
+            InheritPersonalization="merge">
+  <DesignTime>
+    <Attr Name="_isCodegen"    Value="true"/>
+    <Attr Name="_diagramName"  Value="Lookup Code View"/>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
+  </DesignTime>
+  <ListBinding  Name="TypeLOV" ListVOName="typeLOV" ListRangeSize="2" NullValueFlag="none" MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="type"/>
+    </AttrArray>
+    <AttrArray Name="AttrExpressions"/>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="encoded"/>
+    </AttrArray>
+    <AttrArray Name="ListDisplayAttrNames">
+      <Item Value="decoded"/>
+    </AttrArray>
+    <DisplayCriteria/>
+  </ListBinding>
+  <EntityUsage Name="LookupEO" Entity="oracle.iam.identity.sysconfig.model.entity.LookupEO"/>
+  <ViewAttribute Name="lookupKey" PrecisionRule="true" EntityUsage="LookupEO" EntityAttrName="lookupKey" AliasName="KEY" IsQueriable="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="name" PrecisionRule="true" EntityUsage="LookupEO" EntityAttrName="name" AliasName="NAME">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="meaning" PrecisionRule="true" EntityUsage="LookupEO" EntityAttrName="meaning" AliasName="MEANING" IsPersistent="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="group" PrecisionRule="true" EntityUsage="LookupEO" EntityAttrName="group" AliasName="GROUP">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="type" PrecisionRule="true" EntityUsage="LookupEO" EntityAttrName="type" AliasName="TYPE" LOVName="TypeLOV">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="radio"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="field" PrecisionRule="true" EntityUsage="LookupEO" EntityAttrName="field" AliasName="FIELD">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="required" PrecisionRule="true" EntityUsage="LookupEO" EntityAttrName="required" AliasName="REQUIRED">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH Value="40"/>
+        <CONTROLTYPE  Value="check_box"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="note" PrecisionRule="true" EntityUsage="LookupEO" EntityAttrName="note" AliasName="NOTE" IsQueriable="false" IsPersistent="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <!--
+        attribute will be implemented by a text area hence we decrease the
+        default width by 4 to vertical adjust the right border of the UI
+        component with the borders of the other components
+        -->
+        <DISPLAYWIDTH Value="36"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute Name="add" Type="java.lang.String" SQLType="VARCHAR" ColumnType="CHAR" AliasName="ADD" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewAttribute Name="del" Type="java.lang.String" SQLType="VARCHAR" ColumnType="CHAR" AliasName="DEL" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewAttribute Name="mod" Type="java.lang.String" SQLType="VARCHAR" ColumnType="CHAR" AliasName="MOD" IsPersistent="false" IsSelected="false" IsQueriable="false"/>
+  <ViewAccessor Name            ="typeLOV"
+                AMUsageName     ="LookupAM"
+                ViewInstanceName="LookupTypeLOV"
+                RowLevelBinds   ="true"
+                ViewObjectName  ="oracle.iam.identity.sysconfig.model.view.LookupTypeVO"/>
+  <ViewCriteria Name="LookupVC" ViewObjectName="oracle.iam.identity.sysconfig.model.view.LookupVO" Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property Name="mode"                     Value="Basic"/>
+        <Property Name="showInList"               Value="true"/>
+        <Property Name="autoExecute"              Value="false"/>
+        <Property Name="displayOperators"         Value="InAdvancedMode"/>
+        <Property Name="allowConjunctionOverride" Value="true"/>
+        <Property Name="displayName"              ResId="lku.search"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow Name="vcrLKU" UpperColumns="1">
+      <ViewCriteriaItem Name="name"    ViewAttribute="name"    Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+      <ViewCriteriaItem Name="meaning" ViewAttribute="meaning" Operator="STARTSWITH" Conjunction="AND" Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL        ResId="lku.single"/>
+      <LABEL_PLURAL ResId="lku.multiple"/>
+      <TOOLTIP      ResId="lku.tooltip"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <ViewLinkAccessor Name    ="LookupValueVO"
+                    Type    ="oracle.jbo.RowIterator"
+                    ViewLink="oracle.iam.identity.sysconfig.model.view.link.LookupVOLookupValueVO"/>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysconfig.bundle.Backend"/>
+  </ResourceBundle>
+</ViewObject>

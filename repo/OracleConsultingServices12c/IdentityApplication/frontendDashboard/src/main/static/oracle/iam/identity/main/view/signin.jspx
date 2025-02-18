@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1">
+  <c:set var="main$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Main']}"/>
+  <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+  <f:view>
+    <af:document id="d1" title="#{main$bundle.SHELL_TITLE}" theme="light" initialFocusId="pt1:_pt_it1">
+      <af:resource type="javascript" source="/oracle/iam/ui/platform/js/platform.js"/>
+      <af:form id="f1" defaultCommand="pt1:_pt_cb1">
+        <af:pageTemplate id="pt1" viewId="/templates/IdmSignInV2.jspx" value="#{bindings.pageTemplateBinding}">
+          <f:attribute name="success_url"         value="/faces/home"/>
+          <f:attribute name="enableContent"       value="false"/>
+          <f:attribute name="manageGlobalNav"     value="true"/>
+          <f:attribute name="enableAccessibility" value="true"/>
+          <f:facet name="branding">
+            <af:outputText id="ot1" escape="false" value="#{main$bundle.SHELL_TITLE}"/>
+          </f:facet>
+          <f:facet name="globalNav">
+            <af:navigationPane id="npglnav" clientComponent="true" hint="bar">
+              <af:commandNavigationItem id="cnihlp" clientComponent="true" immediate="true" partialSubmit="true" rendered="true" text="#{main$bundle.HELP}">
+                <af:clientAttribute name="helpClientURL" value="/identity/faces/helppages/main.jspx?config=OHW+Servlet+1&amp;amp;topic=oim_uself_toc"/>
+                <af:clientListener  method="PlatformUtils.launchHelp" type="click"/>
+              </af:commandNavigationItem>
+              <af:commandNavigationItem id="cniabt" text="#{main$bundle.ABOUT_VENDOR}" destination="#{main$bundle.ABOUT_VENDOR_HOME}"/>
+            </af:navigationPane>
+          </f:facet>
+          <f:facet name="appCopyright">
+            <af:outputText id="ot2" escape="false" value="#{main$bundle.PRODUCT_COPYRIGHT}"/>
+          </f:facet>
+          <f:facet name="signInActions">
+            <af:panelGroupLayout id="pgl" layout="vertical" halign="start">
+              <af:spacer id="s2" width="10" height="10"/>
+              <af:panelGroupLayout id="pgl1" halign="start" layout="horizontal">
+                <af:commandLink id="cl4" text="#{main$bundle.FORGOT_USER_LOGIN}" action="forgotuserlogin"/>
+                <af:spacer id="s5" width="10" height="10"/>
+                <af:commandLink id="cl2" text="#{main$bundle.FORGOT_USER_PASSWORD}" action="forgotpassword"/>
+              </af:panelGroupLayout>
+              <af:spacer id="s7" width="10" height="10"/>
+              <af:commandLink id="cl1" action="register" text="#{main$bundle.USER_REGISTRATION}"/>
+              <af:spacer id="s9" width="10" height="10"/>
+              <af:commandLink id="cl3" text="#{main$bundle.TRACK_REGISTRATION}" action="trackregistration"/>
+            </af:panelGroupLayout>
+          </f:facet>
+        </af:pageTemplate>
+      </af:form>
+    </af:document>
+  </f:view>
+</jsp:root>

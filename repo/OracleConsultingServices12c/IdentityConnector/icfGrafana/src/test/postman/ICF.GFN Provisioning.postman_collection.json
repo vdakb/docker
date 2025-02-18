@@ -1,0 +1,975 @@
+{
+	"info": {
+		"_postman_id": "4192f462-2109-443a-a228-1955e116ff99",
+		"name": "Grafana Enterprise REST API v10.3.3-1",
+		"description": "Grafana Admin Rest API v10 ([https://grafana.com/docs/grafana/latest/developers/http_api](https://grafana.com/docs/grafana/latest/developers/http_api))",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12777809"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Musterfrau",
+					"item": [
+						{
+							"name": "Permission",
+							"item": [
+								{
+									"name": "admin-assign",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "\n{ \"isGrafanaAdmin\" : true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/users/30/permissions",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"users",
+												"30",
+												"permissions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "revoke",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "\n{ \"isGrafanaAdmin\" : false\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/users/30/permissions",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"users",
+												"30",
+												"permissions"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"login\"      : \"bp4711123\"\n, \"password\"   : \"Welcome1\"\n, \"isDisabled\" : false\n, \"isAdmin\"    : false\n, \"name\"       : \"Agathe Musterfrau\"\n, \"email\"      : \"agathe.musterfrau@cinnamonstar.net\"\n, \"orgId\"      : 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/admin/users",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/users/30",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"users",
+										"30"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resolve",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/users/lookup?loginOrEmail=bp4711123",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"users",
+										"lookup"
+									],
+									"query": [
+										{
+											"key": "loginOrEmail",
+											"value": "bp4711123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/admin/users/30",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"users",
+										"30"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Zitterbacke",
+					"item": [
+						{
+							"name": "Permission",
+							"item": [
+								{
+									"name": "admin-assign",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "\n{ \"isGrafanaAdmin\" : true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/users/29/permissions",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"users",
+												"29",
+												"permissions"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "admin-revoke",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "\n{ \"isGrafanaAdmin\" : false\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{serviceURL}}/admin/users/29/permissions",
+											"host": [
+												"{{serviceURL}}"
+											],
+											"path": [
+												"admin",
+												"users",
+												"29",
+												"permissions"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"login\"          : \"an4711123\"\n, \"password\"       : \"Welcome1\"\n, \"isDisabled\"     : false\n, \"isGrafanaAdmin\" : true\n, \"name\"           : \"Alfons Zitterbacke\"\n, \"email\"          : \"alfons.zitterbacke@cinnamonstar.net\"\n, \"orgId\"          : 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/admin/users",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/users/29",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"users",
+										"29"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resolve",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/users/lookup?loginOrEmail=an4711123",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"users",
+										"lookup"
+									],
+									"query": [
+										{
+											"key": "loginOrEmail",
+											"value": "an4711123"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/admin/users/24",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"admin",
+										"users",
+										"24"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/users",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/users/lookup?loginOrEmail=admin",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"users",
+								"lookup"
+							],
+							"query": [
+								{
+									"key": "loginOrEmail",
+									"value": "admin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "page",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/users?page=2&perpage=500",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								},
+								{
+									"key": "perpage",
+									"value": "500"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/users/1/roles",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "organization",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/users/1/orgs",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"orgs"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Organization",
+			"item": [
+				{
+					"name": "BKA",
+					"item": [
+						{
+							"name": "create-di41",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"name\"       : \"DI41\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/orgs",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-di41-1",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"name\"       : \"DI41-1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/orgs",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-di41-2",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"name\"       : \"DI41-2\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/orgs",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup-di41",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/orgs/4",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup-di41-1",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/orgs/5",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "lookup-di41-2",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/orgs/6",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resolve-di41",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/orgs/name/DI41",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs",
+										"name",
+										"DI41"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resolve-di41-1",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/orgs/name/DI41-1",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs",
+										"name",
+										"DI41-1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resolve-di41-2",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/orgs/name/DI41-2",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs",
+										"name",
+										"DI41-2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Default",
+					"item": [
+						{
+							"name": "lookup-main",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/orgs/1",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "resolve-main",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{serviceURL}}/orgs/name/Main Org.",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"orgs",
+										"name",
+										"Main Org."
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/orgs",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"orgs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/org/users",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"org",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Team",
+			"item": [
+				{
+					"name": "Participant",
+					"item": [
+						{
+							"name": "create-an",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"name\"       : \"Saxony-Anhalt\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/teams",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-bb",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"name\"       : \"Brandenburg\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/teams",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-bk",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"name\"       : \"Federal Criminal Police Office\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/teams",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-bp",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"name\"       : \"Federal Police\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/teams",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create-sn",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"name\"       : \"Saxony\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serviceURL}}/teams",
+									"host": [
+										"{{serviceURL}}"
+									],
+									"path": [
+										"teams"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/teams/search",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"teams",
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/access-control/status",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"access-control",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/access-control/roles?includeHidden=true",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"access-control",
+								"roles"
+							],
+							"query": [
+								{
+									"key": "includeHidden",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "builtin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{serviceURL}}/access-control/builtin-roles",
+							"host": [
+								"{{serviceURL}}"
+							],
+							"path": [
+								"access-control",
+								"builtin-roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "Welcome1",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "serviceURL",
+			"value": "http://hardy.cinnamonstar.net:3000/grafana",
+			"type": "string"
+		}
+	]
+}

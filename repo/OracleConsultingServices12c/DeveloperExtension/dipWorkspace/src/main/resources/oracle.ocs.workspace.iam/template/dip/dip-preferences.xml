@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="#{ant.project}" basedir=".">
+  <!--
+  =====================================================================
+  == properties specific to the version control
+  =====================================================================
+  -->
+  <property name="appication.release"  value="1.0.0.0"/>
+  <property name="application.version" value="./${application}.version"/>
+  <property name="application.jar"     value="${application}.jar"/>
+  <!--
+  =====================================================================
+  == properties specific to control the compiler progress
+  =====================================================================
+  -->
+  <import file="#{wks.preferences}"/>
+  <!--
+  =====================================================================
+  == properties specifies where the runtime environment are located
+  =====================================================================
+  -->
+  <import file="#{dip.server}"/>
+  <!--
+  =====================================================================
+  == properties specific to the project installation
+  =====================================================================
+  -->
+  <property name="ocs.dip.home" value="#{ocs.dip.home}"/>
+  <property name="wks.dip.home" value="#{wks.dip.home}"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="ocs.dip.home: ${ocs.dip.home} doesn't exist.">
+    <condition>
+      <not><available file="${ocs.dip.home}" type="dir"/></not>
+    </condition>
+  </fail>
+  <fail message="wks.dip.home: ${wks.dip.home} doesn't exist.">
+    <condition>
+      <not><available file="${wks.dip.home}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == properties specific to the product installation
+  =====================================================================
+  -->
+  <property name="oim.server.library"  value="${ocs.dip.home}/CodeBaseServer/#{dip.release}"/>
+  <!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ~~ apply the pre-requisite checks
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <fail message="dip.server.library: ${dip.server.library} doesn't exist.">
+    <condition>
+      <not><available file="${dip.server.library}" type="dir"/></not>
+    </condition>
+  </fail>
+  <!--
+  =====================================================================
+  == properties specifies to library declarations
+  =====================================================================
+  -->
+
+  <!--
+  =====================================================================
+  == ANT macro to package a library
+  =====================================================================
+  -->
+  <macrodef name="assemble-package">
+    <attribute name="library"/>
+    <attribute name="include"/>
+    <attribute name="exclude" default="**/*.xsd **/*-dm.xml"/>
+    <attribute name="destination"/>
+    <sequential>
+      <jar destfile="${deploy.dir}/@{library}.jar" manifest="${manifest}">
+        <fileset dir="${output.dir}" includes="@{include}" excludes="@{exclude}"/>
+      </jar>
+      <echo message="Copying java archive from path ${deploy.dir} to @{destination}"/>
+      <copy todir="@{destination}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+        <fileset dir="${deploy.dir}">
+          <include  name="@{library}.jar"/>
+        </fileset>
+      </copy>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to package the adapter library
+  =====================================================================
+  -->
+  <macrodef name="binary-deploy">
+    <attribute name="library"/>
+    <attribute name="destination"/>
+    <sequential>
+      <scp todir="@{destination}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+        <fileset dir="${deploy.dir}" includes="@{library}"/>
+      </scp>
+    </sequential>
+  </macrodef>
+</project>

@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"   value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysconfig$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Configuration']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{!pageFlowScope.lookupTrain.saveEnabled}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysconfig$bundle.LKU_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysconfig$bundle.LKU_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysconfig$bundle.LKU_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysconfig$bundle.LKV}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysconfig$bundle.LKU_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysconfig$bundle.LKU_CREATE_TITLE : af:formatString(sysconfig$bundle.LKU_DETAIL, pageFlowScope.name)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysconfig$bundle.LKU_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id            ="btn15"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysconfig$bundle.LKU_SINGLE)}"
+                   rendered      ="#{pageFlowScope.lookupTrain.saveEnabled}"
+                   disabled      ="#{!pageFlowScope.lookupTrain.flowDirty}"
+                   binding       ="#{backingBeanScope.lookupValue.submit}"
+                   action        ="#{pageFlowScope.lookupTrain.submit}"
+                   styleClass    ="whiteTextButton"
+                   inlineStyle   ="#{pageFlowScope.lookupTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+        <af:button id            ="btn16"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysconfig$bundle.LKU_SINGLE)}"
+                   rendered      ="#{pageFlowScope.lookupTrain.saveEnabled}"
+                   disabled      ="#{!pageFlowScope.lookupTrain.flowDirty}"
+                   binding       ="#{backingBeanScope.lookupValue.revert}"
+                   actionListener="#{pageFlowScope.lookupTrain.revert}"
+                   immediate     ="true">
+          <af:clientAttribute name="value" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelGroupLayout id="pg02" layout="scroll">
+        <af:spacer id="sp05" width="0" height="10"/>
+        <af:panelCollection id="pc01" styleClass="AFStretchWidth" featuresOff="statusBar">
+          <f:facet name="toolbar">
+            <af:toolbar id="tb03" binding="#{backingBeanScope.lookupValue.toolbar}">
+              <af:group id="g01">
+                <af:button id            ="btn01"
+                           text          ="#{sysbase$bundle.GENERIC_ADD}"
+                           icon          ="/images/func_add_16_ena.png"
+                           hoverIcon     ="/images/func_add_16_hov.png"
+                           depressedIcon ="/images/func_add_16_act.png"
+                           disabledIcon  ="/images/func_add_16_dis.png"
+                           shortDesc     ="#{sysconfig$bundle.LKV_ADD_HINT}"
+                           actionListener="#{backingBeanScope.lookupValue.createListener}"/>
+                <af:spacer id="sp06" width="2" height="1"/>
+                <af:button id            ="btn02"
+                           text          ="#{sysbase$bundle.GENERIC_DELETE}"
+                           icon          ="/images/func_delete_16_ena.png"
+                           hoverIcon     ="/images/func_delete_16_hov.png"
+                           depressedIcon ="/images/func_delete_16_act.png"
+                           disabledIcon  ="/images/func_delete_16_dis.png"
+                           shortDesc     ="#{sysconfig$bundle.LKV_DELETE_HINT}"
+                           disabled      ="#{backingBeanScope.lookupValue.revokeDisabled}"
+                           immediate     ="true">
+                  <af:clientAttribute name="actionName" value="GENERIC_DELETE"/>
+                  <af:showPopupBehavior alignId="btn02" align="afterStart" popupId="::confirmPopup"/>
+                </af:button>
+                <af:spacer id="sp07" width="2" height="1"/>
+                <af:button id            ="btn03"
+                           text          ="#{sysbase$bundle.GENERIC_UNDO}"
+                           icon          ="/images/func_undo_16_ena.png"
+                           hoverIcon     ="/images/func_undo_16_hov.png"
+                           depressedIcon ="/images/func_undo_16_act.png"
+                           disabledIcon  ="/images/func_undo_16_dis.png"
+                           shortDesc     ="#{sysconfig$bundle.LKV_UNDO_HINT}"
+                           actionListener="#{backingBeanScope.lookupValue.undoListener}"
+                           disabled      ="#{backingBeanScope.lookupValue.revokeDisabled}"
+                           immediate     ="true">
+                  <af:clientAttribute name="actionName" value="GENERIC_UNDO"/>
+                  <af:showPopupBehavior alignId="btn03" align="afterStart" popupId="::confirmPopup"/>
+                </af:button>
+                <af:spacer id="sp08" width="2" height="1"/>
+                <af:button id            ="btn04"
+                           text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                           icon          ="/images/func_refresh_16_ena.png"
+                             hoverIcon     ="/images/func_refresh_16_hov.png"
+                             disabledIcon  ="/images/func_refresh_16_dis.png"
+                             depressedIcon ="/images/func_refresh_16_act.png"
+                             shortDesc     ="#{sysconfig$bundle.LKV_REFRESH}"
+                             actionListener="#{backingBeanScope.lookupValue.refreshListener}"
+                             immediate     ="true"/>
+              </af:group>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="menus">
+            <af:menu id ="m01" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{backingBeanScope.lookupValue.actionMenu}" partialTriggers="btn03">
+              <af:commandMenuItem id            ="cmi01"
+                                  text          ="#{sysbase$bundle.GENERIC_ADD}"
+                                  icon          ="/images/func_add_16_ena.png"
+                                  shortDesc     ="#{sysconfig$bundle.LKV_ADD_HINT}"
+                                  actionListener="#{backingBeanScope.lookupValue.createListener}"
+                                  useWindow     ="false" />
+              <af:commandMenuItem id            ="cmi02"
+                                  text          ="#{sysbase$bundle.GENERIC_DELETE}"
+                                  icon          ="/images/func_delete_16_ena.png"
+                                  shortDesc     ="#{sysconfig$bundle.LKV_DELETE_HINT}"
+                                  disabled      ="#{(backingBeanScope.lookupValue.revokeDisabled)}"
+                                  immediate     ="true"
+                                  useWindow     ="false">
+                <af:clientAttribute name="actionName" value="GENERIC_DELETE"/>
+                <af:showPopupBehavior alignId="btn02" align="afterStart" popupId="::confirmPopup"/>
+              </af:commandMenuItem>
+              <af:commandMenuItem id            ="cmi03"
+                                  text          ="#{sysbase$bundle.GENERIC_UNDO}"
+                                  icon          ="/images/func_undo_16_ena.png"
+                                  shortDesc     ="#{sysconfig$bundle.LKV_UNDO_HINT}"
+                                  disabled      ="#{backingBeanScope.lookupValue.revokeDisabled}"
+                                  immediate     ="true"
+                                  useWindow     ="false">
+                 <af:clientAttribute name="actionName" value="GENERIC_UNDO"/>
+                  <af:showPopupBehavior alignId="btn03" align="afterStart" popupId="::confirmPopup"/>
+              </af:commandMenuItem>
+              <af:commandMenuItem id            ="cmi04"
+                                  text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                  icon          ="/images/func_refresh_16_ena.png"
+                                  shortDesc     ="#{sysconfig$bundle.LKV_REFRESH}"
+                                  actionListener="#{backingBeanScope.lookupValue.refreshListener}"
+                                   immediate     ="true"
+                                  useWindow     ="false"/>
+            </af:menu>
+          </f:facet>
+          <!--
+          we use columnStretching="multiple" to give us the opportunity to size
+          the columns by witdh="nn%"
+          The default width for a column is 100px. There is no auto sizing for
+          columns. Set the width attribute to ensure the column is wide enough
+          to accommodate the width of the contents. When the "multiple" option
+          is used in the table that contains the column, the width can be set to
+          a percentage.
+          -->
+         <af:table id                   ="lkv"  var="row" varStatus="vs"
+                   styleClass           ="AFStretchWidth"
+                    value                ="#{bindings.LookupValue.collectionModel}"
+                    rows                 ="#{bindings.LookupValue.rangeSize}"
+                    binding              ="#{backingBeanScope.lookupValue.searchTable}"
+                    fetchSize            ="#{bindings.LookupValue.rangeSize}"
+                    filterVisible        ="false"
+                    filterModel          ="#{bindings.LookupValueVCRegion.queryDescriptor}"
+                    queryListener        ="#{bindings.LookupValueVCRegion.processQuery}"
+                    selectionListener    ="#{backingBeanScope.lookupValue.selectionListener}"
+                    columnStretching     ="multiple"
+                    columnBandingInterval="0"
+                    rowBandingInterval   ="1"
+                    autoHeightRows       ="0"
+                    rowSelection         ="multiple"
+                    columnSelection      ="none"
+                    scrollPolicy         ="page"
+                    immediate            ="true"
+                   emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+            <af:column id="c00" rowHeader="true" width="20" headerText="" align="center">
+              <af:switcher id="sw00" facetName="#{row.pendingAction}">
+                <f:facet name="add">
+                  <af:image id       ="im001"
+                            source   ="#{sysbase$bundle.ROWMARK_ADD_ICON}"
+                            shortDesc="#{sysbase$bundle.ROWMARK_ADD_HINT}"/>
+                </f:facet>
+                <f:facet name="mod">
+                  <af:image id       ="im002"
+                             source   ="#{sysbase$bundle.ROWMARK_MOD_ICON}"
+                             shortDesc="#{sysbase$bundle.ROWMARK_MOD_HINT}"/>
+                </f:facet>
+                <f:facet name="del">
+                  <af:image id       ="im003"
+                            source   ="#{sysbase$bundle.ROWMARK_DEL_ICON}"
+                            shortDesc="#{sysbase$bundle.ROWMARK_DEL_HINT}"/>
+                </f:facet>
+              </af:switcher>
+            </af:column>
+            <af:column id="c01" width="40%" sortable="true" sortProperty="encoded" filterable="true" headerText="#{bindings.LookupValue.hints.encoded.label}" showRequired="#{bindings.LookupValue.hints.encoded.mandatory}" headerNoWrap="true">
+              <af:inputText id                 ="ot11"
+                            value              ="#{row.encoded}"
+                            label              ="#{bindings.LookupValue.hints.encoded.label}"
+                            shortDesc          ="#{bindings.LookupValue.hints.encoded.tooltip}"
+                            maximumLength      ="#{bindings.LookupValue.hints.encoded.precision}"
+                            required           ="#{bindings.LookupValue.hints.encoded.mandatory}"
+                            simple             ="true"
+                            autoSubmit         ="true"
+                            valueChangeListener="#{backingBeanScope.lookupValue.changed}">
+                <f:validator binding="#{row.bindings.encoded.validator}"/>
+              </af:inputText>
+            </af:column>
+            <af:column id="c02" width="50%" sortable="true" sortProperty="decoded" filterable="true" headerText="#{bindings.LookupValue.hints.decoded.label}" showRequired="#{bindings.LookupValue.hints.decoded.mandatory}" headerNoWrap="true">
+              <af:inputText id                 ="ot12"
+                            value              ="#{row.decoded}"
+                            label              ="#{bindings.LookupValue.hints.decoded.label}"
+                            shortDesc          ="#{bindings.LookupValue.hints.decoded.tooltip}"
+                            maximumLength      ="#{bindings.LookupValue.hints.decoded.precision}"
+                            required           ="#{bindings.LookupValue.hints.decoded.mandatory}"
+                            simple             ="true"
+                            autoSubmit         ="true"
+                            valueChangeListener="#{backingBeanScope.lookupValue.changed}">
+                <f:validator binding="#{row.bindings.decoded.validator}"/>
+              </af:inputText>
+            </af:column>
+            <af:column id="c03" width="10%" sortable="true" sortProperty="disabled" filterable="true" headerText="#{bindings.LookupValue.hints.disabled.label}" showRequired="#{bindings.LookupValue.hints.disabled.mandatory}" headerNoWrap="true">
+              <af:selectBooleanCheckbox id                 ="cb13"
+                                        value              ="#{row.disabled}"
+                                        label              ="#{bindings.LookupValue.hints.disabled.label}"
+                                        simple             ="true"
+                                        autoSubmit         ="true"
+                                        valueChangeListener="#{backingBeanScope.lookupValue.changed}">
+                <f:converter converterId="oracle.iam.identity.frontend.Boolean"/>
+              </af:selectBooleanCheckbox>
+            </af:column>
+            <f:facet name="contextMenu">
+               <af:popup id="p01" contentDelivery="lazyUncached">
+                <af:menu id="m02">
+                  <af:commandMenuItem id            ="cmi05"
+                                      text          ="#{sysbase$bundle.GENERIC_ADD}"
+                                      icon          ="/images/func_add_16_ena.png"
+                                      shortDesc     ="#{sysconfig$bundle.LKV_ADD_HINT}"
+                                      actionListener="#{backingBeanScope.lookupValue.createListener}"
+                                      useWindow     ="false"/>
+                  <af:commandMenuItem id            ="cmi06"
+                                      text          ="#{sysbase$bundle.GENERIC_DELETE}"
+                                      icon          ="/images/func_delete_16_ena.png"
+                                      shortDesc     ="#{sysconfig$bundle.LKV_DELETE_HINT}"
+                                      disabled      ="#{(backingBeanScope.lookupValue.revokeDisabled)}"
+                                      immediate     ="true"
+                                      useWindow     ="false">
+                    <af:clientAttribute name="actionName" value="GENERIC_DELETE"/>
+                    <af:showPopupBehavior alignId="::btn02" align="afterStart" popupId=":::confirmPopup"/>
+                  </af:commandMenuItem>
+                  <af:commandMenuItem id            ="cmi07"
+                                      text          ="#{sysbase$bundle.GENERIC_UNDO}"
+                                      icon          ="/images/func_undo_16_ena.png"
+                                      shortDesc     ="#{sysconfig$bundle.LKV_UNDO_HINT}"
+                                      rendered       ="#{!(pageFlowScope.mode == 'create')}"
+                                      immediate     ="true"
+                                      useWindow     ="false">
+                    <af:clientAttribute name="actionName" value="GENERIC_UNDO"/>
+                    <af:showPopupBehavior alignId="::btn03" align="afterStart" popupId=":::confirmPopup"/>
+                  </af:commandMenuItem>
+                  <af:commandMenuItem id            ="cmi08"
+                                      text          ="#{sysbase$bundle.GENERIC_REFRESH}"
+                                       icon          ="/images/func_refresh_16_ena.png"
+                                      shortDesc     ="#{sysconfig$bundle.LKV_REFRESH}"
+                                      actionListener="#{backingBeanScope.lookupValue.refreshListener}"
+                                      immediate     ="true"
+                                      useWindow     ="false"/>
+                </af:menu>
+              </af:popup>
+            </f:facet>
+          </af:table>
+        </af:panelCollection>
+        <af:popup id             ="confirmPopup"
+                  launcherVar    ="source"
+                  eventContext   ="launcher"
+                  contentDelivery="lazyUncached">
+          <af:setPropertyListener type="popupFetch" from="#{source.attributes.actionName}" to="#{pageFlowScope.lookupTrain.actionName}"/>
+          <af:dialog id                         ="dlg01"
+                     type                       ="yesNo"
+                     title                      ="#{sysbase$bundle.GENERIC_WARNING}"
+                     titleIconSource            ="/images/warning.png"
+                     dialogListener             ="#{backingBeanScope.lookupValue.dialogListener}"
+                     affirmativeTextAndAccessKey="#{pageFlowScope.lookupTrain.localizedAction}"
+                     cancelTextAndAccessKey     ="#{sysbase$bundle.GENERIC_CANCEL}"
+                     noTextAndAccessKey         ="#{sysbase$bundle.GENERIC_CANCEL}">
+            <af:panelGroupLayout id="pg05" layout="scroll">
+              <af:spacer id="sp09" height="5"/>
+              <af:outputFormatted id="of2" value="#{af:formatString(sysbase$bundle.GENERIC_CONFIRM, pageFlowScope.lookupTrain.localizedAction)}" inlineStyle="font-weight:bold;"/>
+              <af:spacer id="sp10" height="5"/>
+              <af:outputText id="ot6" value="#{af:formatString(backingBeanScope.lookupValue.localizedMessage, pageFlowScope.name)}"/>
+            </af:panelGroupLayout>
+          </af:dialog>
+        </af:popup>
+      </af:panelGroupLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

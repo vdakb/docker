@@ -1,0 +1,411 @@
+{
+  "structural" : [ {
+    "type"       : "account",
+    "entity" : {
+      "name"         : "ofuser",
+      "__UID__"      : "userName",
+      "__NAME__"     : "userName",
+      "__ENABLE__"   : "flag.lockout",
+      "__PASSWORD__" : "encryptedPassword"
+    },
+    "layered" : [ {
+      "prefix" : "property",
+      "name"   : ["gender", "age"],
+      "source" : {
+        "entity" : {
+          "name" : "ofuserprop"
+        },
+        "relation" : [ "username" ]
+      }
+    } ],
+    "embedded" : [ {
+      "prefix" : "group",
+      "source" : {
+        "entity" : {
+          "name" : "ofgroupuser"
+        },
+        "relation" : [ "username" ]
+      }
+    }, {
+      "prefix" : "room",
+      "source" : {
+        "entity" : {
+          "name" : "ofmucmember"
+        },
+        "relation" : [ "jid" ]
+      }
+    } ]
+  }, {
+    "type" : "group",
+    "entity" : {
+      "name"       : "ofgroup",
+      "__UID__"    : "groupName",
+      "__NAME__"   : "groupName"
+    },
+    "embedded" : [ {
+      "prefix" : "account",
+      "source" : {
+        "entity" : {
+          "name" : "ofgroupuser"
+        },
+        "relation" : [ "groupname" ]
+      }
+    } ]
+  }, {
+    "type" : "room",
+    "entity" : {
+      "name"       : "ofmucroom",
+      "__UID__"    : "roomId",
+      "__NAME__"   : "name"
+    },
+    "embedded" : [ {
+      "prefix" : "occupant",
+      "source" : {
+        "entity" : {
+          "name" : "ofmucmember"
+        },
+        "relation" : [ "roomid" ]
+      }
+    } ]
+  } ],
+  "entity" : [ {
+    "name"     : "ofuser",
+    "primary"  : [ {
+      "name"   : "username",
+      "alias"  : "userName",
+      "class"  : "java.lang.String",
+      "flag"   : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "name",
+      "alias" : "name",
+      "class" : "java.lang.String"
+    }, {
+      "name"  : "email",
+      "alias" : "email",
+      "class" : "java.lang.String"
+    }, {
+      "name"  : "storedkey",
+      "alias" : "storedKey",
+      "class" : "java.lang.String",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    }, {
+      "name"  : "serverkey",
+      "alias" : "serverKey",
+      "class" : "java.lang.String",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    }, {
+      "name"  : "salt",
+      "alias" : "salt",
+      "class" : "java.lang.String",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    }, {
+      "name"  : "iterations",
+      "alias" : "iteration",
+      "class" : "java.math.BigDecimal",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    }, {
+      "name"  : "plainpassword",
+      "alias" : "plainPassword",
+      "class" : "org.identityconnectors.common.security.GuardedString"
+    }, {
+      "name"  : "encryptedpassword",
+      "alias" : "encryptedPassword",
+      "class" : "org.identityconnectors.common.security.GuardedString"
+    }, {
+      "name"  : "creationdate",
+      "alias" : "createdOn",
+      "class" : "java.util.Date",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    }, {
+      "name"  : "modificationdate",
+      "alias" : "updatedOn",
+      "class" : "java.util.Date",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    } ]
+  }, {
+    "name"     : "ofgroup",
+    "primary" : [ {
+      "name"  : "groupname",
+      "alias" : "groupName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "description",
+      "alias" : "description",
+      "class" : "java.lang.String"
+    } ]
+  }, {
+    "name"     : "ofgroupuser",
+    "primary" : [ {
+      "name"  : "groupname",
+      "alias" : "groupName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "username",
+      "alias" : "userName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "administrator",
+      "alias" : "administrator",
+      "class" : "java.lang.Boolean"
+    } ]
+  }, {
+    "name" : "ofuserprop",
+    "primary" : [ {
+      "name"  : "username",
+      "alias" : "userName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required", "not_returned_by_default" ]
+    }, {
+      "name"  : "name",
+      "alias" : "name",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "propvalue",
+      "alias" : "value",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ]
+  }, {
+    "name" : "ofuserflag",
+    "primary" : [ {
+      "name"  : "username",
+      "alias" : "userName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required", "not_returned_by_default" ]
+    }, {
+      "name"  : "name",
+      "alias" : "name",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "starttime",
+      "alias" : "startTime",
+      "class" : "java.util.Date"
+    }, {
+      "name"  : "endtime",
+      "alias" : "endTime",
+      "class" : "java.util.Date"
+    } ]
+  }, {
+    "name" : "ofgroupprop",
+    "primary" : [ {
+      "name"  : "groupname",
+      "alias" : "groupName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required", "not_returned_by_default" ]
+    }, {
+      "name"  : "name",
+      "alias" : "name",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "propvalue",
+      "alias" : "value",
+      "class" : "java.lang.String"
+    } ]
+  }, {
+    "name"     : "ofmucroom",
+    "primary" : [ {
+      "name"  : "serviceid",
+      "alias" : "serviceId",
+      "class" : "java.math.BigDecimal",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "roomid",
+      "alias" : "roomId",
+      "class" : "java.math.BigDecimal",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "name",
+      "alias" : "name",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "naturalname",
+      "alias" : "naturalName",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "description",
+      "alias" : "description",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "subject",
+      "alias" : "subject",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "canchangesubject",
+      "alias" : "subjectCanChange",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "canregister",
+      "alias" : "canRegister",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "caninvite",
+      "alias" : "canInvite",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "canchangenick",
+      "alias" : "canChangeNick",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "candiscoverjid",
+      "alias" : "canDiscoverJID",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "moderated",
+      "alias" : "moderated",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "publicroom",
+      "alias" : "publicRoom",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "userservednick",
+      "alias" : "userServedNick",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "membersonly",
+      "alias" : "membersOnly",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "rolestobroadcast",
+      "alias" : "rolesToBroadcast",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "allowpm",
+      "alias" : "allowPM",
+      "class" : "java.lang.Boolean",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "lockeddate",
+      "alias" : "lockedOn",
+      "class" : "java.util.Date",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "emptydate",
+      "alias" : "emptyOn",
+      "class" : "java.util.Date",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "roompassword",
+      "alias" : "roomPassword",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "creationdate",
+      "alias" : "createdOn",
+      "class" : "java.util.Date",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    }, {
+      "name"  : "modificationdate",
+      "alias" : "updatedOn",
+      "class" : "java.util.Date",
+      "flag"  : [ "not_creatable", "not_updateable", "not_returned_by_default" ]
+    } ]
+  }, {
+    "name" : "ofmucroomprop",
+    "primary" : [ {
+      "name"  : "roomid",
+      "alias" : "roomId",
+      "class" : "java.math.BigDecimal",
+      "flag"  : [ "required", "not_returned_by_default" ]
+    }, {
+      "name"  : "name",
+      "alias" : "name",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "propvalue",
+      "alias" : "value",
+      "class" : "java.lang.String"
+    } ]
+  }, {
+    "name"     : "ofmucmember",
+    "primary" : [ {
+      "name"  : "roomid",
+      "alias" : "roomId",
+      "class" : "java.math.BigDecimal",
+      "flag"  : [ "required" ]
+    }, {
+      "name"  : "jid",
+      "alias" : "jid",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "nickname",
+      "alias" : "nickName",
+      "class" : "java.lang.String"
+    }, {
+      "name"  : "firstname",
+      "alias" : "firstName",
+      "class" : "java.lang.String"
+    }, {
+      "name"  : "lastname",
+      "alias" : "lastName",
+      "class" : "java.lang.String"
+    }, {
+      "name"  : "email",
+      "alias" : "email",
+      "class" : "java.lang.String"
+    }, {
+      "name"  : "url",
+      "alias" : "url",
+      "class" : "java.lang.String"
+    }, {
+      "name"  : "faqentry",
+      "alias" : "faq",
+      "class" : "java.lang.String"
+    } ]
+  }, {
+    "name" : "ofproperty",
+    "primary" : [ {
+      "name"  : "name",
+      "alias" : "name",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } ],
+    "attribute" : [ {
+      "name"  : "propvalue",
+      "alias" : "value",
+      "class" : "java.lang.String",
+      "flag"  : [ "required" ]
+    } , {
+      "name"  : "encrypted",
+      "alias" : "encrypted",
+      "class" : "java.lang.Integer",
+      "flag"  : [ "not_returned_by_default" ]
+    } , {
+      "name"  : "iv",
+      "alias" : "iv",
+      "class" : "java.lang.String",
+      "flag"  : [ "not_returned_by_default" ]
+    } ]
+  } ]
+}

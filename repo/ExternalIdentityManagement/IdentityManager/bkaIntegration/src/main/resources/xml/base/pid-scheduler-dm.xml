@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="Identity Governance Service Connector Configuration 12.2.1.3" exported-date="1658074837472" user="XELSYSADM" version="12.2.1.3.0">
+  <scheduledTask mds-file="PIDMigrator.xml" mds-path="/db" name="PIDMigrator" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+          <name>PIDMigrator</name>
+          <class>bka.iam.identity.service.pid.Migrator</class>
+          <description>An Anonymous Identifier Migrator Job instance .</description>
+          <retry>0</retry>
+          <parameters>
+            <string-param  required="true"  encrypted="false" helpText="The IT Resource used to establish the connection to the Target System">IT Resource</string-param>
+            <string-param  required="true"  encrypted="false" helpText="The Prefix of the anonymous identifier to generate">Prefix</string-param>
+            <string-param  required="true"  encrypted="false" helpText="The Profile attribute to receive the  generated anonymous identifier">Profile</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Holds the timestamp when this job was last executed successfully">Last Reconciled</string-param>
+            <string-param  required="true"  encrypted="false" helpText="The name of the object to reconcile; usually User">Reconciliation Object</string-param>
+            <string-param  required="false" encrypted="false" helpText="Specifies the name of the Job that will be started by this Job on successfully completion">Dependent Job</string-param>
+            <number-param  required="false" encrypted="false" helpText="Specifies the size of a batch read from the reconciliation source">Batch Size</number-param>
+            <number-param  required="false" encrypted="false" helpText="Specifies how many threads this Job should create to distribute the workload.">Thread Pool Size</number-param>
+            <boolean-param required="true"  encrypted="false" helpText="Select this option if the external service to generate an Anonymous Identifier should be invoked">Gather Only</boolean-param>
+          </parameters>
+        </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+  <Job name="PID Migrator" repo-type="API">
+    <retrycount>0</retrycount>
+    <method>executeJob</method>
+    <taskKey>381</taskKey>
+    <taskClassName>bka.iam.identity.service.pid.Migrator</taskClassName>
+    <concurrent>false</concurrent>
+    <emailConfig>&lt;![CDATA[rO0ABXA=]]&gt;</emailConfig>
+    <jobScheduleType>None</jobScheduleType>
+    <attributes>
+      <object>
+        <key>Last Reconciled</key>
+        <value type="jobparameter">
+          <name type="string">Last Reconciled</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Holds the timestamp when this job was last executed successfully</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">141</paramKey>
+          <paramValue type="string">0</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Gather Only</key>
+        <value type="jobparameter">
+          <name type="string">Gather Only</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Select this option if the external service to generate an Anonymous Identifier should be invoked</helpText>
+          <dataType type="string">Boolean</dataType>
+          <paramValue type="boolean">false</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Reconciliation Object</key>
+        <value type="jobparameter">
+          <name type="string">Reconciliation Object</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The name of the object to reconcile; usually User</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">142</paramKey>
+          <paramValue type="string">User</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>IT Resource</key>
+        <value type="jobparameter">
+          <name type="string">IT Resource</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The IT Resource used to establish the connection to the Target System</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">143</paramKey>
+          <paramValue type="string">PID.Endpoint</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Batch Size</key>
+        <value type="jobparameter">
+          <name type="string">Batch Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the size of a batch read from the reconciliation source</helpText>
+          <dataType type="string">Number</dataType>
+          <paramKey type="string">144</paramKey>
+          <paramValue type="long">500</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Thread Pool Size</key>
+        <value type="jobparameter">
+          <name type="string">Thread Pool Size</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies how many threads this Job should create to distribute the workload.</helpText>
+          <dataType type="string">Number</dataType>
+          <paramValue type="long">10</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Dependent Job</key>
+        <value type="jobparameter">
+          <name type="string">Dependent Job</name>
+          <required type="boolean">false</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">Specifies the name of the Job that will be started by this Job on successfully completion</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">145</paramKey>
+          <paramValue type="string"/>
+        </value>
+      </object>
+      <object>
+        <key>Prefix</key>
+        <value type="jobparameter">
+          <name type="string">Prefix</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The Prefix of the anonymous identifier to generate</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">146</paramKey>
+          <paramValue type="string">p</paramValue>
+        </value>
+      </object>
+      <object>
+        <key>Profile</key>
+        <value type="jobparameter">
+          <name type="string">Profile</name>
+          <required type="boolean">true</required>
+          <encrypted type="boolean">false</encrypted>
+          <helpText type="string">The Profile attribute to receive the  generated anonymous identifier</helpText>
+          <dataType type="string">String</dataType>
+          <paramKey type="string">147</paramKey>
+          <paramValue type="string">anonymized</paramValue>
+        </value>
+      </object>
+    </attributes>
+    <lastModifyDate>1658074837472</lastModifyDate>
+    <taskStatus>true</taskStatus>
+    <source-scope name="PIDMigrator" type="scheduledTask"/>
+    <taskName scheduledTask="PIDMigrator"/>
+  </Job>
+</xl-ddm-data>

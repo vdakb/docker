@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Access Manager Workspace Targets"
+         basedir     ="."
+         xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="ohs-context.xml"/>
+ <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="call-subproject">
+    <attribute name="path"/>
+    <attribute name="file"/>
+    <attribute name="target"/>
+    <sequential>
+      <subant target="@{target}" buildpath="@{path}/ant" antfile="@{file}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to execute a remote command
+  =====================================================================
+  -->
+  <macrodef name="ssh-shell">
+    <attribute name="command"/>
+    <sequential>
+      <sshexec command="@{command}" keyfile="${scp.server.certificate}" host="${scp.server.host}" username="${scp.server.username}" password="${scp.server.password}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to copy library artifacts
+  =====================================================================
+  -->
+  <macrodef name="ssh-dir">
+    <attribute name="dir"/>
+    <attribute name="location"/>
+    <sequential>
+      <if>
+        <istrue value="${oim.server.simple}"/>
+          <then>
+            <echo message="Copying from @{dir} to @{location}"/>
+            <copy todir="@{location}">
+              <fileset dir="@{dir}" includes="@{file}"/>
+            </copy>
+          </then>
+          <else>
+            <echo message="Transfering @{file} from @{dir} to @{location} on ${scp.server.host}:${scp.server.port}"/>
+            <scp verbose="false" todir="${scp.server.destination}:@{location}" port="${scp.server.port}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+              <fileset dir="@{dir}" includes="@{file}"/>
+            </scp>
+          </else>
+        </if>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to copy runtime artifacts
+  =====================================================================
+  -->
+  <macrodef name="ssh-file">
+    <attribute name="file"/>
+    <attribute name="dir"/>
+    <attribute name="location"/>
+    <sequential>
+      <echo message="Transfering @{file} from @{dir} to @{location} on ${scp.server.host}"/>
+      <scp todir="${scp.server.destination}:@{location}" port="${scp.server.port}" keyfile="${scp.server.certificate}" trust="${scp.server.trust}">
+        <fileset dir="@{dir}">
+          <include name="@{file}"/>
+        </fileset>
+      </scp>
+    </sequential>
+  </macrodef>
+</project>

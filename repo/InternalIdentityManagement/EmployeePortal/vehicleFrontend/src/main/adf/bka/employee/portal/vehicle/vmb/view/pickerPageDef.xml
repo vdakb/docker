@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.22.48"
+                id="pickerPageDef"
+                Package="bka.employee.portal.vehicle.vmb.view">
+  <parameters/>
+  <executables>
+    <iterator     id="BrandSearchVOIterator" Binds="BrandPickerVO"         DataControl="AdministrationAMDataControl" RangeSize="25"/>
+    <searchRegion id="BrandVC"               Binds="BrandSearchVOIterator" Criteria="BrandVOCriteria"  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="name"/>
+  </executables>
+  <bindings>
+    <tree id="Brand" IterBinding="BrandSearchVOIterator">
+      <nodeDefinition Name="BrandSearchVO0" DefName="bka.employee.portal.vehicle.model.view.BrandVO">
+        <AttrNames>
+          <Item Value="name"/>
+          <Item Value="icon"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <eventBinding id="return">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.iam.ui.platform.view.event.TargetSelectionEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

@@ -1,0 +1,560 @@
+version: 1
+
+dn: dc=example,dc=org
+objectClass: organization
+objectClass: dcObject
+dc: example
+o: example
+
+dn: ou=users,dc=example,dc=org
+objectClass: organizationalUnit
+ou: users
+
+dn: cn=user01,ou=users,dc=example,dc=org
+objectClass: shadowAccount
+objectClass: posixAccount
+objectClass: inetOrgPerson
+cn: User1
+cn: user01
+gidNumber: 1000
+homeDirectory: /home/user01
+sn: Bar1
+uid: user01
+uidNumber: 1000
+userPassword: password1
+
+dn: cn=user02,ou=users,dc=example,dc=org
+objectClass: shadowAccount
+objectClass: posixAccount
+objectClass: inetOrgPerson
+cn: User2
+cn: user02
+gidNumber: 1001
+homeDirectory: /home/user02
+sn: Bar2
+uid: user02
+uidNumber: 1001
+userPassword: password2
+
+dn: cn=readers,ou=users,dc=example,dc=org
+objectClass: groupOfNames
+cn: readers
+member: cn=user01,ou=users,dc=example,dc=org
+member: cn=user02,ou=users,dc=example,dc=org
+
+dn: ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: P20
+
+dn: ou=P20-Benutzer,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: P20-Benutzer
+
+dn: ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: P20-Anwendungen
+
+dn: ou=TN-Orgs,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: TN-Orgs
+
+dn: ou=Anwendung1,ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Anwendung1
+
+dn: ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Anwendung2
+
+dn: cn=Zugriff,ou=Anwendung1,ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Zugriff
+member: cn=DE12-3456-7890-11-12-131415,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: ou=Funktionsrechte,ou=Anwendung1,ou=P20-Anwendungen,ou=P20,dc=example,dc
+ =org
+objectClass: top
+objectClass: organizationalUnit
+ou: Funktionsrechte
+
+dn: ou=Rollen,ou=Anwendung1,ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Rollen
+
+dn: ou=Intermediate,ou=Anwendung1,ou=P20-Anwendungen,ou=P20,dc=example,dc=or
+ g
+objectClass: top
+objectClass: organizationalUnit
+ou: Intermediate
+
+dn: cn=Zugriff,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Zugriff
+member: cn=DE12-3456-7890-11-12-131415,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DE12-3456-7890-11-12-131416,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: ou=Funktionsrechte,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=example,dc
+ =org
+objectClass: top
+objectClass: organizationalUnit
+ou: Funktionsrechte
+
+dn: ou=Intermediate,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=example,dc=or
+ g
+objectClass: top
+objectClass: organizationalUnit
+ou: Intermediate
+
+dn: ou=Rollen,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Rollen
+
+dn: ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Anwendung3
+
+dn: cn=Zugriff,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Zugriff
+member: cn=DE12-3456-7890-11-12-131415,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DE12-3456-7890-11-12-131416,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DE12-3456-7890-11-12-131417,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DE12-3456-7890-11-12-131418,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DE12-3456-7890-11-12-131419,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DE12-3456-7890-11-12-131420,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: ou=Funktionsrechte,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=example,dc
+ =org
+objectClass: top
+objectClass: organizationalUnit
+ou: Funktionsrechte
+
+dn: ou=Intermediate,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=example,dc=or
+ g
+objectClass: top
+objectClass: organizationalUnit
+ou: Intermediate
+
+dn: ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: organizationalUnit
+ou: Rollen
+
+dn: cn=DE12-3456-7890-11-12-131415,ou=P20-Benutzer,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: DE12-3456-7890-11-12-131415
+sn: Musterlein
+
+dn: cn=DE12-3456-7890-11-12-131416,ou=P20-Benutzer,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: DE12-3456-7890-11-12-131416
+sn: Musterlein
+
+dn: cn=DE12-3456-7890-11-12-131417,ou=P20-Benutzer,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: DE12-3456-7890-11-12-131417
+sn: Musterlein
+
+dn: cn=DE12-3456-7890-11-12-131418,ou=P20-Benutzer,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: DE12-3456-7890-11-12-131418
+sn: Musterlein
+
+dn: cn=DE12-3456-7890-11-12-131419,ou=P20-Benutzer,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: DE12-3456-7890-11-12-131419
+sn: Musterlein
+
+dn: cn=DE12-3456-7890-11-12-131420,ou=P20-Benutzer,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: DE12-3456-7890-11-12-131420
+sn: Musterlein
+
+dn: cn=exportieren,ou=Funktionsrechte,ou=Anwendung1,ou=P20-Anwendungen,ou=P2
+ 0,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: exportieren
+member: cn=DE12-3456-7890-11-12-131415,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=lesen,ou=Funktionsrechte,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=e
+ xample,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: lesen
+member: cn=Editor,ou=Rollen,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=examp
+ le,dc=org
+member: cn=Vollzugriff,ou=Rollen,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=
+ example,dc=org
+
+dn: cn=schreiben,ou=Funktionsrechte,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,
+ dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: schreiben
+member: cn=Editor,ou=Rollen,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=examp
+ le,dc=org
+member: cn=Vollzugriff,ou=Rollen,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=
+ example,dc=org
+
+dn: cn=loeschen,ou=Funktionsrechte,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,d
+ c=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: loeschen
+member: cn=Vollzugriff,ou=Rollen,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=
+ example,dc=org
+
+dn: cn=Editor,ou=Rollen,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=example,d
+ c=org
+objectClass: top
+objectClass: groupOfNames
+cn: Editor
+member: cn=DE12-3456-7890-11-12-131415,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=Vollzugriff,ou=Rollen,ou=Anwendung2,ou=P20-Anwendungen,ou=P20,dc=exam
+ ple,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Vollzugriff
+member: cn=DE12-3456-7890-11-12-131416,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=DS110000,ou=TN-Orgs,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110000
+member: cn=DE12-3456-7890-11-12-131416,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DE12-3456-7890-11-12-131417,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DE12-3456-7890-11-12-131418,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DS110000_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwe
+ ndungen,ou=P20,dc=example,dc=org
+member: cn=DS110000_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-A
+ nwendungen,ou=P20,dc=example,dc=org
+member: cn=DS110000_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+
+dn: cn=DS110001,ou=TN-Orgs,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110001
+member: cn=DE12-3456-7890-11-12-131419,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DS110001_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwe
+ ndungen,ou=P20,dc=example,dc=org
+member: cn=DS110001_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-A
+ nwendungen,ou=P20,dc=example,dc=org
+member: cn=DS110001_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+
+dn: cn=DS110002,ou=TN-Orgs,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110002
+member: cn=DE12-3456-7890-11-12-131420,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DS110002_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwe
+ ndungen,ou=P20,dc=example,dc=org
+member: cn=DS110002_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-A
+ nwendungen,ou=P20,dc=example,dc=org
+member: cn=DS110002_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+
+dn: cn=DS110003,ou=TN-Orgs,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110003
+member: cn=DE12-3456-7890-11-12-131415,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DS110003_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwe
+ ndungen,ou=P20,dc=example,dc=org
+member: cn=DS110003_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-A
+ nwendungen,ou=P20,dc=example,dc=org
+member: cn=DS110003_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+
+dn: cn=vorgang_lesen,ou=Funktionsrechte,ou=Anwendung3,ou=P20-Anwendungen,ou=
+ P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: vorgang_lesen
+member: cn=Sachbearbeiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,
+ dc=example,dc=org
+member: cn=Sachbearbeiter-QS,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P
+ 20,dc=example,dc=org
+member: cn=SB-Leiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=ex
+ ample,dc=org
+
+dn: cn=vorgang_loeschen,ou=Funktionsrechte,ou=Anwendung3,ou=P20-Anwendungen,
+ ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: vorgang_loeschen
+member: cn=SB-Leiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=ex
+ ample,dc=org
+
+dn: cn=vorgang_schreiben,ou=Funktionsrechte,ou=Anwendung3,ou=P20-Anwendungen
+ ,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: vorgang_schreiben
+member: cn=Sachbearbeiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,
+ dc=example,dc=org
+member: cn=SB-Leiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=ex
+ ample,dc=org
+
+dn: cn=vorgang_zuweisen,ou=Funktionsrechte,ou=Anwendung3,ou=P20-Anwendungen,
+ ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: vorgang_zuweisen
+member: cn=SB-Leiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=ex
+ ample,dc=org
+
+dn: cn=vorgang_anlegen,ou=Funktionsrechte,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: vorgang_anlegen
+member: cn=Sachbearbeiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,
+ dc=example,dc=org
+member: cn=SB-Leiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=ex
+ ample,dc=org
+
+dn: cn=vorgang_pruefen,ou=Funktionsrechte,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: vorgang_pruefen
+member: cn=Sachbearbeiter-QS,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P
+ 20,dc=example,dc=org
+
+dn: cn=Sachbearbeiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=e
+ xample,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Sachbearbeiter
+member: cn=DS110000_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwe
+ ndungen,ou=P20,dc=example,dc=org
+member: cn=DS110001_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwe
+ ndungen,ou=P20,dc=example,dc=org
+member: cn=DS110002_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwe
+ ndungen,ou=P20,dc=example,dc=org
+member: cn=DS110003_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwe
+ ndungen,ou=P20,dc=example,dc=org
+
+dn: cn=SB-Leiter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=exampl
+ e,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: SB-Leiter
+member: cn=DS110000_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+member: cn=DS110001_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+member: cn=DS110002_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+member: cn=DS110003_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+
+dn: cn=Sachbearbeiter-QS,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,d
+ c=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Sachbearbeiter-QS
+member: cn=DS110000_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-A
+ nwendungen,ou=P20,dc=example,dc=org
+member: cn=DS110001_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-A
+ nwendungen,ou=P20,dc=example,dc=org
+member: cn=DS110002_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-A
+ nwendungen,ou=P20,dc=example,dc=org
+member: cn=DS110003_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-A
+ nwendungen,ou=P20,dc=example,dc=org
+
+dn: cn=DS110000_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendun
+ gen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110000_Sachbearbeiter
+member: cn=DE12-3456-7890-11-12-131417,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+member: cn=DE12-3456-7890-11-12-131418,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=DS110000_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-Anwen
+ dungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110000_Sachbearbeiter-QS
+member: cn=DE12-3456-7890-11-12-131416,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=DS110000_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110000_SB-Leiter
+member: cn=DE12-3456-7890-11-12-131418,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=DS110001_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendun
+ gen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110001_Sachbearbeiter
+member: 
+
+dn: cn=DS110001_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-Anwen
+ dungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110001_Sachbearbeiter-QS
+member: 
+
+dn: cn=DS110001_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110001_SB-Leiter
+member: cn=DE12-3456-7890-11-12-131419,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=DS110002_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendun
+ gen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110002_Sachbearbeiter
+member: 
+
+dn: cn=DS110002_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-Anwen
+ dungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110002_Sachbearbeiter-QS
+member: 
+
+dn: cn=DS110002_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110002_SB-Leiter
+member: cn=DE12-3456-7890-11-12-131420,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=DS110003_Sachbearbeiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendun
+ gen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110003_Sachbearbeiter
+member: 
+
+dn: cn=DS110003_Sachbearbeiter-QS,ou=Intermediate,ou=Anwendung3,ou=P20-Anwen
+ dungen,ou=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110003_Sachbearbeiter-QS
+member: 
+
+dn: cn=DS110003_SB-Leiter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110003_SB-Leiter
+member: cn=DE12-3456-7890-11-12-131415,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=ds_vertretung,ou=Funktionsrechte,ou=Anwendung3,ou=P20-Anwendungen,ou=
+ P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: ds_vertretung
+member: cn=Vertreter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=ex
+ ample,dc=org
+
+dn: cn=Vertreter,ou=Rollen,ou=Anwendung3,ou=P20-Anwendungen,ou=P20,dc=exampl
+ e,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: Vertreter
+member: cn=DS110000_Vertreter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+member: cn=DS110001_Vertreter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+member: cn=DS110002_Vertreter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+member: cn=DS110003_Vertreter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendung
+ en,ou=P20,dc=example,dc=org
+
+dn: cn=DS110000_Vertreter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110000_Vertreter
+member: 
+
+dn: cn=DS110001_Vertreter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110001_Vertreter
+member: cn=DE12-3456-7890-11-12-131418,ou=P20-Benutzer,ou=P20,dc=example,dc=
+ org
+
+dn: cn=DS110002_Vertreter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110002_Vertreter
+member: 
+
+dn: cn=DS110003_Vertreter,ou=Intermediate,ou=Anwendung3,ou=P20-Anwendungen,o
+ u=P20,dc=example,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: DS110003_Vertreter
+member: 
+

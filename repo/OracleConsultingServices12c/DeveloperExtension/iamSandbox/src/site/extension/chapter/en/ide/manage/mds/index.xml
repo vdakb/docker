@@ -1,0 +1,289 @@
+<!--
+  ! This software is the confidential and proprietary information of
+  ! Oracle Corporation. ("Confidential Information").  You shall not
+  ! disclose such Confidential Information and shall use it only in
+  ! accordance with the terms of the license agreement you entered
+  ! into with Oracle.
+  !
+  ! ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+  ! SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  ! IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ! PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+  ! SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+  ! THIS SOFTWARE OR ITS DERIVATIVES.
+  !
+  ! Copyright &#xA9c 2015. All Rights reserved
+  !
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="mds-browser"
+         xml:lang="en"
+         version ="5.0">
+  <title>Managing Metadata Service</title>
+  <para>
+    The Metadata Service stores XML files and provides transaction capabilities, versioning, merging and a persistence framework optimized to work with XML nodes and attributes.
+  </para>
+  <para>
+    This chapter describes how to manage shared data with the Metadata Services Browser, including how to create and delete folders, export and import the contents of the documents to and from a file.
+  </para>
+  <para>
+    Once you have a Metadata Service connection, you can:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <link linkend="mds-navigate">Navigate Around</link>
+      <para/>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="mds-folder">Creating and Deleting Folders</link>
+      <para/>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="mds-content-view">Viewing selected contents</link>
+      <para/>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="mds-content-export">Export selected contents</link>
+      <para/>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="mds-content-import">Import selected contents</link>
+      <para/>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="mds-content-update">Update selected contents</link>
+      <para/>
+      <para/>
+    </listitem>
+    <listitem>
+      <link linkend="mds-content-rename">Rename selected contents</link>
+    </listitem>
+  </itemizedlist>
+  <section xml:id="mds-browser-create">
+    <title>Create a Metadata Service Browser</title>
+    <para>
+      To create the <emphasis role="strong">Metadata Service Browser</emphasis> Wizard walkthrough:
+    </para>
+    <orderedlist>
+      <listitem>
+        <para>
+           Open Oracle JDeveloper 12c if it is not already open.
+        </para>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Navigate to the menu <emphasis role="strong">File</emphasis> | <emphasis role="strong">New</emphasis> | <emphasis role="strong">From Gallery...</emphasis> or the correspondending toolbar action.
+        </para>
+        <para>
+          <mediaobject>
+            <alt>gallery</alt>
+            <imageobject>
+              <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/extension/005.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </para>
+        <para>
+          This invokes the <emphasis role="strong">New Gallery</emphasis> dialog to create objects of any sort, from applications or classes to JSPs and UML diagrams, and to set up and maintain your connections.
+        </para>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+           In the <emphasis role="strong">Categories</emphasis>, expand <emphasis role="strong">General</emphasis> and select <emphasis role="strong">Connections</emphasis>.
+           In the Items list, select <emphasis role="strong">Metadata Service</emphasis>.
+        </para>
+        <para>
+          <mediaobject>
+            <alt>item</alt>
+            <imageobject>
+              <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/extension/manage/mds/000.png" format="PNG"/>
+            </imageobject>
+          </mediaobject>
+        </para>
+        <para>
+           Double click on the item or click <emphasis role="strong">OK</emphasis>.
+        </para>
+        <para>
+           This close the <emphasis role="strong">New Gallery</emphasis> dialog and starts the appropriate wizard that guides you through the required steps.
+           The Wizard is performs several steps that are needed to create most of the configurations.
+           After the wizard <emphasis role="strong">Create Metadata Service Connection</emphasis> started, complete the steps below to create the connection.
+        </para>
+      </listitem>
+    </orderedlist>
+    <section xml:id="mds-browser-create-01">
+      <title>Create Connection</title>
+      <para>
+        The wizard <emphasis role="strong">Create Metadata Service Connection</emphasis> is started.
+      </para>
+      <para>
+        <mediaobject>
+          <alt>item</alt>
+          <imageobject>
+            <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/extension/manage/mds/001.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </para>
+      <para>
+        Complete the following steps to configure the connection:
+      </para>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="8em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Section</entry>
+              <entry>Option</entry>
+              <entry>Purpose</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">Connection</emphasis></entry>
+              <entry><emphasis role="strong">Name</emphasis></entry>
+              <entry>
+                <para>Enter a name for the connection.</para>
+                <para>The connection name must be a valid Java identifier, and as the name and connection are global across your JDeveloper installation, choose an appropriate and unique name.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Server</emphasis></entry>
+              <entry><emphasis role="strong">Host</emphasis></entry>
+              <entry>
+                <para>Enter a value to identify the machine running the Oracle Database Server.</para>
+                <para>Use an IP address or a host name that can be resolved by TCP/IP.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong"></emphasis></entry>
+              <entry><emphasis role="strong">Port</emphasis></entry>
+              <entry>
+                <para>Enter a value to identify the TCP/IP port.</para>
+                <para>The default is <literal>1521</literal>.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong"></emphasis></entry>
+              <entry><emphasis role="strong">Service</emphasis></entry>
+              <entry>
+                <para>Select and enter the service name for an Oracle Database instance.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Account</emphasis></entry>
+              <entry><emphasis role="strong">Username</emphasis></entry>
+              <entry>
+                <para>Enter the user name to be authorized for access to the service.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong"></emphasis></entry>
+              <entry><emphasis role="strong">Password</emphasis></entry>
+              <entry>
+                <para>Enter the password to be associated with the specified user name.</para>
+                <para>An asterisk (*) appears for each character you type in this field.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Partition</emphasis></entry>
+              <entry><emphasis role="strong">Name</emphasis></entry>
+              <entry>
+                <para>Select the appropriate partition you want to access. </para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para/>
+      <para>
+        <mediaobject>
+          <alt>item</alt>
+          <imageobject>
+            <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/extension/manage/mds/003.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </para>
+      <important>
+        <para>
+          The <emphasis role="strong">Partion Name</emphasis> is populated with the connection properties you configured so far.
+        </para>
+        <para>
+          In case the connection cannot established an error appears in the status text area.
+        </para>
+      </important>
+      <para>
+        <mediaobject>
+          <alt>item</alt>
+          <imageobject>
+            <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/extension/manage/mds/004.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </para>
+      <para>
+        In the picture shown above the <emphasis role="strong">Server Service</emphasis> for an Oracle Database instance is unknown by the listener. 
+      </para>
+    </section>
+    <section xml:id="mds-browser-create-02">
+      <title>Test Connection</title>
+      <para>
+        Click <emphasis role="strong">Test</emphasis>.  
+      </para>
+      <note>
+        <para>
+          You may have to briefly wait while JDeveloper connects to the service.
+        </para>
+      </note>
+      <para>
+        If the test succeeds, a success message appears in the status text area. For example: 
+      </para>
+      <para>
+        <mediaobject>
+          <alt>test</alt>
+          <imageobject>
+            <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/extension/manage/mds/005.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </para>
+      <important>
+        <para>
+          If the test does not succeed, an error appears.
+        </para>
+        <para>
+          In this case, change any previously entered information as needed to correct the error, or check the error content to determine other possible sources of the error.
+        </para>
+      </important>
+    </section>
+  </section>
+  <section xml:id="mds-browser-open">
+    <title>Open a Metadata Service Browser</title>
+    <para>
+      To start the browsing Metadata Services open the window <emphasis role="strong">Resources</emphasis> by choosing <emphasis role="strong">Window</emphasis> | <emphasis role="strong">Resources</emphasis>.
+    </para>
+    <para>
+      <mediaobject>
+        <alt>open</alt>
+        <imageobject>
+          <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/extension/manage/mds/006.png" format="PNG"/>
+        </imageobject>
+      </mediaobject>
+    </para>
+  </section>
+  <xi:include href="navigate.xml"/>
+  <xi:include href="folder.xml"/>
+  <xi:include href="content/view.xml"/>
+  <xi:include href="content/export.xml"/>
+  <xi:include href="content/import.xml"/>
+  <xi:include href="content/update.xml"/>
+  <xi:include href="content/rename.xml"/>
+</chapter>

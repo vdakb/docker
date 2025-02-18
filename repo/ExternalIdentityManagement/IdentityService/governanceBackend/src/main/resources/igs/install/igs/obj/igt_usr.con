@@ -1,0 +1,57 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityService/governanceBackend/src/main/resources/install/adm/obj/igt_usr.con
+--
+-- Generated for Oracle Database 12c on Sun Feb 11 08:55:42 2022 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key 'igt_usr_pk' on 'igt_users'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ALTER TABLE igt_users
+  ADD (
+    CONSTRAINT igt_usr_pk PRIMARY KEY (
+      id
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Unique Key 'igt_usr_uk1' on 'igt_users'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ALTER TABLE igt_users
+  ADD (
+    CONSTRAINT igt_usr_uk1 UNIQUE (
+      username
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Unique Key 'igt_usr_uk2' on 'igt_users'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ALTER TABLE igt_users
+  ADD (
+    CONSTRAINT igt_usr_uk2 UNIQUE (
+      email
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Check Constraint 'igt_usr_ck1' on 'igt_users'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ALTER TABLE igt_users
+  ADD (
+    CONSTRAINT igt_usr_ck1 CHECK (
+      active IN (0, 1)
+    )
+  )
+/
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Check Constraint 'igt_usr_ck2' on 'igt_users'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ALTER TABLE igt_users
+  ADD (
+    CONSTRAINT igt_usr_ck2 CHECK (
+      language IN ('ar', 'ca', 'cs', 'da', 'de', 'el', 'en', 'es', 'fi', 'fr', 'hi', 'hu', 'is', 'it', 'ja', 'ko', 'lb', 'nl', 'no', 'pl', 'pt', 'ro', 'ru', 'sk', 'sr', 'sv', 'tr', 'zh')
+    )
+  )
+/

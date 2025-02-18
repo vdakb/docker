@@ -1,0 +1,24 @@
+-- D:\Project\Bundeskriminalamt12c\InternalIdentityManagement\EmployeePortal\portalBackend\src\main\resources\dbs\epp\obj\ept-bdl.con
+--
+-- Generated for Oracle Database 12c on Sun May 24 16:53:56 2020 by Server Generator 10.1.2.93.10
+
+PROMPT Creating Primary Key 'ept_bdl_pk' on 'ept_bundles'
+ALTER TABLE ept_bundles
+  ADD (
+    CONSTRAINT ept_bdl_pk PRIMARY KEY (
+      loc_id, entity, item
+    )
+    USING INDEX TABLESPACE &&eppdata
+  )
+/
+PROMPT Creating Foreign Key 'ept_bdl_loc_fk' on 'ept_bundles'
+ALTER TABLE ept_bundles
+  ADD (
+    CONSTRAINT ept_bdl_loc_fk FOREIGN KEY (
+      loc_id
+    )
+    REFERENCES ept_locales (
+      id
+    )
+  )
+/

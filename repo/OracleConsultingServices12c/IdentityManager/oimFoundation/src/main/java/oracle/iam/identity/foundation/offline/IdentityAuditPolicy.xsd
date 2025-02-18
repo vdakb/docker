@@ -1,0 +1,87 @@
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:oim           ="http://www.oracle.com/schema/oim/audit"
+            targetNamespace     ="http://www.oracle.com/schema/oim/audit"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="entitlement"
+            version             ="1.0.0.0">
+  <xsd:element name="exclusion">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="policy" nillable="false" minOccurs="1" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:complexContent>
+              <xsd:extension base="oim:entity">
+                <xsd:sequence>
+                  <xsd:element name="rule" nillable="false" minOccurs="1" maxOccurs="1">
+                    <xsd:complexType>
+                      <xsd:complexContent>
+                        <xsd:extension base="oim:entity">
+                          <xsd:all>
+                            <xsd:element name="first"  type="oim:role" nillable="false" minOccurs="1" maxOccurs="1"/>
+                            <xsd:element name="second" type="oim:role" nillable="false" minOccurs="1" maxOccurs="1"/>
+                          </xsd:all>
+                        </xsd:extension>
+                      </xsd:complexContent>
+                    </xsd:complexType>
+                  </xsd:element>
+                </xsd:sequence>
+                <xsd:attribute name="description" type="oim:token"      use="optional"/>
+                <xsd:attribute name="owner"       type="oim:token"      use="optional"/>
+                <xsd:attribute name="remediator"  type="oim:remediator" use="optional"/>
+                <xsd:attribute name="severity"    type="oim:severity"   default="high"/>
+                <xsd:attribute name="status"      type="oim:status"    default="active"/>
+              </xsd:extension>
+            </xsd:complexContent>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="role">
+    <xsd:complexContent>
+      <xsd:extension base="oim:entity"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="entity">
+    <xsd:attribute name="id"            type="oim:token"     use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="remediator">
+    <xsd:choice>
+      <xsd:element name="user"     nillable="false" minOccurs="1" maxOccurs="1" type="oim:token"/>
+      <xsd:element name="manager"  nillable="false" minOccurs="1" maxOccurs="1" type="oim:manager"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <simpleType name="severity">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="high"/>
+      <xsd:enumeration value="medium"/>
+      <xsd:enumeration value="low"/>
+    </xsd:restriction>
+  </simpleType>
+
+  <xsd:simpleType name="manager">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="manager"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="status">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="active"/>
+      <xsd:enumeration value="disabled"/>
+      <xsd:enumeration value="decomissioned"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <simpleType name="token">
+    <xsd:restriction base="xsd:token">
+      <xsd:whiteSpace value="collapse"/>
+    </xsd:restriction>
+  </simpleType>
+</xsd:schema>

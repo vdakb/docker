@@ -1,0 +1,178 @@
+/*
+    Oracle Deutschland GmbH
+
+    This software is the confidential and proprietary information of
+    Oracle Corporation. ("Confidential Information").  You shall not
+    disclose such Confidential Information and shall use it only in
+    accordance with the terms of the license agreement you entered
+    into with Oracle.
+
+    ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+    SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+    SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+    THIS SOFTWARE OR ITS DERIVATIVES.
+
+    Copyright © 2021. All Rights reserved
+
+    -----------------------------------------------------------------------
+
+    System      :   Oracle Identity Manager Connector Library
+    Subsystem   :   Google Drupal Connector
+
+    File        :   Lookup.java
+
+    Compiler    :   Oracle JDeveloper 12c
+
+    Author      :   adrien.farkas@oracle.com based on work of dieter.steding@oracle.com
+
+    Purpose     :   This file implements the class
+                    Lookup.
+
+
+    Revisions    Date        Editor      Comment
+    ------------+-----------+-----------+-----------------------------------
+    1.0.0.0      2021-21-05  DSteding    First release version
+*/
+
+package oracle.iam.identity.icf.connector.drupal.request;
+
+import java.util.Map;
+import oracle.iam.identity.icf.connector.drupal.schema.User;
+
+import javax.ws.rs.core.Response;
+
+import javax.ws.rs.client.WebTarget;
+
+import oracle.iam.identity.icf.foundation.SystemException;
+
+import oracle.iam.identity.icf.rest.request.Request;
+
+////////////////////////////////////////////////////////////////////////////////
+// class Lookup
+// ~~~~~ ~~~~~~
+/**
+ ** A factory for Google Drupal lookup requests.
+ **
+ ** @author  adrien.farkas@oracle.com based on work of dieter.steding@oracle.com
+ ** @version 1.0.0.0
+ ** @since   1.0.0.0
+ */
+public class Lookup extends Request<Lookup>  {
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Constructors
+  //////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method:   Ctor
+  /**
+   ** Constructs a new REST lookup request.
+   ** <br>
+   ** This constructor is private to prevent other classes to use
+   ** "new Lookup()" and enforces use of the public method below.
+   **
+   ** @param  target             the {@link WebTarget} to send the request.
+   **                            <br>
+   **                            Allowed object is {@link WebTarget}.
+   ** @param  content            a string describing the media type of content
+   **                            sent to the Service Provider.
+   **                            <br>
+   **                            Allowed object is {@link String}.
+   ** @param  accept             a string (or strings) describing the media type
+   **                            that will be accepted from the Service
+   **                            Provider.
+   **                            <br>
+   **                            This parameter must not be <code>null</code>.
+   **                            <br>
+   **                            Allowed object is {@link String}.
+   */
+  private Lookup(final WebTarget target, final String content, final String... accept) {
+    // ensure inheritance
+    super(target.queryParam("_format", "json"), content, accept);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Methods group by functionality
+  //////////////////////////////////////////////////////////////////////////////
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method:   build
+  /**
+   ** Factory method to create a generic lookup resource request.
+   **
+   ** @param  target             the {@link WebTarget} to send the request.
+   **                            <br>
+   **                            Allowed object is {@link WebTarget}.
+   ** @param  content            a string describing the media type of content
+   **                            sent to the Service Provider.
+   **                            <br>
+   **                            Allowed object is {@link String}.
+   ** @param  accept             a string (or strings) describing the media type
+   **                            that will be accepted from the Service
+   **                            Provider.
+   **                            <br>
+   **                            This parameter must not be <code>null</code>.
+   **                            <br>
+   **                            Allowed object is {@link String}.
+   **
+   ** @return                    a JAX-RS request.
+   **                            <br>
+   **                            Possible object is <code>Lookup</code>.
+   */
+  public static Lookup build(final WebTarget target, final String content, final String... accept) {
+    return new Lookup(target, content, accept);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method:   invoke
+  /**
+   ** Invoke the REST lookup request.
+   **
+   ** @return                    the successfully lookedup REST resource.
+   **                            <br>
+   **                            Possible object is {@link Map} where each
+   **                            element is a {@link String} mapped to a
+   **                            {@link Object}.
+   **
+   ** @throws SystemException    if the Service Provider responded with an
+   **                            error.
+   */
+  public Map<String, Object> invoke()
+    throws SystemException {
+
+    final String method = "Lookup#invoke";
+
+    Response response = buildRequest().get();
+    try {
+      if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+        return response.readEntity(Map.class);
+      }
+      else {
+        throw ExceptionParser.from(response);
+      }
+    }
+    finally {
+      response.close();
+    }
+  }
+  public User invokeUser()
+    throws SystemException {
+
+    final String method = "Lookup#invokeUser";
+    
+    Response response = buildRequest().get();
+    try {
+      if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+        return response.readEntity(User.class);
+      }
+      else {
+        throw ExceptionParser.from(response);
+      }
+    }
+    finally {
+      response.close();
+    }
+  }
+}

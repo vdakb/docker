@@ -1,0 +1,25 @@
+-- /Users/dsteding/Project/Bundeskriminalamt12c/ExternalIdentityManagement/IdentityService/governanceBackend/src/main/resources/install/adm/obj/igt_rol.con
+--
+-- Generated for Oracle Database 11g on Sun Jun 10 18:41:42 2018 by Server Generator 10.1.2.93.10
+
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key 'igt_rol_pk' on 'igt_roles'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ALTER TABLE igt_roles
+  ADD (
+    CONSTRAINT igt_rol_pk PRIMARY KEY (
+      id
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Check Constraint 'igt_rol_ck1' on 'igt_roles'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ALTER TABLE igt_roles
+  ADD (
+    CONSTRAINT igt_rol_ck1 CHECK (
+      active IN (0, 1)
+    )
+  )
+/

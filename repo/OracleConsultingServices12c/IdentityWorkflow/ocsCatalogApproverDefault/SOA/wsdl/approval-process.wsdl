@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<wsdl:definitions name           ="ApprovalProcess"
+                  xmlns:wsdl     ="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:plnk     ="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+                  xmlns:ns1      ="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService"
+                  xmlns:ns2      ="http://www.w3.org/2005/08/addressing"
+                  xmlns:client   ="urn:ocs:default:catalog:approver"
+                  targetNamespace="urn:ocs:default:catalog:approver">
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   PARTNER LINK TYPE DEFINITION
+   |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   The ApprovalProcessEndpoint partnerLinkType binds the provider and
+   |   requester portType into an asynchronous conversation.
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <plnk:partnerLinkType name="ApprovalProcessEndpoint">
+    <plnk:role name="ApprovalProcessProvider"  portType="client:ApprovalProcess"/>
+    <plnk:role name="ApprovalProcessRequester" portType="client:ApprovalProcessCallback"/>
+  </plnk:partnerLinkType>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   TYPE DEFINITION
+   |   ~~~~~~~~~~~~~~~
+   |   List of services participating in this BPEL process
+   |
+   |   The default output of the BPEL designer uses strings as input and output
+   |   to the BPEL Process. But you can define or import any XML Schema type
+   |   and use them as part of the message types.
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <wsdl:import location="request-service.wsdl" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService"/>
+  <wsdl:types>
+    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <xsd:import schemaLocation="../schema/approval-process.xsd" namespace="urn:ocs:default:catalog:approver"/>
+    </xsd:schema>
+  </wsdl:types>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   MESSAGE TYPE DEFINITION
+   |   ~~~~~~~~~~~~~~~~~~~~~~~
+   |   Definition of the message types used as part of the port type defintions
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <wsdl:message name="ApprovalProcessRequestMessage">
+    <wsdl:part name="payload" element="client:process"/>
+  </wsdl:message>
+  <wsdl:message name="ApprovalProcessResponseMessage">
+    <wsdl:part name="payload" element="client:processResponse"/>
+  </wsdl:message>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   PORT TYPE DEFINITION
+   |   ~~~~~~~~~~~~~~~~~~~~
+   |   A port type groups a set of operations into a logical service unit.
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <!--
+   | portType implemented by the requester of ApprovalProcess BPEL process
+   | for asynchronous initiating purposes
+   -->
+  <wsdl:portType name="ApprovalProcess">
+    <wsdl:operation name="process">
+      <wsdl:input message="client:ApprovalProcessRequestMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <!--
+   | portType implemented by the requester of ApprovalProcess BPEL process
+   | for asynchronous callback purposes
+   -->
+  <wsdl:portType name="ApprovalProcessCallback">
+    <wsdl:operation name="processResponse">
+      <wsdl:input message="client:ApprovalProcessResponseMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

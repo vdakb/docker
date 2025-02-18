@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name                ="Identity Access Setup Include"
+         xmlns:fmw           ="http://oracle.hst.deployment/fusion"
+         xmlns:jps           ="http://oracle.hst.deployment/security"
+         xmlns:wsm           ="http://oracle.hst.deployment/webservice"
+         xmlns:server        ="http://oracle.hst.deployment/topology"
+         xmlns:ids           ="http://oracle.iam.access/identitystore"
+         xmlns:service       ="http://oracle.iam.access/accessservice"
+         xmlns:ams           ="http://oracle.iam.access/accessserver"
+         xmlns:agent         ="http://oracle.iam.access/accessagent"
+         xmlns:policy        ="http://oracle.iam.access/accesspolicy"
+         xmlns:identitydomain="http://oracle.iam.oauth/domain"
+         xmlns:resourceserver="http://oracle.iam.oauth/resource">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name" value="${log.env}/fim-import-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   ######    #####
+  **              #     #     #  #     #
+  **              #     #     #  #      
+  **              #     #     #   #####
+  **              #     #     #        #
+  **              #     #     #  #     #
+  **            #####   ######    #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deploys the Oracle Access Manager Identity Store Configuration
+  **
+  ** Synopsis: The tasks deploys the Identity Store
+  **           This includes:
+  **           o Secondary User Identity Store (FederationIdentityProxy)
+  ******************************************************************************
+  -->
+  <target name="0100" description="Creating Federation Identity Proxy in Oracle Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 Create Federation Identity Proxy Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <ids:create contextRef="jmx-context">
+      <ids:instance name="FederationIdentityProxy">
+        <ids:parameter value="primary"               name="false"/>
+        <ids:parameter value="serviceType"           name="${fim.server.type}"/>
+        <ids:parameter value="serviceProvider"       name="${fim.server.type}"/>
+        <ids:parameter value="serviceURL"            name="${fim.server.protocol}://${fim.server.host}:${fim.server.port}"/>
+        <ids:parameter value="servicePrincipal"      name="${fim.server.username}"/>
+        <ids:parameter value="serviceCredential"     name="${fim.server.password}"/>
+        <ids:parameter value="groupSearchBase"       name="${fim.server.basegroup}"/>
+        <ids:parameter value="groupCacheEnabled"     name="false"/>
+        <ids:parameter value="userSearchBase"        name="${fim.server.baseuser}"/>
+        <ids:parameter value="userNameAttribute"     name="userPrincipalName"/>
+        <ids:parameter value="userPasswordAttribute" name="userPassword"/>
+        <ids:parameter value="userObjectClass"       name="federatedPerson"/>
+      </ids:instance>
+    </ids:create>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

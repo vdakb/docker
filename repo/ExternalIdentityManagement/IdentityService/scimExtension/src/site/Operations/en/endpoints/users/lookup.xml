@@ -1,0 +1,526 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="api-users-lookup"
+         xml:lang="en"
+         version ="5.0">
+  <title>Lookup User</title>
+  <para>
+    This endpoint provides the ability to lookup existing application instance identified by a URN.
+    Request does not support pagination and filtering.
+  </para>
+  <section xml:id="api-users-lookup-req">
+    <title>Request</title>
+    <warning>
+      <title>Permission</title>
+      <para>Calling user must have administration capability for the organization where the user is located and capability to view users.</para>
+    </warning>
+    <para>
+      <restapi role="search">/Users/{userName}</restapi>
+    </para>
+    <section xml:id="api-users-lookup-req-h">
+      <title>Request Header</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-users-lookup-req-q">
+      <title>Query Parameters</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>none</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>    
+  </section>
+  <section xml:id="api-users-lookup-res">
+    <title>Response</title>
+    <para>
+      The representation of the user's (identified by the given <emphasis role="strong">userName</emphasis>) accounts and attributes.
+    </para>
+    <section xml:id="api-users-lookup-res-r0">
+      <title>Identities and Accounts Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">id</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The identifier of this user's identity, <emphasis role="strong">value is OIM username</emphasis>.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">schemas</emphasis></entry>
+              <entry>array of strings</entry>
+              <entry>yes</entry>
+              <entry>List of schema URNs referenced by this object.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">meta</emphasis></entry>
+              <entry><link linkend='api-users-lookup-res-r1'>Meta Information</link> object</entry>
+              <entry>yes</entry>
+              <entry>Meta information for this object.</entry>
+            </row>
+            <row>
+              <entry>array of attributes</entry>
+              <entry>varies</entry>
+              <entry>yes</entry>
+              <entry>
+                List of attributes of the identity, e.g. <emphasis role="strong">userType</emphasis>, <emphasis role="strong">userName</emphasis> or <emphasis role="strong">displayName</emphasis>.
+                The attributes are in the format <emphasis role="strong">"Attribute Name": "Attribute value"</emphasis> where the <emphasis role="strong">attribute value</emphasis> depends on the actual attribute - can be a string, a boolean, a number or an object.
+              </entry>
+            </row>
+            <row>
+              <entry>Schema URNs</entry>
+              <entry>varies</entry>
+              <entry>yes</entry>
+              <entry>
+                List of additional attributes of the identity identified by the Schema URN defining them.
+                The attributes themselves are in the format <emphasis role="strong">"Attribute Name": "Attribute value"</emphasis> where the <emphasis role="strong">attribute value</emphasis> depends on the actual attribute - can be a string, a boolean, a number or an object.
+                A specific URN (SCIM schema extension <emphasis role="strong">urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:UserApplication</emphasis> is described <link linkend='api-users-lookup-res-r2'>below</link>.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-users-lookup-res-r1">
+      <title>Meta Information</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">resourceType</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The type of this resource.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">created</emphasis></entry>
+              <entry>number</entry>
+              <entry>yes</entry>
+              <entry>The identity creation timestamp in the Java format (number of milliseconds since the epoch).</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">lastModified</emphasis></entry>
+              <entry>number</entry>
+              <entry>yes</entry>
+              <entry>The identity last modifucation timestamp in the Java format (number of milliseconds since the epoch).</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-users-lookup-res-r2">
+      <title>UserApplication SCIM Extension</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">applications</emphasis></entry>
+              <entry>array of <link linkend='api-users-lookup-res-r3'>application</link> objects</entry>
+              <entry>yes</entry>
+              <entry>List of application objects.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-users-lookup-res-r3">
+      <title>Application</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">applicationName</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Name of the application instance for this account.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">status</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Status of the account.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">applicationAttributes</emphasis></entry>
+              <entry>array of <link linkend='api-users-lookup-res-r4'>application attributes</link> objects</entry>
+              <entry>yes</entry>
+              <entry>List of application accounts and attributes.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">entitlements</emphasis></entry>
+              <entry>array of <link linkend='api-users-lookup-res-r5'>entitlements</link> objects</entry>
+              <entry>yes</entry>
+              <entry>List of application entitlements.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-users-lookup-res-r4">
+      <title>Application Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">name</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Name of the application instance attribute.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">value</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Value of the application instance attribute.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-users-lookup-res-r5">
+      <title>Entitlements</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">namespace</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>
+                Namespace specific for the entitlements listed.
+                An application may support multiple entitlement namespaces (e.g. <emphasis role="strong">LDAP Roles</emphasis> and <emphasis role="strong">LDAP Groups</emphasis> are two independent entitlement types each identified by an appropriate namespace).
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">entitlementValues</emphasis></entry>
+              <entry>array of <link linkend='api-users-lookup-res-r6'>entitlement values</link> objects</entry>
+              <entry>yes</entry>
+              <entry>Value of the application instance entitlement.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-users-lookup-res-r6">
+      <title>Entitlement Values Object</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">status</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Status of this entitlement instance, possible values are "Provisioned", "Requested".</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">entitlement</emphasis></entry>
+              <entry>array of <link linkend='api-users-lookup-res-r7'>entitlement</link> objects</entry>
+              <entry>yes</entry>
+              <entry>Value of the application instance attribute.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-users-lookup-res-r7">
+      <title>Entitlement</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">name</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Identity account attribute (containing this entitlement) name.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">value</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Name of the entitlement.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="api-users-lookup-ex">
+    <title>Example for looking up a particular identity</title>
+    <para>
+      <restapi role="search">/Users/AFARKAS</restapi>
+    </para>
+    <programlisting>
+{
+    "id": "AFARKAS",
+    "schemas": [
+        "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:User",
+        "urn:ietf:params:scim:schemas:extension:oracle:2.0:IDM:User",
+        "urn:ietf:params:scim:schemas:core:2.0:User",
+        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User",
+        "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:UserApplication"
+    ],
+    "meta": {
+        "resourceType": "User",
+        "created": 1707744800000,
+        "lastModified": 1707744800000,
+        "location": "http://192.168.64.11:8005/igs/scim/v2/Users/AFARKAS"
+    },
+    "userType": "EMP",
+    "userName": "AFARKAS",
+    "displayName": "Adrien Farkas",
+    "name": {
+        "honorificSuffix": "afarkas@vm.oracle.com",
+        "familyName": "Farkas",
+        "givenName": "Adrien"
+    },
+...
+    "urn:ietf:params:scim:schemas:extension:oracle:2.0:IDM:User": {
+        "createBy": {
+            "value": "1",
+            "$ref": "http://192.168.64.11:8005/igs/scim/v2/Users/1"
+        },
+        "passwordExpireDate": 1718109201000,
+        "updateBy": {
+            "value": "1",
+            "$ref": "http://192.168.64.11:8005/igs/scim/v2/Users/1"
+        },
+        "locked": {
+            "duration": 0,
+            "value": "0"
+        }
+    },
+...
+    "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:UserApplication": {
+        "applications": [
+            {
+                "applicationName": "IDSAccount",
+                "status": "Provisioned",
+                "applicationAttributes": [
+                    {
+                        "name": "NsuniqueID",
+                        "value": "5B1C8425B2F44BFF8E62047518B47385"
+                    },
+                    {
+                        "name": "User ID",
+                        "value": "afarkas"
+                    },
+...
+                },
+                "entitlements": [
+                    {
+                        "namespace": "UD_IDS_GRP",
+                        "entitlementValues": [
+                            {
+                                "status": "Provisioned",
+                                "entitlement": [
+                                    {
+                                        "name": "Group Name",
+                                        "value": "AM.IDS Endpoint~orclUserWritePrivilegeGroup"
+                                    }
+                                ]
+                            },
+                            {
+                                "status": "Provisioned",
+                                "entitlement": [
+                                    {
+                                        "name": "Group Name",
+                                        "value": "AM.IDS Endpoint~orclGroupWritePrivilegeGroup"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
+    </programlisting>
+  </section>
+  <section xml:id="api-users-lookup-err">
+    <title>Possible Errors</title>
+    <table>
+      <thead>
+        <tr>
+          <td>Error</td>
+          <td>Condition</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><emphasis role="strong">401 Unauthorized</emphasis></td>
+          <td>No or invalid authentication was provided.</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">403 Forbidden</emphasis></td>
+          <td>Request was authenticated but authorization was not passed (authenticated user lacks role required to acces the resource).</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">404 Not Found</emphasis></td>
+          <td>Requested application instance was not found.</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">503 Service Unavailable</emphasis></td>
+          <td>Other processing error occured including invalid filter syntax. Response <literal>description</literal> attribute contains more details.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</section>

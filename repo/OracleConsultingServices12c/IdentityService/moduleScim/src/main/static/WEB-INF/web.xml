@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<web-app xmlns             ="http://java.sun.com/xml/ns/javaee" version="3.0"
+         xmlns:xsi         ="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+  <servlet>
+    <display-name>SCIM 2 Provisioning Service</display-name>
+    <servlet-name>scim-service</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>oracle.iam.service.scim.Application</param-value>
+    </init-param>
+    <!--
+     | Use this entry ONLY in Development environment
+    <init-param>
+      <param-name>jersey.config.server.provider.classnames</param-name>
+      <param-value>org.glassfish.jersey.filter.LoggingFilter</param-value>
+    </init-param>
+    -->
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <filter>
+    <filter-name>scim-cors-filter</filter-name>
+    <filter-class>oracle.iam.platform.core.filter.CrossOrigin</filter-class>
+    <init-param>
+      <description>
+        A comma separated list of origins that are allowed to access the
+        resources.
+        Default value *, meaning all origins
+      </description>
+      <param-name>allowedOrigin</param-name>
+      <param-value>*</param-value>
+    </init-param>
+    <init-param>
+      <description>
+        A comma separated list of HTTP methods that are allowed to be used when
+        accessing the resources.
+        Default value is GET,POST.
+      </description>
+      <param-name>allowedMethod</param-name>
+      <param-value>GET</param-value>
+    </init-param>
+    <init-param>
+      <description>
+        A comma separated list of HTTP headers that are allowed to be specified
+        when accessing the resources.
+        Default value is X-Requested-With.
+      </description>
+      <param-name>allowedHeader</param-name>
+      <param-value>X-Requested-With</param-value>
+    </init-param>
+    <init-param>
+      <description>
+        A boolean indicating if the resource allows requests with credentials.
+        Default value is false.
+      </description>
+      <param-name>allowCredential</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <description>
+        The number of seconds that preflight requests can be cached by the
+        client.
+        Default value is 1800 seconds, or 30 minutes.
+      </description>
+      <param-name>preflighAge</param-name>
+      <param-value>60</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>scim-cors-filter</filter-name>
+    <url-pattern>*</url-pattern>
+  </filter-mapping>
+  <session-config>
+    <session-timeout>10</session-timeout>
+  </session-config>
+</web-app>

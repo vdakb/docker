@@ -1,0 +1,1712 @@
+{
+	"info": {
+		"_postman_id": "7ab7a079-22b0-4d3f-917e-14cf1625ff37",
+		"name": "P20 UID Generator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12777809"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "uid-token-request",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "uidservice",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "x-oauth-identity-domain-name",
+								"value": "{{identityDomain}}",
+								"type": "text",
+								"description": "Identity Domain under which the token is being requested."
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"description": "Grant Type for the Access Token Request",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "igssysadm",
+									"description": "Username of resource owner",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"description": "Password of resource owner",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{sso-endpoint}}/oauth2/rest/token",
+							"host": [
+								"{{sso-endpoint}}"
+							],
+							"path": [
+								"oauth2",
+								"rest",
+								"token"
+							]
+						},
+						"description": "The Password grant is used when the application exchanges the user’s username and password for an access token.\n\nThis is exactly the thing OAuth was created to prevent in the first place, so you should never allow third-party apps to use this grant."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Participant Type",
+			"item": [
+				{
+					"name": "search",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true,
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/participantType",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"participantType"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "search",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/participantType",
+									"protocol": "https",
+									"host": [
+										"igs",
+										"cinnamonstar",
+										"oam"
+									],
+									"path": [
+										"igs",
+										"uid",
+										"v1",
+										"participantType"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "lookup",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/participantType/T",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"participantType",
+								"T"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"content-length": true,
+							"user-agent": true,
+							"accept": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\"   : \"X\"\n, \"name\" : \"Unknown\"\n}"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/participantType",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"participantType"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true,
+							"accept-encoding": true,
+							"accept": true,
+							"user-agent": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"name\" : \"Wellknown\" }"
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/participantType/T",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"participantType",
+								"T"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Country",
+			"item": [
+				{
+					"name": "search",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/country",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"country"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "page",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/country?startIndex=1&sortBy=id&sortOrder=ascending",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"country"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								},
+								{
+									"key": "sortBy",
+									"value": "id"
+								},
+								{
+									"key": "sortOrder",
+									"value": "ascending"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/country?filter=id eq 36",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"country"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "id eq 36"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/country/41",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"country",
+								"41"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept-encoding": true,
+							"accept": true,
+							"user-agent": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\"  : \"41\"\n, \"name\" : \"Poland\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/country",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"country"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept-encoding": true,
+							"accept": true,
+							"content-type": true,
+							"user-agent": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"name\" : \"ffffff\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/country/41",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"country",
+								"41"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/country/41",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"country",
+								"41"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "State",
+			"item": [
+				{
+					"name": "list",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/state",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "page",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/state?startIndex=1",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"state"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/state/www",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"state",
+								"www"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\"   : \"2\"\n, \"name\" : \"Dummy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/state",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"state"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"id\"   : \"2\"\n, \"name\" : \"Dummy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/state/2",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"state",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/state/2",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"state",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tenant",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/tenant",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"tenant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "page",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/tenant?startIndex=1",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"tenant"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/tenant/T-36-0-30",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"tenant",
+								"T-36-0-30"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\" : \"test\"\n, \"name\" : \"BlaBla\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/tenant",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"tenant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\" : \"test\"\n, \"name\" : \"No BlaBla\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/tenant/test",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"tenant",
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/tenant/T-36-0-20",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"tenant",
+								"T-36-0-20"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Type",
+			"item": [
+				{
+					"name": "list",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/type",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "page",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/type?startIndex=1",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"type"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/type/101",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"type",
+								"101"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\": \"111\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/type",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modify",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"accept-encoding": true,
+							"content-type": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\": \"Y\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/type/X",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"type",
+								"X"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/type/X",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"type",
+								"X"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Participant",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/participant",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"participant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "page",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/participant?startIndex=1&count=10",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"participant"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								},
+								{
+									"key": "count",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/participant/01",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"participant",
+								"01"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Surrogate",
+			"item": [
+				{
+					"name": "list",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/uid",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"uid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list - 1- 50",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/uid?startIndex=1&count=50",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"uid"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								},
+								{
+									"key": "count",
+									"value": "50"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "de",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/uid/T-36-0-20-101-4123463",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"uid",
+								"T-36-0-20-101-4123463"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"user-agent": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"ptt\" : \"T\"\n, \"cid\" : \"36\"\n, \"sid\" : \"0\"\n, \"pts\" : \"30\"\n, \"tid\" : \"101\"\n, \"eid\" : \"4123458\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/uid",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"uid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"accept": true,
+							"accept-encoding": true,
+							"user-agent": true
+						}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"uid\" : \"T-36-0-20-101-4123464\" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/uid",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"uid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"user-agent": true,
+							"accept": true,
+							"accept-encoding": true,
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://igs.cinnamonstar.oam/igs/uid/v1/uid/T-36-0-30-101-4123461",
+							"protocol": "https",
+							"host": [
+								"igs",
+								"cinnamonstar",
+								"oam"
+							],
+							"path": [
+								"igs",
+								"uid",
+								"v1",
+								"uid",
+								"T-36-0-30-101-4123461"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ4NXQiOiJlRnpFQmNkX0N3SV9qRlk1bXJlVEd1OGthWlEiLCJraWQiOiJTZWN1cmVEb21haW4yIiwiYWxnIjoiUlMyNTYifQ.eyJhdWQiOlsidWlkcmVzb3VyY2UiLCJodHRwczovL3Nzby5jaW5uYW1vbnN0YXIub2FtOjQ0My9vYXV0aDIiXSwic3ViIjoiaWdzc3lzYWRtIiwic2NvcGUiOlsidWlkcmVzb3VyY2UuYWxsIl0sImRvbWFpbiI6IlNlY3VyZURvbWFpbjIiLCJpc3MiOiJodHRwczovL3Nzby5jaW5uYW1vbnN0YXIub2FtOjQ0My9vYXV0aDIiLCJjbGllbnQiOiJ1aWRzZXJ2aWNlIiwiZ3JvdXBzIjpbInVpZGFkbWluIl0sInNlc3Npb25JZCI6ImI2YjE5Nzc2ZjlkMmYzMzQ5MWQ0OGViZGU5MGM1YjY2ZTBjOGI2N2YwMWZhZTRiN2YwMjU0ZGI2MGJhMGU0MjgiLCJleHAiOjE2OTQ4NjE3MDgsImlhdCI6MTY5NDg1NDUwOCwianRpIjoiak8zVV95bzdHSko4cWpFcWFRbXU3ZyJ9.m1p3WrNaaCltVv9j7gkpCRgAuxKPYJMz1o-lLX2X-lPceo8s408xJag_gdlRENK6fLyuc1sKpRfHRp9sVNaS-b7Rw-C_WHdiF2h3zcqgvwkTkpRmvArPmkcbHvSP8mQ3NiG2l6WQqNTz3UZLZb4pf9ZBOiSclnH7Fz3h1UScNKGW8lMtb_L9llE5YkgBrjZTifXyD-4Ny2g19M0Wox-JougXzq_ysgR1BZ90RTtub-gV3BhPPolo986xOt_nnSnda1OF57HqSNu2WmnIM0Gm5998xPc6OY8ptpq3pVUQ-rXw1mBI1RSyeM7y4JCZwf561Yyh-V2HoMjZ_QNiC_ByxQ",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "sso-endpoint",
+			"value": "https://sso.cinnamonstar.oam",
+			"type": "string"
+		},
+		{
+			"key": "identityDomain",
+			"value": "SecureDomain2",
+			"type": "string"
+		},
+		{
+			"key": "igs-endpoint",
+			"value": "https://igs.cinnamonstar.oam",
+			"type": "string"
+		}
+	]
+}

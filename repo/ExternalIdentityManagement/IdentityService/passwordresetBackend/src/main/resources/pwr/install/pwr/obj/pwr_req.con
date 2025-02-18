@@ -1,0 +1,21 @@
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Constraints on 'pwr_requests'
+PROMPT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+PROMPT Creating Primary Key 'pwr_req_pk' on 'pwr_requests'
+ALTER TABLE pwr_requests
+    ADD (
+    CONSTRAINT pwr_req_pk PRIMARY KEY (
+      id
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/
+PROMPT Creating Unique Key 'pwr_req_uk' on 'pwr_requests'
+ALTER TABLE pwr_requests
+    ADD (
+    CONSTRAINT pwr_req_uk UNIQUE (
+      request_id
+    )
+    USING INDEX TABLESPACE igs_data
+  )
+/

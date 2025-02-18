@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="about"
+         xml:lang="de"
+         version ="5.0">
+  <title>Atlassian Jira Server Connector</title>
+  <para>
+    Der Atlassian Jira Server Connector integriert Oracle Identity Manager (OIM) in Atlassian Jira Server. Oracle Identity Manager ist eine zentralisierte L&#246;sung zu Verwaltung von Identit&#252;tsdaten, die Service-, Compliance-, Bereitstellungs- und Kennwortverwaltungsdienste f&#252;r Anwendungen vor Ort oder in der Cloud bereitstellt. Oracle Identity Manager-Konnektoren werden verwendet, um Oracle Identity Manager in externe, identit&#252;tsbezogene Anwendungen zu integrieren. Mit dem Atlassian Jira Server Connector k&#246;nnen Sie Atlassian Jira Server als verwaltete (Ziel-) Ressource in Oracle Identity Manager verwenden.
+  </para>
+  <note>
+    In diesem Handbuch wird der Begriff Zielsystem manchmal f&#252;r Atlassian Jira Server verwendet.
+  </note>
+  <para>
+    Die folgenden Themen bieten einen allgemeinen &#220;berblick &#252;ber den Atlassian Jira Server Connector:
+  </para>
+  <section xml:id="about-preface">
+    <title>Einf&#252;hrung in den Atlassian Jira Server Connector</title>
+    <para>
+      Mit dem Atlassian Jira Server Connector k&#246;nnen Sie den Atlassian Jira Server als verwaltete (Ziel-) Quelle von Identit&#252;tsdaten f&#252;r Oracle Identity Manager verwenden. Im Modus der Benutzerkontenverwaltung (Zielressource) des Connectors werden die Daten zu den Benutzern die direkt auf dem Zielsystem erstellt oder ge&#252;ndert mit Oracle Identity Manager abgeglichen. Diese Daten werden verwendet, um neue Ressourcen bereitzustellen (zuzuweisen) oder Ressourcen zu aktualisieren, die Identit&#252;ten in Oracle Identity Manager bereits zugewiesen wurden. Sie k&#246;nnen Oracle Identity Manager auch zum Bereitstellen oder Aktualisieren von Atlassian Jira Server Ressourcen (Benutzerkonten) verwenden, die Identit&#252;ten in Oracle Identity Manager zugewiesen sind. Diese in Oracle Identity Manager durchgef&#252;hrten Bereitstellungsvorg&#252;nge werden in die Erstellung oder Aktualisierung von Zielsystemkonten &#252;bersetzt.
+    </para>
+  </section>
+  <section xml:id="about-certified">
+    <title>Hardware und Software Zertifizierung</title>
+    <para>
+      Die plattformspezifischen Anforderungen an Hardware und Software, die in diesem Dokument aufgef&#252;hrt werden, sind g&#252;ltig f&#252;r den Zeitpunkt zu dem, dieses Dokument erstellt wurde. Da neue Plattformen und Betriebssysteme zertifiziert werden k&#246;nnen, nachdem dieses Dokument ver&#246;ffentlicht wurde, wird empfohlen die Zertifizierungsmatrix auf Oracle Technology Network heranzuziehen. Dort befinden sich die aktuellsten Aussagen zu zertifizierten Plattformen und Betriebssystemen.
+    </para>
+    <para>
+      Die jeweilige Zertifizierungsmatrix f&#252;r Produkte der Oracle Identity und Access Management Suite sind unter folgenden URLs verf&#252;gbar:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link xl:show="new" xl:href="https://www.oracle.com/technetwork/middleware/fmw-122130-certmatrix-3867828.xlsx" xl:role="http://docbook.org/xlink/role/olink">
+          <citetitle>Oracle&#174; Fusion Middleware 12c (12.2.1.3.0)</citetitle>
+        </link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="about-certified-component">
+      <title>Erforderliche Komponentenversionen</title>
+      <table>
+        <thead>
+          <tr>
+            <td>Komponente</td>
+            <td>Version</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Oracle Java Development Kit</td>
+            <td>JDK 1.8.0_131 oder h&#246;her</td>
+          </tr>
+          <tr>
+            <td>Oracle Infrastruktur</td>
+            <td>Oracle&#174; WebLogic 12c (12.2.1.3.0)</td>
+          </tr>
+          <tr>
+            <td>Oracle Datenbank</td>
+            <td>Oracle&#174; RDBMS 12c (12.2.0.1.0 oder h&#246;her</td>
+          </tr>
+          <tr>
+            <td>Oracle Identity Governance</td>
+            <td>Oracle&#174; Identity Governance 12c Release 12.2.1.3.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section xml:id="about-certified-patch">
+      <title>Erforderliche Patches</title>
+      <table>
+        <thead>
+          <tr>
+            <td>Komponente</td>
+            <td>Version</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Oracle Identity Governance</td>
+            <td>Patch 30735905 Oracle&#174; Identity Governance Bundle Patch ID:200108.2108)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+  <section xml:id="about-architecture">
+    <title>Architektur</title>
+    <para>
+      Der Atlassian Jira Server Connector wird mithilfe des Identity Connector Framework (ICF) implementiert. Die ICF ist eine Komponente, die grundlegende Abstimmungs- und Bereitstellungsvorg&#252;nge bietet, die allen Oracle Identity Manager-Connectors gemeinsam sind. Dar&#252;ber hinaus bietet ICF allgemeine Funktionen, die Entwickler sonst selbst implementieren m&#252;ssten, z. B. Verbindungspooling, Pufferung, Zeit&#252;berschreitungen und Filterung. Die ICF wird zusammen mit Oracle Identity Manager ausgeliefert.
+    </para>
+    <para>
+      Abbildung 1-1 zeigt die Integration von Oracle Identity Manager on-premise in den Atlassian Jira Server Service. Der Atlassian Jira Server Service Connector folgt einem hybriden Datenverwaltungssystem, das M&#246;glichkeiten f&#252;r Unternehmen bietet, die in Oracle Identity Manager invertiert haben, jedoch auf das Oracle Atlassian Jira Server Service-Framework migrieren m&#246;chten. Wie aus dem Diagramm hervorgeht, kann der Atlassian Jira Server Service-Connector Bereitstellungs- und Abgleichsvorg&#252;nge f&#252;r Atlassian Jira Server Service ausf&#252;hren. In der Abbildung ist das Connector-Bundle f&#252;r die Interaktion mit Atlassian Jira Server Service verantwortlich, einem REST-kompatiblen Ziel. Daher verwendet das Connector-Paket das generische REST-Bundle. Das Parsen und Autorisieren erfolgt &#252;ber das gemeinsame REST-Bundle, das Teil des generischen REST-Bundles ist. Standardm&#252;&#223;ig unterst&#252;tzt es die HTTP-Basisauthentifizierung f&#252;r Ressourcenbesitzer
+    </para>
+  </section>
+  <section xml:id="about-function">
+    <title>Funktionen</title>
+    <para>
+      Zu den Funktionen des Connectors geh&#246;ren neben der Provisionierung von Benutzerkonten, der vollst&#252;ndige, inkrementelle und eingeschr&#252;nkte Abgleich von Benutzerkonten und der Abgleich von gel&#246;schten Kontendaten.
+    </para>
+    <section xml:id="about-function-authn">
+      <title>Authentisierung</title>
+      <para>
+        Standardm&#252;&#223;ig unterst&#252;tzt der Connector die HTTP-Basisauthentifizierung.
+      </para>
+      <para>
+        Wenn das Zielsystem einen der vom Connector nicht unterst&#252;tzten Authentifizierungsmechanismen verwendet, kann mithilfe der von diesem Connector bereitgestellten Plug-Ins eine eigene Implementierung f&#252;r die benutzerdefinierte Authentifizierung hinzugef&#252;gt werden.
+      </para>
+    </section>
+    <section xml:id="about-function-secure">
+      <title>Sichere Kommunikation</title>
+      <para>
+        Die Kommunikation zwischen Identity Manager und dem Zielsystem kann konfiguriert werden.
+      </para>
+      <para>
+        Informationen zur Konfiguration der sicheren Kommunikation finden Sie unter Konfigurieren von SSL f&#252;r den Connector.
+      </para>
+    </section>
+    <section xml:id="about-function-provivioning">
+      <title>Provisionierung von Benutzerkonten</title>
+      <para>
+        Sie k&#246;nnen den Connector verwenden, um Atlassian Jira Server Benutzerkonten und Gruppenzuordnungen bereitzustellen. Sie k&#246;nnen einen neuen Benutzer in Oracle Identity Manager mithilfe der Seite Benutzer erstellen.
+      </para>
+    </section>
+    <section xml:id="about-function-reconciliation">
+      <title>Vollst&#252;ndiger und inkrementeller Datenabgleich</title>
+      <para>
+        Bei einem vollst&#252;ndigen Datenabgleich werden alle Datens&#252;tze vom Zielsystem durch Oracle Identity Manager abgerufen. Nachdem Sie den Connector bereitgestellt haben, k&#246;nnen Sie einen vollst&#252;ndigen Datenabgleich durchf&#252;hren, um alle Benutzerdaten vom Zielsystem nach Oracle Identity Manager zu &#252;bertragen. Nach dem ersten vollst&#252;ndigen Abgleich wird der inkrementelle Abgleich automatisch aktiviert. Bei einem inkrementellen Abgleich werden Benutzerkonten, die seit der letzten Ausf&#252;hrung des Abgleichs hinzugef&#252;gt oder ge&#252;ndert wurden, durch Oracle Identity Manager abgerufen. Sie k&#246;nnen jederzeit einen vollst&#252;ndigen Datenabgleich durchf&#252;hren.
+      </para>
+    </section>
+    <section xml:id="about-function-reconciliation-full">
+      <title>Eingeschr&#252;nkter Datenabgleich</title>
+      <para>
+        Sie k&#246;nnen Datens&#252;tze von Benutzerkonten aus dem Zielsystem basierend auf festgelegten Filterkriterien abgleichen. Um die Datens&#252;tze einzuschr&#252;nken oder zu filtern, die w&#252;hrend der Ausf&#252;hrung des Abgleichs von Oracle Identity Manager abgerufen werden, k&#246;nnen Sie die Teilmenge der hinzugef&#252;gten oder ge&#252;nderten Zielsystemdatens&#252;tze angeben, die abgeglichen werden m&#252;ssen.
+      </para>
+    </section>
+    <section xml:id="about-function-reconciliation-batch">
+      <title>Batch Datenabgleich</title>
+      <para>
+        Abh&#252;ngig von der Anzahl der Datens&#252;tze, die abgeglichen werden sollen, kann eine Aufteilung in Stapel (Batches) konfiguriert werden. Sie k&#246;nnen die Ausf&#252;hrung eines Abgleichs in Stapel aufteilen, indem Sie die Anzahl der Datens&#252;tze angeben, die in jedem Stapel enthalten sein m&#252;ssen.
+      </para>
+    </section>
+  </section>
+  <section xml:id="about-lookup">
+    <title>Wertelisten</title>
+    <para>
+      Wertelisten die w&#252;hrend des Datenabgleichs und Provisionierung verwendet werden, sind entweder vorkonfiguriert oder werden mit dem Zielsystem synchronisiert.
+    </para>
+    <para>
+      Wertelisten, die w&#252;hrend Connector Operationen verwendet werden, k&#246;nnen wie folgt kategorisiert werden:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>Vorkonfigurierte Wertelisten</listitem>
+      <listitem>Synchronisierte Wertelisten</listitem>
+    </itemizedlist>
+    <section xml:id="about-lookup-static">
+      <title>Vorkonfigurierte Wertelisten</title>
+      <para>
+       Vorkonfigurierte Wertelisten werden in Oracle Identity Manager erstellt, wenn Sie den Connector bereitstellen. Diese Wertelisten sind entweder mit Werten vorab ausgef&#252;llt oder m&#252;ssen nach der Bereitstellung des Connectors manuell eingegeben werden.
+     </para>
+      <para>
+       Innerhalb dieser Kategorie von Wertelisten wird wiederum unterschieden nach:
+     </para>
+      <itemizedlist mark='bullet'>
+        <listitem>Globale Wertelisten</listitem>
+        <listitem>Lokale Wertelisten</listitem>
+      </itemizedlist>
+      <section xml:id="about-lookup-static-global">
+        <title>Globale Wertelisten</title>
+        <para>
+         Globale Wertelisten sind unabh&#252;ngig von einem spezifischen Zielsystem.
+       </para>
+      </section>
+      <section xml:id="about-lookup-static-local">
+        <title>Lokale Wertelisten</title>
+        <para>
+         Lokale Wertelisten sind nur innerhalb eines spezifischen Zielsystems (Stage) verf&#252;gbar.
+       </para>
+        <section xml:id="about-lookup-static-local-reconciled">
+          <title>Synchronisierte Wertelisten</title>
+          <para>
+           W&#252;hrend eines Bereitstellungsvorgangs verwenden Sie eine Werteliste im Prozessformular, um einen einzelnen Wert aus einer Reihe von Werten auszuw&#252;hlen. Beispielsweise m&#246;chten Sie m&#246;glicherweise eine Gruppe aus dem Suchfeld Gruppen ausw&#252;hlen, um die Gruppe anzugeben, die dem Benutzer zugewiesen wird. Wenn Sie den Connector bereitstellen, werden in Oracle Identity Manager Wertelisten erstellt, die den Wertelisten des Zielsystems entsprechen. Bei der Synchronisierung von Wertelisten werden Erg&#252;nzungen oder &#196;nderungen, die an bestimmten Feldern im Zielsystem vorgenommen wurden, in die Wertelisten in Oracle Identity Manager kopiert. Nach der Bereitstellung des Connectors werden in Oracle Identity Manager automatisch die folgenden Wertelisten erstellt, die als Quelle f&#252;r Wertelisten verwendet werden:
+         </para>
+          <itemizedlist mark='bullet'>
+            <listitem>AJS.XXX.&lt;Stage&gt;</listitem>
+            <listitem>AJS.XXX.&lt;Stage&gt;</listitem>
+          </itemizedlist>
+          <para>
+           Die Wertelisten AJS.XXX.&lt;Stage&gt;, AJS.XXX.&lt;Stage&gt; und AJS.XXX.&lt;Stage&gt; werden mit Werten gef&#252;llt, die von den Hintergrundprozessen f&#252;r die Wertelisten-Synchronisation aus dem Zielsystem abgerufen werden. W&#252;hrend eines Vorgangs zur Provisionierung eines Benutzerkontos verwenden Sie das Feld Name in der Registerkarte Gruppe im Prozessformular, um eine Gruppe dem entsprechenden Benutzerkonto zuzuweisen. Die Wertelisten f&#252;r Gruppen, Organisationen und Spaces werden mit Werten aus den Wertelisten PCF.UGP.&lt;Stage&gt;, PCF.OSC.&lt;Stage&gt; und PCF.SSC.&lt;Stage&gt; gef&#252;llt, die beim Bereitstellen des Connectors automatisch in Oracle Identity Manager erstellt werden.
+         </para>
+          <para>
+           Standardm&#252;&#223;ig sind diese Wertelisten leer. Sie werden mit Werten gef&#252;llt, die vom Zielsystem abgerufen werden, wenn Sie den Hintergrundprozess f&#252;r die Synchronisierung von Wertelisten ausf&#252;hren. Wenn Sie beispielsweise den Hintergrundprozess ausf&#252;hren, werden alle Gruppen auf dem Zielsystem von Oracle Identity Manager abgerufen und in die Werteliste PCF.UGP.&lt;Stage&gt; eingetragen.
+         </para>
+        </section>
+      </section>
+    </section>
+  </section>
+</chapter>

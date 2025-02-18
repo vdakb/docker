@@ -1,0 +1,32 @@
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="User Name"
+            uniqueName    ="User Name"
+            password      ="Password"
+            transformation="false"
+            natively      ="false">
+    <attribute type="string" name="User Name"    source="__NAME__">
+        <flag>required</flag>
+    </attribute>
+    <attribute type="string" name="Display Name" source="displayName">
+        <flag>required</flag>
+    </attribute>
+	<attribute type="string" name="E-mail"   source="emailAddress">
+        <flag>required</flag>
+    </attribute>
+    <multivalue name="Projects" source="__PROJECT__" transformation="false">
+        <attribute class="string" name="Project" source="__UID__">
+          <flag>required</flag>
+          <flag>entitlement</flag>
+        </attribute>
+        <attribute class="string" name="Role"  source="__NAME__">
+          <flag>required</flag>
+		  <flag>entitlement</flag>
+        </attribute>
+    </multivalue>
+	<multivalue name="Groups" source="__GROUP__" transformation="false">
+        <attribute class="string" name="Group" source="__UID__">
+          <flag>required</flag>
+          <flag>entitlement</flag>
+        </attribute>
+    </multivalue>
+</descriptor>

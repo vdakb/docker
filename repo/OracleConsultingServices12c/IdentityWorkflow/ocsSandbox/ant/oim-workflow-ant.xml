@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Framework 12c Sandbox" default="make" basedir=".">
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="project-workflow">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../../@{subproject}/ant" antfile="oim-workflow-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="project-cleanup">
+    <attribute name="subproject"/>
+    <sequential>
+      <exec executable="svn">
+        <arg value="cleanup"/>
+        <arg value="--remove-unversioned"/>
+        <arg value="../../@{subproject}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to make projects
+  =====================================================================
+  -->
+  <macrodef name="make-workflow">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Workflow @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-workflow subtarget="clean"   subproject="@{path}"/>
+      <project-workflow subtarget="make"    subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to deploy projects
+  =====================================================================
+  -->
+  <macrodef name="deploy-workflow">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Workflow @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-connector subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to cleanup projects
+  =====================================================================
+  -->
+  <macrodef name="cleanup-workflow">
+    <attribute name="path"/>
+    <attribute name="component"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Workflow @{component}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <project-cleanup subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to make the entire workspace
+  =====================================================================
+  -->
+  <target name="make" description="Package the entire workspace artifacts to the appropriate java archive">
+    <record name="./oim-workflow-ant.log" action="start"/>
+    <echo message="============================================================="/>
+    <echo message="Build of Identity Manager Workflow"/>
+    <echo message="============================================================="/>
+    <make-workflow path="ocsCatalogApproverUser"        component="Catalog Approver User"/>
+    <make-workflow path="ocsCatalogApproverRole"        component="Catalog Approver Role"/>
+    <make-workflow path="ocsCatalogApproverEntitlement" component="Catalog Approver Entitlement"/>
+    <make-workflow path="ocsCatalogApproverDefault"     component="Catalog Approver Default"/>
+    <!--
+    <xslt style="oim-workflow-log.xsl" out="../doc/changelog/oim-workflow-log.html" force="true" in="oim-workflow-log.xml"/>
+    -->
+    <record name="./oim-workflow-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the entire workspace
+  ==
+  == There is no need to create a dependency on the make target because
+  == any deployment task on the ANT subproject has such dependency
+  == already
+  =====================================================================
+  -->
+  <target name="deploy" description="Deployment of the entire workspace artifacts to the appropriate destination">
+    <record name="./oim-workflow-ant.log" action="start" append="true"/>
+    <echo message="============================================================="/>
+    <echo message="Deployment of Identity Manager Workflow"/>
+    <echo message="============================================================="/>
+    <deploy-workflow path="ocsCatalogApproverUser"    component="Catalog Approver User"/>
+    <deploy-workflow path="ocsCatalogApproverRole"    component="Catalog Approver Role"/>
+    <deploy-workflow path="ocsCatalogApproverEntitlement" component="Catalog Approver Entitlement"/>
+    <deploy-workflow path="ocsCatalogApproverDefault" component="Catalog Approver Default"/>
+    <record name="./oim-workflow-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to cleanup the entire workspace by leveraging svn
+  == cleanup
+  =====================================================================
+  -->
+  <target name="cleanup" description="Cleanup of the entire workspace artifacts">
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Identity Manager Workflow"/>
+    <echo message="============================================================="/>
+    <cleanup-workflow path="ocsCatalogApproverUser"    component="Catalog Approver User"/>
+    <cleanup-workflow path="ocsCatalogApproverRole"    component="Catalog Approver Role"/>
+    <cleanup-workflow path="ocsCatalogApproverEntitlement" component="Catalog Approver Entitlement"/>
+    <cleanup-workflow path="ocsCatalogApproverDefault" component="Catalog Approver Default"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create the change documentation based on the data
+  == collected in the file ant/oim-workflow-log.xml.
+  == It does some style sheet transformation to create an HTML file of the
+  == information.
+  =====================================================================
+  -->
+  <target name="changelog" description="Creates a changelog in html format">
+    <xslt style="oim-workflow-log.xsl" out="../doc/changelog/oim-workflow-log.html" force="true" in="oim-workflow-log.xml"/>
+  </target>
+</project>

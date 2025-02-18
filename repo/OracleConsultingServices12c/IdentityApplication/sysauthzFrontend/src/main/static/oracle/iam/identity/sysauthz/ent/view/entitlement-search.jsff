@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysauth$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Authorization']}"/>
+  <af:panelHeader id="ph10" text="#{sysauth$bundle.ENT_MULTIPLE}" icon="#{sysauth$bundle.ENT_ICON}">
+    <!--
+    the panel which renders the search criteria and the controls belonging to
+    this panel
+    -->
+    <af:panelGroupLayout id="pgl0" styleClass="AFStretchWidth">
+      <af:declarativeComponent id="dc10" viewId="/searchQuickSearch.jspx" viewCriteriaQuery="#{bindings.EntitlementCriteria}" resultComponentId="pc10:ent" advancedMaxColumns="2" advancedRows="5"/>
+      <!--
+      the panel collection which renders the search result and the controls
+      belonging to this panel
+      -->
+      <af:panelCollection id="pc10" styleClass="AFStretchWidth" featuresOff="statusBar">
+        <f:facet name="menus">
+          <af:menu id="m10" partialTriggers="::dc10" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{pageFlowScope.entitlementSearch.actionMenu}" clientComponent="true">
+            <af:commandMenuItem id            ="cmi12"
+                                text          ="#{sysbase$bundle.SEARCH_MODIFYDOT}"
+                                icon          ="/images/func_open_16_ena.png"
+                                shortDesc     ="#{sysauth$bundle.ENT_MODIFY_HINT}"
+                                disabled      ="#{!oimrole.view[pageFlowScope.entitlementSearch.selected].allowed or pageFlowScope.entitlementSearch.openDisabled}"
+                                actionListener="#{pageFlowScope.entitlementSearch.openDetail}"
+                                partialSubmit ="true"/>
+            <af:commandMenuItem id            ="cmi14"
+                                icon          ="/images/func_refresh_16_ena.png"
+                                text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                action        ="#{pageFlowScope.entitlementSearch.refresh}"/>
+          </af:menu>
+        </f:facet>
+        <f:facet name="toolbar">
+          <af:toolbar id="t10" partialTriggers="::dc10" binding="#{pageFlowScope.entitlementSearch.toolbar}">
+            <af:group id="g10">
+              <af:button id            ="btn12"
+                         text          ="#{sysbase$bundle.SEARCH_MODIFY}"
+                         icon          ="/images/func_open_16_ena.png"
+                         hoverIcon     ="/images/func_open_16_hov.png"
+                         disabledIcon  ="/images/func_open_16_dis.png"
+                         depressedIcon ="/images/func_open_16_act.png"
+                         shortDesc     ="#{sysauth$bundle.ENT_MODIFY_HINT}"
+                         disabled      ="#{!oimrole.view[pageFlowScope.entitlementSearch.selected].allowed or pageFlowScope.entitlementSearch.openDisabled}"
+                         actionListener="#{pageFlowScope.entitlementSearch.openDetail}"
+                         partialSubmit ="true"/>
+              <af:button id            ="btn14"
+                         text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         icon          ="/images/func_refresh_16_ena.png"
+                         hoverIcon     ="/images/func_refresh_16_hov.png"
+                         disabledIcon  ="/images/func_refresh_16_dis.png"
+                         depressedIcon ="/images/func_refresh_16_act.png"
+                         disabled      ="false"
+                         shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         action        ="#{pageFlowScope.entitlementSearch.refresh}"
+                         partialSubmit ="true"/>
+            </af:group>
+          </af:toolbar>
+        </f:facet>
+        <!--
+        we use columnStretching="multiple" to give us the opportunity to size
+        the columns by witdh="nn%"
+        The default width for a column is 100px. There is no auto sizing for
+        columns. Set the width attribute to ensure the column is wide enough to
+        accommodate the width of the contents. When the "multiple" option is
+        used in the table that contains the column, the width can be set to a
+        percentage.
+        -->
+        <af:table id                   ="ent1" var="row" varStatus="vs"
+                  value                ="#{bindings.Entitlement.collectionModel}"
+                  rows                 ="#{bindings.Entitlement.rangeSize}"
+                  fetchSize            ="#{bindings.Entitlement.rangeSize}"
+                  binding              ="#{pageFlowScope.entitlementSearch.searchTable}"
+                  summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                  filterVisible        ="false"
+                  filterModel          ="#{bindings.EntitlementCriteria.queryDescriptor}"
+                  queryListener        ="#{bindings.EntitlementCriteria.processQuery}"
+                  selectionListener    ="#{pageFlowScope.entitlementSearch.searchSelect}"
+                  columnStretching     ="multiple"
+                  columnBandingInterval="0"
+                  rowBandingInterval   ="1"
+                  autoHeightRows       ="0"
+                  rowSelection         ="multiple"
+                  verticalGridVisible  ="false"
+                  scrollPolicy         ="page"
+                  immediate            ="true"
+                  emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}"
+                  partialTriggers      =":::dc10">
+          <af:column id="ent1c10" rowHeader="true" width="20" headerText="" align="right"/>
+          <af:column id="ent1c11" width="25%" filterable="true" sortable="true" sortProperty="entitlementValue" headerText="#{bindings.Entitlement.hints.entitlementValue.label}">
+            <af:link id="ci11" text="#{row.entitlementValue}" actionListener="#{pageFlowScope.entitlementSearch.openDetail}" icon="#{sysauth$bundle.ENT_LIST}"/>
+          </af:column>
+          <af:column id="ent1c12" width="25%" filterable="true" sortable="true" sortProperty="displayName" headerText="#{bindings.Entitlement.hints.displayName.label}">
+            <af:outputText id="ot12" value="#{row.displayName}"/>
+          </af:column>
+          <af:column id="ent1c13" width="50%" filterable="true" sortable="true" sortProperty="description" headerText="#{bindings.Entitlement.hints.description.label}">
+            <af:outputText id="ot13" value="#{row.description}"/>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup id="ent1pid11" contentDelivery="lazyUncached">
+              <af:menu id="ent1m20" clientComponent="true">
+                <af:commandMenuItem id            ="ent1cmi22"
+                                    icon          ="/images/func_open_16_ena.png"
+                                    text          ="#{sysbase$bundle.SEARCH_MODIFYDOT}"
+                                    shortDesc     ="#{sysauth$bundle.ENT_MODIFY_HINT}"
+                                    disabled      ="#{!oimrole.view[pageFlowScope.entitlementSearch.selected].allowed or pageFlowScope.entitlementSearch.openDisabled}"
+                                    actionListener="#{pageFlowScope.entitlementSearch.openDetail}"
+                                    partialSubmit ="true"/>
+                <af:commandMenuItem id            ="ent1cmi23"
+                                    icon          ="/images/func_refresh_16_ena.png"
+                                    text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    disabled      ="false"
+                                    shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    action        ="#{pageFlowScope.entitlementSearch.refresh}"/>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelHeader>
+</jsp:root>

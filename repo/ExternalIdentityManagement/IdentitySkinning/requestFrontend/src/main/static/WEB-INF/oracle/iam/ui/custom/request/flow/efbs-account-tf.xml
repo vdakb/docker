@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<adfc-config id="__01" xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="efbs-account-tf">
+    <template-reference>
+      <document id="__02">/WEB-INF/oracle/iam/ui/common/tfs/error-handler-flow-tf-template.xml</document>
+      <id id="__03">error-handler-flow-tf-template</id>
+    </template-reference>
+    <default-activity id="__04">beneficiary</default-activity>
+    <data-control-scope id="__05">
+      <isolated/>
+    </data-control-scope>
+    <input-parameter-definition id="__14">
+      <name  id="__15">beneficiaryKey</name>
+      <value id="__16">#{pageFlowScope.beneficiaryKey}</value>
+      <class id="__17">java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <managed-bean id="__59">
+      <managed-bean-name id="__60">request</managed-bean-name>
+      <managed-bean-class id="__61">bka.iam.identity.ui.request.Adapter</managed-bean-class>
+      <managed-bean-scope id="__62">pageFlow</managed-bean-scope>
+    </managed-bean>
+    <managed-bean id="__63">
+      <managed-bean-name id="__64">account</managed-bean-name>
+      <managed-bean-class id="__65">bka.iam.identity.ui.request.backing.AccountView</managed-bean-class>
+      <managed-bean-scope id="__66">backingBean</managed-bean-scope>
+      <managed-property id="__67">
+        <property-name id="__68">model</property-name>
+        <property-class id="__69">bka.iam.identity.ui.request.Adapter</property-class>
+        <value id="__70">#{pageFlowScope.request}</value>
+      </managed-property>
+    </managed-bean>
+    <exception-handler id="__80">ErrorHandler</exception-handler>
+    <view id="request-dialog">
+      <page id="__81">/bka/iam/identity/ui/request/view/efbs-account.jsff</page>
+    </view>
+    <task-flow-return id="goToCallerTF">
+      <outcome>
+        <name>goToCallerTF</name>
+      </outcome>
+    </task-flow-return>
+    <method-call id="beneficiary">
+      <method id="__161">#{bindings.beneficiary.execute}</method>
+      <outcome id="__162">
+        <fixed-outcome id="__163">fetched</fixed-outcome>
+      </outcome>
+    </method-call>
+    <method-call id="configuration">
+      <method id="__164">#{pageFlowScope.request.initialize}</method>
+      <outcome id="__165">
+        <fixed-outcome id="__166">initialized</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__171">
+      <from-activity-id id="__172">beneficiary</from-activity-id>
+      <control-flow-case id="__173">
+        <from-outcome id="__174">fetched</from-outcome>
+        <to-activity-id id="__175">configuration</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__176">
+      <from-activity-id id="__177">configuration</from-activity-id>
+      <control-flow-case id="__178">
+        <from-outcome id="__179">initialized</from-outcome>
+        <to-activity-id id="__180">request-dialog</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__186">
+      <from-activity-id id="__187">request-dialog</from-activity-id>
+      <control-flow-case id="__188">
+        <from-outcome id="__189">submit</from-outcome>
+        <to-activity-id id="__190">goToCallerTF</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__191">
+        <from-outcome id="__192">cancel</from-outcome>
+        <to-activity-id id="__193">goToCallerTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

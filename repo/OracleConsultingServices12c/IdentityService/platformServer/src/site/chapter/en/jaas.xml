@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="igd-jaas"
+         xml:lang="en"
+         version ="5.0">
+  <title>Java Authentication and Authorization Service</title>
+  <section xml:id="igd-jaas-what">
+    <title>What is JAAS?</title>
+    <para>
+      The <emphasis role="stong">Java Authentication and Authorization Service</emphasis> (JAAS) is a standard API used for building authentication and authorization features into Java based applications.
+    </para>
+    <para>
+      JAAS itself is based upon and is the Java implementation of the <emphasis role="stong">Pluggable Authentication Module</emphasis> (PAM) framwork.
+    </para>
+    <note>
+      <para>
+        A detailed discussion of PAM is out of scope of this document.
+      </para>
+    </note>
+  </section>
+  <section xml:id="igd-jaas-life">
+    <title>Life without JAAS</title>
+    <para>
+      Imagine a scenario where aou are asked to develop a standalone desktop application for end users.
+    </para>
+    <para>
+      This application would be distributed and installed on the end users' work stations and they would have to sign into the application using their credentials.
+    </para>
+    <para>
+      As a part of the initial requirements, you have been told that the user autehntication repository is a standard SQL database.
+      You would probaly leverage Swing/AWT or JavaFX for the application development itself and likely to embed the autehtication logic as standard JDBC code somewhere within the business logic itself - assuming you are anaware od JAAS.
+    </para>
+    <para>
+      This approach is fine, until one day, the customer decides to switch to a shiny LDAP server as their trusted user repository. What now?
+    </para>
+    <para>
+      Of course, the authentication portion of your desktop application needs to be rewritten.
+      Now you would probaly leverage <emphasis>Java Naming Directory Interface</emphasis> (JNDI) API too access the customer's LDAP repository and authenticate your users.
+    </para>
+    <para>
+      Fair enough, but lots of code changes, lot of testing ... but finally mad it!
+    </para>
+    <para>
+      Ask yourself, what if you had an easier way?
+      What if you knew about the <empahsis role="strong">JAAS</empahsis> API?
+    </para>
+  </section>
+</chapter>

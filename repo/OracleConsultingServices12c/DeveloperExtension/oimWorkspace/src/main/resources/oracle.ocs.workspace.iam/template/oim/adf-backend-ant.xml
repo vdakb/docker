@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="#{ant.project}" default="#{ant.default}" basedir="#{ant.basedir}">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description" value="#{adf.description}"/>
+  <property name="library"     value="#{adf.library}"/>
+
+  <property name="packagepath" value="#{adf.packagepath}"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="#{adf.target}"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.iam.oim.client"/>
+    <path refid="oracle.fmw.iam.oim.backend"/>
+    <path refid="oracle.ocs.iam.hst.foundation"/>
+  </path>
+  <!--
+  =====================================================================
+  == ANT target to build and the project artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Build and Package the project on the local system" depends="clean, package"/>
+</project>

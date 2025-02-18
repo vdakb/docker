@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition xmlns  ="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                id     ="orchestrationprocess_eventsPageDef"
+                Package="oracle.iam.identity.sysadmin.orp.view">
+  <parameters/>
+  <executables>
+    <iterator     id="ProcessIterator" Binds="OrchestrationProcessDetailVO" DataControl="OrchestrationAMDataControl" RangeSize="20"/>
+    <iterator     id="EventIterator"   Binds="OrchestrationEventListVO"     DataControl="OrchestrationAMDataControl" RangeSize="20"/>
+    <searchRegion id="EventCriteria"   Binds="EventIterator"                Criteria="__ImplicitViewCriteria__"       Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"/>
+  </executables>
+  <bindings>
+    <tree id="Event" IterBinding="EventIterator" >
+      <nodeDefinition Name="EventNode" DefName="oracle.iam.identity.sysadmin.model.view.OrchestrationEventVO">
+        <AttrNames>
+          <Item Value="processId"/>
+          <Item Value="eventId"/>
+          <Item Value="eventName"/>
+          <Item Value="operation"/>
+          <Item Value="stage"/>
+          <Item Value="order"/>
+          <Item Value="status"/>
+          <Item Value="synchronous"/>
+          <Item Value="execution"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="rollback" RequiresUpdateModel="false" Action="rollbackTransaction" DataControl="OrchestrationAMDataControl"/>
+    <methodAction id="refreshAttribute"
+                  DataControl        ="OrchestrationAMDataControl"
+                  InstanceName       ="OrchestrationAMDataControl.dataProvider"
+                  MethodName         ="refreshAttribute"
+                  Action             ="invokeMethod"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+    </methodAction>
+    <methodAction id                 ="refreshEvent"
+                  InstanceName       ="OrchestrationAMDataControl.dataProvider"
+                  DataControl        ="OrchestrationAMDataControl"
+                  Action             ="invokeMethod"
+                  MethodName         ="refreshEvent"
+                  IsViewObjectMethod ="false"
+                  RequiresUpdateModel="true">
+      <NamedData NDName="identifier" NDType="java.lang.Long"/>
+    </methodAction>
+    <eventBinding id="raiseTaskFlowFeedbackEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.ShowFeedbackEvent"/>
+      </events>
+    </eventBinding>
+    <eventBinding id="raiseTaskFlowMarkCleanEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowMarkCleanEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

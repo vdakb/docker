@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="war-application"
+         xml:lang="en"
+         version ="5.0">
+  <title>Deploying WebApplication Archives</title>
+  <para>
+    All services are deployed as web applications in the same Weblogic Server domain as the applications of the Oracle Identity Governance Suite itself.
+    This achieves a high degree of reusability of libraries provided by the Oracle Identity Governance Suite.
+  </para>
+  <section xml:id="war-application-mode">
+    <title>Deplyoment staging mode</title>
+    <para>
+      WebLogic Server supports serving Web Applications from WAR files and from exploded archive directories.
+      You also have a choice of <emphasis>nostage</emphasis> or <emphasis>stage</emphasis> mode of deployment.
+      If you choose to serve a Web Application Archive file using <emphasis>nostage</emphasis> mode, the Web Application will be served directly from the packed or exploded archive.
+    </para>
+    <para>
+      The deployment staging mode determines how a module's archive files are made available to target servers that must deploy the module.
+      WebLogic Server provides three different options for staging archive files: <emphasis>stage</emphasis> mode, <emphasis>nostage</emphasis> mode, and <emphasis>external_stage</emphasis> mode.
+      You can set the staging mode either at the WebLogic Server level or at the application level, which overrides the server setting.
+    </para>
+    <section xml:id="war-application-stage">
+      <title>Stage mode</title>
+      <para>
+        Stage mode indicates that the Administration Server copies the deployment files from their original location to the staging directories of each targeted server.
+        For example, if you deploy a JEE Application to three servers in a cluster, the Administration Server copies the deployment files to directories on each of the three server machines.
+        Each server then deploys the JEE Application using its local copy of the archive files.
+      </para>
+      <para>
+        Stage mode is the default (and preferred) mode when deploying to more than one WebLogic Server instance.
+      </para>
+    </section>
+    <section xml:id="war-application-nostage">
+      <title>Nostage mode</title>
+      <para>
+        Nostage mode indicates that the Administration Server does not copy the archive files from their source location.
+        Instead, each targeted server must access the archive files from a single source directory for deployment.
+        For example, if you deploy a JEE Application to three servers in a cluster, each server must be able to access the same application archive files (from a shared or network-mounted directory) to deploy the application.
+      </para>
+      <para>
+        In <emphasis>nostage</emphasis> mode, the web application container automatically detects changes to JSPs and servlets.
+      </para>
+      <para>
+        Nostage mode is the default mode when deploying only to the Administration Server (for example, in a single-server domain).
+        You can also select <emphasis>nostage</emphasis> mode if you run a cluster of server instances on the same machine.
+      </para>
+    </section>
+    <section xml:id="war-application-external">
+      <title>External_stage mode</title>
+      <para>
+        External_stage mode is similar to <emphasis>stage</emphasis> mode, in that the deployment files must reside locally to each targeted server.
+        However, the Administration Server does not automatically copy the deployment files to targeted servers in external_stage mode; instead, you must ensure that the files are copied to the staging directory of each targeted server.
+      </para>
+      <para>
+        External_stage mode is the least common deployment staging mode.
+        It is generally used only in environments that are managed by third-party tools that automate the required copying of files.
+      </para>
+    </section>
+  </section>
+  <section xml:id="war-deploy">
+    <title>Deployment process</title>
+    <para>
+      To deploy the application you can:
+    </para>
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend="war-deploy-console">Deploying using WebLogic Administration Console</link>
+      </listitem>
+      <listitem>
+        <link linkend="war-deploy-deployer">Deploying using WebLogic Deployer</link>
+      </listitem>
+      <listitem>
+        <link linkend="war-deploy-wlst">Deploying using WLST</link>
+      </listitem>
+    </itemizedlist>
+    <section xml:id="war-deploy-console">
+      <title>Deploying using WebLogic Administration Console</title>
+      <procedure>
+        <para>To deploy the WebApplication using WebLogic Administration Console perform following steps:</para>
+        <step>
+          <para>
+            Log in to the console using the user name and password you specified when creating the domain.
+          </para>
+        </step>
+        <step performance="optional">
+          <para>
+            Lock console for <emphasis role="strong">Edit</emphasis> if necessary.
+          </para>
+        </step>
+        <step>
+          <para>
+            In the Domain Structure on the left, click <emphasis role="strong">Deployments</emphasis>.
+          </para>
+        </step>
+        <step>
+          <para>
+            Click <emphasis role="strong">Install</emphasis> and then navigate to the location where you downloaded the web application WAR file.
+            <?sbr?>
+            Usually the directory of the location is <filename>${ORACLE_HOME}/12.2.1/idm/server/apps</filename>.
+          </para>
+        </step>
+        <step>
+          <para>
+            Select the WAR file <filename>bka-zero-service.war</filename> and click <emphasis role="strong">Next</emphasis>.
+          </para>
+        </step>
+        <step>
+          <para>
+            Select entire cluster <emphasis role="strong">oic</emphasis> or the appropriate server under the cluster <emphasis role="strong">oic</emphasis> and click <emphasis role="strong">Next</emphasis>.
+          </para>
+        </step>
+        <step>
+          <para>
+            Select <emphasis role="strong">Install this deployment as an application</emphasis> and click <emphasis role="strong">Next</emphasis>.
+          </para>
+        </step>
+        <step>
+          <para>
+            Click <emphasis role="strong">Finish</emphasis>.
+          </para>
+        </step>
+        <step performance="optional">
+          <para>
+            In the Change Center on the left, activate <emphasis role="strong">Activate Change</emphasis>s if necessary..
+          </para>
+        </step>
+      </procedure>
+    </section>
+    <section xml:id="war-deploy-deployer">
+      <title>Deploying using WebLogic Deployer</title>
+      <para>
+        To deploy the WebApplication with WebLogic Deployer execute the commandline:
+      </para>
+      <!--
+      Don't indent what's in the element below
+      -->
+      <programlisting language="bash">
+. igd.env
+${WLS_DOMAIN}/bin/setDomainEnv.sh
+${JAVA_HOME}/bin/java -cp ${WLS_HOME}/server/lib/weblogic.jar weblogic.Deployer \
+  -adminurl ${ADMIN_URL} \
+  -user weblogic \
+  -password &lt;password&gt; \
+  -deploy \
+  -name bka-zero-provisioning \
+  -appversion 12.2.1.3 \
+  -targets oim \
+  -[nostage | stage] \
+  -deploymentorder 501 \
+  -securityModel DDOnly \
+  -source ${OIM_ORACLE_HOME}/apps/bka-zero-provisioning.war
+      </programlisting>
+      <note>
+        <para>
+          Choose the approriate staging mode.
+        </para>
+      </note>
+      <para>You should see something similar in the output:</para>
+      <!--
+      Don't indent what's in the element below
+      -->
+      <programlisting language="bash">
+weblogic.Deployer invoked with options:  -adminurl t3s:&lt;server-host-name&gt;:7002
+-user weblogic -deploy -name bka-zero-provisioning -appversion 12.2.1.3 -targets oic
+-nostage -verbose
+-source /opt/oracle/product/iam/12.2.1/idm/server/apps/bka-zero-provisioning.war
+&lt;Jul 16, 2023 8:57:59 PM CEST&gt; &lt;Info&gt; &lt;J2EE Deployment SPI&gt;
+&lt;BEA-260121&gt; &lt;Initiating deploy operation for application,
+bka-zero-provisioning
+[archive: /opt/oracle/product/iam/12.2.1/idm/server/apps/bka-zero-provisioning.war],
+to oic.&gt;
+Task 0 initiated: [Deployer:149026]deploy application bka-zero-provisioning
+[Version=12.2.1.3] on oic.
+Task 0 completed: [Deployer:149026]deploy application bka-zero-provisioning
+[Version=12.2.1.3] on oic.
+Target state: deploy completed on Server oic
+
+Target Assignments:
++ bka-zero-provisioning  oic
+      </programlisting>
+    </section>
+    <section xml:id="war-deploy-wlst">
+      <title>Deploying using WLST</title>
+      <para>
+        
+      </para>
+      <procedure>
+        <para>Below are the steps to deploy the WebApplication using WLST:</para>
+        <step xml:id="wlst-deploy-start">
+          <para>Starting WLST shell by exceuting:</para>
+          <!--
+          Don't indent what's in the element below
+          -->
+          <programlisting language="bash">
+. igd.env
+${WLS_DOMAIN}/bin/setDomainEnv.sh
+${FMW_HOME}/oracle_common/common/bin/wlst.sh
+          </programlisting>
+          <para>You should see folowing output:</para>
+          <!--
+          Don't indent what's in the element below
+          -->
+          <programlisting language="bash">
+Initializing WebLogic Scripting Tool (WLST) ...
+
+Jython scans all the jar files it can find at first startup. Depending on the system, this
+process may take a few minutes to complete, and WLST may not return a prompt right away.
+
+Welcome to WebLogic Server Administration Scripting Shell
+
+Type help() for help on available commands
+
+wls:/offline>
+          </programlisting>
+        </step>
+        <step xml:id="wlst-deploy-connect">
+          <para>Connecting to the domain through:</para>
+          <!--
+          Don't indent what's in the element below
+          -->
+          <programlisting language="bash">
+import os
+adminurl = os.getenv('ADMIN_URL')
+username = 'weblogic'
+password = '&lt;password&gt;'
+connect(username, password, adminurl)
+          </programlisting>
+          <note>
+            <para>
+              Importing the Jython module <literal>os</literal> offers the capabilities to expand environment variables by calling <literal>os.getenv</literal>.
+            </para>
+          </note>
+          <para>The shell will respond with:</para>
+          <!--
+          Don't indent what's in the element below
+          -->
+          <programlisting language="bash">
+Connecting to t3s://&lt;server-host-name&gt;:7002 with userid weblogic ...
+Successfully connected to Admin Server "igd" that belongs to domain "identity".
+          </programlisting>
+        </step>
+        <step xml:id="wlst-deploy-war">
+          <para>Deploy the application with:</para>
+          <!--
+          Don't indent what's in the element below
+          -->
+          <programlisting language="bash">
+target   = 'oic'
+module   = 'bka-zero-provisioning'
+version  = '12.2.1.3'
+artifact = os.getenv('OIM_ORACLE_HOME') + '/apps/' + module +'.war'
+edit()
+startEdit()
+deploy(appName=module, appVersion=version, archiveVersion=version, targets=target, stageMode='nostage', path=artifact, deploymentOrder='501', securityModel='DDOnly')
+save()
+activate(20000,block="true")
+          </programlisting>
+          <para>The output will look like:</para>
+          <!--
+          Don't indent what's in the element below
+          -->
+          <programlisting language="bash">
+Warning: Unrecognized option appVersion is being ignored
+Deploying application from /opt/oracle/product/iam/12.2.1/idm/server/apps/bka-zero-provisioning.war to targets oim (upload=false) ...
+&lt;Jul 16, 2023 9:18:47 PM CEST&gt; &lt;Info&gt; &lt;J2EE Deployment SPI&gt; &lt;BEA-260121&gt; &lt;Initiating deploy operation for application, bka-zero-provisioning [archive: /opt/oracle/product/iam/12.2.1/idm/server/apps/bka-zero-provisioning.war], to oic.&gt;
+..Completed the deployment of Application with status completed
+Current Status of your Deployment:
+Deployment command type: deploy
+Deployment State : completed
+Deployment Message : no message
+          </programlisting>
+        </step>
+        <step xml:id="wlst-deploy-exit">
+          <para>Disconnect and exit the shell:</para>
+          <!--
+          Don't indent what's in the element below
+          -->
+          <programlisting language="bash">
+disconnect()
+exit()
+          </programlisting>
+        </step>
+      </procedure>
+    </section>
+  </section>
+</section>

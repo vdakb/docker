@@ -1,0 +1,122 @@
+http://dsteding-de.de.oracle.com:8011/scim/v2/Schemas
+http://dsteding-de.de.oracle.com:8011/scim/v2/ResourceTypes
+http://dsteding-de.de.oracle.com:8011/scim/v2/Users
+
+POST
+~~~~
+{ "schemas" : [
+    "urn:ietf:params:scim:schemas:core:2.0:User"
+  , "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+  , "urn:com:rola:scim:schemas:extension:efbs:2.0:EFBSUser"
+  ]
+, "userName" : "sn4711123"
+, "name": {
+    "familyName" : "Steding"
+  , "givenName"  : "Dieter"
+  }
+, "emails":[
+    {"value":"dsteding@vm.oracle.com"}
+  ]
+, "phoneNumbers":[
+    {"value":"+49 177 5948 437"}
+  ]
+, "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+    "organization" : "SN"
+  , "division"     : "SN_1"
+  , "department"   : "SN_1_1"
+  }
+, "urn:com:rola:scim:schemas:extension:efbs:2.0:EFBSUser": {
+    "validFrom"    : "2020-06-25T09:38:59Z"
+  }
+}
+{ "schemas" : [
+    "urn:ietf:params:scim:schemas:core:2.0:User"
+  , "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+  ]
+, "userName" : "sn4711123gfa"
+, "name": {
+    "familyName" : "Steding"
+  , "givenName"  : "Dieter"
+  }
+, "emails":[
+    {"value":"dsteding@vm.oracle.com"}
+  ]
+, "phoneNumbers":[
+    {"value":"+49 177 5948 437"}
+  ]
+, "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+    "organization" : "SN"
+  , "division"     : "SN_1"
+  , "department"   : "SN_1_1"
+  }
+}
+{ "schemas" : [
+    "urn:ietf:params:scim:schemas:core:2.0:User"
+  , "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+  ]
+, "userName" : "sn4711123gsu"
+, "name": {
+    "familyName" : "Steding"
+  , "givenName"  : "Dieter"
+  }
+, "emails":[
+    {"value":"dsteding@vm.oracle.com"}
+  ]
+, "phoneNumbers":[
+    {"value":"+49 177 5948 437"}
+  ]
+, "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+    "organization" : "SN"
+  , "division"     : "SN_1"
+  , "department"   : "SN_1_1"
+  }
+}
+{ "schemas" : [
+    "urn:ietf:params:scim:schemas:core:2.0:User"
+  , "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+  ]
+, "userName" : "sn4711123fa"
+, "name": {
+    "familyName" : "Steding"
+  , "givenName"  : "Dieter"
+  }
+, "emails":[
+    {"value":"dsteding@vm.oracle.com"}
+  ]
+, "phoneNumbers":[
+    {"value":"+49 177 5948 437"}
+  ]
+, "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+    "organization" : "SN"
+  , "division"     : "SN_1"
+  , "department"   : "SN_1_1"
+  }
+}
+
+PUT
+~~~
+{ "schemas" : [
+    "urn:ietf:params:scim:schemas:core:2.0:User"
+  , "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+  ]
+, "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+    "organization" : "DD"
+  , "division"     : "DD_1"
+  , "department"   : "DD_1_1"
+  }
+}
+
+PATCH
+~~~~~
+{ "schemas" : ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+, "Operations": [
+    {"op":"replace", "path":"urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:organization", "value":"DD"}
+  , {"op":"replace", "path":"urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:division",     "value":"DD_1"}
+  , {"op":"replace", "path":"urn:ietf:params:scim:schemas:extension:enterprise:2.0:User:department",   "value":"DD_1_1"}
+  ]
+}
+{ "schemas" : ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+, "Operations": [
+    {"op":"replace", "path":"phoneNumbers[type eq \"work\"]", "value":"+49 177 5948 437"}
+  ]
+}

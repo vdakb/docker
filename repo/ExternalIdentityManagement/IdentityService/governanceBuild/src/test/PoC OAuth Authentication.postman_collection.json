@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "3cf7f717-fd0e-4ef1-a606-3d229cc3fafb",
+		"name": "OCI OAuth Authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12777809"
+	},
+	"item": [
+		{
+			"name": "Administration",
+			"item": [
+				{
+					"name": "Identity Domain",
+					"item": [
+						{
+							"name": "list",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"connection": true,
+									"user-agent": true,
+									"accept": true,
+									"accept-encoding": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{adminServiceURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/oauthidentitydomain",
+									"host": [
+										"{{adminServiceURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"oauthidentitydomain"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Resource Server",
+					"item": [
+						{
+							"name": "list",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true,
+									"user-agent": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://152.70.190.7:7001/oam/services/rest/ssa/api/v1/oauthpolicyadmin/application?identityDomainName=OIDCDefaultDomain",
+									"protocol": "http",
+									"host": [
+										"152",
+										"70",
+										"190",
+										"7"
+									],
+									"port": "7001",
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"application"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "OIDCDefaultDomain"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Resource Client",
+					"item": [
+						{
+							"name": "list-sp-side",
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {
+									"accept": true,
+									"accept-encoding": true,
+									"connection": true,
+									"user-agent": true
+								}
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{adminServiceURL}}/oam/services/rest/ssa/api/v1/oauthpolicyadmin/client?identityDomainName=OIDCDefaultDomain",
+									"host": [
+										"{{adminServiceURL}}"
+									],
+									"path": [
+										"oam",
+										"services",
+										"rest",
+										"ssa",
+										"api",
+										"v1",
+										"oauthpolicyadmin",
+										"client"
+									],
+									"query": [
+										{
+											"key": "identityDomainName",
+											"value": "OIDCDefaultDomain"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "Welcome1",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "weblogic",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Discovery",
+			"item": [
+				{
+					"name": "openid-configuration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{accessServiceURL}}/.well-known/openid-configuration",
+							"host": [
+								"{{accessServiceURL}}"
+							],
+							"path": [
+								".well-known",
+								"openid-configuration"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "adminServiceURL",
+			"value": "http://130.162.212.75:7001",
+			"type": "string"
+		},
+		{
+			"key": "accessServiceURL",
+			"value": "http://130.162.212.75:7777",
+			"type": "string"
+		}
+	]
+}

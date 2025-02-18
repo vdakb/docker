@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Deployment Controller" basedir="../../../deployment/oim">
+  <!--
+  ==============================================================================
+  == properties specific to the deployment environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+  <import file="../../../IdentityTransition/tpl/ant/igs-bootstrap.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name       ="all"
+          description="Deploys and configures the project artifacts on the target host and the Oracle WebLogic Domain Servers"
+          depends    ="000,003,017">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Framework Setup, System Customization and System Integration
+  =====================================================================
+  -->
+  <target name="000" description="Identity Manager Technical Identities">
+    <call-targets package="0000-01,0000-02,0000-03"/>
+  </target>
+  <target name="003" description="Identity Manager Administrative Roles">
+    <call-targets package="0300-01,0300-AN,0300-BB,0300-BE,0300-BK,0300-BP,0300-BW,0300-BY,0300-HB,0300-HE,0300-HH,0300-MV,0300-NI,0300-NW,0300-RP,0300-SH,0300-SL,0300-SN,0300-TH,0300-ZF"/>
+  </target>
+  <target name="017" description="Identity Manager N.SIS Organizations">
+    <call-targets package="1701-01"/>
+  </target>
+</project>

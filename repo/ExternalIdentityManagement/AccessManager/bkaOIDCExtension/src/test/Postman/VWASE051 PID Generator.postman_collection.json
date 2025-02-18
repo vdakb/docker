@@ -1,0 +1,402 @@
+{
+	"info": {
+		"_postman_id": "9d2812f4-c447-4bb6-9dff-51c8ea7d72dc",
+		"name": "VWASE051 PID Generator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "request",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "pidservice",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "x-oauth-identity-domain-name",
+								"value": "SecureDomain2",
+								"description": "Identity Domain under which the token is being requested."
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"description": "Grant Type for the Access Token Request",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "igssysadm",
+									"description": "Username of resource owner",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"description": "Password of resource owner",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://iam.bka.extrapol.de/oauth2/rest/token",
+							"protocol": "https",
+							"host": [
+								"iam",
+								"bka",
+								"extrapol",
+								"de"
+							],
+							"path": [
+								"oauth2",
+								"rest",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "validate",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "0c1f286c5a724a869a7fab8245a5716d",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Welcome1",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "x-oauth-identity-domain-name",
+								"value": "SecureDomain2",
+								"description": "Identity Domain under which the token is being requested."
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "access_token",
+									"value": "eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0IjoiVG5WdjBGVmZaa0daajQ3TXN0QXdOcTBSSXk0IiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwOi8vdndhc2UwNTEuYmthLmV4dHJhcG9sLmRlOjc4MDcvb2F1dGgyIiwiYXVkIjoicGlkcmVzb3VyY2UiLCJleHAiOjE2ODA2MjY2NjAsImp0aSI6IlBxNk9hQmJ6SUpudjgwMWJlT2JwTkEiLCJpYXQiOjE2ODA2MTk0NjAsInN1YiI6Imlnc3N5c2FkbSIsInVwbiI6Ik5PVF9GT1VORCIsImZ1bGxfbmFtZSI6Imlnc3N5c2FkbSIsImdyb3VwcyI6InAyMDIwVW5pcXVlSWRlbnRpZmllckFkbWluIiwic2Vzc2lvbklkIjoiQ09PS0lFX0JBU0VEIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiaWdzc3lzYWRtIiwiZ2l2ZW5fbmFtZSI6IkdvdmVybmFuY2UiLCJmYW1pbHlfbmFtZSI6IkFkbWluaXN0cmF0b3IiLCJlbWFpbCI6ImFsZm9ucy56aXR0ZXJiYWNrZUB2bS5vcmFjbGUuY29tIiwiY2xpZW50IjoiMGMxZjI4NmM1YTcyNGE4NjlhN2ZhYjgyNDVhNTcxNmQiLCJzY29wZSI6WyJwaWRyZXNvdXJjZS5hbGwiXSwiZG9tYWluIjoiU2VjdXJlRG9tYWluMiJ9.RAvlwh0eIx9GzEvGSkJ3aLtaTgXG_ezwrv7UyoJCzsDj5n_Qai4smcrX5vCtbIRBOL7T4Z-uFNFAESJJTjbND61jZlqakBZKHbz0XpUC0yx12oyVtJMMP5ZsZu0pUSWxhUHF0xjio1BG9v6Y30OnSOr5FpKHz6Qzl1C9ms41aLigz9id1WbvPrZEtAXIDuNY97EYE2KdDuAGIeV-BrHTHUa32V0vSdOTpUTFfsG0iSlBiHehP-2rEFCzDjJCeEIvyFNZIiEPAx0Rv6Jmm51ge0wqNsu7lCIJ4_glI8rgMlbKlARjeDGd5jeZx2C-7acdwDtA8lNMpK-glRcCBT6bIw",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://vwase051.bka.extrapol.de:8009/oauth2/rest/token/info",
+							"protocol": "http",
+							"host": [
+								"vwase051",
+								"bka",
+								"extrapol",
+								"de"
+							],
+							"port": "8009",
+							"path": [
+								"oauth2",
+								"rest",
+								"token",
+								"info"
+							]
+						},
+						"description": "This is typically used by clients to access resources about themselves rather than to access a user's resources.\n\nThis is typically used by clients to access resources about themselves rather than to access a user's resources."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Identifier",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://gen.uid-sandb.k8s-shared-ext.app.dev-w0.caas.psp.bka.bund.de/iam/bka-pid-service/v1/pid?startIndex=1",
+							"protocol": "http",
+							"host": [
+								"gen",
+								"uid-sandb",
+								"k8s-shared-ext",
+								"app",
+								"dev-w0",
+								"caas",
+								"psp",
+								"bka",
+								"bund",
+								"de"
+							],
+							"path": [
+								"iam",
+								"bka-pid-service",
+								"v1",
+								"pid"
+							],
+							"query": [
+								{
+									"key": "startIndex",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "lookup",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://vwase051.bka.extrapol.de:8081/igs/pid/v1/pid/pbo08is",
+							"protocol": "http",
+							"host": [
+								"vwase051",
+								"bka",
+								"extrapol",
+								"de"
+							],
+							"port": "8081",
+							"path": [
+								"igs",
+								"pid",
+								"v1",
+								"pid",
+								"pbo08is"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "text/plain"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "prefix",
+									"value": "p",
+									"type": "text"
+								},
+								{
+									"key": "usedby",
+									"value": "an4711126",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://vwase051.bka.extrapol.de:8081/igs/pid/v1/pid",
+							"protocol": "http",
+							"host": [
+								"vwase051",
+								"bka",
+								"extrapol",
+								"de"
+							],
+							"port": "8081",
+							"path": [
+								"igs",
+								"pid",
+								"v1",
+								"pid"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activate",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"active\" : true }"
+						},
+						"url": {
+							"raw": "http://vwase051.bka.extrapol.de:8081/igs/pid/v1/pid/pbo08is",
+							"protocol": "http",
+							"host": [
+								"vwase051",
+								"bka",
+								"extrapol",
+								"de"
+							],
+							"port": "8081",
+							"path": [
+								"igs",
+								"pid",
+								"v1",
+								"pid",
+								"pbo08is"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://vwase051.bka.extrapol.de:8081/igs/pid/v1/pid/pbo08is",
+							"protocol": "http",
+							"host": [
+								"vwase051",
+								"bka",
+								"extrapol",
+								"de"
+							],
+							"port": "8081",
+							"path": [
+								"igs",
+								"pid",
+								"v1",
+								"pid",
+								"pbo08is"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJraWQiOiJTZWN1cmVEb21haW4yIiwieDV0IjoibzNNb1pqTWR3TURxYTVldl9uMy1ycmFsUnBVIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJodHRwczovL2FjY2Vzcy5leHRlc3QuYmthLmV4dHJhcG9sLmRlOjgxMjgvb2F1dGgyIiwiYXVkIjoicGlkcmVzb3VyY2UiLCJleHAiOjE2ODA3Nzg1NjYsImp0aSI6ImJGcUdXc0Jod3k5cFNxeEdQNTlGZ3ciLCJpYXQiOjE2ODA3NzEzNjYsInN1YiI6Imlnc3N5c2FkbSIsInVwbiI6Ik5PVF9GT1VORCIsImZ1bGxfbmFtZSI6Imlnc3N5c2FkbSIsInBpZCI6Ik5PVF9GT1VORCIsInNlc3Npb25JZCI6Ijk4ZDA3NTgzMjlkNWI4NzE1YzkwOGMyNmI4MWNhYzcyNWJlNjMzNjRkYjEyOTQ3NTBjNzJlYWUzNjhiMWZkMWMiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJpZ3NzeXNhZG0iLCJnaXZlbl9uYW1lIjoiSWRlbnRpdHkiLCJmYW1pbHlfbmFtZSI6IlNlcnZpY2VzIiwiZW1haWwiOiJpZ3NzeXNhZG1AYmthLmJ1bmQuZGUiLCJjbGllbnQiOiJwaWRzZXJ2aWNlIiwic2NvcGUiOlsicGlkcmVzb3VyY2UuYWxsIl0sImRvbWFpbiI6IlNlY3VyZURvbWFpbjIifQ.VvoCEnUirYUGM_QXSPrFUzIQfVqXJOgDAtFDctSHmvTr_3HTFsN9YOmT4aX1bYwYlZ2zubBobiNEFAuTvYfszb5sgsmvhDs5FAdXvMZb8v8y2wLuxyKksp0Sz7jUo_rnXaMnrDfSd75TMelOYjNWmrZepwF17TOwAOM98ovyVKEbsWC9MJGOYBTOQ1jtJ0QTo8zIs3vYVhOgyO9qK9pmpLN6dU7SWLmzh4zvr_MehBSnUfCI_WJg-1xlVUBRqupthbborPzzS-PqMv3N5lGu6qhliBM6V5TDrtMx2o42Qd4Fw29V2osOahvNL1wGrJMH5hwIbvNcK3IWKX6suhZqXg",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d0651238-5b6f-4d2a-81aa-969d719cbbc0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "1d9d3521-bca3-4cbd-9813-aaa8067798e2",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

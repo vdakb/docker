@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Oracle Consultings Services 12c Sandbox" default="make" basedir=".">
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="invoke">
+    <attribute name="project"/>
+    <attribute name="target"/>
+    <attribute name="path"/>
+    <sequential>
+      <subant target="@{target}" buildpath="@{project}/ant" antfile="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to cleaning up the entire workspace
+  =====================================================================
+  -->
+  <target name="cleanup" description="Cleanup all workspaces">
+    <invoke target="cleanup" path="oim-framework-ant.xml" project="IdentityManager/bkaSandbox"/>
+    <invoke target="cleanup" path="icf-framework-ant.xml" project="IdentityConnector/icfFramework"/>
+    <invoke target="cleanup" path="adf-library-ant.xml"   project="IdentitySkinning/identityAssembly"/>
+    <invoke target="cleanup" path="igs-framework-ant.xml" project="IdentityService/governanceBuild"/>
+    <invoke target="cleanup" path="igd-framework-ant.xml" project="IdentityService/governanceBuild"/>
+    <invoke target="cleanup" path="igd-module-ant.xml"    project="IdentityService/scimExtension"/>
+    <invoke target="cleanup" path="oam-module-ant.xml"    project="AccessManager/bkaLoginPage"/>
+    <invoke target="cleanup" path="oam-module-ant.xml"    project="AccessManager/bkaDiscovery"/>
+    <invoke target="cleanup" path="oam-module-ant.xml"    project="AccessManager/p20LoginPage"/>
+    <echo message="============================================================="/>
+    <echo message="Cleanup Deployment Artifacts"/>
+    <echo message="============================================================="/>
+    <exec executable="svn">
+     <arg value="cleanup"/>
+     <arg value="--remove-unversioned"/>
+     <arg value="./deployment/oim"/>
+    </exec>
+    <echo message="============================================================="/>
+    <echo message="Cleanup JDeveloper Runtime Artifacts"/>
+    <echo message="============================================================="/>
+    <delete includeEmptyDirs="true">
+      <fileset dir="${basedir}" includes="**/.data/"/>
+      <fileset dir="${basedir}" includes="**/.DS_Store"/>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to clean the build deliverables
+  ==
+  == There is no need to make this task dependend on cleanup due to the
+  == called project itself takes care about this dependency
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables">
+    <invoke target="clean" path="oim-framework-ant.xml" project="IdentityManager/bkaSandbox"/>
+    <invoke target="clean" path="icf-framework-ant.xml" project="IdentityConnector/icfFramework"/>
+    <invoke target="clean" path="adf-library-ant.xml"   project="IdentitySkinning/identityAssembly"/>
+    <invoke target="clean" path="igs-framework-ant.xml" project="IdentityService/governanceBuild"/>
+    <invoke target="clean" path="igd-framework-ant.xml" project="IdentityService/governanceBuild"/>
+    <invoke target="clean" path="igd-module-ant.xml"    project="IdentityService/scimExtension"/>
+    <invoke target="clean" path="oam-module-ant.xml"    project="AccessManager/bkaLoginPage"/>
+    <invoke target="clean" path="oam-module-ant.xml"    project="AccessManager/bkaDiscovery"/>
+    <invoke target="clean" path="oam-module-ant.xml"    project="AccessManager/p20LoginPage"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to make the entire workspace
+  =====================================================================
+  -->
+  <target name="make" description="Package all framework artifacts to the appropriate java archive">
+    <invoke target="make" path="oim-framework-ant.xml" project="IdentityManager/bkaSandbox"/>
+    <invoke target="make" path="igs-framework-ant.xml" project="IdentityService/governanceBuild"/>
+    <!--invoke target="make" path="igd-framework-ant.xml" project="IdentityService/governanceBuild"/-->
+    <invoke target="make" path="igd-module-ant.xml"    project="IdentityService/scimExtension"/>
+    <invoke target="make" path="icf-framework-ant.xml" project="IdentityConnector/icfFramework"/>
+    <invoke target="make" path="adf-library-ant.xml"   project="IdentitySkinning/identityAssembly"/>
+    <invoke target="make" path="oam-module-ant.xml"    project="AccessManager/bkaLoginPage"/>
+    <invoke target="make" path="oam-module-ant.xml"    project="AccessManager/bkaDiscovery"/>
+    <invoke target="make" path="oam-module-ant.xml"    project="AccessManager/p20LoginPage"/>
+  </target>
+</project>

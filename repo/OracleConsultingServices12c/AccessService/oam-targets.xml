@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name        ="Access Service Workspace Targets"
+         basedir     ="."
+         xmlns:fmw   ="http://oracle.hst.deployment/fusion"
+         xmlns:jps   ="http://oracle.hst.deployment/security"
+         xmlns:wsm   ="http://oracle.hst.deployment/webservice"
+         xmlns:server="http://oracle.hst.deployment/topology">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="./oam-context.xml"/>
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="call-subproject">
+    <attribute name="path"/>
+    <attribute name="file"/>
+    <attribute name="target"/>
+    <sequential>
+      <subant target="@{target}" buildpath="@{path}/ant" antfile="@{file}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to execute a remote command
+  =====================================================================
+  -->
+  <macrodef name="ssh-shell">
+    <attribute name="command"/>
+    <sequential>
+      <sshexec command="@{command}" keyfile="${scp.server.certificate}" host="${scp.server.host}" port="${scp.server.port}" username="${scp.server.username}" password="${scp.server.password}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to copy runtime artifacts
+  =====================================================================
+  -->
+  <macrodef name="ssh-file">
+    <attribute name="file"/>
+    <attribute name="dir"/>
+    <attribute name="location"/>
+    <sequential>
+      <echo message="Transfering @{file} from @{dir} to @{location} on ${scp.server.host}:${scp.server.port}"/>
+      <scp todir="${scp.server.destination}:@{location}" port="${scp.server.port}" keyfile="${scp.server.certificate}" passphrase="${scp.server.passphrase}" trust="${scp.server.trust}">
+        <fileset dir="@{dir}">
+          <include name="@{file}"/>
+        </fileset>
+      </scp>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to create the java doc and package the source tree
+  =====================================================================
+  -->
+  <macrodef name="doc-module">
+    <attribute name="type"/>
+    <attribute name="module"/>
+    <attribute name="package"/>
+    <sequential>
+      <!-- generate javadoc -->
+      <echo message="Generating Access Service documentation for @{type} @{module} from path ${deploy.doc}"/>
+      <javadoc author      ="false"
+               classpathref="classpath"
+               sourcepath  ="${source.dir}"
+               packagenames="@{package}"
+               destdir     ="${deploy.doc}"
+               encoding    ="${javac.encoding}"
+               docencoding ="${javac.encoding}"
+               charset     ="${javac.encoding}"/>
+      <!-- package javadoc -->
+      <echo message="Packaging Access Service documentation for @{type} @{module} from path ${deploy.doc}"/>
+      <jar destfile="${deploy.dir}/@{module}-doc.jar">
+        <fileset dir="${deploy.doc}">
+          <patternset refid="document.patterns"/>
+        </fileset>
+      </jar>
+      <!-- package source -->
+      <echo message="Packaging Access Service source for @{type} @{module} from path ${source.dir}"/>
+      <jar destfile="${deploy.dir}/@{module}-src.jar">
+        <fileset dir="${source.dir}" includes="**/*.*"/>
+      </jar>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to make a Access Service jar module
+  =====================================================================
+  -->
+  <macrodef name="oam-jar-make">
+    <attribute name="module"/>
+    <attribute name="package"/>
+    <attribute name="destination" default="not-set"/>
+    <sequential>
+      <echo message="Packaging Access Service module @{module} from path ${output.dir} and ${static.dir}"/>
+      <jar compress="false" destfile="${deploy.dir}/@{module}.jar" manifest="${manifest}">
+        <zipfileset dir="${output.dir}" excludes="**/*-ant.xml ant/** .data/** .wlLibs/** .wlsjsps/**"/>
+      </jar>
+      <if>
+        <equals arg1="@{destination}" arg2="not-set"/>
+        <then>
+          <echo message="nothing to copy..."/>
+        </then>
+        <else>
+          <for param="path" list="@{destination}">
+            <sequential>
+              <copy todir="@{path}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+                <fileset dir="${deploy.dir}">
+                  <include  name="@{module}.jar"/>
+                </fileset>
+              </copy>
+            </sequential>
+          </for>
+        </else>
+      </if>
+      <doc-module type="library" module="@{module}" package="@{package}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to assemble a Access Service war module
+  =====================================================================
+  -->
+  <macrodef name="oam-war-make">
+    <attribute name="module"/>
+    <attribute name="package"/>
+    <attribute name="destination"/>
+    <sequential>
+      <delete dir="${webinf.dir}/temp"/>
+      <mkdir dir="${webinf.dir}/lib"/>
+      <copy todir="${webinf.dir}/lib" flatten="true">
+        <path refid="oracle.ocs.runtime"/>
+      </copy>
+      <echo message="Packaging Access Service module @{module} from path ${output.dir} and ${static.dir}"/>
+      <war compress="false" destfile="${deploy.dir}/@{module}.war" manifest="${manifest}" needxmlfile="false">
+        <zipfileset dir="${static.dir}"/>
+        <zipfileset prefix="WEB-INF/classes" dir="${output.dir}" excludes="**/*-ant.xml ant/** .data/** .wlLibs/** .wlsjsps/**"/>
+      </war>
+      <delete dir="${webinf.dir}/lib"/>
+      <doc-module type="library" module="@{module}" package="@{package}"/>
+      <copy todir="@{destination}/lib" overwrite="true" preservelastmodified="false" verbose="no">
+        <fileset dir="${deploy.dir}">
+          <include  name="@{module}.war"/>
+        </fileset>
+      </copy>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to deploy a Web Application Module
+  =====================================================================
+  -->
+  <macrodef name="oam-war-deploy">
+    <attribute name="module"/>
+    <attribute name="target"/>
+    <sequential>
+      <echo message="Deploy standalone application @{module} at location ${jee.remote.application} on ${jee.server.host}:${jee.server.port} managed server @{target}"/>
+      <ssh-file file="@{module}.war" dir="${deploy.dir}" location="${jee.remote.application}"/>
+      <server:deploy action="deploy" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}" source="${jee.remote.application}/@{module}.war" targets="@{target}" stage="nostage" nostage="true"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to redeploy a Web Application Module
+  =====================================================================
+  -->
+  <macrodef name="oam-war-redeploy">
+    <attribute name="module"/>
+    <attribute name="target"/>
+    <sequential>
+      <echo message="Stop standalone application @{module} at ${jee.remote.application} on ${jee.server.host}:${jee.server.port} managed server @{target}"/>
+      <server:deploy action="stop" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}" failonerror="false"/>
+      <echo message="Redeploy standalone application @{module} at ${jee.remote.application} on ${jee.server.host}:${jee.server.port} managed server @{target}"/>
+      <ssh-file file="@{module}.war" dir="${deploy.dir}" location="${jee.remote.application}"/>
+      <server:deploy action="redeploy" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}" source="${jee.remote.application}/@{module}.war" targets="@{target}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to undeploy a Web Application Module
+  =====================================================================
+  -->
+  <macrodef name="oam-war-undeploy">
+    <attribute name="module"/>
+    <sequential>
+      <echo message="Stop standalone application @{module} at ${jee.remote.application} on ${jee.server.host}:${jee.server.port} managed server @{target}"/>
+      <server:deploy action="stop" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}" failonerror="false"/>
+      <echo message="Undeploy standalone application @{module} at ${jee.remote.application} on ${jee.server.host}:${jee.server.port}"/>
+      <server:deploy action="undeploy" remote="true" name="@{module}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to deploy an Enterprise Application Module
+  =====================================================================
+  -->
+  <macrodef name="oam-ear-deploy">
+    <attribute name="application"/>
+    <attribute name="target"/>
+    <sequential>
+      <echo message="Deploy enterprise application @{application} at ${jee.remote.application} on ${jee.server.host}:${jee.server.port}"/>
+      <ssh-file file="@{application}.ear" dir="${deploy.dir}" location="${jee.remote.application}"/>
+      <server:deploy action="deploy" remote="true" name="@{application}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}" source="${jee.remote.application}/@{application}.ear" targets="@{member}" stage="nostage" nostage="true"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to redeploy an Enterprise Application Module
+  =====================================================================
+  -->
+  <macrodef name="oam-ear-redeploy">
+    <attribute name="application"/>
+    <attribute name="target"/>
+    <sequential>
+      <echo message="Stop enterprise application @{application} at ${jee.remote.application} on ${jee.server.host}:${jee.server.port}"/>
+      <server:deploy action="stop" remote="true" name="@{application}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}" ignoresessions="true" failonerror="false"/>
+      <echo message="Redeploy enterprise application @{application} at ${jee.remote.application} on ${jee.server.host}:${jee.server.port}"/>
+      <ssh-file file="@{application}.ear" dir="${deploy.dir}" location="${jee.remote.application}"/>
+      <server:deploy action="redeploy" remote="true" name="@{application}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}" source="${jee.remote.application}/@{application}.war" targets="@{member}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to undeploy an Enterprise Application Module
+  =====================================================================
+  -->
+  <macrodef name="oam-ear-undeploy">
+    <attribute name="application"/>
+    <sequential>
+      <echo message="Stop enterprise application @{application} at ${jee.remote.application} on ${jee.server.host}:${jee.server.port}"/>
+      <server:deploy action="stop" remote="true" name="@{application}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}" ignoresessions="true" failonerror="false"/>
+      <echo message="Undeploy enterprise application @{application} at ${jee.remote.application} on ${oam.server.host}:${oam.server.port}"/>
+      <server:deploy action="undeploy" remote="true" name="@{application}" appversion="${implementation.version}" adminurl="${jee.server.protocol}://${jee.server.host}:${jee.server.port}" user="${jee.server.username}" password="${jee.server.password}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to clean the build deliverables
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build deliverables">
+    <delete includeemptydirs="true" quiet="true">
+      <fileset dir="${output.dir}"/>
+      <fileset dir="${deploy.dir}"/>
+      <fileset dir="${deploy.doc}">
+        <patternset refid="document.patterns"/>
+      </fileset>
+      <fileset dir="${webinf.dir}/temp"/>
+    </delete>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to remove the files that are not formerly versionized
+  =====================================================================
+  -->
+  <target name="cleanup" description="Cleanup the project build deliverables" depends="clean">
+    <exec executable="${svn.executable}">
+      <arg value="cleanup"/>
+      <arg value="--remove-unversioned"/>
+      <arg value="${basedir}"/>
+    </exec>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to initialize the build process by creating all
+  == necessary filesystem folders
+  =====================================================================
+  -->
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${output.dir}"/>
+    <mkdir dir="${output.dir}/META-INF"/>
+    <mkdir dir="${deploy.dir}"/>
+    <mkdir dir="${deploy.doc}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to copy secific files to the output directory
+  =====================================================================
+  -->
+  <target name="copy" description="Copy files to output directory" depends="init">
+    <patternset id="copy.patterns">
+      <include name="META-INF/**/*"/>
+    </patternset>
+    <copy todir="${output.dir}" verbose="no">
+      <fileset dir="${resource.dir}">
+        <patternset refid="filetype.patterns"/>
+      </fileset>
+      <fileset dir="${source.dir}">
+        <patternset refid="copy.patterns"/>
+      </fileset>
+    </copy>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to compile all Java Source files
+  =====================================================================
+  -->
+  <target name="compile" description="Compile Java source files" depends="copy">
+    <!--
+    due to a regression of Bug 43114 - package-info.java repeatedly compiled
+    we had to enforce to compile any existing package-info.java in the source
+    tree
+    -->
+    <touch>
+      <fileset dir="${source.dir}" includes="**/package-info.java"/>
+    </touch>
+    <!-- Compile Groovy source files if the source path exists -->
+    <condition property="groovy-exists">
+      <available file="${groovy.dir}" type="dir"/>
+    </condition>
+    <if>
+      <equals arg1="${groovy-exists}" arg2="true"/>
+      <then>
+        <echo message="Compiling groovy"/>
+        <groovyc failonerror="false" srcdir="${groovy.dir}" destdir="${output.dir}" includes="**/*.groovy" classpathref="classpath"/>
+      </then>
+    </if>
+    <javac executable       ="${jdk.compiler}"
+           source           ="${jdk.version}"
+           target           ="${jdk.version}"
+           debug            ="${javac.debug}"
+           nowarn           ="${javac.nowarn}"
+           destdir          ="${output.dir}"
+           encoding         ="${javac.encoding}"
+           deprecation      ="${javac.deprecation}"
+           classpathref     ="classpath"
+           includeantruntime="no">
+      <src path        ="${source.dir}"/>
+    </javac>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to create a manifest used in the jar files
+  =====================================================================
+  -->
+  <target name="manifest" description="Create a manifest used in the jar files">
+    <delete file="${manifest}"/>
+    <!--
+    <echo message="Reverting build version properties"/>
+    <exec executable="svn">
+      <arg value="revert"/>
+      <arg value="${application.version}"/>
+    </exec>
+    -->
+    <!-- update to version properties -->
+    <propertyfile file="${application.version}" comment="Build version info">
+      <entry key="build.timest" type="date" value="now" pattern="dd/MM/yyyy hh:mm:ss aa"/>
+      <entry key="build.major"  type="int"  value="0000" default="0000" operation="+" pattern="00"/>
+      <entry key="build.minor"  type="int"  value="0001" default="0000" operation="+" pattern="00"/>
+    </propertyfile>
+
+    <!-- load the file -->
+    <property file="${application.version}"/>
+
+    <!-- create the manifest file -->
+    <manifest file="${manifest}">
+      <attribute name="Built-By"               value="${user.name}"/>
+      <attribute name="Built-At"               value="${build.timest}"/>
+      <attribute name="Specification-Title"    value="${description}"/>
+      <attribute name="Specification-Version"  value="${application.release}"/>
+      <attribute name="Specification-Vendor"   value="Oracle Consulting Services"/>
+      <attribute name="Implementation-Title"   value="${description}"/>
+      <attribute name="Implementation-Version" value="${application.release}-${build.major}.${build.minor}"/>
+      <attribute name="Implementation-Vendor"  value="Oracle Consulting Services"/>
+    </manifest>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the web application to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make-library" description="Package the project source and documentation" if="library" depends="compile,manifest">
+    <oam-jar-make description="${description}" module="${library}" package="${package}" destination="${destination.base}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the web application to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make-module" description="Package the project source and documentation" if="module" depends="compile,manifest">
+    <oam-war-make description="${description}" module="${module}" package="${package}" destination="${destination}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to assemble the web application to be deployed on the
+  == JEE application server
+  =====================================================================
+  -->
+  <target name="make" description="Package the project source and documentation" depends="clean,make-library,make-module"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application on the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="deploy-module" description="Deploy the project artifacts" if="module" depends="make">
+    <oam-war-deploy module="${module}" target="${ppa.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application on the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploy the project artifacts" depends="deploy-module"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="redeploy" description="Redeploy the project artifacts" depends="make">
+    <oam-war-redeploy application="${application}" target="${oam.server.name}"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the web application the JEE application
+  == server
+  =====================================================================
+  -->
+  <target name="undeploy" description="Undeploy the project artifacts">
+    <oam-war-undeploy application="${application}"/>
+  </target>
+</project>

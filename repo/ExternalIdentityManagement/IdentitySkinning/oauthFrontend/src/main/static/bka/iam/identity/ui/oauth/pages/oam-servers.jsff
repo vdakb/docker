@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:f="http://java.sun.com/jsf/core"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+          
+    <c:set var="oauthBundle"
+         value="#{adfBundle['bka.iam.identity.ui.oauth.OAuthBundle']}"/>
+         
+     <af:panelHeader text="#{oauthBundle['oam-servers-header']}"
+                     id="ph1" 
+                     >
+      <af:panelGroupLayout id="pgl1" styleClass="AFStretchWidth">
+        <af:panelCollection id="pc1" styleClass="AFStretchWidth" featuresOff="statusBar">
+          <f:facet name="toolbar">
+            <af:toolbar id="t2"
+                        binding="#{pageFlowScope.OAMServersManagedBean.toolbar}">
+                        
+              <af:commandToolbarButton text="#{oauthBundle['button-refresh']}"
+                           id="ctb7" 
+                           immediate="true"
+                           actionListener="#{pageFlowScope.OAMServersManagedBean.refreshOAMServersList}"
+                           icon="/images/func_refresh_16_ena.png"
+                           hoverIcon="/images/func_refresh_16_hov.png"
+                           disabledIcon="/images/func_refresh_16_dis.png"
+                           depressedIcon="/images/func_refresh_16_act.png"/>
+            </af:toolbar>
+          </f:facet>
+          <f:facet name="menus">
+            <af:menu text="#{oauthBundle['oam-servers-actions']}" id="m1"
+                     binding="#{pageFlowScope.OAMServersManagedBean.actionMenu}">
+             <af:commandMenuItem text="#{oauthBundle['button-refresh']}"
+                        id="cmi9" 
+                        icon="/images/func_refresh_16_ena.png"
+                        immediate="true"
+                        actionListener="#{pageFlowScope.OAMServersManagedBean.refreshOAMServersList}"/>
+            </af:menu>
+          </f:facet>
+          <af:table value="#{bindings.OAMConnections.collectionModel}" var="row"
+                    rows="#{bindings.OAMConnections.rangeSize}"
+                    emptyText="#{bindings.OAMConnections.viewable ? 'No server. Create IT Resource Type OAM Server' : 'Access Denied.'}"
+                    rowBandingInterval="0" selectedRowKeys="#{bindings.OAMConnections.collectionModel.selectedRow}"
+                    selectionListener="#{bindings.OAMConnections.collectionModel.makeCurrent}" rowSelection="single"
+                    fetchSize="#{bindings.OAMConnections.rangeSize}"
+                    filterModel="#{bindings.OAMConnectionsQuery.queryDescriptor}" filterVisible="true"
+                    queryListener="#{bindings.OAMConnectionsQuery.processQuery}" varStatus="vs" id="t1"
+                    binding="#{pageFlowScope.OAMServersManagedBean.searchTable}"
+                    columnStretching="column:c1">
+            <af:column rowHeader="true" width="30"
+                     headerText=""
+                     align="right" id="c8">
+            </af:column>
+            <af:column sortProperty="#{bindings.OAMConnections.hints.name.name}" 
+                       filterable="true" 
+                       sortable="true"
+                       headerText="#{oauthBundle['oam-servers-name.label']}" 
+                       id="c1">
+              <af:commandLink text="#{row.name}" id="cl1"
+                                  immediate="true"
+                                  actionListener="#{pageFlowScope.OAMServersManagedBean.callIdentityDomains}"
+                                  partialSubmit="true">
+                    <f:attribute name="oam_connection_name" value="#{row.name}"/>
+                  </af:commandLink>
+            </af:column>
+            <af:column sortProperty="#{bindings.OAMConnections.hints.host.name}" filterable="true" sortable="true"
+                       headerText="#{oauthBundle['oam-servers-host.label']}" id="c2">
+              <af:outputText value="#{row.host}" shortDesc="#{bindings.OAMConnections.hints.host.tooltip}" id="ot2"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.OAMConnections.hints.port.name}" filterable="true" sortable="true"
+                       headerText="#{oauthBundle['oam-servers-port.label']}" id="c3">
+              <af:outputText value="#{row.port}" shortDesc="#{bindings.OAMConnections.hints.port.tooltip}" id="ot3"/>
+            </af:column>
+            <af:column sortProperty="#{bindings.OAMConnections.hints.username.name}" filterable="true" sortable="true"
+                       headerText="#{oauthBundle['oam-servers-username.label']}" id="c4">
+              <af:outputText value="#{row.username}" shortDesc="#{bindings.OAMConnections.hints.username.tooltip}"
+                             id="ot4"/>
+            </af:column>
+          </af:table>
+      </af:panelCollection>
+      </af:panelGroupLayout>
+     </af:panelHeader>
+</jsp:root>

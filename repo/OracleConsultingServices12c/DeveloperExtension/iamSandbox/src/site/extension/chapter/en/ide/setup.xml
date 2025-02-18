@@ -1,0 +1,460 @@
+<!--
+  ! This software is the confidential and proprietary information of
+  ! Oracle Corporation. ("Confidential Information").  You shall not
+  ! disclose such Confidential Information and shall use it only in
+  ! accordance with the terms of the license agreement you entered
+  ! into with Oracle.
+  !
+  ! ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+  ! SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+  ! IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+  ! PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+  ! SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+  ! THIS SOFTWARE OR ITS DERIVATIVES.
+  !
+  ! Copyright &#xA9; 2015. All Rights reserved
+  !
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="ide-setup"
+         xml:lang="en"
+         version ="5.0">
+  <title>Oracle JDeveloper Setup</title>
+  <section xml:id="setup-ide-01">
+    <title>Patching</title>
+  </section>
+  <section xml:id="setup-ide-02">
+    <title>Personalization</title>
+    <para>
+      It is recommended that you specify a dedicated directory for your personalized settings in Oracle JDeveloper 12c.
+      Especially on a Windows Operating System this helps to keep the huge amount of data JDeveloper creates during usage out of the User Profile this Operating System manage for you.
+    </para>
+    <important>
+      On a Windows Operating System the User Profile may be synchronized to a network device if you shut down the computer you are logged on.
+      If the User Profile exceeds the limits configured by the Domain Administrator the changes you did at all will not be synchronized anymore.
+    </important>
+    <note>
+      If you are working on different PC’s over the time this directory should be a share on a network device where you have access to all the time.
+    </note>
+    <para>
+      Two options exsists to configure such a directory.
+      Either you use a command line switch to start Oracle JDeveloper 12c or you configuring in the property file <emphasis>&#x3C;ORACLE_HOME&#x3E;/jdeveloper/ide/bin/ide.conf</emphasis>
+    </para>
+    <note>
+      If you share the workstation with other developers the command line switch is the recommended option to configure such a directory.
+    </note>
+  </section>
+  <section xml:id="setup-mem">
+    <title>Tuning</title>
+    <section xml:id="setup-mem-01">
+      <title>Memory Settings</title>
+      <para>
+        Open in a text editor the file <emphasis>&#x3C;ORACLE_HOME&#x3E;/jdeveloper/ide/bin/ide.conf</emphasis>.
+      </para>
+      <note>
+        <para>
+          If you share the workstation with other developers you should make this changes in your personalized product configuration.
+        </para>
+        <para>
+          The location of user/product files are often configured during installation, but may be found in:
+        </para>
+        <formalpara>
+          <title>Windows</title>
+          <emphasis>%APPDATA%\&#x3C;product-name&#x3E;\&#x3C;product-version&#x3E;\product.conf</emphasis>
+        </formalpara>
+        <formalpara>
+          <title>Unix</title>
+          <emphasis>$HOME/&#x3C;product-name&#x3e;/\&#x3C;product-version&#x3E;/product.conf</emphasis>
+        </formalpara>
+        <para>
+          In particular, the directives to set the initial and maximum Java memory and the SetJavaHome directive to specify the JDK location can be overridden in that file instead of modifying the global file.
+        </para>
+      </note>
+      <para>
+        The format of this file is <emphasis>Directive Value</emphasis> with one or more spaces between the directive and the value. E.g <emphasis>AddVMOption -Xms2048M</emphasis>.
+      </para>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="2*"/>
+          <colspec colname="c2" colwidth="3*"/>
+          <thead>
+            <row>
+              <entry>Value</entry>
+              <entry>Meaning</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis>-Xms2048M</emphasis></entry>
+              <entry>
+                Specify the initial size, in bytes, of the memory allocation pool.
+                This value must be a multiple of 1024 greater than 1MB.
+                Append the letter k or K to indicate kilobytes, or m or M to indicate megabytes, or g or G to indicate gigabytes.
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis>-Xmx2048M</emphasis></entry>
+              <entry>
+                Specify the maximum size, in bytes, of the memory allocation pool.
+                This value must be a multiple of 1024 greater than 2MB.
+                Append the letter k or K to indicate kilobytes, or m or M to indicate megabytes, or g or G to indicate gigabytes.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="setup-mem-02">
+      <title>Garbage Collector Settings</title>
+      <para>
+        Open in a text editor the file <emphasis>&#x3C;ORACLE_HOME&#x3E;/jdeveloper/ide/bin/jdev.conf</emphasis>.
+      </para>
+      <note>
+        <para>
+          If you share the workstation with other developers you should make this changes in your personalized product configuration.
+        </para>
+        <para>
+          The location of user/product files are often configured during installation, but may be found in:
+        </para>
+        <formalpara>
+          <title>Windows</title>
+          <emphasis>%APPDATA%\&#x3C;product-name&#x3E;\&#x3C;product-version&#x3e;\jdev.conf</emphasis>
+        </formalpara>
+        <formalpara>
+          <title>Unix</title>
+          <emphasis>$HOME/&#x3C;product-name&#x3e;/\&#x3C;product-version&#x3e;/jdev.conf</emphasis>
+        </formalpara>
+      </note>
+      <para>
+        The format of this file is <emphasis>Directive Value</emphasis> with one or more spaces between the directive and the value. E.g <literal>ddVMOption -XX:+UseStringCache</literal>.
+      </para>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="2*"/>
+          <colspec colname="c2" colwidth="3*"/>
+          <thead>
+            <row>
+              <entry>Value</entry>
+              <entry>Meaning</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><literal>-XX:+UseStringCache</literal></entry>
+              <entry>
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-XX:+OptimizeStringConcat</literal></entry>
+              <entry>
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-XX:+UseCompressedOops</literal></entry>
+              <entry>
+                If on a 64-bit system, but using less than 32 GB RAM, this reduces object pointer memory size.
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-XX:+AggressiveOpts</literal></entry>
+              <entry>
+                Use an aggressive garbage collector (constant small collections).
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-XX:+UseConcMarkSweepGC</literal></entry>
+              <entry>
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-DVFS_ENABLE=true</literal></entry>
+              <entry>
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-Dsun.java2d.ddoffscreen=false</literal></entry>
+              <entry>
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-XX:+UseParNewGC</literal></entry>
+              <entry>
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-XX:+CMSIncrementalMode</literal></entry>
+              <entry>
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-XX:+CMSIncrementalPacing</literal></entry>
+              <entry>
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-XX:CMSIncrementalDutyCycleMin=0</literal></entry>
+              <entry>
+              </entry>
+            </row>
+            <row>
+              <entry><literal>-XX:CMSIncrementalDutyCycle=10</literal></entry>
+              <entry>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <warning>
+        We would caution you on enabling <literal>-XX:+AggressiveOpts</literal> breaks offline database support in JDeveloper so that one will have to be avoided in some cases.
+      </warning>
+    </section>
+    <section xml:id="setup-mem-03">
+      <title>Extension Settings</title>
+      <para>
+        It is recommended to load the core extension at startup of the IDE.
+      </para>
+      <programlisting>-Doracle.ide.startup.features=oracle.ocs.workspace.iam</programlisting>
+      <para>
+        This option configures the set of features that will be loaded on startup (the ide-core feature is always loaded  on startup, but you can specify a comma-delimited list of additional feature ids)
+      </para>
+    </section>
+  </section>
+  <section xml:id="setup-jad">
+    <title>Decompiler</title>
+    <para>
+      You can use <emphasis role="strong">JAD</emphasis> or any other decompiler with JDeveloper to show you the decompiled version of the source instead of the standard stub view with the following command line argument.
+    </para>
+    <para>
+      There are two requirements:
+    </para>
+    <itemizedlist>
+      <listitem>
+        <para>
+          the external decompiler must send its output to stdout
+        </para>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          the external decompiler must accept as its last argument the full path to the Java class file to decompile
+        </para>
+      </listitem>
+    </itemizedlist>
+    <para>
+      The property is <literal>jcncmd</literal> and to use for instance <literal>jad.exe</literal> you would use:
+    </para>
+    <programlisting>-J-Djcncmd=D:\Tools\jad\jad.exe -b -ff -nl -p -pi99999 -space -t2</programlisting>
+    <note>
+      <para>
+        In the line, <literal>-p</literal> forces the output to stdout.
+      </para>
+    </note>
+  </section>
+  <section xml:id="setup-prx">
+    <title>Proxy Support</title>
+    <section xml:id="setup-prx-01">
+      <title>Inside Oracle Network (including VPN)</title>
+      <para>
+        In some customer networks and if you work inside of the Oracle Intranet you will connect to the Version Control System through a Forward Proxy.
+        This proxy has to be configured in <emphasis role="strong">Tools</emphasis> | <emphasis role="strong">Preferences</emphasis> | <emphasis role="strong">Web Browser and Proxy</emphasis>.
+      </para>
+      <para>
+        In the dialog that appears switch to <emphasis role="strong">Proxy Settings</emphasis> and provide following information:
+      </para>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="2*"/>
+          <colspec colname="c2" colwidth="3*"/>
+          <thead>
+            <row>
+              <entry>Option</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">Manual Proxy Settings</emphasis></entry>
+              <entry><literal>&#x3C;checked&#x3E;</literal></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Host Name</emphasis></entry>
+              <entry><literal>www-proxy.us.oracle.com</literal></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Port Number</emphasis></entry>
+              <entry><literal>80</literal></entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Exceptions</emphasis></entry>
+              <entry><literal>&#x3C;empty&#x3E;</literal></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+        <mediaobject>
+          <alt>inside</alt>
+          <imageobject>
+            <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/enide/setup/002.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </para>
+    </section>
+    <section xml:id="setup-prx-02">
+      <title>Outside Oracle Network (including VPN)</title>
+      <para>
+        If you have a direct connection to the internet you switching of any proxy configuration.
+      </para>
+      <para>
+        This proxy has to be configured in <emphasis role="strong">Tools</emphasis> | <emphasis role="strong">Preferences</emphasis> | <emphasis role="strong">Web Browser and Proxy</emphasis>.
+        In the dialog that appears switch to <emphasis role="strong">Proxy Settings</emphasis> and provide following information:
+      </para>
+      <table frame="topbot" colsep="0" rowsep="1">
+        <tgroup cols="2">
+          <colspec colname="c1" colwidth="2*"/>
+          <colspec colname="c2" colwidth="3*"/>
+          <thead>
+            <row>
+              <entry>Option</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">No Proxy</emphasis></entry>
+              <entry><literal>&#x3C;checked&#x3E;</literal></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+        <mediaobject>
+          <alt>outside</alt>
+          <imageobject>
+            <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/setup/003.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </para>
+    </section>
+  </section>
+  <section xml:id="setup-vcs">
+    <title>Versioning</title>
+    <para>
+      Complete the steps below to finalize the use of the Subversion extension:
+    </para>
+    <section xml:id="setup-vcs-01">
+      <title>Check Subversion Information</title>
+      <para>
+        Use <emphasis role="strong">Tools</emphasis> | <emphasis role="strong">Preferences</emphasis> | <emphasis role="strong">Versioning</emphasis> | <emphasis role="strong">Subversion</emphasis> to check the current version of the extension.
+        You should see some information like shown in the following figure:
+      </para>
+      <para>
+        <mediaobject>
+          <alt>outside</alt>
+          <imageobject>
+            <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/setup/001.png" format="PNG"/>
+          </imageobject>
+        </mediaobject>
+      </para>
+    </section>
+    <section xml:id="setup-vcs-02">
+      <title>Create a new Repository Connection</title>
+      <para>
+        To use the versioning features of Oracle JDeveloper 12c you must create at first a new Repository Connection.
+      </para>
+      <para>
+        Perform the following steps to create a new Repository Connection for any new project:
+      </para>
+      <orderedlist>
+        <listitem>
+          <para>
+            Open the Subversion Navigator by <emphasis role="strong">Team</emphasis> | <emphasis role="strong">Versions</emphasis>.
+          </para>
+          <para>
+            <mediaobject>
+              <alt>versions</alt>
+              <imageobject>
+                <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/setup/004.png" format="PNG"/>
+              </imageobject>
+            </mediaobject>
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            In the Navigator Panel on the node <emphasis role="strong">Subversion</emphasis> in the navigation tree use mouse right-click to open the context menu and choose <emphasis role="strong">New Repository Connection...</emphasis>.
+          </para>
+          <para>
+            <mediaobject>
+              <alt>versions</alt>
+              <imageobject>
+                <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/setup/005.png" format="PNG"/>
+              </imageobject>
+            </mediaobject>
+          </para>
+          <para/>
+        </listitem>
+        <listitem>
+          <para>
+            In the dialog that appears provide following information:
+          </para>
+          <table frame="topbot" colsep="0" rowsep="1">
+            <tgroup cols="2">
+              <colspec colname="c1" colwidth="1*"/>
+              <colspec colname="c2" colwidth="3*"/>
+              <thead>
+                <row>
+                  <entry>Property</entry>
+                  <entry>Value</entry>
+                </row>
+              </thead>
+              <tbody>
+                <row>
+                  <entry><emphasis role="strong">Repository URL</emphasis></entry>
+                  <entry><literal>svn://svn.cinnamonstar.dev/iam-germany/trunk</literal></entry>
+                </row>
+                <row>
+                  <entry><emphasis role="strong">Connection Name</emphasis></entry>
+                  <entry><literal>iam-germany@svn.cinnamonstar.dev</literal></entry>
+                </row>
+                <row>
+                  <entry><emphasis role="strong">User Name</emphasis></entry>
+                  <entry><literal>&#x3C;Your Single Sign On User Name&#x3E;</literal></entry>
+                </row>
+                <row>
+                  <entry><emphasis role="strong">Password</emphasis></entry>
+                  <entry><literal>&#x3C;Your Single Sign On Password&#x3E;</literal></entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+          <para>
+            <mediaobject>
+              <alt>versions</alt>
+              <imageobject>
+                <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/setup/006.png" format="PNG"/>
+              </imageobject>
+            </mediaobject>
+          </para>
+          <para>
+            To test the access to the repositoty press the button <emphasis role="strong">Test Read Access</emphasis>.
+          </para>
+          <para>
+            <mediaobject>
+              <alt>success</alt>
+              <imageobject>
+                <imagedata scalefit="1" width="100%" contentdepth="100%" fileref="src/site/extension/images/en/ide/setup/007.png" format="PNG"/>
+              </imageobject>
+            </mediaobject>
+          </para>
+          <para>
+            Click <emphasis role="strong">OK</emphasis> to close.
+          </para>
+        </listitem>
+      </orderedlist>
+    </section>
+  </section>
+</chapter>

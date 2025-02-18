@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Payara Variable Initialization
+#
+# DOMAIN will be the name used to reference the domain when working with some
+# Payara/Glassfish commands.
+#
+DOMAIN="igs"
+#
+# The VERSION variable points to your Payara version used.
+# The below path would be appropriate for Payara version 5.2022.5
+#
+VERSION="5.2022.5"
+#
+# The HOME variable points to your Payara install location. The below
+# path would be appropriate for Payara versions 5.2022.x
+#
+HOME="/opt/oracle/product/pgs/${VERSION}"
+#
+# The USERNAME variable points the administrative user.
+#
+USERNAME="pgsadmin"
+#
+# The PASSWORD variable points the password file location.
+#
+PASSWORD="/Users/dsteding/.gfclient/secret"
+#
+# The CLI variable points to the location of the asadmin script used to run the
+# Payara asadmin commands
+#
+CLI=${HOME}/bin/asadmin
+#
+# Start the domain using the asadmin start-domain command.
+#
+rm -rf ${HOME}/glassfish/domains/${DOMAIN}/logs/server.log
+${CLI} start-domain "$@" ${DOMAIN}
+tail -F ${HOME}/glassfish/domains/${DOMAIN}/logs/server.log

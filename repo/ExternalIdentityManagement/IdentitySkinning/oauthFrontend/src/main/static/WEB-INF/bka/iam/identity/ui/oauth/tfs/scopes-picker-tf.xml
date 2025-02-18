@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <task-flow-definition id="scopes-picker-tf">
+    <template-reference>
+      <document>/WEB-INF/oracle/iam/ui/common/tfs/error-handler-flow-tf-template.xml</document>
+      <id>error-handler-flow-tf-template</id>
+    </template-reference>
+    <default-activity>loadAllScopes</default-activity>
+    <data-control-scope>
+      <shared/>
+    </data-control-scope>
+     <input-parameter-definition id="__1">
+      <name>oam_connection_name</name>
+      <value>#{pageFlowScope.oam_connection_name}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__2">
+      <name>identity_domain_name</name>
+      <value>#{pageFlowScope.identity_domain_name}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__8">
+      <name>selection_type</name>
+      <value>#{pageFlowScope.selection_type}</value>
+      <class>java.lang.String</class>
+      <required/>
+    </input-parameter-definition>
+    <input-parameter-definition id="__10">
+      <name>event_distinguisher</name>
+      <value>#{pageFlowScope.event_distinguisher}</value>
+      <class>java.lang.String</class>
+    </input-parameter-definition>
+    <managed-bean id="__9">
+      <managed-bean-name>scopePicker</managed-bean-name>
+      <managed-bean-class>bka.iam.identity.ui.oauth.bean.ScopePickerManagedBean</managed-bean-class>
+      <managed-bean-scope>pageFlow</managed-bean-scope>
+    </managed-bean>
+    <view id="scopes-picker">
+      <page>/bka/iam/identity/ui/oauth/pages/scopes-picker.jsff</page>
+    </view>
+    <task-flow-return id="goToCallerTF">
+      <outcome>
+        <name>goToCallerTF</name>
+      </outcome>
+    </task-flow-return>
+    <method-call id="loadAllScopes">
+      <method>#{bindings.loadAllScopes.execute}</method>
+      <outcome>
+        <fixed-outcome>loadAllScopes</fixed-outcome>
+      </outcome>
+    </method-call>
+    <control-flow-rule id="__3">
+      <from-activity-id>scopes-picker</from-activity-id>
+      <control-flow-case id="__4">
+        <from-outcome>success</from-outcome>
+        <to-activity-id>goToCallerTF</to-activity-id>
+      </control-flow-case>
+      <control-flow-case id="__5">
+        <from-outcome>cancel</from-outcome>
+        <to-activity-id>goToCallerTF</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <control-flow-rule id="__6">
+      <from-activity-id>loadAllScopes</from-activity-id>
+      <control-flow-case id="__7">
+        <from-outcome>loadAllScopes</from-outcome>
+        <to-activity-id>scopes-picker</to-activity-id>
+      </control-flow-case>
+    </control-flow-rule>
+    <use-page-fragments/>
+  </task-flow-definition>
+</adfc-config>

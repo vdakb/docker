@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="deployment-codebase"
+         xml:lang="en"
+         version ="5.0">
+  <title>Modifying CodeBase grants</title>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      <para>
+        Identify location of <emphasis role="strong"><literal>oimclient.jar</literal></emphasis> within the OIM <emphasis role="strong"><literal>MW_HOME</literal></emphasis>, for the code block below the location is <emphasis role="strong"><literal>/opt/oracle/product/fmw/12.2.1/idm/server/client/oimclient.jar</literal></emphasis>.
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+        For each of the WebLogic Server instances where the WAR file is to be deployed modify the <emphasis role="strong"><literal>${MW_HOME}/wlserver/server/lib/weblogic.policy</literal></emphasis> file as follows:
+      </para>
+    </listitem>
+  </itemizedlist>
+  <informalexample>
+    <?dbfo pgwide='1'?>
+    <programlisting>
+grant codeBase "file:/opt/oracle/product/fmw/12.2.1/idm/server/client/oimclient.jar" {
+  permission oracle.security.jps.JpsPermission "IdentityAssertion";
+};
+    </programlisting>
+  </informalexample>
+  <itemizedlist mark='bullet'>
+    <listitem>
+      <para>
+        Restart the appropriate OIM instance.
+      </para>
+    </listitem>
+  </itemizedlist>
+</section>

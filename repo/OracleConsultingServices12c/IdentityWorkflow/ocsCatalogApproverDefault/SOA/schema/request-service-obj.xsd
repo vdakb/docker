@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsi           ="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:jaxb          ="http://java.sun.com/xml/ns/jaxb" jaxb:version="1.0" jaxb:extensionBindingPrefixes="xjc"
+        xmlns:xjc           ="http://java.sun.com/xml/ns/jaxb/xjc"
+        xmlns:general       ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData"
+        xmlns:tns           ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/ResourceData"
+        targetNamespace     ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/ResourceData"
+        elementFormDefault  ="qualified"
+        attributeFormDefault="unqualified">
+
+  <annotation>
+    <appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="oracle.iam.requestdataws.webservicestubs.types"/>
+      </jaxb:schemaBindings>
+    </appinfo>
+  </annotation>
+
+  <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData" schemaLocation="request-service-type.xsd"/>
+
+  <element name="ResourceKey"  type="string"/>
+  <element name="ResourceData" type="tns:ResourceDataType"/>
+
+  <complexType name="ResourceDataType">
+    <sequence>
+      <element name="Resourcekey"     type="string"                      nillable="true"/>
+      <element name="ResourceName"    type="string"                      nillable="true"/>
+      <element name="ResourceType"    type="string"                      nillable="true"/>
+      <element name="Reconsequence"   type="string"                      nillable="true"/>
+      <element name="OrderFor"        type="string"                      nillable="true"/>
+      <!-- Arbitrary Attribute Name and values -->
+      <element name="CustomAttribute" type="general:CustomAttributeType" nillable="true" maxOccurs="unbounded"/>
+    </sequence>
+  </complexType>
+</schema>

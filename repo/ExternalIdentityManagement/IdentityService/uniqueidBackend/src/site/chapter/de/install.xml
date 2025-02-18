@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland BV & Co. KG
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#xA9; 2022. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="uid-backend-install"
+         xml:lang="de"
+         version ="5.0">
+  <title>Installation des Datenbankschemas</title>
+  <para>
+    In diesem Kapitel wird beschrieben, wie die Datenbankobjekte des Datenmodells des zu <emphasis>Identity Governance Services</emphasis> geh&#xF6;renden UID-Generators installiert werden.
+  </para>
+  <para>
+    In diesem Kapitel wird nicht beschrieben, wie eine Instanz der Zieldatenbank eingerichtet wird.
+    F&#xFC;r die Erzeugung einer Instanz der Zieldatenbank ist die Dokumentation des jeweiligen Herstellers heranzuziehen.
+    <important>
+      <emphasis>UID Generator</emphasis> unterst&#xFC;tzt derzeit ausschlie&#xDF;lich Oracle&#xAE; als Zieldatenbank.
+    </important>
+  </para>
+  <para>
+    Um das f&#xFC;r den Generator erforderliche Datenbankschema zu installieren, wird eine Reihe von Skripten mit vorbereiteten DDL-Anweisungen bereitgestellt.
+    Diese Skripte erstellen alle erforderlichen Tabellen und Standardindizes.
+  </para>
+  <para>
+    Um beliebige Objekte installieren zu k&#xF6;nnen, ben&#xF6;tigen Sie entweder lokal oder remote Zugriff auf die Oracle-Datenbank.
+    Um die bereitgestellten Skripte ausf&#xFC;hren zu k&#xF6;nnen, ist eine Installation von <emphasis>SQL*Plus</emphasis> erforderlich.
+  </para>
+  <warning>
+    F&#xFC;r die Ausf&#xFC;hrung der Installation ist die Rolle <emphasis role="strong">DBA</emphasis> erforderlich.
+  </warning>
+  <para>
+    Die Installation der Schemaobjekte besteht aus:
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend='uid-backend-install-all'>Erstellen der Schemaobjekte</link>
+      </listitem>
+    </itemizedlist>
+  </para>
+  <section xml:id="uid-backend-install-all">
+    <title>Erstellen der Schemaobjekte</title>
+    <para>
+       Um die Schemaobjekte zu erstellen, f&#xFC;hren Sie die folgenden Schritte aus:
+    </para>
+    <orderedlist>
+      <listitem>
+        <para>
+          &#xD6;ffnen Sie eine Kommandozeile zu dem Betriebssystem, von dem aus der Zugriff auf die Datenbankinstanz m&#xF6;glich ist.
+        </para>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Suchen Sie das Verzeichnis der bereitgestellten Skripte und navigieren Sie dorthin:
+        </para>
+        <programlisting>cd <emphasis>&#x3C;IGS_BASE&#x3E;</emphasis>/governanceBackend/src/main/resources/uid</programlisting>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Laden Sie das Datenbankschema des Generators, indem Sie den folgenden Befehl ausf&#xFC;hren:
+        </para>
+        <programlisting>sqlplus / as sysdba @create</programlisting>
+      </listitem>
+    </orderedlist>
+    <para>
+       Nach der Ausf&#xFC;hrung des Skripts zur Erstellung der Schemaobjekte sollten die Protokolldateien auf Fehler, die w&#xE4;hrend der Ausf&#xFC;hrung aufgetreten sein k&#xF6;nnen, kontrolliert werden.
+       Diese Protokolldateien befinden sich im gleichen Verzeichnis wie das zum Laden des Datenbankschemas verwendete Skript (siehe Schritt 3).
+    </para>
+    <note>
+      Bei der erstmaligen Ausf&#xFC;hrung des Skripts ist es normal das Fehler wie <emphasis>ORA-04080</emphasis> oder <emphasis>ORA-00942</emphasis> auftreten.
+    </note>
+  </section>
+</chapter>

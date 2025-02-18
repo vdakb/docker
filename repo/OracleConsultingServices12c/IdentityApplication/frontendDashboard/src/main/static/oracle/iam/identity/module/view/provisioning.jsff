@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich"
+          xmlns:cpl="/componentLib1">
+  <c:set var="launchpad$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Launchpad']}"/>
+  <af:panelGridLayout id="pgl1">
+    <af:gridRow id="gr10" height="266px" marginBottom="20px">
+      <af:gridCell id="gc11" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db11"
+                          titleText       ="#{launchpad$bundle.RESOURCE_TITLE}"
+                          instructionText ="#{launchpad$bundle.RESOURCE_HINT}"
+                          image           ="#{launchpad$bundle.RESOURCE_ICON}"
+                          hoverImage      ="#{launchpad$bundle.RESOURCE_HOVER}"
+                          colorStyle      ="blueTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateResource}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+      <af:gridCell id="gc12" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db12"
+                          titleText       ="#{launchpad$bundle.PROVISIONING_TITLE}"
+                          instructionText ="#{launchpad$bundle.PROVISIONING_HINT}"
+                          image           ="#{launchpad$bundle.PROVISIONING_ICON}"
+                          hoverImage      ="#{launchpad$bundle.PROVISIONING_HOVER}"
+                          colorStyle      ="blueTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateProvisioning}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+      <af:gridCell id="gc13" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db14"
+                          titleText       ="#{launchpad$bundle.OPENTASK_TITLE}"
+                          instructionText ="#{launchpad$bundle.OPENTASK_HINT}"
+                          image           ="#{launchpad$bundle.OPENTASK_ICON}"
+                          hoverImage      ="#{launchpad$bundle.OPENTASK_HOVER}"
+                          colorStyle      ="orangeTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateOpenTask}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+      <af:gridCell id="gc14" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db13"
+                          titleText       ="#{launchpad$bundle.RECONCILIATION_TITLE}"
+                          instructionText ="#{launchpad$bundle.RECONCILIATION_HINT}"
+                          image           ="#{launchpad$bundle.RECONCILIATION_ICON}"
+                          hoverImage      ="#{launchpad$bundle.RECONCILIATION_HOVER}"
+                          colorStyle      ="greenTile"
+                          iconClickable   ="true"
+                          iconClickAction ="#{backingBeanScope.dashboard.navigateReconciliation}"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}"/>
+      </af:gridCell>
+    </af:gridRow>
+    <af:gridRow id="gr20" height="266px" marginBottom="20px">
+      <af:gridCell id="gc21" halign="center" width="25%" marginEnd="5px" marginStart="5px">
+        <cpl:DashboardBox id              ="db21"
+                          titleText       ="#{launchpad$bundle.ENDPOINT_CONFIG_TITLE}"
+                          instructionText ="#{launchpad$bundle.ENDPOINT_CONFIG_HINT}"
+                          image           ="#{launchpad$bundle.ENDPOINT_CONFIG_ICON}"
+                          hoverImage      ="#{launchpad$bundle.ENDPOINT_CONFIG_HOVER}"
+                          colorStyle      ="blueTile"
+                          iconClickable   ="false"
+                          truncateAtLength="#{pageFlowScope.navigationBean.truncateLength}">
+          <f:facet name="popupMenu">
+            <af:menu  id="m11" text="menu 1">
+              <af:commandMenuItem id            ="cmi11"
+                                  text          ="#{launchpad$bundle.ENDPOINT_TEXT}"
+                                  actionListener="#{backingBeanScope.dashboard.navigateEndpoint}"/>
+              <af:commandMenuItem id            ="cmi12"
+                                  text          ="#{launchpad$bundle.ENDPOINTTYPE_TEXT}"
+                                  actionListener="#{backingBeanScope.dashboard.navigateEndpointType}"/>
+            </af:menu>
+          </f:facet>
+        </cpl:DashboardBox>
+      </af:gridCell>
+      <af:gridCell id="gc22" halign="center" width="25%" marginEnd="5px" marginStart="5px"/>
+      <af:gridCell id="gc23" halign="center" width="25%" marginEnd="5px" marginStart="5px"/>
+      <af:gridCell id="gc24" halign="center" width="25%" marginEnd="5px" marginStart="5px"/>
+    </af:gridRow>
+  </af:panelGridLayout>
+</jsp:root>

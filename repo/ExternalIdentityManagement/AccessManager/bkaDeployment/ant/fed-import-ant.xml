@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name                ="Identity Access Deployment Controller"
+         basedir             ="../../../deployment/fed"
+         xmlns:fmw           ="http://oracle.hst.deployment/fusion"
+         xmlns:jps           ="http://oracle.hst.deployment/security"
+         xmlns:wsm           ="http://oracle.hst.deployment/webservice"
+         xmlns:server        ="http://oracle.hst.deployment/topology"
+         xmlns:ids           ="http://oracle.iam.access/identitystore"
+         xmlns:service       ="http://oracle.iam.access/accessservice"
+         xmlns:ams           ="http://oracle.iam.access/accessserver"
+         xmlns:agent         ="http://oracle.iam.access/accessagent"
+         xmlns:policy        ="http://oracle.iam.access/accesspolicy"
+         xmlns:identitydomain="http://oracle.iam.oauth/domain"
+         xmlns:resourceserver="http://oracle.iam.oauth/resource">
+  <!--
+  ==============================================================================
+  == properties specific to the deployment environment
+  ==============================================================================
+  -->
+  <import file="../../oam-context.xml"/>
+  <import file="../../../AccessTransition/tpl/ant/fed-import.xml"/>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Deploys and configures the project artifacts on the target host and the Oracle Access Manager">
+    <call-targets package="001,002"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to deploy the workspace artifacts from scratch belonging
+  == to Identity Store Configuration, Authentication Capabilities
+  =====================================================================
+  -->
+  <target name="001" description="Identity Store Configuration">
+    <call-targets package="0100,0101,0102,0103,0104,0105"/>
+  </target>
+  <target name="002" description="OAuth Authentication Configuration">
+    <call-targets package="0201,0202,0203,0204,0205,0206,0207,0208"/>
+  </target>
+</project>

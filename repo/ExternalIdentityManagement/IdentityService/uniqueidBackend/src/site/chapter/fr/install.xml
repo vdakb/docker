@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland BV & Co. KG
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#xA9; 2022. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="uid-backend-install"
+         xml:lang="fr"
+         version ="5.0">
+  <title>Installer le sch&#xE9;ma de donn&#xE9;es</title>
+  <para>
+    Ce chapitre d&#xE9;crit comment installer les objets de mod&#xE8;le de donn&#xE9;es du g&#xE9;n&#xE9;rateur de UID appartenant &#xE0; <emphasis>Identity Governance Services</emphasis>.
+  </para>
+  <para>
+    Ce chapitre ne d&#xE9;crit pas comment configurer une instance de la base de donn&#xE9;es cible.
+    Pour plus d'informations sur la cr&#xE9;ation d'une instance pour la base de donn&#xE9;es cible, consultez la documentation du fabricant.
+    <important>
+      <emphasis>UID Generator</emphasis> ne prend actuellement en charge qu'Oracle&#xAE; comme base de donn&#xE9;es cible.
+    </important>
+  </para>
+  <para>
+    Pour installer le sch&#xE9;ma de base de donn&#xE9;es requis pour le g&#xE9;n&#xE9;rateur, un ensemble de scripts avec des instructions DDL pr&#xE9;par&#xE9;es est fourni.
+    Ces scripts cr&#xE9;ent toutes les tables requises et les index par d&#xE9;faut.
+  </para>
+  <para>
+    Pour pouvoir installer des objets, vous avez besoin d'un acc&#xE8;s local ou distant &#xE0; l'instance de base de donn&#xE9;es Oracle.
+    Afin de pouvoir ex&#xE9;cuter les scripts fournis, une installation de <emphasis>SQL*Plus</emphasis> est requise.
+  </para>
+  <warning>
+    Le r&#xF4;le de base de donn&#xE9;es <emphasis role="strong">DBA</emphasis> est requis pour effectuer l'installation.
+  </warning>
+  <para>
+    L'installation du g&#xE9;n&#xE9;rateur objets de sch&#xE9;ma dans le cadre des <emphasis>Identity Governance Services</emphasis> consiste en:
+    <itemizedlist mark='bullet'>
+      <listitem>
+        <link linkend='uid-backend-install-all'>Cr&#xE9;ation des objets de sch&#xE9;ma</link>
+      </listitem>
+    </itemizedlist>
+  </para>
+  <section xml:id="uid-backend-install-all">
+    <title>Cr&#xE9;ation des objets de sch&#xE9;ma</title>
+    <para>
+      Pour installer les objets de sch&#xE9;ma, proc&#xE9;dez comme suit:
+    </para>
+    <orderedlist>
+      <listitem>
+        <para>
+          Ouvrez une ligne de commande pour le syst&#xE8;me d'exploitation &#xE0; partir duquel l'acc&#xE9;s &#xE0; l'instance de base de donn&#xE9;es est possible.
+        </para>
+        <para/>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Localisez le r&#xE9;pertoire des scripts fournis et acc&#xE9;dez-y:
+        </para>
+        <programlisting>cd <emphasis>&#x3C;IGS_BASE&#x3E;</emphasis>/governanceBackend/src/main/resources/uid</programlisting>
+        <para/>
+      </listitem>
+      <listitem>
+        <para>
+          Chargez le sch&#xE9;ma de base de donn&#xE9;es de <emphasis>UID Generator</emphasis> en ex&#xE9;cutant la commande suivante:
+        </para>
+        <programlisting>sqlplus / as sysdba @create</programlisting>
+      </listitem>
+    </orderedlist>
+    <para>
+       Apr&#xE8;s avoir ex&#xE9;cut&#xE9; le script pour installer les objets de sch&#xE9;ma, les fichiers journaux doivent &#xEA;tre v&#xE9;rifi&#xE9;s pour les erreurs lors de l'ex&#xE9;cution.
+       Ces fichiers journaux se trouvent dans le m&#xEA;me r&#xE9;pertoire que le script utilis&#xE9; pour charger le sch&#xE9;ma de la base de donn&#xE9;es (voir point 3).
+    </para>
+    <note>
+      Lors de la premi&#xE8;re ex&#xE9;cution du script, il est normal de rencontrer des erreurs telles que <emphasis>ORA-04080</emphasis> ou <emphasis>ORA-00942</emphasis>.
+    </note>
+  </section>
+</chapter>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<shell-config xmlns             ="http://xmlns.oracle.com/idm/ui/idmshell"
+              xmlns:xsi         ="http://www.w3.org/2001/XMLSchema-instance"
+              detailAreaTabWidth="25"
+              jsonParser        ="jackson"
+              resourceBundle    ="bka.employee.portal.bundle.Main">
+  <taskflows>
+    <taskflow id="_emptytf" closeable="false" indialog="false" taskFlowId="/taskflows/EmptyTF.xml#EmptyTF">
+      <name>Empty TF</name>
+    </taskflow>
+    <taskflow id="_self_register" closeable="false" indialog="false" helpTopicId="oim_uself_reg_oim" taskFlowId="/WEB-INF/oracle/iam/ui/unauthenticated/selfregistration/tfs/user-self-registration-tf.xml#user-self-registration-tfs">
+      <name>Self Registration</name>
+    </taskflow>
+    <taskflow id="_track_registration" closeable="false" indialog="false" helpTopicId="oim_uself_trk_reg" taskFlowId="/WEB-INF/oracle/iam/ui/unauthenticated/trackregistration/tfs/track-registration-tf.xml#track-registration-tf">
+      <name>Track Registration</name>
+    </taskflow>
+    <taskflow id="_forgot_password" closeable="false" indialog="false" helpTopicId="oim_uself_res_pwd" taskFlowId="/WEB-INF/oracle/iam/ui/unauthenticated/forgotpassword/tfs/forgot-password-tf.xml#forgot-password-tf">
+      <name>Forgot Password</name>
+    </taskflow>
+    <taskflow id="_forgot_user_login" closeable="false" indialog="false" helpTopicId="oim_uself_res_login" taskFlowId="/WEB-INF/oracle/iam/ui/unauthenticated/forgotuserlogin/tfs/forgot-user-login-tf.xml#forgot-user-login-tf">
+      <name>Forgot User Login</name>
+    </taskflow>
+    <taskflow id="_first_login" closeable="false" indialog="false" helpTopicId="oim_uself_login" taskFlowId="/WEB-INF/oracle/iam/ui/authenticated/firstlogin/tfs/user-first-login-tf.xml#user-first-login-tf">
+      <name>LHS TF</name>
+    </taskflow>
+    <taskflow id="_account_locked" closeable="false" indialog="false" helpTopicId="oim_uself_toc" taskFlowId="/WEB-INF/oracle/iam/ui/unauthenticated/accountlocked/tfs/account-locked-tf.xml#account-locked-tf">
+      <name>LHS TF</name>
+    </taskflow>
+    <taskflow id="request_details" closeable="true" indialog="false" enableLinking="true" allowedURLParams="requestId" taskFlowId="/WEB-INF/oracle/iam/ui/catalog/tfs/request-summary-tf.xml#request-summary-tf">
+      <name>Request Details</name>
+    </taskflow>
+    <taskflow id="_task_details" closeable="false" indialog="false" taskFlowId="/WEB-INF/oracle/iam/ui/taskdetails/tfs/taskdetails-wrapper-tf.xml#taskdetails-wrapper-tf">
+      <name>LHS TF</name>
+    </taskflow>
+    <taskflow id="_self" closeable="false" indialog="false" taskFlowId="/WEB-INF/bka/employee/portal/module/flow/selfservice-tf.xml#selfservice-tf">
+      <name>Home</name>
+    </taskflow>
+    <taskflow id="_admin" closeable="false" indialog="false" taskFlowId="/WEB-INF/bka/employee/portal/module/flow/administration-tf.xml#administration-tf">
+      <name>Home</name>
+    </taskflow>
+  </taskflows>
+  <modules>
+    <module id="M2" tabModel="single" helpTopicId="oim_uself_reg_oim">
+      <name>Register</name>
+      <default-taskflow-list>
+        <taskflow refId="_self_register"/>
+      </default-taskflow-list>
+    </module>
+    <module id="M3" tabModel="single" helpTopicId="oim_uself_res_pwd">
+      <name>Forgot Password</name>
+      <default-taskflow-list>
+        <taskflow refId="_forgot_password"/>
+      </default-taskflow-list>
+    </module>
+    <module id="M4" tabModel="single" helpTopicId="oim_uself_trk_reg">
+      <name>Track Registration</name>
+      <default-taskflow-list>
+        <taskflow refId="_track_registration"/>
+      </default-taskflow-list>
+    </module>
+    <module id="M5" tabModel="single" helpTopicId="oim_uself_res_login">
+      <name>Forgot User Login</name>
+      <default-taskflow-list>
+        <taskflow refId="_forgot_user_login"/>
+      </default-taskflow-list>
+    </module>
+    <module id="M7" tabModel="single">
+      <name>Account Locked</name>
+      <default-taskflow-list>
+        <taskflow refId="_account_locked"/>
+      </default-taskflow-list>
+    </module>
+    <module id="M8" tabModel="single">
+      <name>Request Details</name>
+      <default-taskflow-list>
+        <taskflow refId="request_details"/>
+      </default-taskflow-list>
+    </module>
+    <module id="M9" tabModel="single">
+      <name>Task Details</name>
+      <default-taskflow-list>
+        <taskflow refId="_task_details"/>
+      </default-taskflow-list>
+    </module>
+    <module id="M10" icon="/images/navi_selfservice_24_ena.png">
+      <name>Self Service</name>
+      <default-taskflow-list>
+        <taskflow refId="_self"/>
+      </default-taskflow-list>
+    </module>
+    <module id="M11" icon="/images/navi_administration_24_ena.png">
+      <name>Administration</name>
+      <default-taskflow-list>
+        <taskflow refId="_admin"/>
+      </default-taskflow-list>
+    </module>
+  </modules>
+  <consoles>
+    <console id="/home">
+      <name>Employee Portal</name>
+      <path>/home</path>
+      <modules>
+        <module refId="M10"/>
+        <module refId="M11"/>
+      </modules>
+    </console>
+    <console id="/register">
+      <name>Identity Self Service</name>
+      <path>/register</path>
+      <modules>
+        <module refId="M2"/>
+      </modules>
+    </console>
+    <console id="/forgotpassword">
+      <name>Identity Self Service</name>
+      <path>/forgotpassword</path>
+      <modules>
+        <module refId="M3"/>
+      </modules>
+    </console>
+    <console id="/trackregistration">
+      <name>Identity Self Service</name>
+      <path>/trackregistration</path>
+      <modules>
+        <module refId="M4"/>
+      </modules>
+    </console>
+    <console id="/forgotuserlogin">
+      <name>Identity Self Service</name>
+      <path>/forgotuserlogin</path>
+      <modules>
+        <module refId="M5"/>
+      </modules>
+    </console>
+    <console id="/accountlocked">
+      <name>Identity Self Service</name>
+      <path>/accountlocked</path>
+      <modules>
+        <module refId="M7"/>
+      </modules>
+    </console>
+    <console id="/request">
+      <name>Identity Self Service</name>
+      <path>/request</path>
+      <modules>
+        <module refId="M8"/>
+      </modules>
+    </console>
+    <console id="/taskdetails">
+      <name>Identity Self Service</name>
+      <path>/taskdetails</path>
+      <modules>
+        <module refId="M9"/>
+      </modules>
+    </console>
+  </consoles>
+</shell-config>

@@ -1,0 +1,657 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2022. All Rights reserved
+-->
+<section xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="api-schemas-list"
+         xml:lang="en"
+         version ="5.0">
+  <title>List SCIM Schemas</title>
+  <para>
+    This endpoint provides the ability to query SCIM resources.
+    Request supports limiting attributes to return, see the <link linkend='api-schemas-list-req-q'>Query Parameters</link> section for more information.
+  </para>
+  <section xml:id="api-schemas-list-req">
+    <title>Request</title>
+    <warning>
+      <title>Authorization</title>
+      <para>
+        This end-point is available publicly and no authentication and/or authorization is required.
+      </para>
+    </warning>
+    <para>
+      <restapi role="search">/Schemas/</restapi>
+    </para>
+    <section xml:id="api-schemas-list-req-h">
+      <title>Request Header</title>
+      <table colsep="0">
+        <tgroup cols="3">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Value</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">accept</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">content-type</emphasis></entry>
+              <entry>string</entry>
+              <entry>application/scim+json</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-schemas-list-req-q">
+      <title>Query Parameters</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="8em"/>
+          <colspec colname="c2" colwidth="7em"/>
+          <colspec colname="c3" colwidth="7em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">attributes</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Comma separated list of attributes to return.</para>
+                <para>Any top-level resource attributes can be listed.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">excludedAttributes</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Comma separated list of attributes to exclude from the listing.</para>
+                <para>Any top-level resource attributes can be listed.</para>
+              </entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">filter</emphasis></entry>
+              <entry>string</entry>
+              <entry>no</entry>
+              <entry>
+                <para>Specifies filtering of the entries to return. For general filtering information see <link linkend='filters'>Filters</link> chapter.</para>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="api-schemas-list-res">
+    <title>Response</title>
+    <para>
+      The list of schemas supported by this SCIM server as defined by the RFC7644.
+    </para>
+    <section xml:id="api-schemas-list-res-r0">
+      <title>Envelope</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">schemas</emphasis></entry>
+              <entry>array of strings</entry>
+              <entry>yes</entry>
+              <entry>Schemas of the entry/entries returned.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">totalResults</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Non-negative integer in string representation. Specifies the total number of results.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">itemsPerPage</emphasis></entry>
+              <entry>integer</entry>
+              <entry>no</entry>
+              <entry>Non-negative integer. Specifies the number of query results that are returned in a query response page.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">startIndex</emphasis></entry>
+              <entry>integer</entry>
+              <entry>no</entry>
+              <entry>The 0-based index of the first result in the current set of query results.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">Resources</emphasis></entry>
+              <entry>array of <link linkend='api-schemas-list-res-r1'>Resource</link> objects</entry>
+              <entry>yes</entry>
+              <entry>The resource array of the populated result set.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-schemas-list-res-r1">
+      <title>Resource</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">id</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The unique URI of the schema.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">schemas</emphasis></entry>
+              <entry>array of strings</entry>
+              <entry>yes</entry>
+              <entry>Schemas of the entry/entries returned.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">meta</emphasis></entry>
+              <entry><link linkend='api-schemas-list-res-r2'>Meta Information</link> object</entry>
+              <entry>yes</entry>
+              <entry>Meta information for the resource.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">name</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The schema's human-readable name.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">attributes</emphasis></entry>
+              <entry>array of <link linkend='api-schemas-list-res-r3'>Attributes</link> objects</entry>
+              <entry>yes</entry>
+              <entry>The attributes supported by this resource.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">description</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The schema's human-readable description.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-schemas-list-res-r2">
+      <title>Meta Information</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">resourceType</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The type of this resource.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">location</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The URL for accessing this particular resource schema.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+    <section xml:id="api-schemas-list-res-r3">
+      <title>Attributes</title>
+      <table colsep="0">
+        <tgroup cols="4">
+          <colspec colname="c1" colwidth="12em"/>
+          <colspec colname="c2" colwidth="5em"/>
+          <colspec colname="c3" colwidth="5em"/>
+          <colspec colname="c4" colwidth="*"/>
+          <thead>
+            <row>
+              <entry>Name</entry>
+              <entry>Type</entry>
+              <entry>Required</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><emphasis role="strong">name</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The attribute's name.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">type</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The data type of this attribute. Possible values are "string", "boolean", "decimal", "integer", "dateTime", "reference" and "complex".</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">multiValued</emphasis></entry>
+              <entry>boolean</entry>
+              <entry>yes</entry>
+              <entry>Indication whether the attribute can have multiple values.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">description</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The attribute's human-readable description.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">mutability</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>The mutability of this attribute, i.e. whether this attribute value may be updated. Possible values are "readWrite", "readOnly", "writeOnly" and "immutable".</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">returned</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>Indication when this attribute will be returned. Possible values are "never", "default", "always" and "request".</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">uniqueness</emphasis></entry>
+              <entry>string</entry>
+              <entry>yes</entry>
+              <entry>A single keyword value that specifies how the service provider enforces uniqueness of attribute values. Possible values are "none", "server' and "global".</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">required</emphasis></entry>
+              <entry>boolean</entry>
+              <entry>yes</entry>
+              <entry>Indication whether the attribute value is required.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">caseExact</emphasis></entry>
+              <entry>boolean</entry>
+              <entry>yes</entry>
+              <entry>Indication whether the attribute value is case-sensitive.</entry>
+            </row>
+            <row>
+              <entry><emphasis role="strong">subAttributes</emphasis></entry>
+              <entry>array of <link linkend='api-schemas-list-res-r3'>Attributes</link> objects</entry>
+              <entry>no</entry>
+              <entry>For a "complex" type attribute, list of attribute sub-types.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </section>
+  </section>
+  <section xml:id="api-schemas-list-ex">
+    <title>Example for listing schemas</title>
+    <para>
+      <restapi role="search">/Schemas</restapi>
+    </para>
+    <programlisting>
+{
+    "schemas": [
+        "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+    ],
+    "totalResults": "9",
+    "itemsPerPage": 0,
+    "startIndex": 0,
+    "Resources": [
+        {
+            "id": "urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:UserApplication",
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:Schema"
+            ],
+            "meta": {
+                "resourceType": "Schema",
+                "location": "http://192.168.64.11:8005/igs/scim/v2/Schemas/urn:ietf:params:scim:schemas:extension:oracle:2.0:OIG:UserApplication"
+            },
+            "name": "UserApplication",
+            "attributes": [
+                {
+                    "name": "applications",
+                    "type": "complex",
+                    "multiValued": true,
+                    "description": "User's associated application instances",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false,
+                    "subAttributes": [
+                        {
+                            "name": "applicationName",
+                            "type": "string",
+                            "multiValued": false,
+                            "description": "Name of the application instance",
+                            "mutability": "readWrite",
+                            "returned": "default",
+                            "uniqueness": "none",
+                            "required": false,
+                            "caseExact": false
+                        },
+...
+                        {
+                            "name": "applicationAttributes",
+                            "type": "complex",
+                            "multiValued": true,
+                            "description": "Attributes for the application instance account",
+                            "mutability": "readWrite",
+                            "returned": "default",
+                            "uniqueness": "none",
+                            "required": false,
+                            "caseExact": false,
+                            "subAttributes": [
+                                {
+                                    "name": "name",
+                                    "type": "string",
+                                    "multiValued": false,
+                                    "description": "Attribute name (label from OIG)",
+                                    "mutability": "readWrite",
+                                    "returned": "default",
+                                    "uniqueness": "none",
+                                    "required": false,
+                                    "caseExact": false
+                                },
+                                {
+                                    "name": "value",
+                                    "type": "string",
+                                    "multiValued": false,
+                                    "description": "Attribute value",
+                                    "mutability": "readWrite",
+                                    "returned": "default",
+                                    "uniqueness": "none",
+                                    "required": false,
+                                    "caseExact": false
+                                }
+                            ]
+                        },
+                        {
+                            "name": "entitlements",
+                            "type": "complex",
+                            "multiValued": true,
+                            "description": "Entitlements associated with the application instance",
+                            "mutability": "readWrite",
+                            "returned": "default",
+                            "uniqueness": "none",
+                            "required": false,
+                            "caseExact": false,
+                            "subAttributes": [
+                                {
+                                    "name": "namespace",
+                                    "type": "String",
+                                    "multiValued": true,
+                                    "description": "Namespace of the entitlement (e.g. UD_OUD_G)",
+                                    "mutability": "readWrite",
+                                    "returned": "default",
+                                    "uniqueness": "none",
+                                    "required": true,
+                                    "caseExact": false
+                                },
+                                {
+                                    "name": "entitlementValues",
+                                    "type": "complex",
+                                    "multiValued": true,
+                                    "description": "Entitlements associated with the application instance",
+                                    "mutability": "readWrite",
+                                    "returned": "default",
+                                    "uniqueness": "none",
+                                    "required": false,
+                                    "caseExact": false,
+                                    "subAttributes": [
+                                        {
+                                            "name": "status",
+                                            "type": "string",
+                                            "multiValued": false,
+                                            "description": "Status of the entitlement instance",
+                                            "mutability": "read",
+                                            "returned": "default",
+                                            "uniqueness": "none",
+                                            "required": false,
+                                            "caseExact": false
+                                        },
+                                        {
+                                            "name": "entitlement",
+                                            "type": "complex",
+                                            "multiValued": true,
+                                            "description": "Attributes for the entitlement instance",
+                                            "mutability": "readWrite",
+                                            "returned": "default",
+                                            "uniqueness": "none",
+                                            "required": true,
+                                            "caseExact": false,
+                                            "subAttributes": [
+                                                {
+                                                    "name": "name",
+                                                    "type": "string",
+                                                    "multiValued": false,
+                                                    "description": "Name of the entitlement",
+                                                    "mutability": "readWrite",
+                                                    "returned": "default",
+                                                    "uniqueness": "none",
+                                                    "required": true,
+                                                    "caseExact": false
+                                                },
+                                                {
+                                                    "name": "value",
+                                                    "type": "string",
+                                                    "multiValued": false,
+                                                    "description": "Value of the entitlement",
+                                                    "mutability": "readWrite",
+                                                    "returned": "default",
+                                                    "uniqueness": "none",
+                                                    "required": true,
+                                                    "caseExact": false
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "description": "Schema extension for user application instances"
+        },
+        {
+            "id": "urn:ietf:params:scim:schemas:oracle:core:2.0:IDM:ApplicationAccount",
+            "schemas": [
+                "urn:ietf:params:scim:schemas:core:2.0:Schema"
+            ],
+            "meta": {
+                "resourceType": "Schema",
+                "location": "http://192.168.64.11:8005/igs/scim/v2/Schemas/urn:ietf:params:scim:schemas:oracle:core:2.0:IDM:ApplicationAccount"
+            },
+            "name": "ApplicationAccount",
+            "attributes": [
+                {
+                    "name": "applicationName",
+                    "type": "string",
+                    "multiValued": false,
+                    "description": "Name of the application instance",
+                    "mutability": "read",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+...
+                {
+                    "name": "entitlements",
+                    "type": "complex",
+                    "multiValued": true,
+                    "description": "Entitlements associated with the account",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false,
+                    "subAttributes": [
+                        {
+                            "name": "namespace",
+                            "type": "String",
+                            "multiValued": true,
+                            "description": "Namespace of the entitlement (e.g. UD_OUD_G)",
+                            "mutability": "readWrite",
+                            "returned": "default",
+                            "uniqueness": "none",
+                            "required": true,
+                            "caseExact": false
+                        },
+                        {
+                            "name": "entitlementValues",
+                            "type": "complex",
+                            "multiValued": true,
+                            "description": "Entitlements associated with the application instance",
+                            "mutability": "readWrite",
+                            "returned": "default",
+                            "uniqueness": "none",
+                            "required": false,
+                            "caseExact": false,
+                            "subAttributes": [
+                                {
+                                    "name": "status",
+                                    "type": "string",
+                                    "multiValued": false,
+                                    "description": "Status of the entitlement instance",
+                                    "mutability": "read",
+                                    "returned": "default",
+                                    "uniqueness": "none",
+                                    "required": false,
+                                    "caseExact": false
+                                },
+                                {
+                                    "name": "entitlement",
+                                    "type": "complex",
+                                    "multiValued": true,
+                                    "description": "Attributes for the entitlement instance",
+                                    "mutability": "readWrite",
+                                    "returned": "default",
+                                    "uniqueness": "none",
+                                    "required": true,
+                                    "caseExact": false,
+                                    "subAttributes": [
+                                        {
+                                            "name": "name",
+                                            "type": "string",
+                                            "multiValued": false,
+                                            "description": "Name of the entitlement",
+                                            "mutability": "readWrite",
+                                            "returned": "default",
+                                            "uniqueness": "none",
+                                            "required": true,
+                                            "caseExact": false
+                                        },
+                                        {
+                                            "name": "value",
+                                            "type": "string",
+                                            "multiValued": false,
+                                            "description": "Value of the entitlement",
+                                            "mutability": "readWrite",
+                                            "returned": "default",
+                                            "uniqueness": "none",
+                                            "required": true,
+                                            "caseExact": false
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "description": "Schema extension for application accounts"
+        },
+        ...
+    ]
+}
+    </programlisting>
+  </section>
+  <section xml:id="api-schemas-list-err">
+    <title>Possible Errors</title>
+    <table>
+      <thead>
+        <tr>
+          <td>Error</td>
+          <td>Condition</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><emphasis role="strong">401 Unauthorized</emphasis></td>
+          <td>No or invalid authentication was provided.</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">403 Forbidden</emphasis></td>
+          <td>Request was authenticated but authorization was not passed (authenticated user lacks role required to acces the resource).</td>
+        </tr>
+        <tr>
+          <td><emphasis role="strong">503 Service Unavailable</emphasis></td>
+          <td>Other processing error occured including invalid filter syntax. Response <literal>description</literal> attribute contains more details.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</section>

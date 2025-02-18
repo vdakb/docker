@@ -1,0 +1,35 @@
+-- D:\Project\Bundeskriminalamt12c\InternalIdentityManagement\EmployeePortal\portalBackend\..\vehicleBackend\src\main\resources\dbs\epp\obj\ept-vmt.con
+--
+-- Generated for Oracle Database 12c on Sun May 24 17:30:57 2020 by Server Generator 10.1.2.93.10
+
+PROMPT Creating Primary Key 'ept_vmt_pk' on 'ept_vehicle_brand_types'
+ALTER TABLE ept_vehicle_brand_types
+  ADD (
+    CONSTRAINT ept_vmt_pk PRIMARY KEY (
+      vmb_id, vht_id
+    )
+    USING INDEX TABLESPACE &&eppdata
+  )
+/
+PROMPT Creating Foreign Key 'ept_vmt_vmb_fk' on 'ept_vehicle_brand_types'
+ALTER TABLE ept_vehicle_brand_types
+  ADD (
+    CONSTRAINT ept_vmt_vmb_fk FOREIGN KEY (
+      vmb_id
+    )
+    REFERENCES ept_vehicle_brands (
+      id
+    )
+  )
+/
+PROMPT Creating Foreign Key 'ept_vmt_vht_fk' on 'ept_vehicle_brand_types'
+ALTER TABLE ept_vehicle_brand_types
+  ADD (
+    CONSTRAINT ept_vmt_vht_fk FOREIGN KEY (
+      vht_id
+    )
+    REFERENCES ept_vehicle_types (
+      id
+    )
+  )
+/

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<pageDefinition id     ="orchestrationprocess_searchPageDef" xmlns="http://xmlns.oracle.com/adfm/uimodel" version="12.2.1.15.5"
+                Package="oracle.iam.identity.sysadmin.view">
+  <parameters/>
+  <executables>
+    <iterator     id="ProcessIterator" Binds="OrchestrationProcessSearchVO" DataControl="OrchestrationAMDataControl" RangeSize="20"/>
+    <searchRegion id="ProcessCriteria" Binds="ProcessIterator" Criteria="OrchestrationProcessVC" Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer" InitialQueryOverridden="true" DefaultQuickSearchAttrName="processId"/>
+  </executables>
+  <bindings>
+    <tree  id="Process" IterBinding="ProcessIterator">
+      <nodeDefinition Name="ProcessNode" DefName="oracle.iam.identity.sysadmin.model.view.OrchestrationProcessVO">
+        <AttrNames>
+          <Item Value="processId"/>
+          <Item Value="processName"/>
+          <Item Value="bulkParentId"/>
+          <Item Value="status"/>
+          <Item Value="parentId"/>
+          <Item Value="dependendId"/>
+          <Item Value="entityId"/>
+          <Item Value="entityType"/>
+          <Item Value="outOfBandEvents"/>
+          <Item Value="operation"/>
+          <Item Value="stage"/>
+          <Item Value="changeType"/>
+          <Item Value="retry"/>
+          <Item Value="createdOn"/>
+          <Item Value="modifiedOn"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action id="Rollback" DataControl="OrchestrationAMDataControl" RequiresUpdateModel="false" Action="rollbackTransaction"/>
+    <eventBinding id="raiseTaskFlowLaunchEvent">
+      <events xmlns="http://xmlns.oracle.com/adfm/contextualEvent">
+        <event name="oracle.idm.shell.event.TaskFlowLaunchEvent"/>
+      </events>
+    </eventBinding>
+  </bindings>
+</pageDefinition>

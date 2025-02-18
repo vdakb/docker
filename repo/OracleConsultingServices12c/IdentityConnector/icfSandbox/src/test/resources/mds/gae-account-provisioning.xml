@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<descriptor xmlns         ="http://www.oracle.com/schema/oim/mapping"
+            identifier    ="UD_APIP_USR_UID"
+            uniqueName    ="UD_APIP_USR_UID"
+            transformation="false">
+  <attribute type="string"  name="__NAME__"    source="UD_APIP_USR_UID">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="__PASSWORD__" source="UD_APIP_USR_PWD">
+    <flag>sensitive</flag>
+  </attribute>
+  <attribute type="string" name="lastName"     source="UD_APIP_USR_SN">
+    <flag>required</flag>
+  </attribute>
+  <attribute type="string" name="firstName"    source="UD_APIP_USR_GN">
+    <flag/>
+  </attribute>
+  <!--
+   | child form providing access only on column names not labels hence for
+   | any clone of the connector we need a new decriptor; aaargggh
+   | -->
+  <multivalue name="tenant" source="UD_APIP_URL" transformation="true">
+    <attribute type="string" name="__UID__"    source="UD_APIP_URL_SID">
+      <flag>required</flag>
+      <flag>entitlement</flag>
+    </attribute>
+    <attribute type="string" name="__NAME__"   source="UD_APIP_URL_RID">
+      <flag>required</flag>
+    </attribute>
+    <transformer name="UD_APIP_URL_RID" class="oracle.iam.identity.gws.adapter.apigee.Normalizer"/>
+  </multivalue>
+</descriptor>

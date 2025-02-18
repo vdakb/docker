@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+ |  Oracle Deutschland GmbH
+ |
+ |  This software is the confidential and proprietary information of
+ |  Oracle Corporation. ("Confidential Information").  You shall not
+ |  disclose such Confidential Information and shall use it only in
+ |  accordance with the terms of the license agreement you entered
+ |  into with Oracle.
+ |
+ |  ORACLE MAKES NO REPRESENTATIONS OR WARRANTIES ABOUT THE SUITABILITY OF THE
+ |  SOFTWARE, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+ |  IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ |  PURPOSE, OR NON-INFRINGEMENT. ORACLE SHALL NOT BE LIABLE FOR ANY DAMAGES
+ |  SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+ |  THIS SOFTWARE OR ITS DERIVATIVES.
+ |
+ |  Copyright &#169; 2021. All Rights reserved
+-->
+<chapter xmlns   ="http://docbook.org/ns/docbook"
+         xmlns:xl="http://www.w3.org/1999/xlink"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xml:id  ="logging"
+         xml:lang="en"
+         version ="5.0">
+  <title>Managing Logging</title>
+  <para>
+    Oracle Identity Governance uses Oracle Diagnostic Logging (ODL) logging service for recording all types of events pertaining to the connector.
+  </para>
+  <para>
+    The following topics provide detailed information about logging:
+  </para>
+  <itemizedlist>
+    <listitem>
+      <link linkend="logging-lev">Understanding Log Levels</link>
+     <para/>
+    </listitem>
+    <listitem>
+      <link linkend="logging-cfg">Configure Logging</link>
+    </listitem>
+  </itemizedlist>
+  <section xml:id="logging-lev">
+    <title>Understanding Log Levels</title>
+    <para>
+      When you enable logging, Oracle Identity Governance automatically stores in a log file information about events that occur during the course of provisioning and reconciliation operations.
+    </para>
+    <para>
+      ODL is the principle logging service used by Oracle Identity Governance and is based on <literal>java.util.Logger</literal>.
+      To specify the type of event for which you want logging to take place, you can set the log level to one of the following:
+    </para>
+    <table colsep="0">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="10em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Level</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>SEVERE.intValue()+100</entry>
+            <entry>This level enables logging of information about fatal errors.</entry>
+          </row>
+          <row>
+            <entry>SEVERE</entry>
+            <entry>This level enables logging of information about errors that might allow Oracle Identity Governance to continue running.</entry>
+          </row>
+          <row>
+            <entry>WARNING</entry>
+            <entry>This level enables logging of information about potentially harmful situations.</entry>
+          </row>
+          <row>
+            <entry>INFO</entry>
+            <entry>This level enables logging of messages that highlight the progress of the application.</entry>
+          </row>
+          <row>
+            <entry>CONFIG</entry>
+            <entry>This level enables logging of information about fine-grained events that are useful for debugging.</entry>
+          </row>
+          <row>
+            <entry>FINE, FINER, FINEST</entry>
+            <entry>These levels enable logging of information about fine-grained events, where FINEST logs information about all events.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>
+      These message types are mapped to ODL message type and level combinations as shown in Table 4-1.
+    </para>
+    <table colsep="0">
+      <tgroup cols="2">
+        <colspec colname="c1" colwidth="10em"/>
+        <colspec colname="c2" colwidth="*"/>
+        <thead>
+          <row>
+            <entry>Java Level</entry>
+            <entry>ODL Message Type:Level</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>SEVERE.intValue()+100</entry>
+            <entry>INCIDENT_ERROR:1</entry>
+          </row>
+          <row>
+            <entry>SEVERE</entry>
+            <entry>ERROR:1</entry>
+          </row>
+          <row>
+            <entry>WARNING</entry>
+            <entry>WARNING:1</entry>
+          </row>
+          <row>
+            <entry>INFO</entry>
+            <entry>NOTIFICATION:1 </entry>
+          </row>
+          <row>
+            <entry>CONFIG</entry>
+            <entry>NOTIFICATION:16</entry>
+          </row>
+          <row>
+            <entry>FINE</entry>
+            <entry>TRACE1</entry>
+          </row>
+          <row>
+            <entry>FINER</entry>
+            <entry>TRACE16</entry>
+          </row>
+          <row>
+            <entry>FINEST</entry>
+            <entry>TRACE32</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+    <para>
+      The configuration file for ODL is logging.xml is located at the following path:
+    </para>
+    <para>
+      <emphasis>DOMAIN_HOME</emphasis><literal>/config/fmwconfig/servers/</literal><emphasis>OIM_SERVER</emphasis><literal>/logging.xml</literal>.
+    </para>
+    <para>
+      Here, <emphasis>DOMAIN_HOME</emphasis> and <emphasis>OIM_SEVER</emphasis> are the domain and server names specified during the installation of Oracle Identity Governance.
+    </para>
+  </section>
+  <section xml:id="logging-cfg">
+    <title>Configure Logging</title>
+    <para>
+      To enable logging in Oracle WebLogic Server:
+    </para>
+  </section>
+</chapter>

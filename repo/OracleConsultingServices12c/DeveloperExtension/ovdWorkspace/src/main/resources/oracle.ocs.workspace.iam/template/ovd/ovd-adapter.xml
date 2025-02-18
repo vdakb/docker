@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="#{ant.project}" default="#{ant.default}" basedir="../">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name = "description"      value = "#{ovd.description}"/>
+  <property name = "destination.base" value = "#{ovd.destination}"/>
+
+  <property name = "application"      value = "#{ovd.application}"/>
+  <property name = "library"          value = "${application}"/>
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file = "#{ovd.targets}"/>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.jee"/>
+    <path refid="oracle.fmw.iam.ovd.server"/>
+    <path refid="oracle.ocs.iam.hst.foundation"/>
+  </path>
+</project>

@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name                ="Identity Access Setup Include"
+         xmlns:fmw           ="http://oracle.hst.deployment/fusion"
+         xmlns:jps           ="http://oracle.hst.deployment/security"
+         xmlns:wsm           ="http://oracle.hst.deployment/webservice"
+         xmlns:server        ="http://oracle.hst.deployment/topology"
+         xmlns:ids           ="http://oracle.iam.access/identitystore"
+         xmlns:accessservice ="http://oracle.iam.access/accessservice"
+         xmlns:identitydomain="http://oracle.iam.oauth/domain"
+         xmlns:resourceclient="http://oracle.iam.oauth/client"
+         xmlns:resourceserver="http://oracle.iam.oauth/resource">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name" value="${log.env}/fed-delete-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Delete the Oracle Access Manager OAuth Identity Domain
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deletes the environment
+  **           This includes:
+  **           o OAuth Identity Domain
+  **              - SecureDomain2
+  ******************************************************************************
+  -->
+  <target name="0201" description="Delete the OAuth Identity Domain Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0201 OAuth Identity Domain ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Identity Domain from environment ${fmw.env} on ${jee.server.host}:${jee.server.port}"/>
+    <identitydomain:delete contextRef="api-context">
+      <instance name="SecureDomain3"/>
+      <instance name="SecureDomain2"/>
+      <instance name="SecureDomain1"/>
+    </identitydomain:delete>
+    <echo message="=================================================================="/>
+    <echo message="0201 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+ <!--
+  ******************************************************************************
+  **
+  **            #####    #####    #####
+  **              #     #     #  #     #
+  **              #     #        #
+  **              #     #  ####   #####
+  **              #     #     #        #
+  **              #     #     #  #     #
+  **            #####    #####    #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deletes the Oracle Access Manager OAuth Resource Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deletes the environment
+  **           This includes:
+  **           o OAuth Resource Server igsresource
+  ******************************************************************************
+  -->
+  <target name="0202" description="Delete the Identity Governance Service OAuth Resource Server Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0202 OAuth Resource Server igsresource ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Resource Server from environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceserver:delete contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="igsresource"/>
+      </domain>
+    </resourceserver:delete>
+    <echo message="=================================================================="/>
+    <echo message="0202 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####    #####    #####
+  **              #     #     #  #     #
+  **              #     #        #
+  **              #     #  ####   #####
+  **              #     #     #        #
+  **              #     #     #  #     #
+  **            #####    #####    #####
+  **
+  ******************************************************************************
+  ** Purpose:  Deletes the Access Manager OAuth Resource Client Configuration
+  **           The client support credentials grant type.
+  **
+  ** Synopsis: The tasks delete the Resource Client
+  **           This includes:
+  **           o OAuth Resource Client igsservice
+  ******************************************************************************
+  -->
+  <target name="0203" description="Deleting Identity Governance Service OAuth Resource Client in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0203 Delete OAuth Resource Client igsservice ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Resource Client from environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceclient:delete contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="igsservice"/>
+      </domain>
+    </resourceclient:delete>
+    <echo message="=================================================================="/>
+    <echo message="0203 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+ <!--
+  ******************************************************************************
+  **
+  **           #     #  #####  ######
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deletes the Oracle Access Manager OAuth Resource Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deletes the environment
+  **           This includes:
+  **           o OAuth Resource Server uidresource
+  ******************************************************************************
+  -->
+  <target name="0204" description="Delete the Unique Identifier Service OAuth Resource Server Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0204 OAuth Resource Server uidresource ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Resource Server from environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceserver:delete contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="uidresource"/>
+      </domain>
+    </resourceserver:delete>
+    <echo message="=================================================================="/>
+    <echo message="0204 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #  #####  ######
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deletes the Access Manager OAuth Resource Client Configuration
+  **           The client support credentials grant type.
+  **
+  ** Synopsis: The tasks delete the Resource Client
+  **           This includes:
+  **           o OAuth Resource Client uidservice
+  ******************************************************************************
+  -->
+  <target name="0205" description="Deleting Unique Identifier Service OAuth Resource Client in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0205 Delete OAuth Resource Client uidservice ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Resource Client from environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceclient:delete contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="uidservice"/>
+      </domain>
+    </resourceclient:delete>
+    <echo message="=================================================================="/>
+    <echo message="0205 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+ <!--
+  ******************************************************************************
+  **
+  **           ######   #####  ######
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           ######     #    #     #
+  **           #          #    #     #
+  **           #          #    #     #
+  **           #        #####  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deletes the Oracle Access Manager OAuth Resource Server
+  **           Configuration.
+  **
+  ** Synopsis: The tasks deletes the environment
+  **           This includes:
+  **           o OAuth Resource Server Anonymous Identifier Service
+  ******************************************************************************
+  -->
+  <target name="0206" description="Delete the Anonymous Identifier Service OAuth Resource Server Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0206 OAuth Resource Server pidresource ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Resource Server from environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceserver:delete contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="pidresource"/>
+      </domain>
+    </resourceserver:delete>
+    <echo message="=================================================================="/>
+    <echo message="0206 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  ######
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **           ######     #    #     #
+  **           #          #    #     #
+  **           #          #    #     #
+  **           #        #####  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Deletes the Access Manager OAuth Resource Client Configuration
+  **           The client support credentials grant type.
+  **
+  ** Synopsis: The tasks delete the Resource Client
+  **           This includes:
+  **           o OAuth Resource Client Anonymous Identifier Service
+  ******************************************************************************
+  -->
+  <target name="0207" description="Deleting Anonymous Identifier Service OAuth Resource Client in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0207 OAuth Resource Client pidservice ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Delete OAuth Resource Client from environment ${fmw.env} on ${api.server.host}:${api.server.port}"/>
+    <resourceclient:delete contextRef="api-context">
+      <domain name="SecureDomain2">
+        <instance name="pidservice"/>
+      </domain>
+    </resourceclient:delete>
+    <echo message="=================================================================="/>
+    <echo message="0207 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####      #     #     # ####### #     #
+  **           #     #    # #    #     #    #    #     #
+  **           #     #   #   #   #     #    #    #     #
+  **           #     #  #     #  #     #    #    #######
+  **           #     #  #######  #     #    #    #     #
+  **           #     #  #     #  #     #    #    #     #
+  **            #####   #     #   #####     #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Reports the Access Manager Identity Domain Configuration
+  **
+  ** Synopsis: The tasks reports the Identity Domain configuration
+  **           This includes:
+  **           o OAuth Identity Domain SecureDomain2
+  **           o OAuth Resource Server igsresource
+  **           o OAuth Resource Server uidresource
+  **           o OAuth Resource Server pidresource
+  **           o OAuth Resource Client igsservice
+  **           o OAuth Resource Client uidservice
+  **           o OAuth Resource Client pidservice
+  ******************************************************************************
+  -->
+  <target name="0208" description="Report Identity Domains in Access Manager">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0208 Report Identity Domain Configuration ${application.release}"/>
+    <echo message="=================================================================="/>
+    <identitydomain:report contextRef="api-context" failonerror="false">
+      <identitydomain:instance name="SecureDomain2"/>
+    </identitydomain:report>
+    <resourceserver:report contextRef="api-context" failonerror="false">
+      <resourceserver:domain name="SecureDomain2">
+        <resourceserver:instance name="igsresource"/>
+        <resourceserver:instance name="uidresource"/>
+        <resourceserver:instance name="pidresource"/>
+      </resourceserver:domain>
+    </resourceserver:report>
+    <resourceclient:report contextRef="api-context" failonerror="false">
+      <resourceclient:domain name="SecureDomain2">
+        <resourceclient:instance name="igsservice"/>
+        <resourceclient:instance name="uidservice"/>
+        <resourceclient:instance name="pidservice"/>
+      </resourceclient:domain>
+    </resourceclient:report>
+    <echo message="================== ================================================"/>
+    <echo message="0208 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

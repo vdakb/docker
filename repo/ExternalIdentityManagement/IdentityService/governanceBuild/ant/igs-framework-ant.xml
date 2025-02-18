@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Platform Service 12c" default="make" basedir="..">
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../../../../iam-12c-preferences.xml"/>
+  <!--
+  =====================================================================
+  Convenience for the lateral calls we make.
+  Use call-subproject to descend into another directory, and this to call in the
+  same build.xml.
+
+  NOTE THE USE OF $TARGET, here and in common's call-subproject.
+  This has the effect of dividing rules into subdirectory rules (using
+  call-subproject and sensitive to $target) and action rules (using
+  call-subproject and setting $target)... but it is bad for a subdirectory rule
+  to depend on another one, as they are both sensitive to $target, but you
+  probably mean that subdirB needed subdirA to be _built_, not $target'ed
+  (tested, etc.)
+
+  In other words, DO NOT USE DEPENDS=... IN A TARGET WITH call-subproject.
+  =====================================================================
+  -->
+  <macrodef name="subant-library">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../@{subproject}/ant" antfile="igs-library-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="subant-module">
+    <attribute name="subproject"/>
+    <attribute name="subtarget"/>
+    <sequential>
+      <subant target="@{subtarget}" buildpath="../@{subproject}/ant" antfile="igs-module-ant.xml"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to cleanup a project
+  =====================================================================
+  -->
+  <macrodef name="cleanup-project">
+    <attribute name="path"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Cleanup Project in @{path}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <exec executable="${svn.executable}">
+        <arg value="cleanup"/>
+        <arg value="--remove-unversioned"/>
+        <arg value="../@{path}"/>
+      </exec>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to cleanup a project
+  =====================================================================
+  -->
+  <macrodef name="clean-library">
+    <attribute name="path"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Clean Project in @{path}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-library subtarget="clean" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to cleanup a project
+  =====================================================================
+  -->
+  <macrodef name="clean-module">
+    <attribute name="path"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Clean Project in @{path}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-module subtarget="clean" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to make a library project
+  =====================================================================
+  -->
+  <macrodef name="make-library">
+    <attribute name="path"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Project in @{path}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-library subtarget="clean" subproject="@{path}"/>
+      <subant-library subtarget="make"  subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to make a module project
+  =====================================================================
+  -->
+  <macrodef name="make-module">
+    <attribute name="path"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Making Project in @{path}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-module subtarget="clean" subproject="@{path}"/>
+      <subant-module subtarget="make"  subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT macro to deploy a project
+  =====================================================================
+  -->
+  <macrodef name="deploy-module">
+    <attribute name="path"/>
+    <sequential>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <echo message="Deploying Project in @{path}"/>
+      <echo message="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"/>
+      <subant-module subtarget="deploy" subproject="@{path}"/>
+    </sequential>
+  </macrodef>
+  <!--
+  =====================================================================
+  == ANT target to remove particular unversioned files
+  =====================================================================
+  -->
+  <target name="clean" description="Clean the project build artifacts">
+    <record name="./igs-framework-ant.log" action="start"/>
+    <echo message="============================================================="/>
+    <echo message="Clean of Identity Platform Service 12c"/>
+    <echo message="============================================================="/>
+    <clean-module  path="uniqueidFrontend"/>
+    <clean-module  path="uniqueidService"/>
+    <clean-library path="uniqueidBackend"/>
+    <clean-module  path="anonymousidService"/>
+    <clean-library path="anonymousidBackend"/>
+    <clean-module  path="provisioningService"/>
+    <clean-library path="provisioningBackend"/>
+    <clean-library path="governanceService"/>
+    <clean-library path="governanceBackend"/>
+    <clean-library path="governanceAuthentication"/>
+    <record name="./igs-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to remove particular unversioned files
+  =====================================================================
+  -->
+  <target name="cleanup" description="Remove particular unversioned files">
+    <record name="./igs-framework-ant.log" action="start"/>
+    <echo message="============================================================="/>
+    <echo message="Cleanup of Identity Platform Service 12c"/>
+    <echo message="============================================================="/>
+    <cleanup-project path="uniqueidFrontend"/>
+    <cleanup-project path="uniqueidService"/>
+    <cleanup-project path="uniqueidBackend"/>
+    <cleanup-project path="anonymousidService"/>
+    <cleanup-project path="anonymousidBackend"/>
+    <cleanup-project path="provisioningService"/>
+    <cleanup-project path="provisioningBackend"/>
+    <cleanup-project path="governanceService"/>
+    <cleanup-project path="governanceBackend"/>
+    <cleanup-project path="governanceAuthentication"/>
+    <record name="./igs-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to make the entire workspace
+  =====================================================================
+  -->
+  <target name="make" description="Package all foundation artifacts to the appropriate java archive">
+    <record name="./igs-framework-ant.log" action="start"/>
+    <echo message="============================================================="/>
+    <echo message="Build of Identity Governance Service 12c"/>
+    <echo message="============================================================="/>
+    <make-library path="governanceAuthentication"/>
+    <make-library path="governanceBackend"/>
+    <make-library path="governanceService"/>
+    <make-library path="anonymousidBackend"/>
+    <make-module  path="anonymousidService"/>
+    <make-library path="provisioningBackend"/>
+    <make-module  path="provisioningService"/>
+    <make-library path="uniqueidBackend"/>
+    <make-module  path="uniqueidService"/>
+    <make-module  path="uniqueidFrontend"/>
+    <record name="./igs-framework-ant.log" action="stop"/>
+  </target>
+  <!--
+  =====================================================================
+  == ANT target to package the entire workspace
+  ==
+  == There is no need to create a dependency on the make target because
+  == any deployment task on the ANT subproject has such dependency
+  == already
+  =====================================================================
+  -->
+  <target name="deploy" description="Deploys all foundation artifacts to the appropriate destintaion on server">
+    <record name="./igs-framework-ant.log" action="start" append="true"/>
+    <echo message="========================================================"/>
+    <echo message="Deployment of Identity Platform Service 12c"/>
+    <echo message="========================================================"/>
+    <deploy-module  path="anonymousidService"/>
+    <deploy-module  path="uniqueidService"/>
+    <deploy-module  path="uniqueidFrontend"/>
+    <deploy-module  path="provisioningService"/>
+    <record name="./igs-framework-ant.log" action="stop"/>
+  </target>
+</project>

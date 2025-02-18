@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<adfc-config xmlns="http://xmlns.oracle.com/adf/controller" version="1.2">
+  <view id="signin">
+    <page id="__1">/oracle/iam/identity/main/view/signin.jspx</page>
+  </view>
+  <view id="signout">
+    <page id="__2">/oracle/iam/identity/main/view/signout.jspx</page>
+  </view>
+  <view id="home">
+    <page id="__3">/oracle/iam/identity/main/view/identity.jspx</page>
+    <bookmark id="__4">
+      <url-parameter id="__5">
+        <name id="__6">bkmkKey</name>
+        <value id="__7">#{sessionScope.bookmarkKey}</value>
+      </url-parameter>
+      <url-parameter id="__8">
+        <name id="__9">bkmkVal</name>
+        <value id="__10">#{sessionScope.bookmarkValue}</value>
+      </url-parameter>
+    </bookmark>
+  </view>
+  <view id="register">
+    <page id="__11">/oracle/iam/identity/main/view/register.jspx</page>
+  </view>
+  <view id="forgotpassword">
+    <page id="__12">/oracle/iam/identity/main/view/forgotpassword.jspx</page>
+  </view>
+  <view id="trackregistration">
+    <page id="__13">/oracle/iam/identity/main/view/trackregistration.jspx</page>
+  </view>
+  <view id="forgotuserlogin">
+    <page id="__14">/oracle/iam/identity/main/view/forgotuserlogin.jspx</page>
+  </view>
+  <view id="trackregistrationrequests">
+    <page id="__15">/oracle/iam/identity/main/view/trackregistrationrequests.jspx</page>
+  </view>
+  <view id="firstlogin">
+    <page id="__16">/oracle/iam/identity/main/view/firstlogin.jspx</page>
+  </view>
+  <view id="accountlocked">
+    <page id="__17">/oracle/iam/identity/main/view/accountlocked.jspx</page>
+  </view>
+  <view id="request">
+    <page id="__18">/oracle/iam/identity/main/view/request.jspx</page>
+  </view>
+  <view id="taskdetails">
+    <page id="__19">/oracle/iam/identity/main/view/taskdetails.jspx</page>
+  </view>
+  <control-flow-rule id="__101">
+    <from-activity-id id="__102">signin</from-activity-id>
+    <control-flow-case id="__103">
+      <from-outcome id="__104">register</from-outcome>
+      <to-activity-id id="__105">register</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__106">
+      <from-outcome id="__107">forgotpassword</from-outcome>
+      <to-activity-id id="__108">forgotpassword</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__109">
+      <from-outcome id="__110">trackregistration</from-outcome>
+      <to-activity-id id="__111">trackregistration</to-activity-id>
+    </control-flow-case>
+    <control-flow-case id="__112">
+      <from-outcome id="__113">forgotuserlogin</from-outcome>
+      <to-activity-id id="__114">forgotuserlogin</to-activity-id>
+    </control-flow-case>
+  </control-flow-rule>
+  <!--
+  the bean below looks like is required to gain access to the authorization
+  context
+  -->
+  <managed-bean id="__131">
+    <managed-bean-name>oimauth</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.AuthorizationContext</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  the bean below looks like is required to control the authorization of the
+  current connected user to view and manage role data
+  -->
+  <managed-bean id="__132">
+    <managed-bean-name>oimrole</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.RoleAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  the bean below looks like is required to control the authorization of the
+  current connected user to view user data
+  -->
+  <managed-bean id="__133">
+    <managed-bean-name>oimuserAuth</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.UserAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__134">
+    <managed-bean-name>oimui</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.OIMUIAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  the two beans below looks like that they are required to control the
+  authorization of the current connected user to view organizational data
+  -->
+  <managed-bean id="__135">
+    <managed-bean-name>oimorganizationAuth</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.OrganizationAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__136">
+    <managed-bean-name>oimorganization</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.OrganizationAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  the two beans below looks like that they are required to control the
+  authorization of the current connected user to view application instance data
+  -->
+  <managed-bean id="__137">
+    <managed-bean-name>oimappinstance</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.AppInstanceAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <managed-bean id="__138">
+    <managed-bean-name>oimappinstanceAuth</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.ApplicationInstanceAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  the two beans below looks like that they are required to control the
+  authorization of the current connected user to view entitlement data
+  -->
+  <managed-bean id="__139">
+    <managed-bean-name>oimentitlementAuth</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.EntitlementsAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  the two beans below looks like that they are required to control the
+  authorization of the current connected user to view admin role data
+  -->
+   <managed-bean id="__140">
+    <managed-bean-name>oimadminroleAuth</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.AdminRoleAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  the two beans below looks like that they are required to control the
+  authorization of the current connected user to view access policy data
+  -->
+  <managed-bean id="__142">
+    <managed-bean-name>oimaccesspolicy</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.AccessPolicyAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  may be we need this bean to get access to the password policy information
+  taskflow
+  -->
+  <managed-bean id="__143">
+    <managed-bean-name>oimpasswordPolicyAuth</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.PasswordPolicyAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+  <!--
+  the two beans below looks like that they are required to control the
+  authorization of the current connected user to view identity audit data
+  -->
+  <managed-bean id="__144">
+    <managed-bean-name>oimidentityauditAuth</managed-bean-name>
+    <managed-bean-class>oracle.iam.ui.platform.view.authz.IdentityAuditAuthz</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+</adfc-config>

@@ -1,0 +1,56 @@
+Payara Server Community Edition 5.2022.5
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Runtime GlassFish Server
+------------------------
+cp ./deployment/igs/0000\ systemCustomization/lib/ojdbc8.jar                       /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+cp ./deployment/igs/0000\ systemCustomization/lib/primefaces-11.0.0.jar            /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+cp ./deployment/igs/0000\ systemCustomization/lib/primefaces-extensions-11.0.0.jar /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+cp ./deployment/igs/0000\ systemCustomization/lib/ocs-hst-core.jar                 /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+cp ./deployment/igs/0000\ systemCustomization/lib/ocs-hst-jps.jar                  /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+cp ./deployment/igs/0000\ systemCustomization/lib/ocs-hst-json.jar                 /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+cp ./deployment/igs/0000\ systemCustomization/lib/ocs-hst-rest.jar                 /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+cp ./deployment/igs/0000\ systemCustomization/lib/ocs-iad-saml.jar                 /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+cp ./deployment/igs/0000\ systemCustomization/lib/ocs-igd-scim.jar                 /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+cp ./deployment/igs/0000\ systemCustomization/lib/bka-igs-authn.jar                /opt/oracle/product/pgs/5.2022.5/glassfish/lib
+
+Create Domain Identity
+----------------------
+cd /opt/oracle/product/pgs/5.2022.5/bin
+./asadmin
+create-domain --domaindir /opt/Anwendungen/services --domainproperties java.debugger.port=9001:domain.adminPort=8001:domain.instancePort=8081:http.ssl.port=8082:domain.jmxPort=8083:jms.port=8084:orb.listener.port=8085:orb.ssl.port=8086:orb.mutualauth.port=8087:osgi.shell.telnet.port=8003 igs
+  pgsadmin/wmkah1mdkh
+
+start-domain --domaindir /opt/Anwendungen/services --debug igs
+login --host vwase051.zds.bka.bund.de --port 8001
+  pgsadmin/wmkah1mdkh
+exit
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin --host vwase051.zds.bka.bund.de --port 8001 enable-secure-admin
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin stop-domain  --domaindir /opt/Anwendungen/services igs
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin start-domain --domaindir /opt/Anwendungen/services igs
+
+Configure JDBC dataSource
+-------------------------
+# jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(PORT=1521)(HOST=wi11s1e01-scan.exa.bka.bund.de))(ADDRESS=(PROTOCOL=TCP)(PORT=1521)(HOST=wi21s1e01-scan.exa.bka.bund.de)))(CONNECT_DATA=(SERVICE_NAME=acces1e_appl.s1e01.bka.bund.de)))
+create-jdbc-connection-pool --host vwase051.zds.bka.bund.de --port 8001 --restype javax.sql.DataSource --datasourceclassname oracle.jdbc.pool.OracleDataSource --property "user=igd_igs:password=Welcome1:url=jdbc\\:oracle\\:thin\\:@(DESCRIPTION\\=(ADDRESS_LIST\\=(ADDRESS\\=(PROTOCOL\\=TCP)(PORT\\=1521)(HOST\\=wi11s1e01-scan.exa.bka.bund.de))(ADDRESS\\=(PROTOCOL\\=TCP)(PORT\\=1521)(HOST\\=wi21s1e01-scan.exa.bka.bund.de)))(CONNECT_DATA\\=(SERVICE_NAME\\=acces1e_appl.s1e01.bka.bund.de)))" identityServicePool
+ping-connection-pool --host vwase051.zds.bka.bund.de --port 8001 identityServicePool
+create-jdbc-resource --host vwase051.zds.bka.bund.de --port 8001 --connectionpoolid identityServicePool --target server jdbc/idsDS
+exit
+
+<jvm-options>-Doracle.jdbc.autoCommitSpecCompliant=false</jvm-options>
+
+Configure Logger Level
+-----------------------
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin --host vwase051.zds.bka.bund.de --port 8001 set-log-levels bka.iam.identity.AsserterStore=FINEST
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin --host vwase051.zds.bka.bund.de --port 8001 set-log-levels bka.iam.identity.AssertionStore=FINEST
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin --host vwase051.zds.bka.bund.de --port 8001 set-log-levels bka.iam.identity.AssertionMechanism=FINEST
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin --host vwase051.zds.bka.bund.de --port 8001 set-log-levels bka.iam.identity.BearerAssertionStore=FINEST
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin --host vwase051.zds.bka.bund.de --port 8001 set-log-levels bka.iam.identity.BearerAssertionMechanism=FINEST
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin --host vwase051.zds.bka.bund.de --port 8001 set-log-levels bka.iam.identity.oam.IdentityAsserter=FINEST
+
+Operate Domain Identity
+------------------------
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin stop-domain --domaindir /opt/Anwendungen/services igs
+rm -rf /opt/Anwendungen/services/identity/logs/server.log
+/opt/oracle/product/pgs/5.2022.5/bin/asadmin start-domain --debug --domaindir /opt/Anwendungen/services igs
+tail -F /opt/Anwendungen/services/identity/logs/server.log

@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"   value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysconfig$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Configuration']}"/>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysconfig$bundle.LKU_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysconfig$bundle.LKU_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysconfig$bundle.LKU_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysconfig$bundle.LKU_SUMMARY}"/>
+    <f:attribute name="bodyHeaderInstruction"           value="#{sysconfig$bundle.LKU_SUMMARY_INSTRUCTION}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysconfig$bundle.LKU_TRAIN_FINISH}"/>
+    <f:attribute name="finishMethodInterface"           value="#{pageFlowScope.lookupTrain}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysconfig$bundle.LKU_CREATE_TITLE : pageFlowScope.name}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysconfig$bundle.LKU_ICON}"/>
+    <f:attribute name="tabHeaderInstruction"            value=""/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:attribute name="hideSubTabTopPane"               value="#{pageFlowScope.mode == 'request' ? 'true' : 'false'}"/>
+    <f:attribute name="hideSubTabBorder"                value="#{pageFlowScope.mode == 'request' ? 'true' : 'false'}"/>
+    <f:facet name="subtabsButtonBar"/>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical">
+            <af:showDetailHeader id="sdh10" text="#{sysconfig$bundle.LKU_ATTRIBUTE}" disclosed="true" inlineStyle="font-size:small;width:550px;">
+              <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="33%" fieldWidth="67%" inlineStyle="text-decoration:none;">
+                <af:inputText id                   ="it211"
+                              value                ="#{bindings.name.inputValue}"
+                              label                ="#{bindings.name.hints.label}"
+                              columns              ="#{bindings.name.hints.displayWidth}"
+                              shortDesc            ="#{bindings.name.hints.tooltip}"
+                              disabled             ="true"/>
+                <af:inputText id                   ="it212"
+                              value                ="#{bindings.meaning.inputValue}"
+                              label                ="#{bindings.meaning.hints.label}"
+                              columns              ="#{bindings.meaning.hints.displayWidth}"
+                              shortDesc            ="#{bindings.meaning.hints.tooltip}"
+                              disabled             ="true"/>
+                <af:selectOneRadio id              ="rb213"
+                                   value           ="#{bindings.type.inputValue}"
+                                   label           ="#{bindings.type.hints.label}"
+                                   layout          ="horizontal"
+                                   shortDesc       ="#{bindings.type.hints.tooltip}"
+                                   disabled        ="true">
+                  <f:selectItems id="si213" value="#{bindings.type.items}"/>
+                </af:selectOneRadio>
+                <af:inputText id                   ="it214"
+                              value                ="#{bindings.field.inputValue}"
+                              label                ="#{bindings.field.hints.label}"
+                              columns              ="#{bindings.field.hints.displayWidth}"
+                              shortDesc            ="#{bindings.field.hints.tooltip}"
+                              disabled             ="true"/>
+                <af:selectBooleanCheckbox id       ="cb215"
+                                          value    ="#{bindings.required.inputValue}"
+                                          label    ="#{bindings.required.hints.label}"
+                                          shortDesc="#{bindings.required.hints.tooltip}"
+                                          disabled ="true"/>
+                <af:inputText id                   ="it216"
+                              value                ="#{bindings.group.inputValue}"
+                              label                ="#{bindings.group.hints.label}"
+                              columns              ="#{bindings.group.hints.displayWidth}"
+                              shortDesc            ="#{bindings.group.hints.tooltip}"
+                              disabled             ="true"/>
+                <!--
+                <af:inputText id                   ="it217"
+                              value                ="#{bindings.note.inputValue}"
+                              label                ="#{bindings.note.hints.label}"
+                              columns              ="#{bindings.note.hints.displayWidth}"
+                              shortDesc            ="#{bindings.note.hints.tooltip}"
+                              disabled             ="true"/>
+                -->
+              </af:panelFormLayout>
+            </af:showDetailHeader>
+            <af:spacer id="sp02" width="0" height="5"/>
+            <af:showDetailHeader id="sdh20" text="#{sysconfig$bundle.LKV}" disclosed="true" styleClass="AFStretchWidth" inlineStyle="font-size:small;">
+              <af:panelStretchLayout id="ps20">
+                <f:facet name="center">
+                  <!--
+                  we use columnStretching="multiple" to give us the opportunity
+                  to size the columns by witdh="nn%"
+                  The default width for a column is 100px. There is no auto
+                  sizing for columns. Set the width attribute to ensure the
+                  column is wide enough to accommodate the width of the
+                  contents. When the "multiple" option is used in the table that
+                  contains the column, the width can be set to a percentage.
+                  -->
+                  <af:table id="pop20" var="row" varStatus="vs" styleClass="AFStretchWidth"
+                            value                ="#{bindings.LookupValue.collectionModel}"
+                            rows                 ="#{bindings.LookupValue.rangeSize}"
+                            binding              ="#{backingBeanScope.lookupValue.searchTable}"
+                            fetchSize            ="#{bindings.LookupValue.rangeSize}"
+                            columnStretching     ="multiple"
+                            columnBandingInterval="0"
+                            rowBandingInterval   ="1"
+                            autoHeightRows       ="0"
+                            rowSelection         ="multiple"
+                            columnSelection      ="none"
+                            scrollPolicy         ="page"
+                            immediate            ="true"
+                            emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}">
+                    <af:column id="c20" rowHeader="true" width="20" headerText="" align="right"/>
+                    <af:column id="c21" width="45%" sortable="true" sortProperty="encoded" filterable="true" headerText="#{bindings.LookupValue.hints.encoded.label}">
+                      <af:outputText id="ot21" value="#{row.encoded}"/>
+                    </af:column>
+                    <af:column id="c22" width="45%" sortable="true" sortProperty="decoded" filterable="true" headerText="#{bindings.LookupValue.hints.decoded.label}">
+                      <af:outputText id="ot22" value="#{row.decoded}"/>
+                    </af:column>
+                    <af:column id="c23" width="10%" sortable="true" sortProperty="disabled" filterable="true" headerText="#{bindings.LookupValue.hints.disabled.label}">
+                      <af:selectBooleanCheckbox id      ="sbc23"
+                                                value   ="#{row.disabled}"
+                                                disabled="true"/>
+                    </af:column>
+                  </af:table>
+                </f:facet>
+              </af:panelStretchLayout>
+            </af:showDetailHeader>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

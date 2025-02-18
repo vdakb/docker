@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysprov$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Provisioning']}"/>
+  <af:declarativeComponent viewId="/GeneralPageBanner.jspx" id="dc0" rendered="#{pageFlowScope.mode == 'view'}">
+    <f:attribute name="type"        value="info"/>
+    <f:attribute name="shortDesc"   value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+    <f:attribute name="headerText"  value="#{sysbase$bundle.VIEW_ONLY_MODE}"/>
+    <f:attribute name="messageText" value="#{sysbase$bundle.NO_EDIT_RIGHTS}"/>
+  </af:declarativeComponent>
+  <af:declarativeComponent id="dc1" viewId="/CreateTrain1.jspx">
+    <f:attribute name="trainHeaderTitle"                value="#{sysprov$bundle.SVD_TRAIN_TITLE}"/>
+    <f:attribute name="trainHeaderIcon"                 value="#{sysprov$bundle.SVD_ICON}"/>
+    <f:attribute name="trainHeaderInstruction"          value="#{sysprov$bundle.SVD_TRAIN_INSTRUCTION}"/>
+    <f:attribute name="bodyHeaderTitle"                 value="#{sysprov$bundle.SVD_ATTRIBUTE}"/>
+    <f:attribute name="finishButtonTooltip"             value="#{sysprov$bundle.SVD_TRAIN_FINISH}"/>
+    <f:attribute name="tabHeaderTitle"                  value="#{pageFlowScope.mode == 'create' ? sysprov$bundle.SVD_CREATE_TITLE : af:formatString(sysprov$bundle.SVD_DETAIL, pageFlowScope.endpointTypeName)}"/>
+    <f:attribute name="tabHeaderIcon"                   value="#{sysprov$bundle.SVD_ICON}"/>
+    <f:attribute name="trainOrSubTabs"                  value="#{pageFlowScope.mode == 'create' ? 'train' : 'subtabs'}"/>
+    <f:attribute name="roleMSMActionsButtonBarRendered" value="false"/>
+    <f:facet name="subtabsButtonBar">
+      <af:toolbar id="tb01">
+        <af:button id            ="btn15"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_SAVE : sysbase$bundle.GENERIC_APPLY}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_SAVE_HINT, sysprov$bundle.SVD_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.endpointTypeTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.endpointTypeAttribute.submit}"
+                   action        ="#{pageFlowScope.endpointTypeTrain.submit}"
+                   styleClass    ="whiteTextButton"
+                   inlineStyle   ="#{pageFlowScope.endpointTypeTrain.flowDirty ? 'background-color:#00ad31; border-color:#00972b; border-style:solid; border-width:1.0px;background-image:none; background-repeat:repeat;' : ''}"/>
+        <af:button id            ="btn16"
+                   text          ="#{pageFlowScope.mode == 'create' ? sysbase$bundle.GENERIC_CANCEL : sysbase$bundle.GENERIC_REVERT}"
+                   shortDesc     ="#{af:formatString(sysbase$bundle.GENERIC_CANCEL_HINT, sysprov$bundle.SVD_SINGLE)}"
+                   visible       ="#{pageFlowScope.mode != 'view'}"
+                   disabled      ="#{pageFlowScope.mode == 'view'  or (!pageFlowScope.endpointTypeTrain.flowDirty)}"
+                   binding       ="#{backingBeanScope.endpointTypeAttribute.revert}"
+                   actionListener="#{pageFlowScope.endpointTypeTrain.revert}"
+                   immediate     ="true">
+          <af:clientAttribute name="attribute" value="true"/>
+        </af:button>
+      </af:toolbar>
+    </f:facet>
+    <f:facet name="body">
+      <af:panelStretchLayout id="psl0" topHeight="auto" styleClass="AFStretchWidth;AFStretchHeight">
+        <f:facet name="center">
+          <af:panelGroupLayout id="pg10" layout="vertical" inlineStyle="width:550px;">
+            <af:panelFormLayout id="pf10" maxColumns="1" labelWidth="33%" fieldWidth="67%" binding="#{pageFlowScope.endpointTypeTrain.formLayout}">
+              <af:spacer  id="sp11" width="0" height="15"/>
+              <af:inputText id                 ="it11"
+                            value              ="#{bindings.endpointTypeName.inputValue}"
+                            label              ="#{bindings.endpointTypeName.hints.label}"
+                            required           ="#{bindings.endpointTypeName.hints.mandatory}"
+                            columns            ="#{bindings.endpointTypeName.hints.displayWidth}"
+                            maximumLength      ="#{bindings.endpointTypeName.hints.precision}"
+                            shortDesc          ="#{bindings.endpointTypeName.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.endpointTypeAttribute.changed}"
+                            autoSubmit         ="true">
+                <f:validator binding="#{bindings.endpointTypeName.validator}"/>
+              </af:inputText>
+              <af:selectBooleanCheckbox id                 ="cb12"
+                                        value              ="#{bindings.multiple.inputValue}"
+                                        label              ="#{bindings.multiple.label}"
+                                        shortDesc          ="#{bindings.multiple.hints.tooltip}"
+                                        valueChangeListener="#{backingBeanScope.endpointTypeAttribute.changed}"
+                                        autoSubmit         ="true"/>
+              <af:inputText id                 ="it13"
+                            value              ="#{bindings.note.inputValue}"
+                            label              ="#{bindings.note.hints.label}"
+                            required           ="#{bindings.note.hints.mandatory}"
+                            rows               ="4"
+                            columns            ="#{bindings.note.hints.displayWidth}"
+                            maximumLength      ="#{bindings.note.hints.precision}"
+                            shortDesc          ="#{bindings.note.hints.tooltip}"
+                            valueChangeListener="#{backingBeanScope.endpointTypeAttribute.changed}"
+                            autoSubmit         ="true">
+                 <f:validator binding="#{bindings.note.validator}"/>
+              </af:inputText>
+            </af:panelFormLayout>
+          </af:panelGroupLayout>
+        </f:facet>
+      </af:panelStretchLayout>
+    </f:facet>
+  </af:declarativeComponent>
+</jsp:root>

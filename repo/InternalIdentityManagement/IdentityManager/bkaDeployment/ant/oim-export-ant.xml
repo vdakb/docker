@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name           ="Identity Manager Deployment Exporter"
+         basedir        ="../../../deployment/oim"
+         default        ="all"
+         xmlns:fmw      ="http://oracle.hst.deployment/fusion"
+         xmlns:jps      ="http://oracle.hst.deployment/security"
+         xmlns:wsm      ="http://oracle.hst.deployment/webservice"
+         xmlns:server   ="http://oracle.hst.deployment/topology"
+         xmlns:plugin   ="http://oracle.iam.identity/plugin"
+         xmlns:metadata ="http://oracle.iam.identity/metadata"
+         xmlns:object   ="http://oracle.iam.identity/object"
+         xmlns:operation="http://oracle.iam.identity/operation"
+         xmlns:job      ="http://oracle.iam.identity/job"
+         xmlns:sandbox  ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the server environment
+  ==============================================================================
+  -->
+  <import file="../../oim-context.xml"/>
+   <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name"      value="../log/oim-export-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Oracle Identity Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks exports the changes made on System Adapter
+  **           Configuration like:
+  **           o System Properties
+  ******************************************************************************
+  -->
+  <target name="0000" description="Exports the Internal Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0000 System Setup Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="0000 systemCustomization/xml/oim-properties-dm.xml"
+                        description="Internal Identity Management System Property Configuration ${appication.release}">
+        <!--
+        This property is used by the DefaultComboPolicy to generate a user name
+        in e-mail format.
+        -->
+        <object:category value="SystemProperties"    name="XL.UserNameDomain"/>
+        <!--
+        Determines if notification is sent to the user when the user login and
+        password are generated in postprocess event handler for user creation
+        via trusted source reconciliation.
+        If the value is set to true, then notification is sent when user login
+        and password are generated in postprocess event handler for user
+        creation via trusted source reconciliation.
+        If the value is set to false, then notification is not sent when user
+        login and password are generated in postprocess event handler for user
+        creation via trusted source reconciliation.
+        -->
+        <object:category value="SystemProperties"    name="Recon.SEND_NOTIFICATION"/>
+        <!--
+        Specifies whether a user in the disabled state can be set as a manager
+        for another user.
+        -->
+        <object:category value="SystemProperties"    name="AllowDisabledManagers"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="0000 systemCustomization/xml/ps2-properties-dm.xml"
+                        description="Internal Identity Management System Property Configuration ${appication.release}">
+        <!--
+        Determines if access policy engine can link access policies to
+        reconciled accounts and to accounts created by the Bulk Load Utility.
+        This property is used in the context of evaluating access policies for
+        reconciled accounts and to accounts created by the Bulk Load Utility.
+        -->
+        <object:category value="SystemProperties"    name="XL.AllowAPHarvesting"/>
+        <!--
+        Determines if multiple instances of a resource can be provisioned to
+        multiple target resources.
+        When the value is false, provisioning multiple instances of resource
+        object via access policy is not allowed.
+        When the value is true, provisioning multiple instances of resource
+        object via access policy is allowed.
+        -->
+        <object:category value="SystemProperties"    name="XL.AllowAPBasedMultipleAccountProvisioning"/>
+        <!--
+        This property controls the amount of audit data collected when an
+        operation is performed on a role, such as creation or modification.
+        -->
+        <object:category value="SystemProperties"    name="XL.RoleAuditLevel"/>
+        <!--
+        Determines if catalog auditing is enabled or disabled. The default value
+        is none, which specifies that catalog auditing in disabled. To enable
+        catalog auditing, set the value of this property to catalog.
+        -->
+        <object:category value="SystemProperties"    name="XL.CatalogAuditDataCollection"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="0000 systemCustomization/xml/ps3-properties-dm.xml"
+                        description="Internal Identity Management System Property Configuration ${appication.release}">
+        <!--
+        When the value of the property below is TRUE, role lifecycle management,
+        Segregation of Duties (SoD), and identity certification are enabled.
+        Note:
+        After modifying the value of this system property, you must restart
+        Oracle Identity Manager server for the changes to take effect.
+        -->
+        <object:category value="SystemProperties"    name="OIG.IsIdentityAuditorEnabled"/>
+        <!--
+        This property is used to control allowing role hierarchical access
+        policy evaluation.
+        When this system property is set to TRUE, access from inherited access
+        policies is given to the user. If set to FALSE, access from access
+        policies attached to inherited roles is not given to the user.
+        -->
+        <object:category value="SystemProperties"    name="XL.AllowRoleHierarchicalPolicyEval"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="0000 systemCustomization/xml/oim-lookup-dm.xml"
+                        description="Internal Identity Management System Lookup Configuration ${appication.release}">
+        <object:category value="Lookup"       name="Lookup.USR_PROCESS_TRIGGERS"/>
+      </object:exportSet>
+    </object:export>
+    <echo message="=================================================================="/>
+    <echo message="0000 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Oracle Identity Manager System Framework
+  **           Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on System Adapter
+  **           Configuration like:
+  **           o Lookup Definitions
+  **           o Approval Policies
+  **           o User Defined Fields
+  **           o Organizations
+  ******************************************************************************
+  -->
+  <target name="0100" description="Exports the Internal Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0100 System Framework ${prompt.version}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects for ${system.OIM_PREFIX} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportFile ="0100 systemFramework/xml/ocs-lookup-dm.xml"
+                        description="Oracle Consulting Services Identity Manager System Framework Configuration Revision ${prompt.version}">
+        <object:category value="Lookup"              name="OCS.YesNo"/>
+        <object:category value="Lookup"              name="ISO.Country"/>
+        <object:category value="Lookup"              name="ISO.Language"/>
+        <object:category value="Lookup"              name="ISO.TimeZone"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="0100 systemFramework/xml/ocs-adapter-dm.xml"
+                        description="Oracle Consulting Services Identity Manager System Framework Configuration Revision ${prompt.version}">
+        <object:category value="ErrorCode"           name="ADAPTER.IT RESOURCE DEFINTION NOT FOUND"/>
+        <object:category value="ErrorCode"           name="ADAPTER.IT RESOURCE INSTANCE NOT FOUND"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATESTRING"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATESTRINGCONVERTED"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATEINTEGER"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATELONG"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATEDATE"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATEDISPLAYNAME"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATECONCATENATION"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATECURRENTDATE"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATEORGANIZATIONSTRING"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATEDECODEDVALUE"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATEENTITLEMENT"/>
+        <object:category value="PrepopAdapter"       name="adpOCSPREPOPULATEITRESOURCE"/>
+        <object:category value="TaskAdapter"         name="adpOCSGENERICTASKAUTOCOMPLETE"/>
+        <object:category value="TaskAdapter"         name="adpOCSPROPAGATEPROFILEVALUE"/>
+        <object:category value="TaskAdapter"         name="adpOCSPROPAGATEPROFILEBULK"/>
+        <object:category value="TaskAdapter"         name="adpOCSPROPAGATEDECODEDVALUE"/>
+        <object:category value="TaskAdapter"         name="adpOCSSETSTRINGVALUE"/>
+        <object:category value="TaskAdapter"         name="adpOCSSETSTRINGVALUECONVERTED"/>
+        <object:category value="TaskAdapter"         name="adpOCSGENERATEPASSWORD"/>
+      </object:exportSet>
+      <object:exportSet exportFile ="0100 systemFramework/xml/icf-adapter-dm.xml"
+                         description="ICF Adapter Configuration ${appication.release}">
+         <object:category value="TaskAdapter"    name="adpCREATEUSER"/>
+         <object:category value="TaskAdapter"    name="adpDELETEUSER"/>
+         <object:category value="TaskAdapter"    name="adpENABLEUSER"/>
+         <object:category value="TaskAdapter"    name="adpDISABLEUSER"/>
+         <object:category value="TaskAdapter"    name="adpRETURNTEXTVALUE"/>
+         <object:category value="TaskAdapter"    name="adpUPDATEFORM"/>
+         <object:category value="TaskAdapter"    name="adpUPDATEATTRIBUTEVALUE"/>
+         <object:category value="TaskAdapter"    name="adpUPDATESINGLEATTRIBUTEVALUEWITHOLDVALUE"/>
+         <object:category value="TaskAdapter"    name="adpUPDATESINGLEATTRIBUTEVALUEWITHDEPENDENT"/>
+         <object:category value="TaskAdapter"    name="adpADDCHILDTABLEVALUES"/>
+         <object:category value="TaskAdapter"    name="adpREMOVECHILDTABLEVALUES"/>
+         <object:category value="TaskAdapter"    name="adpUPDATECHILDTABLEVALUES"/>
+         <object:category value="TaskAdapter"    name="adpUPDATECHILDTABLEVALUESBULK"/>
+         <object:category value="TaskAdapter"    name="adpCHILDUPDATEWITHWRITEBACK"/>
+         <object:category value="TaskAdapter"    name="adpMANUALPROVISIONING"/>
+         <object:category value="TaskAdapter"    name="adpMANUALENTITLEMENTPROVISIONING"/>
+       </object:exportSet>
+       <object:exportSet exportFile ="0100 systemFramework/xml/icf-scheduler-dm.xml"
+                         description="ICF Scheduler Configuration ${appication.release}">
+         <object:category value="scheduledTask" name="Sync Recon Task"/>
+         <object:category value="scheduledTask" name="Search Recon Task"/>
+         <object:category value="scheduledTask" name="Search Recon Delete Task"/>
+         <object:category value="scheduledTask" name="Entitlement Recon Task"/>
+       </object:exportSet>
+    </object:export>
+    <echo message="=================================================================="/>
+    <echo message="0100 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Oracle Identity Manager System Entity Customization
+  **
+  ** Synopsis: The tasks exports the object definitions for Oracle Identity
+  **           Manager entities. This includes:
+  **           o Lookup Definitons
+  **           o User Defined Fields
+  **           o Organizations
+  ******************************************************************************
+  -->
+  <target name="0101" description="Exports Internal Identity Management System Setup Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0101 Standard Entity Customization Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+      <object:exportSet exportfile ="0101 entityCustomization/xml/org-usrentity-dm.xml"
+                        description="Internal Identity Management Standard Entity Configuration ${appication.release}">
+      </object:exportSet>
+      <object:exportSet exportfile ="0101 entityCustomization/xml/bka-usrentity-dm.xml"
+                        description="Internal Identity Management Standard Entity Configuration ${appication.release}">
+      </object:exportSet>
+    </object:export>
+    <echo message="=================================================================="/>
+    <echo message="0101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ****************************************************************************
+  ** Purpose:  Exports the Oracle Identity Manager System Integration
+  **           Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource Type Definition
+  **           o Lookup Definition
+  **           o Task Adapter
+  **           o Scheduled Task Definitions
+  ******************************************************************************
+  -->
+  <target name="0102" description="Exports Internal Identity Management Connector System Integration Configuration">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0102 Base System Integration Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+    <object:export contextRef="oim-context">
+    </object:export>
+    <echo message="=================================================================="/>
+    <echo message="0102 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Exports the Internal Identity Management Service Trusted
+  **           Configuration
+  **
+  ** Synopsis: The tasks exports the changes made on configuration elements
+  **           like:
+  **           o IT Resource
+  **           o Resource Object
+  **           o Process Definition
+  **           o Scheduled Jobs
+  ******************************************************************************
+  -->
+  <target name="0200" description="Exports the Internal Identity Management Service Trusted Configuration">
+  <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+  <echo message="======================================================================================="/>
+  <echo message="Exports Trusted Reconciliation ZVD Connector ${appication.release}"/>
+  <echo message="======================================================================================="/>
+  <echo message="Exporting exportable objects for environment ${fmw.env} from ${oim.server.host}:${oim.server.port}"/>
+  <object:export contextRef="oim-context">
+  </object:export>
+  <echo message="=================================================================="/>
+  <echo message="0200 completed"/>
+  <echo message="=================================================================="/>
+  <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  <!--
+  =====================================================================
+  == ANT target to export the workspace artifacts from scratch
+  =====================================================================
+  -->
+  <target name="all" description="Exports the project artifacts from the target host and Identity Manager Instance"/>
+</project>

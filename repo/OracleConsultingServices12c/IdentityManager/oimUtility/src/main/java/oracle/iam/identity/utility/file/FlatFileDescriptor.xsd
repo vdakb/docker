@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns              = "http://xmlns.oracle.com/iam/oim"
+            xmlns:xsd          = "http://www.w3.org/2001/XMLSchema"
+            xmlns:oim          = "http://xmlns.oracle.com/iam/oim"
+            targetNamespace    = "http://xmlns.oracle.com/iam/oim"
+            elementFormDefault = "qualified">
+
+  <xsd:element name="descriptor">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="attribute" type="oim:attribute" minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <!-- the definition of an attribute -->
+  <xsd:complexType name="attribute">
+    <xsd:all>
+      <xsd:element name="transformation" type="oim:transformation" minOccurs="0" maxOccurs="1"/>
+      <xsd:element name="properties"     type="oim:property"       minOccurs="0" maxOccurs="1"/>
+    </xsd:all>
+    <xsd:attribute name="name"   type="xsd:string" use="required"/>
+    <xsd:attribute name="type"   type="oim:type"   use="required"/>
+    <xsd:attribute name="start"  type="xsd:int"    use="required"/>
+    <xsd:attribute name="length" type="xsd:int"    use="required"/>
+  </xsd:complexType>
+
+  <!-- the properties an attribute can or must have -->
+  <xsd:complexType name="property">
+    <xsd:attribute name="identifier"  type="xsd:boolean" use="optional"/>
+    <xsd:attribute name="readonly"    type="xsd:boolean" use="optional"/>
+    <xsd:attribute name="mandatory"   type="xsd:boolean" use="optional"/>
+  </xsd:complexType>
+
+  <!-- the properties an attribute transformation may have -->
+  <xsd:complexType name="transformation">
+    <xsd:sequence>
+      <xsd:element name="inbound"   type="oim:transformer" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element name="outbound"  type="oim:transformer" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- the properties a transformer can or must have -->
+  <xsd:complexType name="transformer">
+    <xsd:sequence>
+      <xsd:element name="dictionary"  type="oim:transformerRule" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="sequence"    type="xsd:int" use="required">
+      <xsd:annotation>
+        <xsd:documentation>
+          The order in which a particular transformer will be executed
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="default"    type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          The default value that a particular transformer will be return if a
+          value is not mapped in the dictionary of the transformer
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="className"  type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          The name of the class to instantiate a particular transformer
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="transformerRule">
+    <xsd:attribute name="origin"  type="xsd:string"  use="required"/>
+    <xsd:attribute name="value"   type="xsd:string"  use="required"/>
+  </xsd:complexType>
+
+  <!-- the type an attribute must have -->
+  <xsd:simpleType name="type">
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="Boolean"/>
+      <xsd:enumeration value="Integer"/>
+      <xsd:enumeration value="Long"/>
+      <xsd:enumeration value="Float"/>
+      <xsd:enumeration value="Double"/>
+      <xsd:enumeration value="Date"/>
+      <xsd:enumeration value="String"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

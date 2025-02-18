@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="sysbase$bundle"  value="#{adfBundle['oracle.iam.identity.bundle.Foundation']}"/>
+  <c:set var="sysadmin$bundle" value="#{adfBundle['oracle.iam.identity.bundle.Administration']}"/>
+  <af:panelHeader id="ph10" text="#{sysadmin$bundle.ORC_MULTIPLE}" icon="#{sysadmin$bundle.ORC_ICON}">
+    <!--
+    the panel which renders the search criteria and the controls belonging to
+    this panel
+    -->
+    <af:panelGroupLayout id="pgl0" styleClass="AFStretchWidth">
+      <af:declarativeComponent id="dc10" viewId="/searchQuickSearch.jspx" viewCriteriaQuery="#{bindings.ProcessCriteria}" resultComponentId="pc10:orp" advancedMaxColumns="2" advancedRows="5"/>
+      <!--
+      the panel collection which renders the search result and the controls
+      belonging to this panel
+      -->
+      <af:panelCollection id="pc10" styleClass="AFStretchWidth" featuresOff="statusBar">
+        <f:facet name="menus">
+          <af:menu id="m10" partialTriggers="::dc10" text="#{sysbase$bundle.SEARCH_ACTIONS}" binding="#{pageFlowScope.orchestrationSearch.actionMenu}" clientComponent="true">
+            <af:commandMenuItem id            ="cmi12"
+                                text          ="#{sysbase$bundle.SEARCH_DETAILDOT}"
+                                icon          ="/images/func_open_16_ena.png"
+                                shortDesc     ="#{sysadmin$bundle.ORC_DETAIL_HINT}"
+                                disabled      ="#{pageFlowScope.orchestrationSearch.openDisabled}"
+                                actionListener="#{pageFlowScope.orchestrationSearch.openDetail}"
+                                partialSubmit ="true"/>
+            <af:commandMenuItem id            ="cmi14"
+                                icon          ="/images/func_refresh_16_ena.png"
+                                text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                action        ="#{pageFlowScope.orchestrationSearch.refresh}"/>
+          </af:menu>
+        </f:facet>
+        <f:facet name="toolbar">
+          <af:toolbar id="t10" partialTriggers="::dc10" binding="#{pageFlowScope.orchestrationSearch.toolbar}">
+            <af:group id="g10">
+              <af:button id            ="btn12"
+                         text          ="#{sysbase$bundle.SEARCH_DETAIL}"
+                         icon          ="/images/func_open_16_ena.png"
+                         hoverIcon     ="/images/func_open_16_hov.png"
+                         disabledIcon  ="/images/func_open_16_dis.png"
+                         depressedIcon ="/images/func_open_16_act.png"
+                         shortDesc     ="#{sysadmin$bundle.ORC_DETAIL_HINT}"
+                         disabled      ="#{pageFlowScope.orchestrationSearch.openDisabled}"
+                         actionListener="#{pageFlowScope.orchestrationSearch.openDetail}"
+                         partialSubmit ="true"/>
+              <af:button id            ="btn14"
+                         text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         icon          ="/images/func_refresh_16_ena.png"
+                         hoverIcon     ="/images/func_refresh_16_hov.png"
+                         disabledIcon  ="/images/func_refresh_16_dis.png"
+                         depressedIcon ="/images/func_refresh_16_act.png"
+                         disabled      ="false"
+                         shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                         action        ="#{pageFlowScope.orchestrationSearch.refresh}"
+                         partialSubmit ="true"/>
+            </af:group>
+          </af:toolbar>
+        </f:facet>
+        <!--
+        we use columnStretching="multiple" to give us the opportunity to size
+        the columns by witdh="nn%"
+        The default width for a column is 100px. There is no auto sizing for
+        columns. Set the width attribute to ensure the column is wide enough to
+        accommodate the width of the contents. When the "multiple" option is
+        used in the table that contains the column, the width can be set to a
+        percentage.
+        -->
+        <af:table id                   ="orp" var="row" varStatus="vs"
+                  value                ="#{bindings.Process.collectionModel}"
+                  rows                 ="#{bindings.Process.rangeSize}"
+                  fetchSize            ="#{bindings.Process.rangeSize}"
+                  binding              ="#{pageFlowScope.orchestrationSearch.searchTable}"
+                  summary              ="#{sysbase$bundle.SEARCH_RESULT}"
+                  filterVisible        ="false"
+                  filterModel          ="#{bindings.ProcessCriteria.queryDescriptor}"
+                  queryListener        ="#{bindings.ProcessCriteria.processQuery}"
+                  selectionListener    ="#{pageFlowScope.orchestrationSearch.searchSelect}"
+                  columnStretching     ="multiple"
+                  columnBandingInterval="0"
+                  rowBandingInterval   ="1"
+                  autoHeightRows       ="0"
+                  rowSelection         ="multiple"
+                  columnSelection      ="none"
+                  verticalGridVisible  ="false"
+                  scrollPolicy         ="page"
+                  immediate            ="true"
+                  emptyText            ="#{sysbase$bundle.SEARCH_EMPTY}"
+                  partialTriggers      =":::dc10">
+          <af:column id="c10" rowHeader="true" width="20" headerText="" align="right"/>
+          <af:column id="c11" width="10%" filterable="true" sortable="true" sortProperty="name" headerText="#{bindings.Process.hints.processId.label}">
+            <af:link id="ci11" text="#{row.processId}" actionListener="#{pageFlowScope.orchestrationSearch.openDetail}" icon="#{sysadmin$bundle.ORC_LIST}"/>
+          </af:column>
+          <af:column id="c12" width="20%" filterable="true" sortable="true" sortProperty="entityType" headerText="#{bindings.Process.hints.entityType.label}">
+            <af:outputText id="ot12" value="#{row.entityType}"/>
+          </af:column>
+          <af:column id="c13" width="10%" filterable="true" sortable="true" sortProperty="status" headerText="#{bindings.Process.hints.status.label}">
+            <af:outputText id="ot13" value="#{row.status}"/>
+          </af:column>
+          <af:column id="c14" width="10%" filterable="true" sortable="true" sortProperty="operation" headerText="#{bindings.Process.hints.operation.label}">
+            <af:outputText id="ot14" value="#{row.operation}"/>
+          </af:column>
+          <af:column id="c15" width="10%" filterable="true" sortable="true" sortProperty="changeType" headerText="#{bindings.Process.hints.changeType.label}">
+            <af:outputText id="ot15" value="#{row.changeType}"/>
+          </af:column>
+          <af:column id="c16" width="10%" filterable="true" sortable="true" sortProperty="retry" headerText="#{bindings.Process.hints.retry.label}">
+            <af:outputText id="ot16" value="#{row.retry}"/>
+          </af:column>
+          <af:column id="c17" width="10%" filterable="true" sortable="true" sortProperty="createdOn" headerText="#{bindings.Process.hints.createdOn.label}">
+            <af:outputText id="ot17" value="#{row.createdOn}"/>
+          </af:column>
+          <af:column id="c18" width="10%" filterable="true" sortable="true" sortProperty="modifiedOn" headerText="#{bindings.Process.hints.modifiedOn.label}">
+            <af:outputText id="ot18" value="#{row.modifiedOn}"/>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup id="pid11" contentDelivery="lazyUncached">
+              <af:menu id="m20" clientComponent="true">
+                <af:commandMenuItem id            ="cmi22"
+                                    icon          ="/images/func_open_16_ena.png"
+                                    text          ="#{sysbase$bundle.SEARCH_DETAILDOT}"
+                                    shortDesc     ="#{sysadmin$bundle.ORC_DETAIL_HINT}"
+                                    disabled      ="#{pageFlowScope.orchestrationSearch.openDisabled}"
+                                    actionListener="#{pageFlowScope.orchestrationSearch.openDetail}"
+                                    partialSubmit ="true"/>
+                <af:commandMenuItem id            ="cmi24"
+                                    icon          ="/images/func_refresh_16_ena.png"
+                                    text          ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    disabled      ="false"
+                                    shortDesc     ="#{sysbase$bundle.SEARCH_REFRESH}"
+                                    action        ="#{pageFlowScope.orchestrationSearch.refresh}"/>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+      </af:panelCollection>
+    </af:panelGroupLayout>
+  </af:panelHeader>
+</jsp:root>

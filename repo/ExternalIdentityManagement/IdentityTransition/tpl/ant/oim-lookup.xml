@@ -1,0 +1,2379 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-lookup-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ######   #####
+  **              #    #     # #     #
+  **              #    #     # #
+  **              #    #     #  #####
+  **              #    #     #       #
+  **              #    #     # #     #
+  **            #####  ######   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="0301" description="On-Boarding Access Manager Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0301 On-Boarding Entitlements Access Manager Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Access Manager Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="AM IDS Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from Access Manager Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="AM IDS Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0301 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####
+  **           #     #    #    #     #
+  **           #          #    #
+  **           #          #     #####
+  **           #          #          #
+  **           #     #    #    #     #
+  **            #####     #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="0401" description="On-Boarding eFBS Citrix Terminal Services Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0401 On-Boarding Entitlements eFBS Citrix Terminal Services ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from eFBS Citrix Terminal Services for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="TS ADS Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from eFBS Citrix Terminal Services for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="TS ADS Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0401 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####   #####
+  **           #     # #     # #     #
+  **           #     # #       #
+  **           ######   #####  #
+  **           #             # #
+  **           #       #     # #     #
+  **           #        #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="0601" description="On-Boarding VMware Platform Service Controller Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0601 On-Boarding Entitlements VMware Platform Service Controller ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from VMware Platform Service Controller for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PSC ADS Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from VMware Platform Service Controller for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PSC ADS Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0601 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      ######
+  **           #       #       #           #
+  **           #       #     # #           #
+  **           #        #####  #           #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="0701-01" description="On-Boarding Pivotal Cloud Foundry Production Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 On-Boarding Entitlements Pivotal Cloud Foundry Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Pivotal Cloud Foundry Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Production Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Production Tenant Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Production Space Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0701-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######     ######
+  **           #     # #     # #           #     #
+  **           #     # #       #           #     #
+  **           ######  #       ######      #     #
+  **           #       #       #           #     #
+  **           #       #     # #           #     #
+  **           #        #####  #           ######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="0701-02" description="On-Boarding Pivotal Cloud Foundry Development Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 On-Boarding Entitlements Pivotal Cloud Foundry Development ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Pivotal Cloud Foundry Development for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Development Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Development Tenant Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Development Space Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0701-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####     #     #     #
+  **           #     #    #      # #    #     #
+  **           #     #    #     #   #   #     #
+  **           ######     #    #     #  #     #
+  **           #          #    #######   #   #
+  **           #          #    #     #    # #
+  **           #        #####  #     #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="0801" description="On-Boarding PIAV Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0801 On-Boarding Entitlements PIAV Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from PIAV Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IM PIAV Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from PIAV Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IM PIAV Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0801 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######     #    ######
+  **           #     #   # #   #     #
+  **           #     #  #   #  #     #
+  **           ######  #     # ######
+  **           #       ####### #
+  **           #       #     # #
+  **           #       #     # #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="0901" description="On-Boarding PAP Active Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0901 On-Boarding Entitlements PAP Active Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from PAP Active Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PAP ADS Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from PAP Active Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PAP ADS Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0901 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######     ##
+  **           #     #      #     # #
+  **           #           #     #  #
+  **            #####     #     #   #
+  **                 #   #     #######
+  **           #     #  #           #
+  **            #####  #######      #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="0902" description="On-Boarding SZ4 Active Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0902 On-Boarding Entitlements SZ4 Active Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from SZ4 Active Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SZ4 ADS Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from SZ4 Active Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SZ4 ADS Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0902 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **               #    #######  #####
+  **              # #         # #     #
+  **             #   #        # #
+  **            #     #       #  #####
+  **            #######       #       #
+  **            #     # #     # #     #
+  **            #     #  #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1001" description="On-Boarding Atlassian Jira Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1001 On-Boarding Entitlements Atlassian Jira Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Atlassian Jira Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="AJS Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="AJS Role Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="AJS Project Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######
+  **            #     #   # #   #          #     #
+  **            #        #   #  #          #     #
+  **            # ##### #     # #####      ######
+  **            #     # ####### #          #
+  **            #     # #     # #          #
+  **             #####  #     # #######    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1101-01" description="On-Boarding Google Apigee Edge Production Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 On-Boarding Entitlements Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAEP Tenant Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAEP Role Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######
+  **            #     #   # #   #             #
+  **            #        #   #  #             #
+  **            # ##### #     # #####         #
+  **            #     # ####### #             #
+  **            #     # #     # #             #
+  **             #####  #     # #######       #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1101-02" description="On-Boarding Google Apigee Edge PreProduction Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 On-Boarding Entitlements Google Apigee Edge PreProduction ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Google Apigee Edge PreProduction for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAET Tenant Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAET Role Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####     #
+  **            #     #   # #   #          #     #   #     # #    ##   ##
+  **            #        #   #  #          #     #   #     # #   # #  # #
+  **            # ##### #     # #####      ######    #     # #  #  #    #
+  **            #     # ####### #          #         #     # # #   #    #
+  **            #     # #     # #          #         #     # ##    #    #
+  **             #####  #     # #######    #         ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1101-03" description="On-Boarding Google Apigee Edge Production Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-03 On-Boarding Entitlements Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAEP D01 Application Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####   #####
+  **            #     #   # #   #          #     #   #     # #    ## #     #
+  **            #        #   #  #          #     #   #     # #   # #       #
+  **            # ##### #     # #####      ######    #     # #  #  #   ####
+  **            #     # ####### #          #         #     # # #   #  #
+  **            #     # #     # #          #         #     # ##    # #
+  **             #####  #     # #######    #         ######   #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1101-04" description="On-Boarding Google Apigee Edge Production Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-04 On-Boarding Entitlements Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAEP D02 Application Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####   #####
+  **            #     #   # #   #          #     #   #     # #    ## #     #
+  **            #        #   #  #          #     #   #     # #   # #       #
+  **            # ##### #     # #####      ######    #     # #  #  #   ####
+  **            #     # ####### #          #         #     # # #   #       #
+  **            #     # #     # #          #         #     # ##    # #     #
+  **             #####  #     # #######    #         ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1101-05" description="On-Boarding Google Apigee Edge Production Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-05 On-Boarding Entitlements Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAEP D03 Application Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-05 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######   ######   #####     #
+  **            #     #   # #   #             #      #     # #    ##   ##
+  **            #        #   #  #             #      #     # #   # #  # #
+  **            # ##### #     # #####         #      #     # #  #  #    #
+  **            #     # ####### #             #      #     # # #   #    #
+  **            #     # #     # #             #      #     # ##    #    #
+  **             #####  #     # #######       #      ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1101-06" description="On-Boarding Google Apigee Edge Production Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-06 On-Boarding Entitlements Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAET D01 Application Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-06 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    #######   ######   #####   #####
+  **            #     #   # #   #             #      #     # #    ## #     #
+  **            #        #   #  #             #      #     # #   # #       #
+  **            # ##### #     # #####         #      #     # #  #  #   ####
+  **            #     # ####### #             #      #     # # #   #  #
+  **            #     # #     # #             #      #     # ##    # #
+  **             #####  #     # #######       #      ######   #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1101-07" description="On-Boarding Google Apigee Edge Production Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-07 On-Boarding Entitlements Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAET D02 Application Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-07 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **             #####     #    #######    ######    ######   #####   #####
+  **            #     #   # #   #          #     #   #     # #    ## #     #
+  **            #        #   #  #          #     #   #     # #   # #       #
+  **            # ##### #     # #####      ######    #     # #  #  #   ####
+  **            #     # ####### #          #         #     # # #   #       #
+  **            #     # #     # #          #         #     # ##    # #     #
+  **             #####  #     # #######    #         ######   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1101-08" description="On-Boarding Google Apigee Edge Production Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1101-08 On-Boarding Entitlements Google Apigee Edge Production ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Google Apigee Edge Production for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="GAET D03 Application Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1101-08 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######      #####  #######  #####
+  **           #     # #     # #           #     #      #  #     #
+  **           #     # #       #           #           #         #
+  **           ######  #       ######       #####     #     #####
+  **           #       #       #                 #   #           #
+  **           #       #     # #           #     #  #      #     #
+  **           #        #####  #            #####  #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1201-01" description="On-Boarding Pivotal Cloud Foundry IuA Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 On-Boarding Entitlements Pivotal Cloud Foundry IuA ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Pivotal Cloud Foundry IuA for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF IUA Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF IUA Tenant Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF IUA Space Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1201-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######   #####  #######      #####  #######     ##
+  **           #     # #     # #           #     #      #     # #
+  **           #     # #       #           #           #     #  #
+  **           ######  #       ######       #####     #     #   #
+  **           #       #       #                 #   #     #######
+  **           #       #     # #           #     #  #           #
+  **           #        #####  #            #####  #######      #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1201-02" description="On-Boarding Pivotal Cloud Foundry ARES Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1201-02 On-Boarding Entitlements Pivotal Cloud Foundry ARES ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Pivotal Cloud Foundry ARES for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Ares Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Ares Tenant Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PCF Ares Space Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1201-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ####### ######  #     # #######  #####
+  **           #     # #       #     # ##   ## #       #     #
+  **           #     # #       #     # # # # # #       #
+  **           ####### ######  ######  #  #  # ######   #####
+  **           #     # #       #  #    #     # #             #
+  **           #     # #       #   #   #     # #       #     #
+  **           #     # ####### #    #  #     # #######  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1301" description="On-Boarding Active Directory Domain Hermes Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1301 On-Boarding Entitlements Active Directory Domain Hermes ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Active Directory Domain Hermes for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="ADH ADS Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from Active Directory Domain Hermes for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="ADH ADS Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1301 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######   #####
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ######  # #####
+  **           #     # #             #     #       #     #
+  **           #     # #       #     #     #       #     #
+  **            #####  #        #####      #        #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-PG" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-PG On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PG OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-PG completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####         #    #     #
+  **           #     # #       #     #       # #   ##    #
+  **           #     # #       #            #   #  # #   #
+  **           #     # ######   #####      #     # #  #  #
+  **           #     # #             #     ####### #   # #
+  **           #     # #       #     #     #     # #    ##
+  **            #####  #        #####      #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-AN" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-AN On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="AN OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-AN completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      ######  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-BB" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BB On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BB OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #######
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-BE" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BE On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BE OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #    #
+  **           #     # #       #     #     #     # #   #
+  **           #     # #       #           #     # #  #
+  **           #     # ######   #####      ######  ###
+  **           #     # #             #     #     # #  #
+  **           #     # #       #     #     #     # #   #
+  **            #####  #        #####      ######  #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-BK" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BK On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BK OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BK completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-BP" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BP On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BP OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #     #
+  **           #     # #       #     #     #     # #  #  #
+  **           #     # #       #           #     # #  #  #
+  **           #     # ######   #####      ######  #  #  #
+  **           #     # #             #     #     # #  #  #
+  **           #     # #       #     #     #     # #  #  #
+  **            #####  #        #####      ######   ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-BW" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BW On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BW OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     #  #   #
+  **           #     # ######   #####      ######    ###
+  **           #     # #             #     #     #    #
+  **           #     # #       #     #     #     #    #
+  **            #####  #        #####      ######     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-BY" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-BY On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BY OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-BY completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ####### ######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      #     # ######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-HB" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HB On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HB OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-HB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #######
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #     # #
+  **           #     # ######   #####      ####### ######
+  **           #     # #             #     #     # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####      #     # #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-HE" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HE On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HE OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-HE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ####### #######
+  **           #     # #             #     #     # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####      #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-HH" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-HH On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HH OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-HH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     ##   ## #     #
+  **           #     # #       #           # # # # #     #
+  **           #     # ######   #####      #  #  # #     #
+  **           #     # #             #     #     #  #   #
+  **           #     # #       #     #     #     #   # #
+  **            #####  #        #####      #     #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-MV" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-MV On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="MV OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-MV completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     #  #####
+  **           #     # #       #     #     ##    #    #
+  **           #     # #       #           # #   #    #
+  **           #     # ######   #####      #  #  #    #
+  **           #     # #             #     #   # #    #
+  **           #     # #       #     #     #    ##    #
+  **            #####  #        #####      #     #  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-NI" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-NI On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="NI OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-NI completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      #     # #     #
+  **           #     # #       #     #     ##    # #  #  #
+  **           #     # #       #           # #   # #  #  #
+  **           #     # ######   #####      #  #  # #  #  #
+  **           #     # #             #     #   # # #  #  #
+  **           #     # #       #     #     #    ## #  #  #
+  **            #####  #        #####      #     #  ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-NW" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-NW On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="NW OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-NW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ######  ######
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #     # #     #
+  **           #     # ######   #####      ######  ######
+  **           #     # #             #     #  #    #
+  **           #     # #       #     #     #   #   #
+  **            #####  #        #####      #    #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-RP" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-RP On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="RP OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-RP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #     #
+  **           #     # #       #     #     #     # #     #
+  **           #     # #       #           #       #     #
+  **           #     # ######   #####       #####  #######
+  **           #     # #             #           # #     #
+  **           #     # #       #     #     #     # #     #
+  **            #####  #        #####       #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-SH" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SH On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SH OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-SH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #
+  **           #     # #       #     #     #     # #
+  **           #     # #       #           #       #
+  **           #     # ######   #####       #####  #
+  **           #     # #             #           # #
+  **           #     # #       #     #     #     # #
+  **            #####  #        #####       #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-SL" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SL On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SL OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-SL completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####       #####  #     #
+  **           #     # #       #     #     #     # ##    #
+  **           #     # #       #           #       # #   #
+  **           #     # ######   #####       #####  #  #  #
+  **           #     # #             #           # #   # #
+  **           #     # #       #     #     #     # #    ##
+  **            #####  #        #####       #####  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-SN" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-SN On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SN OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-SN completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ####### #     #
+  **           #     # #       #     #        #    #     #
+  **           #     # #       #              #    #     #
+  **           #     # ######   #####         #    #######
+  **           #     # #             #        #    #     #
+  **           #     # #       #     #        #    #     #
+  **            #####  #        #####         #    #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-TH" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-TH On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="TH OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-TH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #######  #####      ####### #######
+  **           #     # #       #     #          #  #
+  **           #     # #       #               #   #
+  **           #     # ######   #####         #    ######
+  **           #     # #             #       #     #
+  **           #     # #       #     #      #      #
+  **            #####  #        #####      ####### #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1401-ZF" description="On-Boarding openfire XMPP Server Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1401-ZF On-Boarding Entitlements openfire XMPP Server ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from openfire XMPP Server for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="ZF OFS Group Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1401-ZF completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     ######
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        #     #
+  **           #       #     #   # #       #     #
+  **           #       #     #  #   #      #     #
+  **           #       #     # #     #     ######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1501-01" description="On-Boarding Phoenix Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-01 On-Boarding Entitlements Phoenix Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXD Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXD Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1501-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     #######
+  **           #     # #     #  #   #         #
+  **           #     # #     #   # #          #
+  **           ######  #######    #           #
+  **           #       #     #   # #          #
+  **           #       #     #  #   #         #
+  **           #       #     # #     #        #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1501-02" description="On-Boarding Phoenix Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-02 On-Boarding Entitlements Phoenix Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXT Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXT Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1501-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #      #####
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        #     #
+  **           #       #     #   # #       #  #  #
+  **           #       #     #  #   #      #   # #
+  **           #       #     # #     #      #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1501-03" description="On-Boarding Phoenix Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-03 On-Boarding Entitlements Phoenix Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXQ Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXQ Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1501-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     # #     #     ######
+  **           #     # #     #  #   #      #     #
+  **           #     # #     #   # #       #     #
+  **           ######  #######    #        ######
+  **           #       #     #   # #       #
+  **           #       #     #  #   #      #
+  **           #       #     # #     #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1501-04" description="On-Boarding Phoenix Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1501-04 On-Boarding Entitlements Phoenix Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXP Entitlement Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Lookups from Phoenix Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="PXP Organization Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1501-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######  #
+  **           ##   ## #     # #
+  **           # # # # #     # #
+  **           #  #  # #     # #
+  **           #     # #     # #
+  **           #     # #     # #
+  **           #     # ######  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1601" description="On-Boarding Moodle Identity Store Entitlements">
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####        ######
+  **           ##    #    #     #    #    #     #       #     #
+  **           # #   #    #          #    #             #     #
+  **           #  #  #     #####     #     #####   ###  ######
+  **           #   # #          #    #          #       #
+  **           #    ## ## #     #    #    #     #       #
+  **           #     # ##  #####   #####   #####        #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1701-01" description="On-Boarding NSIS Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1701-01 On-Boarding Entitlements NSIS Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from NSIS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="NSISP Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1701-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####       #######
+  **           ##    #    #     #    #    #     #         #
+  **           # #   #    #          #    #               #
+  **           #  #  #     #####     #     #####   ###    #
+  **           #   # #          #    #          #         #
+  **           #    ## ## #     #    #    #     #         #
+  **           #     # ##  #####   #####   #####          #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1701-02" description="On-Boarding NSIS Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1701-02 On-Boarding Entitlements NSIS Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from NSIS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="NSIST Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1701-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####        ######
+  **             #    #     # #     #       #     #
+  **             #    #       #             #     #
+  **             #    #   ###  #####   ###  ######
+  **             #    #     #       #       #
+  **             #    #     # #     #       #
+  **           #####   #####   #####        #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1801-01" description="On-Boarding IGS Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 On-Boarding Entitlements IGS Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from IGS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IGSP Role Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Tenants from IGS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IGSP Tenant Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####   #####   #####       #######
+  **             #    #     # #     #         #
+  **             #    #       #               #
+  **             #    #   ###  #####   ###    #
+  **             #    #     #       #         #
+  **             #    #     # #     #         #
+  **           #####   #####   #####          #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1801-02" description="On-Boarding IGS Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 On-Boarding Entitlements IGS Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from IGS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IGST Role Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Tenants from IGS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="IGST Tenant Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1801-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####   #####   #####
+  **           #     #    #    #     #
+  **           #     #    #    #      
+  **           #     #    #    #   ###
+  **           #     #    #    #     #
+  **           #     #    #    #     #
+  **            #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="1901" description="On-Boarding OIG Identity Store Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="1901 On-Boarding Entitlements OIG Identity Store ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling System Role Entitlements from IGS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OIG System Role Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Global Role Entitlements from IGS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OIG Global Role Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Scoped Role Entitlements from IGS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OIG Scoped Role Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Organization Scopes from IGS Identity Store for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="OIG Organization Scope Lookup Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="1801-01 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #######  #####  #     #  ######
+  **                #     #    ##   ##  #     #
+  **               #      #    # # # #  #     #
+  **              #       #    #  #  #  ######
+  **             #        #    #     #  #
+  **            #         #    #     #  #
+  **           #######  #####  #     #  #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-01" description="On-Boarding ZIMP Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001 On-Boarding Entitlements ZIMP Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from ZIMP Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="ZIMP Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######  ######
+  **           #     # #     # #     #
+  **           #     # #     # #     #
+  **           ######  #     # ######
+  **           #     # #     # #
+  **           #     # #     # #
+  **           ######  ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-02" description="On-Boarding BDP Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-02 On-Boarding Entitlements BDP Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from BDP Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BDP Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-02 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     #     #####   #####   #####
+  **           ##    #    #     #    #    #     #
+  **           # #   #    #          #    #
+  **           #  #  #     #####     #     #####
+  **           #   # #          #    #          #
+  **           #    ## ## #     #    #    #     #
+  **           #     # ##  #####   #####   #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-03" description="On-Boarding NSIS Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 On-Boarding Entitlements NSIS Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from NSIS Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="NSIS Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-03 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ####### #    #    #
+  **           #     # #       #   #    # #
+  **           #     # #       #  #    #   #
+  **           #     # ######  ###    #     #
+  **            #   #  #       #  #   #######
+  **             # #   #       #   #  #     #
+  **              #    #       #    # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-04" description="On-Boarding VFKA Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-04 On-Boarding Entitlements VFKA Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from VFKA Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="VFKA Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-04 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #    # ##### #     # #     #
+  **           #   #    #   #     # #     #
+  **           #  #     #   #     # #     #
+  **           ###      #   #     # #     #
+  **           #  #     #    #   #  #     #
+  **           #   #    #     # #   #     #
+  **           #    # #####    #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-05" description="On-Boarding KIVU Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-05 On-Boarding Entitlements KIVU Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from KIVU Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="KIVU Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-05 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  #     #  #####  #####
+  **           #     # #     # #     #   #
+  **           #       #     # #         #
+  **            #####  #     #  #####    #
+  **                 # #     #       #   #
+  **           #     # #     # #     #   #
+  **            #####   #####   #####  #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-06" description="On-Boarding SUSI Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-06 On-Boarding Entitlements SUSI Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from SUSI Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SUSI Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-06 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #####  #####  ######  #
+  **             #   #     # #     # #
+  **             #   #       #     # #
+  **             #    #####  ######  #
+  **             #         # #       #
+  **             #   #     # #       #
+  **           #####  #####  #       #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-07" description="On-Boarding ISPL Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-07 On-Boarding Entitlements ISPL Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from ISPL Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="ISPL Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-07 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####  ##### ####### #     #
+  **           #     #   #      #    #     #
+  **           #         #      #    #     #
+  **            #####    #      #    #     #
+  **                 #   #      #    #     #
+  **           #     #   #      #    #     #
+  **            #####  #####    #     #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-08" description="On-Boarding SITU Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-08 On-Boarding Entitlements SITU Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from SITU Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="SITU Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-08 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # ######   #####
+  **           #     # #     # #     #
+  **           #     # #     # #
+  **           #     # ######  #
+  **           #     # #       #
+  **           #     # #       #     #
+  **            #####  #        #####
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-09" description="On-Boarding UPC Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-09 On-Boarding Entitlements UPC Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from UPC Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="UPC Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-09 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     #  #####  #######
+  **           #     # #     # #     # #
+  **           #     # #     # #     # #
+  **           #     # ####### #     # ######
+  **           #     # #     # #     # #
+  **           #     # #     # #     # #
+  **           ######  #     #  #####  #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2001-10" description="On-Boarding DHOE Directory Service Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2001-10 On-Boarding Entitlements DHOE Directory Service ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Entitlements from DHOE Directory Service for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="DHOE Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2001-10 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #  #####     ######  #     #
+  **           #     # #   #  #     #    #     # #     #
+  **           #     # #  #   #          #     # #     #
+  **           ######  ###    #          #     # #######
+  **           #   #   #  #   #          #     # #     #
+  **           #    #  #   #  #     #    #     # #     #
+  **           #     # #    #  #####     ######  #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the target system
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to reconcile entitlement
+  **           Definitions.
+  ******************************************************************************
+  -->
+  <target name="2101" description="On-Boarding Redhat Keycloak Entitlements">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="2101 On-Boarding Entitlements Redhat Keycloak DH ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Groups from Redhat Keycloak for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="RKDH Group Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Realm Roles from Redhat Keycloak for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="RKDH Realm Role Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="Reconciling Client Roles from Redhat Keycloak for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="RKDH Client Role Reconciliation">
+        <start blocking="true" interval="1000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="2101 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ####### #     # #######
+  **           #       ##    #    #
+  **           #       # #   #    #
+  **           #####   #  #  #    #
+  **           #       #   # #    #
+  **           #       #    ##    #
+  **           ####### #     #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager Entitlement List Entity
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to synchronize the
+  **           Entitlement List Entity.
+  ******************************************************************************
+  -->
+  <target name="9901" description="Synchonize the Entitlement List">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="9901 Synchronization Entitlement List ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Synchronize Entitlement List Entity for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="Entitlement List">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="9901 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **            #####     #    #######
+  **           #     #   ###      #
+  **           #        #   #     #
+  **           #       #     #    #
+  **           #       #######    #
+  **           #     # #     #    #
+  **            #####  #     #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the deployment
+  **
+  ** Synopsis: The tasks executes the scheduled jobs to synchronize the
+  **           Access Request Catalog.
+  ******************************************************************************
+  -->
+  <target name="9902" description="Synchronization Access Request Catalog">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="9902 Synchronization Access Request Catalog ${application.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Synchronize Access Request Catalog with Deployment for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="Catalog Synchronization Job">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="9902 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

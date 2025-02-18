@@ -1,0 +1,32 @@
+-- D:\Project\Bundeskriminalamt12c\InternalIdentityManagement\EmployeePortal\eppAplication\src\main\dbs\qms\obj\qms_mst.con
+--
+-- Generated for Oracle Database 12c on Fri Apr 24 10:07:06 2020 by Server Generator 10.1.2.93.10
+
+PROMPT Creating Primary Key on 'qms_message_text'
+ALTER TABLE qms_message_text
+  ADD (
+    CONSTRAINT qms_mst_pk PRIMARY KEY (
+      msp_code
+    , language
+    ) USING INDEX TABLESPACE &&qmsindex
+  )
+/
+PROMPT Creating Check Constraint on 'qms_message_text'
+ALTER TABLE qms_message_text
+  ADD (
+    CONSTRAINT qms_mst_ck1 CHECK (
+      language IN ('de', 'en', 'fr')
+    )
+  )
+/
+PROMPT Creating Foreign Key on 'qms_message_text'
+ALTER TABLE qms_message_text
+  ADD (
+    CONSTRAINT qms_mst_msp_fk FOREIGN KEY (
+      msp_code
+    )
+    REFERENCES qms_message_properties (
+      code
+    )
+  )
+/

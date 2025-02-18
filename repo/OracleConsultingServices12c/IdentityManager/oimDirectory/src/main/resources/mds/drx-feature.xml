@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<feature xmlns                 = "http://www.oracle.com/schema/iam/directory"
+         schema-container      = "cn=schema"
+         changelog-container   = "cn=changelog"
+         connection-timeout    = "30"
+         referential-integrity = "false">
+  <failover/>
+  <binary>
+    <attribute>userCertificate</attribute>
+    <attribute>userPassword</attribute>
+  </binary>
+  <distinguishedNames>
+    <attribute>uniqueMember</attribute>
+    <attribute>manager</attribute>
+    <attribute>secretary</attribute>
+  </distinguishedNames>
+  <domain             object-class="domain"             object-prefix="dc"/>
+  <country            object-class="country"            object-prefix="c"/>
+  <locality           object-class="locality"           object-prefix="l"/>
+  <group              object-class="groupOfUniqueNames" object-prefix="cn" object-member="uniqueMember"/>
+  <organization       object-class="organization"       object-prefix="o"/>
+  <organizationalUnit object-class="organizationalUnit" object-prefix="ou"/>
+  <account            object-class="inetOrgPerson"      object-prefix="uid">
+    <multi-valued>
+      <attribute>sn</attribute>
+      <attribute>cn</attribute>
+    </multi-valued>
+  </account>
+</feature>

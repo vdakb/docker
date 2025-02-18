@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE Entity SYSTEM "jbo_03_01.dtd">
+<!---->
+<Entity xmlns                 ="http://xmlns.oracle.com/bc4j" Version="12.2.1.15.5"
+        Name                  ="LookupValueEO"
+        AliasName             ="LookupValue"
+        DBObjectType          ="table"
+        DBObjectName          ="LKV"
+        UseGlueCode           ="false"
+        BindingStyle          ="OracleName"
+        InheritPersonalization="merge"
+        RowClass              ="oracle.iam.identity.sysconfig.model.entity.LookupValueEOImpl">
+  <DesignTime>
+    <Attr      Name="_isCodegen"   Value="true"/>
+    <Attr      Name="_diagramName" Value="Lookup Value Entity"/>
+    <Attr      Name="_superClass"  Value="oracle.iam.ui.platform.model.common.OIMProgrammaticEO"/>
+    <AttrArray Name="_publishEvents"/>
+  </DesignTime>
+  <Attribute Name="valueKey" Type="java.lang.String" ColumnName="VALUEKEY" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="19" PrimaryKey="true" IsUpdateable="while_insert">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="lkv.key.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="lookupKey" Type="java.lang.String" ColumnName="LOOKUPKEY" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="19" IsUpdateable="while_insert">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="lku.key.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="encoded" Type="java.lang.String" ColumnName="ENCODED" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="3000" IsUnique="true" IsPersistent="false" IsNotNull="true" >
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The objectsName attribute is a required attribute hence it can never be
+    blank furthermore it doesn't provided a range of values hence any comparator
+    belonging to a range of values is useless
+    -->
+    <CompOper Name="encoded" Oper=">="         ToDo="-1"/>
+    <CompOper Name="encoded" Oper=">"          ToDo="-1"/>
+    <CompOper Name="encoded" Oper="BETWEEN"    ToDo="-1"/>
+    <CompOper Name="encoded" Oper="NOTBETWEEN" ToDo="-1"/>
+    <CompOper Name="encoded" Oper="&lt;"       ToDo="-1"/>
+    <CompOper Name="encoded" Oper="&lt;="      ToDo="-1"/>
+    <CompOper Name="decoded" Oper="ISBLANK"    ToDo="-1"/>
+    <CompOper Name="encoded" Oper="ISNOTBLANK" ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="lkv.encoded.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="decoded" Type="java.lang.String" ColumnName="DECODED" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="4000" IsPersistent="false" IsNotNull="true">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The objectsName attribute is a required attribute hence it can never be
+    blank furthermore it doesn't provided a range of values hence any comparator
+    belonging to a range of values is useless
+    -->
+    <CompOper Name="decoded" Oper=">="         ToDo="-1"/>
+    <CompOper Name="decoded" Oper=">"          ToDo="-1"/>
+    <CompOper Name="decoded" Oper="BETWEEN"    ToDo="-1"/>
+    <CompOper Name="decoded" Oper="NOTBETWEEN" ToDo="-1"/>
+    <CompOper Name="decoded" Oper="&lt;"       ToDo="-1"/>
+    <CompOper Name="decoded" Oper="&lt;="      ToDo="-1"/>
+    <CompOper Name="decoded" Oper="ISBLANK"    ToDo="-1"/>
+    <CompOper Name="decoded" Oper="ISNOTBLANK" ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="lkv.decoded.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="disabled" Type="java.lang.String" ColumnName="DISABLED" ColumnType="VARCHAR2" SQLType="VARCHAR" Precision="1" IsPersistent="false">
+    <!--
+    List comparation operators with property ToDo="-1" here which should not
+    used by the query criteria for this attribute
+    The objectsName attribute is a required attribute hence it can never be
+    blank furthermore it doesn't provided a range of values hence any comparator
+    belonging to a range of values is useless
+    -->
+    <CompOper Name="disabled" Oper=">="             ToDo="-1"/>
+    <CompOper Name="disabled" Oper=">"              ToDo="-1"/>
+    <CompOper Name="disabled" Oper="BETWEEN"        ToDo="-1"/>
+    <CompOper Name="disabled" Oper="NOTBETWEEN"     ToDo="-1"/>
+    <CompOper Name="disabled" Oper="&lt;"           ToDo="-1"/>
+    <CompOper Name="disabled" Oper="&lt;="          ToDo="-1"/>
+    <CompOper Name="disabled" Oper="ISBLANK"        ToDo="-1"/>
+    <CompOper Name="disabled" Oper="ISNOTBLANK"     ToDo="-1"/>
+    <CompOper Name="disabled" Oper="CONTAINS"       ToDo="-1"/>
+    <CompOper Name="disabled" Oper="STARTSWITH"     ToDo="-1"/>
+    <CompOper Name="disabled" Oper="ENDSWITH"       ToDo="-1"/>
+    <CompOper Name="disabled" Oper="DOESNOTCONTAIN" ToDo="-1"/>
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="lkv.disabled.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Attribute Name="note" Type="oracle.jbo.domain.ClobDomain" ColumnName="NOTE" ColumnType="CLOB" SQLType="CLOB" IsPersistent="false">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL ResId="lkv.note.label"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </Attribute>
+  <Key Name="LookupValuePK" PrimaryKey="true">
+    <DesignTime>
+      <Attr Name="_DBObjectName" Value="LOOKUPVALUEYPK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="oracle.iam.identity.sysconfig.model.entity.LookupValueEO.valueKey"/>
+    </AttrArray>
+  </Key>
+  <Key Name="LookupValueUK" AltKey="true">
+    <DesignTime>
+      <Attr Name="_isUnique"     Value="true"/>
+      <Attr Name="_DBObjectName" Value="LOOKUPVALUEYFK"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="oracle.iam.identity.sysconfig.model.entity.LookupValueEO.lookupKey"/>
+      <Item Value="oracle.iam.identity.sysconfig.model.entity.LookupValueEO.encoded"/>
+    </AttrArray>
+  </Key>
+  <ResourceBundle>
+    <PropertiesBundle PropertiesFile="oracle.iam.identity.sysconfig.bundle.Backend"/>
+  </ResourceBundle>
+  <Properties>
+    <CustomProperties>
+      <Property Name="USE_ALLOCATION_MANAGER" Value="false"/>
+    </CustomProperties>
+  </Properties>
+</Entity>

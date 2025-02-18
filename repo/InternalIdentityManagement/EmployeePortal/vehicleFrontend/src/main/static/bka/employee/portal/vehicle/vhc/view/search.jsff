@@ -1,0 +1,186 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"
+          xmlns:f  ="http://java.sun.com/jsf/core"
+          xmlns:c  ="http://java.sun.com/jsp/jstl/core"
+          xmlns:af ="http://xmlns.oracle.com/adf/faces/rich">
+  <c:set var="fnd$bundle" value="#{adfBundle['bka.employee.portal.bundle.Foundation']}"/>
+  <c:set var="mod$bundle" value="#{adfBundle['bka.employee.portal.vehicle.Frontend']}"/>
+  <af:panelHeader id="ph10" text="#{mod$bundle.VHC_MULTIPLE}" icon="#{mod$bundle.VHC_ICON}">
+    <!--
+    the panel which renders the search criteria and the controls belonging to
+    this panel
+    -->
+    <af:panelGroupLayout id="pgl0" styleClass="AFStretchWidth">
+      <af:declarativeComponent id="dc10" viewId="/searchQuickSearch.jspx" viewCriteriaQuery="#{bindings.ColorCriteria}" resultComponentId="pc10:app" advancedMaxColumns="2" advancedRows="5"/>
+      <!--
+      the panel collection which renders the search result and the controls
+      belonging to this panel
+      -->
+      <af:panelCollection id="pc10" styleClass="AFStretchWidth" featuresOff="statusBar">
+        <f:facet name="menus">
+          <af:menu id="m10" partialTriggers="::dc10" text="#{fnd$bundle.SEARCH_ACTIONS}" binding="#{pageFlowScope.colorSearch.actionMenu}" clientComponent="true">
+            <af:commandMenuItem id            ="cmi12"
+                                text          ="#{fnd$bundle.SEARCH_MODIFYDOT}"
+                                icon          ="/images/func_open_16_ena.png"
+                                shortDesc     ="#{mod$bundle.VHC_MODIFY_HINT}"
+                                action        ="#{pageFlowScope.colorSearch.modify}"
+                                disabled      ="#{pageFlowScope.colorSearch.modifyDisabled}"
+                                partialSubmit ="true"/>
+            <af:commandMenuItem id           ="cmi13"
+                                icon         ="/images/func_delete_16_ena.png"
+                                text         ="#{fnd$bundle.SEARCH_DELETE}"
+                                shortDesc    ="#{mod$bundle.VHC_DELETE_HINT}"
+                                disabled     ="#{pageFlowScope.colorSearch.deleteDisabled}">
+              <af:clientAttribute name="actionName" value="GENERIC_DELETE"/>
+              <af:showPopupBehavior alignId="btn13" align="afterStart" popupId="::confirmPopup"/>
+            </af:commandMenuItem>
+            <af:commandMenuItem id            ="cmi14"
+                                icon          ="/images/func_refresh_16_ena.png"
+                                text          ="#{fnd$bundle.SEARCH_REFRESH}"
+                                shortDesc     ="#{fnd$bundle.SEARCH_REFRESH}"
+                                action        ="#{pageFlowScope.colorSearch.refresh}"/>
+          </af:menu>
+        </f:facet>
+        <f:facet name="toolbar">
+          <af:toolbar id="t10" partialTriggers="::dc10" binding="#{pageFlowScope.colorSearch.toolbar}">
+            <af:group id="g10">
+              <af:button id           ="btn12"
+                         text         ="#{fnd$bundle.SEARCH_MODIFY}"
+                         icon         ="/images/func_open_16_ena.png"
+                         hoverIcon    ="/images/func_open_16_hov.png"
+                         disabledIcon ="/images/func_open_16_dis.png"
+                         depressedIcon="/images/func_open_16_act.png"
+                         shortDesc    ="#{mod$bundle.VHC_MODIFY_HINT}"
+                         action       ="#{pageFlowScope.colorSearch.modify}"
+                         disabled     ="#{pageFlowScope.colorSearch.modifyDisabled}"
+                         partialSubmit="true"/>
+              <af:button id           ="btn13"
+                         text         ="#{fnd$bundle.SEARCH_DELETE}"
+                         icon         ="/images/func_delete_16_ena.png"
+                         hoverIcon    ="/images/func_delete_16_hov.png"
+                         disabledIcon ="/images/func_delete_16_dis.png"
+                         depressedIcon="/images/func_delete_16_act.png"
+                         shortDesc    ="#{mod$bundle.VHC_DELETE_HINT}"
+                         disabled     ="#{pageFlowScope.colorSearch.deleteDisabled}">
+                <af:clientAttribute name="actionName" value="GENERIC_DELETE"/>
+                <af:showPopupBehavior alignId="btn13" align="afterStart" popupId="::confirmPopup"/>
+              </af:button>
+              <af:button id           ="btn14"
+                         text         ="#{fnd$bundle.SEARCH_REFRESH}"
+                         icon         ="/images/func_refresh_16_ena.png"
+                         hoverIcon    ="/images/func_refresh_16_hov.png"
+                         disabledIcon ="/images/func_refresh_16_dis.png"
+                         depressedIcon="/images/func_refresh_16_act.png"
+                         disabled     ="false"
+                         shortDesc    ="#{fnd$bundle.SEARCH_REFRESH}"
+                         action       ="#{pageFlowScope.colorSearch.refresh}"
+                         partialSubmit="true"/>
+            </af:group>
+          </af:toolbar>
+        </f:facet>
+        <!--
+        we use columnStretching="multiple" to give us the opportunity to size
+        the columns by witdh="nn%"
+        The default width for a column is 100px. There is no auto sizing for
+        columns. Set the width attribute to ensure the column is wide enough to
+        accommodate the width of the contents. When the "multiple" option is
+        used in the table that contains the column, the width can be set to a
+        percentage.
+        -->
+        <af:table id                   ="app" var="row" varStatus="vs"
+                  value                ="#{bindings.Color.collectionModel}"
+                  rows                 ="#{bindings.Color.rangeSize}"
+                  fetchSize            ="#{bindings.Color.rangeSize}"
+                  binding              ="#{pageFlowScope.colorSearch.searchTable}"
+                  summary              ="#{fnd$bundle.SEARCH_RESULT}"
+                  filterVisible        ="false"
+                  filterModel          ="#{bindings.ColorCriteria.queryDescriptor}"
+                  queryListener        ="#{bindings.ColorCriteria.processQuery}"
+                  selectionListener    ="#{pageFlowScope.colorSearch.searchSelect}"
+                  columnStretching     ="multiple"
+                  columnBandingInterval="0"
+                  rowBandingInterval   ="1"
+                  autoHeightRows       ="0"
+                  rowSelection         ="multiple"
+                  columnSelection      ="none"
+                  verticalGridVisible  ="false"
+                  scrollPolicy         ="page"
+                  immediate            ="true"
+                  emptyText            ="#{fnd$bundle.SEARCH_EMPTY}"
+                  partialTriggers      =":::dc10">
+          <af:column id="c10" rowHeader="true" width="20" headerText="" align="right"/>
+          <af:column id="c11" width="20%" filterable="true" sortable="true" sortProperty="id" headerText="#{bindings.Color.hints.id.label}">
+            <af:link id="ci11" text="#{row.id}" action="#{pageFlowScope.colorSearch.modify}" icon="#{row.entityIcon}"/>
+          </af:column>
+          <af:column id="c12" width="80%" filterable="true" sortable="true" sortProperty="meaning" headerText="#{bindings.Color.hints.meaning.label}">
+            <af:outputText id="ot12" value="#{row.meaning}"/>
+          </af:column>
+          <f:facet name="contextMenu">
+            <af:popup id="pid11" contentDelivery="lazyUncached">
+              <af:menu id="m20" clientComponent="true">
+                <af:commandMenuItem id            ="cmi22"
+                                    icon          ="/images/func_open_16_ena.png"
+                                    text          ="#{fnd$bundle.SEARCH_MODIFYDOT}"
+                                    shortDesc     ="#{mod$bundle.VHC_MODIFY_HINT}"
+                                    action        ="#{pageFlowScope.colorSearch.modify}"
+                                    disabled      ="#{pageFlowScope.colorSearch.modifyDisabled}"
+                                    partialSubmit ="true"/>
+                <af:commandMenuItem id            ="cmi23"
+                                    icon          ="/images/func_delete_16_ena.png"
+                                    text          ="#{fnd$bundle.SEARCH_DELETEDOT}"
+                                    shortDesc     ="#{mod$bundle.VHC_DELETE_HINT}"
+                                    disabled      ="#{pageFlowScope.colorSearch.deleteDisabled}">
+                  <af:clientAttribute name="actionName" value="GENERIC_DELETE"/>
+                  <af:showPopupBehavior alignId="::btn13" align="afterStart" popupId="::::confirmPopup"/>
+                </af:commandMenuItem>
+                <af:commandMenuItem id            ="cmi24"
+                                    icon          ="/images/func_refresh_16_ena.png"
+                                    text          ="#{fnd$bundle.SEARCH_REFRESH}"
+                                    disabled      ="false"
+                                    shortDesc     ="#{fnd$bundle.SEARCH_REFRESH}"
+                                    action        ="#{pageFlowScope.colorSearch.refresh}"/>
+              </af:menu>
+            </af:popup>
+          </f:facet>
+        </af:table>
+      </af:panelCollection>
+      <af:popup id             ="confirmPopup"
+                launcherVar    ="source"
+                eventContext   ="launcher"
+                contentDelivery="lazyUncached">
+        <af:setPropertyListener type="popupFetch" from="#{source.attributes.actionName}" to="#{pageFlowScope.colorSearch.actionName}"/>
+          <af:dialog id                         ="dlg01"
+                     type                       ="yesNo"
+                     title                      ="#{fnd$bundle.GENERIC_WARNING}"
+                     titleIconSource            ="/images/warning.png"
+                     dialogListener             ="#{pageFlowScope.colorSearch.dialogListener}"
+                     affirmativeTextAndAccessKey="#{pageFlowScope.colorSearch.localizedAction}"
+                     cancelTextAndAccessKey     ="#{fnd$bundle.GENERIC_CANCEL}"
+                     noTextAndAccessKey         ="#{fnd$bundle.GENERIC_CANCEL}">
+            <af:panelGroupLayout id="pg10" inlineStyle="width:auto;height:auto;">
+              <af:spacer id="sp11" height="5"/>
+              <af:panelGroupLayout id="pg20" layout="vertical" inlineStyle="width:350px;">
+                <af:outputFormatted id="of21" value="#{af:formatString(fnd$bundle.GENERIC_CONFIRM, pageFlowScope.colorSearch.localizedAction)}" inlineStyle="font-weight:bold; font-size:small;"/>
+                <af:spacer id="sp21" height="10"/>
+                <af:outputText id="ot22" value="#{pageFlowScope.colorSearch.localizedMessage}"/>
+              </af:panelGroupLayout>
+              <af:spacer id="sp12" height="15"/>
+              <af:table id                     ="svd2" var="row" width="99%" inlineStyle="height:200px"
+                        value                  ="#{pageFlowScope.colorSearch.selectedRow}"
+                        rows                   ="#{pageFlowScope.colorSearch.selectedRowCount}"
+                        fetchSize              ="#{pageFlowScope.colorSearch.selectedRowCount}"
+                        columnStretching       ="last"
+                        rowBandingInterval     ="1"
+                        rendered               ="#{pageFlowScope.colorSearch.selectedRowCount > 1}"
+                        allDetailsEnabled      ="false"
+                        disableColumnReordering="true">
+              <af:column id="ch" headerText="#{mod$bundle.VHC_SINGLE}" align="left" minimumWidth="20" rowHeader="unstyled">
+                <af:outputText id="ot11" value="#{row.name}"/>
+              </af:column>
+            </af:table>
+          </af:panelGroupLayout>
+        </af:dialog>
+      </af:popup>
+    </af:panelGroupLayout>
+  </af:panelHeader>
+</jsp:root>

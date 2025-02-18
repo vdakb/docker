@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xsd:schema xmlns               ="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsd           ="http://www.w3.org/2001/XMLSchema"
+            xmlns:igs           ="http://www.oracle.com/schema/igs"
+            targetNamespace     ="http://www.oracle.com/schema/igs"
+            elementFormDefault  ="qualified"
+            attributeFormDefault="unqualified"
+            id                  ="publication"
+            version             ="1.0.0.0">
+  <xsd:include schemaLocation="core.xsd"/>
+  <!--
+   | Entity Publication
+   -->
+  <xsd:complexType name="publication">
+    <annotation>
+      <documentation>
+        Managing the organizations associated with entities are done by
+        publishing the entity to organizations or revoking them.
+
+        Entity Publication is applicable to:
+          o Roles
+          o Application Instances
+          o Entitlements
+      </documentation>
+    </annotation>
+    <xsd:attribute name="id"        type="igs:token"/>
+    <xsd:attribute name="hierarchy" type="xsd:boolean" default="true"/>
+    <xsd:attribute name="action"                       default="assign">
+      <xsd:simpleType>
+        <xsd:restriction base="igs:token">
+          <xsd:enumeration value="assign"/>
+          <xsd:enumeration value="revoke"/>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+</xsd:schema>

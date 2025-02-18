@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<wsdl:definitions name           ="RequestDataService"
+                  xmlns:wsdl     ="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:soap     ="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:plnk     ="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+                  xmlns:ns1      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RequestData"
+                  xmlns:ns2      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/UserData"
+                  xmlns:ns3      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RoleData"
+                  xmlns:ns4      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/OrgData"
+                  xmlns:ns5      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/ResourceData"
+                  xmlns:ns7      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/FaultData"
+                  xmlns:ns8      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/AppInstanceData"
+                  xmlns:ns9      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/EntitlementData"
+                  xmlns:ns10     ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/AccountData"
+                  xmlns:ns11     ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/CatalogData"
+                  xmlns:client   ="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService"
+                  targetNamespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService">
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   PARTNER LINK TYPE DEFINITION
+   |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   The RequestDataServiceEndpoint partnerLinkType binds the provider and
+   |   requester portType into a synchronous conversation.
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <plnk:partnerLinkType name="RequestDataServiceEndpoint">
+    <plnk:role name="RequestDataServiceProvider">
+      <plnk:portType name="client:RequestDataService"/>
+    </plnk:role>
+  </plnk:partnerLinkType>
+  <wsp:Policy xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="fast_infoset_service_policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+    <wsOptfiser:OptimizedFastInfosetSerialization enabled="true" xmlns:wsOptfiser="http://java.sun.com/xml/ns/wsit/2006/09/policy/fastinfoset/service"/>
+  </wsp:Policy>
+  <wsp:Policy xmlns="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="wss_username_token_service_policy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <sp:SupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+      <wsp:Policy>
+        <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+          <wsp:Policy>
+            <sp:WssUsernameToken10/>
+          </wsp:Policy>
+        </sp:UsernameToken>
+      </wsp:Policy>
+    </sp:SupportingTokens>
+  </wsp:Policy>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   TYPE DEFINITION
+   |   ~~~~~~~~~~~~~~~
+   |   List of services participating in this BPEL process.
+   |
+   |   The default output of the BPEL designer uses strings as input and output
+   |   to the BPEL Process. But you can define or import any XML Schema type and
+   |   use them as part of the message types.
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema">
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData"     schemaLocation="../schema/request-service-type.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/FaultData"       schemaLocation="../schema/request-service-fault.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RequestData"     schemaLocation="../schema/request-service-req.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/UserData"        schemaLocation="../schema/request-service-usr.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RoleData"        schemaLocation="../schema/request-service-rol.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/OrgData"         schemaLocation="../schema/request-service-org.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/ResourceData"    schemaLocation="../schema/request-service-obj.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/AppInstanceData" schemaLocation="../schema/request-service-app.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/EntitlementData" schemaLocation="../schema/request-service-ent.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/AccountData"     schemaLocation="../schema/request-service-acc.xsd"/>
+      <import namespace="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/CatalogData"     schemaLocation="../schema/request-service-cat.xsd"/>
+    </schema>
+  </wsdl:types>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   MESSAGE TYPE DEFINITION
+   |   ~~~~~~~~~~~~~~~~~~~~~~~
+   |   Definition of the message types used as part of the port type defintions
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <wsdl:message name="RequestDataServiceRequestMessage">
+    <wsdl:part name="RequestId" element="ns1:RequestId"/>
+  </wsdl:message>
+  <wsdl:message name="RequestDataServiceResponseMessage">
+    <wsdl:part name="RequestData" element="ns1:RequestData"/>
+  </wsdl:message>
+  <wsdl:message name="FaultMessage">
+    <wsdl:part name="FaultElement" element="ns7:FaultElement"/>
+  </wsdl:message>
+  <wsdl:message name="UserDataServiceRequestMessage">
+    <wsdl:part name="UserId" element="ns2:UserId"/>
+  </wsdl:message>
+  <wsdl:message name="UserDataServiceResponseMessage">
+    <wsdl:part name="UserData" element="ns2:UserData"/>
+  </wsdl:message>
+  <wsdl:message name="RoleDataServiceRequestMessage">
+    <wsdl:part name="RoleKey" element="ns3:RoleKey"/>
+  </wsdl:message>
+  <wsdl:message name="RoleDataServiceResponseMessage">
+    <wsdl:part name="RoleData" element="ns3:RoleData"/>
+  </wsdl:message>
+  <wsdl:message name="OrgDataServiceRequestMessage">
+    <wsdl:part name="OrgKey" element="ns4:OrgKey"/>
+  </wsdl:message>
+  <wsdl:message name="OrgDataServiceResponseMessage">
+    <wsdl:part name="OrgData" element="ns4:OrgData"/>
+  </wsdl:message>
+  <wsdl:message name="ResourceDataServiceRequestMessage">
+    <wsdl:part name="ResourceKey" element="ns5:ResourceKey"/>
+  </wsdl:message>
+  <wsdl:message name="ResourceDataServiceResponseMessage">
+    <wsdl:part name="ResourceData" element="ns5:ResourceData"/>
+  </wsdl:message>
+  <wsdl:message name="AppInstanceDataServiceRequestMessage">
+    <wsdl:part name="AppInstanceKey" element="ns8:AppInstanceKey"/>
+  </wsdl:message>
+  <wsdl:message name="AppInstanceDataServiceResponseMessage">
+    <wsdl:part name="AppInstanceData" element="ns8:AppInstanceData"/>
+  </wsdl:message>
+  <wsdl:message name="EntitlementDataServiceRequestMessage">
+    <wsdl:part name="EntitlementKey" element="ns9:EntitlementKey"/>
+  </wsdl:message>
+  <wsdl:message name="EntitlementDataServiceResponseMessage">
+    <wsdl:part name="EntitlementData" element="ns9:EntitlementData"/>
+  </wsdl:message>
+  <wsdl:message name="AccountDataServiceRequestMessage">
+    <wsdl:part name="AccountKey" element="ns10:AccountKey"/>
+  </wsdl:message>
+  <wsdl:message name="AccountDataServiceResponseMessage">
+    <wsdl:part name="AccountData" element="ns10:AccountData"/>
+  </wsdl:message>
+  <wsdl:message name="CatalogDataRequestMessage">
+    <wsdl:part name="EntityKey" element="ns11:EntityKey"/>
+    <wsdl:part name="EntityType" element="ns11:EntityType"/>
+  </wsdl:message>
+  <wsdl:message name="CatalogDataResponseMessage">
+    <wsdl:part name="CatalogData" element="ns11:CatalogData"/>
+  </wsdl:message>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   PORT TYPE DEFINITION
+   |   ~~~~~~~~~~~~~~~~~~~~
+   |   A port type groups a set of operations into a logical service unit.
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <wsdl:portType name="RequestDataService">
+    <wsdl:operation name="getRequestDetails">
+      <wsdl:input message="client:RequestDataServiceRequestMessage"/>
+      <wsdl:output message="client:RequestDataServiceResponseMessage"/>
+      <wsdl:fault name="fault" message="client:FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getUserDetails">
+      <wsdl:input message="client:UserDataServiceRequestMessage"/>
+      <wsdl:output message="client:UserDataServiceResponseMessage"/>
+      <wsdl:fault name="fault" message="client:FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getRoleDetails">
+      <wsdl:input message="client:RoleDataServiceRequestMessage"/>
+      <wsdl:output message="client:RoleDataServiceResponseMessage"/>
+      <wsdl:fault name="fault" message="client:FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getOrganizationDetails">
+      <wsdl:input message="client:OrgDataServiceRequestMessage"/>
+      <wsdl:output message="client:OrgDataServiceResponseMessage"/>
+      <wsdl:fault name="fault" message="client:FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getResourceDetails">
+      <wsdl:input message="client:ResourceDataServiceRequestMessage"/>
+      <wsdl:output message="client:ResourceDataServiceResponseMessage"/>
+      <wsdl:fault name="fault" message="client:FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getApplicationInstanceDetails">
+      <wsdl:input message="client:AppInstanceDataServiceRequestMessage"/>
+      <wsdl:output message="client:AppInstanceDataServiceResponseMessage"/>
+      <wsdl:fault name="fault" message="client:FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getEntitlementDetails">
+      <wsdl:input message="client:EntitlementDataServiceRequestMessage"/>
+      <wsdl:output message="client:EntitlementDataServiceResponseMessage"/>
+      <wsdl:fault name="fault" message="client:FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getAccountDetails">
+      <wsdl:input message="client:AccountDataServiceRequestMessage"/>
+      <wsdl:output message="client:AccountDataServiceResponseMessage"/>
+      <wsdl:fault name="fault" message="client:FaultMessage"/>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogDetails">
+      <wsdl:input message="client:CatalogDataRequestMessage"/>
+      <wsdl:output message="client:CatalogDataResponseMessage"/>
+      <wsdl:fault name="fault" message="client:FaultMessage"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="RequestDataServiceBinding" type="client:RequestDataService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsp:PolicyReference wsdl:required="false" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#wss_username_token_service_policy"/>
+    <wsp:PolicyReference wsdl:required="false" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#fast_infoset_service_policy"/>
+    <wsdl:operation name="getRequestDetails">
+      <soap:operation style="document" soapAction="process"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getUserDetails">
+      <soap:operation style="document" soapAction="process"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/UserDataService"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/UserDataService"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getRoleDetails">
+      <soap:operation style="document" soapAction="process"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RoleDataService"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RoleDataService"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getOrganizationDetails">
+      <soap:operation style="document" soapAction="process"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/OrgDataService"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/OrgDataService"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getResourceDetails">
+      <soap:operation style="document" soapAction="process"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/ResourceDataService"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/ResourceDataService"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApplicationInstanceDetails">
+      <soap:operation style="document" soapAction="process"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/AppInstanceDataService"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/AppInstanceDataService"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getEntitlementDetails">
+      <soap:operation style="document" soapAction="process"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/EntitlementDataService"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/EntitlementDataService"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAccountDetails">
+      <soap:operation style="document" soapAction="process"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/AccountDataService"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/AccountDataService"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogDetails">
+      <soap:operation style="document" soapAction="process"/>
+      <wsdl:input>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/CatalogDataService"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/CatalogDataService"/>
+      </wsdl:output>
+      <wsdl:fault name="fault">
+        <soap:fault name="fault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="RequestDataService">
+    <wsdl:port name="RequestDataServicePort" binding="client:RequestDataServiceBinding">
+      <soap:address location="__IDENTITY_ENDPOINT__/reqsvc/reqsvc"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

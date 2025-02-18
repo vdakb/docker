@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Access Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:svc       ="http://oracle.iam.access/accessservice">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oam.recorder.name" value="${log.env}/oam-setup-ant.log"/>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Completes the Oracle Access Manager System Setup Configuration.
+  **
+  ** Synopsis: The tasks configures the environment
+  **           This includes:
+  **           o Federation Service Provider
+  **           o Federation Identity Provider
+  ******************************************************************************
+  -->
+  <target name="0001" description="Configures the Federated Access Management Environment Configuration">
+    <record name="${oam.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0001 Manage Service Configuration ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Configuring Federation Service for environment ${iad.env} on ${oam.server.host}:${oam.server.home}"/>
+    <svc:enable contextRef="jmx-context">
+      <service name="fed-idp"/>
+      <service name="fed-sp"/>
+    </svc:enable>
+    <echo message="=================================================================="/>
+    <echo message="0001 completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oam.recorder.name}" action="stop"/>
+  </target>
+</project>

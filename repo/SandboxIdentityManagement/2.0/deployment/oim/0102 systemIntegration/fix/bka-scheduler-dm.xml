@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<xl-ddm-data database="" description="System Health Configuration 12.2.1.3" exported-date="1589195070595" user="XELSYSADM" version="12.2.1.3.0">
+  <scheduledTask mds-file="P20 Directory Synchronization.xml" mds-path="/db" name="P20 Directory Synchronization"  repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+          <name>P20 Directory Synchronization</name>
+          <class>bka.iam.identity.service.ldap.DirectorySynchronization</class>
+          <description>P20 Directory Synchronization Job instance synchronize sub-entries (i.e Role, Group and Intermediate OU) from a source to a target</description>
+          <retry>0</retry>
+          <parameters>
+            <string-param required="true"  encrypted="false" helpText="The IT Resource used to establish the connection to the Source System">IT Resource Source</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Organization search base to retrieve entries from the Source system.">Search Base Organization Source</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Role search base to retrieve entries from the Source system.">Search Base Role Source</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Intermediate search base to retrieve entries from the Source system.">Search Base Intermediate Source</string-param>
+            <string-param required="true"  encrypted="false" helpText="The IT Resource used to establish the connection to the Target System">IT Resource Target</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Organization search base to retrieve entries from the Target system.">Search Base Organization Target</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Role search base to retrieve entries from the Target system.">Search Base Role Target</string-param>
+            <string-param required="true"  encrypted="false" helpText="Specifies the Intermediate search base to retrieve entries from the Target system.">Search Base Intermediate Target</string-param>
+            <string-param required="false" encrypted="false" helpText="Type of object classes that will be copied in the provided dn entries. Multiple values must be separated by '|'">Object Classes</string-param>
+            <string-param required="false" encrypted="false" helpText="Specifies an additional filter criteria that could be applied to retrieve directory entries. Must be a valid LDAP search filter">Search Filter</string-param>
+            <string-param required="false" encrypted="false" helpText="Specifies the attributes of an entry to synchronize. Multiple values must be separated by '|'">Attributes</string-param>
+            <string-param required="false" encrypted="false" helpText="Specifies the size of a block read from the reading source">Batch Size</string-param>
+          </parameters>
+        </task>
+      </scheduledTasks>
+    </completeXml>
+  <scheduledTask mds-file="P20 GDS Synchronization.xml" mds-path="/db" name="P20 GDS Synchronization" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+          <name>P20 GDS Synchronization</name>
+          <class>bka.iam.identity.service.synchronization.DirectoryHousekeeping</class>
+          <description>GDS Synchronize Job instance synchronize entries between two directory</description>
+          <retry>0</retry>
+          <parameters>
+            <string-param  required="true"  encrypted="false" helpText="The IT Resource used to establish the connection to the Source System">IT Resource Source</string-param>
+            <string-param  required="true"  encrypted="false" helpText="The IT Resource used to establish the connection to the Target System">IT Resource Target</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Specifies the Entitlement search base to retrieve entries from the Source system.">Search Base Entitlement Source</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Specifies the Organization search base to retrieve entries from the Source system.">Search Base Organization Source</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Specifies the Role search base to retrieve entries from the Source system.">Search Base Role Source</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Specifies the Special Role search base to retrieve entries from the Source system.">Search Base Special Role Source</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Specifies the Intermediate search base to retrieve entries from the Target system.">Search Base Intermediate Source</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Specifies the entitlement search base to retrieve entries from the Target system.">Search Base Entitlement Target</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Specifies the Organization search base to retrieve entries from the Target system.">Search Base Organization Target</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Specifies the Role search base to retrieve entries from the Target system.">Search Base Role Target</string-param>
+            <string-param  required="true"  encrypted="false" helpText="Specifies the Special Role search base to retrieve entries from the Source system.">Search Base Special Role Target</string-param>
+            <string-param  required="true" encrypted="false" helpText="MDS path to Group descriptor, holding attribute mapping between source and target group object classes">Group Descriptor</string-param>
+            <string-param  required="true" encrypted="false" helpText="MDS path to OrganizationalUnit descriptor, holding attribute mapping between source and target OrganizationalUnit object classes">Organizational Unit Descriptor</string-param>
+            <string-param  required="false" encrypted="false" helpText="Specifies the size of a block read from the reading source">Batch Size</string-param>
+          </parameters>
+        </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+  <scheduledTask mds-file="Request Cleaning.xml" mds-path="/db" name="Request Cleaning" repo-type="MDS">
+    <completeXml>
+      <scheduledTasks xmlns="http://xmlns.oracle.com/oim/scheduler">
+        <task>
+          <name>Request Cleaning</name>
+          <class>bka.iam.identity.request.RequestCleaning</class>
+          <description>A Request Cleaning Job instance closes all the requests that are older than two months and still in a pending stage</description>
+          <retry>0</retry>
+          <parameters/>
+        </task>
+      </scheduledTasks>
+    </completeXml>
+  </scheduledTask>
+</xl-ddm-data>

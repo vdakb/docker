@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name            ="Identity Manager Deployment Include"
+         xmlns:fmw       ="http://oracle.hst.deployment/fusion"
+         xmlns:jps       ="http://oracle.hst.deployment/security"
+         xmlns:wsm       ="http://oracle.hst.deployment/webservice"
+         xmlns:server    ="http://oracle.hst.deployment/topology"
+         xmlns:plugin    ="http://oracle.iam.identity/plugin"
+         xmlns:metadata  ="http://oracle.iam.identity/metadata"
+         xmlns:object    ="http://oracle.iam.identity/object"
+         xmlns:operation ="http://oracle.iam.identity/operation"
+         xmlns:diagnostic="http://oracle.iam.identity/diagnostic"
+         xmlns:job       ="http://oracle.iam.identity/job"
+         xmlns:sandbox   ="http://oracle.iam.identity/sandbox"
+         xmlns:workflow  ="http://oracle.iam.identity/workflow">
+  <!--
+  ==============================================================================
+  == properties specific to the logging behavior
+  ==============================================================================
+  -->
+  <property name="oim.recorder.name" value="${log.env}/oim-identity-ant.log"/>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile the
+  **           identities from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-01-BB" description="Federated Identity Management Police Brandenburg Identities">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-BB On-Boarding Identities Participant Police Brandenburg ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Identities from Participant Police Brandenburg for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BB LDS Identity Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-BB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile role grants
+  **           from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-02-BB" description="Federated Identity Management Police Brandenburg Role Grants">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-BB On-Boarding Role Grants Participant Police Brandenburg ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Role Grants from Participant Police Brandenburg for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BB LDS Role Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-BB completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #    #
+  **           #     # #   #
+  **           #     # #  #
+  **           ######  ###
+  **           #     # #  #
+  **           #     # #   #
+  **           ######  #    #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile the
+  **           identities from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-01-BK" description="Federated Identity Management Federal Criminal Police Office Identities">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-BK On-Boarding Identities Participant Federal Criminal Police Office ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Identities from Participant Federal Criminal Police Office for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BK LDS Identity Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-BK completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile role grants
+  **           from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-02-BK" description="Federated Identity Management Federal Criminal Police Office Role Grants">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-BK On-Boarding Role Grants Participant Federal Criminal Police Office ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Role Grants from Participant Federal Criminal Police Office for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BK LDS Role Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-BK completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  ######
+  **           #     # #     #
+  **           #     # #     #
+  **           ######  ######
+  **           #     # #
+  **           #     # #
+  **           ######  #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile the
+  **           identities from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-01-BP" description="Federated Identity Management Federal Police Identities">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-BP On-Boarding Identities Participant Federal Police ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Identities from Participant Federal Police for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BP LDS Identity Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-BP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile role grants
+  **           from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-02-BP" description="Federated Identity Management Federal Police Role Grants">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-BP On-Boarding Role Grants Participant Federal Police ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Role Grants from Participant Federal Police for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BP LDS Role Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-BP completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           ######  #     #
+  **           #     # #  #  #
+  **           #     # #  #  #
+  **           ######  #  #  #
+  **           #     # #  #  #
+  **           #     # #  #  #
+  **           ######   ## ##
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile the
+  **           identities from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-01-BW" description="Federated Identity Management Police Baden-Wuerttemberg Identities">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-BW On-Boarding Identities Participant Police Baden-Wuerttemberg ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Identities from Participant Police Baden-Wuerttemberg for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BW LDS Identity Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-BW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile role grants
+  **           from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-02-BW" description="Federated Identity Management Police Baden-Wuerttemberg Role Grants">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-BW On-Boarding Role Grants Participant Police Baden-Wuerttemberg ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Role Grants from Participant Police Baden-Wuerttemberg for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="BW LDS Role Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-BW completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # #######
+  **           #     # #
+  **           #     # #
+  **           ####### #####
+  **           #     # #
+  **           #     # #
+  **           #     # #######
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile the
+  **           identities from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-01-HE" description="Federated Identity Management Police Bremen Identities">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-HE On-Boarding Identities Participant Police Bremen ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Identities from Participant Police Bremen for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HE LDS Identity Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-HE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile role grants
+  **           from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-02-HE" description="Federated Identity Management Police Bremen Role Grants">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-HE On-Boarding Role Grants Participant Police Bremen ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Role Grants from Participant Police Bremen for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HE LDS Role Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-HE completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  **
+  **           #     # #     #
+  **           #     # #     #
+  **           #     # #     #
+  **           ####### #######
+  **           #     # #     #
+  **           #     # #     #
+  **           #     # #     #
+  **
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile the
+  **           identities from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-01-HH" description="Federated Identity Management Police Hamburg Identities">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-HH On-Boarding Identities Participant Police Hamburg ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Identities from Participant Police Hamburg for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HH LDS Identity Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-01-HH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+  <!--
+  ******************************************************************************
+  ** Purpose:  Synchronize Oracle Identity Manager with the current state of
+  **           the source system
+  **
+  ** Synopsis: The tasks executes the scheduled job to reconcile role grants
+  **           from Microsoft Lightweight Directory Service (LDS).
+  ******************************************************************************
+  -->
+  <target name="0200-02-HH" description="Federated Identity Management Police Hamburg Role Grants">
+    <record name="${oim.recorder.name}" action="start" append="true" loglevel="verbose"/>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-HH On-Boarding Role Grants Participant Police Hamburg ${appication.release}"/>
+    <echo message="=================================================================="/>
+    <echo message="Reconciling Role Grants from Participant Police Hamburg for ${fmw.env}"/>
+    <operation:scheduler contextRef="oim-context" operation="modify">
+      <job name="HH LDS Role Reconciliation">
+        <start blocking="true" interval="10000"/>
+      </job>
+    </operation:scheduler>
+    <echo message="=================================================================="/>
+    <echo message="0200-02-HH completed"/>
+    <echo message="=================================================================="/>
+    <record name="${oim.recorder.name}" action="stop"/>
+  </target>
+</project>

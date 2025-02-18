@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!--
+////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer
+
+  Created: Mo 5 31 02:53:06 MESZ 2021
+  Author:  dieter.steding@oracle.com
+  Type:    BPEL 2.0 Process
+  Purpose: Asynchronous Approval Process
+////////////////////////////////////////////////////////////////////////////////
+-->
+<process name           ="ApprovalProcess"
+         xmlns          ="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:xsd      ="http://www.w3.org/2001/XMLSchema"
+         xmlns:xsi      ="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ui       ="http://xmlns.oracle.com/soa/designer"
+         xmlns:wf       ="http://schemas.oracle.com/bpel/extension/workflow"
+         xmlns:xdk      ="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:ora      ="http://schemas.oracle.com/xpath/extension"
+         xmlns:hwf      ="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:ids      ="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:bpm      ="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:ess      ="http://xmlns.oracle.com/scheduler"
+         xmlns:addr     ="http://www.w3.org/2005/08/addressing"
+         xmlns:ldap     ="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:bpws     ="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:bpelx    ="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel2    ="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:task     ="http://xmlns.oracle.com/bpel/workflow/taskService"
+         xmlns:dvml     ="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:xslp     ="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:xslf     ="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:xref     ="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ns1      ="http://xmlns.oracle.com/request/RequestDetails"
+         xmlns:ns2      ="http://wls.ws.workflowservice.platform.iam.oracle/"
+         xmlns:ns4      ="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService"
+         xmlns:ns5      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/GeneralData"
+         xmlns:ns6      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RequestData"
+         xmlns:ns7      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/CatalogData"
+         xmlns:ns8      ="http://xmlns.oracle.com/RequestServiceApp/RequestDataService/RoleData"
+         xmlns:ns9      ="http://xmlns.oracle.com/bpel/workflow/task"
+         xmlns:ns10     ="http://xmlns.oracle.com/bpel/workflow/TaskEvidenceService"
+         xmlns:ns11     ="http://xmlns.oracle.com/bpel/workflow/routingSlip"
+         xmlns:client   ="http://xmlns.oracle.com/catalog-role/approval"
+         targetNamespace="http://xmlns.oracle.com/catalog-role/approval">
+
+  <import importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true" location="../wsdl/approval-process.wsdl" namespace="http://xmlns.oracle.com/catalog-role/approval"/>
+  <import importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true" location="../wsdl/request-service.wsdl"  namespace="http://xmlns.oracle.com/RequestServiceApp_jws/RequestDataService/RequestDataService"/>
+  <import importType="http://schemas.xmlsoap.org/wsdl/" ui:processWSDL="true" location="../wsdl/callback-service.wsdl" namespace="http://wls.ws.workflowservice.platform.iam.oracle/"/>
+
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   PARTNERLINKS
+   |   ~~~~~~~~~~~~
+   |   List of services participating in this BPEL process.
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <partnerLinks>
+    <!--
+     | The 'client' role represents the requester of this service. It is used
+     | for callback. The location and correlation information associated with
+     | the client role are automatically set using WS-Addressing.
+     -->
+    <partnerLink name="RequestApprovalService"   partnerLinkType="client:ApprovalProcessEndpoint" partnerRole="ApprovalProcessRequester" myRole="ApprovalProcessProvider"/>
+    <partnerLink name="CallbackService"          partnerLinkType="ns2:CallbackServiceEndpoint"    partnerRole="CallbackServiceProvider"/>
+    <partnerLink name="RequestService"           partnerLinkType="ns4:RequestDataServiceEndpoint" partnerRole="RequestDataServiceProvider"/>
+    <partnerLink name="ApprovalTask.TaskService" partnerLinkType="task:TaskService"               partnerRole="TaskService" myRole="TaskServiceCallbackListener"/>
+  </partnerLinks>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   VARIABLES
+   |   ~~~~~~~~~
+   |   List of messages and XML documents used within this BPEL process.
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <variables>
+    <!--
+     | Reference to the message passed from Identity Manager as input during initiation
+     -->
+    <variable name="approvalServiceInput" messageType="client:ApprovalProcessRequestMessage"/>
+    <!--
+     | Reference to the message that will be sent back to Identity Manager during callback
+     -->
+    <variable name="approvalServiceOutput" messageType="client:ApprovalProcessResponseMessage"/>
+    <!--
+     | Reference to the message that will be obtained from Identity Manager
+     | during process evaluation
+     |
+     | Should be taylored to the requirements of the process following the need to know
+     | approach
+     -->
+    <variable name="requestServiceInput"  messageType="ns4:RequestDataServiceRequestMessage"/>
+    <variable name="requestServiceOutput" messageType="ns4:RequestDataServiceResponseMessage"/>
+    <variable name="catalogServiceInput"  messageType="ns4:CatalogDataRequestMessage"/>
+    <variable name="catalogServiceOutput" messageType="ns4:CatalogDataResponseMessage"/>
+    <variable name="userServiceInput"     messageType="ns4:UserDataServiceRequestMessage"/>
+    <variable name="userServiceOutput"    messageType="ns4:UserDataServiceResponseMessage"/>
+    <variable name="roleServiceInput"     messageType="ns4:RoleDataServiceRequestMessage"/>
+    <variable name="roleServiceOutput"    messageType="ns4:RoleDataServiceResponseMessage"/>
+    <!--
+     | Reference to control whom has to approve
+     -->
+    <variable name="approverEntity"       type="xsd:string"/>
+    <!--
+     | Reference to the message passed back from Identity Manager during approval
+     -->
+    <variable name="approvalMessage"      messageType="task:taskMessage"/>
+    <!--
+     | Reference to the message that will be sent back to Identity Manager
+     | during termination
+     -->
+    <variable name="callbackServiceInput" messageType="ns2:callback"/>
+    <!--
+     | Reference to the message passed passed back from Identity Manager during
+     | termination
+     -->
+    <variable name="callbackServiceOutput" messageType="ns2:callbackResponse"/>
+  </variables>
+  <faultHandlers>
+    <catch bpelx:name="CatchAll" faultName="bpelx:remoteFault">
+      <sequence name="errorSequence">
+        <assign name="callbackInitialize">
+          <copy>
+            <from>ora:getConversationId()</from>
+            <to>$callbackServiceInput.parameters/arg0</to>
+          </copy>
+          <copy>
+            <from>ora:getFaultAsString()</from>
+            <to>$callbackServiceInput.parameters/arg1</to>
+          </copy>
+        </assign>
+        <!--
+         | Asynchronous callback to the requester.
+         | (Note: the callback location and correlation id is transparently
+         | handled using WS-addressing.)
+         | http://buster.vm.oracle.com:8005/workflowservice/CallbackService
+         -->
+        <invoke name="callbackError" partnerLink="CallbackService" portType="ns2:CallbackService" operation="callback" inputVariable="callbackServiceInput" outputVariable="callbackServiceOutput"/>
+      </sequence>
+    </catch>
+  </faultHandlers>
+  <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   |   ORCHESTRATION LOGIC
+   |   ~~~~~~~~~~~~~~~~~~~
+   |   Set of activities coordinating the flow of messages across the services
+   |   integrated within this business process.
+   +~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  <sequence name="main">
+    <!--
+     | Receive input from requestor.
+     | (Note: This maps to operation defined in approval-process.wsdl)
+     -->
+    <receive name="receiveInput" partnerLink="RequestApprovalService" portType="client:ApprovalProcess" operation="process" variable="approvalServiceInput" createInstance="yes"/>
+    <!--
+     | Obtain the further details of the request to control whom has to
+     | approve.
+     -->
+    <assign name="requestId">
+      <copy>
+        <from>$approvalServiceInput.payload/ns1:RequestID</from>
+        <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$requestServiceInput.RequestId</to>
+      </copy>
+    </assign>
+    <invoke name                ="obtainRequest"
+            partnerLink         ="RequestService"
+            portType            ="ns4:RequestDataService"
+            operation           ="getRequestDetails"
+            inputVariable       ="requestServiceInput"
+            outputVariable      ="requestServiceOutput"
+            bpelx:invokeAsDetail="no"/>
+    <!--
+     | Obtain the further details of the catalog item to control whom has to
+     | approve.
+     -->
+    <assign name="catalogId">
+      <copy>
+        <from>$requestServiceOutput.RequestData/ns6:BeneficiaryData/ns6:Beneficiary[1]/ns6:Entity[1]/@Id</from>
+        <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$catalogServiceInput.EntityKey</to>
+      </copy>
+      <copy>
+        <from>$requestServiceOutput.RequestData/ns6:BeneficiaryData/ns6:Beneficiary[1]/ns6:Entity[1]/@Type</from>
+        <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$catalogServiceInput.EntityType</to>
+      </copy>
+    </assign>
+    <invoke name                ="obtainCatalog"
+            partnerLink         ="RequestService"
+            portType            ="ns4:RequestDataService"
+            operation           ="getCatalogDetails"
+            inputVariable       ="catalogServiceInput"
+            outputVariable      ="catalogServiceOutput"
+            bpelx:invokeAsDetail="no"/>
+    <if name="approverSwitch">
+      <documentation>
+        <![CDATA[Approver Role assigned]]>
+      </documentation>
+      <bpelx:annotation>
+        <bpelx:documentation>
+          <![CDATA[Approver Role is set for the Catalog Item which leads to use that role as approver]]>
+        </bpelx:documentation>
+      </bpelx:annotation>
+      <condition>string-length($catalogServiceOutput.CatalogData/ns7:ApproverRole) > 0</condition>
+      <sequence name="approver">
+        <assign name="roleId">
+          <copy>
+            <from>$catalogServiceOutput.CatalogData/ns7:ApproverRole</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$roleServiceInput.RoleKey</to>
+          </copy>
+        </assign>
+        <invoke name                ="obtainRole"
+                partnerLink         ="RequestService"
+                portType            ="ns4:RequestDataService"
+                operation           ="getRoleDetails"
+                inputVariable       ="roleServiceInput"
+                outputVariable      ="roleServiceOutput"
+                bpelx:invokeAsDetail="no"/>
+        <assign name="role">
+          <copy>
+            <from>$roleServiceOutput.RoleData/ns8:RoleName/ns5:Value[1]</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approverEntity</to>
+          </copy>
+        </assign>
+      </sequence>
+      <else>
+        <documentation>
+          <![CDATA[Approver Role empty]]>
+        </documentation>
+        <bpelx:annotation>
+          <bpelx:documentation>
+            <![CDATA[Approver Role is not set for the Catalog Item which leads to use SYSTEM ADMINISTRATORS as approver]]>
+          </bpelx:documentation>
+        </bpelx:annotation>
+        <sequence name="approver">
+          <assign name="system">
+            <copy>
+              <from>string('SYSTEM ADMINISTRATORS')</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approverEntity</to>
+            </copy>
+          </assign>
+        </sequence>
+      </else>
+    </if>
+    <!--
+     | Approval process as an asynchronous invoke and callback to the approver entity.
+     | (Note: the callback location and correlation id is transparently
+     | handled using WS-addressing.)
+     -->
+    <scope name    ="Approval"
+           xmlns:wf="http://schemas.oracle.com/bpel/extension/workflow"
+           wf:key  ="approvalMessage">
+      <bpelx:annotation>
+        <bpelx:pattern patternName="bpelx:workflow"/>
+      </bpelx:annotation>
+      <variables>
+        <variable name="approvalTaskInput"   messageType="task:initiateTaskMessage"/>
+        <variable name="approvalTaskOutcome" messageType="task:initiateTaskResponseMessage"/>
+      </variables>
+      <sequence>
+        <assign name="setupProcess">
+          <copy>
+            <from>number(3)</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:priority</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:RequestID</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:identificationKey</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:RequesterDetails/ns1:Login</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:creator</to>
+          </copy>
+          <copy>
+            <from>
+              <literal>
+                <payload xmlns="http://xmlns.oracle.com/bpel/workflow/task">
+                  <RequestID xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                  <RequestModel xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                  <RequestTarget xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                  <url xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                  <RequesterDetails xmlns="http://xmlns.oracle.com/request/RequestDetails"/>
+                  <BeneficiaryDetails xmlns="http://xmlns.oracle.com/request/RequestDetails"/>
+                  <ObjectDetails xmlns="http://xmlns.oracle.com/request/RequestDetails"/>
+                  <OtherDetails xmlns="http://xmlns.oracle.com/request/RequestDetails"/>
+                  <RequesterDisplayName xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                  <BeneficiaryDisplayName xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                  <Requester xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                  <Approver xmlns="http://xmlns.oracle.com/bpel/workflow/task"/>
+                </payload>
+              </literal>
+            </from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:RequestID</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns9:RequestID</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:RequestModel</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns9:RequestModel</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:RequestTarget</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns9:RequestTarget</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:url</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns9:url</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:RequesterDetails</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns1:RequesterDetails</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:RequesterDetails/ns1:Login</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns9:Requester</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:RequesterDetails/ns1:DisplayName</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns9:RequesterDisplayName</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:BeneficiaryDetails</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns1:BeneficiaryDetails</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:BeneficiaryDetails/ns1:DisplayName</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns9:BeneficiaryDisplayName</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:ObjectDetails</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns1:ObjectDetails</to>
+          </copy>
+          <copy>
+            <from>$approvalServiceInput.payload/ns1:OtherDetails</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns1:OtherDetails</to>
+          </copy>
+          <copy>
+            <from>$approverEntity</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalTaskInput.payload/ns9:task/ns9:payload/ns9:Approver</to>
+          </copy>
+        </assign>
+        <invoke name="initiateProcess" partnerLink="ApprovalTask.TaskService" portType="task:TaskService"         operation="initiateTask"    inputVariable="approvalTaskInput" outputVariable="approvalTaskOutcome"/>
+        <receive name="receiveProcess" partnerLink="ApprovalTask.TaskService" portType="task:TaskServiceCallback" operation="onTaskCompleted" variable="approvalMessage"/>
+      </sequence>
+    </scope>
+    <if name="outcome">
+      <documentation>
+        <![CDATA[APPROVED]]>
+      </documentation>
+      <bpelx:annotation>
+        <bpelx:documentation>
+          <![CDATA[Outcome is APPROVE]]>
+        </bpelx:documentation>
+      </bpelx:annotation>
+      <condition>($approvalMessage.payload/ns9:systemAttributes/ns9:state = string('COMPLETED') and $approvalMessage.payload/ns9:systemAttributes/ns9:outcome = string('APPROVE'))</condition>
+      <sequence>
+        <assign name="approved">
+          <copy>
+            <from>ora:getConversationId()</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg0</to>
+          </copy>
+          <copy>
+            <from>string('approved')</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg1</to>
+          </copy>
+          <copy>
+            <from>string('approved')</from>
+            <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalServiceOutput.payload/client:result</to>
+          </copy>
+        </assign>
+      </sequence>
+      <elseif>
+        <documentation>
+          <![CDATA[REJECTED]]>
+        </documentation>
+        <bpelx:annotation>
+          <bpelx:documentation>
+            <![CDATA[Outcome is REJECT]]>
+          </bpelx:documentation>
+        </bpelx:annotation>
+        <condition>($approvalMessage.payload/ns9:systemAttributes/ns9:state = string('COMPLETED') and $approvalMessage.payload/ns9:systemAttributes/ns9:outcome = string('REJECT'))</condition>
+        <sequence>
+          <assign name="rejected">
+            <copy>
+              <from>ora:getConversationId()</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg0</to>
+            </copy>
+            <copy>
+              <from>string('rejected')</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg1</to>
+            </copy>
+            <copy>
+              <from>string('rejected')</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalServiceOutput.payload/client:result</to>
+            </copy>
+          </assign>
+      </sequence>
+      </elseif>
+      <else>
+        <documentation>
+          <![CDATA[ANYTHING]]>
+        </documentation>
+        <bpelx:annotation>
+          <bpelx:documentation>
+            <![CDATA[Outcome is anything else]]>
+          </bpelx:documentation>
+        </bpelx:annotation>
+        <sequence>
+          <assign name="anything">
+            <copy>
+              <from>ora:getConversationId()</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg0</to>
+            </copy>
+            <copy>
+              <from>$approvalMessage.payload/ns9:systemAttributes/ns9:state</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$callbackServiceInput.parameters/arg1</to>
+            </copy>
+            <copy>
+              <from>$approvalMessage.payload/ns9:systemAttributes/ns9:state</from>
+              <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$approvalServiceOutput.payload/client:result</to>
+            </copy>
+          </assign>
+        </sequence>
+      </else>
+    </if>
+    <invoke name="callbackComplete" partnerLink="CallbackService" portType="ns2:CallbackService" operation="callback" inputVariable="callbackServiceInput" outputVariable="callbackServiceOutput"/>
+    <!--
+     | Asynchronous callback to the Identity Manager request interface.
+     | (Note: the callback location and correlation id is transparently
+     | handled using WS-addressing.)
+     -->
+    <invoke name="callbackClient" partnerLink="RequestApprovalService" portType="client:ApprovalProcessCallback" operation="processResponse" inputVariable="approvalServiceOutput"/>
+  </sequence>
+</process>

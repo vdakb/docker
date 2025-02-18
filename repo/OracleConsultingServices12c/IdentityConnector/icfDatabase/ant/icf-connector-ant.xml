@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<project name="Identity Manager Generic Database Connector" default="all" basedir="..">
+  <!--
+  =====================================================================
+  == properties specific to this project
+  =====================================================================
+  -->
+  <property name="description"            value="Identity Manager Generic Database Connector"/>
+
+  <property name="application"            value="dbs.identity.connector"/>
+  <property name="bundle"                 value="dbs.identity.connector.bundle"/>
+  <property name="adapter"                value="dbs.identity.connector.adapter"/>
+  <property name="scheduler"              value="dbs.identity.connector.scheduler"/>
+  <property name="thirdparty"             value="dbs.identity.connector.common"/>
+
+  <property name="destination.base"       value="../../deployment/oim/0102 systemIntegration,../../../Bundeskriminalamt12c/ExternalIdentityManagement/deployment/oim/0102 systemIntegration"/>
+  <property name="destination.bundle"     value="../../deployment/oim/0102 systemIntegration/ics,../../../Bundeskriminalamt12c/ExternalIdentityManagement/deployment/oim/0102 systemIntegration/lib"/>
+  <property name="destination.target"     value="../../deployment/oim/0304 directoryService DBS,../../../Bundeskriminalamt12c/ExternalIdentityManagement/deployment/oim/0701 systemConnector PCF"/>
+
+  <property name="packagepath.bundle"     value="oracle/iam/identity/icf/**/*.class oracle/iam/identity/icf/**/*.properties"/>
+  <property name="packagepath.adapter"    value="oracle/iam/identity/dbs/provisioning/*.class"/>
+  <property name="packagepath.scheduler"  value="oracle/iam/identity/dbs/reconciliation/*.class"/>
+  <property name="packagepath.diagnostic" value="oracle/iam/identity/dbs/diagnostic/*.class"/>
+
+  <property name="configuration.base"     value="true"/>
+  <property name="configuration.target"   value="true"/>
+  <property name="configuration.trusted"  value="true"/>
+
+  <patternset id="descriptor.pattern.base">
+    <include name="base/dbs-resource-dm.xml"/>
+    <include name="base/dbs-adapter-dm.xml"/>
+    <include name="base/dbs-scheduler-dm.xml"/>
+  </patternset>
+
+  <patternset id="descriptor.pattern.target">
+    <include name="target/orcl-lookup-dm.xml"/>
+    <include name="target/orcl-model-dm.xml"/>
+    <include name="target/orcl-process-dm.xml"/>
+    <include name="target/orcl-scheduler-dm.xml"/>
+  </patternset>
+
+  <patternset id="descriptor.pattern.trusted">
+    <include name="trusted/orcl-lookup-dm.xml"/>
+    <include name="trusted/orcl-process-dm.xml"/>
+    <include name="trusted/orcl-scheduler-dm.xml"/>
+  </patternset>
+
+  <property name="project.dir"       value="./"/>
+  <property name="adfsrc.dir"        value="${project.dir}src/main/adf"/>
+  <property name="source.dir"        value="${project.dir}src/main/java"/>
+  <property name="groovy.dir"        value="${project.dir}src/main/groovy"/>
+  <property name="resource.dir"      value="${project.dir}src/main/resources"/>
+  <property name="output.dir"        value="${project.dir}bin"/>
+  <property name="deploy.dir"        value="${project.dir}lib"/>
+  <property name="plugin.dir"        value="${project.dir}tmp"/>
+  <property name="static.dir"        value="${project.dir}src/main/static"/>
+  <property name="webinf.dir"        value="${static.dir}/WEB-INF"/>
+  <property name="deploy.doc"        value="${project.dir}doc"/>
+  <property name="manifest"          value="${output.dir}/META-INF/manifest.mf"/>
+
+  <!--
+  =====================================================================
+  == properties globaly defined
+  =====================================================================
+  -->
+  <import file="../../icf-targets.xml"/>
+  <!--
+  =====================================================================
+  == accomplish a possible plugin runtime path
+  =====================================================================
+  -->
+  <path id="oracle.ocs.iam.icf.runtime">
+    <path refid="oracle.ocs.iam.icf.foundation"/>
+    <path refid="oracle.ocs.iam.icf.dbms"/>
+  </path>
+  <!--
+  =====================================================================
+  == accomplish the build path of the project
+  =====================================================================
+  -->
+  <path id="classpath">
+    <path refid="oracle.fmw.mds"/>
+    <path refid="oracle.fmw.iam.platform"/>
+    <path refid="oracle.fmw.iam.connector"/>
+    <path refid="oracle.fmw.iam.oim.adapter"/>
+    <path refid="oracle.fmw.iam.oim.scheduler"/>
+    <path refid="oracle.ocs.iam.hst.foundation"/>
+    <path refid="oracle.ocs.iam.oim.foundation"/>
+    <path refid="oracle.ocs.iam.icf.integration"/>
+    <path refid="oracle.ocs.iam.icf.runtime"/>
+  </path>
+</project>
