@@ -69,8 +69,8 @@ import static oracle.iam.identity.icf.scim.annotation.Definition.Uniqueness;
  ** @version 1.0.0.0
  ** @since   1.0.0.0
  */
-@Schema(id=UserResource.SCHEMA, name=User.NAME, description="The core schema for \"User\" provides the common attributes of a user resource. . The user core schema is identified using the following schema URI: \"urn:ietf:params:scim:schemas:core:2.0:User\".")
-public class AccountResource extends UserResource<AccountResource> {
+@Schema(id = NewUserResource.SCHEMA, name=User.NAME, description="The core schema for \"User\" provides the common attributes of a user resource. . The user core schema is identified using the following schema URI: \"urn:ietf:params:scim:schemas:core:2.0:User\".")
+public class AccountResource extends NewUserResource<AccountResource> {
 
   //////////////////////////////////////////////////////////////////////////////
   // instance attributes

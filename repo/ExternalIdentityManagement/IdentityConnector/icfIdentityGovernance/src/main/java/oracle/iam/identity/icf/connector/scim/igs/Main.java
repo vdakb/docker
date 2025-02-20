@@ -47,6 +47,10 @@ import java.util.Collection;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.util.Arrays;
+
+import java.util.Collections;
+
 import org.identityconnectors.framework.common.objects.Uid;
 import org.identityconnectors.framework.common.objects.Name;
 import org.identityconnectors.framework.common.objects.Schema;
@@ -95,7 +99,7 @@ import oracle.iam.identity.icf.scim.Path;
 
 import oracle.iam.identity.icf.scim.response.ListResponse;
 
-import oracle.iam.identity.icf.scim.schema.User;
+import oracle.iam.identity.icf.scim.schema.NewUser;
 import oracle.iam.identity.icf.scim.schema.Group;
 import oracle.iam.identity.icf.scim.schema.Member;
 import oracle.iam.identity.icf.scim.schema.Resource;
@@ -105,7 +109,7 @@ import oracle.iam.identity.icf.scim.v2.Translator;
 import oracle.iam.identity.icf.scim.v2.request.Operation;
 
 import oracle.iam.identity.icf.scim.v2.schema.Marshaller;
-import oracle.iam.identity.icf.scim.v2.schema.UserResource;
+import oracle.iam.identity.icf.scim.v2.schema.NewUserResource;
 import oracle.iam.identity.icf.scim.v2.schema.GroupResource;
 import oracle.iam.identity.icf.scim.v2.schema.TenantResource;
 import oracle.iam.identity.icf.scim.v2.schema.AccountResource;
@@ -399,13 +403,13 @@ public class Main extends    ServiceConnector
       if (ObjectClass.ACCOUNT.equals(objectClass)) {
         do {
           // .emit(returning)
-          final ListResponse<UserResource> response = this.context.searchAccount(index, control.limit, criteria).invoke(UserResource.class);
+          final ListResponse<NewUserResource> response = this.context.searchAccount(index, control.limit, criteria).invoke(NewUserResource.class);
           batch = response.items();
           if (batch == 0) {
             info(ServiceBundle.string(ServiceMessage.NOTHING_TO_CHANGE));
             break;
           }
-          for (UserResource user : response) {
+          for (NewUserResource user : response) {
             handler.handle(transform(user));
           }
           index += control.limit;
@@ -508,7 +512,7 @@ public class Main extends    ServiceConnector
       if (ObjectClass.ACCOUNT.equals(type)) {
         uid = this.context.resolveAccount(name);
         if (uid == null)
-          throw ServiceException.notFound(ServiceBundle.string(ServiceError.OBJECT_NOT_EXISTS, Context.ENDPOINT_USERS, User.UNIQUE, name));
+          throw ServiceException.notFound(ServiceBundle.string(ServiceError.OBJECT_NOT_EXISTS, Context.ENDPOINT_USERS, NewUser.UNIQUE, name));
       }
       else if (ObjectClass.GROUP.equals(type)) {
         uid = this.context.resolveRole(name);
@@ -1333,7 +1337,7 @@ public class Main extends    ServiceConnector
   protected Uid patchAccount(final String identifier, final Set<Attribute> attribute)
     throws SystemException {
 
-    final UserResource resource = this.context.modifyAccount(identifier, Marshaller.operationUser(attribute));
+    final NewUserResource resource = this.context.modifyAccount(identifier, Marshaller.operationUser(attribute));
     return new Uid(resource.id());
   }
 
@@ -1634,21 +1638,21 @@ public class Main extends    ServiceConnector
   //////////////////////////////////////////////////////////////////////////////
   // Method:   transform
   /**
-   ** Transforms the data received from the code>Service Provider</code> and
-   ** wrapped in the specified SCIM 2 {@link UserResource} <code>user</code>
-   ** to the {@link ConnectorObject} transfer object.
-   **
-   ** @param  user               the specified SCIM 2 {@link UserResource} to
-   **                            transform.
-   ** @param  returning          the {@link Set} of attribute names to be set
-   **                            in the the {@link ConnectorObject} transfer
-   **                            object.
-   **
-   ** @return                    the transformation result wrapped in a
-   **                            {@link ConnectorObject} transfer object.
+   * Transforms the data received from the code>Service Provider</code> and
+   * wrapped in the specified SCIM 2 {@link NewUserResource} <code>user</code>
+   * to the {@link ConnectorObject} transfer object.
+   *
+   * @param user the specified SCIM 2 {@link NewUserResource} to
+   * transform.
+   * @param returning the {@link Set} of attribute names to be set
+   * in the the {@link ConnectorObject} transfer
+   * object.
+   *
+   * @return the transformation result wrapped in a
+   * {@link ConnectorObject} transfer object.
    */
   @SuppressWarnings("unchecked")
-  private ConnectorObject transform(final UserResource user) {
+  private ConnectorObject transform(final NewUserResource user) {
     final String method = "transform";
     trace(method, Loggable.METHOD_ENTRY);
 
@@ -1657,7 +1661,7 @@ public class Main extends    ServiceConnector
     // always set __UID__ and __NAME__ attribute to convince stupid framework
     // developer
     builder.setUid(user.id());
-    builder.setName(user.userName());
+    builder.setName((String) user.userName().get(0));
     try {
       Marshaller.transfer(builder, user);
       if (user.extension() != null) {
@@ -1665,7 +1669,7 @@ public class Main extends    ServiceConnector
         final Collection<String> namespace = user.namespace();
         for (String cursor : namespace) {
           // skip any namespace that is not already observed
-          if (!UserResource.SCHEMA.equalsIgnoreCase(cursor)) {
+          if (!NewUserResource.SCHEMA.equalsIgnoreCase(cursor)) {
             final JsonNode node = user.extension().path(cursor);
             if (!node.isMissingNode()) {
               Marshaller.transferExtension(builder, cursor, node);
@@ -1890,19 +1894,19 @@ public class Main extends    ServiceConnector
   //////////////////////////////////////////////////////////////////////////////
   // Method:   transferTenant
   /**
-   ** Factory method to create a new {@link TenantResource} instance and transfer
-   ** the specified {@link Set} of {@link Attribute}s to the SCIM 2 tenant
-   ** resource.
-   **
-   ** @param  attribute          the {@link Set} of {@link Attribute}s to set
-   **                            on the SCIM 2 tenant resource.
-   **                            <br>
-   **                            Allowed object is {@link Set} where each
-   **                            elemment is of type {@link Attribute}.
-   **
-   ** @return                    the SCIM 2 tenant resource to convert.
-   **                            <br>
-   **                            Possible object is {@link UserResource}.
+   * Factory method to create a new {@link TenantResource} instance and transfer
+   * the specified {@link Set} of {@link Attribute} s to the SCIM 2 tenant
+   * resource.
+   *
+   * @param attribute the {@link Set} of {@link Attribute} s to set
+   * on the SCIM 2 tenant resource.
+   * <br>
+   * Allowed object is {@link Set} where each
+   * elemment is of type {@link Attribute}.
+   *
+   * @return the SCIM 2 tenant resource to convert.
+   * <br>
+   * Possible object is {@link NewUserResource}.
    */
   private static TenantResource transferTenant(final Set<Attribute> attribute) {
     final TenantResource  resource  = new TenantResource();

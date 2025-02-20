@@ -72,7 +72,7 @@ import oracle.iam.identity.icf.scim.request.Search;
 
 import oracle.iam.identity.icf.scim.annotation.Definition;
 
-import oracle.iam.identity.icf.scim.schema.User;
+import oracle.iam.identity.icf.scim.schema.NewUser;
 import oracle.iam.identity.icf.scim.schema.Group;
 import oracle.iam.identity.icf.scim.schema.Resource;
 
@@ -509,7 +509,7 @@ public class Context extends Feature {
   public String resolveAccount(final String id)
     throws SystemException {
 
-    return resolve(ENDPOINT_USERS, User.UNIQUE, id, AccountResource.class);
+    return resolve(ENDPOINT_USERS, NewUser.UNIQUE, id, AccountResource.class);
   }
 
   //////////////////////////////////////////////////////////////////////////////
