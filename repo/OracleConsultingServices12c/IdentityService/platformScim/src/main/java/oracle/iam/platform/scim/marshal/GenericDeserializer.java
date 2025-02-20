@@ -19,7 +19,7 @@
     -----------------------------------------------------------------------
 
     System      :   Identity Service Library
-    Subsystem   :   Generic REST Service
+    Subsystem   :   Generic SCIM Service
 
     File        :   GenericDeserializer.java
 

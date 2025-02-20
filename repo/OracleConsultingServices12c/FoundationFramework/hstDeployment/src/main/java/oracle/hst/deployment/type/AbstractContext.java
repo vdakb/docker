@@ -64,8 +64,8 @@ import oracle.hst.deployment.ServiceException;
 public abstract class AbstractContext extends ServiceDataType {
 
   /**
-   ** Default value of the timeout period for establishment of the content
-   ** provider connection.
+   ** Default value of the timeout period for establish a connection to the
+   ** provider provide.
    */
   public static final int   TIMEOUT_DEFAULT_CONNECTION = 3000;
 
@@ -80,7 +80,7 @@ public abstract class AbstractContext extends ServiceDataType {
   private String            port                       = null;
   private int               timeoutConnection          = TIMEOUT_DEFAULT_CONNECTION;
 
-  /** needs to be left unitialized to enforce validation */
+  /** needs to be left uninitialized to enforce validation */
   private SecurityPrincipal principal                  = null;
 
   //////////////////////////////////////////////////////////////////////////////

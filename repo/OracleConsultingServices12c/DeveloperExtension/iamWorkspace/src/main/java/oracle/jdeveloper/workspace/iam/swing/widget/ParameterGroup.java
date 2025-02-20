@@ -60,7 +60,7 @@ public class ParameterGroup extends ParameterForm {
 
   // the official serial version ID which says cryptically which version we're
   // compatible with
-  @SuppressWarnings("compatibility:6628639607912278577")
+  @SuppressWarnings("compatibility:6049343611941363159")
   private static final long serialVersionUID = -4577622148467803644L;
 
   //////////////////////////////////////////////////////////////////////////////

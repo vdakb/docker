@@ -323,7 +323,7 @@ public abstract class Palette {
 
   //////////////////////////////////////////////////////////////////////////////
   // class Triadic
-  // ~~~~~ ~~~~~~~
+  // ~~~~~ ~~~~~~~~~~~~~
   /**
    ** Palette subclass used to generate a triadic color palette.
    ** <p>

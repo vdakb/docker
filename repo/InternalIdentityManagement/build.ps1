@@ -26,7 +26,7 @@
 #
 # Revision   Date        Editor      Comment
 # ----------+-----------+-----------+------------------------------------
-# 1.0.0.0    2019-05-27  dfteding    First release version
+# 1.0.0.0    2019-05-27  dsteding    First release version
 # ----------+-----------+-----------+------------------------------------
 
 #
@@ -35,7 +35,7 @@
 Set-Variable -Name "ocs.base"    -Value "D:\Project\OracleConsultingServices12c"
 Set-Variable -Name "hst.base"    -Value "${ocs.base}\FoundationFramework"
 Set-Variable -Name "oim.base"    -Value "${ocs.base}\IdentityManager"
-Set-Variable -Name "oam.base"    -Value "${ocs.base}\AccessMAnager"
+Set-Variable -Name "oam.base"    -Value "${ocs.base}\AccessManager"
 Set-Variable -Name "ods.base"    -Value "${ocs.base}\DirectoryFramework"
 
 #

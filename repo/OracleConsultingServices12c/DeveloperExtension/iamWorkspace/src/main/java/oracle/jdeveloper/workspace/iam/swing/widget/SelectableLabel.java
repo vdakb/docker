@@ -66,7 +66,7 @@ import oracle.jdeveloper.workspace.iam.swing.Selectable;
  ** An implementation of a label that have an additional border of three pixels
  ** on the left and on the right side.
  ** <p>
- ** The indended use is in JTrees and JList in compination with check boxes to
+ ** The indended use is in JTrees and JList in combination with check boxes to
  ** adjust the vertical alignment.
  ** <p>
  ** This widget also extends the capabilities of the standard label to visualize

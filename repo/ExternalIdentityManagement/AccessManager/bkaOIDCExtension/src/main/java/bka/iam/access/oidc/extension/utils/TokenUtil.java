@@ -45,8 +45,6 @@ import java.util.Collection;
 
 import java.util.logging.Logger;
 
-import java.util.regex.Pattern;
-
 import java.nio.charset.StandardCharsets;
 
 import java.security.MessageDigest;
@@ -87,19 +85,11 @@ public class TokenUtil {
   /**
    ** Class name captured for logging purpose
    */
-  private static final String CLASS  = TokenUtil.class.getName();
+  private static final String CLASS = TokenUtil.class.getName();
   /**
    ** Logger created based on the class name
    */
-  private static Logger      LOGGER  = Logger.getLogger(CLASS);
-  /**
-   ** The bit length of an IDToken hash value.
-   */
-  private static int         BITS    = 128;
-  /**
-   ** The regular expression to match exactly the oidc scope in the scope.
-   */
-  private static Pattern     PATTERN = Pattern.compile("\\bopenid\\b");
+  private static Logger      LOGGER = Logger.getLogger(CLASS);
 
   //////////////////////////////////////////////////////////////////////////////
   // Method:   info
@@ -187,11 +177,6 @@ public class TokenUtil {
         final GrantType grantType = GrantType.from(form.getFirst("grant_type"));
         if (grantType.equals(GrantType.AUTHORIZATION) || grantType.equals(GrantType.REFRESH) || grantType.equals(GrantType.TOKEN_EXCHANGE)) {
           memberOf(response);
-          // handle the id token if its scoped
-          if (PATTERN.matcher(response.getScope()).find()) {
-            LOGGER.finest("Id token hash value (at_hash) is required.");
-            response.setId_token(hashToken(domain, response.getId_token(), response.getAccess_token()));
-          }
         }
       }
       else {
@@ -301,9 +286,10 @@ public class TokenUtil {
 
     final String method = "tokenHash";
     LOGGER.entering(CLASS, method);
+    final int bits  = 128;
     try {
       final byte[] digest = MessageDigest.getInstance("SHA-256").digest(value.getBytes(StandardCharsets.UTF_8));
-      final int    length = Math.min(digest.length, BITS / 8);
+      final int    length = Math.min(digest.length, bits / 8);
       final byte[] left   = Arrays.copyOfRange(digest, 0, length);
       return new String(Base64.getUrlEncoder().withoutPadding().encode(left));
     }
@@ -348,7 +334,7 @@ public class TokenUtil {
       final JwtToken            token   = new JwtToken(response.getAccess_token());
       final Map<String, Object> header  = token.getHeaderParameters();
       final Map<String, Object> claims  = token.getClaimParameters();
-      final String              domain  = (String)claims.get("domain");
+      final String              domain  = (String) claims.get("domain");
       final Collection<String>  scopes  = new ArrayList<String>();
       final Object              request = claims.get("scope");
       if (request instanceof String) {
@@ -368,6 +354,7 @@ public class TokenUtil {
         }
       }
       response.setAccess_token(createToken(domain, header, claims));
+      response.setId_token(hashToken(domain, response.getId_token(), response.getAccess_token()));
     }
     finally {
       LOGGER.exiting(CLASS, method);
@@ -430,15 +417,8 @@ public class TokenUtil {
   private static String hashToken(final String domain, final String identity, final String access)
     throws Exception {
 
-    final String method = "hashToken";
-    LOGGER.entering(CLASS, method);
-    try {
-      final JwtToken  idToken = new JwtToken(identity);
-      idToken.setClaimParameter("at_hash", tokenHash(access));
-      return idToken.signAndSerialize(OAuthUtil.domainPrivateKey(domain));
-    }
-    finally {
-      LOGGER.exiting(CLASS, method);
-    }
+    final JwtToken  idToken = new JwtToken(identity);
+    idToken.setClaimParameter("at_hash", tokenHash(access));
+    return idToken.signAndSerialize(OAuthUtil.domainPrivateKey(domain));
   }
 }

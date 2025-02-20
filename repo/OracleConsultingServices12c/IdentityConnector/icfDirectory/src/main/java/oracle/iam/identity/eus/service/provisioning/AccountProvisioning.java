@@ -38,13 +38,13 @@
 
 package oracle.iam.identity.eus.service.provisioning;
 
-import org.xml.sax.InputSource;
-
-import org.identityconnectors.framework.common.objects.ObjectClass;
-
 import com.thortech.xl.dataaccess.tcDataProvider;
 
 import java.util.Map;
+
+import org.xml.sax.InputSource;
+
+import org.identityconnectors.framework.common.objects.ObjectClass;
 
 import oracle.hst.foundation.SystemMessage;
 

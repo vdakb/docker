@@ -37,13 +37,13 @@
 */
 package oracle.iam.identity.icf.connector.jira.schema;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import oracle.iam.identity.icf.schema.Schema;
 import oracle.iam.identity.icf.schema.Attribute;
 import oracle.iam.identity.icf.schema.Mutability;
-import oracle.iam.identity.icf.schema.Schema;
 
 ////////////////////////////////////////////////////////////////////////////////
 // class Group

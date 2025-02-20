@@ -224,7 +224,7 @@ public class Tracer {
    ** <br>
    ** <b>Note</b>:
    ** <br>
-   ** If an {@link #executor(Executor) Executor} was set, it must be closed
+   ** If an {@code #executor(Executor) Executor} was set, it must be closed
    ** separately.
    */
   public synchronized void stop() {

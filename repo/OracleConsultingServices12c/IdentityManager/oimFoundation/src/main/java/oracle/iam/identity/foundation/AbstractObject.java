@@ -73,7 +73,7 @@ public abstract class AbstractObject extends    AbstractLoggable
   //////////////////////////////////////////////////////////////////////////////
 
   /**
-   ** the attribute values of the Oracle Identity Manager instance where this
+   ** The attribute values of the Oracle Identity Manager instance where this
    ** wrapper belongs to
    */
   protected final Map<String, Object> attribute = new LinkedHashMap<String, Object>();

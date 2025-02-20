@@ -47,7 +47,7 @@ import oracle.hst.foundation.xml.XMLException;
 import oracle.hst.foundation.xml.XMLProcessor;
 import oracle.hst.foundation.xml.XMLOutputNode;
 
-import oracle.iam.identity.common.spi.SandboxInstance;
+import oracle.iam.identity.common.spi.SandboxMetadata;
 
 ////////////////////////////////////////////////////////////////////////////////
 // abstract class Sandbox
@@ -95,12 +95,12 @@ public abstract class Sandbox {
    **                            <code>null</code>.
    ** @param  path               the {@link File} pathname to create or override
    **                            the file within.
-   ** @param  sandbox            the {@link SandboxInstance} as the data
+   ** @param  sandbox            the {@link SandboxMetadata} as the data
    **                            provider.
    **
    ** @throws XMLException       if the an error occurs.
    */
-  public static void marshal(final Loggable loggable, final File path, final SandboxInstance sandbox)
+  public static void marshal(final Loggable loggable, final File path, final SandboxMetadata sandbox)
     throws XMLException {
 
     final File             file = new File(path, FILENAME);

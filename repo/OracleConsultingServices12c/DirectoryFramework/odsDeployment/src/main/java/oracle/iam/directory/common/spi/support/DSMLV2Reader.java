@@ -40,8 +40,8 @@ package oracle.iam.directory.common.spi.support;
 
 import java.io.File;
 
-import javax.naming.directory.DirContext;
 import javax.naming.directory.Attribute;
+import javax.naming.directory.DirContext;
 import javax.naming.directory.BasicAttribute;
 
 import oracle.hst.foundation.utility.StringUtility;

@@ -38,8 +38,8 @@
 
 package oracle.iam.directory.common.spi.support;
 
-import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.NamingEnumeration;
 
 import javax.naming.directory.SearchResult;
 import javax.naming.directory.SearchControls;

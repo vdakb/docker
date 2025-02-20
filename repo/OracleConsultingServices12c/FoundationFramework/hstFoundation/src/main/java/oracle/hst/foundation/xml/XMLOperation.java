@@ -62,7 +62,7 @@ public class XMLOperation implements Loggable {
   //////////////////////////////////////////////////////////////////////////////
 
   /**
-   ** these are for convenience the avoid a specific getter for this instance
+   ** These are for convenience the avoid a specific getter for this instance
    ** attributes.
    ** <p>
    ** Subclasses must not change these instance attributes.

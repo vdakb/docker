@@ -105,7 +105,7 @@ public class TemplateProjectSequence extends TemplateObjectSequence {
    **                            will be based on.
    */
   public TemplateProjectSequence(final List<ProjectTemplate> templates, final TraversableContext wizardContext) {
-    // ensure inheritanve
+    // ensure inheritance
     super(wizardContext);
 
     // initialize instance

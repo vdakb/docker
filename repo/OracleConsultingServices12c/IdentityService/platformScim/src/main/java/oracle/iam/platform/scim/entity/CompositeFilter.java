@@ -164,8 +164,8 @@ public abstract class CompositeFilter implements Filter {
    **
    ** @return                    the internal filter that is being negated.
    **                            <br>
-   **                            Possible object is {@link Collection} where each
-   **                            element is of type {@link Filter}.
+   **                            Possible object is {@link Collection} where
+   **                            each element is of type {@link Filter}.
    */
   public Collection<Filter> filter() {
     return CollectionUtility.unmodifiable(this.filter);

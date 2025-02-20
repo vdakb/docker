@@ -133,7 +133,7 @@ public class Create extends Base {
     }
     catch (ConnectorException e) {
       // swallow the expected exception but fail in any other case
-      if (!e.getLocalizedMessage().startsWith("JES-00022"))
+      if (!e.getLocalizedMessage().startsWith("RMI-00022"))
         failed(e);
     }
     catch (TaskException e) {

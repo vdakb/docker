@@ -48,7 +48,7 @@ import org.junit.Assert;
 import org.junit.runner.JUnitCore;
 
 ////////////////////////////////////////////////////////////////////////////////
-// class ExtractorTest
+// class DiscoveryTest
 // ~~~~~ ~~~~~~~~~~~~~
 /**
  ** Example use of value extraction using Reflection.

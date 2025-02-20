@@ -40,7 +40,7 @@ package oracle.iam.directory.common.spi.support;
 
 ////////////////////////////////////////////////////////////////////////////////
 // interface DSMLGrammar
-// ~~~~~~~~ ~~~~~~~~~~~~
+// ~~~~~~~~~ ~~~~~~~~~~~
 /**
  ** Grammar DSML, Directory Service Markup Language, from files, streams and
  ** readers, and returns LDAPMessages.

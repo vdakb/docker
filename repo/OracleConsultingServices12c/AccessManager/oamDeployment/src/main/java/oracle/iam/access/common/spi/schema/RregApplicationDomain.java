@@ -79,7 +79,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  **     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  **       &lt;sequence&gt;
  **         &lt;element name="name"        type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
- **         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
+ **         &lt;element name="descriptioc" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/&gt;
  **         &lt;element ref="{}uriList"                    minOccurs="0"/&gt;
  **         &lt;element ref="{}deletedUriList"             minOccurs="0"/&gt;
  **         &lt;element ref="{}rregAuthenticationPolicies" minOccurs="0"/&gt;

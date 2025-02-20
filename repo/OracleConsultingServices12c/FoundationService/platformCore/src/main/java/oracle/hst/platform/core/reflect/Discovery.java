@@ -347,6 +347,7 @@ public abstract class Discovery {
     }
     return false;
   }
+
   //////////////////////////////////////////////////////////////////////////////
   // Method:   classAnnotation
   /**
@@ -904,7 +905,6 @@ public abstract class Discovery {
     final String capitalized = StringUtility.capitalizeWord(item);
     invoke(target, "set" + capitalized, value);
   }
-
 
   //////////////////////////////////////////////////////////////////////////////
   // Method:   getter

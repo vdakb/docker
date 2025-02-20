@@ -46,7 +46,7 @@ package oracle.iam.platform.scim;
  ** client interface.
  ** <p>
  ** The class covvers common action required to perform activities regrading
- ** SCIM request/reply synchronous invocations to the REST API of a SCIM
+ ** SCIM request/reply synchronous invocations to the SCIM API of a SCIM
  ** <code>Service Provider</code>.
  **
  ** @author  dieter.steding@oracle.com

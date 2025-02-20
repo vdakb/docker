@@ -284,7 +284,6 @@ public abstract class Perlin {
     final double v = (h < 4) ? y : x;
     return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
   }
-
   //////////////////////////////////////////////////////////////////////////////
   // Method:   gradient
   private static double gradient(final int hash, final double x, final double y, final double z) {

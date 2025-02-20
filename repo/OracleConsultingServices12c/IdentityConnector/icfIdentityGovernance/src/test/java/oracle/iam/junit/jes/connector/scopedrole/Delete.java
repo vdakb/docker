@@ -108,7 +108,7 @@ public class Delete extends TestFixture {
     }
     catch (SystemException e) {
       // swallow the expected exception but fail in any other case
-      if (!"JES-00022".equals(e.code()))
+      if (!"RMI-00022".equals(e.code()))
         failed(e);
     }
   }

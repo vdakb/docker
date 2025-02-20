@@ -138,7 +138,7 @@ public abstract class StringUtility {
     // instance attributes
     ////////////////////////////////////////////////////////////////////////////
 
-    /** the format strings for this <code>Action</code>. */
+    /** The format strings for this <code>Action</code>. */
     private final String      singleString;
     private final String      pairedString;
 

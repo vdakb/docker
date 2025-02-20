@@ -62,8 +62,8 @@ import static oracle.iam.platform.scim.annotation.Attribute.Uniqueness;
 /**
  ** SCIM provides a resource type for <code>Group</code> resources.
  ** <br>
- ** The core schema for <code>Group</code> is identified using the URI:
- * <code>urn:ietf:params:scim:schemas:core:2.0:Group}</code>
+ ** The core schema for <code>Group</code> is identified using the URI
+ ** <code>urn:ietf:params:scim:schemas:core:2.0:Group</code>.
  **
  ** @author  dieter.steding@oracle.com
  ** @version 1.0.0.0

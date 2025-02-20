@@ -93,8 +93,8 @@ public class ServiceBundle_de extends ListResourceBundle {
   , { ServiceError.PARAMETER_SORT_INVALID_VALUE,   "'%s' ist kein gültiger Wert für den sortBy-Parameter: %s." }
 
     // GWS-00091 - 00100 filtering errors
-  , { ServiceError.FILTER_METHOD_INCONSISTENT,     "übersetzungsmethode ist inkonsistent: %s" }
-  , { ServiceError.FILTER_EXPRESSION_INCONSISTENT, "übersetzungsausdruck ist inkonsistent: %s" }
+  , { ServiceError.FILTER_METHOD_INCONSISTENT,     "Übersetzungsmethode ist inkonsistent: %s" }
+  , { ServiceError.FILTER_EXPRESSION_INCONSISTENT, "Übersetzungsausdruck ist inkonsistent: %s" }
   , { ServiceError.FILTER_USAGE_INVALID_GE,        "Der Filter \"Größer oder gleich\" vergleicht möglicherweise keine booleschen oder binären Attributwerte." }
   , { ServiceError.FILTER_USAGE_INVALID_GT,        "Der Filter \"Größer als\" vergleicht keine booleschen oder binären Attributwerte." }
   , { ServiceError.FILTER_USAGE_INVALID_LE,        "Der Filter \"Kleiner oder gleich\" vergleicht keine booleschen oder binären Attributwerte." }

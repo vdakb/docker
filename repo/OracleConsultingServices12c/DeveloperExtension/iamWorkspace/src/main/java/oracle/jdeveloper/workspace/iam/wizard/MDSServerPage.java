@@ -106,7 +106,7 @@ public class MDSServerPage extends DBSServerPage {
 
   // the official serial version ID which says cryptically which version we're
   // compatible with
-  @SuppressWarnings("compatibility:6313569803796228343")
+  @SuppressWarnings("compatibility:8161022784122678844")
   private static final long           serialVersionUID = -4685522832694654885L;
 
   //////////////////////////////////////////////////////////////////////////////

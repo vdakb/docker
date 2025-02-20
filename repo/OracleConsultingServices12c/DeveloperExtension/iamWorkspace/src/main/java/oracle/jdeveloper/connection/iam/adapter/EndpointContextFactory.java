@@ -99,7 +99,7 @@ public abstract class EndpointContextFactory implements InitialContextFactory {
    ** Returns the {@link Endpoint} associated with the Resource Palette that
    ** matches the specified class name and identifier.
    ** <p>
-   ** The class itslef cannot be used as a matching criteria because it can be
+   ** The class itself cannot be used as a matching criteria because it can be
    ** deployed in a different bundle hence the OSGi class loading behavior
    ** prevents to access any method of such a class.
    **
@@ -120,7 +120,7 @@ public abstract class EndpointContextFactory implements InitialContextFactory {
    ** Returns the {@link Endpoint} associated with the Resource Palette that
    ** matches the specified class name and identifier.
    ** <p>
-   ** The class itslef cannot be used as a matching criteria because it can be
+   ** The class itself cannot be used as a matching criteria because it can be
    ** deployed in a different bundle hence the OSGi class loading behavior
    ** prevents to access any method of such a class.
    **
@@ -179,7 +179,7 @@ public abstract class EndpointContextFactory implements InitialContextFactory {
    ** Returns a {@link List} of {@link Endpoint}s from the specified
    ** {@link AdfJndiContext} that match the specified class name.
    ** <p>
-   ** The class itslef cannot be used as a matching criteria because it can be
+   ** The class itself cannot be used as a matching criteria because it can be
    ** deployed in a different bundle hence the OSGi class loading behavior
    ** prevents to access any method of such a class.
    ** 

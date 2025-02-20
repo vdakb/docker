@@ -100,7 +100,7 @@ public class Assign<T extends Resource> extends Abstract<T, Assign> {
   // Method:   team
   /**
    ** Build a request to modify member privileges at a known team resource
-   ** represented b< <code>id</code> at the Service Provider.
+   ** represented by <code>id</code> at the Service Provider.
    **
    ** @param  <T>                the type of the payload implementation.
    **                            <br>
@@ -133,7 +133,7 @@ public class Assign<T extends Resource> extends Abstract<T, Assign> {
   // Method:   organization
   /**
    ** Build a request to modify member privileges at a known organization
-   ** resource represented b< <code>id</code> at the Service Provider.
+   ** resource represented by <code>id</code> at the Service Provider.
    **
    ** @param  <T>                the type of the payload implementation.
    **                            <br>

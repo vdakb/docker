@@ -67,10 +67,10 @@ public class Entity implements Map<String, Attribute> {
   // instance attributes
   //////////////////////////////////////////////////////////////////////////////
 
-  /** the type of the <code>Entity</code>. */
+  /** The type of the <code>Entity</code>. */
   final String                 type;
 
-  /** the attributes of the <code>Entity</code>. */
+  /** The attributes of the <code>Entity</code>. */
   final Map<String, Attribute> delegate;
 
   //////////////////////////////////////////////////////////////////////////////

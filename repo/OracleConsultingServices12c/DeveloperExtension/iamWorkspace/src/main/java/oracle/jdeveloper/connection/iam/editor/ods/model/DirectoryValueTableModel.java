@@ -174,7 +174,7 @@ public class DirectoryValueTableModel extends DirectoryTableModel {
   //////////////////////////////////////////////////////////////////////////////
   // Method:   refresh
   /**
-   ** Populates the <code>AttributeModel</code> responsible to dispaly the
+   ** Populates the <code>AttributeModel</code> responsible to display the
    ** populate with labels and values of attribute types.
    */
   private void refresh() {

@@ -40,7 +40,7 @@ package oracle.iam.identity.scim.api.v2;
 
 import javax.ws.rs.core.UriInfo;
 
-import oracle.hst.platform.rest.ProcessingException;
+import oracle.iam.platform.scim.ProcessingException;
 
 import oracle.iam.platform.scim.schema.Generic;
 

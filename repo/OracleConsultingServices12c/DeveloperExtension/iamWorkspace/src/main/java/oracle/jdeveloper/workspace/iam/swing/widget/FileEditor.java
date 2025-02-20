@@ -55,7 +55,7 @@ import oracle.ide.net.URLTextField;
 // class FileEditor
 // ~~~~~ ~~~~~~~~~~
 /**
- ** A concret implementation of en editor that handles <code>File</code>
+ ** A concret implementation of an editor that handles <code>File</code>
  ** and {@link File} properties.
  **
  ** @author  dieter.steding@oracle.com
@@ -70,7 +70,7 @@ public class FileEditor extends URLTextField {
 
   // the official serial version ID which says cryptically which version we're
   // compatible with
-  @SuppressWarnings("compatibility:-7917944183093118545")
+  @SuppressWarnings("compatibility:-3592058161656765580")
   private static final long  serialVersionUID = 332676060571172965L;
 
   //////////////////////////////////////////////////////////////////////////////

@@ -50,8 +50,8 @@ import oracle.iam.platform.scim.schema.User;
 /**
  ** SCIM provides a resource type for <code>User</code> resources.
  ** <br>
- ** The core schema for <code>User</code> is identified using the URI:
- * <code>urn:ietf:params:scim:schemas:core:2.0:User}</code>
+ ** The core schema for <code>User</code> is identified using the URI
+ ** <code>urn:ietf:params:scim:schemas:core:2.0:User</code>.
  **
  ** @author  dieter.steding@oracle.com
  ** @version 1.0.0.0

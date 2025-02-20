@@ -119,8 +119,8 @@ public class TokenRefresh extends ServiceDataType {
    ** Called to inject the argument for parameter <code>lifeCycle</code>.
    **
    ** @param  state              <code>true</code> if the life cycle of the
-     **                          <code>Token</code> is enabled; otherwise
-     **                          <code>false</code>.
+   **                            <code>Token</code> is enabled; otherwise
+   **                            <code>false</code>.
    */
   public final void setLifeCycle(final boolean state) {
     checkAttributesAllowed();

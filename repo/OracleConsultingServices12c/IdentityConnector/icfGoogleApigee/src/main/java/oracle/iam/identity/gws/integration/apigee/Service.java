@@ -537,7 +537,7 @@ public interface Service {
     }
   }
   /**
-   ** the attribute tags of the feature definition in the
+   ** The attribute tags of the feature definition in the
    ** <code>Metadata Descriptor</code>
    */
   static final Set<String> PROPERTY = CollectionUtility.unmodifiableSet(
@@ -547,7 +547,7 @@ public interface Service {
   , OIM.Feature.ENTITLEMENT_PREFIX_REQUIRED
   );
   /**
-   ** the attribute mapping of the feature transfer from the
+   ** The attribute mapping of the feature transfer from the
    ** <code>Metadata Descriptor</code> to <code>Identity Connector</code>
    ** configuration
    */
@@ -560,7 +560,7 @@ public interface Service {
     }
   );
   /**
-   ** the attribute mapping of the feature transfer from the
+   ** The attribute mapping of the feature transfer from the
    ** <code>IT Resource</code> to <code>Identity Connector</code>
    ** configuration
    */

@@ -116,7 +116,7 @@ public class EndpointConnectionFactory {
    ** Returns the {@link Endpoint} associated with the Resource Palette that
    ** matches the identifier.
    ** <p>
-   ** The class itslef cannot be used as a matching criteria because it can be
+   ** The class itself cannot be used as a matching criteria because it can be
    ** deployed in a different bundle hence the OSGi class loading behavior
    ** prevents to access any method of such a class.
    **

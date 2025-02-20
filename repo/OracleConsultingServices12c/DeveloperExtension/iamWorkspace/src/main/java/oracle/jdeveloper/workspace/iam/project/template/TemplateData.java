@@ -436,7 +436,7 @@ public abstract class TemplateData extends OptionTreeNodeData {
       }
       catch (URISyntaxException e1) {
         // the URL is broken beyond automatic repair
-        throw new IllegalArgumentException("broken URL: " + url);
+        throw new IllegalArgumentException("Broken URL: " + url);
       }
     }
   }

@@ -143,7 +143,7 @@ public class Create<T extends Resource> extends Request<Create> {
    **
    ** @param  <T>                the type of objects to return.
    **                            <br>
-   **                            Allowed type is <code>&lt;R&gt;</code>.
+   **                            Allowed type is <code>&lt;T&gt;</code>.
    ** @param  resource           the REST resource to POST.
    **                            <br>
    **                            Allowed object is <code>T</code>.

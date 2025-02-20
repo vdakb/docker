@@ -48,7 +48,7 @@ import oracle.jdeveloper.connection.iam.editor.ods.resource.Bundle;
 // class MatchingRulePage
 // ~~~~~ ~~~~~~~~~~~~~~~~
 /**
- ** A flat editor panel suitable to display all mathcing rules of a directory
+ ** A flat editor panel suitable to display all matching rules of a directory
  ** service schema in a editor.
  **
  ** @author  dieter.steding@oracle.com

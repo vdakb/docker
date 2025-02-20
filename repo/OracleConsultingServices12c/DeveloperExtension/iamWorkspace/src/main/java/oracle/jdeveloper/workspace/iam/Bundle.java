@@ -101,9 +101,9 @@ public class Bundle extends ArrayResourceBundle {
   public static final int     HST_FRAMEWORK_HOME           = 10;
   public static final int     HST_FRAMEWORK_HINT           = 11;
   public static final int     HST_FRAMEWORK_FAILURE        = 12;
-  public static final int     SVC_FRAMEWORK_HOME           = 13;
-  public static final int     SVC_FRAMEWORK_HINT           = 14;
-  public static final int     SVC_FRAMEWORK_FAILURE        = 15;
+  public static final int     HST_PLATFORM_HOME            = 13;
+  public static final int     HST_PLATFORM_HINT            = 14;
+  public static final int     HST_PLATFORM_FAILURE         = 15;
   public static final int     OPS_FRAMEWORK_HOME           = 16;
   public static final int     OPS_FRAMEWORK_HINT           = 17;
   public static final int     OPS_FRAMEWORK_FAILURE        = 18;

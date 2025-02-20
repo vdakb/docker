@@ -293,7 +293,7 @@ public class ProcessForm {
    ** Constructs a <code>ProcessForm</code> with the specified properties.
    **
    ** @param  key               the system identifier of the process form.
-   ** @param  version           the vorsion number of the process form.
+   ** @param  version           the version number of the process form.
    ** @param  physicalName      the physical name of the process form.
    ** @param  logicalName       the logical name of the process form.
    */

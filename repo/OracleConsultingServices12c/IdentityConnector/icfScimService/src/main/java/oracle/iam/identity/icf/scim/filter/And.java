@@ -94,7 +94,7 @@ public final class And extends CompositeFilter {
   //////////////////////////////////////////////////////////////////////////////
 
   //////////////////////////////////////////////////////////////////////////////
-  // Method:   accept (Filter)
+  // Method:   apply (Filter)
   /**
    ** Applies a {@link Visitor} to this <code>Filter</code>.
    **
@@ -119,9 +119,9 @@ public final class And extends CompositeFilter {
    ** @throws ServiceException   if the filter is not valid for matching.
    */
   @Override
-  public <R, P> R accept(final Visitor<R, P> visitor, final P parameter)
+  public <R, P> R apply(final Visitor<R, P> visitor, final P parameter)
     throws ServiceException {
 
-    return visitor.and(parameter, this);
+    return visitor.apply(this, parameter);
   }
 }

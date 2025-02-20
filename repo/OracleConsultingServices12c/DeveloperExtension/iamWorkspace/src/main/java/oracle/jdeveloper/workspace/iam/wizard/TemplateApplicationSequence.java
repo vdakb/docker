@@ -99,7 +99,7 @@ public class TemplateApplicationSequence extends TemplateObjectSequence {
    **                            page flow to create is based on.
    */
   public TemplateApplicationSequence(final TraversableContext context, final TechId[] technology) {
-    // ensure inheritanve
+    // ensure inheritance
     super(context);
 
     this.technology = technology;

@@ -83,7 +83,7 @@
         <xsl:when test="name()='important'">#7c2482</xsl:when>
       </xsl:choose>
     </xsl:variable>
-    <fo:block id="{$id}" xsl:use-attribute-sets="graphical.admonition.properties" background-color="{$background}" padding="2mm" border-left="2px solid {$bordercolor}">
+    <fo:block id="{$id}" xsl:use-attribute-sets="graphical.admonition.properties" background-color="{$background}" padding="2mm" border-left="2px {$bordercolor} solid">
       <fo:list-block provisional-distance-between-starts="{$admon.graphic.width} + 8pt" provisional-label-separation="4pt">
         <fo:list-item>
           <fo:list-item-label end-indent="label-end()">

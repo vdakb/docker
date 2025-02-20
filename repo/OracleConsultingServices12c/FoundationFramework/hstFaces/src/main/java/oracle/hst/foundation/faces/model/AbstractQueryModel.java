@@ -36,9 +36,9 @@
 
 package oracle.hst.foundation.faces.model;
 
+import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
 
 import oracle.adf.view.rich.model.QueryModel;
 import oracle.adf.view.rich.model.QueryDescriptor;

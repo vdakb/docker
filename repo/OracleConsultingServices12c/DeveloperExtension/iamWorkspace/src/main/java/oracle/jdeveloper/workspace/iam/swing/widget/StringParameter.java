@@ -62,7 +62,7 @@ public class StringParameter extends DefaultProperty {
 
   // the official serial version ID which says cryptically which version we're
   // compatible with
-  @SuppressWarnings("compatibility:8350436841044171410")
+  @SuppressWarnings("compatibility:2085500206850461829")
   private static final long                   serialVersionUID = -4510554659114951576L;
 
   //////////////////////////////////////////////////////////////////////////////

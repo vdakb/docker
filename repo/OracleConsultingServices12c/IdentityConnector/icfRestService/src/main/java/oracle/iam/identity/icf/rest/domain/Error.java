@@ -38,10 +38,10 @@
 
 package oracle.iam.identity.icf.rest.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 ////////////////////////////////////////////////////////////////////////////////
 // class Error

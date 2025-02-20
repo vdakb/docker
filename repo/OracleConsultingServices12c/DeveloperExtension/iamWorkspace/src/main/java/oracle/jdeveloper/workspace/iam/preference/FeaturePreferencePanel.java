@@ -72,7 +72,7 @@ public abstract class FeaturePreferencePanel extends PreferencePanel {
 
   // the official serial version ID which says cryptically which version we're
   // compatible with
-  @SuppressWarnings("compatibility:-5091507144140519779")
+  @SuppressWarnings("compatibility:-2674051340383673959")
   private static final long             serialVersionUID = -4182972895964902751L;
 
   //////////////////////////////////////////////////////////////////////////////

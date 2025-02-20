@@ -133,7 +133,7 @@ public class Context extends Feature {
    */
   public ListResponse<SchemaResource> schemas() {
     final List<SchemaResource> resource = CollectionUtility.list(SchemaFactory.schema(SchemaResource.class), SchemaFactory.schema(UserResource.class), SchemaFactory.schema(GroupResource.class));
-    return new ListResponse<SchemaResource>(resource.size(), resource, resource.size(), resource.size());
+    return new ListResponse<SchemaResource>(resource.size(), resource.size(), resource.size(), resource);
   }
 
   //////////////////////////////////////////////////////////////////////////////

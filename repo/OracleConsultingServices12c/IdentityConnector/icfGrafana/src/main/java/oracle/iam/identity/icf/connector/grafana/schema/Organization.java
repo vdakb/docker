@@ -227,7 +227,7 @@ public final class Organization extends Entity<Organization> {
   /**
    ** Factory method to create an <code>Organization</code> membership.
    **
-   ** @param  name               the internal identifier of the
+   ** @param  id                 the internal identifier of the
    **                            <code>Organization</code>.
    **                            <br>
    **                            Allowed object is {@link String}.

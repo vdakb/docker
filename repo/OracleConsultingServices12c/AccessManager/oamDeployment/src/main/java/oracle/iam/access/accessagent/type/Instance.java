@@ -41,12 +41,12 @@ package oracle.iam.access.accessagent.type;
 import org.apache.tools.ant.BuildException;
 
 import oracle.iam.access.common.type.Resource;
+import oracle.iam.access.common.type.Variation;
 import oracle.iam.access.common.type.AccessServer;
 import oracle.iam.access.common.type.FeatureInstance;
 
 import oracle.iam.access.common.spi.AccessAgentProperty;
 import oracle.iam.access.common.spi.AccessAgentInstance;
-import oracle.iam.access.common.type.Variation;
 
 ////////////////////////////////////////////////////////////////////////////////
 // class Instance
