@@ -52,6 +52,7 @@ import bka.iam.identity.scim.extension.spi.UserEndpoint;
 import bka.iam.identity.scim.extension.spi.requestfilter.HeaderFilter;
 import bka.iam.identity.scim.extension.spi.requestfilter.QueryFilter;
 import bka.iam.identity.scim.extension.spi.requestfilter.SchemaFilter;
+import bka.iam.identity.scim.extension.spi.requestfilter.UriInfoRequestFilter;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -98,6 +99,7 @@ public class SCIMExtensionApplication extends Application {
     s.add(HeaderFilter.class);
     s.add(SchemaFilter.class);
     s.add(QueryFilter.class);
+    s.add(UriInfoRequestFilter.class);
     s.add(ServiceProviderVersionEndpoint.class);
     s.add(UserEndpoint.class);
     s.add(GroupEndpoint.class);

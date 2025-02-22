@@ -19,6 +19,7 @@ public class SchemaFilter extends AbstractEndpoint implements ContainerRequestFi
   @Context
   private HttpServletRequest httpRequest;
   
+  
   public SchemaFilter() {
     super();
   }

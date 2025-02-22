@@ -42,6 +42,7 @@ import bka.iam.identity.scim.extension.model.Attribute;
 import bka.iam.identity.scim.extension.model.AttributeValue;
 import bka.iam.identity.scim.extension.model.ListResponse;
 import bka.iam.identity.scim.extension.model.Resource;
+import bka.iam.identity.scim.extension.model.ScimResource;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -136,7 +137,7 @@ public class AttributeVisitor implements Visitor<List<Attribute>, Attribute> {
    *
    */
   @Override
-  public List<Attribute> visit(Resource resource) {
+  public List<Attribute> visit(ScimResource resource) {
     // In case 
     for (String attribute : attributeName) {
       if (!attribute.contains(":")) {
@@ -192,7 +193,7 @@ public class AttributeVisitor implements Visitor<List<Attribute>, Attribute> {
   }
 
   @Override
-  public <R extends Resource> ListResponse<R> visit(ListResponse<R> listResource)
+  public <R extends ScimResource> ListResponse<R> visit(ListResponse<R> listResource)
     throws ScimException {
     return null;
   }

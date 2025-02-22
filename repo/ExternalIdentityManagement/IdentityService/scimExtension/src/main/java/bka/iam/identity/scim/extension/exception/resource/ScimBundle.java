@@ -31,15 +31,23 @@ public class ScimBundle extends ListResourceBundle {
     { ScimMessage.DUPLICATE_CANONICAL_VALUE,        "Duplicate [%1$s] with value [%2$s] on attribute [%3$s] is not allowed."},
     { ScimMessage.VALUE_NOT_ALLOWED,                "Value [%1$s] for attribute [%2$s] not allowed."},
     { ScimMessage.VALUE_ALREADY_EXIST,              "The [%1$s] attribute already exists. Cannot be added."},
+    { ScimMessage.ENTITY_NOT_FOUND,                 "The requested resource [%1$s] not found."},
+    
   
   // 00101 - 00200 User related errors
     { ScimMessage.USER_NOTFOUND,                    "Cannot find user with key(s) [%1$s]"},
     { ScimMessage.USER_NOT_AUTHORIZED,              "You do not have permission to operate on this user."},
+    { ScimMessage.USER_CANNOT_CREATE,               "Cannot create user. Please contact an administrator"},
+    { ScimMessage.USER_CANNOT_DELETE,               "Cannot delete user [%1$s]. Please contact an administrator"},
   
   // 00201 - 00300 Group related errors
     { ScimMessage.GROUP_NOTFOUND,                   "Cannot find group with key(s) [%1$s]"},
     { ScimMessage.GROUP_CANNOT_DELETE,              "Cannot delete group with key(s) [%1$s]"},
+    { ScimMessage.GROUP_CANNOT_CREATE,              "Cannot create group with key(s) [%1$s]"},
     { ScimMessage.GROUP_OPERATION_ONLY_MEMBER,      "You are not allowed to modify a group resource except the member attribute"},
+    { ScimMessage.GROUP_PUT_NOT_SUPPORTED,          "You are not allowed to modify a group resource with PUT Operation."},
+    { ScimMessage.GROUP_CREATE_NOT_SUPPORTED,       "You are not allowed to create a group resource."},
+    { ScimMessage.GROUP_MEMBER_DUPLICATE,           "Group [%1$s] is already granted to user [%2$s]"},
     
   // 00301 - 00310 Application related errors
     { ScimMessage.APPLICATION_NOTFOUND,             "Cannot find Application with key [%1$s]"},
@@ -61,7 +69,7 @@ public class ScimBundle extends ListResourceBundle {
     { ScimMessage.PATCH_ATTRIBUTE_MISSING,          "Invalid Patch request. Attribute %1$s is mandatory."},
     { ScimMessage.PATCH_UNSUPPORTED_OPERATION,      "Patch unsupported operation: $1s. Supported operations are [add|replace|remove]."},
     { ScimMessage.PATCH_DUPLICATE_VALUE,            "Attribute already exists at $1s. Use 'replace' instead of 'add'."},
-    { ScimMessage.PATCH_PATH_NOT_EXIST,             "Path $1s does not exist or is read only."},
+    { ScimMessage.PATCH_PATH_NOT_EXIST,             "Path %1$s does not exist or is read only."},
     { ScimMessage.PATCH_RESOURCE_WIHTOUT_ATTRIBUTE, "Resource must contain a list of one or more attribute"},
   
   // 01301 - 01300 Post Operation related errors 

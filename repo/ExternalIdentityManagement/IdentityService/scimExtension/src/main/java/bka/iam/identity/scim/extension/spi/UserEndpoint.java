@@ -43,14 +43,14 @@ import bka.iam.identity.scim.extension.exception.ScimMessage;
 import bka.iam.identity.scim.extension.exception.resource.ScimBundle;
 import bka.iam.identity.scim.extension.model.ListResponse;
 import bka.iam.identity.scim.extension.model.Operation;
-import bka.iam.identity.scim.extension.model.Operation.OperationType;
 import bka.iam.identity.scim.extension.model.PatchRequest;
 import bka.iam.identity.scim.extension.model.ResourceDescriptor;
 import bka.iam.identity.scim.extension.model.SearchRequest;
+import bka.iam.identity.scim.extension.oim.Option.SortOrder;
+import bka.iam.identity.scim.extension.oim.UserService;
 import bka.iam.identity.scim.extension.parser.Marshaller;
 import bka.iam.identity.scim.extension.parser.ResponseBuilder;
 import bka.iam.identity.scim.extension.parser.Unmarshaller;
-import bka.iam.identity.scim.extension.parser.UserParser;
 import bka.iam.identity.scim.extension.resource.User;
 import bka.iam.identity.scim.extension.rest.HTTPContext;
 import bka.iam.identity.scim.extension.rest.OIMSchema;
@@ -67,11 +67,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 
@@ -232,30 +230,27 @@ public class UserEndpoint extends AbstractEndpoint {
     final String method = "search";
     this.entering(method);
 
-    bka.iam.identity.scim.extension.model.ListResponse<User> listResponse = null;
     boolean            excludeApplicationsAttribute = excludeApplicationsAttribute(omit, emit);
     
-    final String requesterId = httpRequest.getRemoteUser();
+    final ListResponse<User> listResponse = new ListResponse<>();
+    final List<User>         users        = UserService.build(count, startIndex, sortBy, SortOrder.fromString(sortOrder), emit, omit).searchResource(null);
+    
+    for (User user : users) {
+      listResponse.add(user);
+    }
+    
+    if (startIndex != null)
+    listResponse.setStartIndex(startIndex);
+    
+    listResponse.setTotalResult(UserService.build(emit, omit).count());
     
     
-    final Map<String, Object> option = getQueryParameter(httpRequest, OIMScimContext.ATTRIBUTE_QUERY_PARAM,
-                                                                      OIMScimContext.EXCLUDE_ATTRIBUTE_QUERY_PARAM);
-    
-    
-    
-    // Scope the search from the requester
-    if (requesterId != null && !requesterId.equals("xelsysadm"))
-      option.put(OIMScimContext.FILTER_ATTRIBUTE_QUERY_PARAM, "");
-    
-    listResponse = OIMScimContext.build(this, httpRequest).searchUsers(option)
-                                                          .invokeList(User.class);;
-    
-    for (User user : listResponse.getResources()) {
+    /*for (User user : listResponse.getResources()) {
       if (user.getUserName() != null)
         user.setId(user.getUserName());
       if (!excludeApplicationsAttribute)
         UserParser.apppendApplicationExtension(user, sc.getUserPrincipal().getName(), this.facade);
-    }
+    }*/
 
     this.exiting(method, listResponse);
     return bka.iam.identity.scim.extension.parser.ResponseBuilder.response(200, listResponse, omit, emit, null, null);
@@ -352,7 +347,6 @@ public class UserEndpoint extends AbstractEndpoint {
     this.entering(method);
     bka.iam.identity.scim.extension.resource.User   user = null;
     String userKey = null;
-    
     try {
       userKey = this.facade.getUserKey(id);
       
@@ -367,15 +361,16 @@ public class UserEndpoint extends AbstractEndpoint {
     final Map<String, Object> option = getQueryParameter(httpRequest, OIMScimContext.ATTRIBUTE_QUERY_PARAM,
                                                                       OIMScimContext.EXCLUDE_ATTRIBUTE_QUERY_PARAM);
     
-    //boolean excludeApplicationsAttribute = excludeApplicationsAttribute(omit, emit);
+    boolean excludeApplicationsAttribute = excludeApplicationsAttribute(omit, emit);
     
-    user = bka.iam.identity.scim.extension.rest.OIMScimContext.build(this, httpRequest).lookupUser(userKey, option);
+    user = UserService.build(emit, omit).lookupUserLogin(id);
+      //bka.iam.identity.scim.extension.rest.OIMScimContext.build(this, httpRequest).lookupUser(userKey, option);
     // Override resource ID with the userlogin  
-    user.setId(id);
+    //user.setId(id);
     
-    //if (!excludeApplicationsAttribute) {
+    /*if (!excludeApplicationsAttribute) {
       UserParser.apppendApplicationExtension(user, sc.getUserPrincipal().getName(), this.facade);
-    //}
+    }*/
     
     this.exiting(method, user);
     return bka.iam.identity.scim.extension.parser.ResponseBuilder.response(200, user, omit, emit);
@@ -438,8 +433,8 @@ public class UserEndpoint extends AbstractEndpoint {
         throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, ScimException.ScimType.INVALID_VALUE, ScimBundle.format(ScimMessage.ATTRIBUTE_MANDATORY, "givenName"));
       }
       
-      user = OIMScimContext.build(this, httpRequest).createUser(user, option);
-      user.setId(user.getUserName());
+      //user = UserUtil.createUser(user, uriInfo);
+      user = UserService.build(emit, omit).createResource(user);
 
       return ResponseBuilder.response(201, user, null, null);
     }
@@ -453,19 +448,10 @@ public class UserEndpoint extends AbstractEndpoint {
   
   private String getMissingRequiredAttribute(final User user) {
     List<String> requiredAttribute = user.getRegisterResourceDescriptor().getRequiredAttributeName();
-    
+    System.out.println("Required Attriubte: " + requiredAttribute);
     for (String requiredAttributeName : requiredAttribute) {
-      if (user.getAttributeValue(requiredAttributeName) == null) {
-        final int pos = requiredAttributeName.lastIndexOf(".");
-        if (pos == -1)
-          return requiredAttributeName;
-        if (user.getAttributeValue(requiredAttributeName.substring(0, pos)) == null && !requiredAttribute.contains(requiredAttributeName.substring(0, pos))) {
-          return null;
-        }
-        else {
-          return requiredAttributeName;
-        }
-      }
+      if (user.getAttributeValue(requiredAttributeName) == null)
+        return requiredAttributeName;
     }
     return null;
   }
@@ -525,7 +511,9 @@ public class UserEndpoint extends AbstractEndpoint {
       
       user = Unmarshaller.jsonNodeToResource((JsonNode)new ObjectMapper().readTree(is), resourceDescriptor, User.class);
       //user.setId(userKey);
-      user = OIMScimContext.build(this, httpRequest).modifyUser(userKey, user);
+      //user = OIMScimContext.build(this, httpRequest).modifyUser(userKey, user);
+      user = UserService.build(emit, omit).replaceResource(id, user);
+      //user= UserUtil.modifyUser(userKey, user, uriInfo);
      }
     catch (IOException e) {
       throw new ScimException(HTTPContext.StatusCode.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -590,44 +578,57 @@ public class UserEndpoint extends AbstractEndpoint {
     }
   
     PatchRequest patchRequest;
-    User user = bka.iam.identity.scim.extension.rest.OIMScimContext.build(this, httpRequest).lookupUser(userKey, new HashMap<String, Object>());
-    
+    User user = UserService.build(emit, omit).lookupUserLogin(id)  ;// UserUtil.lookupUser(userKey, uriInfo, false);//bka.iam.identity.scim.extension.rest.OIMScimContext.build(this, httpRequest).lookupUser(userKey, new HashMap<String, Object>());
+    System.out.println("Pathing the following user: " + user);
     List<String> requiredAttribute = resourceDescriptor.getRequiredReadWriteName();
     List<String> specialAttributeHandling = Arrays.asList("urn:ietf:params:scim:schemas:extension:oracle:2.0:IDM:User:locked", "urn:ietf:params:scim:schemas:core:2.0:User:active", "active");
     
     // Schema violation
-    requiredAttribute = requiredAttribute.stream().filter(attribute ->   !specialAttributeHandling.stream().anyMatch(special -> attribute.startsWith(special))).collect(Collectors.toList());
+    //requiredAttribute = requiredAttribute.stream().filter(attribute ->   !specialAttributeHandling.stream().anyMatch(special -> attribute.startsWith(special))).collect(Collectors.toList());
     
-    User originalUserState = user.copyResourceWithAttribute(requiredAttribute, User.class);
+    //User originalUserState = user.copyResourceWithAttribute(requiredAttribute, User.class);
+    User originalUserState = UserService.build(emit, omit).lookupUserLogin(id);
   
     try {
         patchRequest = Unmarshaller.jsonNodeToPatchRequest(new ObjectMapper().readTree(is));
         for (final Operation operation : patchRequest.getOperations()) {          
-          if (operation.getOperationType().equals(OperationType.REMOVE)) {
+          /*if (operation.getOperationType().equals(OperationType.REMOVE)) {
             // Escape double quotes in the path if needed
             Operation excapedOperation = new Operation(operation.getOperationType(), operation.getPath().replace("\"", "\\\"").replace("\'", "\\\""), operation.getValue());
             OIMScimContext.build(this, httpRequest).replaceUser(userKey, new PatchRequest(OIMSchema.getInstance().getResourceDescriptorByResourceType(PatchRequest.class), Arrays.asList(excapedOperation)));
-          }
-          else if (operation.getOperationType().equals(OperationType.REPLACE) && specialAttributeHandling.stream().anyMatch(special -> operation.getPath().startsWith(special))) {
+          }*/
+          /*if (operation.getOperationType().equals(OperationType.REPLACE) && specialAttributeHandling.stream().anyMatch(special -> operation.getPath().startsWith(special))) {
             OIMScimContext.build(this, httpRequest).replaceUser(userKey, new PatchRequest(OIMSchema.getInstance().getResourceDescriptorByResourceType(PatchRequest.class), Arrays.asList(operation)));
           }
-          else {
+          else {*/
+            System.out.println("Path before: " + user);
             user = user.copyResourceWithAttribute(requiredAttribute, User.class);
+           System.out.println("Path copy before: " + user);
             JsonNode userJson = Marshaller.resourceToJsonNode(user, null, null);
-            JsonNode patchedNode = PatchUtil.applyPatch(userJson, operation);  
-            user = Unmarshaller.jsonNodeToResource(patchedNode, resourceDescriptor , User.class);
-            user = OIMScimContext.build(this, httpRequest).modifyUser(userKey, user);
-          }
+            //try {
+              JsonNode patchedNode = PatchUtil.applyPatch(userJson, operation);
+              System.out.println("Path after: " + patchedNode);
+              user = Unmarshaller.jsonNodeToResource(patchedNode, resourceDescriptor , User.class);
+              
+            /*}
+            catch (ScimException e) {
+              user.addAttribute(operation.getPath(), operation.getValue().getValue().getStringValue());
+            }*/
+           
+            
+            user = UserService.build(emit, omit).modifyResource(id, user, originalUserState);//UserUtil.modifyUser(userKey, user, uriInfo);
+          //}
         }
                 
     } catch (ScimException e) {
       // Revert to original state if needed
-      OIMScimContext.build(this, httpRequest).modifyUser(userKey, originalUserState);
+      //new UserService(emit, omit).modifyResource(originalUserState);
+      //OIMScimContext.build(this, httpRequest).modifyUser(userKey, originalUserState);
       throw e;
     } 
     catch (IOException e) {
       // Revert to original state if needed
-      OIMScimContext.build(this, httpRequest).modifyUser(userKey, originalUserState);
+      //OIMScimContext.build(this, httpRequest).modifyUser(userKey, originalUserState);
       throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, e.getMessage());
     }
     user.setId(id);
@@ -655,7 +656,7 @@ public class UserEndpoint extends AbstractEndpoint {
    * @return the {@link Response} indicating the success of
    * the delete operation.
    *
-   * @throws Exception if an error occurs during the operation.
+   * @throws ScimException if an error occurs during the operation.
    */
   @DELETE
   @Path("/{id}")
@@ -677,7 +678,9 @@ public class UserEndpoint extends AbstractEndpoint {
         throw new ScimException(HTTPContext.StatusCode.NOT_FOUND, ScimBundle.format(ScimMessage.USER_NOTFOUND, id));          
     }
     
-    Response response = OIMScimContext.build(this, httpRequest).deleteUser(userKey);
+    UserService.build().deleteResource(id);
+    
+    Response response = ResponseBuilder.response(HTTPContext.StatusCode.NO_CONTENT.getStatusCode());;
     exiting(method);
     return response;
   }

@@ -6,8 +6,8 @@ import bka.iam.identity.scim.extension.model.AttributeValue;
 import bka.iam.identity.scim.extension.model.ListResponse;
 import bka.iam.identity.scim.extension.model.MultiValueComplexAttribute;
 import bka.iam.identity.scim.extension.model.MultiValueSimpleAttribute;
-import bka.iam.identity.scim.extension.model.Resource;
 import bka.iam.identity.scim.extension.model.ResourceDescriptor;
+import bka.iam.identity.scim.extension.model.ScimResource;
 import bka.iam.identity.scim.extension.model.SingularComplexAttribute;
 import bka.iam.identity.scim.extension.model.SingularSimpleAttribute;
 import bka.iam.identity.scim.extension.rest.HTTPContext;
@@ -97,7 +97,7 @@ public class RequestedAttributePathVisitor implements Visitor<List<Attribute>, A
   }
   
   @Override
-  public List<Attribute> visit(Resource resource) {
+  public List<Attribute> visit(ScimResource resource) {
     attributeNumber = 0;
     index = 0;
      while (attributeNumber < filter.length) {
@@ -199,7 +199,7 @@ public class RequestedAttributePathVisitor implements Visitor<List<Attribute>, A
   }
   
   @Override
-  public <R extends Resource>  ListResponse<R> visit(ListResponse<R> listResource)
+  public <R extends ScimResource>  ListResponse<R> visit(ListResponse<R> listResource)
     throws ScimException {
     
     final List<R> resources = new ArrayList<R>();

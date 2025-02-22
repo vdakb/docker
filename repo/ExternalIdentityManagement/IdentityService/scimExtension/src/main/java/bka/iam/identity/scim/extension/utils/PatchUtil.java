@@ -57,6 +57,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import oracle.hst.platform.core.entity.Path;
+import oracle.hst.platform.core.entity.Path.Segment;
 import oracle.hst.platform.rest.ProcessingException;
 import oracle.hst.platform.rest.entity.PathParser;
 import oracle.hst.platform.rest.schema.Support;
@@ -152,8 +154,10 @@ public class PatchUtil {
   private static void addValue(final ObjectNode resourceNode, final String path, final JsonNode value) throws ScimException {
     List<JsonNode> targetNodes = new ArrayList<>();
     
+    Path pathParsed = null;
     try {
-      targetNodes = Support.matchPath(PathParser.path(path), resourceNode);
+      pathParsed = PathParser.path(path);
+      targetNodes = Support.matchPath(pathParsed, resourceNode);
     }
     catch (ProcessingException e) {
       throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, e);
@@ -165,7 +169,38 @@ public class PatchUtil {
     if (targetNodes.isEmpty()) {
       //if (path.contains("[") && !value.isArray() && !value.isObject())
       //  throw new IllegalArgumentException("Cannot add a value Path: " + path + "does not exist");
-      resourceNode.set(path, value);
+      if (pathParsed != null) {
+        
+        ObjectNode       currentNode =  resourceNode;
+        ObjectNode  newNode = null;
+        if (pathParsed.schemaUrn() != null && !pathParsed.schemaUrn().isEmpty() ) {
+          JsonNode  node = currentNode.get(pathParsed.schemaUrn());
+          if (node == null) {
+            newNode = new ObjectMapper().createObjectNode();
+            currentNode.set(pathParsed.schemaUrn(), newNode);
+            currentNode = newNode;
+          }
+          else {
+            currentNode = (ObjectNode) node;
+          }
+          
+        }
+        for (int i = 0; i < pathParsed.size() - 1; i++) {
+          Segment segment = pathParsed.segment(i);
+          JsonNode  node = currentNode.get(segment.attribute());
+          if (node == null) {
+            newNode = new ObjectMapper().createObjectNode();
+            currentNode.set(segment.attribute(), newNode);
+            currentNode = newNode;
+          }
+          else {
+            currentNode = (ObjectNode) node;
+          }
+        }
+          ((ObjectNode) currentNode).set(pathParsed.segment(pathParsed.size() - 1).attribute(),  value);
+      } else {
+        resourceNode.set(path, value);
+      }
     }
     else {
       JsonNode targetNode = targetNodes.get(0);
@@ -237,7 +272,6 @@ public class PatchUtil {
         }
       }
     }
-    
     throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, ScimType.INVALID_FILTER, ScimBundle.format(ScimMessage.PATCH_PATH_NOT_EXIST, path));
   }
 
@@ -257,7 +291,7 @@ public class PatchUtil {
    */
   private static void replaceValue(final ObjectNode resourceNode, String path, JsonNode value)
   throws ScimException {     
-    
+    System.out.println("ObjectNode value: " + resourceNode);
     if (path == null || path.isEmpty()) {
       if (!value.isObject()) {
         //RFC 7644. Section 3.5.2.3
@@ -270,12 +304,26 @@ public class PatchUtil {
     
     List<JsonNode> targetNodes = new ArrayList<>();
     try {
-      targetNodes = Support.matchPath(PathParser.path(path), resourceNode);
+      /*if(PathParser.path(path).schemaUrn() != null){
+        JsonNode tempNode = resourceNode.path(PathParser.path(path).schemaUrn());
+        for (JsonNode node : tempNode) {
+          targetNodes.add(node);
+          break;
+        }*
+        
+      }
+      else {*/
+        targetNodes = Support.matchPath(PathParser.path(path), resourceNode);
+      
+      System.out.println("targetNodes: " + targetNodes);
     }
     catch (ParseException e) {
       throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, ScimType.INVALID_SYNTAX, e.getMessage());
     }
     catch (ProcessingException e) {
+      throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, ScimType.INVALID_SYNTAX, e.getMessage());
+    }
+    catch (ClassCastException e) {
       throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, ScimType.INVALID_SYNTAX, e.getMessage());
     }
     
@@ -293,7 +341,7 @@ public class PatchUtil {
             if (value.isArray()) {
               for (JsonNode arrayNode : value)
                 ((ArrayNode) parentNode).add((JsonNode)arrayNode);
-            }
+              }
             else {
               ((ArrayNode) parentNode).add((JsonNode)value);
             }
@@ -303,6 +351,9 @@ public class PatchUtil {
           return;
         }
       }
+    } else {
+      addValue(resourceNode, path, value);
+      return;
     }
     
     throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, ScimType.INVALID_FILTER, ScimBundle.format(ScimMessage.PATCH_PATH_NOT_EXIST, path));

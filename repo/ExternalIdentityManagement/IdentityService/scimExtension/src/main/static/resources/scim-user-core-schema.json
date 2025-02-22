@@ -1,9 +1,441 @@
 {
-    "schemas": [
-        "urn:ietf:params:scim:schemas:core:2.0:Schema"
-    ],
-    "id": "urn:ietf:params:scim:schemas:core:2.0:User",
-    "attributes": [{
+   "schemas":[
+      "urn:ietf:params:scim:schemas:core:2.0:Schema"
+   ],
+   "id":"urn:ietf:params:scim:schemas:core:2.0:User",
+   "attributes":[
+      {
+         "name":"userName",
+         "type":"string",
+         "multiValued":false,
+         "description":"Unique identifier for the User",
+         "required":true,
+         "caseExact":false,
+         "mutability":"readWrite",
+         "returned":"default",
+         "uniqueness":"server"
+      },
+      {
+         "name":"name",
+         "type":"complex",
+         "multiValued":false,
+         "description":"The components of the user's real name.",
+         "required":false,
+         "subAttributes":[
+            {
+               "name":"formatted",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            },
+            {
+               "name":"familyName",
+               "type":"string",
+               "multiValued":false,
+               "description":"The family name (last name).",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            },
+            {
+               "name":"givenName",
+               "type":"string",
+               "multiValued":false,
+               "description":"The given name (first name).",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            },
+            {
+               "name":"middleName",
+               "type":"string",
+               "multiValued":false,
+               "description":"The middle name(s).",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            },
+            {
+               "name":"honorificPrefix",
+               "type":"string",
+               "multiValued":false,
+               "description":"Honorific prefix (e.g., Mr., Dr.).",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            },
+            {
+               "name":"honorificSuffix",
+               "type":"string",
+               "multiValued":false,
+               "description":"Honorific suffix (e.g., Jr., PhD).",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            }
+         ],
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
+         "name":"displayName",
+         "type":"string",
+         "multiValued":false,
+         "description":"The name to be displayed.",
+         "required":false,
+         "caseExact":false,
+         "mutability":"readOnly",
+         "returned":"default"
+      },
+      {
+         "name":"nickName",
+         "type":"string",
+         "multiValued":false,
+         "description":"This attribute is ignored by the server.",
+         "required":false,
+         "caseExact":false,
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
+         "name":"profileUrl",
+         "type":"string",
+         "multiValued":false,
+         "description":"This attribute is ignored by the server.",
+         "required":false,
+         "caseExact":false,
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
+         "name":"title",
+         "type":"string",
+         "multiValued":false,
+         "description":"The user's title, such as \"Vice President.\"",
+         "required":false,
+         "caseExact":false,
+         "mutability":"readWrite",
+         "returned":"default",
+         "uniqueness":"none"
+      },
+      {
+         "name":"userType",
+         "type":"string",
+         "multiValued":false,
+         "description":"User type (i.e Full-Time Employee)",
+         "required":false,
+         "caseExact":false,
+         "mutability":"readWrite",
+         "returned":"default",
+         "uniqueness":"none"
+      },
+      {
+         "name":"preferredLanguage",
+         "type":"string",
+         "multiValued":false,
+         "description":"Indicates the User's preferred written or spoken language.",
+         "required":false,
+         "caseExact":false,
+         "mutability":"readWrite",
+         "returned":"default",
+         "uniqueness":"none"
+      },
+      {
+         "name":"locale",
+         "type":"string",
+         "multiValued":false,
+         "description":"This attribute is ignored by the server.",
+         "required":false,
+         "caseExact":false,
+         "mutability":"readWrite",
+         "returned":"default",
+         "uniqueness":"none"
+      },
+      {
+         "name":"timezone",
+         "type":"string",
+         "multiValued":false,
+         "description":"This attribute is ignored by the server.",
+         "required":false,
+         "caseExact":false,
+         "mutability":"readWrite",
+         "returned":"default",
+         "uniqueness":"none"
+      },
+      {
+         "name":"active",
+         "type":"boolean",
+         "multiValued":false,
+         "description":"A Boolean value indicating the User's status",
+         "required":false,
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
+         "name":"password",
+         "type":"string",
+         "multiValued":false,
+         "description":"The User password.  This attribute is intended to be used as a means to specify an initial password when creating a new User or to reset an existing User's password.",
+         "required":false,
+         "caseExact":false,
+         "mutability":"writeOnly",
+         "returned":"never",
+         "uniqueness":"none"
+      },
+      {
+         "name":"emails",
+         "type":"complex",
+         "multiValued":true,
+         "description":"Email addresses for the user.",
+         "required":false,
+         "subAttributes":[
+            {
+               "name":"value",
+               "type":"string",
+               "multiValued":false,
+               "description":"Email address.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            },
+            {
+               "name":"display",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"type",
+               "type":"string",
+               "multiValued":false,
+               "description":"Type of email (only the type work is handle by the server).",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "canonicalValues":[
+                  "work"
+               ]
+            },
+            {
+               "name":"primary",
+               "type":"boolean",
+               "multiValued":false,
+               "description":"Primary email flag.",
+               "required":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            }
+         ],
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
+         "name":"phoneNumbers",
+         "type":"complex",
+         "multiValued":true,
+         "description":"",
+         "mutability":"readWrite",
+         "returned":"default",
+         "uniqueness":"none",
+         "required":false,
+         "caseExact":false,
+         "subAttributes":[
+            {
+               "name":"display",
+               "type":"string",
+               "description":"This attribute is ignored by the server.",
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none",
+               "required":false,
+               "caseExact":false
+            },
+            {
+               "name":"type",
+               "type":"string",
+               "description":"A label indicating the attribute's function (i.e work, cnp)",
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none",
+               "required":false,
+               "caseExact":false,
+               "canonicalValues":[
+                  "work",
+                  "cnp"
+               ]
+            },
+            {
+               "name":"$ref",
+               "type":"reference",
+               "description":"This attribute is ignored by the server.",
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none",
+               "required":false,
+               "caseExact":false
+            },
+            {
+               "name":"value",
+               "type":"string",
+               "description":"Phone number of the User.",
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none",
+               "required":false,
+               "caseExact":false
+            },
+            {
+               "name":"primary",
+               "type":"boolean",
+               "description":"This attribute is ignored by the server.",
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none",
+               "required":false,
+               "caseExact":false
+            }
+         ]
+      },
+      {
+         "name":"ims",
+         "type":"complex",
+         "multiValued":true,
+         "description":"This attribute is ignored by the server.",
+         "required":false,
+         "subAttributes":[
+            {
+               "name":"value",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"display",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"type",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "caseExact":false,
+               "canonicalValues":[
+                  "aim",
+                  "gtalk",
+                  "icq",
+                  "xmpp",
+                  "msn",
+                  "skype",
+                  "qq",
+                  "yahoo"
+               ],
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"primary",
+               "type":"boolean",
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            }
+         ],
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
+         "name":"photos",
+         "type":"complex",
+         "multiValued":true,
+         "description":"This attribute is ignored by the server.",
+         "required":false,
+         "subAttributes":[
+            {
+               "name":"value",
+               "type":"reference",
+               "referenceTypes":[
+                  "external"
+               ],
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"display",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"type",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "caseExact":false,
+               "canonicalValues":[
+                  "photo",
+                  "thumbnail"
+               ],
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"primary",
+               "type":"boolean",
+               "multiValued":false,
+               "description":"This attribute is ignored by the server.",
+               "required":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            }
+         ],
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
             "name": "addresses",
             "type": "complex",
             "multiValued": true,
@@ -74,7 +506,10 @@
                     "returned": "default",
                     "uniqueness": "none",
                     "required": false,
-                    "caseExact": false
+                    "caseExact": false,
+                    "canonicalValues": [
+                        "work"
+                    ]
                 }, {
                     "name": "region",
                     "type": "string",
@@ -113,374 +548,251 @@
                     "caseExact": false
                 }
             ]
-        }, {
-            "name": "preferredLanguage",
-            "type": "string",
-            "multiValued": false,
-            "description": "Indicates the User's preferred written or spoken language. Generally used for selecting a localized User interface. Valid values are concatenation of the ISO 639-1 two letter language code, an underscore, and the ISO 3166-1 2 letter country code; e.g., 'en_US' specifies the language English and country US.",
-            "mutability": "readWrite",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false
-        }, {
-            "name": "timezone",
-            "type": "string",
-            "multiValued": false,
-            "description": "",
-            "mutability": "readWrite",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false
-        }, {
-            "name": "displayName",
-            "type": "string",
-            "multiValued": false,
-            "description": "",
-            "mutability": "readWrite",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false
-        }, {
-            "name": "active",
-            "type": "boolean",
-            "multiValued": false,
-            "description": "",
-            "mutability": "readWrite",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false
-        }, {
-            "name": "groups",
-            "type": "string",
-            "multiValued": true,
-            "description": "A list of groups that the user belongs to, either thorough direct membership, nested groups, or dynamically calculated.  The values are meant to enable expression of common group or role based access control models, although no explicit authorization model is defined.  It is intended that the semantics of group membership and any behavior or authorization granted as a result of membership are defined by the Service Provider.  The Canonical types \"direct\" and \"indirect\" are defined to describe how the group membership was derived.  Direct group membership indicates the User is directly associated with the group and SHOULD indicate that Consumers may modify membership through the Group Resource.  Indirect membership indicates User membership is transitive or dynamic and implies that Consumers cannot modify indirect group membership through the Group resource but MAY modify direct group membership through the Group resource which MAY influence indirect memberships.  If the SCIM Service Provider exposes a Group resource, the value MUST be the \"id\" attribute of the corresponding Group resources to which the user belongs.  Since this attribute is read-only, group membership changes MUST be applied via the Group Resource.",
-            "mutability": "readOnly",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false,
-            "subAttributes": [{
-                    "name": "display",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readOnly",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "type",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readOnly",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "$ref",
-                    "type": "reference",
-                    "description": "",
-                    "mutability": "readOnly",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "value",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readOnly",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "primary",
-                    "type": "boolean",
-                    "description": "",
-                    "mutability": "readOnly",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }
-            ]
-        }, {
-            "name": "userName",
-            "type": "string",
-            "multiValued": false,
-            "description": "",
-            "mutability": "readWrite",
-            "returned": "default",
-            "uniqueness": "server",
-            "required": false,
-            "caseExact": false
-        }, {
-            "name": "title",
-            "type": "string",
-            "multiValued": false,
-            "description": "",
-            "mutability": "readWrite",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false
-        }, {
-            "name": "phoneNumbers",
-            "type": "string",
-            "multiValued": true,
-            "description": "",
-            "mutability": "readWrite",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false,
-            "subAttributes": [{
-                    "name": "display",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "type",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false,
-                    "canonicalValues": [
-                        "work",
-                        "home"
-                    ]
-                }, {
-                    "name": "$ref",
-                    "type": "reference",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "value",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "primary",
-                    "type": "boolean",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }
-            ]
-        }, {
-            "name": "emails",
-            "type": "string",
-            "multiValued": true,
-            "description": "",
-            "mutability": "readWrite",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false,
-            "subAttributes": [{
-                    "name": "display",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "type",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false,
-                    "canonicalValues": [
-                        "work"
-                    ]
-                }, {
-                    "name": "$ref",
-                    "type": "reference",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "value",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "primary",
-                    "type": "boolean",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }
-            ]
-        }, {
-            "name": "password",
-            "type": "string",
-            "multiValued": false,
-            "description": "",
-            "mutability": "writeOnly",
-            "returned": "never",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false
-        }, {
-            "name": "schemas",
-            "type": "string",
-            "multiValued": true,
-            "description": "The schemas attribute is an array of Strings which allows introspection of the supported schema version for a SCIM representation as well any schema extensions supported by that representation.  Each String value must be a unique URI.  This specification defines URIs for User, Group, and a standard \"enterprise\" extension.  All representations of SCIM schema MUST include a non-zero value array with value(s) of the URIs supported by that representation.  Duplicate values MUST NOT be included.  Value order is not specified and MUST not impact behavior.  REQUIRED.",
-            "mutability": "readWrite",
-            "returned": "always",
-            "uniqueness": "none",
-            "required": true,
-            "caseExact": false,
-            "subAttributes": [{
-                    "name": "display",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "type",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "$ref",
-                    "type": "reference",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "value",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "primary",
-                    "type": "boolean",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }
-            ]
-        }, {
-            "name": "name",
-            "type": "complex",
-            "multiValued": false,
-            "description": "",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false,
-            "subAttributes": [{
-                    "name": "formatted",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "familyName",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": true,
-                    "caseExact": false
-                }, {
-                    "name": "givenName",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }, {
-                    "name": "middleName",
-                    "type": "string",
-                    "description": "",
-                    "mutability": "readWrite",
-                    "returned": "default",
-                    "uniqueness": "none",
-                    "required": false,
-                    "caseExact": false
-                }
-            ]
-        }, {
-            "name": "userType",
-            "type": "string",
-            "multiValued": false,
-            "description": "",
-            "mutability": "readWrite",
-            "returned": "default",
-            "uniqueness": "none",
-            "required": false,
-            "caseExact": false
-        }
-    ],
-    "name": "User",
-    "meta": {
-        "location": "$OIG_URL/iam/governance/scim/v1/Schemas/urn:ietf:params:scim:schemas:core:2.0:User",
-        "resourceType": "Schema"
-    },
-    "description": "Oracle User"
+        },
+      {
+         "name":"active",
+         "type":"boolean",
+         "multiValued":false,
+         "description":"Active status.",
+         "required":false,
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
+         "name":"password",
+         "type":"string",
+         "multiValued":false,
+         "description":"User's password.",
+         "required":false,
+         "mutability":"writeOnly",
+         "returned":"never"
+      },
+      {
+         "name":"groups",
+         "type":"complex",
+         "multiValued":true,
+         "description":"A list of groups to which the user belongs, either through direct membership, through nested groups, ordynamically calculated.",
+         "required":false,
+         "subAttributes":[
+            {
+               "name":"value",
+               "type":"string",
+               "multiValued":false,
+               "description":"The identifier of the User's group.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readOnly",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"$ref",
+               "type":"reference",
+               "multiValued":false,
+               "description":"The URI of the corresponding 'Group' resource to which the user belongs.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readOnly",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"display",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is displayed by the server",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readOnly",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"type",
+               "type":"string",
+               "multiValued":false,
+               "description":"A label indicating the attribute's function, e.g., 'direct' or 'indirect'.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readOnly",
+               "returned":"default",
+               "uniqueness":"none"
+            }
+         ],
+         "mutability":"readOnly",
+         "returned":"default"
+      },
+      {
+         "name":"entitlements",
+         "type":"complex",
+         "multiValued":true,
+         "description":"This attribute is not handled by the server.",
+         "required":false,
+         "subAttributes":[
+            {
+               "name":"value",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"display",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"type",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"primary",
+               "type":"boolean",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            }
+         ],
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
+         "name":"roles",
+         "type":"complex",
+         "multiValued":true,
+         "description":"This attribute is not handled by the server.",
+         "required":false,
+         "subAttributes":[
+            {
+               "name":"value",
+               "type":"string",
+               "multiValued":false,
+               "description":"The value of a role.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"display",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"type",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "caseExact":false,
+               "canonicalValues":[
+                  
+               ],
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"primary",
+               "type":"boolean",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            }
+         ],
+         "mutability":"readWrite",
+         "returned":"default"
+      },
+      {
+         "name":"x509Certificates",
+         "type":"complex",
+         "multiValued":true,
+         "description":"This attribute is not handled by the server.",
+         "required":false,
+         "caseExact":false,
+         "subAttributes":[
+            {
+               "name":"value",
+               "type":"binary",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"display",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "caseExact":false,
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"type",
+               "type":"string",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "caseExact":false,
+               "canonicalValues":[
+                  
+               ],
+               "mutability":"readWrite",
+               "returned":"default",
+               "uniqueness":"none"
+            },
+            {
+               "name":"primary",
+               "type":"boolean",
+               "multiValued":false,
+               "description":"This attribute is not handled by the server.",
+               "required":false,
+               "mutability":"readWrite",
+               "returned":"default"
+            }
+         ],
+         "mutability":"readWrite",
+         "returned":"default"
+      }
+   ],
+   "name":"User",
+   "meta":{
+      "location":"$OIG_URL/iam/governance/scim/v1/Schemas/urn:ietf:params:scim:schemas:core:2.0:User",
+      "resourceType":"Schema"
+   },
+   "description":"Oracle User"
 }

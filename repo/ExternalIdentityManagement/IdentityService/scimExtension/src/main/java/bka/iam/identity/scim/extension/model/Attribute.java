@@ -127,7 +127,7 @@ public abstract class Attribute {
    */
   public AttributeValue[] getValues() {
     if (this.values != null)
-      return this.values.clone();
+      return this.values;
     return new AttributeValue[0];
   }
   
@@ -164,7 +164,7 @@ public abstract class Attribute {
    */
   public AttributeValue getValue() {
     if (this.values != null && this.values.length != 0)
-      return (AttributeValue) values[0].clone();
+      return (AttributeValue) values[0];
     return null;
   }
 
@@ -182,6 +182,14 @@ public abstract class Attribute {
   public AttributeValue setValue(final AttributeValue value) {
     this.values[0] = value.clone();
     return this.values[0];
+  }
+  
+  public AttributeValue[] setValue(final AttributeValue[] value) {
+    this.values = new AttributeValue[value.length];
+    for (int i = 0; i < value.length; i ++) {
+      this.values[i] = value[i];
+    }
+    return this.values;
   }
   
   //////////////////////////////////////////////////////////////////////////////

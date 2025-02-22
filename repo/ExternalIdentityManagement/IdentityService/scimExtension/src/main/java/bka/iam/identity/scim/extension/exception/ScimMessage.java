@@ -85,15 +85,23 @@ public interface ScimMessage {
   static final String DUPLICATE_CANONICAL_VALUE        = PREFIX + "000014";
   static final String VALUE_NOT_ALLOWED                = PREFIX + "000015";
   static final String VALUE_ALREADY_EXIST              = PREFIX + "000016";
+  static final String ENTITY_NOT_FOUND                 = PREFIX + "000017";
+  
   
   // 00101 - 00201 User related errors
   static final String USER_NOTFOUND                    = PREFIX + "00101";
   static final String USER_NOT_AUTHORIZED              = PREFIX + "00102";
+  static final String USER_CANNOT_CREATE               = PREFIX + "00103";
+  static final String USER_CANNOT_DELETE               = PREFIX + "00104";
   
   // 00201 - 00300 Group related errors
   static final String GROUP_NOTFOUND                   = PREFIX + "00201";
   static final String GROUP_OPERATION_ONLY_MEMBER      = PREFIX + "00202";
-  static final String GROUP_CANNOT_DELETE              = PREFIX + "00203";
+  static final String GROUP_CANNOT_CREATE              = PREFIX + "00203";
+  static final String GROUP_CANNOT_DELETE              = PREFIX + "00204";
+  static final String GROUP_PUT_NOT_SUPPORTED          = PREFIX + "00205";
+  static final String GROUP_CREATE_NOT_SUPPORTED       = PREFIX + "00206";
+  static final String GROUP_MEMBER_DUPLICATE           = PREFIX + "00207";
   
   // 00301 - 00400 Group related errors
   static final String POLICY_NOTFOUND                  = PREFIX + "00301";

@@ -21,12 +21,14 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import oracle.hst.foundation.SystemWatch;
 import oracle.hst.foundation.logging.Loggable;
 import oracle.hst.foundation.logging.Logger;
 import oracle.hst.foundation.utility.ClassUtility;
 import oracle.hst.foundation.utility.DateUtility;
 
 import oracle.iam.identity.foundation.TaskException;
+import oracle.iam.identity.foundation.resource.TaskBundle;
 
 public abstract class AbstractEndpoint implements Loggable {
 
@@ -42,6 +44,9 @@ public abstract class AbstractEndpoint implements Loggable {
 
   private final String prefix;
   private final Logger logger;
+  
+  /** the system watch to gather performance metrics */
+  protected final SystemWatch    watch;
 
   //////////////////////////////////////////////////////////////////////////////
   // Constructors
@@ -60,6 +65,7 @@ public abstract class AbstractEndpoint implements Loggable {
   protected AbstractEndpoint() {
     this(LOGGER_CATEGORY);
   }
+  
   //////////////////////////////////////////////////////////////////////////////
   // Method:   Ctor
   /**
@@ -74,7 +80,9 @@ public abstract class AbstractEndpoint implements Loggable {
 
     // initialize instance attributes
     this.prefix = ClassUtility.shortName(this);
-    this.logger    = Logger.create(loggerCategory);
+    this.logger = Logger.create(loggerCategory);
+    
+    this.watch    = new SystemWatch(LOGGER_CATEGORY);
   }
 
   //////////////////////////////////////////////////////////////////////////////
@@ -467,6 +475,40 @@ public abstract class AbstractEndpoint implements Loggable {
     catch (UnsupportedEncodingException e) {
       throw new ScimException(HTTPContext.StatusCode.INTERNAL_SERVER_ERROR, e.getMessage());
     }
+  }
+  
+    //////////////////////////////////////////////////////////////////////////////
+  // Method:   timerStart
+  /**
+   ** Starts a timer for a named task.
+   ** <p>
+   ** The results are undefined if {@link #timerStop(String)} or timing methods
+   ** are called without invoking this method.
+   **
+   ** @param  name               the name of the task to start
+   **
+   ** @see    #timerStop(String)
+   */
+  protected void timerStart(final String name) {
+    // start the task to gather performance metrics
+    this.watch.start(TaskBundle.location(this.getClass(), name));
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Method:   timerStop
+  /**
+   ** Stops a timer for a named task.
+   ** <p>
+   ** The results are undefined if {@link #timerStop(String)} or timing methods
+   ** are called without invoking this method.
+   **
+   ** @param  name               the name of the task to start
+   **
+   ** @see    #timerStart(String)
+   */
+  protected void timerStop(final String name) {
+    // stop the task timer from gathering performance metrics
+    this.watch.stop(TaskBundle.location(this.getClass(), name));
   }
 
   

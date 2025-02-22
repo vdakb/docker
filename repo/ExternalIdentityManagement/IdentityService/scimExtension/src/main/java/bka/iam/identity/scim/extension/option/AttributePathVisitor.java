@@ -44,6 +44,8 @@ import bka.iam.identity.scim.extension.model.ListResponse;
 import bka.iam.identity.scim.extension.model.MultiValueComplexAttribute;
 import bka.iam.identity.scim.extension.model.MultiValueSimpleAttribute;
 import bka.iam.identity.scim.extension.model.Resource;
+import bka.iam.identity.scim.extension.model.SchemaAttribute;
+import bka.iam.identity.scim.extension.model.ScimResource;
 import bka.iam.identity.scim.extension.model.SingularComplexAttribute;
 import bka.iam.identity.scim.extension.model.SingularSimpleAttribute;
 
@@ -81,6 +83,10 @@ public class AttributePathVisitor implements Visitor<Set<String>, String> {
   
   // Constructing attribute paths during subcalling.
   private StringBuilder builder;
+  
+  private SchemaAttribute schemaAttribute;
+  
+  private SchemaAttribute schemaAttributeWithCanonicalValue;
 
   //////////////////////////////////////////////////////////////////////////////
   // Constructors
@@ -131,12 +137,20 @@ public class AttributePathVisitor implements Visitor<Set<String>, String> {
    **                             Possible object is {@link Set}.
    */
   @Override
-  public Set<String> visit(Resource resource) {
+  public Set<String> visit(ScimResource resource) {
     final Iterator<Attribute> attributes = resource.iterator();
+    
     while (attributes.hasNext()) {
       final Attribute attribute = attributes.next();
-      this.builder = new StringBuilder();
-      attribute.accept(this);
+      if (attribute.getName().equalsIgnoreCase("schemas")) {
+        continue;
+      }
+      schemaAttribute = resource.getResourceDescriptor().get(attribute.getName());
+      
+      if (schemaAttribute != null) {
+        this.builder = new StringBuilder();
+        attribute.accept(this);
+      }
     }
     return attributeName;
   }
@@ -172,7 +186,7 @@ public class AttributePathVisitor implements Visitor<Set<String>, String> {
   }
   
   @Override
-  public <R extends Resource>  ListResponse<R> visit(ListResponse<R> listResource)
+  public <R extends ScimResource>  ListResponse<R> visit(ListResponse<R> listResource)
     throws ScimException {
     return null;
   }
@@ -190,27 +204,68 @@ public class AttributePathVisitor implements Visitor<Set<String>, String> {
 
   public void visitSingularComplex(SingularComplexAttribute attribute) {
     addAttributeToBuilder(attribute, false);
+    SchemaAttribute parentSchema = schemaAttribute;
     for (AttributeValue values : attribute.getValues()) {
+      
       Attribute[] subAttribute = values.getSubAttributes();
         for (Attribute subValue : subAttribute) {
-          StringBuilder temporaryBuilder = new StringBuilder(this.builder);
-          subValue.accept(this);
-          this.builder = new StringBuilder(temporaryBuilder);
+          schemaAttribute = schemaAttribute.getSubSchemaAttribute(subValue.getName());
+          if (schemaAttribute != null) {
+            StringBuilder temporaryBuilder = new StringBuilder(this.builder);
+            subValue.accept(this);
+            this.builder = new StringBuilder(temporaryBuilder);
+          }
+          schemaAttribute = parentSchema;
         }
+      
     }
   }
 
   public void visitMultiValueComplex(MultiValueComplexAttribute attribute) {
+    
     final AttributeValue[] values = attribute.getValues();
     addAttributeToBuilder(attribute, false);
+    schemaAttributeWithCanonicalValue = getSchemaAttributeWithCanonicalValue(schemaAttribute);
+    String index = "";
+    
+    int i = 0;
+    StringBuilder parentStringBuilder = new StringBuilder(this.builder);
     for (AttributeValue value : values) {
+      
       Attribute[] listAttribute = value.getSubAttributes();
       for (Attribute subValue : listAttribute) {
-        StringBuilder temporaryBuilder = new StringBuilder(this.builder);
-        subValue.accept(this);
-        this.builder = new StringBuilder(temporaryBuilder);
+          if (subValue.getName().equalsIgnoreCase(schemaAttributeWithCanonicalValue.getName())) {
+            index = subValue.getValue().getStringValue();
+          }
       }
+      SchemaAttribute parentSchema = schemaAttribute;
+      StringBuilder array = new StringBuilder();
+      if (schemaAttributeWithCanonicalValue != null) {
+        array.append("[");
+        array.append(index);
+        array.append("]");
+      }
+      else {
+        array.append("[");
+        array.append(i);
+        array.append("]");
+      }
+      this.builder.insert(this.builder.length() - 1, array);
+      for (Attribute subValue : listAttribute) {
+        schemaAttribute = parentSchema.getSubSchemaAttribute(subValue.getName());
+        if (schemaAttribute != null) {
+          if (schemaAttributeWithCanonicalValue != null && !schemaAttributeWithCanonicalValue.getName().equalsIgnoreCase(subValue.getName())) {
+            StringBuilder temporaryBuilder = new StringBuilder(this.builder);
+            subValue.accept(this);
+            this.builder = new StringBuilder(temporaryBuilder);
+          }
+        }
+      }
+      schemaAttribute = parentSchema;
+      this.builder = new StringBuilder(parentStringBuilder);
     }
+    i++;
+    schemaAttributeWithCanonicalValue = null;
   }
 
   public void visitMultiValueSimple(MultiValueSimpleAttribute attribute) {
@@ -230,6 +285,15 @@ public class AttributePathVisitor implements Visitor<Set<String>, String> {
    ** @param end                  Whether this is the final attribute in the path.
    */
   private void addAttributeToBuilder(Attribute attribute, Boolean end) {
+    if (schemaAttribute.getCanonicalValues().length != 0) {
+      if (attribute.getName().equalsIgnoreCase(schemaAttribute.getName())) {
+        StringBuilder appendIndex = new StringBuilder(builder.toString().substring(0, builder.toString().length() - 2));
+        appendIndex.append("[");
+        appendIndex.append(attribute.getValue().getStringValue());
+        appendIndex.append("]");
+        builder = appendIndex.append(".");
+      }
+    }
     if (attribute.getName().contains(":"))
       builder.append(attribute.getName() + ":");
     else if (!end)
@@ -238,4 +302,18 @@ public class AttributePathVisitor implements Visitor<Set<String>, String> {
       builder.append(attribute.getName());
     }
   }
+  
+  private SchemaAttribute getSchemaAttributeWithCanonicalValue(final SchemaAttribute schemaAttribute) {
+    SchemaAttribute[] subSchemaAttributes = schemaAttribute.getSubAttributes();
+    
+    for (SchemaAttribute subSchemaAttribute : subSchemaAttributes) {
+      if (subSchemaAttribute.getCanonicalValues() != null && subSchemaAttribute.getCanonicalValues().length > 0) {
+        return subSchemaAttribute;
+      }
+    }
+    
+    return null;
+    // throw new ScimException(HTTPContext.StatusCode.INTERNAL_SERVER_ERROR, "Cannot find cannonical value");
+  }
+  
 }

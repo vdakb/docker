@@ -6,8 +6,8 @@ import bka.iam.identity.scim.extension.model.AttributeValue;
 import bka.iam.identity.scim.extension.model.ListResponse;
 import bka.iam.identity.scim.extension.model.MultiValueComplexAttribute;
 import bka.iam.identity.scim.extension.model.MultiValueSimpleAttribute;
-import bka.iam.identity.scim.extension.model.Resource;
 import bka.iam.identity.scim.extension.model.ResourceDescriptor;
+import bka.iam.identity.scim.extension.model.ScimResource;
 import bka.iam.identity.scim.extension.model.SingularComplexAttribute;
 import bka.iam.identity.scim.extension.model.SingularSimpleAttribute;
 import bka.iam.identity.scim.extension.rest.HTTPContext;
@@ -62,7 +62,7 @@ public class ExcludeAttributeVisitor implements Visitor<List<Attribute>, Attribu
   }
   
   @Override
-  public List<Attribute> visit(Resource resource) {
+  public List<Attribute> visit(ScimResource resource) {
     final List<Attribute> excludedAttributes = new LinkedList<>();
     while (attributeNumber < filter.length) {
       for (Attribute attribute : resource) {
@@ -148,7 +148,7 @@ public class ExcludeAttributeVisitor implements Visitor<List<Attribute>, Attribu
   }
 
   @Override
-  public <R extends Resource>  ListResponse<R> visit(ListResponse<R> listResource)
+  public <R extends ScimResource>  ListResponse<R> visit(ListResponse<R> listResource)
     throws ScimException {
     
     List<R> filteredResources  = new ArrayList<R>();

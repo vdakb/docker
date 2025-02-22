@@ -11,7 +11,7 @@ import bka.iam.identity.scim.extension.model.SingularSimpleAttribute;
 import bka.iam.identity.scim.extension.parser.Marshaller;
 import bka.iam.identity.scim.extension.rest.HTTPContext;
 import bka.iam.identity.scim.extension.rest.OIMScimContext;
-import bka.iam.identity.scim.extension.utils.WLSUtil;
+import bka.iam.identity.scim.extension.rest.RequestContext;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,7 +35,6 @@ public class Group extends ScimResource {
   }
   
   public Attribute getMembers() {
-    System.out.println("Member: " + get("members"));
     return get("members");
   }
   
@@ -66,7 +65,7 @@ public class Group extends ScimResource {
     LinkedList<Attribute> attribute = new LinkedList<>();
     
     attribute.add(new SingularSimpleAttribute("value", new AttributeValue(userId)));
-    attribute.add(new SingularSimpleAttribute("$ref", new AttributeValue(WLSUtil.getOIMUrl() + OIMScimContext.OIM_EXTENTION_ENDPOINT_SCIM + "/" + OIMScimContext.ENDPOINT_USERS  + "/" + userId)));
+    attribute.add(new SingularSimpleAttribute("$ref", new AttributeValue(RequestContext.getUriInfo().getRequestUri().toString() + "/" + OIMScimContext.ENDPOINT_USERS  + "/" + userId)));
 
     final Attribute members = getMembers();
     

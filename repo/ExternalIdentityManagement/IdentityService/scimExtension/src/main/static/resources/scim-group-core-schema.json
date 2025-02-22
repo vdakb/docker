@@ -1,0 +1,151 @@
+{
+    "schemas": [
+        "urn:ietf:params:scim:schemas:core:2.0:Schema"
+    ],
+    "id": "urn:ietf:params:scim:schemas:core:2.0:Group",
+    "attributes": [
+        {
+            "name": "displayName",
+            "type": "string",
+            "multiValued": false,
+            "description": "",
+            "mutability": "readWrite",
+            "returned": "default",
+            "uniqueness": "none",
+            "required": true,
+            "caseExact": false
+        },
+        {
+            "name": "schemas",
+            "type": "string",
+            "multiValued": true,
+            "description": "The schemas attribute is an array of Strings which allows introspection of the supported schema version for a SCIM representation as well any schema extensions supported by that representation.  Each String value must be a unique URI.  This specification defines URIs for User, Group, and a standard \"enterprise\" extension.  All representations of SCIM schema MUST include a non-zero value array with value(s) of the URIs supported by that representation.  Duplicate values MUST NOT be included.  Value order is not specified and MUST not impact behavior.  REQUIRED.",
+            "mutability": "readWrite",
+            "returned": "always",
+            "uniqueness": "none",
+            "required": true,
+            "caseExact": false,
+            "subAttributes": [
+                {
+                    "name": "display",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+                {
+                    "name": "type",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+                {
+                    "name": "$ref",
+                    "type": "reference",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+                {
+                    "name": "value",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+                {
+                    "name": "primary",
+                    "type": "boolean",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }
+            ]
+        },
+        {
+            "name": "members",
+            "type": "complex",
+            "multiValued": true,
+            "description": "A list of members of the Group.  Canonical Types \"User\" and \"Group\" are READ-ONLY.  The \"value\" sub-attribute must be the \"id\" and the \"$ref\" sub-attribute must be the URI of a SCIM resource, either a User, or a Group.  The intention of the Group type is to allow the Service Provider to support nested Groups.  Service Providers MAY require Consumers to provide a non-empty members value based on the \"required\" sub attribute of the \"members\" attribute in Group Resource Schema.",
+            "mutability": "readWrite",
+            "returned": "default",
+            "uniqueness": "none",
+            "required": false,
+            "caseExact": false,
+            "subAttributes": [
+                {
+                    "name": "display",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+                {
+                    "name": "type",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+                {
+                    "name": "$ref",
+                    "type": "reference",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+                {
+                    "name": "value",
+                    "type": "string",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                },
+                {
+                    "name": "primary",
+                    "type": "boolean",
+                    "description": "",
+                    "mutability": "readWrite",
+                    "returned": "default",
+                    "uniqueness": "none",
+                    "required": false,
+                    "caseExact": false
+                }
+            ]
+        }
+    ],
+    "name": "Group",
+    "meta": {
+        "location": "http://oig.silverid.fr:14000/iam/governance/scim/v1/Schemas/urn:ietf:params:scim:schemas:core:2.0:Group",
+        "resourceType": "Schema"
+    },
+    "description": "Oracle Group"
+}

@@ -36,8 +36,6 @@
 */
 package bka.iam.identity.scim.extension.model;
 
-import bka.iam.identity.scim.extension.option.AttributeVisitor;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -127,7 +125,7 @@ public abstract class Resource implements Iterable<Attribute> {
     return null;
   }
   
-  public final Attribute getAttribute(final String path) {
+  /*public final Attribute getAttribute(final String path) {
     final List<String> attributeName = new ArrayList<>();
     attributeName.add(path);
     
@@ -138,7 +136,7 @@ public abstract class Resource implements Iterable<Attribute> {
       return attribute;
     }
     return null;
-  }
+  }*/
 
 
   //////////////////////////////////////////////////////////////////////////////
@@ -160,20 +158,7 @@ public abstract class Resource implements Iterable<Attribute> {
     return "";
   }*/
   
-  public final String getAttributeValue(final String path) {
-    final List<String> attributeName = new ArrayList<>();
-    attributeName.add(path);
-    
-    final AttributeVisitor visitor = new AttributeVisitor(attributeName);
-    List<Attribute> selectedAttribute = visitor.visit(this);
-    if (selectedAttribute.size() > 0) {
-      Attribute attribute = selectedAttribute.get(0);
-      if (attribute.getValue() != null)
-        return (String) attribute.getValue().getValue();
-      return attribute.getValues().toString();
-    }
-    return null;
-  }
+
 
   //////////////////////////////////////////////////////////////////////////////
   // Method:   set
@@ -194,6 +179,7 @@ public abstract class Resource implements Iterable<Attribute> {
     }
     attributes.add(new SingularSimpleAttribute(key, new AttributeValue(value)));
   }
+
 
   //////////////////////////////////////////////////////////////////////////////
   // Method:   add

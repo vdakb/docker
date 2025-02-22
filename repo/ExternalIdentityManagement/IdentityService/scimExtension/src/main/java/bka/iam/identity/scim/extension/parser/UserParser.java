@@ -89,7 +89,7 @@ public class UserParser {
         }
 
         final MultiValueComplexAttribute applications      = new MultiValueComplexAttribute("applications", apps.toArray(new AttributeValue[0]));
-        final SingularComplexAttribute   applicationSchema = new SingularComplexAttribute(User.SCHEMAS[4], new AttributeValue(applications));
+        final SingularComplexAttribute   applicationSchema = new SingularComplexAttribute(User.SCHEMAS[3], new AttributeValue(applications));
         user.add(applicationSchema.clone());
         user.addSchema(ScimConstants.USER_APPLICATION_SCHEMA_URN);
         //setUserApplicationAndSchema(user, appExtension);

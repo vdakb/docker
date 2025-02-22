@@ -469,14 +469,13 @@ public class SchemaDescriptor implements Iterable<SchemaAttribute> {
    */
   private List<String> getSubReadWriteAttributeKey(final String parentKey, final SchemaAttribute schemaAttribute, final Boolean rootLevel) {
     List<String> keys = new ArrayList<String>();
-    System.out.println("Visiting " + schemaAttribute.getName() + " | SubAttribute lenght:" + schemaAttribute.getSubAttributes().length);
     if (schemaAttribute.getSubAttributes().length == 0) {
-      if (schemaAttribute.getMutability().equals("readWrite")) {
+      //if (schemaAttribute.getMutability().equals("readWrite")) {
         if (parentKey != null)
           keys.add(rootLevel ? parentKey + ":" + schemaAttribute.getName() : parentKey + "." + schemaAttribute.getName());
         else
           keys.add(schemaAttribute.getName());
-      }
+      //}
     }
     else {
       for (SchemaAttribute subSchemaAttribute : schemaAttribute.getSubAttributes()) {

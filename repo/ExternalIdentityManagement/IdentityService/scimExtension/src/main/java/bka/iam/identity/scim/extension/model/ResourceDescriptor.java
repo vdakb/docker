@@ -228,6 +228,7 @@ public class ResourceDescriptor implements Iterable<SchemaDescriptor> {
         schema.setReturned("default");
         schema.setRequired(false);
         schema.setMultiValued(false);
+        schema.setType("complex");
         schema.setSubAttributes(descriptor.getAttributes().toArray(new SchemaAttribute[0]));
         return schema;
       }

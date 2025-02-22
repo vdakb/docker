@@ -36,16 +36,20 @@
 package bka.iam.identity.scim.extension.model;
 
 import bka.iam.identity.scim.extension.exception.ScimException;
+import bka.iam.identity.scim.extension.exception.ScimMessage;
+import bka.iam.identity.scim.extension.exception.resource.ScimBundle;
+import bka.iam.identity.scim.extension.option.AttributeVisitor;
 import bka.iam.identity.scim.extension.parser.Marshaller;
 import bka.iam.identity.scim.extension.parser.Unmarshaller;
+import bka.iam.identity.scim.extension.rest.HTTPContext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.URI;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -191,6 +195,21 @@ public abstract class ScimResource extends Resource {
     return get(SCHEMA);
   }
   
+  public final String getAttributeValue(final String path) {
+    final List<String> attributeName = new ArrayList<>();
+    attributeName.add(path);
+    
+    final AttributeVisitor visitor = new AttributeVisitor(attributeName);
+    List<Attribute> selectedAttribute = visitor.visit(this);
+    if (selectedAttribute.size() > 0) {
+      Attribute attribute = selectedAttribute.get(0);
+      if (attribute.getValue() != null)
+        return (String) attribute.getValue().getValue();
+      return attribute.getValues().toString();
+    }
+    return null;
+  }
+  
   //////////////////////////////////////////////////////////////////////////////
   // Method:   addSchema
   /**
@@ -198,8 +217,367 @@ public abstract class ScimResource extends Resource {
    */
   public void addSchema(final String value) {
     Attribute schemaValue = get(SCHEMA);
-    schemaValue.addValue(new AttributeValue(value));
+    if (schemaValue != null)
+      schemaValue.addValue(new AttributeValue(value));
+    else {
+      this.add(new MultiValueSimpleAttribute(SCHEMA, Arrays.asList(new AttributeValue(value)).toArray(new AttributeValue[0])));
+    }
   }
+  
+  public void addAttribute(String key, final Object value)
+    throws ScimException {
+    final List<String> path = new LinkedList<>();
+  
+    for (String schema : getSchemaList()) {
+      if (key.startsWith(schema)) {
+        path.add(schema);
+        key = key.substring(schema.length() + 1);
+        break;
+      }
+    }
+  
+    Collections.addAll(path, key.split("\\."));
+    SchemaAttribute schemaAttribute = null;
+    Attribute currentAttribute = null;
+    AttributeValue currentAttributeValue = null;
+
+  
+    for (int i = 0; i < path.size(); i++) {
+      String currentPath = path.get(i);
+     
+      
+      boolean isMultiValueComplex = path.get(i).matches("(.+)\\[((.+))\\]");
+      String index = "-1";
+      
+      if (isMultiValueComplex) {
+        index = currentPath.substring(currentPath.indexOf("[") + 1, currentPath.indexOf("]"));
+        currentPath = currentPath.substring(0, currentPath.indexOf("[")); 
+      }
+      
+       if (i == 0) {
+        schemaAttribute = this.descriptor.get(currentPath);
+        currentAttribute = this.get(currentPath);
+      } else {
+        schemaAttribute = schemaAttribute.getSubSchemaAttribute(currentPath);
+      }
+        
+      if (schemaAttribute == null) {
+        throw new ScimException(HTTPContext.StatusCode.BAD_GATEWAY, ScimBundle.format(ScimMessage.ATTRIBUTE_SCHEMA_NOTFOUND, currentPath));
+      }
+  
+      // Check schema attribute exist
+  
+      if (i == path.size() - 1) {
+        if (currentAttribute == null) {
+          Attribute attribute = null;
+          if (schemaAttribute.getType().equalsIgnoreCase("complex")) {
+            if (schemaAttribute.getMultiValued() == true) {
+              // Create MCV
+              System.out.println("Add Multi Complexe value: " + value);
+              currentAttribute = new MultiValueComplexAttribute(currentPath, (AttributeValue[]) value);
+              this.add(currentAttribute);
+              
+            } else {
+              // Create SCV
+              currentAttributeValue = new AttributeValue(new Attribute[0]);
+              attribute = new SingularComplexAttribute(currentPath, currentAttributeValue);
+              currentAttribute = attribute;
+              this.add(currentAttribute);
+            }
+          } else {
+            if (schemaAttribute.getMultiValued() == true) {
+              // Create MVS
+            } else {
+              // Create SSV
+                attribute = new SingularSimpleAttribute(currentPath, new AttributeValue(value));
+                currentAttributeValue = attribute.getValue();
+                currentAttribute = attribute;
+                this.add(currentAttribute);
+            }
+          }
+  
+        } else {
+          if (schemaAttribute.getType().equalsIgnoreCase("complex")) {
+            if (schemaAttribute.getMultiValued() == true) {
+              List<AttributeValue> attributeValues = new LinkedList<AttributeValue>(Arrays.asList(currentAttribute.getValues()));
+              if (value != null)
+                attributeValues.add((AttributeValue) value);
+              currentAttribute.setValue(attributeValues.toArray(new AttributeValue[0]));
+            } else {
+              // Create SCV
+            }
+          } else {
+            if (schemaAttribute.getMultiValued() == true) {
+              // Create MVS
+            } else {
+              // Create SSV
+              List<Attribute> attributes = new ArrayList<>(Arrays.asList(currentAttributeValue.getSubAttributes()));
+                Attribute newAttribute = new SingularSimpleAttribute(currentPath, new AttributeValue(value));
+                attributes.add(newAttribute);
+              List<AttributeValue> updatedAttributeValue = new ArrayList<AttributeValue>();
+              for (AttributeValue attrValue : currentAttribute.getValues()) {
+                if (attrValue == currentAttributeValue) {
+                  updatedAttributeValue.add(new AttributeValue(attributes.toArray(new Attribute[0])));
+                }
+                else
+                  updatedAttributeValue.add(attrValue);
+              }
+              currentAttribute.setValue(updatedAttributeValue.toArray(new AttributeValue[0]));
+              currentAttribute = newAttribute;
+              
+            }
+          }
+        }
+        return;
+      } else {
+        if (currentAttribute == null) {
+          Attribute attribute = null;
+          if (schemaAttribute.getType().equalsIgnoreCase("complex")) {
+            if (schemaAttribute.getMultiValued() == true) {
+              // Create MCV
+              List<AttributeValue> attributeValues = new ArrayList<AttributeValue>();
+              // Handle special index
+              SchemaAttribute schemaAttributeWithCannonicalValue = getSchemaAttributeWithCanonicalValue(schemaAttribute);
+              if (schemaAttributeWithCannonicalValue == null) {
+                for (int j = 0; j < Integer.parseInt(index) + 1; j++) {
+                  attributeValues.add(new AttributeValue(new Attribute[0]));
+                }
+                MultiValueComplexAttribute multiValueComplexAttr = new MultiValueComplexAttribute(currentPath, attributeValues.toArray(new AttributeValue[0]));
+                currentAttributeValue = multiValueComplexAttr.getValues()[Integer.parseInt(index)];
+                currentAttribute = multiValueComplexAttr;
+              }
+              else {
+                List<String> cannonicalValue = Arrays.asList(schemaAttributeWithCannonicalValue.getCanonicalValues());
+                  attribute = new SingularSimpleAttribute(schemaAttributeWithCannonicalValue.getName(), new AttributeValue(index));
+                  currentAttributeValue = new AttributeValue(attribute);
+                  attributeValues.add(currentAttributeValue);
+                  MultiValueComplexAttribute multiValueComplexAttr = new MultiValueComplexAttribute(currentPath, attributeValues.toArray(new AttributeValue[0]));
+                  currentAttribute = multiValueComplexAttr;
+              }
+              
+              
+              this.add(currentAttribute);
+              
+            } else {
+              // Create SCV
+              currentAttributeValue = new AttributeValue(new Attribute[0]);
+              attribute = new SingularComplexAttribute(currentPath, currentAttributeValue);
+              currentAttribute = attribute;
+              this.add(currentAttribute);
+            }
+          } else {
+            if (schemaAttribute.getMultiValued() == true) {
+              // Create MVS
+            } else {
+              // Create SSV
+              attribute = new SingularSimpleAttribute(currentPath, new AttributeValue(value));
+            }
+          }
+  
+          //
+          continue;
+        } else {
+          Attribute attribute = null;
+          if (schemaAttribute.getType().equalsIgnoreCase("complex")) {
+            if (schemaAttribute.getMultiValued() == true) {
+              List<AttributeValue> attributeValues = new LinkedList<AttributeValue>(Arrays.asList(currentAttribute.getValues()));
+              SchemaAttribute schemaAttributeWithCannonicalValue = getSchemaAttributeWithCanonicalValue(schemaAttribute);
+              if (schemaAttributeWithCannonicalValue == null) {
+                if (Integer.parseInt(index) > currentAttribute.getValues().length - 1) {
+                  attributeValues.add(new AttributeValue(new Attribute[0]));
+                  currentAttribute.setValue(attributeValues.toArray(new AttributeValue[0]));
+                }
+                currentAttributeValue = currentAttribute.getValues()[Integer.parseInt(index)];
+              } else {
+                boolean foundIndex = false;
+                for (int j = 0; j < currentAttribute.getValues().length; j++) {
+                  if (foundIndex)
+                    break;
+                  AttributeValue attributeValue = currentAttribute.getValues()[j];
+                  for (Attribute subAttribute : attributeValue.getSubAttributes()) {
+                    if (foundIndex) {
+                      break;
+                    }
+                    if (subAttribute.getName().equalsIgnoreCase(schemaAttributeWithCannonicalValue.getName())
+                        && subAttribute.getValue().getValueAsString().equalsIgnoreCase(index)) {
+                      currentAttributeValue = attributeValue;
+                      foundIndex = true;
+                      break;
+                    }
+                  }
+                }
+                if (!foundIndex) {
+                  attribute = new SingularSimpleAttribute(schemaAttributeWithCannonicalValue.getName(), new AttributeValue(index));
+                  currentAttributeValue = new AttributeValue(attribute);
+                  attributeValues.add(currentAttributeValue);
+                  currentAttribute.setValue(attributeValues.toArray(new AttributeValue[0]));
+                }
+              }
+              // Create MCV
+            } else {
+              // Create SCV
+              currentAttributeValue = currentAttribute.getValue();
+            }
+          } else {
+            if (schemaAttribute.getMultiValued() == true) {
+              // Create MVS
+            } else {
+              // Create SSV
+            }
+          }
+  
+        }
+      }
+    }
+    return;
+  }
+  
+  public Object getAttribute(String key) {
+    final List < String > path = new LinkedList < >();
+  
+    for (String schema: getSchemaList()) {
+      if (key.startsWith(schema)) {
+        path.add(schema);
+        key = key.substring(schema.length() + 1);
+        break;
+      }
+    }
+  
+    Collections.addAll(path, key.split("\\."));
+    SchemaAttribute schemaAttribute = null;
+    Attribute currentAttribute = null;
+    AttributeValue currentAttributeValue = null;
+  
+    for (int i = 0; i < path.size(); i++) {
+      String currentPath = path.get(i);
+  
+      boolean isMultiValueComplex = path.get(i).matches("(.+)\\[((.+))\\]");
+      String index = "-1";
+  
+      if (isMultiValueComplex) {
+        index = currentPath.substring(currentPath.indexOf("[") + 1, currentPath.indexOf("]"));
+        currentPath = currentPath.substring(0, currentPath.indexOf("["));
+      }
+  
+      if (i == 0) {
+        schemaAttribute = this.descriptor.get(currentPath);
+        currentAttribute = this.get(currentPath);
+      } else {
+        schemaAttribute = schemaAttribute.getSubSchemaAttribute(currentPath);
+      }
+  
+      /*if (schemaAttribute == null) {
+        throw new ScimException(ScimMessage.ATTRIBUTE_SCHEMA_NOTFOUND, );
+      }*/
+  
+      // Check schema attribute exist
+  
+      if (i == path.size() - 1) {
+        if (currentAttribute == null) {
+          return null;
+        }
+        else if (currentAttributeValue == null) {
+          return returnValueFromSchemaType(schemaAttribute, currentAttribute);
+        }
+        else {
+          for (Attribute attribute: currentAttributeValue.getSubAttributes()) {
+            if (attribute.getName().equalsIgnoreCase(currentPath)) return returnValueFromSchemaType(schemaAttribute, attribute);
+          }
+        }
+      } else {
+        if (currentAttribute == null) {
+          return null;
+        } else {
+          Attribute attribute = null;
+          if (schemaAttribute.getType().equalsIgnoreCase("complex")) {
+            if (schemaAttribute.getMultiValued() == true) {
+              SchemaAttribute schemaAttributeWithCannonicalValue = getSchemaAttributeWithCanonicalValue(schemaAttribute);
+              if (schemaAttributeWithCannonicalValue == null) {
+                if (Integer.parseInt(index) > currentAttribute.getValues().length) {
+                  return null;
+                }
+                currentAttributeValue = currentAttribute.getValues()[Integer.parseInt(index)];
+              } else {
+                boolean foundIndex = false;
+                for (int j = 0; j < currentAttribute.getValues().length; j++) {
+                  if (foundIndex) break;
+                  AttributeValue attributeValue = currentAttribute.getValues()[j];
+                  for (Attribute subAttribute: attributeValue.getSubAttributes()) {
+                    if (foundIndex) {
+                      break;
+                    }
+                    if (subAttribute.getName().equalsIgnoreCase(schemaAttributeWithCannonicalValue.getName()) && subAttribute.getValue().getValueAsString().equalsIgnoreCase(index)) {
+                      currentAttributeValue = attributeValue;
+                      foundIndex = true;
+                      break;
+                    }
+                  }
+                }
+                if (!foundIndex) {
+                  return null;
+                }
+              }
+              // Create MCV
+            } else {
+              // Create SCV
+              currentAttributeValue = currentAttribute.getValue();
+            }
+          } else {
+            if (schemaAttribute.getMultiValued() == true) {
+              return null;
+            } else {
+              return null;
+            }
+          }
+  
+        }
+      }
+    }
+    return null;
+  }
+  
+  private Object returnValueFromSchemaType(final SchemaAttribute schemaAttribute, final Attribute attribute) {
+    switch (schemaAttribute.getType()) {
+      case "string":
+        return attribute.getValue().getStringValue();
+      case "boolean":
+        return attribute.getValue().getBooleanValue();
+      case "decimal":
+        return attribute.getValue().getDecimalValue();
+      case "integer":
+        return attribute.getValue().getIntegerValue();
+      case "dateTime":
+        return attribute.getValue().getDateTimeValue();
+      case "binary":
+        return attribute.getValue().getBinaryValue();
+      case "reference":
+        return attribute.getValue().getReferenceValue();
+      case "complex":
+        return attribute.getValues();
+      default:
+        return attribute;
+    }
+  }
+
+  private SchemaAttribute getSchemaAttributeWithCanonicalValue(final SchemaAttribute schemaAttribute) {
+    SchemaAttribute[] subSchemaAttributes = schemaAttribute.getSubAttributes();
+    
+    for (SchemaAttribute subSchemaAttribute : subSchemaAttributes) {
+      if (subSchemaAttribute.getCanonicalValues() != null && subSchemaAttribute.getCanonicalValues().length > 0) {
+        return subSchemaAttribute;
+      }
+    }
+    
+    return null;
+    // throw new ScimException(HTTPContext.StatusCode.INTERNAL_SERVER_ERROR, "Cannot find cannonical value");
+  }
+
+
+
+
+
+
+
 
   //////////////////////////////////////////////////////////////////////////////
   // Method:   getResourceDescriptor
@@ -322,11 +700,6 @@ public abstract class ScimResource extends Resource {
     throws ScimException {
   
     final JsonNode jsonNode = Marshaller.resourceToJsonNode(this, null, new HashSet<String>(attributeList));
-    try {
-      System.out.println("COpyResource: " + new ObjectMapper().writeValueAsString(jsonNode));
-    }
-    catch (JsonProcessingException e) {
-    }
     return Unmarshaller.jsonNodeToResource(jsonNode, descriptor, clazz);
   }
 

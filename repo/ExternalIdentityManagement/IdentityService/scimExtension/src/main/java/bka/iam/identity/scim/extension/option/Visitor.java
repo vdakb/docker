@@ -40,6 +40,7 @@ import bka.iam.identity.scim.extension.exception.ScimException;
 import bka.iam.identity.scim.extension.model.Attribute;
 import bka.iam.identity.scim.extension.model.ListResponse;
 import bka.iam.identity.scim.extension.model.Resource;
+import bka.iam.identity.scim.extension.model.ScimResource;
 
 import java.util.Collection;
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,7 +79,7 @@ public interface Visitor<C extends Collection<T>, T> {
    **                        resource.
    **                        Possible object is {@link Collection}.
    */
-  C visit(Resource resource);
+  C visit(ScimResource resource);
 
   //////////////////////////////////////////////////////////////////////////////
   // Method:   visit
@@ -116,6 +117,6 @@ public interface Visitor<C extends Collection<T>, T> {
    ** 
    ** @throws ScimException   If an error occurs during processing.
    */
-  <R extends Resource>  ListResponse<R> visit(ListResponse<R> listResource)
+  <R extends ScimResource>  ListResponse<R> visit(ListResponse<R> listResource)
    throws ScimException;
 }

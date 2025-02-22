@@ -42,6 +42,8 @@ import bka.iam.identity.scim.extension.model.ListResponse;
 import bka.iam.identity.scim.extension.model.Operation;
 import bka.iam.identity.scim.extension.model.PatchRequest;
 import bka.iam.identity.scim.extension.model.ResourceDescriptor;
+import bka.iam.identity.scim.extension.oim.Option.SortOrder;
+import bka.iam.identity.scim.extension.oim.RoleService;
 import bka.iam.identity.scim.extension.parser.Marshaller;
 import bka.iam.identity.scim.extension.parser.ResponseBuilder;
 import bka.iam.identity.scim.extension.parser.Unmarshaller;
@@ -51,7 +53,6 @@ import bka.iam.identity.scim.extension.rest.OIMSchema;
 import bka.iam.identity.scim.extension.rest.OIMScimContext;
 import bka.iam.identity.scim.extension.rest.PATCH;
 import bka.iam.identity.scim.extension.utils.PatchUtil;
-import bka.iam.identity.scim.extension.utils.RoleUtil;
 import bka.iam.identity.zero.api.AccountsFacade;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -60,6 +61,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.InputStream;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -187,7 +189,7 @@ public class GroupEndpoint extends AbstractEndpoint {
     //                                                      .invokeList(Group.class);
 
     final ListResponse<Group> listResponse = new ListResponse();
-    final List<Group>         groups       = RoleUtil.searchRole(startIndex, count, sortOrder);
+    final List<Group>         groups       = RoleService.build(count, startIndex, sortBy, SortOrder.fromString(sortOrder), emit, omit).searchResource(null);
     
     for (Group group : groups) {
       listResponse.add(group);
@@ -196,7 +198,7 @@ public class GroupEndpoint extends AbstractEndpoint {
     if (startIndex != null)
     listResponse.setStartIndex(startIndex);
     
-    listResponse.setTotalResult(RoleUtil.countRole());
+    listResponse.setTotalResult(RoleService.build(emit, omit).count());
     
     
     trace(method, SystemMessage.METHOD_EXIT);
@@ -254,7 +256,7 @@ public class GroupEndpoint extends AbstractEndpoint {
     
     Group group = OIMScimContext.build(this, httpRequest).lookupGroup(id, option);*/
     
-    Group group = RoleUtil.lookupRole(id);
+    Group group = RoleService.build(emit, omit).lookupRoleID(id);
     
     this.exiting(method, group);
     return ResponseBuilder.response(200, group, omit, emit);
@@ -291,6 +293,8 @@ public class GroupEndpoint extends AbstractEndpoint {
   @Produces({"application/scim+json"})
   public Response create(InputStream is,
                          @Context UriInfo uriInfo,
+                         final @QueryParam("attributes") Set<String> emit,
+                         final @QueryParam("excludedAttributes") Set<String> omit,
                          @Context HttpServletRequest httpRequest,
                          @Context SecurityContext sc,
                          @Context Request request
@@ -309,7 +313,7 @@ public class GroupEndpoint extends AbstractEndpoint {
     try {
       group = Unmarshaller.jsonNodeToResource((JsonNode)mapper.readTree(is), resourceDescriptor , Group.class);
       
-      group = OIMScimContext.build(this, httpRequest).createGroup(group, option);
+      group = RoleService.build(emit, omit).createResource(group);
     }
     catch (IOException e) {
       throw new ScimException(HTTPContext.StatusCode.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -355,7 +359,7 @@ public class GroupEndpoint extends AbstractEndpoint {
     final String method = "delete";
     this.entering(method);
     
-    RoleUtil.delete(id);
+    RoleService.build().deleteResource(id);
     
     this.exiting(method);
     return ResponseBuilder.response(HTTPContext.StatusCode.NO_CONTENT.getStatusCode());
@@ -393,6 +397,8 @@ public class GroupEndpoint extends AbstractEndpoint {
   public Response replace(InputStream is,
                           @PathParam("id") String id,
                           @Context UriInfo uriInfo,
+                          final @QueryParam("attributes") Set<String> emit,
+                          final @QueryParam("excludedAttributes") Set<String> omit,
                           @Context HttpServletRequest httpRequest,
                           @Context SecurityContext sc,
                           @Context Request request)
@@ -403,23 +409,31 @@ public class GroupEndpoint extends AbstractEndpoint {
     try {
       final ObjectMapper mapper       = new ObjectMapper();
       final PatchRequest patchRequest = Unmarshaller.jsonNodeToPatchRequest(mapper.readTree(is));
+      final Group originalGroup       = RoleService.build(emit, omit).lookupRoleID(id);
       
-      final Group originalGroup = RoleUtil.lookupRole(id);
-      
-      Group patchedGroup = (Group) originalGroup.clone();
-      JsonNode groupJson   = Marshaller.resourceToJsonNode(patchedGroup, null, null);
+      //Group patchedGroup = (Group) originalGroup.clone();
+      Group groupToPatch   = RoleService.build(emit, omit).lookupRoleID(id);
       for (Operation operation : patchRequest.getOperations()) {
+        JsonNode groupJson   = Marshaller.resourceToJsonNode(groupToPatch, null, null);
         if (!operation.getPath().startsWith("members")){
           throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, ScimException.ScimType.INVALID_VALUE, ScimBundle.string(ScimMessage.GROUP_OPERATION_ONLY_MEMBER));  
         }
         groupJson = PatchUtil.applyPatch(groupJson, operation);
-      }
-      
-      RoleUtil.modify(Unmarshaller.jsonNodeToResource(groupJson, originalGroup.getResourceDescriptor(), Group.class), this.facade);
-      
-      final Group        group        = RoleUtil.lookupRole(id);
+        Group groupPatched = Unmarshaller.jsonNodeToResource(groupJson, originalGroup.getResourceDescriptor(), Group.class);
+        List<String> dupplicateMembers = new ArrayList<>();
+        for (String member : groupPatched.getMembersAsListString()) {
+          if (!dupplicateMembers.contains(member))
+            dupplicateMembers.add(member);
+          else {
+            throw new ScimException(HTTPContext.StatusCode.BAD_REQUEST, ScimException.ScimType.UNIQUENESS, ScimBundle.format(ScimMessage.GROUP_MEMBER_DUPLICATE, id, member));  
 
-      return ResponseBuilder.response(200, group, null, null);
+          }
+        }
+        groupToPatch = RoleService.build(emit, omit).modifyResource(id, Unmarshaller.jsonNodeToResource(groupJson, originalGroup.getResourceDescriptor(), Group.class), originalGroup);         
+      }
+
+
+      return ResponseBuilder.response(200, groupToPatch, null, null);
     }
     catch (IOException e) {
       throw new ScimException(HTTPContext.StatusCode.INTERNAL_SERVER_ERROR, e);
@@ -469,23 +483,9 @@ public class GroupEndpoint extends AbstractEndpoint {
     final String method = "modify";
     this.entering(method);
     
-    final ObjectMapper mapper       = new ObjectMapper();
-
-    Group group = null;
-    try {
-      final ResourceDescriptor resourceDescriptor = OIMSchema.getInstance().getResourceDescriptorByResourceType(Group.class);    
-      
-      group = Unmarshaller.jsonNodeToResource((JsonNode)mapper.readTree(is), resourceDescriptor, Group.class);
-      group = OIMScimContext.build(this, httpRequest).modifyGroup(id, group);
-    }
-    catch (IOException e) {
-      throw new ScimException(HTTPContext.StatusCode.INTERNAL_SERVER_ERROR, e.getMessage());
-    }
-    finally {
-      this.exiting(method);
-    }
+    throw new ScimException(HTTPContext.StatusCode.METHOD_NOT_ALLOWED,  ScimBundle.string(ScimMessage.GROUP_PUT_NOT_SUPPORTED));
     
-    return ResponseBuilder.response(200, group, null, null);
+    
   }
   
   /**
